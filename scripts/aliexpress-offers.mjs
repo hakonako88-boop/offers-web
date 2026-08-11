@@ -71,6 +71,7 @@ export function normalizeAliExpressProduct(product, category) {
     image,
     url,
     category: String(product?.first_level_category_name || category || 'AliExpress').slice(0, 60),
+    siteCategory: category || 'Tecnología',
     price,
     priceLabel: euro(price),
     previousPrice: previousPrice > price ? previousPrice : 0,

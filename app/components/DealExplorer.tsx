@@ -28,6 +28,7 @@ type LegacyOffer = {
   price?: string;
   previousPrice?: string;
   store?: string;
+  category?: string;
   date?: number;
 };
 
@@ -46,6 +47,8 @@ function cleanTitle(value?: string) {
 }
 
 function categoryFor(offer: LegacyOffer) {
+  const directCategory = String(offer.category ?? "").trim();
+  if (["Tecnología", "Hogar", "Cocina", "Moda"].includes(directCategory)) return directCategory;
   const text = `${offer.title ?? ""} ${offer.text ?? ""}`.toLocaleLowerCase("es");
   if (/café|capsula|lomo|aliment|cocina|táper/.test(text)) return "Cocina";
   if (/hogar|vileda|piscina|jardín|mueble|limpieza/.test(text)) return "Hogar";

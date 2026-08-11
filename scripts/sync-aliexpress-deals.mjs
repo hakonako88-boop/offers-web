@@ -12,6 +12,8 @@ import {
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'aliexpress-discovery-state.json');
 const PUBLISHED_FILE = path.join(ROOT, 'data', 'aliexpress-publications.json');
+const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
+const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const MAX_POSTS_PER_RUN = 2;
 
 function readJson(file, fallback) {
@@ -123,6 +125,44 @@ async function publishOffer(config, offer) {
   });
 }
 
+async function mirrorImageForWeb(offer) {
+  const filename = `aliexpress-${offer.id}.jpg`;
+  const localImage = path.join(WEB_IMAGES_DIR, filename);
+  if (fs.existsSync(localImage)) return `/tg/${filename}`;
+
+  try {
+    const response = await fetch(offer.image);
+    if (!response.ok) throw new Error(`image status ${response.status}`);
+    fs.mkdirSync(WEB_IMAGES_DIR, { recursive: true });
+    fs.writeFileSync(localImage, Buffer.from(await response.arrayBuffer()));
+    return `/tg/${filename}`;
+  } catch (error) {
+    console.warn(`Could not mirror AliExpress image ${offer.id}: ${error.message}`);
+    return offer.image;
+  }
+}
+
+async function saveOfferForWeb(offer, message) {
+  const existingOffers = readJson(WEB_OFFERS_FILE, []);
+  const image = await mirrorImageForWeb(offer);
+  const record = {
+    message_id: message.message_id,
+    source_product_id: offer.id,
+    date: Math.floor(Date.now() / 1000),
+    title: offer.title,
+    text: formatAliExpressCaption(offer),
+    image,
+    url: offer.url,
+    price: offer.priceLabel,
+    previousPrice: offer.previousPriceLabel,
+    store: 'AliExpress',
+    category: offer.siteCategory,
+    description: offer.title,
+  };
+  const withoutPreviousVersion = existingOffers.filter((entry) => String(entry.source_product_id || '') !== offer.id);
+  writeJson(WEB_OFFERS_FILE, [record, ...withoutPreviousVersion]);
+}
+
 const config = getConfig();
 const missing = missingConfig(config);
 if (missing.length) {
@@ -154,6 +194,7 @@ let sent = 0;
 for (const offer of uniqueCandidates) {
   try {
     const message = await publishOffer(config, offer);
+    await saveOfferForWeb(offer, message);
     published.push({
       productId: offer.id,
       publishedAt: new Date().toISOString(),

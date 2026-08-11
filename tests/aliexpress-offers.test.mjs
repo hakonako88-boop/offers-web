@@ -36,6 +36,7 @@ test('keeps only discounted AliExpress products with an affiliate link', () => {
   assert.equal(offer.id, '123456');
   assert.equal(offer.price, 24.99);
   assert.equal(offer.discount, 58);
+  assert.equal(offer.siteCategory, 'Tecnología');
   assert.match(formatAliExpressCaption(offer), /24,99\s?€/);
   assert.match(formatAliExpressCaption(offer), /58%/);
 });
