@@ -42,6 +42,15 @@ jobs:
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[telegram-test]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run send:test-telegram
 
+      - name: Guardar resultado de la prueba de Telegram
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[telegram-test]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/telegram-test-status.json
+          git diff --cached --quiet || git commit -m "Guardar resultado de prueba de Telegram"
+          git push
+
       - name: Sincronizar ofertas de Telegram
         if: ${{ env.TELEGRAM_BOT_TOKEN != '' }}
         run: npm run sync || echo "Telegram no respondió; se publican las ofertas guardadas."
