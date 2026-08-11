@@ -1,7 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { Readable } from 'node:stream';
+import { createGunzip } from 'node:zlib';
 import {
   formatMiraviaCaption,
+  isGzipFeed,
   miraviaFeedEntries,
   miraviaRecordFromColumns,
   normalizeMiraviaProduct,
@@ -197,7 +200,12 @@ async function discoverCandidates(feedUrl, seenProductIds) {
     return productsScanned < MAX_PRODUCTS_SCANNED;
   });
 
-  for await (const chunk of response.body) {
+  const rawStream = Readable.fromWeb(response.body);
+  const feedStream = isGzipFeed(feedUrl, response.headers.get('content-encoding'))
+    ? rawStream.pipe(createGunzip())
+    : rawStream;
+
+  for await (const chunk of feedStream) {
     reader.push(decoder.decode(chunk, { stream: true }));
     if (reader.stopped) break;
   }
@@ -232,7 +240,7 @@ const entries = miraviaFeedEntries(parseFeedList(await listResponse.text()));
 const feed = selectMiraviaFeed(entries, state.nextFeed);
 if (!feed) throw new Error('No Spanish Miravia product feed is available for this publisher account.');
 
-const feedVersion = String(feed.last_imported || feed.last_checked || 'unknown');
+const feedVersion = `gzip-v2:${String(feed.last_imported || feed.last_checked || 'unknown')}`;
 const alreadyChecked = state.feedVersions?.[feed.feed_id] === feedVersion;
 let discovered = { candidates: [], productsScanned: 0 };
 if (!alreadyChecked) {

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   formatMiraviaCaption,
+  isGzipFeed,
   miraviaFeedEntries,
   normalizeMiraviaProduct,
   parseFeedList,
@@ -55,4 +56,10 @@ test('rejects a Miravia product that is out of stock or has no real saving', () 
 
   assert.equal(normalizeMiraviaProduct(base), null);
   assert.equal(normalizeMiraviaProduct({ ...base, product_price_old: '50.00', in_stock: '0' }), null);
+});
+
+test('recognizes the gzip downloads produced by Awin feeds', () => {
+  assert.equal(isGzipFeed('https://feeds.example/compression/gzip/products'), true);
+  assert.equal(isGzipFeed('https://feeds.example/products', 'gzip'), true);
+  assert.equal(isGzipFeed('https://feeds.example/products'), false);
 });

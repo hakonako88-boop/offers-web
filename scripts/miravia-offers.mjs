@@ -126,6 +126,10 @@ export function selectMiraviaFeed(entries = [], cursor = 0) {
   return pool[Math.abs(Number(cursor) || 0) % pool.length];
 }
 
+export function isGzipFeed(feedUrl = '', contentEncoding = '') {
+  return /gzip/i.test(String(contentEncoding)) || /compression[=/]gzip/i.test(String(feedUrl));
+}
+
 export function miraviaRecordFromColumns(headers = [], values = []) {
   const record = {};
   headers.forEach((header, index) => {
