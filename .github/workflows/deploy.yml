@@ -20,6 +20,7 @@ jobs:
     env:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      TELEGRAM_CONTROL_CODE: ${{ secrets.TELEGRAM_CONTROL_CODE }}
       AMAZON_CREATOR_CREDENTIAL_ID: ${{ secrets.AMAZON_CREATOR_CREDENTIAL_ID }}
       AMAZON_CREATOR_SECRET: ${{ secrets.AMAZON_CREATOR_SECRET }}
       AMAZON_CREATOR_VERSION: ${{ secrets.AMAZON_CREATOR_VERSION }}
@@ -45,6 +46,10 @@ jobs:
         if: ${{ env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         continue-on-error: true
         run: npm run verify:telegram
+
+      - name: Procesar ofertas enviadas al bot privado
+        if: ${{ env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' && env.TELEGRAM_CONTROL_CODE != '' }}
+        run: npm run sync:inbox || echo "No se pudo procesar el buzón privado de Telegram en esta ejecución."
 
       - name: Enviar mensaje de prueba a Telegram
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[telegram-test]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
@@ -80,7 +85,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json public/tg
+          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json data/telegram-inbox-state.json public/tg
           git diff --cached --quiet || git commit -m "Actualizar ofertas desde Telegram"
           git push
 

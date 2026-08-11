@@ -12,6 +12,7 @@ Configura estos valores en GitHub Actions Secrets. Nunca los compartas por chat 
 - `AWIN_FEED_LIST_URL`: enlace privado del listado de feeds de Awin para la cuenta de Miravia. Se guarda únicamente como secreto de GitHub.
 - `TELEGRAM_BOT_TOKEN`: token de BotFather.
 - `TELEGRAM_CHANNEL_ID`: ID numérico del canal; el bot debe ser administrador.
+- `TELEGRAM_CONTROL_CODE`: clave privada que autoriza los mensajes de publicación enviados al chat privado del bot. Elige una frase larga y guárdala solo como secreto de GitHub.
 - `IMPORT_SECRET`: contraseña aleatoria para autorizar importaciones al endpoint de la web.
 
 ## Automatización activa de Amazon
@@ -41,6 +42,23 @@ ChollosAlDía revisa con frecuencia moderada los canales RSS o mapas de sitio p�
 Una señal solo se publica si AliExpress confirma de nuevo el producto, precio, imagen, descuento y genera un `promotion_link` oficial para el identificador de seguimiento configurado. Las señales que indican Amazon no se publican mientras la API de Amazon no esté habilitada para la cuenta. MiChollo se consulta como máximo una vez cada seis horas para no sobrecargar su sitemap público.
 
 ## Formato de una oferta manual
+
+### Publicar desde el chat privado del bot sin APIs externas
+
+El bot puede recibir una oferta manual desde un chat privado y publicarla en el canal y en la web en la siguiente ejecución programada. No consulta ni extrae precios de Amazon: usa exclusivamente la foto y los datos que envía el administrador, para evitar scraping y precios incorrectos.
+
+Envía **una foto** al bot con este texto como pie de foto, sustituyendo `TU_CLAVE` por el valor de `TELEGRAM_CONTROL_CODE`:
+
+```text
+/publicar TU_CLAVE
+https://www.amazon.es/dp/ASIN?tag=tu-identificador
+Título: Nombre del producto
+Precio: 19,99 €
+Antes: 39,99 €
+Categoría: Tecnología
+```
+
+En Amazon debe ser un enlace directo generado con SiteStripe que conserve `tag=`. El bot confirma por privado cuando la oferta se haya enviado al canal y guardado en la web. Las notas de voz no se transcriben en esta modalidad gratuita; el enlace y los datos deben enviarse por escrito.
 
 ```json
 {
