@@ -35,7 +35,7 @@ jobs:
 
       - name: Sincronizar ofertas de Telegram
         if: ${{ env.TELEGRAM_BOT_TOKEN != '' }}
-        run: npm run sync
+        run: npm run sync || echo "Telegram no respondió; se publican las ofertas guardadas."
 
       - name: Guardar ofertas nuevas
         if: ${{ env.TELEGRAM_BOT_TOKEN != '' }}
