@@ -9,6 +9,7 @@ Configura estos valores en GitHub Actions Secrets. Nunca los compartas por chat 
 - `AMAZON_CREATOR_CREDENTIAL_ID`, `AMAZON_CREATOR_SECRET` y `AMAZON_CREATOR_VERSION`: credenciales de Amazon Creators API.
 - `AMAZON_PARTNER_TAG`: tracking ID de Amazon Afiliados (`chollos00a-21`).
 - `ALIEXPRESS_APP_KEY`, `ALIEXPRESS_APP_SECRET` y `ALIEXPRESS_TRACKING_ID`: credenciales oficiales de AliExpress Affiliates API.
+- `AWIN_FEED_LIST_URL`: enlace privado del listado de feeds de Awin para la cuenta de Miravia. Se guarda únicamente como secreto de GitHub.
 - `TELEGRAM_BOT_TOKEN`: token de BotFather.
 - `TELEGRAM_CHANNEL_ID`: ID numérico del canal; el bot debe ser administrador.
 - `IMPORT_SECRET`: contraseña aleatoria para autorizar importaciones al endpoint de la web.
@@ -26,6 +27,12 @@ Amazon puede devolver `AssociateNotEligible` hasta validar la elegibilidad de la
 Cada 30 minutos, GitHub consulta dos categorías rotativas con AliExpress Affiliates API en euros para España. Publica como máximo dos productos nuevos con descuento real de al menos el 20%, foto, precio y el enlace `promotion_link` generado por AliExpress para el Tracking ID configurado. No se repiten productos publicados durante 120 días.
 
 La API no proporciona siempre cupones aplicables a todos los productos. Por eso las publicaciones muestran el descuento real recibido y nunca inventan un cupón. No se extraen precios mediante scraping ni se añaden parámetros de afiliación manuales: evita enlaces sin atribución y precios incorrectos.
+
+## Miravia (Awin)
+
+Cada 30 minutos, GitHub consulta de forma moderada el listado oficial de feeds de Awin para Miravia. Rota los feeds españoles locales, solo descarga los que Awin haya actualizado y analiza una muestra limitada para no sobrecargar el catálogo. Solo publica como máximo una oferta nueva por ejecución cuando el propio feed confirma enlace de seguimiento Awin, imagen, stock, precio y un descuento real de al menos el 20%.
+
+Las ofertas se publican primero con foto y botón en Telegram y se guardan simultáneamente en la web. El enlace de acceso a los feeds nunca se versiona ni se muestra al público.
 
 ## Señales públicas de comunidades de chollos
 

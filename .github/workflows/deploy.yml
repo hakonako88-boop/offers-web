@@ -27,6 +27,7 @@ jobs:
       ALIEXPRESS_APP_KEY: ${{ secrets.ALIEXPRESS_APP_KEY }}
       ALIEXPRESS_APP_SECRET: ${{ secrets.ALIEXPRESS_APP_SECRET }}
       ALIEXPRESS_TRACKING_ID: ${{ secrets.ALIEXPRESS_TRACKING_ID }}
+      AWIN_FEED_LIST_URL: ${{ secrets.AWIN_FEED_LIST_URL }}
     steps:
       - name: Descargar web
         uses: actions/checkout@v4
@@ -57,6 +58,10 @@ jobs:
         if: ${{ env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run sync:aliexpress || echo "AliExpress no devolvió ofertas publicables en esta ejecución."
 
+      - name: Buscar y publicar ofertas de Miravia
+        if: ${{ env.AWIN_FEED_LIST_URL != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        run: npm run sync:miravia || echo "Miravia no devolvió ofertas publicables en esta ejecución."
+
       - name: Guardar resultado de la prueba de Telegram
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[telegram-test]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: |
@@ -75,7 +80,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json public/tg
+          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json public/tg
           git diff --cached --quiet || git commit -m "Actualizar ofertas desde Telegram"
           git push
 
