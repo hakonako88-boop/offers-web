@@ -5,11 +5,13 @@ import { createGunzip } from 'node:zlib';
 import {
   formatMiraviaCaption,
   formatMiraviaTelegramCaption,
+  highResolutionMiraviaImage,
   isGzipFeed,
   miraviaFeedEntries,
   miraviaRecordFromColumns,
   normalizeMiraviaProduct,
   parseFeedList,
+  productImageFromPage,
   selectMiraviaFeed,
 } from './miravia-offers.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
@@ -82,26 +84,40 @@ async function publishOffer(config, offer) {
   });
 }
 
-async function mirrorImageForWeb(offer) {
+async function preferredMiraviaImage(offer) {
+  try {
+    const response = await fetch(offer.url, {
+      headers: { 'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)' },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!response.ok) throw new Error(`product page status ${response.status}`);
+    return productImageFromPage(await response.text(), offer.image);
+  } catch (error) {
+    console.warn(`Could not obtain a high-resolution Miravia image for ${offer.sourceProductId}: ${error.message}`);
+    return highResolutionMiraviaImage(offer.image);
+  }
+}
+
+async function mirrorImageForWeb(offer, imageUrl = offer.image) {
   const filename = `miravia-${offer.sourceProductId}.jpg`;
   const localImage = path.join(WEB_IMAGES_DIR, filename);
   if (fs.existsSync(localImage)) return `/tg/${filename}`;
 
   try {
-    const response = await fetch(offer.image);
+    const response = await fetch(imageUrl);
     if (!response.ok) throw new Error(`image status ${response.status}`);
     fs.mkdirSync(WEB_IMAGES_DIR, { recursive: true });
     fs.writeFileSync(localImage, Buffer.from(await response.arrayBuffer()));
     return `/tg/${filename}`;
   } catch (error) {
     console.warn(`Could not mirror Miravia image ${offer.sourceProductId}: ${error.message}`);
-    return offer.image;
+    return imageUrl;
   }
 }
 
 async function saveOfferForWeb(offer, message) {
   const existingOffers = readJson(WEB_OFFERS_FILE, []);
-  const image = await mirrorImageForWeb(offer);
+  const image = await mirrorImageForWeb(offer, offer.image);
   const record = {
     message_id: message.message_id,
     source_product_id: offer.id,
@@ -260,6 +276,7 @@ const candidates = filterDuplicateDeals(Array.from(new Map(
 let sent = 0;
 for (const offer of candidates) {
   try {
+    offer.image = await preferredMiraviaImage(offer);
     const message = await publishOffer(config, offer);
     await saveOfferForWeb(offer, message);
     published.push({

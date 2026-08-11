@@ -3,10 +3,12 @@ import test from 'node:test';
 import {
   formatMiraviaCaption,
   formatMiraviaTelegramCaption,
+  highResolutionMiraviaImage,
   isGzipFeed,
   miraviaFeedEntries,
   normalizeMiraviaProduct,
   parseFeedList,
+  productImageFromPage,
   selectMiraviaFeed,
 } from '../scripts/miravia-offers.mjs';
 
@@ -90,4 +92,21 @@ test('recognizes the gzip downloads produced by Awin feeds', () => {
   assert.equal(isGzipFeed('https://feeds.example/compression/gzip/products'), true);
   assert.equal(isGzipFeed('https://feeds.example/products', 'gzip'), true);
   assert.equal(isGzipFeed('https://feeds.example/products'), false);
+});
+
+test('prefers the high-resolution product image exposed by Miravia over a feed thumbnail', () => {
+  const image = productImageFromPage(
+    '<meta content="https://img2.miravia.es/g/fb/kf/product.png_720x720q75.jpg" property="og:image">',
+    'https://img2.miravia.es/g/fb/kf/product.png_200x200q75.jpg',
+  );
+  assert.match(image, /720x720/);
+  assert.equal(productImageFromPage('<meta property="og:image" content="https://images.example/product.jpg">', 'https://cdn.example/thumb.jpg'), 'https://cdn.example/thumb.jpg');
+});
+
+test('upgrades the small Miravia feed rendition to a card-ready CDN image', () => {
+  assert.equal(
+    highResolutionMiraviaImage('https://img2.miravia.es/g/fb/kf/product.png_200x200q75.jpg'),
+    'https://img2.miravia.es/g/fb/kf/product.png_720x720q85.jpg',
+  );
+  assert.equal(highResolutionMiraviaImage('https://cdn.example/product.jpg'), 'https://cdn.example/product.jpg');
 });

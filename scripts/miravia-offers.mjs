@@ -57,6 +57,38 @@ function columnValue(record, aliases) {
   return '';
 }
 
+/** Returns Miravia's product-page social image instead of the 200 px feed thumbnail. */
+export function productImageFromPage(html = '', fallback = '') {
+  const tags = String(html).match(/<meta\b[^>]*>/giu) || [];
+  for (const tag of tags) {
+    const key = tag.match(/\b(?:property|name)\s*=\s*["']([^"']+)["']/iu)?.[1]?.toLocaleLowerCase('en');
+    if (key !== 'og:image' && key !== 'twitter:image') continue;
+    const value = tag.match(/\bcontent\s*=\s*["']([^"']+)["']/iu)?.[1]?.replaceAll('&amp;', '&') || '';
+    try {
+      const imageUrl = new URL(value);
+      const host = imageUrl.hostname.toLocaleLowerCase('en');
+      if (imageUrl.protocol === 'https:' && (host === 'miravia.es' || host.endsWith('.miravia.es'))) return imageUrl.toString();
+    } catch {
+      // The feed thumbnail remains the safe fallback when the page has no usable image.
+    }
+  }
+  return fallback;
+}
+
+/** Awin's Miravia feeds often contain a 200 px thumbnail even though its CDN
+ * can deliver the same product image at a card-ready size. */
+export function highResolutionMiraviaImage(image = '') {
+  try {
+    const parsed = new URL(String(image));
+    const host = parsed.hostname.toLocaleLowerCase('en');
+    if (host !== 'miravia.es' && !host.endsWith('.miravia.es')) return String(image);
+    parsed.pathname = parsed.pathname.replace(/_\d{2,4}x\d{2,4}q\d+(?=\.(?:jpe?g|png|webp)$)/iu, '_720x720q85');
+    return parsed.toString();
+  } catch {
+    return String(image);
+  }
+}
+
 function hasStock(record) {
   const value = columnValue(record, ['in_stock', 'is_for_sale', 'stock_status', 'availability']).toLocaleLowerCase('es');
   if (!value) return true;
@@ -144,7 +176,7 @@ export function normalizeMiraviaProduct(record = {}) {
   const id = columnValue(record, ['aw_product_id', 'product_id', 'merchant_product_id', 'pid']);
   const title = columnValue(record, ['product_name', 'name', 'title']);
   const url = columnValue(record, ['aw_deep_link', 'basket_link', 'merchant_deep_link']);
-  const image = columnValue(record, ['aw_image_url', 'large_image', 'merchant_image_url', 'image_url', 'merchant_thumb_url']);
+  const image = highResolutionMiraviaImage(columnValue(record, ['aw_image_url', 'large_image', 'merchant_image_url', 'image_url', 'merchant_thumb_url']));
   const price = toAmount(columnValue(record, ['search_price', 'store_price', 'sale_price', 'price']));
   const oldPrice = toAmount(columnValue(record, ['product_price_old', 'rrp_price', 'base_price', 'old_price']));
   const reportedDiscount = percentage(columnValue(record, ['savings_percent', 'discount', 'discount_percent']));
