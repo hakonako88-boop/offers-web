@@ -40,7 +40,7 @@ test('keeps only discounted AliExpress products with an affiliate link', () => {
   assert.match(formatAliExpressCaption(offer), /24,99\s?€/);
   assert.match(formatAliExpressCaption(offer), /58%/);
   assert.match(formatAliExpressCaption(offer), /Ahorras/);
-  assert.match(formatAliExpressCaption(offer), /Enlace de afiliado/);
+  assert.match(formatAliExpressCaption(offer), /#publi/);
 });
 
 test('rejects normal-priced products without a real discount', () => {

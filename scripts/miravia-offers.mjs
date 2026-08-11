@@ -179,6 +179,8 @@ export function formatMiraviaCaption(offer) {
     ? `\n💸 Ahorras: ${euro(offer.previousPrice - offer.price)}`
     : '';
   return [
+    '#publi',
+    '',
     '🛍️ OFERTÓN EN MIRAVIA',
     '',
     offer.title,
@@ -188,7 +190,7 @@ export function formatMiraviaCaption(offer) {
     `📂 Categoría: ${offer.category}`,
     '',
     '👇 Toca el botón para ver la oferta.',
-    'ℹ️ Enlace de afiliado · El precio y el stock pueden cambiar.',
+    '⚠️ El precio y el stock pueden cambiar.',
     '#Chollos #Miravia #Ofertas',
   ].join('\n').slice(0, 1000);
 }

@@ -69,6 +69,8 @@ export function formatAmazonCaption(offer) {
   const prime = offer.isPrime ? '\n🚚 Prime' : '';
 
   return [
+    '#publi',
+    '',
     '🛒 OFERTÓN EN AMAZON',
     '',
     offer.title,
@@ -78,7 +80,7 @@ export function formatAmazonCaption(offer) {
     `📂 Categoría: ${offer.category}`,
     '',
     '👇 Toca el botón para ver la oferta.',
-    'ℹ️ Enlace de afiliado · El precio y el stock pueden cambiar.',
+    '⚠️ El precio y el stock pueden cambiar.',
     '#Chollos #Amazon #Ofertas',
   ].join('\n').slice(0, 1000);
 }

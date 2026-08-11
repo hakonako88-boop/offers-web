@@ -102,6 +102,8 @@ export function formatAliExpressCaption(offer) {
   const popularity = offer.volume > 20 ? `\n🔥 ${offer.volume}+ pedidos recientes` : '';
 
   return [
+    '#publi',
+    '',
     '🛍️ OFERTÓN EN ALIEXPRESS',
     '',
     offer.title,
@@ -111,7 +113,7 @@ export function formatAliExpressCaption(offer) {
     `📂 Categoría: ${offer.category}`,
     '',
     '👇 Toca el botón para ver la oferta.',
-    'ℹ️ Enlace de afiliado · El precio y el stock pueden cambiar.',
+    '⚠️ El precio y el stock pueden cambiar.',
     '#Chollos #AliExpress #Ofertas',
   ].join('\n').slice(0, 1000);
 }
