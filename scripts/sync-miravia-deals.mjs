@@ -4,6 +4,7 @@ import { Readable } from 'node:stream';
 import { createGunzip } from 'node:zlib';
 import {
   formatMiraviaCaption,
+  formatMiraviaTelegramCaption,
   isGzipFeed,
   miraviaFeedEntries,
   miraviaRecordFromColumns,
@@ -72,9 +73,10 @@ async function publishOffer(config, offer) {
   return telegram('sendPhoto', config.telegramToken, {
     chat_id: config.telegramChannelId,
     photo: offer.image,
-    caption: formatMiraviaCaption(offer),
+    caption: formatMiraviaTelegramCaption(offer),
+    parse_mode: 'HTML',
     reply_markup: {
-      inline_keyboard: [[{ text: '🛒 Ver chollo', url: offer.url }]],
+      inline_keyboard: [[{ text: '🛒 VER CHOLLO', url: offer.url }]],
     },
   });
 }

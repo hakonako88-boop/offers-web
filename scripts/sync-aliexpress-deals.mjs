@@ -5,6 +5,7 @@ import {
   ALIEXPRESS_SEARCH_TOPICS,
   createAliExpressSignature,
   formatAliExpressCaption,
+  formatAliExpressTelegramCaption,
   normalizeAliExpressProduct,
   topicsForAliExpressRun,
 } from './aliexpress-offers.mjs';
@@ -121,9 +122,10 @@ async function publishOffer(config, offer) {
   return telegram('sendPhoto', config.telegramToken, {
     chat_id: config.telegramChannelId,
     photo: offer.image,
-    caption: formatAliExpressCaption(offer),
+    caption: formatAliExpressTelegramCaption(offer),
+    parse_mode: 'HTML',
     reply_markup: {
-      inline_keyboard: [[{ text: '🛒 Ver chollo', url: offer.url }]],
+      inline_keyboard: [[{ text: '🛒 VER CHOLLO', url: offer.url }]],
     },
   });
 }

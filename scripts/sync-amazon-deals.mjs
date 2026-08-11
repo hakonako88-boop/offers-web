@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {
   AMAZON_MARKETPLACE,
-  formatAmazonCaption,
+  formatAmazonTelegramCaption,
   normalizeAmazonItem,
   topicsForRun,
 } from './amazon-offers.mjs';
@@ -146,9 +146,10 @@ async function publishOffer(config, offer) {
   return telegram('sendPhoto', config.telegramToken, {
     chat_id: config.telegramChannelId,
     photo: offer.image,
-    caption: formatAmazonCaption(offer),
+    caption: formatAmazonTelegramCaption(offer),
+    parse_mode: 'HTML',
     reply_markup: {
-      inline_keyboard: [[{ text: '🛒 Ver chollo', url: offer.url }]],
+      inline_keyboard: [[{ text: '🛒 VER CHOLLO', url: offer.url }]],
     },
   });
 }

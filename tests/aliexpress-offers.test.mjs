@@ -3,6 +3,7 @@ import test from 'node:test';
 import {
   createAliExpressSignature,
   formatAliExpressCaption,
+  formatAliExpressTelegramCaption,
   normalizeAliExpressProduct,
   topicsForAliExpressRun,
 } from '../scripts/aliexpress-offers.mjs';
@@ -41,6 +42,8 @@ test('keeps only discounted AliExpress products with an affiliate link', () => {
   assert.match(formatAliExpressCaption(offer), /58%/);
   assert.match(formatAliExpressCaption(offer), /Ahorras/);
   assert.match(formatAliExpressCaption(offer), /#publi/);
+  assert.match(formatAliExpressTelegramCaption(offer), /<b>PRECIO:<\/b>/);
+  assert.match(formatAliExpressTelegramCaption(offer), /<s>59,99 €<\/s>/);
 });
 
 test('rejects normal-priced products without a real discount', () => {
