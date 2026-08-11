@@ -33,6 +33,11 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
+      - name: Comprobar acceso seguro a Telegram
+        if: ${{ env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        continue-on-error: true
+        run: npm run verify:telegram
+
       - name: Sincronizar ofertas de Telegram
         if: ${{ env.TELEGRAM_BOT_TOKEN != '' }}
         run: npm run sync || echo "Telegram no respondió; se publican las ofertas guardadas."
