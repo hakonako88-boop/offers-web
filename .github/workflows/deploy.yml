@@ -11,7 +11,9 @@ on:
         default: false
         type: boolean
   schedule:
-    - cron: "*/30 * * * *"
+    # GitHub Actions checks the private Telegram inbox every five minutes.
+    # It runs in the cloud, so it does not consume the owner's computer.
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: write
