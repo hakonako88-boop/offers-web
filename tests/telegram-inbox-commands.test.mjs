@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   activateChatFromMessage,
+  amazonProductImageFromUrl,
   forwardedOfferMetadata,
   formatManualTelegramCaption,
   manualOfferFromMessage,
@@ -66,6 +67,14 @@ test('builds a ready Amazon offer from public product metadata and adds the tag'
   assert.equal(result.status, 'ready');
   assert.match(result.offer.url, /tag=example-21/);
   assert.equal(result.offer.imageUrl, 'https://images.example/product.jpg');
+});
+
+test('builds Amazon’s official product image URL from a direct product link', () => {
+  assert.equal(
+    amazonProductImageFromUrl('https://www.amazon.es/dp/B0FC2HFCTN?tag=another-tag-21'),
+    'https://m.media-amazon.com/images/P/B0FC2HFCTN.01._SCLZZZZZZZ_.jpg',
+  );
+  assert.equal(amazonProductImageFromUrl('https://example.com/dp/B0FC2HFCTN'), '');
 });
 
 test('reads an Amazon link hidden behind a forwarded Telegram card and uses its facts', () => {

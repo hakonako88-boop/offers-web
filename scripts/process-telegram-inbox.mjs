@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {
   activateChatFromMessage,
+  amazonProductImageFromUrl,
   controlHelp,
   formatManualTelegramCaption,
   formatManualWebsiteText,
@@ -146,6 +147,12 @@ function inboxFailureReply(error) {
   return '⚠️ No he podido terminar esa oferta. No se ha publicado nada. Reenvía la publicación y, si Telegram quitó el botón, pega debajo el enlace directo de compra.';
 }
 
+function metadataWithOfficialAmazonImage(url, metadata = {}) {
+  if (storeFromUrl(url) !== 'Amazon' || metadata.imageUrl) return metadata;
+  const imageUrl = amazonProductImageFromUrl(url);
+  return imageUrl ? { ...metadata, imageUrl } : metadata;
+}
+
 const settings = config();
 if (!settings.token || !settings.channelId) {
   console.log('Telegram inbox skipped: missing Telegram configuration.');
@@ -161,6 +168,25 @@ const updates = await telegram(settings.token, 'getUpdates', {
 
 let published = 0;
 let handled = 0;
+for (const [chatKey, pending] of Object.entries(pendingByChat)) {
+  const metadata = metadataWithOfficialAmazonImage(pending?.url, pending?.metadata);
+  const result = offerFromProductMetadata({
+    url: pending?.url,
+    metadata,
+    partnerTag: settings.amazonPartnerTag,
+  });
+  if (result.status !== 'ready') continue;
+  try {
+    const outcome = await publishIfNew(settings, result.offer, { message_id: pending.messageId || `pending-${chatKey}` });
+    await reply(settings.token, chatKey, outcome.duplicate
+      ? '♻️ Esa oferta pendiente ya estaba publicada. No la repito en el canal.'
+      : `✅ Publicada en el canal y en Chollos al Día. Mensaje del canal: ${outcome.channelMessage.message_id}`);
+    if (!outcome.duplicate) published += 1;
+    delete pendingByChat[chatKey];
+  } catch (error) {
+    console.warn(`Pending Telegram offer for ${chatKey} could not be published: ${safeError(error, settings.token)}`);
+  }
+}
 for (const update of updates || []) {
   const updateId = Number(update.update_id);
   if (!Number.isFinite(updateId) || processed.has(updateId)) continue;
@@ -211,6 +237,7 @@ for (const update of updates || []) {
         ...metadata,
         ...metadataFromForward,
       };
+      metadata = metadataWithOfficialAmazonImage(url, metadata);
       if (storeFromUrl(url) === 'AliExpress' && (!metadata.title || !metadata.price || !/\.(?:jpe?g|png|webp)(?:[?#]|$)/iu.test(metadata.imageUrl))) {
         try {
           const affiliateMetadata = await resolveAliExpressAffiliateProduct(metadata.finalUrl || url, {
@@ -257,7 +284,7 @@ for (const update of updates || []) {
       } else {
         const result = offerFromProductMetadata({
           url: pending.url,
-          metadata: { ...pending.metadata, ...amounts },
+          metadata: { ...metadataWithOfficialAmazonImage(pending.url, pending.metadata), ...amounts },
           partnerTag: settings.amazonPartnerTag,
         });
         if (result.status === 'ready') {

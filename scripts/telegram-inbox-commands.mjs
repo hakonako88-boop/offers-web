@@ -119,6 +119,19 @@ function amazonUrlWithTag(url, partnerTag) {
   }
 }
 
+/** Amazon's public ASIN image endpoint is a reliable fallback when the
+ * product page rejects an automated metadata request. */
+export function amazonProductImageFromUrl(url = '') {
+  try {
+    const parsed = new URL(url);
+    if (!/(^|\.)amazon\./iu.test(parsed.hostname)) return '';
+    const asin = parsed.pathname.match(/\/(?:dp|gp\/product)\/([a-z0-9]{10})(?:[/?]|$)/iu)?.[1];
+    return asin ? `https://m.media-amazon.com/images/P/${asin.toUpperCase()}.01._SCLZZZZZZZ_.jpg` : '';
+  } catch {
+    return '';
+  }
+}
+
 function hasAffiliateLink(url, store) {
   try {
     const host = new URL(url).hostname.toLowerCase();
