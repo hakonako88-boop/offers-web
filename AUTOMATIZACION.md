@@ -1,19 +1,30 @@
 # Automatización de ChollosAlDía
 
-La web recibe ofertas mediante `POST /api/deals` y las guarda en la base de datos. Cada alta o actualización puede publicarse automáticamente en Telegram.
+La web recibe ofertas mediante `POST /api/deals` y puede publicarlas en Telegram. La publicación pública usa GitHub Actions cada 30 minutos.
 
-## Variables necesarias
+## Secretos necesarios
 
-Copia `.env.example` como `.env.local` para desarrollo. En producción configura los mismos nombres como secretos. Nunca compartas ni subas las claves al repositorio.
+Configura estos valores en GitHub Actions Secrets. Nunca los compartas por chat ni los subas al repositorio.
 
-- `AMAZON_ASSOCIATE_TAG`: tracking ID de Amazon Afiliados. Si se envía una URL normal de Amazon, la web añade el parámetro `tag`.
-- `IMPORT_SECRET`: contraseña aleatoria para autorizar importaciones.
+- `AMAZON_CREATOR_CREDENTIAL_ID`, `AMAZON_CREATOR_SECRET` y `AMAZON_CREATOR_VERSION`: credenciales de Amazon Creators API.
+- `AMAZON_PARTNER_TAG`: tracking ID de Amazon Afiliados (`chollos00a-21`).
 - `TELEGRAM_BOT_TOKEN`: token de BotFather.
-- `TELEGRAM_CHANNEL_ID`: `@nombrecanal` o ID del canal; el bot debe ser administrador.
+- `TELEGRAM_CHANNEL_ID`: ID numérico del canal; el bot debe ser administrador.
+- `IMPORT_SECRET`: contraseña aleatoria para autorizar importaciones al endpoint de la web.
 
-AliExpress exige que `affiliateUrl` llegue ya generado por AliExpress Portals/Open Platform o por tu herramienta de afiliación. No se inventan parámetros porque eso puede impedir que la venta se atribuya.
+## Automatización activa de Amazon
 
-## Formato de una oferta
+Cada 30 minutos, GitHub consulta dos categorías rotativas con Amazon Creators API. Solo publica un máximo de dos productos nuevos si tienen una oferta de Amazon o un descuento de al menos el 20%, foto, precio, enlace atribuido y disponibilidad. El sistema no repite ASIN publicados durante 120 días.
+
+Cada publicación sale primero por Telegram con foto, precio, ahorro y botón de compra. La siguiente sincronización incorpora la misma oferta a la web y la publicación pública se actualiza.
+
+Amazon puede devolver `AssociateNotEligible` hasta validar la elegibilidad de la cuenta. En ese caso no se envía nada a Telegram y la web sigue disponible.
+
+## AliExpress
+
+AliExpress debe proporcionar el enlace afiliado desde AliExpress Portals/Open Platform. No se inventan parámetros de afiliación ni se extraen precios mediante scraping: evita enlaces sin atribución y precios incorrectos.
+
+## Formato de una oferta manual
 
 ```json
 {
@@ -30,13 +41,4 @@ AliExpress exige que `affiliateUrl` llegue ya generado por AliExpress Portals/Op
 }
 ```
 
-Envía la petición con `Authorization: Bearer TU_IMPORT_SECRET`. Para AliExpress usa `affiliateUrl` en lugar de `url`.
-
-## Flujo recomendado
-
-1. Amazon Product Advertising API y AliExpress Portals proporcionan productos, precios, imágenes y enlaces permitidos.
-2. Un programador horario (Cloudflare Cron, n8n, Make o servidor propio) filtra los descuentos y llama al endpoint.
-3. La web guarda o actualiza la oferta y publica la foto, precio, cupón y enlace en Telegram.
-4. Las ofertas caducadas se desactivan enviando el mismo `id` con `active: false`.
-
-No extraigas precios mediante scraping: además de ser frágil, puede incumplir las condiciones de los programas de afiliación. Usa sus APIs o feeds oficiales.
+Envía las importaciones manuales con `Authorization: Bearer TU_IMPORT_SECRET`.
