@@ -10,6 +10,11 @@ on:
         required: false
         default: false
         type: boolean
+      configure_telegram_webhook:
+        description: "Conectar Telegram con el webhook inmediato"
+        required: false
+        default: false
+        type: boolean
   repository_dispatch:
     types: [telegram_update]
   schedule:
@@ -34,6 +39,8 @@ jobs:
       TELEGRAM_ALLOWED_CHAT_ID: ${{ secrets.TELEGRAM_ALLOWED_CHAT_ID }}
       TELEGRAM_WEBHOOK_ACTIVE: ${{ secrets.TELEGRAM_WEBHOOK_ACTIVE }}
       TELEGRAM_WEBHOOK_UPDATE: ${{ toJSON(github.event.client_payload.update) }}
+      TELEGRAM_WEBHOOK_URL: ${{ secrets.TELEGRAM_WEBHOOK_URL }}
+      TELEGRAM_WEBHOOK_SECRET: ${{ secrets.TELEGRAM_WEBHOOK_SECRET }}
       AMAZON_CREATOR_CREDENTIAL_ID: ${{ secrets.AMAZON_CREATOR_CREDENTIAL_ID }}
       AMAZON_CREATOR_SECRET: ${{ secrets.AMAZON_CREATOR_SECRET }}
       AMAZON_CREATOR_VERSION: ${{ secrets.AMAZON_CREATOR_VERSION }}
@@ -63,6 +70,10 @@ jobs:
       - name: Corregir publicaciones anteriores de Telegram
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.repair_telegram_captions && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run repair:telegram
+
+      - name: Conectar Telegram con el webhook inmediato
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.configure_telegram_webhook && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_WEBHOOK_URL != '' && env.TELEGRAM_WEBHOOK_SECRET != '' }}
+        run: node scripts/configure-telegram-webhook.mjs
 
       - name: Procesar ofertas enviadas al bot privado
         if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_update' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}

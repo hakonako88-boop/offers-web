@@ -7,8 +7,9 @@ const json = (value, status = 200) => new Response(JSON.stringify(value), {
   headers: { 'content-type': 'application/json; charset=utf-8' },
 });
 
-export default {
-  async fetch(request, env) {
+addEventListener('fetch', (event) => event.respondWith(handleRequest(event.request)));
+
+async function handleRequest(request) {
     const url = new URL(request.url);
     if (request.method === 'GET' && url.pathname === '/health') {
       return json({ ok: true, service: 'chollosaldia-telegram-webhook' });
@@ -16,7 +17,7 @@ export default {
     if (request.method !== 'POST' || url.pathname !== '/telegram') {
       return json({ ok: false, error: 'Not found' }, 404);
     }
-    if (!env.TELEGRAM_WEBHOOK_SECRET || request.headers.get('X-Telegram-Bot-Api-Secret-Token') !== env.TELEGRAM_WEBHOOK_SECRET) {
+    if (!TELEGRAM_WEBHOOK_SECRET || request.headers.get('X-Telegram-Bot-Api-Secret-Token') !== TELEGRAM_WEBHOOK_SECRET) {
       return json({ ok: false, error: 'Unauthorized' }, 401);
     }
     let update;
@@ -25,10 +26,10 @@ export default {
     } catch {
       return json({ ok: false, error: 'Invalid Telegram update' }, 400);
     }
-    const dispatch = await fetch(`https://api.github.com/repos/${env.GITHUB_OWNER}/${env.GITHUB_REPO}/dispatches`, {
+    const dispatch = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/dispatches`, {
       method: 'POST',
       headers: {
-        authorization: `Bearer ${env.GITHUB_DISPATCH_TOKEN}`,
+        authorization: `Bearer ${GITHUB_DISPATCH_TOKEN}`,
         accept: 'application/vnd.github+json',
         'content-type': 'application/json',
         'user-agent': 'chollosaldia-telegram-webhook',
@@ -41,5 +42,4 @@ export default {
       return json({ ok: false, error: 'Could not start offer processing' }, 502);
     }
     return json({ ok: true });
-  },
-};
+}
