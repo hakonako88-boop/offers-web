@@ -12,6 +12,7 @@ import {
 } from './telegram-inbox-commands.mjs';
 import { extractProductMetadata, parsePrice } from './link-offer-extractor.mjs';
 import { isEquivalentDeal } from './offer-deduplication.mjs';
+import { resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
@@ -39,6 +40,9 @@ function config() {
     channelId: process.env.TELEGRAM_CHANNEL_ID,
     controlCode: process.env.TELEGRAM_CONTROL_CODE,
     amazonPartnerTag: process.env.AMAZON_PARTNER_TAG,
+    aliexpressAppKey: process.env.ALIEXPRESS_APP_KEY,
+    aliexpressAppSecret: process.env.ALIEXPRESS_APP_SECRET,
+    aliexpressTrackingId: process.env.ALIEXPRESS_TRACKING_ID,
   };
 }
 
@@ -177,7 +181,22 @@ for (const update of updates || []) {
       handled += 1;
     } else if (authorizedChatIds.has(chatKey) && firstUrl(text)) {
       const url = firstUrl(text);
-      const metadata = await extractProductMetadata(url);
+      let metadata = await extractProductMetadata(url);
+      if (storeFromUrl(url) === 'AliExpress' && (!metadata.title || !metadata.price || !/\.(?:jpe?g|png|webp)(?:[?#]|$)/iu.test(metadata.imageUrl))) {
+        try {
+          const affiliateMetadata = await resolveAliExpressAffiliateProduct(metadata.finalUrl || url, {
+            appKey: settings.aliexpressAppKey,
+            appSecret: settings.aliexpressAppSecret,
+            trackingId: settings.aliexpressTrackingId,
+          });
+          metadata = {
+            ...metadata,
+            ...Object.fromEntries(Object.entries(affiliateMetadata).filter(([, value]) => value)),
+          };
+        } catch (error) {
+          console.warn(`AliExpress affiliate lookup failed: ${safeError(error, settings.token)}`);
+        }
+      }
       const affiliateUrl = storeFromUrl(url) === 'Amazon' ? (metadata.finalUrl || url) : url;
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
