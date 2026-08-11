@@ -274,7 +274,13 @@ for (const update of updates || []) {
         : (sourceStore === resolvedStore ? url : (metadata.finalUrl || url));
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
-        if (resolvedStore !== 'Amazon' && forwardedMetadata.photoFileId) result.offer.photoFileId = forwardedMetadata.photoFileId;
+        // Prefer the official shop image when it was read correctly. A
+        // forwarded Telegram photo is only a fallback, as source channels
+        // often compress it heavily.
+        if (resolvedStore !== 'Amazon' && forwardedMetadata.photoFileId
+          && (!metadata.imageUrl || metadata.imageUrl === forwardedMetadata.photoFileId)) {
+          result.offer.photoFileId = forwardedMetadata.photoFileId;
+        }
         const outcome = await publishIfNew(settings, result.offer, message);
         if (outcome.duplicate) {
           await reply(settings.token, message.chat.id, '♻️ Esa oferta o un producto equivalente ya está publicado. No la repito en el canal.');

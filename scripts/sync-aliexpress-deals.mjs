@@ -17,7 +17,8 @@ const PUBLISHED_FILE = path.join(ROOT, 'data', 'aliexpress-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.json');
-const MAX_POSTS_PER_RUN = 2;
+const MAX_POSTS_PER_RUN = 1;
+const MINIMUM_PUBLICATION_INTERVAL_MS = 6 * 60 * 60 * 1000;
 const MAX_COMMUNITY_QUERIES_PER_RUN = 3;
 
 function readJson(file, fallback) {
@@ -182,6 +183,8 @@ const existingWebOffers = readJson(WEB_OFFERS_FILE, []);
 const cutoff = Date.now() - 120 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
 const seenProductIds = new Set(published.map((entry) => entry.productId));
+const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, Date.parse(entry.publishedAt || '') || 0), 0);
+const canPublishNow = !lastPublicationAt || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
 // Community sites are discovery signals. Do not fill the channel with generic
 // catalogue searches when there is no fresh external signal to validate.
 const topics = [];
@@ -210,9 +213,9 @@ for (const signal of communitySignals) {
   }
 }
 
-const uniqueCandidates = filterDuplicateDeals(Array.from(new Map(
+const uniqueCandidates = (canPublishNow ? filterDuplicateDeals(Array.from(new Map(
   candidates.sort((left, right) => right.score - left.score).map((offer) => [offer.id, offer]),
-).values()), existingWebOffers).slice(0, MAX_POSTS_PER_RUN);
+).values()), existingWebOffers) : []).slice(0, MAX_POSTS_PER_RUN);
 
 let sent = 0;
 for (const offer of uniqueCandidates) {

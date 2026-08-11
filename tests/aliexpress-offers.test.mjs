@@ -4,6 +4,7 @@ import {
   createAliExpressSignature,
   formatAliExpressCaption,
   formatAliExpressTelegramCaption,
+  highResolutionAliExpressImage,
   normalizeAliExpressProduct,
   topicsForAliExpressRun,
 } from '../scripts/aliexpress-offers.mjs';
@@ -48,6 +49,17 @@ test('keeps only discounted AliExpress products with an affiliate link', () => {
   assert.match(formatAliExpressTelegramCaption(offer), /250\+ pedidos recientes/);
   assert.match(formatAliExpressTelegramCaption(offer), /👉🏻 Pulsa «VER OFERTA» para aprovecharlo/);
   assert.doesNotMatch(formatAliExpressTelegramCaption(offer), /Categoría/);
+});
+
+test('upgrades an AliExpress CDN thumbnail before it is sent to Telegram', () => {
+  assert.equal(
+    highResolutionAliExpressImage('https://ae01.alicdn.com/kf/S123/product_220x220q75.jpg'),
+    'https://ae01.alicdn.com/kf/S123/product_1000x1000q75.jpg',
+  );
+  assert.equal(
+    highResolutionAliExpressImage('https://images.example/product_220x220q75.jpg'),
+    'https://images.example/product_220x220q75.jpg',
+  );
 });
 
 test('rejects normal-priced products without a real discount', () => {

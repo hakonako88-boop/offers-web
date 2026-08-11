@@ -33,6 +33,23 @@ export function createAliExpressSignature(params, appSecret) {
   return crypto.createHmac('sha256', appSecret).update(canonical).digest('hex').toUpperCase();
 }
 
+/** AliExpress feeds sometimes append a thumbnail size to an otherwise
+ * high-quality CDN image. Upgrade only its own CDN URLs, keeping third-party
+ * image links untouched so Telegram always receives the clearest safe photo. */
+export function highResolutionAliExpressImage(image = '') {
+  try {
+    const parsed = new URL(String(image));
+    if (!/(^|\.)alicdn\.com$/iu.test(parsed.hostname)) return String(image);
+    parsed.pathname = parsed.pathname.replace(
+      /_\d{2,4}x\d{2,4}(?:q\d+)?(?=\.(?:jpe?g|png|webp)$)/iu,
+      '_1000x1000q75',
+    );
+    return parsed.toString();
+  } catch {
+    return String(image);
+  }
+}
+
 function toAmount(value) {
   const amount = Number.parseFloat(String(value || '').replace(',', '.'));
   return Number.isFinite(amount) ? amount : 0;
@@ -60,7 +77,7 @@ function euro(value) {
 export function normalizeAliExpressProduct(product, category, titleTerms = [], minimumTitleMatches = 1) {
   const id = String(product?.product_id || '').trim();
   const title = String(product?.product_title || '').trim();
-  const image = String(product?.product_main_image_url || '').trim();
+  const image = highResolutionAliExpressImage(product?.product_main_image_url || '');
   const url = String(product?.promotion_link || '').trim();
   const price = toAmount(product?.target_sale_price);
   const previousPrice = toAmount(product?.target_original_price);

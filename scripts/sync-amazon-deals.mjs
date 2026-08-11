@@ -12,7 +12,8 @@ const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'amazon-discovery-state.json');
 const PUBLISHED_FILE = path.join(ROOT, 'data', 'amazon-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
-const MAX_POSTS_PER_RUN = 2;
+const MAX_POSTS_PER_RUN = 1;
+const MINIMUM_PUBLICATION_INTERVAL_MS = 4 * 60 * 60 * 1000;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -169,6 +170,8 @@ const existingWebOffers = readJson(WEB_OFFERS_FILE, []);
 const cutoff = Date.now() - 120 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
 const seenAsins = new Set(published.map((entry) => entry.asin));
+const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, Date.parse(entry.publishedAt || '') || 0), 0);
+const canPublishNow = !lastPublicationAt || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
 const accessToken = await getAmazonAccessToken(config);
 const topics = topicsForRun(Number(state.nextTopic || 0), 2);
 const candidates = [];
@@ -181,9 +184,9 @@ for (const topic of topics) {
   }
 }
 
-const uniqueCandidates = filterDuplicateDeals(Array.from(new Map(
+const uniqueCandidates = (canPublishNow ? filterDuplicateDeals(Array.from(new Map(
   candidates.sort((a, b) => b.score - a.score).map((offer) => [offer.asin, offer])
-).values()), existingWebOffers).slice(0, MAX_POSTS_PER_RUN);
+).values()), existingWebOffers) : []).slice(0, MAX_POSTS_PER_RUN);
 
 let sent = 0;
 for (const offer of uniqueCandidates) {

@@ -1,4 +1,4 @@
-import { ALIEXPRESS_ENDPOINT, createAliExpressSignature } from './aliexpress-offers.mjs';
+import { ALIEXPRESS_ENDPOINT, createAliExpressSignature, highResolutionAliExpressImage } from './aliexpress-offers.mjs';
 
 function timestamp() {
   return new Date().toISOString().replace(/[-:TZ.]/g, '').slice(0, 14);
@@ -20,7 +20,7 @@ export function metadataFromAliExpressProduct(product = {}) {
   return {
     title: String(product.product_title || '').trim(),
     description: String(product.product_title || '').trim(),
-    imageUrl: String(product.product_main_image_url || '').trim(),
+    imageUrl: highResolutionAliExpressImage(product.product_main_image_url || ''),
     price,
     previousPrice: previousPrice > price ? previousPrice : 0,
   };
