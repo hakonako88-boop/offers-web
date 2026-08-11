@@ -5,6 +5,28 @@ function compact(value = '') {
   return String(value).replace(/\s+/gu, ' ').trim();
 }
 
+export function isReliableProductTitle(value = '') {
+  const title = compact(value);
+  return title.length >= 5
+    && !/^https?:\/\//iu.test(title)
+    && !/^(?:amazon|aliexpress|miravia)(?:\s+(?:españa|espana|es))?$/iu.test(title);
+}
+
+/** Keeps facts supplied by the shop/API ahead of text copied from a forwarded
+ * card. Forwarded titles are only a fallback: source channels often truncate
+ * or embellish them, which made AliExpress posts look inaccurate. */
+export function mergeProductMetadata(official = {}, forwarded = {}) {
+  const result = { ...official };
+  if (!isReliableProductTitle(result.title) && isReliableProductTitle(forwarded.title)) result.title = forwarded.title;
+  if (!compact(result.description) && compact(forwarded.description)) result.description = forwarded.description;
+  if (!compact(result.imageUrl) && compact(forwarded.imageUrl)) result.imageUrl = forwarded.imageUrl;
+  if (!(Number(result.price) > 0) && Number(forwarded.price) > 0) result.price = Number(forwarded.price);
+  if (!(Number(result.previousPrice) > Number(result.price)) && Number(forwarded.previousPrice) > Number(result.price)) {
+    result.previousPrice = Number(forwarded.previousPrice);
+  }
+  return result;
+}
+
 function parseAmount(value = '') {
   const clean = String(value)
     .replace(/\u00a0/g, '')
@@ -150,10 +172,10 @@ export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag =
   const price = Number(metadata.price) || 0;
   const previousPrice = Number(metadata.previousPrice) > price ? Number(metadata.previousPrice) : 0;
   const imageUrl = compact(metadata.imageUrl);
-  if (!title || !imageUrl || !price) {
+  if (!isReliableProductTitle(title) || !imageUrl || !price) {
     return {
       status: 'needs_details',
-      missing: [!title && 'título', !imageUrl && 'foto', !price && 'precio'].filter(Boolean),
+      missing: [!isReliableProductTitle(title) && 'título fiable', !imageUrl && 'foto', !price && 'precio'].filter(Boolean),
     };
   }
   if (store === 'Amazon' && !partnerTag && !/[?&]tag=/i.test(finalUrl)) {
@@ -187,7 +209,8 @@ export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag =
  * the original price wording and does not invent a discount or description. */
 export function forwardedOfferMetadata(text = '', photoFileId = '') {
   const lines = String(text).replace(/\r\n/g, '\n').split('\n').map((line) => compact(line)).filter(Boolean);
-  const headline = lines.find((line) => !/(?:descuento\s*:|precio(?:\s+(?:oferta|final|actual))?\s*:|precio más bajo|compra recurrente|compra única|ver aquí)/iu.test(line)) || '';
+  const headline = lines.find((line) => !/^https?:\/\//iu.test(line)
+    && !/(?:descuento\s*:|precio(?:\s+(?:oferta|final|actual))?\s*:|precio más bajo|compra recurrente|compra única|ver aquí)/iu.test(line)) || '';
   const title = compact(headline.replace(/[🔥✨💥]+/gu, '').replace(/\|\s*#.+$/u, ''));
   const priceLine = lines.find((line) => (
     /(?:precio(?:\s+(?:oferta|final|actual))?|compra\s+(?:recurrente|única)|ahora|solo)\b/iu.test(line)

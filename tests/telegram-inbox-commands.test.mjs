@@ -5,7 +5,9 @@ import {
   amazonProductImageFromUrl,
   forwardedOfferMetadata,
   formatManualTelegramCaption,
+  isReliableProductTitle,
   manualOfferFromMessage,
+  mergeProductMetadata,
   offerFromProductMetadata,
   urlFromTelegramMessage,
 } from '../scripts/telegram-inbox-commands.mjs';
@@ -67,6 +69,32 @@ test('builds a ready Amazon offer from public product metadata and adds the tag'
   assert.equal(result.status, 'ready');
   assert.match(result.offer.url, /tag=example-21/);
   assert.equal(result.offer.imageUrl, 'https://images.example/product.jpg');
+});
+
+test('keeps the official AliExpress catalogue facts ahead of forwarded wording', () => {
+  const metadata = mergeProductMetadata({
+    title: 'Xiaomi Smart Band 9 Active, pantalla AMOLED',
+    description: 'Pulsera inteligente Xiaomi con pantalla AMOLED.',
+    imageUrl: 'https://images.example/xiaomi-band.jpg',
+    price: 19.99,
+    previousPrice: 29.99,
+  }, {
+    title: '🔥 OFERTÓN pulsera barata',
+    description: 'Texto del canal original',
+    imageUrl: 'telegram-forwarded-photo',
+    price: 12.99,
+  });
+  assert.equal(metadata.title, 'Xiaomi Smart Band 9 Active, pantalla AMOLED');
+  assert.equal(metadata.description, 'Pulsera inteligente Xiaomi con pantalla AMOLED.');
+  assert.equal(metadata.price, 19.99);
+  assert.equal(metadata.imageUrl, 'https://images.example/xiaomi-band.jpg');
+});
+
+test('does not use an URL or a generic storefront as a product title', () => {
+  assert.equal(isReliableProductTitle('https://s.click.aliexpress.com/e/example'), false);
+  assert.equal(isReliableProductTitle('AliExpress España'), false);
+  assert.equal(isReliableProductTitle('Xiaomi Smart Band 9 Active'), true);
+  assert.equal(forwardedOfferMetadata('https://s.click.aliexpress.com/e/example').title, '');
 });
 
 test('builds Amazon’s official product image URL from a direct product link', () => {

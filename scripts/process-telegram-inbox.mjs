@@ -7,6 +7,7 @@ import {
   formatManualTelegramCaption,
   formatManualWebsiteText,
   manualOfferFromMessage,
+  mergeProductMetadata,
   offerFromProductMetadata,
   storeFromUrl,
   forwardedOfferMetadata,
@@ -245,26 +246,24 @@ for (const update of updates || []) {
       const metadataFromForward = resolvedStore === 'Amazon'
         ? Object.fromEntries(Object.entries(forwardedMetadata).filter(([key, value]) => key !== 'imageUrl' && key !== 'photoFileId' && value))
         : Object.fromEntries(Object.entries(forwardedMetadata).filter(([, value]) => value));
-      metadata = {
-        ...metadata,
-        ...metadataFromForward,
-      };
-      metadata = metadataWithOfficialAmazonImage(metadata.finalUrl || url, metadata);
-      if (resolvedStore === 'AliExpress' && (!metadata.title || !metadata.price || !/\.(?:jpe?g|png|webp)(?:[?#]|$)/iu.test(metadata.imageUrl))) {
+      // AliExpress's public page frequently returns a generic storefront title
+      // or an incomplete price to automated readers. Its affiliate catalogue
+      // is the authoritative product source, so ask it on every AliExpress
+      // submission rather than only when the page happens to be blank.
+      if (resolvedStore === 'AliExpress') {
         try {
           const affiliateMetadata = await resolveAliExpressAffiliateProduct(metadata.finalUrl || url, {
             appKey: settings.aliexpressAppKey,
             appSecret: settings.aliexpressAppSecret,
             trackingId: settings.aliexpressTrackingId,
           });
-          metadata = {
-            ...metadata,
-            ...Object.fromEntries(Object.entries(affiliateMetadata).filter(([, value]) => value)),
-          };
+          metadata = { ...metadata, ...Object.fromEntries(Object.entries(affiliateMetadata).filter(([, value]) => value)) };
         } catch (error) {
           console.warn(`AliExpress affiliate lookup failed: ${safeError(error, settings.token)}`);
         }
       }
+      metadata = mergeProductMetadata(metadata, metadataFromForward);
+      metadata = metadataWithOfficialAmazonImage(metadata.finalUrl || url, metadata);
       const sourceStore = storeFromUrl(url);
       // An affiliate redirect found inside another publisher's post may belong
       // to that publisher. We only reuse a non-Amazon link when the user sent
