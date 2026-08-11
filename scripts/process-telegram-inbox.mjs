@@ -265,9 +265,14 @@ for (const update of updates || []) {
           console.warn(`AliExpress affiliate lookup failed: ${safeError(error, settings.token)}`);
         }
       }
+      const sourceStore = storeFromUrl(url);
+      // An affiliate redirect found inside another publisher's post may belong
+      // to that publisher. We only reuse a non-Amazon link when the user sent
+      // the shop/tracking link directly; Amazon is safe because its tag is
+      // always replaced with this account's configured tag.
       const affiliateUrl = resolvedStore === 'Amazon'
         ? (metadata.finalUrl || url)
-        : (metadata.affiliateUrl || metadata.finalUrl || url);
+        : (sourceStore === resolvedStore ? url : (metadata.finalUrl || url));
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
         if (resolvedStore !== 'Amazon' && forwardedMetadata.photoFileId) result.offer.photoFileId = forwardedMetadata.photoFileId;
