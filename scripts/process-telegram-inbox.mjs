@@ -65,6 +65,77 @@ async function telegram(token, method, payload = {}) {
   return data.result;
 }
 
+async function telegramForm(token, method, form) {
+  const response = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
+    method: 'POST',
+    body: form,
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.ok) throw new Error(`Telegram ${method} failed: ${data.description || response.status}`);
+  return data.result;
+}
+
+async function downloadProductImage(url) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12_000);
+  try {
+    const response = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        accept: 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+        'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaBot/1.0; +https://chollosaldia.com)',
+      },
+    });
+    const contentType = response.headers.get('content-type') || '';
+    if (!response.ok || !contentType.toLowerCase().startsWith('image/')) {
+      throw new Error(`La imagen respondió ${response.status || 'sin estado'}.`);
+    }
+    const bytes = await response.arrayBuffer();
+    if (!bytes.byteLength) throw new Error('La imagen estaba vacía.');
+    return new Blob([bytes], { type: contentType.split(';')[0] || 'image/jpeg' });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function sendProductPhoto(settings, offer) {
+  const photos = [...new Set([offer.photoFileId, offer.imageUrl].filter(Boolean))];
+  let lastError;
+  for (const photo of photos) {
+    const replyMarkup = {
+      inline_keyboard: [[{ text: '👉🏻 VER OFERTA', url: offer.url }]],
+    };
+    const payload = {
+      chat_id: settings.channelId,
+      photo,
+      caption: formatManualTelegramCaption(offer),
+      parse_mode: 'HTML',
+      reply_markup: replyMarkup,
+    };
+    try {
+      return await telegram(settings.token, 'sendPhoto', payload);
+    } catch (error) {
+      lastError = error;
+      // Algunas CDNs bloquean a Telegram. Con una URL pública descargamos la
+      // imagen una vez y la subimos como archivo para no perder la oferta.
+      if (!/^https?:\/\//iu.test(String(photo))) continue;
+      try {
+        const image = await downloadProductImage(photo);
+        const form = new FormData();
+        form.set('chat_id', String(settings.channelId));
+        form.set('caption', formatManualTelegramCaption(offer));
+        form.set('parse_mode', 'HTML');
+        form.set('reply_markup', JSON.stringify(replyMarkup));
+        form.set('photo', image, 'oferta.jpg');
+        return await telegramForm(settings.token, 'sendPhoto', form);
+      } catch (uploadError) {
+        lastError = uploadError;
+      }
+    }
+  }
+  throw lastError || new Error('No se recibió una foto válida del producto.');
+}
+
 async function mirrorTelegramPhoto(token, fileId, reference) {
   const file = await telegram(token, 'getFile', { file_id: fileId });
   if (!file?.file_path) throw new Error('Telegram did not return the uploaded photo.');
@@ -89,15 +160,7 @@ async function reply(token, chatId, text) {
 }
 
 async function publishManualOffer(settings, offer, inputMessage) {
-  const channelMessage = await telegram(settings.token, 'sendPhoto', {
-    chat_id: settings.channelId,
-    photo: offer.photoFileId || offer.imageUrl,
-    caption: formatManualTelegramCaption(offer),
-    parse_mode: 'HTML',
-    reply_markup: {
-      inline_keyboard: [[{ text: '👉🏻 VER OFERTA', url: offer.url }]],
-    },
-  });
+  const channelMessage = await sendProductPhoto(settings, offer);
 
   const postedPhotoId = channelMessage.photo?.at(-1)?.file_id || offer.photoFileId;
   if (!postedPhotoId) throw new Error('Telegram did not return a reusable product image.');
