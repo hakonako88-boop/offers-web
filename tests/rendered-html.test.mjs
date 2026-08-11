@@ -54,6 +54,16 @@ test("keeps the historical contact URL as a useful, indexable page", async () =>
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/contacto"/);
 });
 
+test("renders store pages with active offers and collection SEO", async () => {
+  const response = await render("/ofertas/amazon");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Ofertas Amazon de hoy/);
+  assert.match(html, /"@type":"CollectionPage"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/ofertas\/amazon"/);
+  assert.match(html, /href="\/oferta\//);
+});
+
 test("keeps affiliate credentials out of the client source", async () => {
   const [client, example] = await Promise.all([
     readFile(new URL("../app/components/DealExplorer.tsx", import.meta.url), "utf8"),

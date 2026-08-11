@@ -336,9 +336,18 @@ export function DealExplorer() {
           <h2 id="guides-title">Guías rápidas<br />para <em>ahorrar mejor.</em></h2>
         </div>
         <div className="guideGrid">
-          <a href="#ofertas" className="guideCard guideAmazon"><span>AMAZON</span><h3>Ofertas de Amazon que merece la pena vigilar</h3><p>Productos con descuento visible y datos de precio para decidir con rapidez.</p><b>Ver ofertas <i aria-hidden="true">→</i></b></a>
-          <a href="#ofertas" className="guideCard guideAli"><span>ALIEXPRESS</span><h3>Cupones y precios directos de AliExpress</h3><p>Encuentra oportunidades y códigos que reducen el precio final de compra.</p><b>Explorar chollos <i aria-hidden="true">→</i></b></a>
+          <a href="/ofertas/amazon" className="guideCard guideAmazon"><span>AMAZON</span><h3>Ofertas de Amazon que merece la pena vigilar</h3><p>Productos con descuento visible y datos de precio para decidir con rapidez.</p><b>Ver ofertas <i aria-hidden="true">→</i></b></a>
+          <a href="/ofertas/aliexpress" className="guideCard guideAli"><span>ALIEXPRESS</span><h3>Cupones y precios directos de AliExpress</h3><p>Encuentra oportunidades y códigos que reducen el precio final de compra.</p><b>Explorar chollos <i aria-hidden="true">→</i></b></a>
           <a href="#como-funciona" className="guideCard guideHow"><span>MÉTODO</span><h3>Cómo saber si una oferta es realmente buena</h3><p>Consulta el precio anterior, las condiciones y la ficha antes de comprar.</p><b>Conocer el proceso <i aria-hidden="true">→</i></b></a>
+        </div>
+      </section>
+
+      <section className="storeDirectory shell" aria-labelledby="stores-title">
+        <div><p className="eyebrow"><span aria-hidden="true" />EXPLORA POR TIENDA</p><h2 id="stores-title">Encuentra chollos donde prefieres comprar.</h2></div>
+        <div className="storeDirectoryGrid">
+          <a href="/ofertas/amazon"><span>Amazon</span><b>Ofertas con precio y ahorro visible <i aria-hidden="true">→</i></b></a>
+          <a href="/ofertas/aliexpress"><span>AliExpress</span><b>Chollos y cupones publicados <i aria-hidden="true">→</i></b></a>
+          <a href="/ofertas/miravia"><span>Miravia</span><b>Productos seleccionados de Miravia <i aria-hidden="true">→</i></b></a>
         </div>
       </section>
 

@@ -8,6 +8,9 @@ const homepageLastModified = latestPublication ? new Date(latestPublication) : n
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     { url: siteUrl, lastModified: homepageLastModified, changeFrequency: "daily", priority: 1 },
+    { url: `${siteUrl}/ofertas/amazon`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
+    { url: `${siteUrl}/ofertas/aliexpress`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
+    { url: `${siteUrl}/ofertas/miravia`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
     { url: `${siteUrl}/aviso-legal`, lastModified: new Date("2026-08-11T00:00:00.000Z"), changeFrequency: "yearly", priority: 0.3 },
     { url: `${siteUrl}/privacidad`, lastModified: new Date("2026-08-11T00:00:00.000Z"), changeFrequency: "yearly", priority: 0.3 },
     { url: `${siteUrl}/afiliacion`, lastModified: new Date("2026-08-11T00:00:00.000Z"), changeFrequency: "yearly", priority: 0.3 },
