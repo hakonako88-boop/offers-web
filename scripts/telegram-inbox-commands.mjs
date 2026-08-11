@@ -187,10 +187,13 @@ export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag =
  * the original price wording and does not invent a discount or description. */
 export function forwardedOfferMetadata(text = '', photoFileId = '') {
   const lines = String(text).replace(/\r\n/g, '\n').split('\n').map((line) => compact(line)).filter(Boolean);
-  const headline = lines.find((line) => !/(?:descuento\s*:|precio\s*:|precio más bajo|compra recurrente|compra única|ver aquí)/iu.test(line)) || '';
+  const headline = lines.find((line) => !/(?:descuento\s*:|precio(?:\s+(?:oferta|final|actual))?\s*:|precio más bajo|compra recurrente|compra única|ver aquí)/iu.test(line)) || '';
   const title = compact(headline.replace(/[🔥✨💥]+/gu, '').replace(/\|\s*#.+$/u, ''));
-  const priceLine = lines.find((line) => /(?:precio|compra recurrente)\s*:/iu.test(line)) || '';
-  const previousLine = lines.find((line) => /precio más bajo|(?:pvp|antes)\s*:/iu.test(line)) || '';
+  const priceLine = lines.find((line) => (
+    /(?:precio(?:\s+(?:oferta|final|actual))?|compra\s+(?:recurrente|única)|ahora|solo)\b/iu.test(line)
+    && !/(?:precio\s+m[aá]s\s+bajo|antes|pvp)\b/iu.test(line)
+  )) || lines.find((line) => /\d+(?:[.,]\d{1,2})?\s*€/u.test(line)) || '';
+  const previousLine = lines.find((line) => /precio\s+m[aá]s\s+bajo|\b(?:pvp|antes)\b/iu.test(line)) || '';
   const lastAmount = (value = '') => [...String(value).matchAll(/\d+(?:[.,]\d{1,2})?/gu)].at(-1)?.[0] || '';
   const price = parseAmount(lastAmount(priceLine));
   const previousPrice = parseAmount(lastAmount(previousLine));

@@ -113,6 +113,27 @@ test('keeps title and price facts from a forwarded card when the store cannot be
   assert.equal(metadata.photoFileId, 'telegram-forwarded-photo');
 });
 
+test('reads price labels from a forwarded offer even when the label has no colon', () => {
+  const metadata = forwardedOfferMetadata([
+    'Pack 8 Sanytol Desinfectante Limpiahogar Eucaliptus 1.2 L #Amazon',
+    '📛 PVP 22.32 €',
+    '💶 PRECIO OFERTA 16.7 €💥',
+    '🔻 Añadir 2 uds y tramitar',
+  ].join('\n'), 'telegram-forwarded-photo');
+  assert.equal(metadata.title, 'Pack 8 Sanytol Desinfectante Limpiahogar Eucaliptus 1.2 L #Amazon');
+  assert.equal(metadata.price, 16.7);
+  assert.equal(metadata.previousPrice, 22.32);
+});
+
+test('uses a recurring-price line sent in a forwarded card', () => {
+  const metadata = forwardedOfferMetadata([
+    'Producto de ejemplo #Amazon',
+    '🟢 Compra recurrente 12,34 €, puedes cancelar cuando quieras',
+    '🔴 Compra única 12,99 €',
+  ].join('\n'), 'telegram-forwarded-photo');
+  assert.equal(metadata.price, 12.34);
+});
+
 test('requires an image, price and direct tagged Amazon URL', () => {
   const result = manualOfferFromMessage({
     controlCode,
