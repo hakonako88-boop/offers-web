@@ -10,6 +10,15 @@ import {
 } from "../../lib/deals";
 
 const money = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
+const siteUrl = "https://chollosaldia.com";
+
+function absoluteImageUrl(value: string) {
+  try {
+    return new URL(value, siteUrl).toString();
+  } catch {
+    return `${siteUrl}/og-chollosaldia-v2.png`;
+  }
+}
 
 type OfferPageProps = {
   params: Promise<{ id: string }>;
@@ -37,9 +46,9 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
       title: `${title} | Chollos al Día`,
       description,
       url: path,
-      images: [{ url: deal.imageUrl, alt: deal.title }],
+      images: [{ url: absoluteImageUrl(deal.imageUrl), alt: deal.title }],
     },
-    twitter: { card: "summary_large_image", title, description, images: [deal.imageUrl] },
+    twitter: { card: "summary_large_image", title, description, images: [absoluteImageUrl(deal.imageUrl)] },
   };
 }
 
@@ -48,7 +57,7 @@ function schemaFor(deal: NonNullable<ReturnType<typeof getDealById>>) {
     "@context": "https://schema.org",
     "@type": "Product",
     name: deal.title,
-    image: [`https://chollosaldia.com${deal.imageUrl}`],
+    image: [absoluteImageUrl(deal.imageUrl)],
     description: dealDescription(deal),
     category: deal.category,
     offers: {
@@ -58,6 +67,7 @@ function schemaFor(deal: NonNullable<ReturnType<typeof getDealById>>) {
       price: deal.price.toFixed(2),
       availability: "https://schema.org/InStock",
       seller: { "@type": "Organization", name: deal.store },
+      priceValidUntil: new Date(Date.now() + (24 * 60 * 60 * 1000)).toISOString().slice(0, 10),
     },
   };
 }

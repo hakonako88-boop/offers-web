@@ -22,6 +22,9 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com"/);
   assert.match(html, /href="\/oferta\//);
   assert.match(html, /og-chollosaldia-v2\.png/);
+  assert.doesNotMatch(html, /Precio 54,40/);
+  assert.doesNotMatch(html, /https:\/\/amzn\.to\/4gryAR2/);
+  assert.doesNotMatch(html, /t\.href/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/);
 });
 

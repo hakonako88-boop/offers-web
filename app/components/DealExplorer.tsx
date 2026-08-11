@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import rawOffers from "../../data/offers.json";
+import { publishedDeals } from "../lib/deals";
 
 export type Deal = {
   id: string;
@@ -130,6 +131,15 @@ const importedDeals: Deal[] = (rawOffers as LegacyOffer[]).flatMap((offer) => {
   }];
 });
 
+// The browser view uses exactly the same curated list as the sitemap and the
+// individual offer pages. The legacy conversion remains only as a safe empty
+// state during a broken local import.
+const curatedDeals: Deal[] = publishedDeals.map((deal) => ({
+  ...deal,
+  store: deal.store as Deal["store"],
+}));
+const initialDeals = curatedDeals.length ? curatedDeals : importedDeals;
+
 function displayDate(deals: Deal[]) {
   const dates = deals.flatMap((deal) => (deal.verifiedDate ? [new Date(deal.verifiedDate)] : []));
   const latest = dates.sort((a, b) => b.getTime() - a.getTime())[0];
@@ -147,22 +157,13 @@ function dealDetailsUrl(deal: Pick<Deal, "id">) {
 }
 
 export function DealExplorer() {
-  const [deals, setDeals] = useState<Deal[]>(importedDeals);
+  const [deals] = useState<Deal[]>(initialDeals);
   const [category, setCategory] = useState("Todos");
   const [query, setQuery] = useState(() => {
     if (typeof window === "undefined") return "";
     return new URLSearchParams(window.location.search).get("q")?.slice(0, 80) ?? "";
   });
   const [copied, setCopied] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch("/api/deals")
-      .then((response) => (response.ok ? response.json() : Promise.reject()))
-      .then((payload) => {
-        if (Array.isArray(payload.deals) && payload.deals.length) setDeals(payload.deals as Deal[]);
-      })
-      .catch(() => undefined);
-  }, []);
 
   const categories = useMemo(
     () => ["Todos", ...Array.from(new Set(deals.map((deal) => deal.category))).sort((a, b) => a.localeCompare(b, "es"))],
@@ -241,6 +242,17 @@ export function DealExplorer() {
             <div className="featuredBody"><p className="featuredMeta"><span className="liveDot" /> OFERTA ACTIVA · {featuredDeal.store}</p><h2><a href={dealDetailsUrl(featuredDeal)}>{shortTitle(featuredDeal.title, 72)}</a></h2><div className="featuredPrice"><strong>{money.format(featuredDeal.price)}</strong>{featuredDeal.oldPrice > featuredDeal.price && <span>Antes <s>{money.format(featuredDeal.oldPrice)}</s> · −{Math.round((1 - featuredDeal.price / featuredDeal.oldPrice) * 100)}%</span>}</div><a href={dealDetailsUrl(featuredDeal)}>Ver análisis de la oferta <span aria-hidden="true">→</span></a><p className="featuredFoot"><b>{deals.length}</b> ofertas activas · descuento medio −{averageDiscount}% · revisión {displayDate(deals)}</p></div>
           </aside>
         ) : <aside className="savingsPanel" aria-label="Resumen de las ofertas publicadas"><div className="panelTop"><span className="liveDot" /> EN DIRECTO</div><p>Descuento medio de las ofertas activas</p><strong>−{averageDiscount}%</strong></aside>}
+      </section>
+
+      <section className="editorialStrip" aria-label="Criterios de selección">
+        <div className="shell editorialStripInner">
+          <p><b>Selección editorial</b><span>Solo se publican productos identificables, con enlace válido y precio registrado.</span></p>
+          <div className="editorialMetrics" aria-label="Resumen de ofertas">
+            <span><b>{deals.length}</b> chollos</span>
+            <span><b>{storeCount}</b> tiendas</span>
+            <span><b>−{averageDiscount}%</b> ahorro medio</span>
+          </div>
+        </div>
       </section>
 
       <section className="benefitBand" aria-label="Ventajas de Chollos al Día">

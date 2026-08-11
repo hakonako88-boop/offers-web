@@ -16,6 +16,13 @@ export const ALIEXPRESS_SEARCH_TOPICS = [
   { keywords: 'cargador usb c', category: 'Tecnología', titleTerms: ['cargador', 'cable usb', 'usb-c'] },
 ];
 
+// Cheap catalogue fillers can show a large percentage while having no demand.
+// They weaken the channel and are excluded unless they have exceptional proof.
+const LOW_INTENT_TERMS = [
+  'pegatina', 'brida', 'tornillo', 'funda', 'protector', 'recambio', 'repuesto',
+  'malla', 'mantel', 'servilleta', 'cortina', 'organizador', 'cable', 'bolsa',
+];
+
 export function topicsForAliExpressRun(cursor = 0, count = 2) {
   return Array.from(
     { length: count },
@@ -90,8 +97,13 @@ export function normalizeAliExpressProduct(product, category, titleTerms = [], m
   const normalizedTitle = normalizedText(title);
   const matchedTitleTerms = titleTerms.filter((term) => normalizedTitle.includes(normalizedText(term))).length;
   const isRelated = !titleTerms.length || matchedTitleTerms >= Math.min(minimumTitleMatches, titleTerms.length);
+  const wordCount = normalizedTitle.split(/\s+/).filter(Boolean).length;
+  const lowIntent = LOW_INTENT_TERMS.some((term) => normalizedTitle.includes(term));
 
-  if (!id || !title || !image || !url || price < 3 || discount < 20 || volume < 5 || !isRelated) return null;
+  if (!id || !title || !image || !url || !previousPrice || previousPrice <= price || !isRelated) return null;
+  if (price < 5 || discount < 30 || volume < 20 || wordCount > 28) return null;
+  if (price < 12 && discount < 40) return null;
+  if (lowIntent && volume < 150) return null;
 
   return {
     id,

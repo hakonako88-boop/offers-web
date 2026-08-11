@@ -107,17 +107,48 @@ function sourceId(offer: LegacyOffer) {
   return String(offer.chollometroId || offer.message_id || offer.url || "");
 }
 
-export const publishedDeals: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer) => {
+function isUsefulTitle(title: string) {
+  const compact = title.trim();
+  if (compact.length < 8 || /^https?:\/\//i.test(compact)) return false;
+  if (/^(?:precio|oferta)\s*\d+(?:[,.]\d{1,2})?\s*(?:€|eur)?$/i.test(compact)) return false;
+  if (compact.split(/\s+/).length > 22) return false;
+  if (/\b(?:malla|relleno|mantel|servilleta|brida|pegatina|recambio|repuesto|funda|protector|barra de mantequilla|cuerda deformable)\b/i.test(compact)) return false;
+  return /\p{L}/u.test(compact);
+}
+
+function isSupportedAffiliateUrl(value: string, store: string) {
+  try {
+    const url = new URL(value);
+    const host = url.hostname.toLowerCase();
+    if (/[%]22|["']|t\.href|%3c|%3e/i.test(value)) return false;
+    if (store === "Amazon") return /(^|\.)amazon\./.test(host) || host === "amzn.to";
+    if (store === "AliExpress") return host === "s.click.aliexpress.com" || host === "a.aliexpress.com" || host.endsWith(".aliexpress.com");
+    if (store === "Miravia") return host === "www.awin1.com" || host === "awin1.com" || host.endsWith(".miravia.es");
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+function isRecent(timestamp?: number) {
+  if (!timestamp) return false;
+  const publishedAt = Number(timestamp) * 1000;
+  const maximumAge = 14 * 24 * 60 * 60 * 1000;
+  return Number.isFinite(publishedAt) && publishedAt <= Date.now() + 60_000 && (Date.now() - publishedAt) <= maximumAge;
+}
+
+const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer) => {
   const id = sourceId(offer);
   const price = parsePrice(offer.price);
   const previous = parsePrice(offer.previousPrice);
   const title = cleanTitle(offer.title);
-  if (!id || !price || !title || !offer.url || !offer.image) return [];
+  const store = offer.store === "Amazon" || offer.store === "AliExpress" || offer.store === "Miravia" ? offer.store : "";
+  if (!id || !price || !isUsefulTitle(title) || !offer.url || !offer.image || !store || !isRecent(offer.date) || !isSupportedAffiliateUrl(offer.url, store)) return [];
   const date = formatDate(offer.date);
   return [{
     id,
     title,
-    store: offer.store === "Amazon" || offer.store === "AliExpress" || offer.store === "Miravia" ? offer.store : "Tienda online",
+    store,
     category: categoryFor(offer),
     price,
     oldPrice: previous > price ? previous : price,
@@ -128,6 +159,18 @@ export const publishedDeals: PublishedDeal[] = (rawOffers as LegacyOffer[]).flat
     verifiedDate: date.dateTime,
   }];
 });
+
+/** Homepage, sitemap and offer pages share this editorial list. */
+const seenAffiliateUrls = new Set<string>();
+export const publishedDeals: PublishedDeal[] = candidates
+  .sort((left, right) => Date.parse(right.verifiedDate || "") - Date.parse(left.verifiedDate || ""))
+  .filter((deal) => {
+    const key = deal.affiliateUrl.replace(/\?.*$/, "").toLowerCase();
+    if (seenAffiliateUrls.has(key)) return false;
+    seenAffiliateUrls.add(key);
+    return true;
+  })
+  .slice(0, 30);
 
 export function dealHref(id: string) {
   return `/oferta/${encodeURIComponent(id)}`;

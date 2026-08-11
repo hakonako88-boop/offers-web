@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {
   AMAZON_MARKETPLACE,
+  formatAmazonCaption,
   formatAmazonTelegramCaption,
   normalizeAmazonItem,
   topicsForRun,
@@ -12,6 +13,7 @@ const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'amazon-discovery-state.json');
 const PUBLISHED_FILE = path.join(ROOT, 'data', 'amazon-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
+const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const MAX_POSTS_PER_RUN = 1;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 4 * 60 * 60 * 1000;
 
@@ -157,6 +159,43 @@ async function publishOffer(config, offer) {
   });
 }
 
+async function mirrorImageForWeb(offer) {
+  const filename = `amazon-${offer.asin}.jpg`;
+  const localImage = path.join(WEB_IMAGES_DIR, filename);
+  if (fs.existsSync(localImage)) return `/tg/${filename}`;
+  try {
+    const response = await fetch(offer.image, { signal: AbortSignal.timeout(15_000) });
+    if (!response.ok) throw new Error(`image status ${response.status}`);
+    fs.mkdirSync(WEB_IMAGES_DIR, { recursive: true });
+    fs.writeFileSync(localImage, Buffer.from(await response.arrayBuffer()));
+    return `/tg/${filename}`;
+  } catch (error) {
+    console.warn(`Could not mirror Amazon image ${offer.asin}: ${error.message}`);
+    return offer.image;
+  }
+}
+
+async function saveOfferForWeb(offer, message) {
+  const existingOffers = readJson(WEB_OFFERS_FILE, []);
+  const image = await mirrorImageForWeb(offer);
+  const record = {
+    message_id: message.message_id,
+    source_product_id: `amazon-${offer.asin}`,
+    date: Math.floor(Date.now() / 1000),
+    title: offer.title,
+    text: formatAmazonCaption(offer),
+    image,
+    url: offer.url,
+    price: offer.price,
+    previousPrice: offer.previousPrice,
+    store: 'Amazon',
+    category: offer.category,
+    description: offer.title,
+  };
+  const withoutPreviousVersion = existingOffers.filter((entry) => String(entry.source_product_id || '') !== record.source_product_id);
+  writeJson(WEB_OFFERS_FILE, [record, ...withoutPreviousVersion]);
+}
+
 const config = getConfig();
 const missing = missingConfig(config);
 if (missing.length) {
@@ -192,6 +231,7 @@ let sent = 0;
 for (const offer of uniqueCandidates) {
   try {
     const message = await publishOffer(config, offer);
+    await saveOfferForWeb(offer, message);
     published.push({
       asin: offer.asin,
       publishedAt: new Date().toISOString(),

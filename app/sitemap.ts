@@ -1,10 +1,9 @@
 import type { MetadataRoute } from "next";
-import rawOffers from "../data/offers.json";
 import { dealHref, publishedDeals } from "./lib/deals";
 
 const siteUrl = "https://chollosaldia.com";
-const latestPublication = Math.max(0, ...(rawOffers as Array<{ date?: number }>).map((offer) => Number(offer.date) || 0));
-const homepageLastModified = latestPublication ? new Date(latestPublication * 1000) : new Date("2026-08-11T00:00:00.000Z");
+const latestPublication = Math.max(0, ...publishedDeals.map((deal) => Date.parse(deal.verifiedDate || "") || 0));
+const homepageLastModified = latestPublication ? new Date(latestPublication) : new Date("2026-08-11T00:00:00.000Z");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
@@ -19,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteUrl}${dealHref(deal.id)}`,
       lastModified: deal.verifiedDate ? new Date(deal.verifiedDate) : homepageLastModified,
       changeFrequency: "weekly" as const,
-      priority: 0.7,
+      priority: 0.6,
     })),
   ];
 }
