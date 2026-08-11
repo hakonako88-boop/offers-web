@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  activateChatFromMessage,
   formatManualTelegramCaption,
   manualOfferFromMessage,
+  offerFromProductMetadata,
 } from '../scripts/telegram-inbox-commands.mjs';
 
 const controlCode = 'test-private-code';
@@ -40,6 +42,28 @@ test('does not let an incorrect control code publish an offer', () => {
     text: '/publicar wrong-code\nhttps://www.amazon.es/dp/B0ABCDE123?tag=example-21\nTítulo: Producto\nPrecio: 19,99 €',
   });
   assert.equal(result.status, 'unauthorized');
+});
+
+test('activates a private chat before it accepts URL-only publications', () => {
+  assert.equal(activateChatFromMessage({ text: '/activar test-private-code', controlCode }).status, 'authorized');
+  assert.equal(activateChatFromMessage({ text: '/activar incorrecta', controlCode }).status, 'unauthorized');
+});
+
+test('builds a ready Amazon offer from public product metadata and adds the tag', () => {
+  const result = offerFromProductMetadata({
+    url: 'https://www.amazon.es/dp/B0ABCDE123',
+    partnerTag: 'example-21',
+    metadata: {
+      title: 'Auriculares inalámbricos SoundPEATS',
+      description: 'Cancelación de ruido para llamadas.',
+      imageUrl: 'https://images.example/product.jpg',
+      price: 19.99,
+      previousPrice: 39.99,
+    },
+  });
+  assert.equal(result.status, 'ready');
+  assert.match(result.offer.url, /tag=example-21/);
+  assert.equal(result.offer.imageUrl, 'https://images.example/product.jpg');
 });
 
 test('requires an image, price and direct tagged Amazon URL', () => {

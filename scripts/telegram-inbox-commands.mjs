@@ -25,18 +25,18 @@ function euro(amount) {
   return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(amount);
 }
 
-function commandCodeMatches(received, expected) {
+export function commandCodeMatches(received, expected) {
   const left = Buffer.from(String(received || ''));
   const right = Buffer.from(String(expected || ''));
   return left.length === right.length && left.length > 0 && crypto.timingSafeEqual(left, right);
 }
 
-function firstUrl(text) {
+export function firstUrl(text) {
   const match = String(text).match(/https?:\/\/[^\s<>]+/i);
   return match ? match[0].replace(/[),.;!?]+$/u, '') : '';
 }
 
-function storeFromUrl(url) {
+export function storeFromUrl(url) {
   let host = '';
   try {
     host = new URL(url).hostname.toLowerCase();
@@ -75,19 +75,88 @@ function fallbackTitle(lines) {
 
 export function controlHelp() {
   return [
-    '📩 Envíame una foto con esta plantilla en el mismo mensaje:',
+    '👋 Envíame un enlace de una oferta y prepararé la publicación.',
     '',
-    '/publicar TU_CLAVE',
-    'https://www.amazon.es/dp/...?...tag=TU_TAG',
-    'Título: Nombre del producto',
-    'Precio: 19,99 €',
-    'Antes: 39,99 €',
-    'Categoría: Tecnología',
-    'Descripción: Explicación corta y útil del producto',
-    'Cupón: AHORRA10',
+    'Primero activa este chat una única vez:',
+    '/activar TU_CLAVE_PRIVADA',
     '',
-    'La foto es obligatoria. Para Amazon usa el enlace directo de SiteStripe con tag=.',
+    'Después basta con pegar un enlace. El bot obtiene título, foto, descripción y precio de la ficha pública. Si la tienda oculta el precio, te pedirá solo ese dato.',
+    '',
+    'Amazon: puedes mandar el enlace directo; se añade tu tag automáticamente. AliExpress y Miravia: envía el enlace ya generado desde tu afiliación.',
+    '',
+    'También sigue disponible /publicar TU_CLAVE con foto y datos si quieres editar una oferta manualmente.',
   ].join('\n');
+}
+
+export function activateChatFromMessage({ text = '', controlCode = '' } = {}) {
+  const match = String(text).trim().match(/^\/(?:activar|autorizar)(?:@\w+)?\s+(\S+)\s*$/i);
+  if (!match) return { status: 'ignore' };
+  return commandCodeMatches(match[1], controlCode)
+    ? { status: 'authorized' }
+    : { status: 'unauthorized' };
+}
+
+function amazonUrlWithTag(url, partnerTag) {
+  if (!partnerTag || storeFromUrl(url) !== 'Amazon') return url;
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname.toLowerCase() === 'amzn.to') return url;
+    parsed.searchParams.set('tag', partnerTag);
+    return parsed.toString();
+  } catch {
+    return url;
+  }
+}
+
+function hasAffiliateLink(url, store) {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    if (store === 'AliExpress') return /(^|\.)s\.click\.aliexpress\.com$/.test(host) || /(^|\.)a\.aliexpress\.com$/.test(host);
+    if (store === 'Miravia') return /(^|\.)awin1\.com$/.test(host) || /(^|\.)awin\.com$/.test(host);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag = '' } = {}) {
+  const store = storeFromUrl(url);
+  const finalUrl = amazonUrlWithTag(url, partnerTag);
+  const title = compact(metadata.title);
+  const price = Number(metadata.price) || 0;
+  const previousPrice = Number(metadata.previousPrice) > price ? Number(metadata.previousPrice) : 0;
+  const imageUrl = compact(metadata.imageUrl);
+  if (!title || !imageUrl || !price) {
+    return {
+      status: 'needs_details',
+      missing: [!title && 'título', !imageUrl && 'foto', !price && 'precio'].filter(Boolean),
+    };
+  }
+  if (store === 'Amazon' && !partnerTag && !/[?&]tag=/i.test(finalUrl)) {
+    return { status: 'needs_affiliate', message: 'Falta configurar el tag de Amazon para poder crear tu enlace de afiliado.' };
+  }
+  if ((store === 'AliExpress' || store === 'Miravia') && !hasAffiliateLink(finalUrl, store)) {
+    return { status: 'needs_affiliate', message: `Ese enlace de ${store} no parece ser de afiliación. Genera el enlace desde tu panel de afiliado y envíamelo de nuevo.` };
+  }
+  const discount = previousPrice ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
+  return {
+    status: 'ready',
+    offer: {
+      id: `manual-${Date.now()}`,
+      title: improveOfferTitle(title),
+      store,
+      category: 'Ofertas',
+      coupon: '',
+      price,
+      priceLabel: euro(price),
+      previousPrice,
+      previousPriceLabel: previousPrice ? euro(previousPrice) : '',
+      discount,
+      url: finalUrl,
+      imageUrl,
+      description: compact(metadata.description).slice(0, 220) || `${title.slice(0, 180)} · Oferta publicada en Chollos al Día.`,
+    },
+  };
 }
 
 export function manualOfferFromMessage({ text = '', photoFileId = '', controlCode = '' } = {}) {

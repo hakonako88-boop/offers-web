@@ -7,9 +7,9 @@ import {
   formatAliExpressCaption,
   formatAliExpressTelegramCaption,
   normalizeAliExpressProduct,
-  topicsForAliExpressRun,
 } from './aliexpress-offers.mjs';
 import { discoverCommunitySignals, nextCommunitySignalState } from './community-signals.mjs';
+import { filterDuplicateDeals } from './offer-deduplication.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'aliexpress-discovery-state.json');
@@ -178,19 +178,14 @@ if (missing.length) {
 const state = readJson(STATE_FILE, { nextTopic: 0 });
 const publicationState = readJson(PUBLISHED_FILE, { published: [] });
 const communityState = readJson(COMMUNITY_STATE_FILE, { seen: [] });
+const existingWebOffers = readJson(WEB_OFFERS_FILE, []);
 const cutoff = Date.now() - 120 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
 const seenProductIds = new Set(published.map((entry) => entry.productId));
-const topics = topicsForAliExpressRun(Number(state.nextTopic || 0), 2);
+// Community sites are discovery signals. Do not fill the channel with generic
+// catalogue searches when there is no fresh external signal to validate.
+const topics = [];
 const candidates = [];
-
-for (const topic of topics) {
-  const products = await searchAliExpress(config, topic);
-  for (const product of products) {
-    const offer = normalizeAliExpressProduct(product, topic.category, topic.titleTerms);
-    if (offer && !seenProductIds.has(offer.id)) candidates.push(offer);
-  }
-}
 
 const communityDiscovery = await discoverCommunitySignals({ state: communityState });
 const communitySignals = [];
@@ -215,9 +210,9 @@ for (const signal of communitySignals) {
   }
 }
 
-const uniqueCandidates = Array.from(new Map(
+const uniqueCandidates = filterDuplicateDeals(Array.from(new Map(
   candidates.sort((left, right) => right.score - left.score).map((offer) => [offer.id, offer]),
-).values()).slice(0, MAX_POSTS_PER_RUN);
+).values()), existingWebOffers).slice(0, MAX_POSTS_PER_RUN);
 
 let sent = 0;
 for (const offer of uniqueCandidates) {
@@ -244,4 +239,4 @@ writeJson(STATE_FILE, {
 });
 writeJson(COMMUNITY_STATE_FILE, nextCommunitySignalState(communityState, { ...communityDiscovery, signals: communitySignals }));
 writeJson(PUBLISHED_FILE, { published });
-console.log(`AliExpress discovery checked ${topics.map((topic) => topic.keywords).join(', ')}, ${communitySignals.length} community signal(s), and published ${sent} offer(s).`);
+console.log(`AliExpress discovery checked ${communitySignals.length} fresh community signal(s), and published ${sent} validated offer(s).`);

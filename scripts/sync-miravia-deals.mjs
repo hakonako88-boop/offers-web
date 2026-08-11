@@ -12,6 +12,7 @@ import {
   parseFeedList,
   selectMiraviaFeed,
 } from './miravia-offers.mjs';
+import { filterDuplicateDeals } from './offer-deduplication.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'miravia-discovery-state.json');
@@ -229,6 +230,7 @@ await sleep(10000 + Math.floor(Math.random() * 15000));
 
 const state = readJson(STATE_FILE, { nextFeed: 0, feedVersions: {} });
 const publicationState = readJson(PUBLISHED_FILE, { published: [] });
+const existingWebOffers = readJson(WEB_OFFERS_FILE, []);
 const cutoff = Date.now() - 120 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
 const seenProductIds = new Set(published.map((entry) => entry.productId));
@@ -251,9 +253,9 @@ if (!alreadyChecked) {
   console.log(`Miravia feed ${feed.feed_id} is unchanged; skipping download.`);
 }
 
-const candidates = Array.from(new Map(
+const candidates = filterDuplicateDeals(Array.from(new Map(
   discovered.candidates.map((offer) => [offer.id, offer]),
-).values()).sort((left, right) => right.score - left.score).slice(0, MAX_POSTS_PER_RUN);
+).values()), existingWebOffers).sort((left, right) => right.score - left.score).slice(0, MAX_POSTS_PER_RUN);
 
 let sent = 0;
 for (const offer of candidates) {

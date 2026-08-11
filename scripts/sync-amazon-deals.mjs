@@ -6,10 +6,12 @@ import {
   normalizeAmazonItem,
   topicsForRun,
 } from './amazon-offers.mjs';
+import { filterDuplicateDeals } from './offer-deduplication.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'amazon-discovery-state.json');
 const PUBLISHED_FILE = path.join(ROOT, 'data', 'amazon-publications.json');
+const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const MAX_POSTS_PER_RUN = 2;
 
 function readJson(file, fallback) {
@@ -163,6 +165,7 @@ if (missing.length) {
 
 const state = readJson(STATE_FILE, { nextTopic: 0 });
 const publicationState = readJson(PUBLISHED_FILE, { published: [] });
+const existingWebOffers = readJson(WEB_OFFERS_FILE, []);
 const cutoff = Date.now() - 120 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
 const seenAsins = new Set(published.map((entry) => entry.asin));
@@ -178,9 +181,9 @@ for (const topic of topics) {
   }
 }
 
-const uniqueCandidates = Array.from(new Map(
+const uniqueCandidates = filterDuplicateDeals(Array.from(new Map(
   candidates.sort((a, b) => b.score - a.score).map((offer) => [offer.asin, offer])
-).values()).slice(0, MAX_POSTS_PER_RUN);
+).values()), existingWebOffers).slice(0, MAX_POSTS_PER_RUN);
 
 let sent = 0;
 for (const offer of uniqueCandidates) {

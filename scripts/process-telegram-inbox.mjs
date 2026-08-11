@@ -1,11 +1,16 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {
+  activateChatFromMessage,
   controlHelp,
+  firstUrl,
   formatManualTelegramCaption,
   formatManualWebsiteText,
   manualOfferFromMessage,
+  offerFromProductMetadata,
 } from './telegram-inbox-commands.mjs';
+import { extractProductMetadata, parsePrice } from './link-offer-extractor.mjs';
+import { isEquivalentDeal } from './offer-deduplication.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
@@ -32,6 +37,7 @@ function config() {
     token: process.env.TELEGRAM_BOT_TOKEN,
     channelId: process.env.TELEGRAM_CHANNEL_ID,
     controlCode: process.env.TELEGRAM_CONTROL_CODE,
+    amazonPartnerTag: process.env.AMAZON_PARTNER_TAG,
   };
 }
 
@@ -76,7 +82,7 @@ async function reply(token, chatId, text) {
 async function publishManualOffer(settings, offer, inputMessage) {
   const channelMessage = await telegram(settings.token, 'sendPhoto', {
     chat_id: settings.channelId,
-    photo: offer.photoFileId,
+    photo: offer.photoFileId || offer.imageUrl,
     caption: formatManualTelegramCaption(offer),
     parse_mode: 'HTML',
     reply_markup: {
@@ -84,7 +90,9 @@ async function publishManualOffer(settings, offer, inputMessage) {
     },
   });
 
-  const image = await mirrorTelegramPhoto(settings.token, offer.photoFileId, channelMessage.message_id);
+  const postedPhotoId = channelMessage.photo?.at(-1)?.file_id || offer.photoFileId;
+  if (!postedPhotoId) throw new Error('Telegram did not return a reusable product image.');
+  const image = await mirrorTelegramPhoto(settings.token, postedPhotoId, channelMessage.message_id);
   const existingOffers = readJson(OFFERS_FILE, []);
   const record = {
     message_id: channelMessage.message_id,
@@ -105,6 +113,21 @@ async function publishManualOffer(settings, offer, inputMessage) {
   return channelMessage;
 }
 
+async function publishIfNew(settings, offer, inputMessage) {
+  const existingOffers = readJson(OFFERS_FILE, []);
+  if (existingOffers.some((entry) => isEquivalentDeal(offer, entry))) return { duplicate: true };
+  return { channelMessage: await publishManualOffer(settings, offer, inputMessage), duplicate: false };
+}
+
+function requestedPrice(text) {
+  const priceMatch = String(text).match(/(?:precio|ahora)\s*:\s*([^\n]+)/iu);
+  const previousMatch = String(text).match(/(?:antes|pvp)\s*:\s*([^\n]+)/iu);
+  return {
+    price: parsePrice(priceMatch?.[1] || text),
+    previousPrice: parsePrice(previousMatch?.[1] || ''),
+  };
+}
+
 const settings = config();
 if (!settings.token || !settings.channelId) {
   console.log('Telegram inbox skipped: missing Telegram configuration.');
@@ -117,6 +140,8 @@ if (!settings.controlCode) {
 
 const state = readJson(STATE_FILE, { processedUpdateIds: [] });
 const processed = new Set((state.processedUpdateIds || []).map(Number));
+const authorizedChatIds = new Set((state.authorizedChatIds || []).map(String));
+const pendingByChat = state.pendingByChat && typeof state.pendingByChat === 'object' ? state.pendingByChat : {};
 const updates = await telegram(settings.token, 'getUpdates', {
   limit: 100,
 });
@@ -134,11 +159,64 @@ for (const update of updates || []) {
 
   try {
     const text = message.caption || message.text || '';
-    if (/^\/(?:start|ayuda)(?:@\w+)?\b/i.test(String(text).trim())) {
+    const chatKey = String(message.chat.id);
+    const activation = activateChatFromMessage({ text, controlCode: settings.controlCode });
+    if (activation.status === 'authorized') {
+      authorizedChatIds.add(chatKey);
+      await reply(settings.token, message.chat.id, '✅ Chat activado. Ahora solo tienes que pegar un enlace de oferta.');
+      handled += 1;
+    } else if (activation.status === 'unauthorized') {
+      await reply(settings.token, message.chat.id, '⛔ La clave no es correcta.');
+      handled += 1;
+    } else if (/^\/(?:start|ayuda)(?:@\w+)?\b/i.test(String(text).trim())) {
       await reply(settings.token, message.chat.id, controlHelp());
       handled += 1;
     } else if (message.voice) {
-      await reply(settings.token, message.chat.id, '🎙️ Esta versión gratuita no transcribe audios. Pega el enlace y los datos con la foto en un solo mensaje.\n\n' + controlHelp());
+      await reply(settings.token, message.chat.id, '🎙️ Esta versión gratuita no transcribe audios. Pega el enlace del producto por escrito.\n\n' + controlHelp());
+      handled += 1;
+    } else if (authorizedChatIds.has(chatKey) && firstUrl(text)) {
+      const url = firstUrl(text);
+      const metadata = await extractProductMetadata(url);
+      const result = offerFromProductMetadata({ url, metadata, partnerTag: settings.amazonPartnerTag });
+      if (result.status === 'ready') {
+        const outcome = await publishIfNew(settings, result.offer, message);
+        if (outcome.duplicate) {
+          await reply(settings.token, message.chat.id, '♻️ Esa oferta o un producto equivalente ya está publicado. No la repito en el canal.');
+        } else {
+          await reply(settings.token, message.chat.id, `✅ Publicada en el canal y en Chollos al Día. Mensaje del canal: ${outcome.channelMessage.message_id}`);
+          published += 1;
+        }
+      } else if (result.status === 'needs_details') {
+        pendingByChat[chatKey] = { url, metadata };
+        await reply(settings.token, message.chat.id, `He encontrado el enlace, pero la ficha no muestra ${result.missing.join(', ')}. Respóndeme solo con “Precio: 19,99 €” y, si lo tienes, “Antes: 29,99 €”.`);
+      } else {
+        await reply(settings.token, message.chat.id, `⚠️ ${result.message}`);
+      }
+      handled += 1;
+    } else if (authorizedChatIds.has(chatKey) && pendingByChat[chatKey]) {
+      const pending = pendingByChat[chatKey];
+      const amounts = requestedPrice(text);
+      if (!amounts.price) {
+        await reply(settings.token, message.chat.id, 'Necesito un precio válido, por ejemplo: Precio: 19,99 €');
+      } else {
+        const result = offerFromProductMetadata({
+          url: pending.url,
+          metadata: { ...pending.metadata, ...amounts },
+          partnerTag: settings.amazonPartnerTag,
+        });
+        if (result.status === 'ready') {
+          const outcome = await publishIfNew(settings, result.offer, message);
+          if (outcome.duplicate) {
+            await reply(settings.token, message.chat.id, '♻️ Esa oferta o un producto equivalente ya está publicado. No la repito en el canal.');
+          } else {
+            await reply(settings.token, message.chat.id, `✅ Publicada en el canal y en Chollos al Día. Mensaje del canal: ${outcome.channelMessage.message_id}`);
+            published += 1;
+          }
+          delete pendingByChat[chatKey];
+        } else {
+          await reply(settings.token, message.chat.id, `⚠️ Aún falta ${result.missing?.join(', ') || 'información'} para publicar.`);
+        }
+      }
       handled += 1;
     } else {
       const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
@@ -152,9 +230,19 @@ for (const update of updates || []) {
         await reply(settings.token, message.chat.id, `⚠️ ${result.message}`);
         handled += 1;
       } else if (result.status === 'ready') {
-        const channelMessage = await publishManualOffer(settings, result.offer, message);
-        await reply(settings.token, message.chat.id, `✅ Publicada en el canal y en Chollos al Día.\nMensaje del canal: ${channelMessage.message_id}`);
-        published += 1;
+        const outcome = await publishIfNew(settings, result.offer, message);
+        if (outcome.duplicate) {
+          await reply(settings.token, message.chat.id, '♻️ Esa oferta o un producto equivalente ya está publicado. No la repito en el canal.');
+        } else {
+          await reply(settings.token, message.chat.id, `✅ Publicada en el canal y en Chollos al Día. Mensaje del canal: ${outcome.channelMessage.message_id}`);
+          published += 1;
+        }
+        handled += 1;
+      } else if (result.status === 'unauthorized') {
+        await reply(settings.token, message.chat.id, '⛔ Para publicar primero activa este chat con /activar TU_CLAVE_PRIVADA.');
+        handled += 1;
+      } else {
+        await reply(settings.token, message.chat.id, 'Pega un enlace de oferta. Si es la primera vez, activa este chat con /activar TU_CLAVE_PRIVADA.');
         handled += 1;
       }
     }
@@ -171,6 +259,8 @@ for (const update of updates || []) {
 
 writeJson(STATE_FILE, {
   processedUpdateIds: Array.from(processed).sort((left, right) => left - right).slice(-MAX_PROCESSED_UPDATES),
+  authorizedChatIds: Array.from(authorizedChatIds).slice(-20),
+  pendingByChat,
   lastCheckedAt: new Date().toISOString(),
 });
 console.log(`Telegram private inbox handled ${handled} message(s) and published ${published} offer(s).`);
