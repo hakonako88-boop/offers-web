@@ -74,7 +74,7 @@ async function publishOffer(config, offer) {
     photo: offer.image,
     caption: formatMiraviaCaption(offer),
     reply_markup: {
-      inline_keyboard: [[{ text: '🛍️ Ver oferta en Miravia', url: offer.url }]],
+      inline_keyboard: [[{ text: '🛒 Ver chollo', url: offer.url }]],
     },
   });
 }

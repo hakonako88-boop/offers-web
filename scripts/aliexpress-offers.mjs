@@ -96,18 +96,22 @@ export function normalizeAliExpressProduct(product, category, titleTerms = [], m
 
 export function formatAliExpressCaption(offer) {
   const before = offer.previousPriceLabel ? `\n🏷️ Antes: ${offer.previousPriceLabel}` : '';
+  const savings = offer.previousPrice > offer.price
+    ? `\n💸 Ahorras: ${euro(offer.previousPrice - offer.price)}`
+    : '';
   const popularity = offer.volume > 20 ? `\n🔥 ${offer.volume}+ pedidos recientes` : '';
 
   return [
+    '🛍️ OFERTÓN EN ALIEXPRESS',
+    '',
     offer.title,
     '',
-    '🛍️ OFERTÓN ALIEXPRESS 🔥',
-    '',
-    `💶 PRECIO OFERTA: ${offer.priceLabel}${before}`,
+    `💶 Precio: ${offer.priceLabel}${before}${savings}`,
     `📉 Descuento: ${offer.discount}%${popularity}`,
+    `📂 Categoría: ${offer.category}`,
     '',
-    `📂 ${offer.category}`,
-    '👇 Pulsa para ver la oferta en AliExpress',
+    '👇 Toca el botón para ver la oferta.',
+    'ℹ️ Enlace de afiliado · El precio y el stock pueden cambiar.',
     '#Chollos #AliExpress #Ofertas',
   ].join('\n').slice(0, 1000);
 }

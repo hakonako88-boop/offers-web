@@ -42,6 +42,8 @@ test('normalizes a real Miravia deal only when it has price, image and tracking 
   assert.equal(offer.category, 'Tecnología');
   assert.match(formatMiraviaCaption(offer), /Miravia/);
   assert.match(formatMiraviaCaption(offer), /58%/);
+  assert.match(formatMiraviaCaption(offer), /Ahorras/);
+  assert.match(formatMiraviaCaption(offer), /Enlace de afiliado/);
 });
 
 test('rejects a Miravia product that is out of stock or has no real saving', () => {

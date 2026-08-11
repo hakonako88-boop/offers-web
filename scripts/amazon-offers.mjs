@@ -63,20 +63,22 @@ export function normalizeAmazonItem(item, category) {
 }
 
 export function formatAmazonCaption(offer) {
-  const savings = offer.savings ? `\n📉 Ahorras: ${offer.savings}${offer.discount ? ` (${offer.discount}%)` : ''}` : '';
+  const savings = offer.savings ? `\n💸 Ahorras: ${offer.savings}` : '';
   const before = offer.previousPrice ? `\n🏷 Antes: ${offer.previousPrice}` : '';
-  const urgency = offer.dealType ? '\n⚡ Oferta por tiempo limitado.' : '';
-  const prime = offer.isPrime ? '\n🚚 Oferta Prime.' : '';
+  const urgency = offer.dealType ? '\n⚡ Oferta temporal' : '';
+  const prime = offer.isPrime ? '\n🚚 Prime' : '';
 
   return [
-    '🛒 OFERTÓN AMAZON 🔥',
+    '🛒 OFERTÓN EN AMAZON',
     '',
     offer.title,
     '',
-    `💰 PRECIO OFERTA: ${offer.price}${before}${savings}${urgency}${prime}`,
+    `💶 Precio: ${offer.price}${before}${savings}`,
+    `📉 Descuento: ${offer.discount}%${urgency}${prime}`,
+    `📂 Categoría: ${offer.category}`,
     '',
-    `📂 ${offer.category}`,
-    '👇 Pulsa para ver la oferta en Amazon',
+    '👇 Toca el botón para ver la oferta.',
+    'ℹ️ Enlace de afiliado · El precio y el stock pueden cambiar.',
     '#Chollos #Amazon #Ofertas',
   ].join('\n').slice(0, 1000);
 }

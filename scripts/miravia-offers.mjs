@@ -175,18 +175,20 @@ export function normalizeMiraviaProduct(record = {}) {
 
 export function formatMiraviaCaption(offer) {
   const before = offer.previousPriceLabel ? `\n🏷️ Antes: ${offer.previousPriceLabel}` : '';
+  const savings = offer.previousPrice > offer.price
+    ? `\n💸 Ahorras: ${euro(offer.previousPrice - offer.price)}`
+    : '';
   return [
+    '🛍️ OFERTÓN EN MIRAVIA',
+    '',
     offer.title,
     '',
-    '🛍️ OFERTÓN MIRAVIA 🔥',
-    '',
-    `💶 PRECIO OFERTA: ${offer.priceLabel}${before}`,
+    `💶 Precio: ${offer.priceLabel}${before}${savings}`,
     `📉 Descuento: ${offer.discount}%`,
+    `📂 Categoría: ${offer.category}`,
     '',
-    `📂 ${offer.category}`,
-    '👇 Pulsa para ver la oferta en Miravia',
+    '👇 Toca el botón para ver la oferta.',
+    'ℹ️ Enlace de afiliado · El precio y el stock pueden cambiar.',
     '#Chollos #Miravia #Ofertas',
-    '',
-    'ℹ️ Enlace de afiliado',
   ].join('\n').slice(0, 1000);
 }

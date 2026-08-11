@@ -123,7 +123,7 @@ async function publishOffer(config, offer) {
     photo: offer.image,
     caption: formatAliExpressCaption(offer),
     reply_markup: {
-      inline_keyboard: [[{ text: '🛍️ Ver oferta en AliExpress', url: offer.url }]],
+      inline_keyboard: [[{ text: '🛒 Ver chollo', url: offer.url }]],
     },
   });
 }
