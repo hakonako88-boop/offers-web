@@ -8,6 +8,36 @@ const json = (value, status = 200) => new Response(JSON.stringify(value), {
 });
 
 addEventListener('fetch', (event) => event.respondWith(handleRequest(event.request)));
+addEventListener('scheduled', (event) => event.waitUntil(dispatchAutomaticScan(event.cron)));
+
+async function githubDispatch(eventType, payload = {}) {
+  const dispatch = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/dispatches`, {
+    method: 'POST',
+    headers: {
+      authorization: `Bearer ${GITHUB_DISPATCH_TOKEN}`,
+      accept: 'application/vnd.github+json',
+      'content-type': 'application/json',
+      'user-agent': 'chollosaldia-telegram-webhook',
+      'x-github-api-version': '2022-11-28',
+    },
+    body: JSON.stringify({ event_type: eventType, client_payload: payload }),
+  });
+  if (!dispatch.ok) throw new Error(`GitHub dispatch failed (${dispatch.status}): ${(await dispatch.text()).slice(0, 300)}`);
+}
+
+/** Runs one source at a fixed Cloudflare cron time. The four schedules are
+ * deliberately separated so the channel gets a curated rhythm instead of a
+ * burst of unrelated products. */
+async function dispatchAutomaticScan(cron) {
+  const eventType = {
+    '15 7 * * *': 'automatic_amazon',
+    '15 11 * * *': 'automatic_aliexpress',
+    '15 15 * * *': 'automatic_amazon',
+    '15 19 * * *': 'automatic_miravia',
+  }[cron];
+  if (!eventType) return;
+  await githubDispatch(eventType, { source: 'cloudflare-cron', cron, scheduledAt: new Date().toISOString() });
+}
 
 async function handleRequest(request) {
     const url = new URL(request.url);
@@ -26,19 +56,10 @@ async function handleRequest(request) {
     } catch {
       return json({ ok: false, error: 'Invalid Telegram update' }, 400);
     }
-    const dispatch = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/dispatches`, {
-      method: 'POST',
-      headers: {
-        authorization: `Bearer ${GITHUB_DISPATCH_TOKEN}`,
-        accept: 'application/vnd.github+json',
-        'content-type': 'application/json',
-        'user-agent': 'chollosaldia-telegram-webhook',
-        'x-github-api-version': '2022-11-28',
-      },
-      body: JSON.stringify({ event_type: 'telegram_update', client_payload: { update } }),
-    });
-    if (!dispatch.ok) {
-      console.error(`GitHub dispatch failed (${dispatch.status}): ${(await dispatch.text()).slice(0, 300)}`);
+    try {
+      await githubDispatch('telegram_update', { update });
+    } catch (error) {
+      console.error(error.message);
       return json({ ok: false, error: 'Could not start offer processing' }, 502);
     }
     return json({ ok: true });
