@@ -5,6 +5,7 @@ import {
   formatMiraviaTelegramCaption,
   highResolutionMiraviaImage,
   isGzipFeed,
+  miraviaQualityScore,
   miraviaFeedEntries,
   normalizeMiraviaProduct,
   parseFeedList,
@@ -53,7 +54,7 @@ test('normalizes a real Miravia deal only when it has price, image and tracking 
   assert.doesNotMatch(formatMiraviaTelegramCaption(offer), /Categoría/);
 });
 
-test('turns a catalogue-style title into a shorter Telegram headline with breathing room', () => {
+test('rejects inflated home-textile catalogue items even when their percentage is high', () => {
   const offer = normalizeMiraviaProduct({
     aw_product_id: 'sku-cushion',
     product_name: 'Tesosy Relleno de Cojín 35 X 55 Cm Fibra Virgen Hueca Siliconada',
@@ -65,13 +66,7 @@ test('turns a catalogue-style title into a shorter Telegram headline with breath
     merchant_category: 'Bedding & Bath > Bedding > Pillows & Bolsters',
   });
 
-  assert.equal(offer.title, 'Relleno de cojín Tesosy 35×55 cm de fibra siliconada');
-  const caption = formatMiraviaTelegramCaption(offer);
-  assert.match(caption, /<b>Relleno de cojín Tesosy/);
-  assert.match(caption, /#Miravia\n\n✨/);
-  assert.match(caption, /📛 <b>PVP:<\/b> <s>64,95 €<\/s>/);
-  assert.match(caption, /💶 <b>PRECIO OFERTA:<\/b> <b>12,99 €<\/b> 💥/);
-  assert.match(caption, /🪐 Más ofertas en @aldiachollos #Publi/);
+  assert.equal(offer, null);
 });
 
 test('rejects a Miravia product that is out of stock or has no real saving', () => {
@@ -86,6 +81,40 @@ test('rejects a Miravia product that is out of stock or has no real saving', () 
 
   assert.equal(normalizeMiraviaProduct(base), null);
   assert.equal(normalizeMiraviaProduct({ ...base, product_price_old: '50.00', in_stock: '0' }), null);
+});
+
+test('keeps only proven, high-interest Miravia deals and rejects catalogue filler', () => {
+  const promising = normalizeMiraviaProduct({
+    aw_product_id: 'sku-console-headset',
+    product_name: 'Logitech Auriculares Gaming Inalámbricos G Pro X',
+    aw_deep_link: 'https://www.awin1.com/cread.php?s=affiliate-link',
+    aw_image_url: 'https://cdn.example/headset.jpg',
+    search_price: '59,99',
+    product_price_old: '129,99',
+    in_stock: '1',
+    merchant_category: 'Electronics > Gaming',
+    reviews: '250',
+  });
+  const filler = normalizeMiraviaProduct({
+    aw_product_id: 'sku-mesh',
+    product_name: 'Mini Rollo Malla Ocultación Verde',
+    aw_deep_link: 'https://www.awin1.com/cread.php?s=affiliate-link',
+    aw_image_url: 'https://cdn.example/mesh.jpg',
+    search_price: '12,79',
+    product_price_old: '64,95',
+    in_stock: '1',
+    merchant_category: 'Home & Garden > Fencing',
+    reviews: '300',
+  });
+  assert.ok(promising.score >= 100);
+  assert.equal(filler, null);
+  assert.equal(miraviaQualityScore({
+    title: 'Auriculares Gaming genéricos',
+    category: 'Electronics > Gaming',
+    price: 25,
+    oldPrice: 60,
+    reviews: 2,
+  }), 0);
 });
 
 test('recognizes the gzip downloads produced by Awin feeds', () => {

@@ -24,6 +24,7 @@ const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const MAX_POSTS_PER_RUN = 1;
 const MAX_PRODUCTS_SCANNED = 40000;
 const MAX_CANDIDATES = 60;
+const MINIMUM_PUBLICATION_INTERVAL_MS = 8 * 60 * 60 * 1000;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -250,6 +251,8 @@ const existingWebOffers = readJson(WEB_OFFERS_FILE, []);
 const cutoff = Date.now() - 120 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
 const seenProductIds = new Set(published.map((entry) => entry.productId));
+const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, Date.parse(entry.publishedAt || '') || 0), 0);
+const canPublishToday = !lastPublicationAt || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
 
 const listResponse = await fetch(config.feedListUrl, {
   headers: { 'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)' },
@@ -269,9 +272,9 @@ if (!alreadyChecked) {
   console.log(`Miravia feed ${feed.feed_id} is unchanged; skipping download.`);
 }
 
-const candidates = filterDuplicateDeals(Array.from(new Map(
+const candidates = (canPublishToday ? filterDuplicateDeals(Array.from(new Map(
   discovered.candidates.map((offer) => [offer.id, offer]),
-).values()), existingWebOffers).sort((left, right) => right.score - left.score).slice(0, MAX_POSTS_PER_RUN);
+).values()), existingWebOffers) : []).sort((left, right) => right.score - left.score).slice(0, MAX_POSTS_PER_RUN);
 
 let sent = 0;
 for (const offer of candidates) {
@@ -302,4 +305,4 @@ writeJson(STATE_FILE, {
   lastProductsScanned: discovered.productsScanned,
 });
 writeJson(PUBLISHED_FILE, { published });
-console.log(`Miravia checked feed ${feed.feed_id} (${feed.feed_name}), scanned ${discovered.productsScanned} products, and published ${sent} offer(s).`);
+console.log(`Miravia checked feed ${feed.feed_id} (${feed.feed_name}), scanned ${discovered.productsScanned} products, and published ${sent} curated offer(s).`);

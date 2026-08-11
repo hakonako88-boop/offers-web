@@ -4,6 +4,22 @@ const STOP_WORDS = new Set([
   'de', 'la', 'el', 'los', 'las', 'y', 'en', 'para', 'con', 'por', 'un', 'una', 'pack', 'nuevo', 'nueva',
 ]);
 
+// A catalogue discount alone is not a chollo. These are low-intent catalogue
+// items that routinely have inflated reference prices and should never occupy
+// a slot in an editorial deals channel.
+const LOW_INTEREST_TERMS = [
+  'malla', 'ocultacion', 'relleno', 'cojin', 'almohada', 'funda', 'cortina',
+  'tela', 'persiana', 'recambio', 'repuesto', 'tornillo', 'brida', 'pegatina',
+  'adhesivo', 'organizador', 'bolsa de', 'filtro de', 'protector de',
+];
+
+const TRUSTED_BRANDS = [
+  'apple', 'samsung', 'xiaomi', 'redmi', 'poco', 'google', 'sony', 'nintendo',
+  'playstation', 'logitech', 'razer', 'jbl', 'bose', 'philips', 'dyson', 'ghd',
+  'oral b', 'braun', 'rowenta', 'bosch', 'siemens', 'lg', 'tp link', 'amazon',
+  'lego', 'hasbro', 'barbie', 'adidas', 'nike', 'puma', 'new balance',
+];
+
 function normalizeKey(value = '') {
   return String(value)
     .trim()
@@ -31,11 +47,6 @@ function toAmount(value) {
   }
   const amount = Number.parseFloat(normalized);
   return Number.isFinite(amount) ? amount : 0;
-}
-
-function percentage(value) {
-  const match = String(value ?? '').match(/-?\d+(?:[.,]\d+)?/);
-  return match ? Number.parseFloat(match[0].replace(',', '.')) : 0;
 }
 
 function euro(value) {
@@ -105,6 +116,39 @@ function categoryFor(value) {
   if (/toy|juguete|baby|bebe/.test(normalized)) return 'Juguetes';
   if (/fashion|moda|clothing|ropa|shoe|calzado/.test(normalized)) return 'Moda';
   return category || 'Miravia';
+}
+
+function containsOne(value = '', terms = []) {
+  const normalized = ` ${normalizeKey(value).replaceAll('_', ' ')} `;
+  return terms.some((term) => normalized.includes(` ${normalizeKey(term).replaceAll('_', ' ')} `));
+}
+
+function highInterestCategory(value = '') {
+  const normalized = normalizeKey(value);
+  return /electron|informat|telefono|mobile|computer|software|gaming|appliance|cocina|beauty|belleza|health|salud|sport|deporte|toy|juguete|baby|bebe/.test(normalized);
+}
+
+/** Editorial score used to prefer proven, useful products over the largest
+ * catalogue percentage. It deliberately rejects products with no real PVP
+ * comparison, no social proof and generic accessory/home-textile wording. */
+export function miraviaQualityScore({ title = '', category = '', price = 0, oldPrice = 0, reviews = 0 } = {}) {
+  const saving = oldPrice - price;
+  const discount = oldPrice > price ? ((saving / oldPrice) * 100) : 0;
+  const branded = containsOne(title, TRUSTED_BRANDS);
+  const popular = Number(reviews) || 0;
+
+  if (!title || !highInterestCategory(category) || containsOne(`${title} ${category}`, LOW_INTEREST_TERMS)) return 0;
+  if (!oldPrice || oldPrice <= price || discount < 35 || saving < 10) return 0;
+  if (price < 10 && saving < 18) return 0;
+  if (!branded && popular < 25) return 0;
+  if (discount > 80 && !branded && popular < 100) return 0;
+
+  return Math.round(
+    (discount * 1.25)
+    + Math.min(saving, 80)
+    + Math.min(popular, 500) / 5
+    + (branded ? 18 : 0),
+  );
 }
 
 export function parseCsvRow(line = '') {
@@ -179,16 +223,17 @@ export function normalizeMiraviaProduct(record = {}) {
   const image = highResolutionMiraviaImage(columnValue(record, ['aw_image_url', 'large_image', 'merchant_image_url', 'image_url', 'merchant_thumb_url']));
   const price = toAmount(columnValue(record, ['search_price', 'store_price', 'sale_price', 'price']));
   const oldPrice = toAmount(columnValue(record, ['product_price_old', 'rrp_price', 'base_price', 'old_price']));
-  const reportedDiscount = percentage(columnValue(record, ['savings_percent', 'discount', 'discount_percent']));
   const calculatedDiscount = oldPrice > price ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
-  const discount = Math.max(reportedDiscount, calculatedDiscount);
 
-  if (!id || !title || !url || !image || !hasStock(record) || price < 3 || price > 2500 || discount < 20) return null;
+  if (!id || !title || !url || !image || !hasStock(record) || price < 3 || price > 2500) return null;
   if (!/^https?:\/\//i.test(url) || !/^https?:\/\//i.test(image)) return null;
 
-  const category = categoryFor(columnValue(record, ['merchant_category', 'category_name', 'product_type', 'merchant_product_category_path']));
+  const rawCategory = columnValue(record, ['merchant_category', 'category_name', 'product_type', 'merchant_product_category_path']);
+  const category = categoryFor(rawCategory);
   const titleTerms = normalizeKey(title).split('_').filter((term) => term.length >= 4 && !STOP_WORDS.has(term));
-  const popularity = Number.parseInt(columnValue(record, ['reviews', 'rating_count', 'number_available', 'stock_quantity']), 10) || 0;
+  const popularity = Number.parseInt(columnValue(record, ['reviews', 'rating_count', 'review_count', 'number_available']), 10) || 0;
+  const qualityScore = miraviaQualityScore({ title, category: rawCategory, price, oldPrice, reviews: popularity });
+  if (!qualityScore) return null;
 
   return {
     id: `miravia-${id}`,
@@ -200,10 +245,10 @@ export function normalizeMiraviaProduct(record = {}) {
     priceLabel: euro(price),
     previousPrice: oldPrice > price ? oldPrice : 0,
     previousPriceLabel: oldPrice > price ? euro(oldPrice) : '',
-    discount: Math.round(discount),
+    discount: calculatedDiscount,
     category,
     titleTerms,
-    score: discount + Math.min(Math.max(popularity, 0), 500) / 100,
+    score: qualityScore,
   };
 }
 
