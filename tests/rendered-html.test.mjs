@@ -15,13 +15,13 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, /<html lang="es">/i);
-  assert.match(html, /Ofertas verificadas y descuentos de hoy/);
-  assert.match(html, /Ofertas reales/);
+  assert.match(html, /Chollos de hoy: ofertas, descuentos y cupones/);
+  assert.match(html, /sí merece/);
   assert.match(html, /Chollos de hoy/);
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com"/);
   assert.match(html, /href="\/oferta\//);
-  assert.match(html, /og-chollosaldia\.png/);
+  assert.match(html, /og-chollosaldia-v2\.png/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/);
 });
 

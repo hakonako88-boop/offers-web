@@ -222,11 +222,11 @@ export function DealExplorer() {
 
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="heroCopy">
-          <p className="eyebrow"><span aria-hidden="true" />SELECCIÓN INTELIGENTE DE OFERTAS</p>
-          <h1 id="hero-title">Ofertas reales<br />para <em>pagar menos.</em></h1>
-          <p className="heroLead">Seleccionamos chollos con descuento visible, precio comparado y enlace directo. Tú decides; nosotros te ayudamos a encontrar el ahorro.</p>
+          <p className="eyebrow"><span aria-hidden="true" />RADAR DE CHOLLOS · AMAZON · ALIEXPRESS · MIRAVIA</p>
+          <h1 id="hero-title">Chollos de hoy<br />que <em>sí merece</em> la pena abrir.</h1>
+          <p className="heroLead">Una selección diaria de ofertas con precio claro, ahorro calculado y acceso directo a la tienda. Menos ruido, mejores decisiones de compra.</p>
           <div className="heroActions">
-            <a className="primaryButton" href="#ofertas">Ver ofertas de hoy <span aria-hidden="true">↓</span></a>
+            <a className="primaryButton" href="#ofertas">Explorar chollos de hoy <span aria-hidden="true">↓</span></a>
             <a className="quietLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis <span aria-hidden="true">↗</span></a>
           </div>
           <ul className="trustList" aria-label="Compromisos de Chollos al Día">
@@ -241,6 +241,14 @@ export function DealExplorer() {
             <div className="featuredBody"><p className="featuredMeta"><span className="liveDot" /> OFERTA ACTIVA · {featuredDeal.store}</p><h2><a href={dealDetailsUrl(featuredDeal)}>{shortTitle(featuredDeal.title, 72)}</a></h2><div className="featuredPrice"><strong>{money.format(featuredDeal.price)}</strong>{featuredDeal.oldPrice > featuredDeal.price && <span>Antes <s>{money.format(featuredDeal.oldPrice)}</s> · −{Math.round((1 - featuredDeal.price / featuredDeal.oldPrice) * 100)}%</span>}</div><a href={dealDetailsUrl(featuredDeal)}>Ver análisis de la oferta <span aria-hidden="true">→</span></a><p className="featuredFoot"><b>{deals.length}</b> ofertas activas · descuento medio −{averageDiscount}% · revisión {displayDate(deals)}</p></div>
           </aside>
         ) : <aside className="savingsPanel" aria-label="Resumen de las ofertas publicadas"><div className="panelTop"><span className="liveDot" /> EN DIRECTO</div><p>Descuento medio de las ofertas activas</p><strong>−{averageDiscount}%</strong></aside>}
+      </section>
+
+      <section className="benefitBand" aria-label="Ventajas de Chollos al Día">
+        <div className="shell benefitGrid">
+          <article><span aria-hidden="true">01</span><h2>Precio a la vista</h2><p>Ves el importe actual, el precio anterior y el ahorro antes de salir de la web.</p></article>
+          <article><span aria-hidden="true">02</span><h2>Compra sin rodeos</h2><p>Cada chollo lleva a su ficha con contexto y un enlace directo a la tienda.</p></article>
+          <article><span aria-hidden="true">03</span><h2>Alertas cuando importan</h2><p>Las oportunidades nuevas también llegan al canal de Telegram para no llegar tarde.</p></article>
+        </div>
       </section>
 
       <section className="dealPulse" aria-label="Resumen de las ofertas activas">
@@ -307,6 +315,18 @@ export function DealExplorer() {
             })}
           </div>
           {!visibleDeals.length && <div className="empty"><b>No hemos encontrado ofertas con esa búsqueda.</b><span>Prueba con otra palabra o vuelve a “Todos”.</span></div>}
+        </div>
+      </section>
+
+      <section className="savingGuides shell" aria-labelledby="guides-title">
+        <div className="guidesIntro">
+          <p className="eyebrow"><span aria-hidden="true" />COMPRA MEJOR, SIN BUSCAR MÁS</p>
+          <h2 id="guides-title">Guías rápidas<br />para <em>ahorrar mejor.</em></h2>
+        </div>
+        <div className="guideGrid">
+          <a href="#ofertas" className="guideCard guideAmazon"><span>AMAZON</span><h3>Ofertas de Amazon que merece la pena vigilar</h3><p>Productos con descuento visible y datos de precio para decidir con rapidez.</p><b>Ver ofertas <i aria-hidden="true">→</i></b></a>
+          <a href="#ofertas" className="guideCard guideAli"><span>ALIEXPRESS</span><h3>Cupones y precios directos de AliExpress</h3><p>Encuentra oportunidades y códigos que reducen el precio final de compra.</p><b>Explorar chollos <i aria-hidden="true">→</i></b></a>
+          <a href="#como-funciona" className="guideCard guideHow"><span>MÉTODO</span><h3>Cómo saber si una oferta es realmente buena</h3><p>Consulta el precio anterior, las condiciones y la ficha antes de comprar.</p><b>Conocer el proceso <i aria-hidden="true">→</i></b></a>
         </div>
       </section>
 

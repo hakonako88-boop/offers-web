@@ -7,8 +7,8 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://chollosaldia.com"),
-  title: { default: "Chollos al Día | Ofertas verificadas y ahorro real", template: "%s | Chollos al Día" },
-  description: "Ofertas verificadas, descuentos claros y enlaces directos para comprar mejor cada día.",
+  title: { default: "Chollos al Día | Chollos, ofertas y cupones de hoy", template: "%s | Chollos al Día" },
+  description: "Chollos de hoy, descuentos claros, cupones y enlaces directos para comprar mejor cada día.",
   applicationName: "Chollos al Día",
   keywords: ["chollos", "ofertas de hoy", "descuentos", "cupones", "ofertas AliExpress", "ofertas Amazon", "ahorro"],
   authors: [{ name: "Chollos al Día" }],
@@ -19,11 +19,11 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
     siteName: "Chollos al Día",
-    title: "Chollos al Día | Ofertas verificadas y ahorro real",
+    title: "Chollos al Día | Chollos, ofertas y cupones de hoy",
     description: "Chollos seleccionados, precios claros y enlaces directos para comprar mejor.",
-    images: [{ url: "/og-chollosaldia.png", width: 1536, height: 1024, alt: "Chollos al Día, ofertas verificadas y ahorro real" }],
+    images: [{ url: "/og-chollosaldia-v2.png", width: 1731, height: 909, alt: "Chollos al Día, ofertas verificadas y ahorro real" }],
   },
-  twitter: { card: "summary_large_image", title: "Chollos al Día", description: "Ofertas verificadas y ahorro real.", images: ["/og-chollosaldia.png"] },
+  twitter: { card: "summary_large_image", title: "Chollos al Día", description: "Ofertas verificadas y ahorro real.", images: ["/og-chollosaldia-v2.png"] },
   robots: {
     index: true,
     follow: true,

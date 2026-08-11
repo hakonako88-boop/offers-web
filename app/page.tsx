@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { DealExplorer } from "./components/DealExplorer";
+import { publishedDeals } from "./lib/deals";
 
-const title = "Ofertas verificadas y descuentos de hoy";
-const description = "Encuentra chollos seleccionados, descuentos reales y enlaces directos de AliExpress, Amazon y otras tiendas. Actualizado cada día.";
+const title = "Chollos de hoy: ofertas, descuentos y cupones";
+const description = "Chollos de hoy en Amazon, AliExpress, Miravia y más tiendas. Ofertas seleccionadas con precio, descuento, cupón y enlace directo para ahorrar.";
 
 export const metadata: Metadata = {
   title,
@@ -12,9 +13,9 @@ export const metadata: Metadata = {
     title: `${title} | Chollos al Día`,
     description,
     url: "/",
-    images: [{ url: "/og-chollosaldia.png", width: 1536, height: 1024, alt: "Chollos al Día: ofertas verificadas y ahorro real" }],
+    images: [{ url: "/og-chollosaldia-v2.png", width: 1731, height: 909, alt: "Chollos al Día: ofertas verificadas y ahorro real" }],
   },
-  twitter: { card: "summary_large_image", title: `${title} | Chollos al Día`, description, images: ["/og-chollosaldia.png"] },
+  twitter: { card: "summary_large_image", title: `${title} | Chollos al Día`, description, images: ["/og-chollosaldia-v2.png"] },
 };
 
 const websiteSchema = {
@@ -27,11 +28,6 @@ const websiteSchema = {
       url: "https://chollosaldia.com/",
       inLanguage: "es-ES",
       description,
-      potentialAction: {
-        "@type": "SearchAction",
-        target: "https://chollosaldia.com/?q={search_term_string}",
-        "query-input": "required name=search_term_string",
-      },
     },
     {
       "@type": "Organization",
@@ -41,6 +37,26 @@ const websiteSchema = {
       sameAs: ["https://t.me/aldiachollos"],
     },
   ],
+};
+
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": "https://chollosaldia.com/#ofertas",
+  name: "Chollos y ofertas de hoy",
+  description,
+  inLanguage: "es-ES",
+  isPartOf: { "@id": "https://chollosaldia.com/#website" },
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: publishedDeals.length,
+    itemListElement: publishedDeals.slice(0, 20).map((deal, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `https://chollosaldia.com/oferta/${encodeURIComponent(deal.id)}`,
+      name: deal.title,
+    })),
+  },
 };
 
 const faqSchema = {
@@ -69,6 +85,7 @@ export default function Home() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <DealExplorer />
     </>
