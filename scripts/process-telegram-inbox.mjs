@@ -40,6 +40,7 @@ function config() {
     token: process.env.TELEGRAM_BOT_TOKEN,
     channelId: process.env.TELEGRAM_CHANNEL_ID,
     controlCode: process.env.TELEGRAM_CONTROL_CODE,
+    allowedChatId: process.env.TELEGRAM_ALLOWED_CHAT_ID,
     amazonPartnerTag: process.env.AMAZON_PARTNER_TAG,
     aliexpressAppKey: process.env.ALIEXPRESS_APP_KEY,
     aliexpressAppSecret: process.env.ALIEXPRESS_APP_SECRET,
@@ -166,6 +167,7 @@ for (const update of updates || []) {
   try {
     const text = message.caption || message.text || '';
     const chatKey = String(message.chat.id);
+    const isAuthorizedChat = authorizedChatIds.has(chatKey) || (settings.allowedChatId && chatKey === String(settings.allowedChatId));
     const activation = activateChatFromMessage({ text, controlCode: settings.controlCode });
     if (activation.status === 'authorized') {
       authorizedChatIds.add(chatKey);
@@ -180,7 +182,7 @@ for (const update of updates || []) {
     } else if (message.voice) {
       await reply(settings.token, message.chat.id, '🎙️ Esta versión gratuita no transcribe audios. Pega el enlace del producto por escrito.\n\n' + controlHelp());
       handled += 1;
-    } else if (authorizedChatIds.has(chatKey) && urlFromTelegramMessage(message, text)) {
+    } else if (isAuthorizedChat && urlFromTelegramMessage(message, text)) {
       const url = urlFromTelegramMessage(message, text);
       let metadata = await extractProductMetadata(url);
       const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
@@ -223,7 +225,7 @@ for (const update of updates || []) {
         await reply(settings.token, message.chat.id, `⚠️ ${result.message}`);
       }
       handled += 1;
-    } else if (authorizedChatIds.has(chatKey) && pendingByChat[chatKey]) {
+    } else if (isAuthorizedChat && pendingByChat[chatKey]) {
       const pending = pendingByChat[chatKey];
       const amounts = requestedPrice(text);
       if (!amounts.price) {
@@ -249,7 +251,7 @@ for (const update of updates || []) {
       }
       handled += 1;
     } else if (
-      authorizedChatIds.has(chatKey)
+      isAuthorizedChat
       && !/^\/publicar(?:@\w+)?\b/i.test(String(text).trim())
       && (message.forward_origin || message.forward_date || Array.isArray(message.photo))
     ) {
@@ -281,10 +283,10 @@ for (const update of updates || []) {
         }
         handled += 1;
       } else if (result.status === 'unauthorized') {
-        await reply(settings.token, message.chat.id, '⛔ Para publicar primero activa este chat con /activar TU_CLAVE_PRIVADA.');
+        await reply(settings.token, message.chat.id, '⛔ Este chat no está autorizado para publicar ofertas.');
         handled += 1;
       } else {
-        await reply(settings.token, message.chat.id, 'Pega un enlace de oferta. Si es la primera vez, activa este chat con /activar TU_CLAVE_PRIVADA.');
+        await reply(settings.token, message.chat.id, 'Pega un enlace de oferta o reenvía una publicación y después envía su enlace de compra.');
         handled += 1;
       }
     }

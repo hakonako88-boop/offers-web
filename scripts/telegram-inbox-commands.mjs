@@ -91,14 +91,11 @@ export function controlHelp() {
   return [
     '👋 Envíame un enlace de una oferta y prepararé la publicación.',
     '',
-    'Primero activa este chat una única vez:',
-    '/activar TU_CLAVE_PRIVADA',
-    '',
     'Después basta con pegar un enlace. El bot obtiene título, foto, descripción y precio de la ficha pública. Si la tienda oculta el precio, te pedirá solo ese dato.',
     '',
     'Amazon: puedes mandar el enlace directo; se añade tu tag automáticamente. AliExpress y Miravia: envía el enlace ya generado desde tu afiliación.',
     '',
-    'También sigue disponible /publicar TU_CLAVE con foto y datos si quieres editar una oferta manualmente.',
+    'También puedes reenviar una publicación con foto y pegar después su enlace de compra.',
   ].join('\n');
 }
 
