@@ -119,7 +119,6 @@ const state = readJson(STATE_FILE, { processedUpdateIds: [] });
 const processed = new Set((state.processedUpdateIds || []).map(Number));
 const updates = await telegram(settings.token, 'getUpdates', {
   limit: 100,
-  allowed_updates: ['message'],
 });
 
 let published = 0;
