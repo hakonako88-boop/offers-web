@@ -41,9 +41,11 @@ test('keeps only discounted AliExpress products with an affiliate link', () => {
   assert.match(formatAliExpressCaption(offer), /24,99\s?€/);
   assert.match(formatAliExpressCaption(offer), /58%/);
   assert.match(formatAliExpressCaption(offer), /Ahorras/);
-  assert.match(formatAliExpressCaption(offer), /#publi/);
-  assert.match(formatAliExpressTelegramCaption(offer), /<b>PRECIO:<\/b>/);
+  assert.match(formatAliExpressCaption(offer), /CHOLLO EN ALIEXPRESS/);
+  assert.match(formatAliExpressTelegramCaption(offer), /CHOLLO EN ALIEXPRESS/);
   assert.match(formatAliExpressTelegramCaption(offer), /<s>59,99 €<\/s>/);
+  assert.match(formatAliExpressTelegramCaption(offer), /\n\n<b>/);
+  assert.doesNotMatch(formatAliExpressTelegramCaption(offer), /Categoría/);
 });
 
 test('rejects normal-priced products without a real discount', () => {

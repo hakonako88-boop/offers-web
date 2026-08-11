@@ -1,3 +1,5 @@
+import { formatTelegramDealCard, formatWebsiteDealText, improveOfferTitle } from './offer-presentation.mjs';
+
 const STOP_WORDS = new Set([
   'de', 'la', 'el', 'los', 'las', 'y', 'en', 'para', 'con', 'por', 'un', 'una', 'pack', 'nuevo', 'nueva',
 ]);
@@ -41,16 +43,6 @@ function euro(value) {
     style: 'currency',
     currency: 'EUR',
   }).format(value);
-}
-
-function telegramHtml(value, maximum = 240) {
-  return String(value || '')
-    .replace(/\s+/gu, ' ')
-    .trim()
-    .slice(0, maximum)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
 }
 
 function nonEmpty(value) {
@@ -169,7 +161,7 @@ export function normalizeMiraviaProduct(record = {}) {
   return {
     id: `miravia-${id}`,
     sourceProductId: id,
-    title: title.slice(0, 220),
+    title: improveOfferTitle(title),
     image,
     url,
     price,
@@ -184,49 +176,24 @@ export function normalizeMiraviaProduct(record = {}) {
 }
 
 export function formatMiraviaCaption(offer) {
-  const before = offer.previousPriceLabel ? `\n🏷️ Antes: ${offer.previousPriceLabel}` : '';
-  const savings = offer.previousPrice > offer.price
-    ? `\n💸 Ahorras: ${euro(offer.previousPrice - offer.price)}`
-    : '';
-  return [
-    '#publi',
-    '',
-    '🛍️ OFERTÓN EN MIRAVIA',
-    '',
-    offer.title,
-    '',
-    `💶 Precio: ${offer.priceLabel}${before}${savings}`,
-    `📉 Descuento: ${offer.discount}%`,
-    `📂 Categoría: ${offer.category}`,
-    '',
-    '👇 Toca el botón para ver la oferta.',
-    '⚠️ El precio y el stock pueden cambiar.',
-    '#Chollos #Miravia #Ofertas',
-  ].join('\n').slice(0, 1000);
+  return formatWebsiteDealText({
+    title: offer.title,
+    store: 'Miravia',
+    price: offer.priceLabel,
+    previousPrice: offer.previousPriceLabel,
+    savings: offer.previousPrice > offer.price ? euro(offer.previousPrice - offer.price) : '',
+    discount: offer.discount,
+  });
 }
 
 export function formatMiraviaTelegramCaption(offer) {
-  const before = offer.previousPriceLabel
-    ? `🏷️ <b>Antes:</b> <s>${telegramHtml(offer.previousPriceLabel, 32)}</s>`
-    : '';
-  const savings = offer.previousPrice > offer.price
-    ? `💸 <b>Ahorras:</b> ${telegramHtml(euro(offer.previousPrice - offer.price), 32)}`
-    : '';
-
-  return [
-    '#publi',
-    '',
-    '<b>🛍️ OFERTÓN EN MIRAVIA</b>',
-    '━━━━━━━━━━━━━━━━━━',
-    `<b>${telegramHtml(offer.title)}</b>`,
-    '',
-    `💶 <b>PRECIO:</b> <b>${telegramHtml(offer.priceLabel, 32)}</b>`,
-    before,
-    savings,
-    `📉 <b>DESCUENTO:</b> ${telegramHtml(offer.discount, 12)}%`,
-    `📂 <b>Categoría:</b> ${telegramHtml(offer.category, 52)}`,
-    '━━━━━━━━━━━━━━━━━━',
-    '<i>⚠️ Precio y stock pueden cambiar.</i>',
-    '#Chollos #Miravia',
-  ].filter(Boolean).join('\n').slice(0, 1000);
+  return formatTelegramDealCard({
+    title: offer.title,
+    store: 'Miravia',
+    category: offer.category,
+    price: offer.priceLabel,
+    previousPrice: offer.previousPriceLabel,
+    savings: offer.previousPrice > offer.price ? euro(offer.previousPrice - offer.price) : '',
+    discount: offer.discount,
+  });
 }

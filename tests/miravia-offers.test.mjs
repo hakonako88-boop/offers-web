@@ -41,12 +41,32 @@ test('normalizes a real Miravia deal only when it has price, image and tracking 
   assert.equal(offer.price, 24.99);
   assert.equal(offer.discount, 58);
   assert.equal(offer.category, 'Tecnología');
-  assert.match(formatMiraviaCaption(offer), /Miravia/);
+  assert.match(formatMiraviaCaption(offer), /MIRAVIA/);
   assert.match(formatMiraviaCaption(offer), /58%/);
   assert.match(formatMiraviaCaption(offer), /Ahorras/);
-  assert.match(formatMiraviaCaption(offer), /#publi/);
-  assert.match(formatMiraviaTelegramCaption(offer), /<b>PRECIO:<\/b>/);
+  assert.match(formatMiraviaCaption(offer), /CHOLLO EN MIRAVIA/);
+  assert.match(formatMiraviaTelegramCaption(offer), /CHOLLO EN MIRAVIA/);
   assert.match(formatMiraviaTelegramCaption(offer), /<s>59,99 €<\/s>/);
+  assert.doesNotMatch(formatMiraviaTelegramCaption(offer), /Categoría/);
+});
+
+test('turns a catalogue-style title into a shorter Telegram headline with breathing room', () => {
+  const offer = normalizeMiraviaProduct({
+    aw_product_id: 'sku-cushion',
+    product_name: 'Tesosy Relleno de Cojín 35 X 55 Cm Fibra Virgen Hueca Siliconada',
+    aw_deep_link: 'https://www.awin1.com/cread.php?s=affiliate-link',
+    aw_image_url: 'https://cdn.example/cojin.jpg',
+    search_price: '12,99',
+    product_price_old: '64,95',
+    in_stock: '1',
+    merchant_category: 'Bedding & Bath > Bedding > Pillows & Bolsters',
+  });
+
+  assert.equal(offer.title, 'Relleno de cojín Tesosy 35×55 cm de fibra siliconada');
+  const caption = formatMiraviaTelegramCaption(offer);
+  assert.match(caption, /<b>🔥 CHOLLO EN MIRAVIA<\/b>\n\n<b>Relleno de cojín Tesosy/);
+  assert.match(caption, /<s>64,95 €<\/s>\s{2}➜\s{2}<b>12,99 €<\/b> · <b>−80%<\/b>/);
+  assert.match(caption, /#ChollosAlDia #Miravia #Hogar #publi/);
 });
 
 test('rejects a Miravia product that is out of stock or has no real saving', () => {

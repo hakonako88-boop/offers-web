@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import { formatTelegramDealCard, formatWebsiteDealText, improveOfferTitle } from './offer-presentation.mjs';
 
 export const ALIEXPRESS_ENDPOINT = 'https://api-sg.aliexpress.com/sync';
 
@@ -56,16 +57,6 @@ function euro(value) {
   }).format(value);
 }
 
-function telegramHtml(value, maximum = 240) {
-  return String(value || '')
-    .replace(/\s+/gu, ' ')
-    .trim()
-    .slice(0, maximum)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
-
 export function normalizeAliExpressProduct(product, category, titleTerms = [], minimumTitleMatches = 1) {
   const id = String(product?.product_id || '').trim();
   const title = String(product?.product_title || '').trim();
@@ -87,7 +78,7 @@ export function normalizeAliExpressProduct(product, category, titleTerms = [], m
 
   return {
     id,
-    title: title.slice(0, 220),
+    title: improveOfferTitle(title),
     image,
     url,
     category: String(product?.first_level_category_name || category || 'AliExpress').slice(0, 60),
@@ -105,53 +96,26 @@ export function normalizeAliExpressProduct(product, category, titleTerms = [], m
 }
 
 export function formatAliExpressCaption(offer) {
-  const before = offer.previousPriceLabel ? `\n🏷️ Antes: ${offer.previousPriceLabel}` : '';
-  const savings = offer.previousPrice > offer.price
-    ? `\n💸 Ahorras: ${euro(offer.previousPrice - offer.price)}`
-    : '';
-  const popularity = offer.volume > 20 ? `\n🔥 ${offer.volume}+ pedidos recientes` : '';
-
-  return [
-    '#publi',
-    '',
-    '🛍️ OFERTÓN EN ALIEXPRESS',
-    '',
-    offer.title,
-    '',
-    `💶 Precio: ${offer.priceLabel}${before}${savings}`,
-    `📉 Descuento: ${offer.discount}%${popularity}`,
-    `📂 Categoría: ${offer.category}`,
-    '',
-    '👇 Toca el botón para ver la oferta.',
-    '⚠️ El precio y el stock pueden cambiar.',
-    '#Chollos #AliExpress #Ofertas',
-  ].join('\n').slice(0, 1000);
+  return formatWebsiteDealText({
+    title: offer.title,
+    store: 'AliExpress',
+    price: offer.priceLabel,
+    previousPrice: offer.previousPriceLabel,
+    savings: offer.previousPrice > offer.price ? euro(offer.previousPrice - offer.price) : '',
+    discount: offer.discount,
+  });
 }
 
 export function formatAliExpressTelegramCaption(offer) {
-  const before = offer.previousPriceLabel
-    ? `🏷️ <b>Antes:</b> <s>${telegramHtml(offer.previousPriceLabel, 32)}</s>`
-    : '';
-  const savings = offer.previousPrice > offer.price
-    ? `💸 <b>Ahorras:</b> ${telegramHtml(euro(offer.previousPrice - offer.price), 32)}`
-    : '';
-  const popularity = offer.volume > 20 ? `🔥 <b>${offer.volume}+ pedidos recientes</b>` : '';
-
-  return [
-    '#publi',
-    '',
-    '<b>🛍️ OFERTÓN EN ALIEXPRESS</b>',
-    '━━━━━━━━━━━━━━━━━━',
-    `<b>${telegramHtml(offer.title)}</b>`,
-    '',
-    `💶 <b>PRECIO:</b> <b>${telegramHtml(offer.priceLabel, 32)}</b>`,
-    before,
-    savings,
-    `📉 <b>DESCUENTO:</b> ${telegramHtml(offer.discount, 12)}%`,
-    popularity,
-    `📂 <b>Categoría:</b> ${telegramHtml(offer.category, 52)}`,
-    '━━━━━━━━━━━━━━━━━━',
-    '<i>⚠️ Precio y stock pueden cambiar.</i>',
-    '#Chollos #AliExpress',
-  ].filter(Boolean).join('\n').slice(0, 1000);
+  const popularity = offer.volume > 20 ? `${offer.volume}+ pedidos recientes` : '';
+  return formatTelegramDealCard({
+    title: offer.title,
+    store: 'AliExpress',
+    category: offer.siteCategory || offer.category,
+    price: offer.priceLabel,
+    previousPrice: offer.previousPriceLabel,
+    savings: offer.previousPrice > offer.price ? euro(offer.previousPrice - offer.price) : '',
+    discount: offer.discount,
+    highlight: popularity,
+  });
 }

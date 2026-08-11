@@ -27,6 +27,8 @@ test('accepts a complete private publication command with an Amazon affiliate UR
   assert.equal(result.offer.discount, 67);
   assert.match(formatManualTelegramCaption(result.offer), /Auriculares &amp; micrófono/);
   assert.match(formatManualTelegramCaption(result.offer), /<s>59,99\s€<\/s>/);
+  assert.match(formatManualTelegramCaption(result.offer), /CHOLLO EN AMAZON/);
+  assert.doesNotMatch(formatManualTelegramCaption(result.offer), /Categoría/);
 });
 
 test('does not let an incorrect control code publish an offer', () => {

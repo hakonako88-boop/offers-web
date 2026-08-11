@@ -1,14 +1,8 @@
 import crypto from 'node:crypto';
+import { formatTelegramDealCard, formatWebsiteDealText, improveOfferTitle } from './offer-presentation.mjs';
 
 function compact(value = '') {
   return String(value).replace(/\s+/gu, ' ').trim();
-}
-
-function escapeHtml(value = '') {
-  return compact(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
 }
 
 function parseAmount(value = '') {
@@ -131,7 +125,7 @@ export function manualOfferFromMessage({ text = '', photoFileId = '', controlCod
     status: 'ready',
     offer: {
       id: `manual-${Date.now()}`,
-      title: title.slice(0, 220),
+      title: improveOfferTitle(title),
       store,
       category: category.slice(0, 60),
       price,
@@ -147,42 +141,24 @@ export function manualOfferFromMessage({ text = '', photoFileId = '', controlCod
 }
 
 export function formatManualTelegramCaption(offer) {
-  const previous = offer.previousPriceLabel
-    ? `🏷️ <b>Antes:</b> <s>${escapeHtml(offer.previousPriceLabel)}</s>`
-    : '';
-  const savings = offer.previousPrice > offer.price
-    ? `💸 <b>Ahorras:</b> ${escapeHtml(euro(offer.previousPrice - offer.price))}`
-    : '';
-  const discount = offer.discount > 0 ? `📉 <b>DESCUENTO:</b> ${offer.discount}%` : '';
-
-  return [
-    '#publi',
-    '',
-    `<b>🛍️ OFERTÓN EN ${escapeHtml(offer.store).toUpperCase()}</b>`,
-    '━━━━━━━━━━━━━━━━━━',
-    `<b>${escapeHtml(offer.title)}</b>`,
-    '',
-    `💶 <b>PRECIO:</b> <b>${escapeHtml(offer.priceLabel)}</b>`,
-    previous,
-    savings,
-    discount,
-    `📂 <b>Categoría:</b> ${escapeHtml(offer.category)}`,
-    '━━━━━━━━━━━━━━━━━━',
-    '<i>⚠️ Precio y stock pueden cambiar.</i>',
-    `#Chollos #${escapeHtml(offer.store).replace(/\s+/g, '')}`,
-  ].filter(Boolean).join('\n').slice(0, 1000);
+  return formatTelegramDealCard({
+    title: offer.title,
+    store: offer.store,
+    category: offer.category,
+    price: offer.priceLabel,
+    previousPrice: offer.previousPriceLabel,
+    savings: offer.previousPrice > offer.price ? euro(offer.previousPrice - offer.price) : '',
+    discount: offer.discount,
+  });
 }
 
 export function formatManualWebsiteText(offer) {
-  const previous = offer.previousPriceLabel ? `\n🏷️ Antes: ${offer.previousPriceLabel}` : '';
-  const savings = offer.previousPrice > offer.price
-    ? `\n💸 Ahorras: ${euro(offer.previousPrice - offer.price)}`
-    : '';
-  const discount = offer.discount > 0 ? `\n📉 Descuento: ${offer.discount}%` : '';
-  return [
-    `OFERTÓN EN ${offer.store.toUpperCase()}`,
-    offer.title,
-    `💶 Precio: ${offer.priceLabel}${previous}${savings}${discount}`,
-    `📂 Categoría: ${offer.category}`,
-  ].join('\n');
+  return formatWebsiteDealText({
+    title: offer.title,
+    store: offer.store,
+    price: offer.priceLabel,
+    previousPrice: offer.previousPriceLabel,
+    savings: offer.previousPrice > offer.price ? euro(offer.previousPrice - offer.price) : '',
+    discount: offer.discount,
+  });
 }
