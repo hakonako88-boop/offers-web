@@ -31,7 +31,7 @@ test('keeps only discounted AliExpress products with an affiliate link', () => {
     lastest_volume: 250,
     commission_rate: '8.5%',
     first_level_category_name: 'Electrónica',
-  }, 'Tecnología');
+  }, 'Tecnología', ['auriculares']);
 
   assert.equal(offer.id, '123456');
   assert.equal(offer.price, 24.99);
@@ -64,6 +64,19 @@ test('rejects products without enough recent demand', () => {
     discount: '66%',
     lastest_volume: 0,
   }, 'Tecnología'), null);
+});
+
+test('rejects a discounted product when its title does not match the searched category', () => {
+  assert.equal(normalizeAliExpressProduct({
+    product_id: 997,
+    product_title: 'Rueda de hendido para manualidades',
+    product_main_image_url: 'https://ae-pic.example/product.jpg',
+    promotion_link: 'https://s.click.aliexpress.com/e/example',
+    target_sale_price: '9.99',
+    target_original_price: '29.99',
+    discount: '66%',
+    lastest_volume: 100,
+  }, 'Tecnología', ['teclado', 'keyboard']), null);
 });
 
 test('rotates AliExpress searches between executions', () => {

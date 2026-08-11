@@ -3,16 +3,16 @@ import crypto from 'node:crypto';
 export const ALIEXPRESS_ENDPOINT = 'https://api-sg.aliexpress.com/sync';
 
 export const ALIEXPRESS_SEARCH_TOPICS = [
-  { keywords: 'auriculares bluetooth', category: 'Tecnología' },
-  { keywords: 'robot aspirador', category: 'Hogar' },
-  { keywords: 'teclado mecánico', category: 'Tecnología' },
-  { keywords: 'freidora de aire', category: 'Hogar' },
-  { keywords: 'herramientas bricolaje', category: 'Bricolaje' },
-  { keywords: 'smartwatch', category: 'Tecnología' },
-  { keywords: 'accesorios gaming', category: 'Videojuegos' },
-  { keywords: 'cafetera', category: 'Hogar' },
-  { keywords: 'juguetes educativos', category: 'Juguetes' },
-  { keywords: 'cargador usb c', category: 'Tecnología' },
+  { keywords: 'auriculares bluetooth', category: 'Tecnología', titleTerms: ['auriculares', 'headphones', 'earbuds', 'cascos'] },
+  { keywords: 'robot aspirador', category: 'Hogar', titleTerms: ['robot aspirador', 'aspirador'] },
+  { keywords: 'teclado mecánico', category: 'Tecnología', titleTerms: ['teclado', 'keyboard'] },
+  { keywords: 'freidora de aire', category: 'Hogar', titleTerms: ['freidora', 'air fryer'] },
+  { keywords: 'herramientas bricolaje', category: 'Bricolaje', titleTerms: ['herramienta', 'destornillador', 'taladro', 'alicates', 'broca'] },
+  { keywords: 'smartwatch', category: 'Tecnología', titleTerms: ['smartwatch', 'reloj inteligente', 'pulsera inteligente'] },
+  { keywords: 'accesorios gaming', category: 'Videojuegos', titleTerms: ['gaming', 'mando', 'ratón', 'mouse', 'teclado'] },
+  { keywords: 'cafetera', category: 'Hogar', titleTerms: ['cafetera', 'café'] },
+  { keywords: 'juguetes educativos', category: 'Juguetes', titleTerms: ['juguete', 'muñeco', 'juego', 'tamagotchi'] },
+  { keywords: 'cargador usb c', category: 'Tecnología', titleTerms: ['cargador', 'cable usb', 'usb-c'] },
 ];
 
 export function topicsForAliExpressRun(cursor = 0, count = 2) {
@@ -42,6 +42,13 @@ function percentage(value) {
   return match ? Number.parseFloat(match[1].replace(',', '.')) : 0;
 }
 
+function normalizedText(value) {
+  return String(value || '')
+    .toLocaleLowerCase('es')
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '');
+}
+
 function euro(value) {
   return new Intl.NumberFormat('es-ES', {
     style: 'currency',
@@ -49,7 +56,7 @@ function euro(value) {
   }).format(value);
 }
 
-export function normalizeAliExpressProduct(product, category) {
+export function normalizeAliExpressProduct(product, category, titleTerms = []) {
   const id = String(product?.product_id || '').trim();
   const title = String(product?.product_title || '').trim();
   const image = String(product?.product_main_image_url || '').trim();
@@ -62,8 +69,10 @@ export function normalizeAliExpressProduct(product, category) {
   const discount = Math.max(percentage(product?.discount), calculatedDiscount);
   const volume = Number.parseInt(product?.lastest_volume || '0', 10) || 0;
   const commission = percentage(product?.commission_rate);
+  const normalizedTitle = normalizedText(title);
+  const isRelated = !titleTerms.length || titleTerms.some((term) => normalizedTitle.includes(normalizedText(term)));
 
-  if (!id || !title || !image || !url || price < 3 || discount < 20 || volume < 5) return null;
+  if (!id || !title || !image || !url || price < 3 || discount < 20 || volume < 5 || !isRelated) return null;
 
   return {
     id,

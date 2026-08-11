@@ -181,7 +181,7 @@ const candidates = [];
 for (const topic of topics) {
   const products = await searchAliExpress(config, topic);
   for (const product of products) {
-    const offer = normalizeAliExpressProduct(product, topic.category);
+    const offer = normalizeAliExpressProduct(product, topic.category, topic.titleTerms);
     if (offer && !seenProductIds.has(offer.id)) candidates.push(offer);
   }
 }
