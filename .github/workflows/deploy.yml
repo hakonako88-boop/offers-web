@@ -75,7 +75,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/aliexpress-discovery-state.json data/aliexpress-publications.json public/tg
+          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json public/tg
           git diff --cached --quiet || git commit -m "Actualizar ofertas desde Telegram"
           git push
 

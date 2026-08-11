@@ -56,7 +56,7 @@ function euro(value) {
   }).format(value);
 }
 
-export function normalizeAliExpressProduct(product, category, titleTerms = []) {
+export function normalizeAliExpressProduct(product, category, titleTerms = [], minimumTitleMatches = 1) {
   const id = String(product?.product_id || '').trim();
   const title = String(product?.product_title || '').trim();
   const image = String(product?.product_main_image_url || '').trim();
@@ -70,7 +70,8 @@ export function normalizeAliExpressProduct(product, category, titleTerms = []) {
   const volume = Number.parseInt(product?.lastest_volume || '0', 10) || 0;
   const commission = percentage(product?.commission_rate);
   const normalizedTitle = normalizedText(title);
-  const isRelated = !titleTerms.length || titleTerms.some((term) => normalizedTitle.includes(normalizedText(term)));
+  const matchedTitleTerms = titleTerms.filter((term) => normalizedTitle.includes(normalizedText(term))).length;
+  const isRelated = !titleTerms.length || matchedTitleTerms >= Math.min(minimumTitleMatches, titleTerms.length);
 
   if (!id || !title || !image || !url || price < 3 || discount < 20 || volume < 5 || !isRelated) return null;
 
@@ -89,6 +90,7 @@ export function normalizeAliExpressProduct(product, category, titleTerms = []) {
     volume,
     commission,
     score: discount + Math.min(volume, 500) / 50 + commission,
+    matchedTitleTerms,
   };
 }
 

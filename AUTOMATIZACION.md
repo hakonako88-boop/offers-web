@@ -27,6 +27,12 @@ Cada 30 minutos, GitHub consulta dos categorías rotativas con AliExpress Affili
 
 La API no proporciona siempre cupones aplicables a todos los productos. Por eso las publicaciones muestran el descuento real recibido y nunca inventan un cupón. No se extraen precios mediante scraping ni se añaden parámetros de afiliación manuales: evita enlaces sin atribución y precios incorrectos.
 
+## Señales públicas de comunidades de chollos
+
+ChollosAlDía revisa con frecuencia moderada los canales RSS o mapas de sitio públicos de Chollometro, No Lo Dejes Escapar y MiChollo. Estas fuentes sirven exclusivamente para descubrir nombres de productos y tendencias: no se reutilizan sus descripciones, imágenes, cupones ni enlaces de afiliado.
+
+Una señal solo se publica si AliExpress confirma de nuevo el producto, precio, imagen, descuento y genera un `promotion_link` oficial para el identificador de seguimiento configurado. Las señales que indican Amazon no se publican mientras la API de Amazon no esté habilitada para la cuenta. MiChollo se consulta como máximo una vez cada seis horas para no sobrecargar su sitemap público.
+
 ## Formato de una oferta manual
 
 ```json

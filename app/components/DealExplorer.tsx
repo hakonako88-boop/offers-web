@@ -114,6 +114,12 @@ function displayDate(deals: Deal[]) {
   return latest ? latest.toLocaleDateString("es-ES", { day: "numeric", month: "long" }) : "hoy";
 }
 
+function shortTitle(title: string, maximum = 92) {
+  if (title.length <= maximum) return title;
+  const shortened = title.slice(0, maximum + 1).replace(/\s+\S*$/, "").trim();
+  return `${shortened || title.slice(0, maximum)}…`;
+}
+
 export function DealExplorer() {
   const [deals, setDeals] = useState<Deal[]>(importedDeals);
   const [category, setCategory] = useState("Todos");
@@ -151,6 +157,9 @@ export function DealExplorer() {
     return Math.round(discounted.reduce((total, deal) => total + (1 - deal.price / deal.oldPrice) * 100, 0) / discounted.length);
   }, [deals]);
 
+  const featuredDeal = visibleDeals[0];
+  const gridDeals = visibleDeals.slice(1);
+
   function copyCoupon(code: string) {
     navigator.clipboard?.writeText(code);
     setCopied(code);
@@ -170,7 +179,7 @@ export function DealExplorer() {
         <div className="shell headerInner">
           <a className="brand" href="#inicio" aria-label="Chollos al Día, inicio">
             <span className="brandMark" aria-hidden="true">€</span>
-            <span>chollos<span>al</span>día</span>
+            <span>Chollos <span>al</span>Día</span>
           </a>
           <nav aria-label="Navegación principal">
             <a href="#ofertas">Ofertas de hoy</a>
@@ -182,7 +191,7 @@ export function DealExplorer() {
 
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="heroCopy">
-          <p className="eyebrow"><span aria-hidden="true" />OFERTAS REVISADAS, SIN RUIDO</p>
+          <p className="eyebrow"><span aria-hidden="true" />SELECCIÓN INTELIGENTE DE OFERTAS</p>
           <h1 id="hero-title">Ofertas reales<br />para <em>pagar menos.</em></h1>
           <p className="heroLead">Seleccionamos chollos con descuento visible, precio comparado y enlace directo. Tú decides; nosotros te ayudamos a encontrar el ahorro.</p>
           <div className="heroActions">
@@ -195,13 +204,12 @@ export function DealExplorer() {
             <li>Sin coste adicional para ti</li>
           </ul>
         </div>
-        <aside className="savingsPanel" aria-label="Resumen de las ofertas publicadas">
-          <div className="panelTop"><span className="liveDot" /> EN DIRECTO</div>
-          <p>Descuento medio de las ofertas activas</p>
-          <strong>−{averageDiscount}%</strong>
-          <div className="panelDivider" />
-          <div className="panelFoot"><span><b>{deals.length}</b> chollos activos</span><span>Última revisión: {displayDate(deals)}</span></div>
-        </aside>
+        {featuredDeal ? (
+          <aside className="featuredPanel" aria-label="Oferta destacada">
+            <div className="featuredImage"><img src={featuredDeal.imageUrl} alt="" width={720} height={560} /><span>DESTACADA</span></div>
+            <div className="featuredBody"><p className="featuredMeta"><span className="liveDot" /> OFERTA ACTIVA · {featuredDeal.store}</p><h2>{shortTitle(featuredDeal.title, 72)}</h2><div className="featuredPrice"><strong>{money.format(featuredDeal.price)}</strong>{featuredDeal.oldPrice > featuredDeal.price && <span>Antes <s>{money.format(featuredDeal.oldPrice)}</s> · −{Math.round((1 - featuredDeal.price / featuredDeal.oldPrice) * 100)}%</span>}</div><a href={featuredDeal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ver oferta destacada <span aria-hidden="true">→</span></a><p className="featuredFoot"><b>{deals.length}</b> ofertas activas · descuento medio −{averageDiscount}% · revisión {displayDate(deals)}</p></div>
+          </aside>
+        ) : <aside className="savingsPanel" aria-label="Resumen de las ofertas publicadas"><div className="panelTop"><span className="liveDot" /> EN DIRECTO</div><p>Descuento medio de las ofertas activas</p><strong>−{averageDiscount}%</strong></aside>}
       </section>
 
       <section className="offersSection" id="ofertas" aria-labelledby="offers-title">
@@ -228,7 +236,7 @@ export function DealExplorer() {
 
           <p className="resultsSummary" aria-live="polite"><b>{visibleDeals.length}</b> {visibleDeals.length === 1 ? "oferta encontrada" : "ofertas encontradas"}</p>
           <div className="dealGrid">
-            {visibleDeals.map((deal) => {
+            {gridDeals.map((deal) => {
               const discount = Math.max(0, Math.round((1 - deal.price / deal.oldPrice) * 100));
               return (
                 <article className="dealCard" key={deal.id}>
@@ -239,7 +247,7 @@ export function DealExplorer() {
                   </div>
                   <div className="dealBody">
                     <p className="categoryLabel">{deal.category}</p>
-                    <h3>{deal.title}</h3>
+                    <h3 title={deal.title}>{shortTitle(deal.title)}</h3>
                     <div className="priceRow">
                       <strong>{money.format(deal.price)}</strong>
                       {discount > 0 && <span>Antes <s>{money.format(deal.oldPrice)}</s></span>}
@@ -251,7 +259,7 @@ export function DealExplorer() {
                       </button>
                     ) : <p className="noCoupon">Precio directo, sin cupón extra</p>}
                     <a className="dealButton" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ver oferta <span aria-hidden="true">→</span></a>
-                    <p className="verified"><span aria-hidden="true" />{deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt}</p>
+                    <p className="verified"><span aria-hidden="true" />Oferta activa · {deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt}</p>
                   </div>
                 </article>
               );
@@ -290,7 +298,7 @@ export function DealExplorer() {
 
       <footer>
         <div className="shell footerGrid">
-          <div className="footerBrand"><a className="brand" href="#inicio"><span className="brandMark" aria-hidden="true">€</span><span>chollos<span>al</span>día</span></a><p>Ofertas verificadas para comprar mejor cada día.</p></div>
+          <div className="footerBrand"><a className="brand" href="#inicio"><span className="brandMark" aria-hidden="true">€</span><span>Chollos <span>al</span>Día</span></a><p>Ofertas verificadas para comprar mejor cada día.</p></div>
           <div><strong>Explora</strong><a href="#ofertas">Ofertas de hoy</a><a href="#como-funciona">Cómo funciona</a><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Canal de Telegram</a></div>
           <div><strong>Información</strong><a href="/aviso-legal">Aviso legal</a><a href="/privacidad">Privacidad</a><a href="/afiliacion">Política de afiliación</a></div>
         </div>

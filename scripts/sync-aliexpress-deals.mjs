@@ -8,13 +8,16 @@ import {
   normalizeAliExpressProduct,
   topicsForAliExpressRun,
 } from './aliexpress-offers.mjs';
+import { discoverCommunitySignals, nextCommunitySignalState } from './community-signals.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'aliexpress-discovery-state.json');
 const PUBLISHED_FILE = path.join(ROOT, 'data', 'aliexpress-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
+const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.json');
 const MAX_POSTS_PER_RUN = 2;
+const MAX_COMMUNITY_QUERIES_PER_RUN = 3;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -172,6 +175,7 @@ if (missing.length) {
 
 const state = readJson(STATE_FILE, { nextTopic: 0 });
 const publicationState = readJson(PUBLISHED_FILE, { published: [] });
+const communityState = readJson(COMMUNITY_STATE_FILE, { seen: [] });
 const cutoff = Date.now() - 120 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
 const seenProductIds = new Set(published.map((entry) => entry.productId));
@@ -183,6 +187,29 @@ for (const topic of topics) {
   for (const product of products) {
     const offer = normalizeAliExpressProduct(product, topic.category, topic.titleTerms);
     if (offer && !seenProductIds.has(offer.id)) candidates.push(offer);
+  }
+}
+
+const communityDiscovery = await discoverCommunitySignals({ state: communityState });
+const communitySignals = [];
+const queriedCommunitySources = new Set();
+for (const signal of communityDiscovery.signals) {
+  if (signal.sourceStore === 'Amazon' || signal.terms.length < 2 || queriedCommunitySources.has(signal.source)) continue;
+  communitySignals.push(signal);
+  queriedCommunitySources.add(signal.source);
+  if (communitySignals.length >= MAX_COMMUNITY_QUERIES_PER_RUN) break;
+}
+
+for (const signal of communitySignals) {
+  try {
+    const products = await searchAliExpress(config, { keywords: signal.searchQuery });
+    const minimumTitleMatches = Math.min(3, Math.max(2, signal.terms.length));
+    for (const product of products) {
+      const offer = normalizeAliExpressProduct(product, signal.category, signal.terms, minimumTitleMatches);
+      if (offer && !seenProductIds.has(offer.id)) candidates.push({ ...offer, score: offer.score + signal.sourceWeight, communitySignalId: signal.id });
+    }
+  } catch (error) {
+    console.warn(`Could not validate community signal from ${signal.source}: ${error.message}`);
   }
 }
 
@@ -213,5 +240,6 @@ writeJson(STATE_FILE, {
   nextTopic: (Number(state.nextTopic || 0) + topics.length) % ALIEXPRESS_SEARCH_TOPICS.length,
   lastRunAt: new Date().toISOString(),
 });
+writeJson(COMMUNITY_STATE_FILE, nextCommunitySignalState(communityState, { ...communityDiscovery, signals: communitySignals }));
 writeJson(PUBLISHED_FILE, { published });
-console.log(`AliExpress discovery checked ${topics.map((topic) => topic.keywords).join(', ')} and published ${sent} offer(s).`);
+console.log(`AliExpress discovery checked ${topics.map((topic) => topic.keywords).join(', ')}, ${communitySignals.length} community signal(s), and published ${sent} offer(s).`);
