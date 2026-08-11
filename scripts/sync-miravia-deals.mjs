@@ -248,7 +248,7 @@ await sleep(10000 + Math.floor(Math.random() * 15000));
 const state = readJson(STATE_FILE, { nextFeed: 0, feedVersions: {} });
 const publicationState = readJson(PUBLISHED_FILE, { published: [] });
 const existingWebOffers = readJson(WEB_OFFERS_FILE, []);
-const cutoff = Date.now() - 120 * 24 * 60 * 60 * 1000;
+const cutoff = Date.now() - 365 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
 const seenProductIds = new Set(published.map((entry) => entry.productId));
 const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, Date.parse(entry.publishedAt || '') || 0), 0);

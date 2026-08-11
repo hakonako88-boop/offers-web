@@ -230,7 +230,6 @@ for (const update of updates || []) {
       const url = urlFromTelegramMessage(message, text);
       const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
       const forwardedMetadata = pendingByChat[chatKey]?.draft || forwardedOfferMetadata(text, largestPhoto);
-      const store = storeFromUrl(url);
       let metadata = { finalUrl: url };
       let metadataError = '';
       try {
@@ -239,18 +238,19 @@ for (const update of updates || []) {
         metadataError = safeError(error, settings.token);
         console.warn(`Could not read product metadata for inbox message ${message.message_id}: ${metadataError}`);
       }
+      const resolvedStore = storeFromUrl(metadata.finalUrl || metadata.affiliateUrl || url);
       // Amazon posts must use Amazon's product image, never a picture copied
       // from the source channel. Other stores retain the forwarded image when
       // their product page does not expose a usable one.
-      const metadataFromForward = store === 'Amazon'
+      const metadataFromForward = resolvedStore === 'Amazon'
         ? Object.fromEntries(Object.entries(forwardedMetadata).filter(([key, value]) => key !== 'imageUrl' && key !== 'photoFileId' && value))
         : Object.fromEntries(Object.entries(forwardedMetadata).filter(([, value]) => value));
       metadata = {
         ...metadata,
         ...metadataFromForward,
       };
-      metadata = metadataWithOfficialAmazonImage(url, metadata);
-      if (storeFromUrl(url) === 'AliExpress' && (!metadata.title || !metadata.price || !/\.(?:jpe?g|png|webp)(?:[?#]|$)/iu.test(metadata.imageUrl))) {
+      metadata = metadataWithOfficialAmazonImage(metadata.finalUrl || url, metadata);
+      if (resolvedStore === 'AliExpress' && (!metadata.title || !metadata.price || !/\.(?:jpe?g|png|webp)(?:[?#]|$)/iu.test(metadata.imageUrl))) {
         try {
           const affiliateMetadata = await resolveAliExpressAffiliateProduct(metadata.finalUrl || url, {
             appKey: settings.aliexpressAppKey,
@@ -265,10 +265,12 @@ for (const update of updates || []) {
           console.warn(`AliExpress affiliate lookup failed: ${safeError(error, settings.token)}`);
         }
       }
-      const affiliateUrl = store === 'Amazon' ? (metadata.finalUrl || url) : url;
+      const affiliateUrl = resolvedStore === 'Amazon'
+        ? (metadata.finalUrl || url)
+        : (metadata.affiliateUrl || metadata.finalUrl || url);
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
-        if (store !== 'Amazon' && forwardedMetadata.photoFileId) result.offer.photoFileId = forwardedMetadata.photoFileId;
+        if (resolvedStore !== 'Amazon' && forwardedMetadata.photoFileId) result.offer.photoFileId = forwardedMetadata.photoFileId;
         const outcome = await publishIfNew(settings, result.offer, message);
         if (outcome.duplicate) {
           await reply(settings.token, message.chat.id, '♻️ Esa oferta o un producto equivalente ya está publicado. No la repito en el canal.');

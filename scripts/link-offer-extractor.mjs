@@ -55,10 +55,70 @@ export function parsePrice(value = '') {
 
 function absoluteUrl(value, baseUrl) {
   try {
-    return new URL(value, baseUrl).toString();
+    return baseUrl ? new URL(value, baseUrl).toString() : new URL(value).toString();
   } catch {
     return '';
   }
+}
+
+function merchantUrl(value = '', baseUrl = '') {
+  const url = absoluteUrl(decode(value), baseUrl);
+  if (!url) return '';
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return /(^|\.)(?:amazon\.[a-z.]+|amzn\.to|aliexpress\.com|miravia\.es|awin1\.com|awin\.com)$/iu.test(host) ? url : '';
+  } catch {
+    return '';
+  }
+}
+
+/** Finds the actual shop button in a blog/deals-page. This lets forwarded
+ * cards use the merchant page rather than publishing a link back to the
+ * original deals site. */
+export function merchantLinkFromHtml(html = '', pageUrl = '') {
+  const links = String(html).matchAll(/<a\b[^>]*\bhref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/giu);
+  for (const link of links) {
+    const target = merchantUrl(link[1] || link[2] || link[3] || '', pageUrl);
+    if (target) return target;
+  }
+  return '';
+}
+
+function hrefFromAnchor(anchor = '') {
+  const match = String(anchor).match(/\bhref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/iu);
+  return match?.[1] || match?.[2] || match?.[3] || '';
+}
+
+/** Some deal sites hide the merchant behind an internal “Ver oferta” link.
+ * We follow one clearly-labelled button, then accept it only if it reaches a
+ * supported merchant. Navigation links are intentionally ignored. */
+export function outboundOfferLinkFromHtml(html = '', pageUrl = '') {
+  const direct = merchantLinkFromHtml(html, pageUrl);
+  if (direct) return direct;
+  for (const match of String(html).matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/giu)) {
+    const anchor = match[0];
+    const target = absoluteUrl(hrefFromAnchor(anchor), pageUrl);
+    const label = decode(anchor).toLocaleLowerCase('es');
+    if (target && /(?:ver|ir|comprar|conseguir).{0,24}(?:oferta|producto|tienda)|amazon|aliexpress|miravia/iu.test(label)) {
+      return target;
+    }
+  }
+  return '';
+}
+
+async function fetchPage(url, fetchImpl) {
+  const response = await fetchImpl(url, {
+    redirect: 'follow',
+    headers: {
+      'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaBot/1.0; +https://chollosaldia.com)',
+      accept: 'text/html,application/xhtml+xml',
+    },
+  });
+  if (!response.ok) throw new Error(`La tienda respondió ${response.status}.`);
+  return {
+    html: (await response.text()).slice(0, 1_500_000),
+    finalUrl: response.url || url,
+  };
 }
 
 /**
@@ -82,17 +142,19 @@ export async function extractProductMetadata(url, { fetchImpl = fetch } = {}) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 12000);
   try {
-    const response = await fetchImpl(url, {
-      redirect: 'follow',
-      signal: controller.signal,
-      headers: {
-        'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaBot/1.0; +https://chollosaldia.com)',
-        accept: 'text/html,application/xhtml+xml',
-      },
-    });
-    if (!response.ok) throw new Error(`La tienda respondió ${response.status}.`);
-    const html = (await response.text()).slice(0, 1_500_000);
-    return { ...productMetadataFromHtml(html, response.url || url), finalUrl: response.url || url };
+    const firstPage = await fetchPage(url, (requestUrl, options) => fetchImpl(requestUrl, { ...options, signal: controller.signal }));
+    const outboundOfferUrl = outboundOfferLinkFromHtml(firstPage.html, firstPage.finalUrl);
+    const directMerchantUrl = merchantLinkFromHtml(firstPage.html, firstPage.finalUrl);
+    const resolvedPage = outboundOfferUrl && outboundOfferUrl !== firstPage.finalUrl
+      ? await fetchPage(outboundOfferUrl, (requestUrl, options) => fetchImpl(requestUrl, { ...options, signal: controller.signal }))
+      : firstPage;
+    const finalPage = merchantUrl(resolvedPage.finalUrl) ? resolvedPage : firstPage;
+    return {
+      ...productMetadataFromHtml(finalPage.html, finalPage.finalUrl),
+      finalUrl: finalPage.finalUrl,
+      sourceUrl: firstPage.finalUrl,
+      affiliateUrl: directMerchantUrl || merchantUrl(url) || merchantUrl(resolvedPage.finalUrl) || '',
+    };
   } finally {
     clearTimeout(timeout);
   }

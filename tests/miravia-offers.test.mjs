@@ -117,6 +117,16 @@ test('keeps only proven, high-interest Miravia deals and rejects catalogue fille
   }), 0);
 });
 
+test('rejects table linen even when it is listed under a high-interest kitchen category', () => {
+  assert.equal(miraviaQualityScore({
+    title: 'Mantel antimanchas para mesa de comedor',
+    category: 'Kitchen & Dining > Kitchen & Table Linen',
+    price: 18,
+    oldPrice: 90,
+    reviews: 300,
+  }), 0);
+});
+
 test('recognizes the gzip downloads produced by Awin feeds', () => {
   assert.equal(isGzipFeed('https://feeds.example/compression/gzip/products'), true);
   assert.equal(isGzipFeed('https://feeds.example/products', 'gzip'), true);

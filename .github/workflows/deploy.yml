@@ -88,15 +88,15 @@ jobs:
         run: npm run send:test-telegram
 
       - name: Buscar y publicar ofertas de Amazon
-        if: ${{ github.event_name != 'repository_dispatch' && env.AMAZON_CREATOR_CREDENTIAL_ID != '' && env.AMAZON_CREATOR_SECRET != '' && env.AMAZON_CREATOR_VERSION != '' && env.AMAZON_PARTNER_TAG != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ github.event_name == 'schedule' && env.AMAZON_CREATOR_CREDENTIAL_ID != '' && env.AMAZON_CREATOR_SECRET != '' && env.AMAZON_CREATOR_VERSION != '' && env.AMAZON_PARTNER_TAG != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run sync:amazon || echo "Amazon no devolvió ofertas publicables en esta ejecución."
 
       - name: Buscar y publicar ofertas de AliExpress
-        if: ${{ github.event_name != 'repository_dispatch' && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ github.event_name == 'schedule' && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run sync:aliexpress || echo "AliExpress no devolvió ofertas publicables en esta ejecución."
 
       - name: Buscar y publicar ofertas de Miravia
-        if: ${{ github.event_name != 'repository_dispatch' && env.AWIN_FEED_LIST_URL != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ github.event_name == 'schedule' && env.AWIN_FEED_LIST_URL != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run sync:miravia || echo "Miravia no devolvió ofertas publicables en esta ejecución."
 
       - name: Guardar resultado de la prueba de Telegram

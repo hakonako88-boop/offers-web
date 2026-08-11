@@ -27,14 +27,40 @@ function similarity(left = '', right = '') {
   return shared / Math.min(a.length, b.length);
 }
 
+function productIdentity(deal = {}) {
+  const explicit = deal.sourceProductId || deal.source_product_id || deal.productId;
+  if (explicit) return String(explicit).toLowerCase().replace(/^miravia-/, '');
+  try {
+    const url = new URL(deal.url || '');
+    const pclickProduct = url.searchParams.get('p');
+    if (pclickProduct && /(^|\.)awin1?\.com$/iu.test(url.hostname)) return `awin:${pclickProduct}`;
+    const asin = url.pathname.match(/\/(?:dp|gp\/product)\/([a-z0-9]{10})(?:[/?]|$)/iu)?.[1];
+    if (asin) return `amazon:${asin.toLowerCase()}`;
+    const aliProduct = url.pathname.match(/\/item\/(\d+)\.html/iu)?.[1];
+    if (aliProduct) return `aliexpress:${aliProduct}`;
+  } catch {
+    // A title comparison below remains a safe fallback for malformed links.
+  }
+  return '';
+}
+
 export function isEquivalentDeal(candidate = {}, published = {}) {
+  const candidateIdentity = productIdentity(candidate);
+  const publishedIdentity = productIdentity(published);
+  if (candidateIdentity && publishedIdentity && candidateIdentity === publishedIdentity) return true;
   const candidateTitle = normalise(candidate.title);
   const publishedTitle = normalise(published.title);
   if (!candidateTitle || !publishedTitle) return false;
   if (candidateTitle === publishedTitle) return true;
   // Variants often add a size or a colour to an otherwise identical catalogue
   // title ("Alfombrilla gaming Charizard" vs "... XXL Charizard").
-  return similarity(candidate.title, published.title) >= 0.72;
+  const overlap = similarity(candidate.title, published.title);
+  if (overlap >= 0.72) return true;
+  // For the same merchant a model/name with a small wording change is still
+  // the same deal. This catches feed variants without merging unrelated shops.
+  return candidate.store && published.store
+    && candidate.store === published.store
+    && overlap >= 0.64;
 }
 
 export function filterDuplicateDeals(candidates = [], existing = []) {

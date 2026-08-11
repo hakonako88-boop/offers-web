@@ -22,3 +22,14 @@ test('keeps genuinely different products and removes duplicates in one batch', (
   assert.equal(candidates.length, 2);
   assert.equal(candidates[1].title, 'Auriculares inalámbricos SoundPEATS');
 });
+
+test('blocks the same affiliate product even if the feed changes its title', () => {
+  assert.equal(isEquivalentDeal(
+    { title: 'Auriculares inalámbricos con cancelación', sourceProductId: '445566', store: 'Miravia' },
+    { title: 'Cascos Bluetooth oferta especial', source_product_id: 'miravia-445566', store: 'Miravia' },
+  ), true);
+  assert.equal(isEquivalentDeal(
+    { title: 'Ratón gaming edición negra', store: 'Miravia' },
+    { title: 'Ratón gaming negro edición 2026', store: 'Miravia' },
+  ), true);
+});

@@ -10,7 +10,8 @@ const STOP_WORDS = new Set([
 const LOW_INTEREST_TERMS = [
   'malla', 'ocultacion', 'relleno', 'cojin', 'almohada', 'funda', 'cortina',
   'tela', 'persiana', 'recambio', 'repuesto', 'tornillo', 'brida', 'pegatina',
-  'adhesivo', 'organizador', 'bolsa de', 'filtro de', 'protector de',
+  'adhesivo', 'organizador', 'bolsa de', 'filtro de', 'protector de', 'mantel',
+  'table cloth', 'table linen', 'camino de mesa', 'servilleta',
 ];
 
 const TRUSTED_BRANDS = [
@@ -238,6 +239,7 @@ export function normalizeMiraviaProduct(record = {}) {
   return {
     id: `miravia-${id}`,
     sourceProductId: id,
+    store: 'Miravia',
     title: improveOfferTitle(title),
     image,
     url,
