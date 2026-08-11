@@ -45,6 +45,15 @@ test("renders an individual offer with price analysis, pros, cons and Product SE
   assert.match(html, new RegExp(`rel="canonical" href="https://chollosaldia\\.com/oferta/${id}"`));
 });
 
+test("keeps the historical contact URL as a useful, indexable page", async () => {
+  const response = await render("/contacto");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Has visto un chollo/i);
+  assert.match(html, /t\.me\/aldiachollos/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/contacto"/);
+});
+
 test("keeps affiliate credentials out of the client source", async () => {
   const [client, example] = await Promise.all([
     readFile(new URL("../app/components/DealExplorer.tsx", import.meta.url), "utf8"),
