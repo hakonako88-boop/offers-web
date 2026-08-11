@@ -32,6 +32,9 @@ await render("/contacto", "contacto/index.html");
 for (const store of ["amazon", "aliexpress", "miravia"]) {
   await render(`/ofertas/${store}`, `ofertas/${store}/index.html`);
 }
+for (const category of ["tecnologia", "videojuegos", "hogar"]) {
+  await render(`/chollos/${category}`, `chollos/${category}/index.html`);
+}
 const publishedOffers = JSON.parse(await readFile(path.join(root, "data", "offers.json"), "utf8"));
 const offerIds = [...new Set(publishedOffers
   .map((offer) => String(offer.chollometroId || offer.message_id || offer.url || ""))

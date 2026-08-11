@@ -351,6 +351,15 @@ export function DealExplorer() {
         </div>
       </section>
 
+      <section className="categoryDirectory shell" aria-labelledby="categories-title">
+        <div><p className="eyebrow"><span aria-hidden="true" />CHOLLOS POR CATEGORIA</p><h2 id="categories-title">Ve directo a lo que buscas.</h2></div>
+        <div className="categoryDirectoryGrid">
+          <a href="/chollos/tecnologia"><span>Tecnología</span><b>Electrónica, informática y accesorios <i aria-hidden="true">→</i></b></a>
+          <a href="/chollos/videojuegos"><span>Videojuegos</span><b>Gaming y accesorios para jugar <i aria-hidden="true">→</i></b></a>
+          <a href="/chollos/hogar"><span>Hogar</span><b>Selección útil para casa y cocina <i aria-hidden="true">→</i></b></a>
+        </div>
+      </section>
+
       <section className="process shell" id="como-funciona" aria-labelledby="process-title">
         <div className="processHeading">
           <p className="eyebrow"><span aria-hidden="true" />UN RADAR PARA COMPRAR MEJOR</p>

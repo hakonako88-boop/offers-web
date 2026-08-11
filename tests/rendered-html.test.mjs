@@ -64,6 +64,16 @@ test("renders store pages with active offers and collection SEO", async () => {
   assert.match(html, /href="\/oferta\//);
 });
 
+test("renders the technology category with its own collection SEO", async () => {
+  const response = await render("/chollos/tecnologia");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Chollos de tecnologia/);
+  assert.match(html, /"@type":"CollectionPage"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/chollos\/tecnologia"/);
+  assert.match(html, /name="robots" content="index, follow"/);
+});
+
 test("keeps affiliate credentials out of the client source", async () => {
   const [client, example] = await Promise.all([
     readFile(new URL("../app/components/DealExplorer.tsx", import.meta.url), "utf8"),

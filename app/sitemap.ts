@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { categoryIsIndexable, categoryPages } from "./lib/categories";
 import { dealHref, publishedDeals } from "./lib/deals";
 
 const siteUrl = "https://chollosaldia.com";
@@ -11,6 +12,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}/ofertas/amazon`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
     { url: `${siteUrl}/ofertas/aliexpress`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
     { url: `${siteUrl}/ofertas/miravia`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
+    ...Object.keys(categoryPages)
+      .filter((category) => categoryIsIndexable(category, publishedDeals))
+      .map((category) => ({ url: `${siteUrl}/chollos/${category}`, lastModified: homepageLastModified, changeFrequency: "daily" as const, priority: 0.75 })),
     { url: `${siteUrl}/aviso-legal`, lastModified: new Date("2026-08-11T00:00:00.000Z"), changeFrequency: "yearly", priority: 0.3 },
     { url: `${siteUrl}/privacidad`, lastModified: new Date("2026-08-11T00:00:00.000Z"), changeFrequency: "yearly", priority: 0.3 },
     { url: `${siteUrl}/afiliacion`, lastModified: new Date("2026-08-11T00:00:00.000Z"), changeFrequency: "yearly", priority: 0.3 },
