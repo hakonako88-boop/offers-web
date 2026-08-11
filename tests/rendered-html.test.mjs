@@ -29,8 +29,9 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
 });
 
 test("renders an individual offer with price analysis, pros, cons and Product SEO", async () => {
-  const offers = JSON.parse(await readFile(new URL("../data/offers.json", import.meta.url), "utf8"));
-  const id = String(offers.find((offer) => offer.message_id)?.message_id ?? "");
+  const home = await render();
+  const homeHtml = await home.text();
+  const id = homeHtml.match(/href="\/oferta\/([^"?#]+)"/)?.[1] ?? "";
   assert.ok(id, "Expected at least one published offer");
   const response = await render(`/oferta/${encodeURIComponent(id)}`);
   assert.equal(response.status, 200);

@@ -143,7 +143,9 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
   const previous = parsePrice(offer.previousPrice);
   const title = cleanTitle(offer.title);
   const store = offer.store === "Amazon" || offer.store === "AliExpress" || offer.store === "Miravia" ? offer.store : "";
-  if (!id || !price || !isUsefulTitle(title) || !offer.url || !offer.image || !store || !isRecent(offer.date) || !isSupportedAffiliateUrl(offer.url, store)) return [];
+  const coupon = couponFor(offer.text);
+  const hasDemonstrableSaving = previous > price || Boolean(coupon);
+  if (!id || !price || !hasDemonstrableSaving || !isUsefulTitle(title) || !offer.url || !offer.image || !store || !isRecent(offer.date) || !isSupportedAffiliateUrl(offer.url, store)) return [];
   const date = formatDate(offer.date);
   return [{
     id,
@@ -152,7 +154,7 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
     category: categoryFor(offer),
     price,
     oldPrice: previous > price ? previous : price,
-    coupon: couponFor(offer.text),
+    coupon,
     imageUrl: offer.image,
     affiliateUrl: offer.url,
     verifiedAt: date.label,
