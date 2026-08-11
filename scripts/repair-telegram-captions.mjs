@@ -75,6 +75,8 @@ for (const [index, offer] of editableOffers.entries()) {
     previousPrice,
     savings,
     discount,
+    url: offer.url,
+    description: offer.description,
   });
 
   try {
@@ -83,7 +85,11 @@ for (const [index, offer] of editableOffers.entries()) {
       message_id: offer.message_id,
       caption,
       parse_mode: 'HTML',
-      reply_markup: { inline_keyboard: [[{ text: '🛒 VER CHOLLO', url: offer.url }]] },
+    });
+    await telegram(token, 'editMessageReplyMarkup', {
+      chat_id: channelId,
+      message_id: offer.message_id,
+      reply_markup: { inline_keyboard: [] },
     });
     repaired += 1;
     console.log(`Actualizada publicación ${offer.message_id} (${offer.store || 'Tienda'}).`);

@@ -117,5 +117,6 @@ export function formatAliExpressTelegramCaption(offer) {
     savings: offer.previousPrice > offer.price ? euro(offer.previousPrice - offer.price) : '',
     discount: offer.discount,
     highlight: popularity,
+    url: offer.url,
   });
 }

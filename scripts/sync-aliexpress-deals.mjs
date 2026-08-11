@@ -124,9 +124,6 @@ async function publishOffer(config, offer) {
     photo: offer.image,
     caption: formatAliExpressTelegramCaption(offer),
     parse_mode: 'HTML',
-    reply_markup: {
-      inline_keyboard: [[{ text: '🛒 VER CHOLLO', url: offer.url }]],
-    },
   });
 }
 

@@ -45,8 +45,9 @@ test('normalizes a real Miravia deal only when it has price, image and tracking 
   assert.match(formatMiraviaCaption(offer), /58%/);
   assert.match(formatMiraviaCaption(offer), /Ahorras/);
   assert.match(formatMiraviaCaption(offer), /CHOLLO EN MIRAVIA/);
-  assert.match(formatMiraviaTelegramCaption(offer), /CHOLLO EN MIRAVIA/);
+  assert.match(formatMiraviaTelegramCaption(offer), /#Miravia/);
   assert.match(formatMiraviaTelegramCaption(offer), /<s>59,99 €<\/s>/);
+  assert.match(formatMiraviaTelegramCaption(offer), /PRECIO OFERTA/);
   assert.doesNotMatch(formatMiraviaTelegramCaption(offer), /Categoría/);
 });
 
@@ -64,9 +65,11 @@ test('turns a catalogue-style title into a shorter Telegram headline with breath
 
   assert.equal(offer.title, 'Relleno de cojín Tesosy 35×55 cm de fibra siliconada');
   const caption = formatMiraviaTelegramCaption(offer);
-  assert.match(caption, /<b>🔥 CHOLLO EN MIRAVIA<\/b>\n\n<b>Relleno de cojín Tesosy/);
-  assert.match(caption, /<s>64,95 €<\/s>\s{2}➜\s{2}<b>12,99 €<\/b> · <b>−80%<\/b>/);
-  assert.match(caption, /#ChollosAlDia #Miravia #Hogar #publi/);
+  assert.match(caption, /<b>Relleno de cojín Tesosy/);
+  assert.match(caption, /#Miravia\n\n✨/);
+  assert.match(caption, /📛 <b>PVP:<\/b> <s>64,95 €<\/s>/);
+  assert.match(caption, /💶 <b>PRECIO OFERTA:<\/b> <b>12,99 €<\/b> 💥/);
+  assert.match(caption, /🪐 Más ofertas en @aldiachollos #Publi/);
 });
 
 test('rejects a Miravia product that is out of stock or has no real saving', () => {

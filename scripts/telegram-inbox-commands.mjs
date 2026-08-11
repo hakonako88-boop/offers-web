@@ -83,6 +83,8 @@ export function controlHelp() {
     'Precio: 19,99 €',
     'Antes: 39,99 €',
     'Categoría: Tecnología',
+    'Descripción: Explicación corta y útil del producto',
+    'Cupón: AHORRA10',
     '',
     'La foto es obligatoria. Para Amazon usa el enlace directo de SiteStripe con tag=.',
   ].join('\n');
@@ -104,6 +106,8 @@ export function manualOfferFromMessage({ text = '', photoFileId = '', controlCod
   const price = parseAmount(fieldValue(bodyLines, ['precio', 'precio final', 'precio oferta']));
   const oldPrice = parseAmount(fieldValue(bodyLines, ['antes', 'precio anterior', 'pvp']));
   const category = fieldValue(bodyLines, ['categoria', 'category']) || 'Ofertas';
+  const description = fieldValue(bodyLines, ['descripcion', 'descripción', 'detalle', 'texto']);
+  const coupon = fieldValue(bodyLines, ['cupon', 'cupón', 'codigo', 'código']);
 
   const missing = [];
   if (!url) missing.push('el enlace');
@@ -128,6 +132,7 @@ export function manualOfferFromMessage({ text = '', photoFileId = '', controlCod
       title: improveOfferTitle(title),
       store,
       category: category.slice(0, 60),
+      coupon: coupon.slice(0, 40),
       price,
       priceLabel: euro(price),
       previousPrice,
@@ -135,7 +140,7 @@ export function manualOfferFromMessage({ text = '', photoFileId = '', controlCod
       discount,
       url,
       photoFileId,
-      description: `${title.slice(0, 180)} · Oferta publicada en Chollos al Día.`,
+      description: description.slice(0, 220) || `${title.slice(0, 180)} · Oferta publicada en Chollos al Día.`,
     },
   };
 }
@@ -149,6 +154,9 @@ export function formatManualTelegramCaption(offer) {
     previousPrice: offer.previousPriceLabel,
     savings: offer.previousPrice > offer.price ? euro(offer.previousPrice - offer.price) : '',
     discount: offer.discount,
+    coupon: offer.coupon,
+    url: offer.url,
+    description: offer.description,
   });
 }
 

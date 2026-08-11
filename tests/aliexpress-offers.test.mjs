@@ -42,9 +42,11 @@ test('keeps only discounted AliExpress products with an affiliate link', () => {
   assert.match(formatAliExpressCaption(offer), /58%/);
   assert.match(formatAliExpressCaption(offer), /Ahorras/);
   assert.match(formatAliExpressCaption(offer), /CHOLLO EN ALIEXPRESS/);
-  assert.match(formatAliExpressTelegramCaption(offer), /CHOLLO EN ALIEXPRESS/);
+  assert.match(formatAliExpressTelegramCaption(offer), /#AliExpress/);
   assert.match(formatAliExpressTelegramCaption(offer), /<s>59,99 €<\/s>/);
-  assert.match(formatAliExpressTelegramCaption(offer), /\n\n<b>/);
+  assert.match(formatAliExpressTelegramCaption(offer), /PRECIO OFERTA/);
+  assert.match(formatAliExpressTelegramCaption(offer), /250\+ pedidos recientes/);
+  assert.match(formatAliExpressTelegramCaption(offer), /<a href="https:\/\/s\.click\.aliexpress\.com\/e\/example">👉🏻 Ver oferta en AliExpress<\/a>/);
   assert.doesNotMatch(formatAliExpressTelegramCaption(offer), /Categoría/);
 });
 

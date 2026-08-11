@@ -89,5 +89,6 @@ export function formatAmazonTelegramCaption(offer) {
     savings: offer.savings,
     discount: offer.discount,
     highlight: highlights,
+    url: offer.url,
   });
 }

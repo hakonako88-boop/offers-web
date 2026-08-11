@@ -100,37 +100,73 @@ function storeHashtag(store = '') {
   return compact(store).replace(/[^\p{L}\p{N}]/gu, '') || 'Tienda';
 }
 
+function escapeUrl(value = '') {
+  try {
+    const url = new URL(String(value));
+    if (!['http:', 'https:'].includes(url.protocol)) return '';
+    return url.toString().replace(/&/g, '&amp;').replace(/"/g, '%22');
+  } catch {
+    return '';
+  }
+}
+
+function offerDescription({ title, discount, description = '' } = {}) {
+  const supplied = compact(description);
+  const product = improveOfferTitle(title);
+  const sameAsTitle = normalized(supplied) === normalized(product)
+    || normalized(supplied) === normalized(title);
+  const usableDescription = supplied
+    && !sameAsTitle
+    && !/oferta publicada en chollos al dia/i.test(supplied)
+    ? supplied
+    : '';
+
+  if (usableDescription) return trimAtWord(usableDescription, 210);
+  const discountText = Number(discount) > 0
+    ? ` con un ${Math.round(Number(discount))}% de descuento`
+    : ' a un precio rebajado';
+  return trimAtWord(`Una buena oportunidad para conseguir ${product}${discountText}. Revisa el stock y las condiciones antes de finalizar la compra.`, 210);
+}
+
 export function formatTelegramDealCard({
   title,
   store,
-  category,
   price,
   previousPrice = '',
   savings = '',
   discount = 0,
   highlight = '',
+  coupon = '',
+  url = '',
+  description = '',
 } = {}) {
+  const storeTag = storeHashtag(store);
   const discountLabel = Number(discount) > 0 ? ` · <b>−${Math.round(Number(discount))}%</b>` : '';
-  const priceLine = previousPrice
-    ? `<s>${escapeHtml(previousPrice)}</s>  ➜  <b>${escapeHtml(price)}</b>${discountLabel}`
-    : `💶 <b>${escapeHtml(price)}</b>${discountLabel}`;
-  const priceDetails = [
-    priceLine,
-    savings ? `💸 Ahorras <b>${escapeHtml(savings)}</b>` : '',
-    highlight ? `✨ ${escapeHtml(highlight)}` : '',
-  ].filter(Boolean).join('\n');
+  const savingsText = savings ? `Ahorras <b>${escapeHtml(savings)}</b>${discountLabel}` : (discountLabel ? `Descuento${discountLabel}` : 'Precio sujeto a stock');
+  const actionLine = coupon
+    ? `🔻 Usa el cupón <code>${escapeHtml(coupon)}</code> al tramitar`
+    : highlight
+      ? `🔻 ${escapeHtml(highlight)}`
+      : `🔻 ${savingsText}`;
+  const offerLink = escapeUrl(url);
+  const linkLine = offerLink
+    ? `<a href="${offerLink}">👉🏻 Ver oferta en ${escapeHtml(store)}</a>`
+    : '👉🏻 Consulta la oferta antes de que cambie el precio';
 
   return [
-    `<b>🔥 CHOLLO EN ${escapeHtml(store).toUpperCase()}</b>`,
+    `<b>${escapeHtml(improveOfferTitle(title))}</b> #${storeTag}`,
     '',
-    `<b>${escapeHtml(improveOfferTitle(title))}</b>`,
+    `✨ ${escapeHtml(offerDescription({ title, discount, description }))}`,
     '',
-    priceDetails,
+    previousPrice ? `📛 <b>PVP:</b> <s>${escapeHtml(previousPrice)}</s>` : '',
+    `💶 <b>PRECIO OFERTA:</b> <b>${escapeHtml(price)}</b> 💥`,
+    actionLine,
     '',
-    '👇 <b>Pulsa «VER CHOLLO» para aprovecharlo</b>',
+    linkLine,
     '',
-    `#ChollosAlDia #${storeHashtag(store)} #${categoryHashtag(category)} #publi`,
-  ].join('\n').slice(0, 1000);
+    '🪐 Más ofertas en @aldiachollos #Publi',
+    `🔥 TOP CHOLLOS ${escapeHtml(store).toUpperCase()}`,
+  ].filter((line, index) => line || index === 1 || index === 3 || index === 7 || index === 9).join('\n').slice(0, 1000);
 }
 
 export function formatWebsiteDealText({ title, store, price, previousPrice = '', savings = '', discount = 0 } = {}) {
