@@ -18,12 +18,16 @@ on:
   repository_dispatch:
     types: [telegram_update, automatic_amazon, automatic_aliexpress, automatic_miravia]
   schedule:
-    # Plan editorial (UTC; en verano peninsular, UTC+2). Separa las tiendas
-    # y reserva Amazon para la mañana y el tramo de mayor intención de compra.
+    # Plan editorial (UTC; en verano peninsular, UTC+2). Hasta seis intentos
+    # diarios, separados por tienda para mantener un canal activo sin saturarlo.
     - cron: "45 6 * * 1-5" # Amazon: 08:45 de lunes a viernes
+    - cron: "30 13 * * 1-5" # Amazon: 15:30 de lunes a viernes
     - cron: "45 8 * * 0,6" # Amazon: 10:45 sábados y domingos
-    - cron: "45 11 * * 1-5" # AliExpress: 13:45 de lunes a viernes
-    - cron: "45 10 * * 0,6" # AliExpress: 12:45 sábados y domingos
+    - cron: "0 14 * * 0,6" # Amazon: 16:00 sábados y domingos
+    - cron: "45 9 * * 1-5" # AliExpress: 11:45 de lunes a viernes
+    - cron: "0 17 * * 1-5" # AliExpress: 19:00 de lunes a viernes
+    - cron: "0 11 * * 0,6" # AliExpress: 13:00 sábados y domingos
+    - cron: "15 17 * * 0,6" # AliExpress: 19:15 sábados y domingos
     - cron: "50 16 * * *" # Miravia: 18:50 todos los días
     - cron: "30 19 * * *" # Amazon: 21:30 todos los días
 
@@ -93,11 +97,11 @@ jobs:
         run: npm run send:test-telegram
 
       - name: Buscar y publicar ofertas de Amazon
-        if: ${{ ((github.event_name == 'repository_dispatch' && github.event.action == 'automatic_amazon') || (github.event_name == 'schedule' && (github.event.schedule == '45 6 * * 1-5' || github.event.schedule == '45 8 * * 0,6' || github.event.schedule == '30 19 * * *'))) && env.AMAZON_CREATOR_CREDENTIAL_ID != '' && env.AMAZON_CREATOR_SECRET != '' && env.AMAZON_CREATOR_VERSION != '' && env.AMAZON_PARTNER_TAG != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ ((github.event_name == 'repository_dispatch' && github.event.action == 'automatic_amazon') || (github.event_name == 'schedule' && (github.event.schedule == '45 6 * * 1-5' || github.event.schedule == '30 13 * * 1-5' || github.event.schedule == '45 8 * * 0,6' || github.event.schedule == '0 14 * * 0,6' || github.event.schedule == '30 19 * * *'))) && env.AMAZON_CREATOR_CREDENTIAL_ID != '' && env.AMAZON_CREATOR_SECRET != '' && env.AMAZON_CREATOR_VERSION != '' && env.AMAZON_PARTNER_TAG != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run sync:amazon || echo "Amazon no devolvió ofertas publicables en esta ejecución."
 
       - name: Buscar y publicar ofertas de AliExpress
-        if: ${{ ((github.event_name == 'repository_dispatch' && github.event.action == 'automatic_aliexpress') || (github.event_name == 'schedule' && (github.event.schedule == '45 11 * * 1-5' || github.event.schedule == '45 10 * * 0,6'))) && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ ((github.event_name == 'repository_dispatch' && github.event.action == 'automatic_aliexpress') || (github.event_name == 'schedule' && (github.event.schedule == '45 9 * * 1-5' || github.event.schedule == '0 17 * * 1-5' || github.event.schedule == '0 11 * * 0,6' || github.event.schedule == '15 17 * * 0,6'))) && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run sync:aliexpress || echo "AliExpress no devolvió ofertas publicables en esta ejecución."
 
       - name: Buscar y publicar ofertas de Miravia
