@@ -8,6 +8,7 @@ Configura estos valores en GitHub Actions Secrets. Nunca los compartas por chat 
 
 - `AMAZON_CREATOR_CREDENTIAL_ID`, `AMAZON_CREATOR_SECRET` y `AMAZON_CREATOR_VERSION`: credenciales de Amazon Creators API.
 - `AMAZON_PARTNER_TAG`: tracking ID de Amazon Afiliados (`chollos00a-21`).
+- `ALIEXPRESS_APP_KEY`, `ALIEXPRESS_APP_SECRET` y `ALIEXPRESS_TRACKING_ID`: credenciales oficiales de AliExpress Affiliates API.
 - `TELEGRAM_BOT_TOKEN`: token de BotFather.
 - `TELEGRAM_CHANNEL_ID`: ID numérico del canal; el bot debe ser administrador.
 - `IMPORT_SECRET`: contraseña aleatoria para autorizar importaciones al endpoint de la web.
@@ -22,7 +23,9 @@ Amazon puede devolver `AssociateNotEligible` hasta validar la elegibilidad de la
 
 ## AliExpress
 
-AliExpress debe proporcionar el enlace afiliado desde AliExpress Portals/Open Platform. No se inventan parámetros de afiliación ni se extraen precios mediante scraping: evita enlaces sin atribución y precios incorrectos.
+Cada 30 minutos, GitHub consulta dos categorías rotativas con AliExpress Affiliates API en euros para España. Publica como máximo dos productos nuevos con descuento real de al menos el 20%, foto, precio y el enlace `promotion_link` generado por AliExpress para el Tracking ID configurado. No se repiten productos publicados durante 120 días.
+
+La API no proporciona siempre cupones aplicables a todos los productos. Por eso las publicaciones muestran el descuento real recibido y nunca inventan un cupón. No se extraen precios mediante scraping ni se añaden parámetros de afiliación manuales: evita enlaces sin atribución y precios incorrectos.
 
 ## Formato de una oferta manual
 
