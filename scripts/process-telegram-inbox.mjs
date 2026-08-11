@@ -184,7 +184,7 @@ for (const update of updates || []) {
       const url = urlFromTelegramMessage(message, text);
       let metadata = await extractProductMetadata(url);
       const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
-      const forwardedMetadata = forwardedOfferMetadata(text, largestPhoto);
+      const forwardedMetadata = pendingByChat[chatKey]?.draft || forwardedOfferMetadata(text, largestPhoto);
       metadata = {
         ...metadata,
         ...Object.fromEntries(Object.entries(forwardedMetadata).filter(([, value]) => value)),
@@ -215,6 +215,7 @@ for (const update of updates || []) {
           await reply(settings.token, message.chat.id, `✅ Publicada en el canal y en Chollos al Día. Mensaje del canal: ${outcome.channelMessage.message_id}`);
           published += 1;
         }
+        delete pendingByChat[chatKey];
       } else if (result.status === 'needs_details') {
         pendingByChat[chatKey] = { url: affiliateUrl, metadata };
         await reply(settings.token, message.chat.id, `He encontrado el enlace, pero la ficha no muestra ${result.missing.join(', ')}. Respóndeme solo con “Precio: 19,99 €” y, si lo tienes, “Antes: 29,99 €”.`);
@@ -252,7 +253,12 @@ for (const update of updates || []) {
       && !/^\/publicar(?:@\w+)?\b/i.test(String(text).trim())
       && (message.forward_origin || message.forward_date || Array.isArray(message.photo))
     ) {
-      await reply(settings.token, message.chat.id, 'He recibido la publicación, pero Telegram elimina los botones de compra al reenviarla. La foto y el texto sí llegan; el enlace de «Ver oferta» no. Pega debajo el enlace de Amazon, AliExpress o Miravia y la convertiré con tu afiliado.');
+      const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
+      pendingByChat[chatKey] = {
+        draft: forwardedOfferMetadata(text, largestPhoto),
+        messageId: message.message_id,
+      };
+      await reply(settings.token, message.chat.id, 'He guardado la foto, el título y los precios de la publicación. Telegram elimina los botones de compra al reenviarla, así que pega ahora el enlace de Amazon, AliExpress o Miravia y la publicaré con tu afiliado.');
       handled += 1;
     } else {
       const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
