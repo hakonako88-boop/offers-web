@@ -87,6 +87,11 @@ test('reads an Amazon link hidden behind a forwarded Telegram card and uses its 
   assert.equal(metadata.imageUrl, 'telegram-forwarded-photo');
 });
 
+test('does not invent a URL when a forwarded card has no link entity', () => {
+  const text = 'Producto con foto y precio, pero sin URL visible';
+  assert.equal(urlFromTelegramMessage({ caption_entities: [] }, text), '');
+});
+
 test('requires an image, price and direct tagged Amazon URL', () => {
   const result = manualOfferFromMessage({
     controlCode,

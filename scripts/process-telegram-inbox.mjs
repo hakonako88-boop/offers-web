@@ -247,6 +247,13 @@ for (const update of updates || []) {
         }
       }
       handled += 1;
+    } else if (
+      authorizedChatIds.has(chatKey)
+      && !/^\/publicar(?:@\w+)?\b/i.test(String(text).trim())
+      && (message.forward_origin || message.forward_date || Array.isArray(message.photo))
+    ) {
+      await reply(settings.token, message.chat.id, 'He recibido la publicación, pero Telegram elimina los botones de compra al reenviarla. La foto y el texto sí llegan; el enlace de «Ver oferta» no. Pega debajo el enlace de Amazon, AliExpress o Miravia y la convertiré con tu afiliado.');
+      handled += 1;
     } else {
       const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
       const result = manualOfferFromMessage({
