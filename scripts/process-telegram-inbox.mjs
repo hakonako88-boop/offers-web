@@ -162,9 +162,21 @@ const state = readJson(STATE_FILE, { processedUpdateIds: [] });
 const processed = new Set((state.processedUpdateIds || []).map(Number));
 const authorizedChatIds = new Set((state.authorizedChatIds || []).map(String));
 const pendingByChat = state.pendingByChat && typeof state.pendingByChat === 'object' ? state.pendingByChat : {};
-const updates = await telegram(settings.token, 'getUpdates', {
-  limit: 100,
-});
+let updates;
+const webhookUpdate = String(process.env.TELEGRAM_WEBHOOK_UPDATE || '').trim();
+if (webhookUpdate && webhookUpdate !== 'null') {
+  try {
+    const parsed = JSON.parse(webhookUpdate);
+    updates = parsed && typeof parsed === 'object' ? [parsed] : [];
+    console.log('Telegram inbox received one update through the instant webhook.');
+  } catch (error) {
+    throw new Error(`Telegram webhook update is not valid JSON: ${safeError(error, settings.token)}`);
+  }
+} else {
+  updates = await telegram(settings.token, 'getUpdates', {
+    limit: 100,
+  });
+}
 
 let published = 0;
 let handled = 0;

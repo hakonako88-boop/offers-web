@@ -10,6 +10,8 @@ on:
         required: false
         default: false
         type: boolean
+  repository_dispatch:
+    types: [telegram_update]
   schedule:
     # GitHub Actions checks the private Telegram inbox every five minutes.
     # It runs in the cloud, so it does not consume the owner's computer.
@@ -30,6 +32,8 @@ jobs:
       TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
       TELEGRAM_CONTROL_CODE: ${{ secrets.TELEGRAM_CONTROL_CODE }}
       TELEGRAM_ALLOWED_CHAT_ID: ${{ secrets.TELEGRAM_ALLOWED_CHAT_ID }}
+      TELEGRAM_WEBHOOK_ACTIVE: ${{ secrets.TELEGRAM_WEBHOOK_ACTIVE }}
+      TELEGRAM_WEBHOOK_UPDATE: ${{ toJSON(github.event.client_payload.update) }}
       AMAZON_CREATOR_CREDENTIAL_ID: ${{ secrets.AMAZON_CREATOR_CREDENTIAL_ID }}
       AMAZON_CREATOR_SECRET: ${{ secrets.AMAZON_CREATOR_SECRET }}
       AMAZON_CREATOR_VERSION: ${{ secrets.AMAZON_CREATOR_VERSION }}
@@ -61,7 +65,11 @@ jobs:
         run: npm run repair:telegram
 
       - name: Procesar ofertas enviadas al bot privado
-        if: ${{ env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_update' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        run: npm run sync:inbox || echo "No se pudo procesar el buzón privado de Telegram en esta ejecución."
+
+      - name: Procesar ofertas enviadas al bot privado (modo de respaldo)
+        if: ${{ github.event_name != 'repository_dispatch' && env.TELEGRAM_WEBHOOK_ACTIVE != 'true' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run sync:inbox || echo "No se pudo procesar el buzón privado de Telegram en esta ejecución."
 
       - name: Enviar mensaje de prueba a Telegram
