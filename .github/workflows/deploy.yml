@@ -38,6 +38,10 @@ jobs:
         continue-on-error: true
         run: npm run verify:telegram
 
+      - name: Enviar mensaje de prueba a Telegram
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[telegram-test]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        run: npm run send:test-telegram
+
       - name: Sincronizar ofertas de Telegram
         if: ${{ env.TELEGRAM_BOT_TOKEN != '' }}
         run: npm run sync || echo "Telegram no respondió; se publican las ofertas guardadas."
