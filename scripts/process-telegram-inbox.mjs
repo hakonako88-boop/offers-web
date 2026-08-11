@@ -140,11 +140,6 @@ if (!settings.token || !settings.channelId) {
   console.log('Telegram inbox skipped: missing Telegram configuration.');
   process.exit(0);
 }
-if (!settings.controlCode) {
-  console.log('Telegram inbox skipped: add the TELEGRAM_CONTROL_CODE secret to enable private commands.');
-  process.exit(0);
-}
-
 const state = readJson(STATE_FILE, { processedUpdateIds: [] });
 const processed = new Set((state.processedUpdateIds || []).map(Number));
 const authorizedChatIds = new Set((state.authorizedChatIds || []).map(String));

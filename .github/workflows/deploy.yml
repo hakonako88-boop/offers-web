@@ -61,7 +61,7 @@ jobs:
         run: npm run repair:telegram
 
       - name: Procesar ofertas enviadas al bot privado
-        if: ${{ env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' && env.TELEGRAM_CONTROL_CODE != '' }}
+        if: ${{ env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run sync:inbox || echo "No se pudo procesar el buzón privado de Telegram en esta ejecución."
 
       - name: Enviar mensaje de prueba a Telegram
