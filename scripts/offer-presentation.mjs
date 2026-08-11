@@ -100,16 +100,6 @@ function storeHashtag(store = '') {
   return compact(store).replace(/[^\p{L}\p{N}]/gu, '') || 'Tienda';
 }
 
-function escapeUrl(value = '') {
-  try {
-    const url = new URL(String(value));
-    if (!['http:', 'https:'].includes(url.protocol)) return '';
-    return url.toString().replace(/&/g, '&amp;').replace(/"/g, '%22');
-  } catch {
-    return '';
-  }
-}
-
 function offerDescription({ title, discount, description = '' } = {}) {
   const supplied = compact(description);
   const product = improveOfferTitle(title);
@@ -137,7 +127,6 @@ export function formatTelegramDealCard({
   discount = 0,
   highlight = '',
   coupon = '',
-  url = '',
   description = '',
 } = {}) {
   const storeTag = storeHashtag(store);
@@ -148,10 +137,7 @@ export function formatTelegramDealCard({
     : highlight
       ? `🔻 ${escapeHtml(highlight)}`
       : `🔻 ${savingsText}`;
-  const offerLink = escapeUrl(url);
-  const linkLine = offerLink
-    ? `<a href="${offerLink}">👉🏻 Ver oferta en ${escapeHtml(store)}</a>`
-    : '👉🏻 Consulta la oferta antes de que cambie el precio';
+  const linkLine = '👉🏻 Pulsa «VER OFERTA» para aprovecharlo';
 
   return [
     `<b>${escapeHtml(improveOfferTitle(title))}</b> #${storeTag}`,

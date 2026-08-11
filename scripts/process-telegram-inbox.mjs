@@ -79,6 +79,9 @@ async function publishManualOffer(settings, offer, inputMessage) {
     photo: offer.photoFileId,
     caption: formatManualTelegramCaption(offer),
     parse_mode: 'HTML',
+    reply_markup: {
+      inline_keyboard: [[{ text: '👉🏻 VER OFERTA', url: offer.url }]],
+    },
   });
 
   const image = await mirrorTelegramPhoto(settings.token, offer.photoFileId, channelMessage.message_id);
