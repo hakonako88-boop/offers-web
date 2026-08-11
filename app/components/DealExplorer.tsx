@@ -120,6 +120,10 @@ function shortTitle(title: string, maximum = 92) {
   return `${shortened || title.slice(0, maximum)}…`;
 }
 
+function dealDetailsUrl(deal: Pick<Deal, "id">) {
+  return `/oferta/${encodeURIComponent(deal.id)}`;
+}
+
 export function DealExplorer() {
   const [deals, setDeals] = useState<Deal[]>(importedDeals);
   const [category, setCategory] = useState("Todos");
@@ -206,8 +210,8 @@ export function DealExplorer() {
         </div>
         {featuredDeal ? (
           <aside className="featuredPanel" aria-label="Oferta destacada">
-            <div className="featuredImage"><img src={featuredDeal.imageUrl} alt="" width={720} height={560} /><span>DESTACADA</span></div>
-            <div className="featuredBody"><p className="featuredMeta"><span className="liveDot" /> OFERTA ACTIVA · {featuredDeal.store}</p><h2>{shortTitle(featuredDeal.title, 72)}</h2><div className="featuredPrice"><strong>{money.format(featuredDeal.price)}</strong>{featuredDeal.oldPrice > featuredDeal.price && <span>Antes <s>{money.format(featuredDeal.oldPrice)}</s> · −{Math.round((1 - featuredDeal.price / featuredDeal.oldPrice) * 100)}%</span>}</div><a href={featuredDeal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ver oferta destacada <span aria-hidden="true">→</span></a><p className="featuredFoot"><b>{deals.length}</b> ofertas activas · descuento medio −{averageDiscount}% · revisión {displayDate(deals)}</p></div>
+            <a className="featuredImage featuredOfferLink" href={dealDetailsUrl(featuredDeal)}><img src={featuredDeal.imageUrl} alt={featuredDeal.title} width={720} height={560} /><span>DESTACADA</span></a>
+            <div className="featuredBody"><p className="featuredMeta"><span className="liveDot" /> OFERTA ACTIVA · {featuredDeal.store}</p><h2><a href={dealDetailsUrl(featuredDeal)}>{shortTitle(featuredDeal.title, 72)}</a></h2><div className="featuredPrice"><strong>{money.format(featuredDeal.price)}</strong>{featuredDeal.oldPrice > featuredDeal.price && <span>Antes <s>{money.format(featuredDeal.oldPrice)}</s> · −{Math.round((1 - featuredDeal.price / featuredDeal.oldPrice) * 100)}%</span>}</div><a href={dealDetailsUrl(featuredDeal)}>Ver análisis de la oferta <span aria-hidden="true">→</span></a><p className="featuredFoot"><b>{deals.length}</b> ofertas activas · descuento medio −{averageDiscount}% · revisión {displayDate(deals)}</p></div>
           </aside>
         ) : <aside className="savingsPanel" aria-label="Resumen de las ofertas publicadas"><div className="panelTop"><span className="liveDot" /> EN DIRECTO</div><p>Descuento medio de las ofertas activas</p><strong>−{averageDiscount}%</strong></aside>}
       </section>
@@ -240,14 +244,14 @@ export function DealExplorer() {
               const discount = Math.max(0, Math.round((1 - deal.price / deal.oldPrice) * 100));
               return (
                 <article className="dealCard" key={deal.id}>
-                  <div className="imageWrap">
+                  <a className="imageWrap dealPreviewLink" href={dealDetailsUrl(deal)} aria-label={`Ver análisis de ${deal.title}`}>
                     <img src={deal.imageUrl} alt={deal.title} loading="lazy" decoding="async" width={720} height={560} />
                     {discount > 0 && <span className="discountBadge">−{discount}%</span>}
                     <span className="storeBadge">{deal.store}</span>
-                  </div>
+                  </a>
                   <div className="dealBody">
                     <p className="categoryLabel">{deal.category}</p>
-                    <h3 title={deal.title}>{shortTitle(deal.title)}</h3>
+                    <h3 title={deal.title}><a href={dealDetailsUrl(deal)}>{shortTitle(deal.title)}</a></h3>
                     <div className="priceRow">
                       <strong>{money.format(deal.price)}</strong>
                       {discount > 0 && <span>Antes <s>{money.format(deal.oldPrice)}</s></span>}
@@ -258,7 +262,7 @@ export function DealExplorer() {
                         <span>Cupón</span><b>{copied === deal.coupon ? "¡Copiado!" : deal.coupon}</b><i aria-hidden="true">□</i>
                       </button>
                     ) : <p className="noCoupon">Precio directo, sin cupón extra</p>}
-                    <a className="dealButton" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ver oferta <span aria-hidden="true">→</span></a>
+                    <a className="dealButton" href={dealDetailsUrl(deal)}>Ver oferta y análisis <span aria-hidden="true">→</span></a>
                     <p className="verified"><span aria-hidden="true" />Oferta activa · {deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt}</p>
                   </div>
                 </article>

@@ -1,4 +1,4 @@
-import { cp, mkdir, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -28,6 +28,14 @@ await render("/", "index.html");
 await render("/aviso-legal", "aviso-legal/index.html");
 await render("/privacidad", "privacidad/index.html");
 await render("/afiliacion", "afiliacion/index.html");
+const publishedOffers = JSON.parse(await readFile(path.join(root, "data", "offers.json"), "utf8"));
+const offerIds = [...new Set(publishedOffers
+  .map((offer) => String(offer.chollometroId || offer.message_id || offer.url || ""))
+  .filter(Boolean))];
+for (const id of offerIds) {
+  const encodedId = encodeURIComponent(id);
+  await render(`/oferta/${encodedId}`, `oferta/${encodedId}/index.html`);
+}
 await render("/robots.txt", "robots.txt");
 await render("/sitemap.xml", "sitemap.xml");
 await writeFile(path.join(output, "CNAME"), "chollosaldia.com\n", "utf8");

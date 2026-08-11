@@ -26,7 +26,8 @@ test('keeps only real Amazon discounts with all publishable data', () => {
   const offer = normalizeAmazonItem(qualifyingItem, 'Tecnología');
   assert.equal(offer.asin, 'B0TESTDEAL1');
   assert.equal(offer.discount, 50);
-  assert.match(formatAmazonCaption(offer), /PRECIO OFERTA: 39,99 €/);
+  assert.match(formatAmazonCaption(offer), /CHOLLO EN AMAZON/);
+  assert.match(formatAmazonCaption(offer), /Ahora: 39,99 €/);
   assert.match(formatAmazonCaption(offer), /Antes: 79,99 €/);
 });
 

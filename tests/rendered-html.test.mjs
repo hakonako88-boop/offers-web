@@ -2,11 +2,11 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render() {
+async function render(route = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
-  return worker.fetch(new Request("http://localhost/", { headers: { accept: "text/html" } }), { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } }, { waitUntil() {}, passThroughOnException() {} });
+  return worker.fetch(new Request(`http://localhost${route}`, { headers: { accept: "text/html" } }), { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } }, { waitUntil() {}, passThroughOnException() {} });
 }
 
 test("renders the Chollos al Día storefront and SEO metadata", async () => {
@@ -20,9 +20,25 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.match(html, /Chollos de hoy/);
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com"/);
-  assert.match(html, /rel="nofollow sponsored noreferrer"/);
+  assert.match(html, /href="\/oferta\//);
   assert.match(html, /og-chollosaldia\.png/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/);
+});
+
+test("renders an individual offer with price analysis, pros, cons and Product SEO", async () => {
+  const offers = JSON.parse(await readFile(new URL("../data/offers.json", import.meta.url), "utf8"));
+  const id = String(offers.find((offer) => offer.message_id)?.message_id ?? "");
+  assert.ok(id, "Expected at least one published offer");
+  const response = await render(`/oferta/${encodeURIComponent(id)}`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Lo importante de esta oferta/);
+  assert.match(html, /Puntos a favor/);
+  assert.match(html, /A tener en cuenta/);
+  assert.match(html, /PRECIO DE OFERTA/);
+  assert.match(html, /"@type":"Product"/);
+  assert.match(html, /rel="nofollow sponsored noreferrer"/);
+  assert.match(html, new RegExp(`rel="canonical" href="https://chollosaldia\\.com/oferta/${id}"`));
 });
 
 test("keeps affiliate credentials out of the client source", async () => {
