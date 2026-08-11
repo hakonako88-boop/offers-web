@@ -47,11 +47,31 @@ function normalise(value: string) {
 }
 
 function cleanTitle(value?: string) {
-  return String(value ?? "")
+  const original = String(value ?? "")
     .replace(/^[^\p{L}\p{N}]+/u, "")
     .replace(/^(OFERT[ÓO]N\s+(AMAZON|ALIEXPRESS|MIRAVIA)\s*[-–—:]?\s*)/i, "")
     .replace(/\b(\d+)\s*[xX×]\s*(\d+)\s*Cm\b/gu, "$1×$2 cm")
     .trim();
+  const text = normalise(original);
+  if (!original) return "Oferta destacada";
+  if (/relleno\s+de\s+cojin/.test(text)) {
+    const brand = original.match(/(?:^|\s)([\p{L}\p{N}-]{2,})\s+Relleno\s+de\s+Coj[ií]n/iu)?.[1]
+      || original.match(/Relleno\s+de\s+Coj[ií]n\s+([\p{L}\p{N}-]{2,})/iu)?.[1]
+      || "";
+    const size = original.match(/\b(\d+(?:[.,]\d+)?)\s*[x×]\s*(\d+(?:[.,]\d+)?)\s*(cm|mm|m)\b/i);
+    return `Relleno de cojín${brand ? ` ${brand}` : ""}${size ? ` ${size[1]}×${size[2]} ${size[3].toLowerCase()}` : ""}${/siliconad/.test(text) ? " de fibra siliconada" : ""}`;
+  }
+  if (/sandalia/.test(text)) {
+    const brand = original.match(/\b[A-Z]{3,}\b/)?.[0] || "";
+    return `Sandalias de fiesta para mujer${brand ? ` ${brand}` : ""}`;
+  }
+  if (/bolso/.test(text) && /mujer|women/.test(text)) return "Bolso de mujer para ocasiones especiales";
+  if (/mantel|table cloth/.test(text)) return "Mantel impermeable y fácil de limpiar";
+  if (/cuaderno|notebook/.test(text)) return "Cuaderno con accesorios";
+  if (/robot/.test(text) && /nino|educacion|ai/.test(text)) return "Robot educativo interactivo para niños";
+  if (/alfombrilla.*(?:raton|mouse)|mousepad/.test(text)) return `Alfombrilla gaming${/charizard/.test(text) ? " Charizard" : ""}${/xxl/.test(text) ? " XXL" : ""}`;
+  if (/freidora.*aire/.test(text) && /silicona/.test(text)) return "Molde de silicona para freidora de aire";
+  return original;
 }
 
 function categoryFor(offer: LegacyOffer) {

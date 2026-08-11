@@ -6,7 +6,7 @@ import rawOffers from "../../data/offers.json";
 export type Deal = {
   id: string;
   title: string;
-  store: "Amazon" | "AliExpress" | "Otra";
+  store: "Amazon" | "AliExpress" | "Miravia" | "Otra";
   category: string;
   price: number;
   oldPrice: number;
@@ -50,25 +50,47 @@ function normalise(value: string) {
 }
 
 function cleanTitle(value?: string) {
-  return String(value ?? "")
+  const original = String(value ?? "")
     .replace(/^[^\p{L}\p{N}]+/u, "")
-    .replace(/^(OFERT[ÓO]N\s+(AMAZON|ALIEXPRESS)\s*[-–—:]?\s*)/i, "")
+    .replace(/^(OFERT[ÓO]N\s+(AMAZON|ALIEXPRESS|MIRAVIA)\s*[-–—:]?\s*)/i, "")
     .replace(/🔥|🚨|🛒|📺|🍃|🛢️/gu, "")
+    .replace(/\b(\d+)\s*[xX×]\s*(\d+)\s*Cm\b/gu, "$1×$2 cm")
     .trim();
+  const text = normalise(original);
+  if (!original) return "Oferta destacada";
+  if (/relleno\s+de\s+cojin/.test(text)) {
+    const brand = original.match(/(?:^|\s)([\p{L}\p{N}-]{2,})\s+Relleno\s+de\s+Coj[ií]n/iu)?.[1]
+      || original.match(/Relleno\s+de\s+Coj[ií]n\s+([\p{L}\p{N}-]{2,})/iu)?.[1]
+      || "";
+    const size = original.match(/\b(\d+(?:[.,]\d+)?)\s*[x×]\s*(\d+(?:[.,]\d+)?)\s*(cm|mm|m)\b/i);
+    return `Relleno de cojín${brand ? ` ${brand}` : ""}${size ? ` ${size[1]}×${size[2]} ${size[3].toLowerCase()}` : ""}${/siliconad/.test(text) ? " de fibra siliconada" : ""}`;
+  }
+  if (/sandalia/.test(text)) {
+    const brand = original.match(/\b[A-Z]{3,}\b/)?.[0] || "";
+    return `Sandalias de fiesta para mujer${brand ? ` ${brand}` : ""}`;
+  }
+  if (/bolso/.test(text) && /mujer|women/.test(text)) return "Bolso de mujer para ocasiones especiales";
+  if (/mantel|table cloth/.test(text)) return "Mantel impermeable y fácil de limpiar";
+  if (/cuaderno|notebook/.test(text)) return "Cuaderno con accesorios";
+  if (/robot/.test(text) && /nino|educacion|ai/.test(text)) return "Robot educativo interactivo para niños";
+  if (/alfombrilla.*(?:raton|mouse)|mousepad/.test(text)) return `Alfombrilla gaming${/charizard/.test(text) ? " Charizard" : ""}${/xxl/.test(text) ? " XXL" : ""}`;
+  if (/freidora.*aire/.test(text) && /silicona/.test(text)) return "Molde de silicona para freidora de aire";
+  if (/cuerda.*deform/.test(text)) return /nino|juguete/.test(text) ? "Cuerda deformable antiestrés para niños" : "Cuerda deformable antiestrés";
+  return original;
 }
 
 function categoryFor(offer: LegacyOffer) {
   const directCategory = String(offer.category ?? "").trim();
-  if (directCategory && !["Otros", "Todas"].includes(directCategory)) return directCategory;
-
-  const text = normalise(`${offer.title ?? ""} ${offer.text ?? ""}`);
+  const text = normalise(`${directCategory} ${offer.title ?? ""} ${offer.text ?? ""}`);
+  if (/gaming|gamer|consola|videojuego/.test(text)) return "Videojuegos";
+  if (/electron|informat|telefono|mobile|data|memory|software/.test(text)) return "Tecnología";
   if (/cafe|capsula|freidora|aceite|cocina|taper/.test(text)) return "Cocina";
-  if (/hogar|vileda|piscina|jardin|mueble|limpieza/.test(text)) return "Hogar";
+  if (/hogar|vileda|piscina|jardin|mueble|limpieza|bedding|bath|pillow/.test(text)) return "Hogar";
   if (/herramienta|bricolaje|diy|taladro/.test(text)) return "Bricolaje";
-  if (/gamer|gaming|raton|teclado|consola/.test(text)) return "Videojuegos";
-  if (/juguete|tamagotchi|muneco|nino/.test(text)) return "Juguetes";
-  if (/reloj|moda|barba|gillette/.test(text)) return "Moda";
-  return "Tecnología";
+  if (/juguete|tamagotchi|muneco|nino|toy|baby/.test(text)) return "Juguetes";
+  if (/reloj|moda|barba|gillette|fashion|ropa|calzado|bolso|bag/.test(text)) return "Moda";
+  if (/stationery|paper|notebook|cuaderno/.test(text)) return "Papelería";
+  return directCategory && !["Otros", "Todas"].includes(directCategory) && directCategory.length <= 28 ? directCategory : "Ofertas";
 }
 
 function couponFor(text?: string) {
@@ -91,7 +113,7 @@ const importedDeals: Deal[] = (rawOffers as LegacyOffer[]).flatMap((offer) => {
   const previous = parsePrice(offer.previousPrice || extractedPrevious);
   const title = cleanTitle(offer.title);
   if (!price || !title || !offer.url || !offer.image) return [];
-  const store: Deal["store"] = offer.store === "Amazon" || offer.store === "AliExpress" ? offer.store : "Otra";
+  const store: Deal["store"] = offer.store === "Amazon" || offer.store === "AliExpress" || offer.store === "Miravia" ? offer.store : "Otra";
   const date = formatDate(offer.date);
   return [{
     id: String(offer.chollometroId || offer.message_id || offer.url),
@@ -160,6 +182,11 @@ export function DealExplorer() {
     if (!discounted.length) return 0;
     return Math.round(discounted.reduce((total, deal) => total + (1 - deal.price / deal.oldPrice) * 100, 0) / discounted.length);
   }, [deals]);
+  const storeCount = useMemo(() => new Set(deals.map((deal) => deal.store)).size, [deals]);
+  const bestDiscount = useMemo(
+    () => Math.max(0, ...deals.map((deal) => Math.round((1 - deal.price / deal.oldPrice) * 100))),
+    [deals],
+  );
 
   const featuredDeal = visibleDeals[0];
   const gridDeals = visibleDeals.slice(1);
@@ -214,6 +241,16 @@ export function DealExplorer() {
             <div className="featuredBody"><p className="featuredMeta"><span className="liveDot" /> OFERTA ACTIVA · {featuredDeal.store}</p><h2><a href={dealDetailsUrl(featuredDeal)}>{shortTitle(featuredDeal.title, 72)}</a></h2><div className="featuredPrice"><strong>{money.format(featuredDeal.price)}</strong>{featuredDeal.oldPrice > featuredDeal.price && <span>Antes <s>{money.format(featuredDeal.oldPrice)}</s> · −{Math.round((1 - featuredDeal.price / featuredDeal.oldPrice) * 100)}%</span>}</div><a href={dealDetailsUrl(featuredDeal)}>Ver análisis de la oferta <span aria-hidden="true">→</span></a><p className="featuredFoot"><b>{deals.length}</b> ofertas activas · descuento medio −{averageDiscount}% · revisión {displayDate(deals)}</p></div>
           </aside>
         ) : <aside className="savingsPanel" aria-label="Resumen de las ofertas publicadas"><div className="panelTop"><span className="liveDot" /> EN DIRECTO</div><p>Descuento medio de las ofertas activas</p><strong>−{averageDiscount}%</strong></aside>}
+      </section>
+
+      <section className="dealPulse" aria-label="Resumen de las ofertas activas">
+        <div className="shell dealPulseInner">
+          <div className="pulseIntro"><span className="liveDot" aria-hidden="true" /><div><b>RADAR CHOLLOS AL DÍA</b><p>Selección en movimiento</p></div></div>
+          <div className="pulseStat"><strong>{deals.length}</strong><span>ofertas activas</span></div>
+          <div className="pulseStat"><strong>−{averageDiscount}%</strong><span>descuento medio</span></div>
+          <div className="pulseStat"><strong>−{bestDiscount}%</strong><span>mejor descuento</span></div>
+          <div className="pulseStat"><strong>{storeCount}</strong><span>tiendas revisadas</span></div>
+        </div>
       </section>
 
       <section className="offersSection" id="ofertas" aria-labelledby="offers-title">
