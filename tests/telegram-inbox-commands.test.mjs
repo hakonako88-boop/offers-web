@@ -92,6 +92,18 @@ test('does not invent a URL when a forwarded card has no link entity', () => {
   assert.equal(urlFromTelegramMessage({ caption_entities: [] }, text), '');
 });
 
+test('keeps title and price facts from a forwarded card when the store cannot be read', () => {
+  const metadata = forwardedOfferMetadata([
+    '🔥 Producto de prueba | #Miravia',
+    '💶 Precio: 19,99 €',
+    '🏷 Antes: 39,99 €',
+  ].join('\n'), 'telegram-forwarded-photo');
+  assert.equal(metadata.title, 'Producto de prueba');
+  assert.equal(metadata.price, 19.99);
+  assert.equal(metadata.previousPrice, 39.99);
+  assert.equal(metadata.photoFileId, 'telegram-forwarded-photo');
+});
+
 test('requires an image, price and direct tagged Amazon URL', () => {
   const result = manualOfferFromMessage({
     controlCode,

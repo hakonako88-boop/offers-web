@@ -135,6 +135,17 @@ function requestedPrice(text) {
   };
 }
 
+function inboxFailureReply(error) {
+  const detail = String(error?.message || error || '');
+  if (/sendPhoto|photo|image|file/i.test(detail)) {
+    return '⚠️ He leído la oferta, pero Telegram no ha podido descargar la foto de la tienda. Pega el enlace directo del producto (no un enlace acortado) y la intentaré publicar de nuevo.';
+  }
+  if (/abort|timeout|fetch|respondió|status/i.test(detail)) {
+    return '⚠️ La tienda no ha dejado leer la ficha en este momento. No he publicado nada. Pega el enlace directo del producto y vuelve a enviarlo dentro de unos minutos.';
+  }
+  return '⚠️ No he podido terminar esa oferta. No se ha publicado nada. Reenvía la publicación y, si Telegram quitó el botón, pega debajo el enlace directo de compra.';
+}
+
 const settings = config();
 if (!settings.token || !settings.channelId) {
   console.log('Telegram inbox skipped: missing Telegram configuration.');
@@ -179,10 +190,17 @@ for (const update of updates || []) {
       handled += 1;
     } else if (isAuthorizedChat && urlFromTelegramMessage(message, text)) {
       const url = urlFromTelegramMessage(message, text);
-      let metadata = await extractProductMetadata(url);
       const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
       const forwardedMetadata = pendingByChat[chatKey]?.draft || forwardedOfferMetadata(text, largestPhoto);
       const store = storeFromUrl(url);
+      let metadata = { finalUrl: url };
+      let metadataError = '';
+      try {
+        metadata = await extractProductMetadata(url);
+      } catch (error) {
+        metadataError = safeError(error, settings.token);
+        console.warn(`Could not read product metadata for inbox message ${message.message_id}: ${metadataError}`);
+      }
       // Amazon posts must use Amazon's product image, never a picture copied
       // from the source channel. Other stores retain the forwarded image when
       // their product page does not expose a usable one.
@@ -222,7 +240,11 @@ for (const update of updates || []) {
         delete pendingByChat[chatKey];
       } else if (result.status === 'needs_details') {
         pendingByChat[chatKey] = { url: affiliateUrl, metadata };
-        await reply(settings.token, message.chat.id, `He encontrado el enlace, pero la ficha no muestra ${result.missing.join(', ')}. Respóndeme solo con “Precio: 19,99 €” y, si lo tienes, “Antes: 29,99 €”.`);
+        const missing = result.missing.join(', ');
+        const retry = metadataError
+          ? ' La tienda no ha dejado leer la ficha ahora mismo; pega el enlace directo del producto e inténtalo de nuevo en unos minutos.'
+          : '';
+        await reply(settings.token, message.chat.id, `He encontrado el enlace, pero falta ${missing}.${retry} Si solo falta el precio, responde: “Precio: 19,99 €” y, si lo tienes, “Antes: 29,99 €”.`);
       } else {
         await reply(settings.token, message.chat.id, `⚠️ ${result.message}`);
       }
@@ -295,7 +317,7 @@ for (const update of updates || []) {
   } catch (error) {
     console.warn(`Telegram private message ${message.message_id} could not be processed: ${safeError(error, settings.token)}`);
     try {
-      await reply(settings.token, message.chat.id, '⚠️ No se pudo publicar la oferta. Revisa que el enlace, la foto y los precios estén completos e inténtalo de nuevo.');
+      await reply(settings.token, message.chat.id, inboxFailureReply(error));
     } catch {
       // Avoid failing the complete scheduled publication when Telegram cannot send a response.
     }
