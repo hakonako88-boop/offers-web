@@ -2,9 +2,11 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   activateChatFromMessage,
+  forwardedOfferMetadata,
   formatManualTelegramCaption,
   manualOfferFromMessage,
   offerFromProductMetadata,
+  urlFromTelegramMessage,
 } from '../scripts/telegram-inbox-commands.mjs';
 
 const controlCode = 'test-private-code';
@@ -64,6 +66,25 @@ test('builds a ready Amazon offer from public product metadata and adds the tag'
   assert.equal(result.status, 'ready');
   assert.match(result.offer.url, /tag=example-21/);
   assert.equal(result.offer.imageUrl, 'https://images.example/product.jpg');
+});
+
+test('reads an Amazon link hidden behind a forwarded Telegram card and uses its facts', () => {
+  const text = [
+    '🔥 Lenor Perlas de Perfume para la Ropa | #Amazon #OfertaFlash',
+    '📉 DESCUENTO: 28%',
+    '🔥 Precio: 12,34€',
+    '❌ El precio más bajo de los últimos 30 días: 17,08€',
+    '👉 Ver aquí en Amazon',
+  ].join('\n');
+  const url = urlFromTelegramMessage({
+    entities: [{ type: 'text_link', offset: 166, length: 20, url: 'https://www.amazon.es/dp/B0ABCDE123' }],
+  }, text);
+  const metadata = forwardedOfferMetadata(text, 'telegram-forwarded-photo');
+  assert.equal(url, 'https://www.amazon.es/dp/B0ABCDE123');
+  assert.equal(metadata.title, 'Lenor Perlas de Perfume para la Ropa');
+  assert.equal(metadata.price, 12.34);
+  assert.equal(metadata.previousPrice, 17.08);
+  assert.equal(metadata.imageUrl, 'telegram-forwarded-photo');
 });
 
 test('requires an image, price and direct tagged Amazon URL', () => {

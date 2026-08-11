@@ -36,6 +36,20 @@ export function firstUrl(text) {
   return match ? match[0].replace(/[),.;!?]+$/u, '') : '';
 }
 
+/** Reads a normal URL as well as the hidden destination of Telegram's
+ * clickable text (for example, a forwarded “Ver aquí en Amazon” button). */
+export function urlFromTelegramMessage(message = {}, text = '') {
+  const entities = [...(message.entities || []), ...(message.caption_entities || [])];
+  const linked = entities.find((entity) => entity?.type === 'text_link' && entity.url)?.url;
+  if (linked) return String(linked);
+  for (const entity of entities) {
+    if (entity?.type !== 'url') continue;
+    const candidate = String(text).slice(Number(entity.offset || 0), Number(entity.offset || 0) + Number(entity.length || 0));
+    if (candidate) return candidate;
+  }
+  return firstUrl(text);
+}
+
 export function storeFromUrl(url) {
   let host = '';
   try {
@@ -156,6 +170,27 @@ export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag =
       imageUrl,
       description: compact(metadata.description).slice(0, 220) || `${title.slice(0, 180)} · Oferta publicada en Chollos al Día.`,
     },
+  };
+}
+
+/** Turns a forwarded deal card into factual product metadata. It preserves
+ * the original price wording and does not invent a discount or description. */
+export function forwardedOfferMetadata(text = '', photoFileId = '') {
+  const lines = String(text).replace(/\r\n/g, '\n').split('\n').map((line) => compact(line)).filter(Boolean);
+  const headline = lines.find((line) => !/(?:descuento\s*:|precio\s*:|precio más bajo|compra recurrente|compra única|ver aquí)/iu.test(line)) || '';
+  const title = compact(headline.replace(/[🔥✨💥]+/gu, '').replace(/\|\s*#.+$/u, ''));
+  const priceLine = lines.find((line) => /(?:precio|compra recurrente)\s*:/iu.test(line)) || '';
+  const previousLine = lines.find((line) => /precio más bajo|(?:pvp|antes)\s*:/iu.test(line)) || '';
+  const lastAmount = (value = '') => [...String(value).matchAll(/\d+(?:[.,]\d{1,2})?/gu)].at(-1)?.[0] || '';
+  const price = parseAmount(lastAmount(priceLine));
+  const previousPrice = parseAmount(lastAmount(previousLine));
+  return {
+    title,
+    description: title ? `Oferta reenviada: ${title}. Revisa el precio y las condiciones antes de finalizar la compra.` : '',
+    imageUrl: photoFileId,
+    price,
+    previousPrice: previousPrice > price ? previousPrice : 0,
+    photoFileId,
   };
 }
 

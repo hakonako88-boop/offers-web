@@ -3,12 +3,13 @@ import path from 'node:path';
 import {
   activateChatFromMessage,
   controlHelp,
-  firstUrl,
   formatManualTelegramCaption,
   formatManualWebsiteText,
   manualOfferFromMessage,
   offerFromProductMetadata,
   storeFromUrl,
+  forwardedOfferMetadata,
+  urlFromTelegramMessage,
 } from './telegram-inbox-commands.mjs';
 import { extractProductMetadata, parsePrice } from './link-offer-extractor.mjs';
 import { isEquivalentDeal } from './offer-deduplication.mjs';
@@ -179,9 +180,15 @@ for (const update of updates || []) {
     } else if (message.voice) {
       await reply(settings.token, message.chat.id, '🎙️ Esta versión gratuita no transcribe audios. Pega el enlace del producto por escrito.\n\n' + controlHelp());
       handled += 1;
-    } else if (authorizedChatIds.has(chatKey) && firstUrl(text)) {
-      const url = firstUrl(text);
+    } else if (authorizedChatIds.has(chatKey) && urlFromTelegramMessage(message, text)) {
+      const url = urlFromTelegramMessage(message, text);
       let metadata = await extractProductMetadata(url);
+      const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
+      const forwardedMetadata = forwardedOfferMetadata(text, largestPhoto);
+      metadata = {
+        ...metadata,
+        ...Object.fromEntries(Object.entries(forwardedMetadata).filter(([, value]) => value)),
+      };
       if (storeFromUrl(url) === 'AliExpress' && (!metadata.title || !metadata.price || !/\.(?:jpe?g|png|webp)(?:[?#]|$)/iu.test(metadata.imageUrl))) {
         try {
           const affiliateMetadata = await resolveAliExpressAffiliateProduct(metadata.finalUrl || url, {
@@ -200,6 +207,7 @@ for (const update of updates || []) {
       const affiliateUrl = storeFromUrl(url) === 'Amazon' ? (metadata.finalUrl || url) : url;
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
+        if (forwardedMetadata.photoFileId) result.offer.photoFileId = forwardedMetadata.photoFileId;
         const outcome = await publishIfNew(settings, result.offer, message);
         if (outcome.duplicate) {
           await reply(settings.token, message.chat.id, '♻️ Esa oferta o un producto equivalente ya está publicado. No la repito en el canal.');
