@@ -8,6 +8,7 @@ import {
   formatManualWebsiteText,
   manualOfferFromMessage,
   offerFromProductMetadata,
+  storeFromUrl,
 } from './telegram-inbox-commands.mjs';
 import { extractProductMetadata, parsePrice } from './link-offer-extractor.mjs';
 import { isEquivalentDeal } from './offer-deduplication.mjs';
@@ -177,7 +178,8 @@ for (const update of updates || []) {
     } else if (authorizedChatIds.has(chatKey) && firstUrl(text)) {
       const url = firstUrl(text);
       const metadata = await extractProductMetadata(url);
-      const result = offerFromProductMetadata({ url, metadata, partnerTag: settings.amazonPartnerTag });
+      const affiliateUrl = storeFromUrl(url) === 'Amazon' ? (metadata.finalUrl || url) : url;
+      const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
         const outcome = await publishIfNew(settings, result.offer, message);
         if (outcome.duplicate) {
@@ -187,7 +189,7 @@ for (const update of updates || []) {
           published += 1;
         }
       } else if (result.status === 'needs_details') {
-        pendingByChat[chatKey] = { url, metadata };
+        pendingByChat[chatKey] = { url: affiliateUrl, metadata };
         await reply(settings.token, message.chat.id, `He encontrado el enlace, pero la ficha no muestra ${result.missing.join(', ')}. Respóndeme solo con “Precio: 19,99 €” y, si lo tienes, “Antes: 29,99 €”.`);
       } else {
         await reply(settings.token, message.chat.id, `⚠️ ${result.message}`);
