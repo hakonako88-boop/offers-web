@@ -13,7 +13,7 @@ function readEnvFile(file) {
 
 function normalizeText(s = '') {
   return String(s)
-    .replace(/\u0000/g, '')
+    .replaceAll("\0", "")
     .replace(/\r\n/g, '\n')
     .replace(/\uFFFD/g, '€')
     .replace(/�/g, '€')
