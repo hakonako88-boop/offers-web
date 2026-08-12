@@ -98,6 +98,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
   const shareText = `${deal.title} por ${money.format(deal.price)} en Chollos al Día`;
   const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(`${shareText} ${publicOfferUrl}`)}`;
   const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(publicOfferUrl)}&text=${encodeURIComponent(shareText)}`;
+  const reportUrl = `mailto:chollosaldia@gmail.com?subject=${encodeURIComponent(`Aviso sobre una oferta: ${deal.title}`)}&body=${encodeURIComponent(`Hola, he visto un cambio de precio, stock o cupón en esta oferta:\n\n${publicOfferUrl}\n\nCambio observado:`)}`;
   const relatedDeals = publishedDeals
     .filter((candidate) => candidate.id !== deal.id)
     .sort((left, right) => Number(right.category === deal.category) - Number(left.category === deal.category) || Number(right.store === deal.store) - Number(left.store === deal.store))
@@ -147,6 +148,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
             <a className="offerCta" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ir a la oferta en {deal.store} <span aria-hidden="true">→</span></a>
             <div className="offerShare"><span>¿Conoces a alguien a quien le interese?</span><div><a href={whatsappShareUrl} target="_blank" rel="noreferrer">Compartir por WhatsApp</a><a href={telegramShareUrl} target="_blank" rel="noreferrer">Enviar por Telegram</a></div></div>
             <p className="offerMeta"><span aria-hidden="true" />{deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt} · Precio sujeto a cambios.</p>
+            <a className="offerReport" href={reportUrl}>¿Ha cambiado el precio o el stock? Avísanos</a>
           </div>
         </div>
 

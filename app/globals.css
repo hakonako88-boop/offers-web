@@ -113,6 +113,7 @@ body { background: var(--paper); }
 .offerShare { margin-top: 16px; padding-top: 15px; border-top: 1px solid var(--line); }.offerShare > span { display: block; margin-bottom: 9px; color: var(--muted); font-size: 11px; }.offerShare > div { display: flex; flex-wrap: wrap; gap: 8px; }.offerShare a { border: 1px solid #cfd5df; border-radius: 999px; padding: 8px 10px; color: #26344d; font-size: 11px; font-weight: 800; }.offerShare a:hover { border-color: var(--coral); color: var(--coral); }
 .offerMeta { display: flex; align-items: center; gap: 7px; margin: 13px 0 0; color: #8791a0; font-size: 11px; }
 .offerMeta > span { width: 7px; height: 7px; border-radius: 50%; background: #55b693; }
+.offerReport { display: inline-block; margin-top: 10px; color: #617087; font-size: 11px; text-decoration: underline; text-underline-offset: 3px; }.offerReport:hover { color: var(--coral); }
 .offerContent { display: grid; grid-template-columns: .82fr 1.18fr; gap: clamp(35px, 6vw, 90px); padding: 102px 0; }
 .offerIntro h2 { max-width: 460px; margin: 12px 0 17px; font-size: clamp(37px, 4.6vw, 62px); letter-spacing: -.06em; line-height: 1; }
 .offerIntro > p:last-child { max-width: 450px; color: var(--muted); font-size: 15px; line-height: 1.65; }

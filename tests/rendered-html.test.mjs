@@ -60,6 +60,8 @@ test("renders an individual offer with price analysis, pros, cons and Product SE
   assert.match(html, /Otras ofertas que te pueden interesar/);
   assert.match(html, /Compartir por WhatsApp/);
   assert.match(html, /t\.me\/share\/url/);
+  assert.match(html, /Ha cambiado el precio o el stock/);
+  assert.match(html, /Aviso sobre una oferta/);
   assert.match(html, /PRECIO DE OFERTA/);
   assert.match(html, /"@type":"Product"/);
   assert.match(html, /"@type":"BreadcrumbList"/);
