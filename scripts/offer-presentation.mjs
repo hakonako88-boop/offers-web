@@ -74,6 +74,13 @@ export function improveOfferTitle(value = '') {
     return 'Molde de silicona para freidora de aire';
   }
 
+  if (/ventilador/.test(text)) {
+    const brand = original.match(/\b(SPARK)\b/iu)?.[1] || '';
+    const inches = original.match(/\b(?:de\s+)?(\d{1,2})\s*(?:"|pulgadas?\b)/iu)?.[1] || '';
+    const power = original.match(/\b(\d{2,4})\s*W\b/iu)?.[1] || '';
+    return trimAtWord(`Ventilador${brand ? ` ${brand}` : ''}${inches ? ` de sobremesa · ${inches}\"` : ''}${power ? ` · ${power} W` : ''}`);
+  }
+
   if (/auriculares|headphones|earbuds/.test(text)) {
     if (/^auriculares(?:\s+inal[aá]mbricos)?\b/i.test(original)) return trimAtWord(original);
     const brand = brandBefore(original, /(?:auriculares|headphones|earbuds)/i);
@@ -108,10 +115,18 @@ function offerDescription({ title, discount, description = '' } = {}) {
   const usableDescription = supplied
     && !sameAsTitle
     && !/oferta publicada en chollos al dia/i.test(supplied)
+    && !/oferta reenviada/i.test(supplied)
     ? supplied
     : '';
 
   if (usableDescription) return trimAtWord(usableDescription, 210);
+  const titleText = normalized(title);
+  if (/ventilador/.test(titleText)) {
+    const speeds = /3\s+velocidades/.test(titleText) ? '3 velocidades, ' : '';
+    const blades = /aspas.*aluminio/.test(titleText) ? 'aspas de aluminio y ' : '';
+    const quiet = /silencios/.test(titleText) ? 'funcionamiento silencioso' : 'direcciÃ³n ajustable';
+    return trimAtWord(`Ventilador de sobremesa con ${speeds}${blades}${quiet}. Ideal para refrescar espacios pequeÃ±os.`, 210);
+  }
   const discountText = Number(discount) > 0
     ? ` con un ${Math.round(Number(discount))}% de descuento`
     : ' a un precio rebajado';

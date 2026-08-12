@@ -12,6 +12,7 @@ import {
   processingOfferReply,
   urlFromTelegramMessage,
 } from '../scripts/telegram-inbox-commands.mjs';
+import { formatTelegramDealCard } from '../scripts/offer-presentation.mjs';
 
 const controlCode = 'test-private-code';
 
@@ -139,6 +140,18 @@ test('reads an Amazon link hidden behind a forwarded Telegram card and uses its 
   assert.equal(metadata.previousPrice, 17.08);
   assert.equal(metadata.imageUrl, 'telegram-forwarded-photo');
   assert.doesNotMatch(metadata.description, /oferta reenviada/i);
+});
+
+test('formats a forwarded fan offer without exposing its forwarded origin', () => {
+  const card = formatTelegramDealCard({
+    title: 'SPARK- VENTILADOR DE 10\". POTENCIA 40W. 3 VELOCIDADES. 3 ASPAS DE ALUMINIO. OPERACIÃ“N SILENCIOSA.',
+    store: 'AliExpress',
+    price: '17,78 €',
+    description: 'Oferta reenviada: SPARK- VENTILADOR DE 10\". POTENCIA 40W.',
+  });
+  assert.match(card, /Ventilador SPARK de sobremesa · 10\" · 40 W/);
+  assert.match(card, /3 velocidades, aspas de aluminio y funcionamiento silencioso/);
+  assert.doesNotMatch(card, /oferta reenviada/i);
 });
 
 test('does not invent a URL when a forwarded card has no link entity', () => {
