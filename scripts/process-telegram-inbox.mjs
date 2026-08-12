@@ -22,6 +22,7 @@ const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
 const OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const MAX_PROCESSED_UPDATES = 400;
+const DUPLICATE_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -187,8 +188,20 @@ async function publishManualOffer(settings, offer, inputMessage) {
 
 async function publishIfNew(settings, offer, inputMessage) {
   const existingOffers = readJson(OFFERS_FILE, []);
-  if (existingOffers.some((entry) => isEquivalentDeal(offer, entry))) return { duplicate: true };
+  const oldestDuplicate = Math.floor((Date.now() - DUPLICATE_WINDOW_MS) / 1000);
+  // An expired deal must not keep blocking the same product forever. Only
+  // compare against offers that can still be visible on the public site.
+  const recentOffers = existingOffers.filter((entry) => Number(entry.date) >= oldestDuplicate);
+  if (recentOffers.some((entry) => isEquivalentDeal(offer, entry))) return { duplicate: true };
   return { channelMessage: await publishManualOffer(settings, offer, inputMessage), duplicate: false };
+}
+
+function publicationSuccessReply() {
+  return [
+    '✅ Publicada en el canal.',
+    '🌐 También se ha guardado para Chollos al Día.',
+    '⏳ La ficha aparecerá en la web en unos minutos, al terminar su actualización automática.',
+  ].join('\n');
 }
 
 function requestedPrice(text) {
@@ -256,7 +269,7 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
     const outcome = await publishIfNew(settings, result.offer, { message_id: pending.messageId || `pending-${chatKey}` });
     await reply(settings.token, chatKey, outcome.duplicate
       ? '♻️ Esa oferta pendiente ya estaba publicada. No la repito en el canal.'
-      : `✅ Publicada en el canal y en Chollos al Día. Mensaje del canal: ${outcome.channelMessage.message_id}`);
+      : publicationSuccessReply());
     if (!outcome.duplicate) published += 1;
     delete pendingByChat[chatKey];
   } catch (error) {
@@ -348,7 +361,7 @@ for (const update of updates || []) {
         if (outcome.duplicate) {
           await reply(settings.token, message.chat.id, '♻️ Esa oferta o un producto equivalente ya está publicado. No la repito en el canal.');
         } else {
-          await reply(settings.token, message.chat.id, `✅ Publicada en el canal y en Chollos al Día. Mensaje del canal: ${outcome.channelMessage.message_id}`);
+          await reply(settings.token, message.chat.id, publicationSuccessReply());
           published += 1;
         }
         delete pendingByChat[chatKey];
@@ -375,11 +388,15 @@ for (const update of updates || []) {
           partnerTag: settings.amazonPartnerTag,
         });
         if (result.status === 'ready') {
+          // The requested price can arrive together with a replacement photo.
+          // Keep it so a previously incomplete forwarded offer can finish.
+          const newestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
+          if (newestPhoto) result.offer.photoFileId = newestPhoto;
           const outcome = await publishIfNew(settings, result.offer, message);
           if (outcome.duplicate) {
             await reply(settings.token, message.chat.id, '♻️ Esa oferta o un producto equivalente ya está publicado. No la repito en el canal.');
           } else {
-            await reply(settings.token, message.chat.id, `✅ Publicada en el canal y en Chollos al Día. Mensaje del canal: ${outcome.channelMessage.message_id}`);
+            await reply(settings.token, message.chat.id, publicationSuccessReply());
             published += 1;
           }
           delete pendingByChat[chatKey];
@@ -416,7 +433,7 @@ for (const update of updates || []) {
         if (outcome.duplicate) {
           await reply(settings.token, message.chat.id, '♻️ Esa oferta o un producto equivalente ya está publicado. No la repito en el canal.');
         } else {
-          await reply(settings.token, message.chat.id, `✅ Publicada en el canal y en Chollos al Día. Mensaje del canal: ${outcome.channelMessage.message_id}`);
+          await reply(settings.token, message.chat.id, publicationSuccessReply());
           published += 1;
         }
         handled += 1;
