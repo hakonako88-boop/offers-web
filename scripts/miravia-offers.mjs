@@ -144,9 +144,12 @@ export function miraviaQualityScore({ title = '', category = '', price = 0, oldP
 
   if (!title || !highInterestCategory(category) || containsOne(`${title} ${category}`, LOW_INTEREST_TERMS)) return 0;
   if (!oldPrice || oldPrice <= price || discount < 35 || saving < 10) return 0;
-  if (price < 10 && saving < 18) return 0;
-  if (!branded && popular < 25) return 0;
-  if (discount > 80 && !branded && popular < 100) return 0;
+  // A catalogue percentage by itself is not enough. Products without a
+  // recognised brand need strong buyer demand before they occupy the channel.
+  // This prevents cheap, generic listings with an inflated reference price.
+  if (branded ? popular < 20 : popular < 120) return 0;
+  if (price < 12 && (saving < 25 || popular < 180)) return 0;
+  if (discount > 70 && popular < (branded ? 75 : 250)) return 0;
 
   return Math.round(
     (discount * 1.25)

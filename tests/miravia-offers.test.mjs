@@ -127,6 +127,16 @@ test('rejects table linen even when it is listed under a high-interest kitchen c
   }), 0);
 });
 
+test('requires meaningful demand for an unbranded Miravia catalogue product', () => {
+  assert.equal(miraviaQualityScore({
+    title: 'Luz LED USB para escritorio',
+    category: 'Electronics > Lighting',
+    price: 14,
+    oldPrice: 39,
+    reviews: 60,
+  }), 0);
+});
+
 test('recognizes the gzip downloads produced by Awin feeds', () => {
   assert.equal(isGzipFeed('https://feeds.example/compression/gzip/products'), true);
   assert.equal(isGzipFeed('https://feeds.example/products', 'gzip'), true);
