@@ -28,6 +28,7 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.match(html, /og-chollosaldia-v2\.png/);
   assert.doesNotMatch(html, /Precio 54,40/);
   assert.doesNotMatch(html, /https:\/\/amzn\.to\/4gryAR2/);
+  assert.doesNotMatch(html, /Relleno de coj[ií]n|Mantel impermeable|Malla Ocultaci[oó]n/i);
   assert.doesNotMatch(html, /t\.href/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/);
 });

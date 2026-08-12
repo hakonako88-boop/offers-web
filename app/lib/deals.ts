@@ -138,6 +138,17 @@ function isRecent(timestamp?: number) {
   return Number.isFinite(publishedAt) && publishedAt <= Date.now() + 60_000 && (Date.now() - publishedAt) <= maximumAge;
 }
 
+/** Legacy Miravia imports contained a run of low-intent catalogue products.
+ * Keep the storefront selective without deleting the historical source data
+ * or blocking an offer explicitly sent by the owner through Telegram. */
+function isWebworthyMiraviaOffer(offer: LegacyOffer, title: string, price: number) {
+  if (offer.store !== "Miravia" || /^manual-/i.test(String(offer.source_product_id || ""))) return true;
+  const text = normalise(`${offer.category ?? ""} ${title}`);
+  const usefulDepartments = /tecnolog|electron|informat|mobile|telefono|data|memory|software|gaming|consola|videojuego|cocina|cafe|freidora|beauty|belleza|salud|health|deporte|sport|juguete|toy|baby|herramienta|bricolaje|diy/.test(text);
+  const catalogueTerms = /\b(?:correa|cuerda|malla|relleno|mantel|bolso|cardigan|sandalia|botin|gafas|cuaderno|papeleria|funda|recambio|repuesto)\b/.test(text);
+  return usefulDepartments && !catalogueTerms && price >= 12;
+}
+
 const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer) => {
   const id = sourceId(offer);
   const price = parsePrice(offer.price);
@@ -152,7 +163,7 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
   // Imported/automatic offers keep the stricter savings-or-coupon rule.
   const isManualTelegramOffer = /^manual-/i.test(String(offer.source_product_id || ""));
   const hasPublishablePrice = hasDemonstrableSaving || isManualTelegramOffer;
-  if (!id || !price || !hasPublishablePrice || !isUsefulTitle(title) || !offer.url || !offer.image || !store || !isRecent(offer.date) || !isSupportedAffiliateUrl(offer.url, store)) return [];
+  if (!id || !price || !hasPublishablePrice || !isUsefulTitle(title) || !isWebworthyMiraviaOffer(offer, title, price) || !offer.url || !offer.image || !store || !isRecent(offer.date) || !isSupportedAffiliateUrl(offer.url, store)) return [];
   const date = formatDate(offer.date);
   return [{
     id,

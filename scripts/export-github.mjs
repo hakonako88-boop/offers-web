@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -38,9 +38,14 @@ for (const category of ["tecnologia", "videojuegos", "hogar"]) {
 for (const guide of ["ofertas-amazon", "cupones-aliexpress", "detectar-chollos-reales"]) {
   await render(`/guias/${guide}`, `guias/${guide}/index.html`);
 }
-const publishedOffers = JSON.parse(await readFile(path.join(root, "data", "offers.json"), "utf8"));
-const offerIds = [...new Set(publishedOffers
-  .map((offer) => String(offer.chollometroId || offer.message_id || offer.url || ""))
+// The sitemap is built from the same reviewed list used by the application.
+// Exporting every raw inbox/history entry here used to create stale deal pages
+// that the homepage had intentionally hidden.
+const sitemapResponse = await worker.fetch(new Request("https://chollosaldia.com/sitemap.xml"), { ASSETS: assets }, context);
+if (!sitemapResponse.ok) throw new Error("No se pudo leer el mapa del sitio para exportar las ofertas activas.");
+const sitemap = await sitemapResponse.text();
+const offerIds = [...new Set([...sitemap.matchAll(/<loc>https:\/\/chollosaldia\.com\/oferta\/([^<]+)<\/loc>/g)]
+  .map((match) => decodeURIComponent(match[1]))
   .filter(Boolean))];
 for (const id of offerIds) {
   const encodedId = encodeURIComponent(id);
