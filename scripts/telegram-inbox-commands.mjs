@@ -9,6 +9,7 @@ export function isReliableProductTitle(value = '') {
   const title = compact(value);
   return title.length >= 5
     && !/^https?:\/\//iu.test(title)
+    && !/^(?:ahorra|ofert[oó]n|oferta|chollo|descuento|precio)\b/iu.test(title)
     && !/^(?:amazon|aliexpress|miravia)(?:\s+(?:españa|espana|es))?$/iu.test(title);
 }
 
@@ -167,6 +168,12 @@ function hasAffiliateLink(url, store) {
 
 export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag = '' } = {}) {
   const store = storeFromUrl(url);
+  if (!['Amazon', 'AliExpress', 'Miravia'].includes(store)) {
+    return {
+      status: 'needs_store',
+      message: 'No he encontrado una ficha directa de Amazon, AliExpress o Miravia detrás de ese enlace. No publico imágenes ni enlaces de otros canales. Pega el enlace real del producto y prepararé el título, la foto y tu enlace de afiliado.',
+    };
+  }
   const finalUrl = amazonUrlWithTag(url, partnerTag);
   const title = compact(metadata.title);
   const price = Number(metadata.price) || 0;

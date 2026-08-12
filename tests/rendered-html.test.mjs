@@ -29,6 +29,7 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.match(html, /chollosaldia@gmail\.com/);
   assert.match(html, /"@type":"ContactPoint"/);
   assert.doesNotMatch(html, /Precio 54,40/);
+  assert.doesNotMatch(html, /AHORRA UN 34%/);
   assert.doesNotMatch(html, /https:\/\/amzn\.to\/4gryAR2/);
   assert.doesNotMatch(html, /Relleno de coj[ií]n|Mantel impermeable|Malla Ocultaci[oó]n/i);
   assert.doesNotMatch(html, /t\.href/);

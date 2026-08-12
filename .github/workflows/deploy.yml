@@ -78,6 +78,11 @@ jobs:
         continue-on-error: true
         run: npm run verify:telegram
 
+      - name: Retirar publicaciones con datos erróneos
+        if: ${{ env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        continue-on-error: true
+        run: node scripts/delete-telegram-messages.mjs
+
       - name: Corregir publicaciones anteriores de Telegram
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.repair_telegram_captions && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run repair:telegram
@@ -128,7 +133,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json data/telegram-inbox-state.json public/tg
+          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json data/telegram-inbox-state.json data/telegram-removals.json public/tg
           git diff --cached --quiet || git commit -m "Actualizar ofertas desde Telegram"
           git push
 

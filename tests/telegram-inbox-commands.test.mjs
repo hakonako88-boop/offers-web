@@ -71,6 +71,15 @@ test('builds a ready Amazon offer from public product metadata and adds the tag'
   assert.equal(result.offer.imageUrl, 'https://images.example/product.jpg');
 });
 
+test('does not publish a forwarded image link that is not a supported shop product', () => {
+  const result = offerFromProductMetadata({
+    url: 'https://s.chollo.to/imagen-de-otro-canal.png',
+    metadata: { title: 'Ahorra un 34%', imageUrl: 'telegram-photo-id', price: 79 },
+  });
+  assert.equal(result.status, 'needs_store');
+  assert.match(result.message, /ficha directa/i);
+});
+
 test('keeps the official AliExpress catalogue facts ahead of forwarded wording', () => {
   const metadata = mergeProductMetadata({
     title: 'Xiaomi Smart Band 9 Active, pantalla AMOLED',
@@ -92,6 +101,7 @@ test('keeps the official AliExpress catalogue facts ahead of forwarded wording',
 
 test('does not use an URL or a generic storefront as a product title', () => {
   assert.equal(isReliableProductTitle('https://s.click.aliexpress.com/e/example'), false);
+  assert.equal(isReliableProductTitle('AHORRA UN 34% #Perfumes #Amazon'), false);
   assert.equal(isReliableProductTitle('AliExpress España'), false);
   assert.equal(isReliableProductTitle('Xiaomi Smart Band 9 Active'), true);
   assert.equal(forwardedOfferMetadata('https://s.click.aliexpress.com/e/example').title, '');

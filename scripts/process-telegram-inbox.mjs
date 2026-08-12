@@ -316,12 +316,13 @@ for (const update of updates || []) {
         console.warn(`Could not read product metadata for inbox message ${message.message_id}: ${metadataError}`);
       }
       const resolvedStore = storeFromUrl(metadata.finalUrl || metadata.affiliateUrl || url);
-      // Amazon posts must use Amazon's product image, never a picture copied
-      // from the source channel. Other stores retain the forwarded image when
-      // their product page does not expose a usable one.
-      const metadataFromForward = resolvedStore === 'Amazon'
-        ? Object.fromEntries(Object.entries(forwardedMetadata).filter(([key, value]) => key !== 'imageUrl' && key !== 'photoFileId' && value))
-        : Object.fromEntries(Object.entries(forwardedMetadata).filter(([, value]) => value));
+      // A forwarded photo belongs to the original channel and is frequently
+      // compressed, cropped or unrelated to the final variant. Never reuse it
+      // as the public card: the photo must be recovered from the shop/API.
+      // Forwarded wording can still supply a price or a sensible product title
+      // when a merchant omits those fields.
+      const metadataFromForward = Object.fromEntries(Object.entries(forwardedMetadata)
+        .filter(([key, value]) => key !== 'imageUrl' && key !== 'photoFileId' && value));
       // AliExpress's public page frequently returns a generic storefront title
       // or an incomplete price to automated readers. Its affiliate catalogue
       // is the authoritative product source, so ask it on every AliExpress
@@ -350,13 +351,6 @@ for (const update of updates || []) {
         : (sourceStore === resolvedStore ? url : (metadata.finalUrl || url));
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
-        // Prefer the official shop image when it was read correctly. A
-        // forwarded Telegram photo is only a fallback, as source channels
-        // often compress it heavily.
-        if (resolvedStore !== 'Amazon' && forwardedMetadata.photoFileId
-          && (!metadata.imageUrl || metadata.imageUrl === forwardedMetadata.photoFileId)) {
-          result.offer.photoFileId = forwardedMetadata.photoFileId;
-        }
         const outcome = await publishIfNew(settings, result.offer, message);
         if (outcome.duplicate) {
           await reply(settings.token, message.chat.id, '♻️ Esa oferta o un producto equivalente ya está publicado. No la repito en el canal.');
