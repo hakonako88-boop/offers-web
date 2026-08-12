@@ -35,6 +35,8 @@ const websiteSchema = {
       name: "Chollos al Día",
       url: "https://chollosaldia.com/",
       sameAs: ["https://t.me/aldiachollos"],
+      email: "chollosaldia@gmail.com",
+      contactPoint: [{ "@type": "ContactPoint", email: "chollosaldia@gmail.com", contactType: "customer support", availableLanguage: "Spanish" }],
     },
   ],
 };
