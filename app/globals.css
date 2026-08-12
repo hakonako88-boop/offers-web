@@ -156,3 +156,15 @@ body { background: var(--paper); }
 .categoryDirectoryGrid .sectionCover b { font-size: 15px; line-height: 1.35; }.categoryDirectoryGrid .sectionCover i { color: #f7c948; font-size: 17px; font-style: normal; }
 .sectionCover.storeAliExpress .coverShade { background: linear-gradient(90deg, rgb(91 32 17 / 91%), rgb(208 65 22 / 53%), rgb(15 23 42 / 18%)); }.sectionCover.storeMiravia .coverShade { background: linear-gradient(90deg, rgb(21 38 56 / 93%), rgb(82 58 155 / 56%), rgb(15 23 42 / 18%)); }.sectionCover.categoryGaming .coverShade { background: linear-gradient(180deg, rgb(44 29 103 / 18%), rgb(35 22 80 / 93%)); }.sectionCover.categoryHome .coverShade { background: linear-gradient(180deg, rgb(8 89 78 / 18%), rgb(6 62 55 / 94%)); }
 @media (max-width: 640px) { .storeDirectoryGrid .sectionCover { align-items: flex-start; min-height: 154px; flex-direction: column; gap: 8px; padding: 20px; }.storeDirectoryGrid .sectionCover:hover { transform: translateY(-3px); }.storeDirectoryGrid .sectionCover b { max-width: 260px; }.categoryDirectoryGrid .sectionCover { min-height: 138px; } }
+
+/* Deal prices are the primary decision cue: give them a high-contrast surface
+   instead of relying on a subtle brand colour against white. */
+.priceRow strong { display: inline-block; padding: 6px 9px 7px; border-radius: 8px; background: #e7eaff; color: #141a44; font-size: 29px; font-weight: 900; letter-spacing: -.055em; }
+.priceRow span { color: #4b5a70; font-weight: 700; }.priceRow s { color: #40506a; }
+.saving { color: #07685e; font-weight: 850; }.featuredPrice strong { color: #35359c; font-weight: 900; }.offerPriceBox { border: 1px solid #cfd5ff; background: #eef0ff; }.offerPriceBox > span { color: #3d4099; }.offerPriceBox strong { color: #292a83; font-weight: 900; }.offerPriceBox p { color: #40506a; }.offerPriceBox p b { color: #a6342a; }.offerPriceBox em { color: #07685e; }
+
+/* Some old Miravia feed images were 200 px thumbnails. Keeping those images
+   contained prevents a tiny source from being stretched and blurred in cards;
+   new publications are now fetched at the product-image rendition. */
+.imageWrap img[src*="/tg/miravia-"], .offerImageWrap img[src*="/tg/miravia-"] { padding: 12px; background: #fff; object-fit: contain; }
+.dealCard:hover img[src*="/tg/miravia-"] { transform: none; }

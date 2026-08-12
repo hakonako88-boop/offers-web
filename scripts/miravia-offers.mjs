@@ -69,8 +69,11 @@ function columnValue(record, aliases) {
   return '';
 }
 
-/** Returns Miravia's product-page social image instead of the 200 px feed thumbnail. */
-export function productImageFromPage(html = '', fallback = '') {
+/** Returns Miravia's product-page social image instead of the 200 px feed thumbnail.
+ * A CDN image is permitted only after the caller has verified that the page itself
+ * is an official Miravia product page. This lets us use the sharper social image
+ * without accepting an arbitrary image from a tracking redirect. */
+export function productImageFromPage(html = '', fallback = '', { allowExternalCdn = false } = {}) {
   const tags = String(html).match(/<meta\b[^>]*>/giu) || [];
   for (const tag of tags) {
     const key = tag.match(/\b(?:property|name)\s*=\s*["']([^"']+)["']/iu)?.[1]?.toLocaleLowerCase('en');
@@ -79,7 +82,8 @@ export function productImageFromPage(html = '', fallback = '') {
     try {
       const imageUrl = new URL(value);
       const host = imageUrl.hostname.toLocaleLowerCase('en');
-      if (imageUrl.protocol === 'https:' && (host === 'miravia.es' || host.endsWith('.miravia.es'))) return imageUrl.toString();
+      const isMiraviaImage = host === 'miravia.es' || host.endsWith('.miravia.es');
+      if (imageUrl.protocol === 'https:' && (isMiraviaImage || allowExternalCdn)) return highResolutionMiraviaImage(imageUrl.toString());
     } catch {
       // The feed thumbnail remains the safe fallback when the page has no usable image.
     }

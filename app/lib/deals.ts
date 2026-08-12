@@ -17,6 +17,7 @@ export type PublishedDeal = {
 type LegacyOffer = {
   message_id?: number;
   chollometroId?: string;
+  source_product_id?: string;
   title?: string;
   text?: string;
   image?: string;
@@ -145,7 +146,13 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
   const store = offer.store === "Amazon" || offer.store === "AliExpress" || offer.store === "Miravia" ? offer.store : "";
   const coupon = couponFor(offer.text);
   const hasDemonstrableSaving = previous > price || Boolean(coupon);
-  if (!id || !price || !hasDemonstrableSaving || !isUsefulTitle(title) || !offer.url || !offer.image || !store || !isRecent(offer.date) || !isSupportedAffiliateUrl(offer.url, store)) return [];
+  // Offers received from the owner's authorised Telegram chat may contain a
+  // current price but no reliable previous-price comparison. They are still
+  // useful for the website when all of the product essentials are present.
+  // Imported/automatic offers keep the stricter savings-or-coupon rule.
+  const isManualTelegramOffer = /^manual-/i.test(String(offer.source_product_id || ""));
+  const hasPublishablePrice = hasDemonstrableSaving || isManualTelegramOffer;
+  if (!id || !price || !hasPublishablePrice || !isUsefulTitle(title) || !offer.url || !offer.image || !store || !isRecent(offer.date) || !isSupportedAffiliateUrl(offer.url, store)) return [];
   const date = formatDate(offer.date);
   return [{
     id,

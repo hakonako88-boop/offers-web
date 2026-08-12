@@ -140,6 +140,10 @@ test('prefers the high-resolution product image exposed by Miravia over a feed t
   );
   assert.match(image, /720x720/);
   assert.equal(productImageFromPage('<meta property="og:image" content="https://images.example/product.jpg">', 'https://cdn.example/thumb.jpg'), 'https://cdn.example/thumb.jpg');
+  assert.equal(
+    productImageFromPage('<meta property="og:image" content="https://cdn.merchant.example/product.jpg">', 'https://cdn.example/thumb.jpg', { allowExternalCdn: true }),
+    'https://cdn.merchant.example/product.jpg',
+  );
 });
 
 test('upgrades the small Miravia feed rendition to a card-ready CDN image', () => {

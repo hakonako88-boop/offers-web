@@ -92,7 +92,13 @@ async function preferredMiraviaImage(offer) {
       signal: AbortSignal.timeout(15000),
     });
     if (!response.ok) throw new Error(`product page status ${response.status}`);
-    return productImageFromPage(await response.text(), offer.image);
+    const productHost = new URL(response.url).hostname.toLowerCase();
+    const isOfficialProductPage = productHost === 'miravia.es' || productHost.endsWith('.miravia.es');
+    return productImageFromPage(
+      await response.text(),
+      highResolutionMiraviaImage(offer.image),
+      { allowExternalCdn: isOfficialProductPage },
+    );
   } catch (error) {
     console.warn(`Could not obtain a high-resolution Miravia image for ${offer.sourceProductId}: ${error.message}`);
     return highResolutionMiraviaImage(offer.image);
@@ -102,13 +108,18 @@ async function preferredMiraviaImage(offer) {
 async function mirrorImageForWeb(offer, imageUrl = offer.image) {
   const filename = `miravia-${offer.sourceProductId}.jpg`;
   const localImage = path.join(WEB_IMAGES_DIR, filename);
-  if (fs.existsSync(localImage)) return `/tg/${filename}`;
+  const existingBytes = fs.existsSync(localImage) ? fs.statSync(localImage).size : 0;
+  // Do not repeatedly download good originals, but give old catalogue
+  // thumbnails a chance to be replaced when a better rendition is available.
+  if (existingBytes >= 24_000) return `/tg/${filename}`;
 
   try {
     const response = await fetch(imageUrl);
     if (!response.ok) throw new Error(`image status ${response.status}`);
+    const image = Buffer.from(await response.arrayBuffer());
+    if (existingBytes && image.length <= existingBytes) return `/tg/${filename}`;
     fs.mkdirSync(WEB_IMAGES_DIR, { recursive: true });
-    fs.writeFileSync(localImage, Buffer.from(await response.arrayBuffer()));
+    fs.writeFileSync(localImage, image);
     return `/tg/${filename}`;
   } catch (error) {
     console.warn(`Could not mirror Miravia image ${offer.sourceProductId}: ${error.message}`);
