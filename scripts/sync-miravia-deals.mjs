@@ -6,6 +6,7 @@ import {
   formatMiraviaCaption,
   formatMiraviaTelegramCaption,
   highResolutionMiraviaImage,
+  isMiraviaProductImageLargeEnough,
   isGzipFeed,
   miraviaFeedEntries,
   miraviaRecordFromColumns,
@@ -86,6 +87,7 @@ async function publishOffer(config, offer) {
 }
 
 async function preferredMiraviaImage(offer) {
+  let imageUrl = highResolutionMiraviaImage(offer.image);
   try {
     const response = await fetch(offer.url, {
       headers: { 'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)' },
@@ -94,15 +96,23 @@ async function preferredMiraviaImage(offer) {
     if (!response.ok) throw new Error(`product page status ${response.status}`);
     const productHost = new URL(response.url).hostname.toLowerCase();
     const isOfficialProductPage = productHost === 'miravia.es' || productHost.endsWith('.miravia.es');
-    return productImageFromPage(
+    imageUrl = productImageFromPage(
       await response.text(),
       highResolutionMiraviaImage(offer.image),
       { allowExternalCdn: isOfficialProductPage },
     );
   } catch (error) {
     console.warn(`Could not obtain a high-resolution Miravia image for ${offer.sourceProductId}: ${error.message}`);
-    return highResolutionMiraviaImage(offer.image);
   }
+
+  const response = await fetch(imageUrl, { signal: AbortSignal.timeout(15_000) });
+  const contentType = response.headers.get('content-type') || '';
+  if (!response.ok || !contentType.toLowerCase().startsWith('image/')) throw new Error(`Miravia image status ${response.status}`);
+  const image = await response.arrayBuffer();
+  if (!isMiraviaProductImageLargeEnough(image.byteLength)) {
+    throw new Error(`Miravia image is too small (${image.byteLength} bytes)`);
+  }
+  return imageUrl;
 }
 
 async function mirrorImageForWeb(offer, imageUrl = offer.image) {
@@ -111,12 +121,13 @@ async function mirrorImageForWeb(offer, imageUrl = offer.image) {
   const existingBytes = fs.existsSync(localImage) ? fs.statSync(localImage).size : 0;
   // Do not repeatedly download good originals, but give old catalogue
   // thumbnails a chance to be replaced when a better rendition is available.
-  if (existingBytes >= 24_000) return `/tg/${filename}`;
+  if (isMiraviaProductImageLargeEnough(existingBytes)) return `/tg/${filename}`;
 
   try {
     const response = await fetch(imageUrl);
     if (!response.ok) throw new Error(`image status ${response.status}`);
     const image = Buffer.from(await response.arrayBuffer());
+    if (!isMiraviaProductImageLargeEnough(image.length)) throw new Error(`image too small (${image.length} bytes)`);
     if (existingBytes && image.length <= existingBytes) return `/tg/${filename}`;
     fs.mkdirSync(WEB_IMAGES_DIR, { recursive: true });
     fs.writeFileSync(localImage, image);

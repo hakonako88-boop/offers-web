@@ -21,6 +21,16 @@ const TRUSTED_BRANDS = [
   'lego', 'hasbro', 'barbie', 'adidas', 'nike', 'puma', 'new balance',
 ];
 
+// The Awin feed frequently supplies 200 px thumbnails that weigh only a few
+// kilobytes. They look visibly blurred once Telegram or the web card enlarges
+// them. This guard is deliberately conservative: it rejects the tiny feed
+// rendition, without treating a normal product photo as an error.
+export const MIN_MIRAVIA_PRODUCT_IMAGE_BYTES = 12_000;
+
+export function isMiraviaProductImageLargeEnough(byteLength = 0) {
+  return Number(byteLength) >= MIN_MIRAVIA_PRODUCT_IMAGE_BYTES;
+}
+
 function normalizeKey(value = '') {
   return String(value)
     .trim()

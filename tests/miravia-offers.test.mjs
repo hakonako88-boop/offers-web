@@ -4,6 +4,7 @@ import {
   formatMiraviaCaption,
   formatMiraviaTelegramCaption,
   highResolutionMiraviaImage,
+  isMiraviaProductImageLargeEnough,
   isGzipFeed,
   miraviaQualityScore,
   miraviaFeedEntries,
@@ -125,6 +126,12 @@ test('rejects table linen even when it is listed under a high-interest kitchen c
     oldPrice: 90,
     reviews: 300,
   }), 0);
+});
+
+test('rejects the tiny Miravia feed thumbnails before publication', () => {
+  assert.equal(isMiraviaProductImageLargeEnough(3_732), false);
+  assert.equal(isMiraviaProductImageLargeEnough(11_999), false);
+  assert.equal(isMiraviaProductImageLargeEnough(12_000), true);
 });
 
 test('requires meaningful demand for an unbranded Miravia catalogue product', () => {
