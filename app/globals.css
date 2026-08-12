@@ -110,6 +110,7 @@ body { background: var(--paper); }
 .offerCoupon p { grid-column: 2; margin: 4px 0 0; color: var(--muted); font-size: 11px; }
 .offerCta { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; border-radius: 9px; background: var(--coral); padding: 17px 19px; color: #fff; font-size: 15px; font-weight: 850; transition: background .2s ease, transform .2s ease; }
 .offerCta:hover { background: var(--coral-dark); transform: translateY(-2px); }
+.offerShare { margin-top: 16px; padding-top: 15px; border-top: 1px solid var(--line); }.offerShare > span { display: block; margin-bottom: 9px; color: var(--muted); font-size: 11px; }.offerShare > div { display: flex; flex-wrap: wrap; gap: 8px; }.offerShare a { border: 1px solid #cfd5df; border-radius: 999px; padding: 8px 10px; color: #26344d; font-size: 11px; font-weight: 800; }.offerShare a:hover { border-color: var(--coral); color: var(--coral); }
 .offerMeta { display: flex; align-items: center; gap: 7px; margin: 13px 0 0; color: #8791a0; font-size: 11px; }
 .offerMeta > span { width: 7px; height: 7px; border-radius: 50%; background: #55b693; }
 .offerContent { display: grid; grid-template-columns: .82fr 1.18fr; gap: clamp(35px, 6vw, 90px); padding: 102px 0; }

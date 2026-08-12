@@ -56,6 +56,8 @@ test("renders an individual offer with price analysis, pros, cons and Product SE
   assert.match(html, /Puntos a favor/);
   assert.match(html, /A tener en cuenta/);
   assert.match(html, /Otras ofertas que te pueden interesar/);
+  assert.match(html, /Compartir por WhatsApp/);
+  assert.match(html, /t\.me\/share\/url/);
   assert.match(html, /PRECIO DE OFERTA/);
   assert.match(html, /"@type":"Product"/);
   assert.match(html, /rel="nofollow sponsored noreferrer"/);
