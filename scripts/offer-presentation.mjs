@@ -137,7 +137,7 @@ export function formatTelegramDealCard({
     : highlight
       ? `🔻 ${escapeHtml(highlight)}`
       : `🔻 ${savingsText}`;
-  const linkLine = '👉🏻 Pulsa «VER OFERTA» para aprovecharlo';
+  const linkLine = '👇🏻 <b>Toca el botón VER OFERTA</b> para comprar';
 
   return [
     `<b>${escapeHtml(improveOfferTitle(title))}</b> #${storeTag}`,
@@ -150,7 +150,7 @@ export function formatTelegramDealCard({
     '',
     linkLine,
     '',
-    '🪐 Más ofertas en @aldiachollos #Publi',
+    '🪐 Más en @aldiachollos #Publi',
     `🔥 TOP CHOLLOS ${escapeHtml(store).toUpperCase()}`,
   ].filter((line, index) => line || index === 1 || index === 3 || index === 7 || index === 9).join('\n').slice(0, 1000);
 }
