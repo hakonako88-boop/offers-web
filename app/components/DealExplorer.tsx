@@ -195,6 +195,14 @@ export function DealExplorer() {
       .slice(0, 3),
     [deals],
   );
+  const sectionCovers = useMemo(() => ({
+    amazon: deals.find((deal) => deal.store === "Amazon"),
+    aliexpress: deals.find((deal) => deal.store === "AliExpress"),
+    miravia: deals.find((deal) => deal.store === "Miravia"),
+    tecnologia: deals.find((deal) => deal.category === "Tecnología"),
+    videojuegos: deals.find((deal) => deal.category === "Videojuegos"),
+    hogar: deals.find((deal) => deal.category === "Hogar"),
+  }), [deals]);
 
   const featuredDeal = visibleDeals[0];
   const gridDeals = visibleDeals.slice(1);
@@ -362,18 +370,18 @@ export function DealExplorer() {
       <section className="storeDirectory shell" aria-labelledby="stores-title">
         <div><p className="eyebrow"><span aria-hidden="true" />EXPLORA POR TIENDA</p><h2 id="stores-title">Encuentra chollos donde prefieres comprar.</h2></div>
         <div className="storeDirectoryGrid">
-          <a href="/ofertas/amazon"><span>Amazon</span><b>Ofertas con precio y ahorro visible <i aria-hidden="true">→</i></b></a>
-          <a href="/ofertas/aliexpress"><span>AliExpress</span><b>Chollos y cupones publicados <i aria-hidden="true">→</i></b></a>
-          <a href="/ofertas/miravia"><span>Miravia</span><b>Productos seleccionados de Miravia <i aria-hidden="true">→</i></b></a>
+          <a className="sectionCover storeAmazon" href="/ofertas/amazon">{sectionCovers.amazon && <img src={sectionCovers.amazon.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Amazon</span><b>Ofertas con precio y ahorro visible <i aria-hidden="true">→</i></b></a>
+          <a className="sectionCover storeAliExpress" href="/ofertas/aliexpress">{sectionCovers.aliexpress && <img src={sectionCovers.aliexpress.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>AliExpress</span><b>Chollos y cupones publicados <i aria-hidden="true">→</i></b></a>
+          <a className="sectionCover storeMiravia" href="/ofertas/miravia">{sectionCovers.miravia && <img src={sectionCovers.miravia.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Miravia</span><b>Productos seleccionados de Miravia <i aria-hidden="true">→</i></b></a>
         </div>
       </section>
 
       <section className="categoryDirectory shell" aria-labelledby="categories-title">
         <div><p className="eyebrow"><span aria-hidden="true" />CHOLLOS POR CATEGORIA</p><h2 id="categories-title">Ve directo a lo que buscas.</h2></div>
         <div className="categoryDirectoryGrid">
-          <a href="/chollos/tecnologia"><span>Tecnología</span><b>Electrónica, informática y accesorios <i aria-hidden="true">→</i></b></a>
-          <a href="/chollos/videojuegos"><span>Videojuegos</span><b>Gaming y accesorios para jugar <i aria-hidden="true">→</i></b></a>
-          <a href="/chollos/hogar"><span>Hogar</span><b>Selección útil para casa y cocina <i aria-hidden="true">→</i></b></a>
+          <a className="sectionCover categoryTech" href="/chollos/tecnologia">{sectionCovers.tecnologia && <img src={sectionCovers.tecnologia.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Tecnología</span><b>Electrónica, informática y accesorios <i aria-hidden="true">→</i></b></a>
+          <a className="sectionCover categoryGaming" href="/chollos/videojuegos">{sectionCovers.videojuegos && <img src={sectionCovers.videojuegos.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Videojuegos</span><b>Gaming y accesorios para jugar <i aria-hidden="true">→</i></b></a>
+          <a className="sectionCover categoryHome" href="/chollos/hogar">{sectionCovers.hogar && <img src={sectionCovers.hogar.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Hogar</span><b>Selección útil para casa y cocina <i aria-hidden="true">→</i></b></a>
         </div>
       </section>
 
