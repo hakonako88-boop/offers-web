@@ -8,6 +8,7 @@ a { color: inherit; text-decoration: none; }
 button, input { font: inherit; }
 button { cursor: pointer; }
 :focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+.analyticsConsent { position: fixed; z-index: 60; right: 24px; bottom: 24px; display: flex; width: min(570px, calc(100% - 32px)); align-items: center; justify-content: space-between; gap: 20px; border: 1px solid #334155; border-radius: 15px; background: #101828; padding: 17px 18px; color: #fff; box-shadow: 0 18px 45px rgb(15 23 42 / 30%); }.analyticsConsent strong { display: block; font-size: 13px; }.analyticsConsent p { max-width: 320px; margin: 5px 0 0; color: #d7e0ee; font-size: 11px; line-height: 1.45; }.analyticsConsentActions { display: flex; flex: 0 0 auto; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }.analyticsConsentActions a, .analyticsConsentActions button { border: 1px solid #68768d; border-radius: 8px; background: transparent; padding: 9px 10px; color: #fff; font-size: 11px; font-weight: 800; }.analyticsConsentActions a:hover, .analyticsConsentActions button:hover { border-color: #fff; }.analyticsConsentActions .analyticsAccept { border-color: #f7c948; background: #f7c948; color: #18223b; }.analyticsConsentActions .analyticsAccept:hover { background: #ffe07b; }
 .shell { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
 .announcement { min-height: 38px; background: var(--ink); color: #fff; font-size: 12px; }
 .announcementInner { min-height: 38px; display: flex; align-items: center; justify-content: space-between; gap: 20px; color: #dce4ef; }
@@ -172,3 +173,4 @@ body { background: var(--paper); }
 .dealCard:hover img[src*="/tg/miravia-"] { transform: none; }
 .relatedDeals { padding: 0 0 92px; }.relatedDeals .sectionIntro { margin-bottom: 26px; }.relatedDeals .sectionIntro h2 { max-width: 670px; }
 @media (max-width: 640px) { .relatedDeals { padding-bottom: 68px; }.relatedDeals .sectionIntro h2 { font-size: 38px; } }
+@media (max-width: 640px) { .analyticsConsent { right: 14px; bottom: 14px; align-items: flex-start; flex-direction: column; gap: 13px; padding: 16px; }.analyticsConsent p { max-width: none; }.analyticsConsentActions { width: 100%; justify-content: flex-start; }.analyticsConsentActions a, .analyticsConsentActions button { padding: 10px; } }
