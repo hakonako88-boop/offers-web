@@ -144,7 +144,7 @@ test('reads an Amazon link hidden behind a forwarded Telegram card and uses its 
 
 test('formats a forwarded fan offer without exposing its forwarded origin', () => {
   const card = formatTelegramDealCard({
-    title: 'SPARK- VENTILADOR DE 10\". POTENCIA 40W. 3 VELOCIDADES. 3 ASPAS DE ALUMINIO. OPERACIÃ“N SILENCIOSA.',
+    title: 'SPARK- VENTILADOR DE 10\". POTENCIA 40W. 3 VELOCIDADES. 3 ASPAS DE ALUMINIO. OPERACIÓN SILENCIOSA.',
     store: 'AliExpress',
     price: '17,78 €',
     description: 'Oferta reenviada: SPARK- VENTILADOR DE 10\". POTENCIA 40W.',
@@ -156,12 +156,12 @@ test('formats a forwarded fan offer without exposing its forwarded origin', () =
 
 test('formats a V16 safety light without catalogue separators', () => {
   const card = formatTelegramDealCard({
-    title: 'Baliza V16 Homologada DGT con GeolocalizaciÃ³n | Luz de Emergencia Coche LED 360Â° 1km | Conectada Plataforma DGT 3.0',
+    title: 'Baliza V16 Homologada DGT con Geolocalización | Luz de Emergencia Coche LED 360° 1km | Conectada Plataforma DGT 3.0',
     store: 'AliExpress',
     price: '13,23 €',
   });
-  assert.match(card, /Baliza V16 DGT con geolocalizaciÃ³n para coche/);
-  assert.match(card, /visibilidad 360Â°, conexiÃ³n DGT 3.0 y base imantada/);
+  assert.match(card, /Baliza V16 DGT con geolocalización para coche/);
+  assert.match(card, /visibilidad 360°, conexión DGT 3.0 y base imantada/);
   assert.doesNotMatch(card, /\|/);
 });
 
