@@ -29,6 +29,7 @@ await render("/aviso-legal", "aviso-legal/index.html");
 await render("/privacidad", "privacidad/index.html");
 await render("/afiliacion", "afiliacion/index.html");
 await render("/contacto", "contacto/index.html");
+await render("/como-verificamos-ofertas", "como-verificamos-ofertas/index.html");
 for (const store of ["amazon", "aliexpress", "miravia"]) {
   await render(`/ofertas/${store}`, `ofertas/${store}/index.html`);
 }

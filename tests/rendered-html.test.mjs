@@ -61,7 +61,7 @@ test("renders an individual offer with price analysis, pros, cons and Product SE
   assert.match(html, /Compartir por WhatsApp/);
   assert.match(html, /t\.me\/share\/url/);
   assert.match(html, /Ha cambiado el precio o el stock/);
-  assert.match(html, /Aviso sobre una oferta/);
+  assert.match(html, /Aviso%20sobre%20una%20oferta/);
   assert.match(html, /PRECIO DE OFERTA/);
   assert.match(html, /"@type":"Product"/);
   assert.match(html, /"@type":"BreadcrumbList"/);
@@ -77,6 +77,16 @@ test("keeps the historical contact URL as a useful, indexable page", async () =>
   assert.match(html, /t\.me\/aldiachollos/);
   assert.match(html, /mailto:chollosaldia@gmail\.com/);
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/contacto"/);
+});
+
+test("explains the editorial verification method in an indexable page", async () => {
+  const response = await render("/como-verificamos-ofertas");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /C[oó]mo verificamos las ofertas/);
+  assert.match(html, /Filtramos el ruido/);
+  assert.match(html, /"@type":"Article"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/como-verificamos-ofertas"/);
 });
 
 test("renders store pages with active offers and collection SEO", async () => {
