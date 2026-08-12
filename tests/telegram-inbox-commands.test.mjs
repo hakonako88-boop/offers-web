@@ -154,6 +154,17 @@ test('formats a forwarded fan offer without exposing its forwarded origin', () =
   assert.doesNotMatch(card, /oferta reenviada/i);
 });
 
+test('formats a V16 safety light without catalogue separators', () => {
+  const card = formatTelegramDealCard({
+    title: 'Baliza V16 Homologada DGT con GeolocalizaciÃ³n | Luz de Emergencia Coche LED 360Â° 1km | Conectada Plataforma DGT 3.0',
+    store: 'AliExpress',
+    price: '13,23 €',
+  });
+  assert.match(card, /Baliza V16 DGT con geolocalizaciÃ³n para coche/);
+  assert.match(card, /visibilidad 360Â°, conexiÃ³n DGT 3.0 y base imantada/);
+  assert.doesNotMatch(card, /\|/);
+});
+
 test('does not invent a URL when a forwarded card has no link entity', () => {
   const text = 'Producto con foto y precio, pero sin URL visible';
   assert.equal(urlFromTelegramMessage({ caption_entities: [] }, text), '');

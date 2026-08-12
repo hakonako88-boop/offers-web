@@ -81,6 +81,11 @@ export function improveOfferTitle(value = '') {
     return trimAtWord(`Ventilador${brand ? ` ${brand}` : ''}${inches ? ` de sobremesa · ${inches}\"` : ''}${power ? ` · ${power} W` : ''}`);
   }
 
+  if (/baliza\s+v16|luz\s+de\s+emergencia.*(?:dgt|coche)/.test(text)) {
+    const connected = /dgt\s*3[.,]?0|geolocaliz/.test(text) ? ' con geolocalizaciÃ³n' : '';
+    return `Baliza V16 DGT${connected} para coche`;
+  }
+
   if (/auriculares|headphones|earbuds/.test(text)) {
     if (/^auriculares(?:\s+inal[aá]mbricos)?\b/i.test(original)) return trimAtWord(original);
     const brand = brandBefore(original, /(?:auriculares|headphones|earbuds)/i);
@@ -126,6 +131,9 @@ function offerDescription({ title, discount, description = '' } = {}) {
     const blades = /aspas.*aluminio/.test(titleText) ? 'aspas de aluminio y ' : '';
     const quiet = /silencios/.test(titleText) ? 'funcionamiento silencioso' : 'direcciÃ³n ajustable';
     return trimAtWord(`Ventilador de sobremesa con ${speeds}${blades}${quiet}. Ideal para refrescar espacios pequeÃ±os.`, 210);
+  }
+  if (/baliza\s+v16|luz\s+de\s+emergencia.*(?:dgt|coche)/.test(titleText)) {
+    return 'Baliza de emergencia V16 con visibilidad 360Â°, conexiÃ³n DGT 3.0 y base imantada para el coche.';
   }
   const discountText = Number(discount) > 0
     ? ` con un ${Math.round(Number(discount))}% de descuento`
