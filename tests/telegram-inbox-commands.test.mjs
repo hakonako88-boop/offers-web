@@ -157,6 +157,12 @@ test('keeps title and price facts from a forwarded card when the store cannot be
   assert.equal(metadata.photoFileId, 'telegram-forwarded-photo');
 });
 
+test('keeps a photo attached directly by the owner as a safe metadata fallback', () => {
+  const attached = forwardedOfferMetadata('Producto de prueba\nPrecio: 19,99 €', 'owner-attached-photo');
+  const metadata = mergeProductMetadata({ title: 'Producto de prueba', price: 19.99 }, attached);
+  assert.equal(metadata.imageUrl, 'owner-attached-photo');
+});
+
 test('reads price labels from a forwarded offer even when the label has no colon', () => {
   const metadata = forwardedOfferMetadata([
     'Pack 8 Sanytol Desinfectante Limpiahogar Eucaliptus 1.2 L #Amazon',
