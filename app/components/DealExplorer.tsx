@@ -336,9 +336,9 @@ export function DealExplorer() {
           <h2 id="guides-title">Guías rápidas<br />para <em>ahorrar mejor.</em></h2>
         </div>
         <div className="guideGrid">
-          <a href="/ofertas/amazon" className="guideCard guideAmazon"><span>AMAZON</span><h3>Ofertas de Amazon que merece la pena vigilar</h3><p>Productos con descuento visible y datos de precio para decidir con rapidez.</p><b>Ver ofertas <i aria-hidden="true">→</i></b></a>
-          <a href="/ofertas/aliexpress" className="guideCard guideAli"><span>ALIEXPRESS</span><h3>Cupones y precios directos de AliExpress</h3><p>Encuentra oportunidades y códigos que reducen el precio final de compra.</p><b>Explorar chollos <i aria-hidden="true">→</i></b></a>
-          <a href="#como-funciona" className="guideCard guideHow"><span>MÉTODO</span><h3>Cómo saber si una oferta es realmente buena</h3><p>Consulta el precio anterior, las condiciones y la ficha antes de comprar.</p><b>Conocer el proceso <i aria-hidden="true">→</i></b></a>
+          <a href="/guias/ofertas-amazon" className="guideCard guideAmazon"><span>AMAZON</span><h3>Como encontrar ofertas de Amazon que merecen la pena</h3><p>Una lista sencilla para comprobar precio, variante y condiciones antes de comprar.</p><b>Leer guia <i aria-hidden="true">→</i></b></a>
+          <a href="/guias/cupones-aliexpress" className="guideCard guideAli"><span>ALIEXPRESS</span><h3>Cupones y precios finales de AliExpress</h3><p>Aprende a revisar condiciones y a aplicar el descuento antes de pagar.</p><b>Leer guia <i aria-hidden="true">→</i></b></a>
+          <a href="/guias/detectar-chollos-reales" className="guideCard guideHow"><span>MÉTODO</span><h3>Como saber si una oferta es realmente buena</h3><p>Consulta el precio anterior, las condiciones y la ficha antes de comprar.</p><b>Ver el metodo <i aria-hidden="true">→</i></b></a>
         </div>
       </section>
 
@@ -390,7 +390,7 @@ export function DealExplorer() {
       <footer>
         <div className="shell footerGrid">
           <div className="footerBrand"><a className="brand" href="#inicio"><span className="brandMark" aria-hidden="true">€</span><span>Chollos <span>al</span>Día</span></a><p>Ofertas verificadas para comprar mejor cada día.</p></div>
-          <div><strong>Explora</strong><a href="#ofertas">Ofertas de hoy</a><a href="#como-funciona">Cómo funciona</a><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Canal de Telegram</a></div>
+          <div><strong>Explora</strong><a href="#ofertas">Ofertas de hoy</a><a href="/guias/detectar-chollos-reales">Guias para ahorrar</a><a href="#como-funciona">Cómo funciona</a><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Canal de Telegram</a></div>
           <div><strong>Información</strong><a href="/contacto">Contacto</a><a href="/aviso-legal">Aviso legal</a><a href="/privacidad">Privacidad</a><a href="/afiliacion">Política de afiliación</a></div>
         </div>
         <div className="shell footnote"><span>© {new Date().getFullYear()} Chollos al Día</span><p>Como afiliado, Chollos al Día puede recibir una comisión por compras que cumplen los requisitos. El precio para ti no cambia.</p></div>

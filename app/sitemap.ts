@@ -12,6 +12,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}/ofertas/amazon`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
     { url: `${siteUrl}/ofertas/aliexpress`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
     { url: `${siteUrl}/ofertas/miravia`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
+    { url: `${siteUrl}/guias/ofertas-amazon`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${siteUrl}/guias/cupones-aliexpress`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${siteUrl}/guias/detectar-chollos-reales`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.7 },
     ...Object.keys(categoryPages)
       .filter((category) => categoryIsIndexable(category, publishedDeals))
       .map((category) => ({ url: `${siteUrl}/chollos/${category}`, lastModified: homepageLastModified, changeFrequency: "daily" as const, priority: 0.75 })),

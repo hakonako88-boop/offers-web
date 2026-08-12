@@ -74,6 +74,16 @@ test("renders the technology category with its own collection SEO", async () => 
   assert.match(html, /name="robots" content="index, follow"/);
 });
 
+test("renders a useful Amazon guide with Article and FAQ SEO", async () => {
+  const response = await render("/guias/ofertas-amazon");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Como encontrar ofertas reales en Amazon/);
+  assert.match(html, /"@type":"Article"/);
+  assert.match(html, /"@type":"FAQPage"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/guias\/ofertas-amazon"/);
+});
+
 test("keeps affiliate credentials out of the client source", async () => {
   const [client, example] = await Promise.all([
     readFile(new URL("../app/components/DealExplorer.tsx", import.meta.url), "utf8"),
