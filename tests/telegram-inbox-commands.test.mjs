@@ -163,6 +163,12 @@ test('keeps a photo attached directly by the owner as a safe metadata fallback',
   assert.equal(metadata.imageUrl, 'owner-attached-photo');
 });
 
+test('keeps a forwarded card photo as a fallback when the official shop image is unavailable', () => {
+  const card = forwardedOfferMetadata('Ventilador SPARK 10 pulgadas\nPrecio: 17,78 €', 'forwarded-card-photo');
+  const metadata = mergeProductMetadata({ title: 'Ventilador SPARK 10 pulgadas', price: 17.78 }, card);
+  assert.equal(metadata.imageUrl, 'forwarded-card-photo');
+});
+
 test('reads price labels from a forwarded offer even when the label has no colon', () => {
   const metadata = forwardedOfferMetadata([
     'Pack 8 Sanytol Desinfectante Limpiahogar Eucaliptus 1.2 L #Amazon',

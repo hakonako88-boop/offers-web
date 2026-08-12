@@ -307,7 +307,6 @@ for (const update of updates || []) {
     } else if (isAuthorizedChat && urlFromTelegramMessage(message, text)) {
       const url = urlFromTelegramMessage(message, text);
       const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
-      const isForwardedMessage = Boolean(message.forward_origin || message.forward_date);
       const forwardedMetadata = pendingByChat[chatKey]?.draft || forwardedOfferMetadata(text, largestPhoto);
       try {
         await reply(settings.token, message.chat.id, processingOfferReply(storeFromUrl(url)));
@@ -325,15 +324,14 @@ for (const update of updates || []) {
         console.warn(`Could not read product metadata for inbox message ${message.message_id}: ${metadataError}`);
       }
       const resolvedStore = storeFromUrl(metadata.finalUrl || metadata.affiliateUrl || url);
-      // A forwarded photo belongs to the original channel and is frequently
-      // compressed, cropped or unrelated to the final variant. Never reuse it
-      // as the public card: the photo must be recovered from the shop/API.
-      // In contrast, a photo deliberately attached by the owner to a normal
-      // message is safe as a last-resort fallback when a shop hides its image.
-      // Forwarded wording can still supply a price or a sensible product title
-      // when a merchant omits those fields.
+      // The shop/API image always wins. If it cannot be read, however, a photo
+      // supplied in the Telegram card is a valid last-resort fallback. This is
+      // essential for AliExpress redirects, which occasionally block metadata
+      // access even though the owner has sent a complete offer. The supported
+      // store/link validation below still prevents image-only channel links
+      // from being published as products.
       const metadataFromForward = Object.fromEntries(Object.entries(forwardedMetadata)
-        .filter(([key, value]) => (key !== 'photoFileId') && (key !== 'imageUrl' || !isForwardedMessage) && value));
+        .filter(([key, value]) => key !== 'photoFileId' && value));
       // AliExpress's public page frequently returns a generic storefront title
       // or an incomplete price to automated readers. Its affiliate catalogue
       // is the authoritative product source, so ask it on every AliExpress
