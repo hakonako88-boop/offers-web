@@ -9,6 +9,7 @@ import {
   manualOfferFromMessage,
   mergeProductMetadata,
   offerFromProductMetadata,
+  processingOfferReply,
   urlFromTelegramMessage,
 } from '../scripts/telegram-inbox-commands.mjs';
 
@@ -69,6 +70,11 @@ test('builds a ready Amazon offer from public product metadata and adds the tag'
   assert.equal(result.status, 'ready');
   assert.match(result.offer.url, /tag=example-21/);
   assert.equal(result.offer.imageUrl, 'https://images.example/product.jpg');
+});
+
+test('confirms that a product link is being checked before publication', () => {
+  assert.match(processingOfferReply('Amazon'), /ficha de Amazon/);
+  assert.match(processingOfferReply('Tienda'), /ficha de la tienda/);
 });
 
 test('does not publish a forwarded image link that is not a supported shop product', () => {

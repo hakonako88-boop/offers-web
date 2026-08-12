@@ -9,6 +9,7 @@ import {
   manualOfferFromMessage,
   mergeProductMetadata,
   offerFromProductMetadata,
+  processingOfferReply,
   storeFromUrl,
   forwardedOfferMetadata,
   urlFromTelegramMessage,
@@ -307,6 +308,13 @@ for (const update of updates || []) {
       const url = urlFromTelegramMessage(message, text);
       const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
       const forwardedMetadata = pendingByChat[chatKey]?.draft || forwardedOfferMetadata(text, largestPhoto);
+      try {
+        await reply(settings.token, message.chat.id, processingOfferReply(storeFromUrl(url)));
+      } catch (error) {
+        // The acknowledgement is helpful but must never stop the actual
+        // publication when Telegram delays a private reply.
+        console.warn(`Telegram acknowledgement could not be sent: ${safeError(error, settings.token)}`);
+      }
       let metadata = { finalUrl: url };
       let metadataError = '';
       try {

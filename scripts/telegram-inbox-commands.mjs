@@ -122,6 +122,13 @@ export function controlHelp() {
   ].join('\n');
 }
 
+/** A quick acknowledgement prevents a forwarded offer from looking ignored
+ * while the shop page or the affiliate catalogue is being checked. */
+export function processingOfferReply(store = 'Tienda') {
+  const label = ['Amazon', 'AliExpress', 'Miravia'].includes(store) ? store : 'la tienda';
+  return `🔎 Estoy comprobando la ficha de ${label}: título, precio, foto y enlace. Te confirmaré aquí si se publica o si falta el enlace directo.`;
+}
+
 export function activateChatFromMessage({ text = '', controlCode = '' } = {}) {
   const match = String(text).trim().match(/^\/(?:activar|autorizar)(?:@\w+)?\s+(\S+)\s*$/i);
   if (!match) return { status: 'ignore' };
