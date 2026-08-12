@@ -20,6 +20,9 @@ export default function ContactPage() {
         <p>La vía más rápida para seguir las alertas y contactar con Chollos al Día es nuestro canal de Telegram.</p>
         <div className="notice"><strong>Ofertas y avisos:</strong> entra en el canal para recibir las publicaciones nuevas y comprobar sus condiciones antes de comprar.</div>
         <p><a className="primaryButton" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Abrir canal de Telegram <span aria-hidden="true">↗</span></a></p>
+        <h2>Escríbenos por correo</h2>
+        <p>Si quieres enviarnos una oferta, proponer una colaboración o hacernos una consulta, puedes escribirnos directamente.</p>
+        <p><a className="primaryButton" href="mailto:chollosaldia@gmail.com?subject=Contacto%20desde%20Chollos%20al%20D%C3%ADa">chollosaldia@gmail.com <span aria-hidden="true">→</span></a></p>
         <h2>Antes de compartir una oferta</h2>
         <p>Incluye el enlace directo del producto, el precio final y, si existe, el cupón o el precio anterior. Así podremos comprobarla y evitar publicaciones repetidas o incompletas.</p>
         <p><Link href="/">← Volver a las ofertas activas</Link></p>

@@ -68,6 +68,7 @@ test("keeps the historical contact URL as a useful, indexable page", async () =>
   const html = await response.text();
   assert.match(html, /Has visto un chollo/i);
   assert.match(html, /t\.me\/aldiachollos/);
+  assert.match(html, /mailto:chollosaldia@gmail\.com/);
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/contacto"/);
 });
 
