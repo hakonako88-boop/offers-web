@@ -188,6 +188,13 @@ export function DealExplorer() {
     () => Math.max(0, ...deals.map((deal) => Math.round((1 - deal.price / deal.oldPrice) * 100))),
     [deals],
   );
+  const highestSavings = useMemo(
+    () => deals
+      .filter((deal) => deal.oldPrice > deal.price)
+      .sort((left, right) => (right.oldPrice - right.price) - (left.oldPrice - left.price))
+      .slice(0, 3),
+    [deals],
+  );
 
   const featuredDeal = visibleDeals[0];
   const gridDeals = visibleDeals.slice(1);
@@ -254,6 +261,16 @@ export function DealExplorer() {
           </div>
         </div>
       </section>
+
+      {highestSavings.length > 0 && <section className="savingsSpotlight shell" aria-labelledby="savings-spotlight-title">
+        <div className="savingsSpotlightIntro"><p className="eyebrow"><span aria-hidden="true" />MAYOR AHORRO REGISTRADO</p><h2 id="savings-spotlight-title">Tres precios que merece la pena revisar.</h2><p>El orden se calcula con el ahorro entre el precio anterior registrado y el precio publicado. Comprueba siempre la ficha final antes de comprar.</p></div>
+        <div className="savingsSpotlightGrid">
+          {highestSavings.map((deal) => {
+            const discount = Math.max(0, Math.round((1 - deal.price / deal.oldPrice) * 100));
+            return <a className="savingsSpotlightCard" href={dealDetailsUrl(deal)} key={deal.id}><img src={deal.imageUrl} alt="" width={200} height={160} /><div><span>{deal.store} · −{discount}%</span><b>{shortTitle(deal.title, 56)}</b><strong>{money.format(deal.price)} <small>ahorras {money.format(deal.oldPrice - deal.price)}</small></strong></div><i aria-hidden="true">→</i></a>;
+          })}
+        </div>
+      </section>}
 
       <section className="benefitBand" aria-label="Ventajas de Chollos al Día">
         <div className="shell benefitGrid">
@@ -374,8 +391,8 @@ export function DealExplorer() {
 
       <section className="telegramCta" aria-labelledby="telegram-title">
         <div className="shell telegramInner">
-          <div><p className="eyebrow"><span aria-hidden="true" />NO LLEGUES TARDE</p><h2 id="telegram-title">Los mejores precios<br />no esperan.</h2></div>
-          <div><p>Únete al canal y recibe los nuevos chollos en Telegram.</p><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Unirme gratis <span aria-hidden="true">↗</span></a></div>
+          <div><p className="eyebrow"><span aria-hidden="true" />NO LLEGUES TARDE</p><h2 id="telegram-title">Las alertas llegan<br />antes de que se agoten.</h2></div>
+          <div><p>Entra gratis al canal para recibir nuevos chollos de Amazon, AliExpress y Miravia directamente en Telegram.</p><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis <span aria-hidden="true">↗</span></a><small>No necesitas dejar tu correo ni crear otra cuenta.</small></div>
         </div>
       </section>
 
@@ -395,6 +412,7 @@ export function DealExplorer() {
         </div>
         <div className="shell footnote"><span>© {new Date().getFullYear()} Chollos al Día</span><p>Como afiliado, Chollos al Día puede recibir una comisión por compras que cumplen los requisitos. El precio para ti no cambia.</p></div>
       </footer>
+      <a className="telegramDock" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer" aria-label="Recibir alertas de ofertas en Telegram"><span aria-hidden="true">✦</span> Alertas de chollos <b>Gratis ↗</b></a>
     </main>
   );
 }
