@@ -72,6 +72,18 @@ function schemaFor(deal: NonNullable<ReturnType<typeof getDealById>>) {
   };
 }
 
+function breadcrumbSchemaFor(deal: NonNullable<ReturnType<typeof getDealById>>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: siteUrl },
+      { "@type": "ListItem", position: 2, name: deal.category, item: `${siteUrl}/?categoria=${encodeURIComponent(deal.category)}` },
+      { "@type": "ListItem", position: 3, name: deal.title, item: `${siteUrl}${dealHref(deal.id)}` },
+    ],
+  };
+}
+
 export default async function OfferPage({ params }: OfferPageProps) {
   const { id } = await params;
   const deal = getDealById(id);
@@ -101,10 +113,12 @@ export default async function OfferPage({ params }: OfferPageProps) {
     "La valoración se basa en el precio publicado; no sustituye la ficha del vendedor.",
   ];
   const productSchema = JSON.stringify(schemaFor(deal)).replace(/</g, "\\u003c");
+  const breadcrumbsSchema = JSON.stringify(breadcrumbSchemaFor(deal)).replace(/</g, "\\u003c");
 
   return (
     <main className="offerPage">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: productSchema }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: breadcrumbsSchema }} />
       <div className="announcement">
         <div className="shell announcementInner"><span><b>Oferta analizada</b> · precio y enlace revisados al publicarla</span><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Alertas en Telegram ↗</a></div>
       </div>

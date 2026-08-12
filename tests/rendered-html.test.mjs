@@ -60,6 +60,7 @@ test("renders an individual offer with price analysis, pros, cons and Product SE
   assert.match(html, /t\.me\/share\/url/);
   assert.match(html, /PRECIO DE OFERTA/);
   assert.match(html, /"@type":"Product"/);
+  assert.match(html, /"@type":"BreadcrumbList"/);
   assert.match(html, /rel="nofollow sponsored noreferrer"/);
   assert.match(html, new RegExp(`rel="canonical" href="https://chollosaldia\\.com/oferta/${id}"`));
 });
