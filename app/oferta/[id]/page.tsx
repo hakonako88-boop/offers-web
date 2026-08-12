@@ -143,7 +143,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
 
         <section className="offerPurchase" aria-labelledby="purchase-title"><div><p className="eyebrow"><span aria-hidden="true" />¿TE ENCAJA?</p><h2 id="purchase-title">Comprueba el precio final antes de pagar.</h2><p>El enlace te lleva a la tienda. Allí podrás revisar disponibilidad, gastos de envío, variantes y condiciones de compra.</p></div><a className="primaryButton" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ver oferta en {deal.store} <span aria-hidden="true">→</span></a></section>
       </article>
-      <footer><div className="shell footnote"><span>© {new Date().getFullYear()} Chollos al Día</span><p>Algunos enlaces son de afiliación y pueden generar una comisión sin cambiar el precio para ti.</p></div></footer>
+      <footer><div className="shell footnote"><span>© {new Date().getFullYear()} Chollos al Día</span><p><Link href="/contacto">Contacto</Link> · <a href="mailto:chollosaldia@gmail.com">chollosaldia@gmail.com</a></p><p>Algunos enlaces son de afiliación y pueden generar una comisión sin cambiar el precio para ti.</p></div></footer>
     </main>
   );
 }
