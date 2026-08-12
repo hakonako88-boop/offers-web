@@ -82,6 +82,10 @@ export default async function OfferPage({ params }: OfferPageProps) {
   const discount = dealDiscount(deal);
   const savings = dealSavings(deal);
   const description = dealDescription(deal);
+  const relatedDeals = publishedDeals
+    .filter((candidate) => candidate.id !== deal.id)
+    .sort((left, right) => Number(right.category === deal.category) - Number(left.category === deal.category) || Number(right.store === deal.store) - Number(left.store === deal.store))
+    .slice(0, 3);
   const pros = [
     discount > 0 ? `Descuento visible del ${discount}% frente al precio anterior.` : "Precio localizado y enlazado directamente a la tienda.",
     savings > 0 ? `Ahorro estimado de ${money.format(savings)}.` : "Compra directa sin pasos intermedios.",
@@ -134,6 +138,8 @@ export default async function OfferPage({ params }: OfferPageProps) {
             <section className="cons"><h3><span aria-hidden="true">!</span> A tener en cuenta</h3><ul>{cons.map((item) => <li key={item}>{item}</li>)}</ul></section>
           </div>
         </section>
+
+        {relatedDeals.length > 0 && <section className="relatedDeals" aria-labelledby="related-title"><div className="sectionIntro"><div><p className="eyebrow"><span aria-hidden="true" />SIGUE AHORRANDO</p><h2 id="related-title">Otras ofertas que te pueden interesar.</h2></div><p>Selección activa de la misma tienda o categoría.</p></div><div className="dealGrid">{relatedDeals.map((related) => <article className="dealCard" key={related.id}><Link className="imageWrap dealPreviewLink" href={dealHref(related.id)} aria-label={`Ver oferta: ${related.title}`}><img src={related.imageUrl} alt={related.title} width={720} height={560} /><span className="storeBadge">{related.store}</span></Link><div className="dealBody"><p className="categoryLabel">{related.category}</p><h3><Link href={dealHref(related.id)}>{related.title}</Link></h3><div className="priceRow"><strong>{money.format(related.price)}</strong>{related.oldPrice > related.price && <span>Antes <s>{money.format(related.oldPrice)}</s></span>}</div><Link className="dealButton" href={dealHref(related.id)}>Ver oferta <span aria-hidden="true">→</span></Link></div></article>)}</div></section>}
 
         <section className="offerPurchase" aria-labelledby="purchase-title"><div><p className="eyebrow"><span aria-hidden="true" />¿TE ENCAJA?</p><h2 id="purchase-title">Comprueba el precio final antes de pagar.</h2><p>El enlace te lleva a la tienda. Allí podrás revisar disponibilidad, gastos de envío, variantes y condiciones de compra.</p></div><a className="primaryButton" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ver oferta en {deal.store} <span aria-hidden="true">→</span></a></section>
       </article>

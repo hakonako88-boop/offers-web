@@ -168,3 +168,5 @@ body { background: var(--paper); }
    new publications are now fetched at the product-image rendition. */
 .imageWrap img[src*="/tg/miravia-"], .offerImageWrap img[src*="/tg/miravia-"] { padding: 12px; background: #fff; object-fit: contain; }
 .dealCard:hover img[src*="/tg/miravia-"] { transform: none; }
+.relatedDeals { padding: 0 0 92px; }.relatedDeals .sectionIntro { margin-bottom: 26px; }.relatedDeals .sectionIntro h2 { max-width: 670px; }
+@media (max-width: 640px) { .relatedDeals { padding-bottom: 68px; }.relatedDeals .sectionIntro h2 { font-size: 38px; } }
