@@ -138,6 +138,7 @@ test('reads an Amazon link hidden behind a forwarded Telegram card and uses its 
   assert.equal(metadata.price, 12.34);
   assert.equal(metadata.previousPrice, 17.08);
   assert.equal(metadata.imageUrl, 'telegram-forwarded-photo');
+  assert.doesNotMatch(metadata.description, /oferta reenviada/i);
 });
 
 test('does not invent a URL when a forwarded card has no link entity', () => {

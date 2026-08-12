@@ -236,7 +236,10 @@ export function forwardedOfferMetadata(text = '', photoFileId = '') {
   const previousPrice = parseAmount(lastAmount(previousLine));
   return {
     title,
-    description: title ? `Oferta reenviada: ${title}. Revisa el precio y las condiciones antes de finalizar la compra.` : '',
+    // “Forwarded” is an internal ingestion detail, never public copy. Keeping
+    // the factual title here lets the presentation layer create its normal
+    // concise product description without revealing how it arrived.
+    description: title,
     imageUrl: photoFileId,
     price,
     previousPrice: previousPrice > price ? previousPrice : 0,
