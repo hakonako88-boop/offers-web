@@ -53,6 +53,7 @@ for (const id of offerIds) {
 }
 await render("/robots.txt", "robots.txt");
 await render("/sitemap.xml", "sitemap.xml");
+await render("/feed.xml", "feed.xml");
 await writeFile(path.join(output, "CNAME"), "chollosaldia.com\n", "utf8");
 await writeFile(path.join(output, ".nojekyll"), "", "utf8");
 

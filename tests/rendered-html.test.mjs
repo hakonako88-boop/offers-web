@@ -33,6 +33,17 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/);
 });
 
+test("publishes a feed with only the reviewed active offers", async () => {
+  const response = await render("/feed.xml");
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") ?? "", /^application\/rss\+xml\b/i);
+  const xml = await response.text();
+  assert.match(xml, /<rss version="2.0">/);
+  assert.match(xml, /<title>Chollos al Día - Ofertas nuevas<\/title>/);
+  assert.match(xml, /https:\/\/chollosaldia\.com\/oferta\//);
+  assert.doesNotMatch(xml, /Relleno de coj[ií]n|Mantel impermeable|Malla Ocultaci[oó]n/i);
+});
+
 test("renders an individual offer with price analysis, pros, cons and Product SEO", async () => {
   const home = await render();
   const homeHtml = await home.text();
