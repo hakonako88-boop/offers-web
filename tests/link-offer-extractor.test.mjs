@@ -39,3 +39,58 @@ test('follows a merchant button from a forwarded deals page to the product page'
   assert.equal(result.title, 'Auriculares de prueba');
   assert.equal(result.price, 29.99);
 });
+
+test('uses MiChollo public API to resolve the real Miravia product', async () => {
+  const sourceUrl = 'https://michollo.com/chollo-robot-aspirador-xiaomi-365999/';
+  const shortUrl = 'https://a.michollo.to/test';
+  const miraviaUrl = 'https://www.miravia.es/p/robot-xiaomi-i1234567890.html';
+  const fetchImpl = async (url) => {
+    if (String(url).includes('/api/deals/365999')) return {
+      ok: true,
+      json: async () => ({ deal: {
+        name: 'Robot aspirador Xiaomi S20',
+        description: '<p>Robot con navegación láser</p>',
+        image_url: 'https://img.michollo.com/robot.webp',
+        offer_url: shortUrl,
+      } }),
+    };
+    if (url === shortUrl) return {
+      ok: true,
+      url: miraviaUrl,
+      text: async () => '<meta property="og:title" content="Xiaomi Robot Vacuum S20"><meta property="og:image" content="https://img.miravia.es/s20.jpg"><meta property="product:price:amount" content="129,99">',
+    };
+    throw new Error(`unexpected URL ${url}`);
+  };
+  const result = await extractProductMetadata(sourceUrl, { fetchImpl });
+  assert.equal(result.source, 'michollo');
+  assert.equal(result.finalUrl, miraviaUrl);
+  assert.equal(result.title, 'Xiaomi Robot Vacuum S20');
+  assert.equal(result.price, 129.99);
+});
+
+test('uses NoLoDejesEscapar public REST data but ignores an unrelated Awin affiliate', async () => {
+  const sourceUrl = 'https://nolodejesescapar.com/cargador-gan-65w/';
+  const aliExpressUrl = 'https://www.aliexpress.com/item/1005001234567890.html';
+  const fetchImpl = async (url) => {
+    if (String(url).includes('/wp-json/wp/v2/posts')) return {
+      ok: true,
+      json: async () => [{
+        title: { rendered: 'Chollo! Cargador GaN 65W' },
+        content: { rendered: `<a href="https://www.awin1.com/cread.php?awinmid=20982&awinaffid=540793">PcComponentes</a><a href="${aliExpressUrl}">Ver oferta en AliExpress</a>` },
+        yoast_head_json: { og_image: [{ url: 'https://nolodejesescapar.com/cargador.jpg' }] },
+      }],
+    };
+    if (url === aliExpressUrl) return {
+      ok: true,
+      url: aliExpressUrl,
+      text: async () => '<meta property="og:title" content="Cargador GaN USB-C 65W"><meta property="og:image" content="https://ae01.alicdn.com/cargador.jpg"><meta property="product:price:amount" content="18,49">',
+    };
+    throw new Error(`unexpected URL ${url}`);
+  };
+  assert.equal(merchantLinkFromHtml('<a href="https://www.awin1.com/cread.php?awinmid=20982&awinaffid=540793">Comprar</a>'), '');
+  const result = await extractProductMetadata(sourceUrl, { fetchImpl });
+  assert.equal(result.source, 'nolodejesescapar');
+  assert.equal(result.finalUrl, aliExpressUrl);
+  assert.equal(result.title, 'Cargador GaN USB-C 65W');
+  assert.equal(result.price, 18.49);
+});

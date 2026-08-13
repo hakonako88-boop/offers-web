@@ -5,15 +5,15 @@ const MAX_SIGNAL_AGE_MS = 48 * 60 * 60 * 1000;
 const MICHOLLO_REFRESH_MS = 6 * 60 * 60 * 1000;
 
 export const COMMUNITY_SOURCES = [
+  { id: 'michollo', kind: 'sitemap', url: 'https://michollo.com/assets/sitemap-chollos-0.xml.gz', weight: 30 },
+  { id: 'nolodejesescapar', kind: 'rss', url: 'https://nolodejesescapar.com/feed/', weight: 25 },
   {
     id: 'chollometro-aliexpress',
     kind: 'rss',
     url: 'https://www.chollometro.com/rss/nuevos',
     merchant: 'AliExpress',
-    weight: 14,
+    weight: 8,
   },
-  { id: 'nolodejesescapar', kind: 'rss', url: 'https://nolodejesescapar.com/feed/', weight: 12 },
-  { id: 'michollo', kind: 'sitemap', url: 'https://michollo.com/assets/sitemap-chollos-0.xml.gz', weight: 8 },
 ];
 
 const STOP_WORDS = new Set([
@@ -59,7 +59,31 @@ function sourceStore(value = '') {
   const text = normalise(value);
   if (/amazon/.test(text)) return 'Amazon';
   if (/aliexpress/.test(text)) return 'AliExpress';
+  if (/miravia/.test(text)) return 'Miravia';
   return 'Otra';
+}
+
+/** Returns the strongest recent community signal that describes the same
+ * product. Two concrete terms are required, so generic words cannot make an
+ * unrelated catalogue item look community-validated. */
+export function communityMatchForTitle(title = '', signals = []) {
+  const haystack = normalise(title);
+  let best = null;
+  for (const signal of signals) {
+    const terms = [...new Set((signal.terms || []).map(normalise).filter((term) => term.length >= 3))];
+    const matchedTerms = terms.filter((term) => haystack.includes(term));
+    const required = Math.min(3, Math.max(2, Math.ceil(terms.length * 0.4)));
+    if (matchedTerms.length < required) continue;
+    const score = Number(signal.sourceWeight || 0) + matchedTerms.length * 8;
+    if (!best || score > best.score) best = {
+      id: signal.id,
+      source: signal.source,
+      sourceUrl: signal.sourceUrl,
+      score,
+      matchedTerms,
+    };
+  }
+  return best;
 }
 
 export function searchTermsForSignal(title) {

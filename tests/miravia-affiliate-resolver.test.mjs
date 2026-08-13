@@ -1,12 +1,18 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  isMiraviaAwinUrl,
   miraviaAffiliateUrl,
   miraviaAwinAffiliateUrl,
   miraviaAwinDeepLink,
   miraviaProductIdFromHtml,
   miraviaProductIdFromUrl,
 } from '../scripts/miravia-affiliate-resolver.mjs';
+
+test('accepts only Awin links belonging to the Miravia programme', () => {
+  assert.equal(isMiraviaAwinUrl('https://www.awin1.com/pclick.php?p=42552297239&a=2023977&m=37168'), true);
+  assert.equal(isMiraviaAwinUrl('https://www.awin1.com/cread.php?awinmid=20982&awinaffid=540793'), false);
+});
 
 test('extracts a Miravia/Awin product id from an existing affiliate click', () => {
   assert.equal(

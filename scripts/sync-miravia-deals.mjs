@@ -17,17 +17,21 @@ import {
   selectMiraviaFeed,
 } from './miravia-offers.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
+import { communityMatchForTitle, discoverCommunitySignals } from './community-signals.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'miravia-discovery-state.json');
 const PUBLISHED_FILE = path.join(ROOT, 'data', 'miravia-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
-const MAX_POSTS_PER_RUN = 3;
+const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'miravia-community-signal-state.json');
+const MAX_POSTS_PER_RUN = 1;
 const MAX_PUBLICATION_ATTEMPTS = 12;
 const MAX_PRODUCTS_SCANNED = 40000;
 const MAX_CANDIDATES = 60;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
+const COMMUNITY_REFRESH_MS = 2 * 60 * 60 * 1000;
+const COMMUNITY_SIGNAL_RETENTION_MS = 48 * 60 * 60 * 1000;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -154,6 +158,8 @@ async function saveOfferForWeb(offer, message) {
     price: offer.priceLabel,
     previousPrice: offer.previousPriceLabel,
     store: 'Miravia',
+    source: offer.communitySource || 'miravia-awin-feed',
+    source_url: offer.communitySourceUrl || '',
     category: offer.category,
     description: offer.title,
   };
@@ -271,6 +277,7 @@ await sleep(10000 + Math.floor(Math.random() * 15000));
 
 const state = readJson(STATE_FILE, { nextFeed: 0, feedVersions: {} });
 const publicationState = readJson(PUBLISHED_FILE, { published: [] });
+const storedCommunityState = readJson(COMMUNITY_STATE_FILE, { recentSignals: [] });
 const existingWebOffers = readJson(WEB_OFFERS_FILE, []);
 const cutoff = Date.now() - 365 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
@@ -279,6 +286,32 @@ const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, D
 const canPublishToday = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
   || !lastPublicationAt
   || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
+
+const signalCutoff = Date.now() - COMMUNITY_SIGNAL_RETENTION_MS;
+let communitySignals = (storedCommunityState.recentSignals || [])
+  .filter((signal) => !Number.isFinite(Date.parse(signal.publishedAt || '')) || Date.parse(signal.publishedAt) > signalCutoff);
+const lastCommunityCheck = Date.parse(storedCommunityState.lastCheckedAt || '');
+let communityHealth = storedCommunityState.sourceHealth || [];
+let micholloLastCheckedAt = storedCommunityState.micholloLastCheckedAt;
+if (!Number.isFinite(lastCommunityCheck) || Date.now() - lastCommunityCheck >= COMMUNITY_REFRESH_MS) {
+  const discovery = await discoverCommunitySignals({ state: { ...storedCommunityState, seen: [] } });
+  const mergedSignals = new Map(communitySignals.map((signal) => [signal.id, signal]));
+  for (const signal of discovery.signals) mergedSignals.set(signal.id, signal);
+  communitySignals = [...mergedSignals.values()]
+    .filter((signal) => !Number.isFinite(Date.parse(signal.publishedAt || '')) || Date.parse(signal.publishedAt) > signalCutoff)
+    .sort((left, right) => Number(right.sourceWeight || 0) - Number(left.sourceWeight || 0))
+    .slice(0, 80);
+  communityHealth = discovery.sourceHealth;
+  if (discovery.sourceHealth.some((entry) => entry.source === 'michollo' && entry.status !== 'deferred')) {
+    micholloLastCheckedAt = discovery.checkedAt;
+  }
+  writeJson(COMMUNITY_STATE_FILE, {
+    recentSignals: communitySignals,
+    lastCheckedAt: discovery.checkedAt,
+    micholloLastCheckedAt,
+    sourceHealth: communityHealth,
+  });
+}
 
 const listResponse = await fetch(config.feedListUrl, {
   headers: { 'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)' },
@@ -294,21 +327,36 @@ if (!feed) throw new Error('No Spanish Miravia product feed is available for thi
 const feedVersion = `${MIRAVIA_QUALITY_POLICY_VERSION}:${String(feed.last_imported || feed.last_checked || 'unknown')}`;
 const alreadyChecked = state.feedVersions?.[feed.feed_id] === feedVersion;
 let discovered = { candidates: [], productsScanned: 0 };
-if (!alreadyChecked) {
+const queuedOffers = (state.queuedOffers || []).filter((offer) => offer?.id && !seenProductIds.has(offer.id));
+if (!alreadyChecked || queuedOffers.length < 5) {
   discovered = await discoverCandidates(feed.url, seenProductIds);
 } else {
-  console.log(`Miravia feed ${feed.feed_id} is unchanged; skipping download.`);
+  console.log(`Miravia feed ${feed.feed_id} is unchanged; using ${queuedOffers.length} validated queued candidates.`);
 }
 
-const candidates = (canPublishToday ? filterDuplicateDeals(Array.from(new Map(
-  discovered.candidates.map((offer) => [offer.id, offer]),
-).values()), existingWebOffers) : []).sort((left, right) => right.score - left.score);
+const mergedCandidates = Array.from(new Map(
+  [...queuedOffers, ...discovered.candidates].map((offer) => [offer.id, offer]),
+).values()).map((offer) => {
+  const communityMatch = communityMatchForTitle(offer.title, communitySignals);
+  return communityMatch ? {
+    ...offer,
+    score: offer.score + 1_000 + communityMatch.score,
+    communitySignalId: communityMatch.id,
+    communitySource: communityMatch.source,
+    communitySourceUrl: communityMatch.sourceUrl,
+  } : offer;
+});
+
+const candidates = (canPublishToday ? filterDuplicateDeals(mergedCandidates, existingWebOffers) : [])
+  .sort((left, right) => right.score - left.score);
 
 let sent = 0;
 let attempted = 0;
+const attemptedProductIds = new Set();
 for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
   if (sent >= MAX_POSTS_PER_RUN) break;
   attempted += 1;
+  attemptedProductIds.add(offer.id);
   try {
     offer.image = await preferredMiraviaImage(offer);
     const message = await publishOffer(config, offer);
@@ -319,6 +367,11 @@ for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
       telegramMessageId: message.message_id,
       price: offer.price,
       url: offer.url,
+      title: offer.title,
+      store: 'Miravia',
+      source: offer.communitySource || 'miravia-awin-feed',
+      sourceUrl: offer.communitySourceUrl || '',
+      status: 'PUBLICADO',
     });
     seenProductIds.add(offer.id);
     sent += 1;
@@ -330,10 +383,13 @@ for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
 writeJson(STATE_FILE, {
   nextFeed: Number(state.nextFeed || 0) + 1,
   feedVersions: { ...state.feedVersions, [feed.feed_id]: feedVersion },
+  queuedOffers: candidates
+    .filter((offer) => !seenProductIds.has(offer.id) && !attemptedProductIds.has(offer.id))
+    .slice(0, MAX_CANDIDATES),
   lastRunAt: new Date().toISOString(),
   lastFeedId: feed.feed_id,
   lastFeedName: feed.feed_name,
   lastProductsScanned: discovered.productsScanned,
 });
 writeJson(PUBLISHED_FILE, { published });
-console.log(`Miravia checked feed ${feed.feed_id} (${feed.feed_name}), scanned ${discovered.productsScanned} products, found ${candidates.length} publishable candidate(s), attempted ${attempted}, and published ${sent} curated offer(s).${canPublishToday ? '' : ' Publication interval is still active.'}`);
+console.log(`Miravia checked feed ${feed.feed_id} (${feed.feed_name}), scanned ${discovered.productsScanned} products, retained ${communitySignals.length} priority source signal(s), found ${candidates.length} publishable candidate(s), attempted ${attempted}, and published ${sent} curated offer(s).${canPublishToday ? '' : ' Publication interval is still active.'}`);

@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import { formatTelegramDealCard, formatWebsiteDealText, improveOfferTitle } from './offer-presentation.mjs';
+import { isMiraviaAwinUrl } from './miravia-affiliate-resolver.mjs';
 
 function compact(value = '') {
   return String(value).replace(/\s+/gu, ' ').trim();
@@ -94,7 +95,7 @@ export function storeFromUrl(url) {
   }
   if (/(^|\.)amazon\./.test(host) || host === 'amzn.to') return 'Amazon';
   if (/(^|\.)aliexpress\./.test(host) || /s\.click\.aliexpress\.com/.test(host)) return 'AliExpress';
-  if (/(^|\.)miravia\./.test(host) || /awin1\.com/.test(host)) return 'Miravia';
+  if (/(^|\.)miravia\./.test(host) || isMiraviaAwinUrl(url)) return 'Miravia';
   return 'Tienda';
 }
 
@@ -178,7 +179,8 @@ function hasAffiliateLink(url, store) {
   try {
     const host = new URL(url).hostname.toLowerCase();
     if (store === 'AliExpress') return /(^|\.)s\.click\.aliexpress\.com$/.test(host) || /(^|\.)a\.aliexpress\.com$/.test(host);
-    if (store === 'Miravia') return /(^|\.)awin1\.com$/.test(host) || /(^|\.)awin\.com$/.test(host);
+    if (store === 'Miravia') return isMiraviaAwinUrl(url)
+      && (new URL(url).searchParams.get('a') === '2023977' || new URL(url).searchParams.get('awinaffid') === '2023977');
     return true;
   } catch {
     return false;

@@ -1,51 +1,67 @@
 # Automatización de ChollosAlDía
 
-Las ofertas automáticas se seleccionan, validan y publican mediante GitHub Actions. Cada oferta aceptada se envía a Telegram y se guarda en `data/offers.json` para aparecer también en la web.
+Las ofertas automáticas se descubren mediante fuentes públicas permitidas, se comprueban de nuevo en el catálogo oficial de la tienda y se publican mediante GitHub Actions. Cada oferta aceptada llega a Telegram y se guarda en la web.
 
-## Horarios activos
+## Horario Europe/Madrid
 
-Mientras Amazon no tenga acceso aprobado a Creators API, las ejecuciones automáticas se reparten así:
+Hay cinco tandas diarias. Cada tanda reserva dos posiciones para AliExpress y dos para Miravia:
 
-| Hora peninsular de verano | Tienda | Máximo por tanda |
-| --- | --- | ---: |
-| 09:00 | AliExpress | 3 |
-| 11:00 | Miravia | 3 |
-| 13:00 | AliExpress | 3 |
-| 15:00 | Miravia | 3 |
-| 17:00 | AliExpress | 3 |
+| Tanda | AliExpress | Miravia | AliExpress | Miravia |
+| --- | --- | --- | --- | --- |
+| 09:00 | 09:00 | 09:04 | 09:08 | 09:12 |
+| 11:30 | 11:30 | 11:34 | 11:38 | 11:42 |
+| 14:30 | 14:30 | 14:34 | 14:38 | 14:42 |
+| 18:30 | 18:30 | 18:34 | 18:38 | 18:42 |
+| 21:30 | 21:30 | 21:34 | 21:38 | 21:42 |
 
-GitHub programa las tareas en UTC. Los valores actuales corresponden al horario de verano español (UTC+2); al comenzar el horario de invierno deben desplazarse una hora para conservar las horas peninsulares indicadas.
+El máximo teórico es de veinte ofertas al día: diez de AliExpress y diez de Miravia. Cada posición es una ejecución independiente. El fallo de una tienda, una imagen o un producto no cancela las posiciones posteriores.
 
-El máximo teórico es de 15 publicaciones diarias. No se completa una tanda con datos inventados: si no hay tres productos nuevos con precio, imagen, descuento y enlace verificables, se publican solo los que superen todos los controles.
+Cada horario declara directamente `timezone: Europe/Madrid`. GitHub ajusta automáticamente el cambio de verano e invierno, por lo que las horas peninsulares se conservan durante todo el año.
 
-Amazon no participa en ninguna ejecución programada. Permanece disponible para publicaciones manuales y para pruebas manuales de la API cuando la cuenta obtenga elegibilidad.
+Una posición puede quedar vacía. Nunca se publica un producto inventado o incompleto para alcanzar el máximo.
 
-## Enlaces de afiliación
+Amazon no participa en ejecuciones programadas mientras la cuenta no tenga acceso aprobado a Creators API. Continúa disponible para publicaciones manuales.
 
-- **AliExpress:** la API oficial consulta el producto y devuelve `promotion_link` usando `ALIEXPRESS_TRACKING_ID`. En el bot privado se vuelve a generar el enlace aunque la URL recibida sea un enlace corto o proceda de otro canal.
-- **Miravia:** las ofertas automáticas usan el enlace atribuido del feed privado de Awin. En el bot privado, una URL directa de `miravia.es` se convierte en un enlace Awin asociado al publisher `2023977` y al programa Miravia `37168`. Si se recibe un enlace Awin con un identificador de producto, el bot puede reconstruirlo para esta cuenta.
-- **Amazon:** el bot añade y verifica `AMAZON_PARTNER_TAG` en publicaciones manuales. La búsqueda automática seguirá desactivada hasta que Amazon apruebe la API.
+## Descubrimiento prioritario
 
-El bot nunca debe declarar que un enlace está atribuido si no ha podido crear o verificar una URL válida de la red correspondiente.
+Las señales editoriales se consultan en este orden:
 
-## Secretos necesarios
+1. MiChollo.
+2. NoLoDejesEscapar.com.
+3. Fuentes oficiales de AliExpress y el feed privado de Miravia en Awin.
 
-Los valores privados se guardan únicamente en GitHub Actions Secrets y nunca deben compartirse por chat ni incluirse en el repositorio:
+Las páginas de chollos sirven para descubrir productos y tendencias. Sus descripciones, imágenes y enlaces de afiliado no se copian como datos definitivos. Antes de publicar, el producto debe encontrarse otra vez en AliExpress o en el catálogo de Miravia, donde se verifican el precio, la imagen, el descuento y la identidad del producto.
 
-- `ALIEXPRESS_APP_KEY`, `ALIEXPRESS_APP_SECRET` y `ALIEXPRESS_TRACKING_ID`.
-- `AWIN_FEED_LIST_URL`.
-- `AMAZON_CREATOR_CREDENTIAL_ID`, `AMAZON_CREATOR_SECRET` y `AMAZON_CREATOR_VERSION`, cuando Amazon habilite la cuenta.
-- `AMAZON_PARTNER_TAG`.
-- `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHANNEL_ID`, `TELEGRAM_ALLOWED_CHAT_ID`, `TELEGRAM_WEBHOOK_URL` y `TELEGRAM_WEBHOOK_SECRET`.
+Chollometro puede permanecer como señal secundaria de respaldo para AliExpress, con una prioridad inferior a MiChollo y NoLoDejesEscapar.
 
-## Controles editoriales
+## Afiliación
 
-Antes de publicar se comprueba que existan título fiable, precio actual, imagen útil y enlace atribuido. También se rechazan productos sin descuento real suficiente, sin interés probado, agotados, con imágenes pequeñas o repetidos recientemente.
+- **AliExpress:** la API oficial genera `promotion_link` usando `ALIEXPRESS_TRACKING_ID`. El enlace debe corresponder al mismo identificador de producto encontrado en la fuente.
+- **Miravia:** las ofertas automáticas usan enlaces atribuidos del feed privado de Awin. Las entradas manuales se reconstruyen para el publisher `2023977` y el programa Miravia `37168` cuando se conoce la URL oficial o el identificador Awin del producto.
+- **Amazon:** las publicaciones manuales usan `AMAZON_PARTNER_TAG`; la búsqueda automática permanece desactivada.
 
-Chollometro, No Lo Dejes Escapar y MiChollo se utilizan únicamente como señales para descubrir tendencias. Sus textos, fotografías y enlaces de afiliado no se copian. AliExpress o Awin deben volver a confirmar los datos y generar el enlace propio antes de publicar.
+Nunca se conserva como destino final el identificador de afiliación de MiChollo, NoLoDejesEscapar u otro canal.
 
-## Publicación desde el bot privado
+## Validación editorial
 
-El propietario puede pegar un enlace de Amazon, AliExpress o Miravia, o reenviar una tarjeta que incluya enlace, título, precio y fotografía. El bot intenta obtener la ficha oficial, genera el enlace propio, elimina referencias al canal original, evita duplicados y publica en Telegram y la web.
+Una oferta se publica solo cuando dispone de:
 
-Si una tienda bloquea temporalmente la lectura y falta un dato indispensable, el bot conserva los datos seguros del mensaje y solicita únicamente la información que falte; nunca inventa el precio ni sustituye el producto por uno parecido.
+- Tienda e identidad de producto válidas.
+- Título fiable.
+- Precio actual verificable.
+- Imagen oficial o segura de calidad suficiente.
+- Enlace de afiliado propio y válido.
+- Descuento real o interés comercial suficiente.
+- Producto no publicado recientemente.
+
+Los cupones, valoraciones, ventas, envío gratuito y precios anteriores se muestran únicamente cuando la fuente oficial los proporciona y pueden verificarse. No se afirman mínimos históricos, escasez ni duración limitada sin una prueba fiable.
+
+## Duplicados e historial
+
+La identidad se compara primero por product ID, SKU o identificador Awin/AliExpress; después por URL canónica y, solo como respaldo, por similitud de título. El historial almacena tienda, producto, título, precio, afiliado, fuente, fecha y estado. Los productos ya publicados se excluyen de las posiciones posteriores.
+
+## Bot privado
+
+El propietario puede enviar enlaces de AliExpress, Miravia, MiChollo o NoLoDejesEscapar. El bot intenta resolver el botón externo permitido, identifica la tienda, obtiene la ficha oficial, genera el enlace propio, elimina referencias al canal de origen y publica en Telegram y la web.
+
+No se sortean CAPTCHA, autenticaciones ni controles de seguridad. Si una tienda impide verificar un dato obligatorio, el bot solicita solamente lo que falta o descarta la oferta; nunca inventa datos ni sustituye el producto por otro parecido.

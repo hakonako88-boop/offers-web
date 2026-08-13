@@ -1,5 +1,11 @@
+import { isMiraviaAwinUrl, miraviaProductIdFromHtml, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
+
 function compact(value = '') {
   return String(value).replace(/\s+/gu, ' ').trim();
+}
+
+function sourceTitle(value = '') {
+  return compact(value).replace(/^(?:chollo|chollazo|descuento|rebaja|preciazo|ofert[oó]n)\s*!?\s*/iu, '');
 }
 
 function decode(value = '') {
@@ -66,7 +72,8 @@ function merchantUrl(value = '', baseUrl = '') {
   if (!url) return '';
   try {
     const host = new URL(url).hostname.toLowerCase();
-    return /(^|\.)(?:amazon\.[a-z.]+|amzn\.to|aliexpress\.com|miravia\.es|awin1\.com|awin\.com)$/iu.test(host) ? url : '';
+    if (/(^|\.)awin1?\.com$/iu.test(host)) return isMiraviaAwinUrl(url) ? url : '';
+    return /(^|\.)(?:amazon\.[a-z.]+|amzn\.to|aliexpress\.com|miravia\.es)$/iu.test(host) ? url : '';
   } catch {
     return '';
   }
@@ -121,6 +128,78 @@ async function fetchPage(url, fetchImpl) {
   };
 }
 
+async function fetchResolvedDestination(url, fetchImpl) {
+  const response = await fetchImpl(url, {
+    redirect: 'follow',
+    headers: {
+      'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaBot/1.0; +https://chollosaldia.com)',
+      accept: 'text/html,application/xhtml+xml',
+    },
+  });
+  const finalUrl = merchantUrl(response.url || '') || merchantUrl(url);
+  return {
+    finalUrl,
+    html: response.ok ? (await response.text()).slice(0, 1_500_000) : '',
+  };
+}
+
+function sourceType(url = '') {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    if (host === 'michollo.com' || host.endsWith('.michollo.com')) return 'michollo';
+    if (host === 'nolodejesescapar.com' || host.endsWith('.nolodejesescapar.com')) return 'nolodejesescapar';
+  } catch {
+    return '';
+  }
+  return '';
+}
+
+async function publicSourceOffer(url, fetchImpl) {
+  const type = sourceType(url);
+  if (type === 'michollo') {
+    const dealId = new URL(url).pathname.match(/-(\d+)\/?$/u)?.[1];
+    if (!dealId) return null;
+    const response = await fetchImpl(`https://app.michollo.com/api/deals/${dealId}`, {
+      headers: { 'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)' },
+    });
+    if (!response.ok) throw new Error(`MiChollo respondió ${response.status}.`);
+    const deal = (await response.json().catch(() => ({})))?.deal;
+    if (!deal?.offer_url) return null;
+    return {
+      source: 'michollo',
+      title: sourceTitle(deal.name),
+      description: decode(deal.description),
+      imageUrl: absoluteUrl(deal.image_url),
+      outboundUrl: absoluteUrl(deal.offer_url),
+    };
+  }
+  if (type === 'nolodejesescapar') {
+    const slug = new URL(url).pathname.split('/').filter(Boolean).at(-1) || '';
+    if (!slug) return null;
+    const endpoint = `https://nolodejesescapar.com/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed=1`;
+    const response = await fetchImpl(endpoint, {
+      headers: { 'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)' },
+    });
+    if (!response.ok) throw new Error(`NoLoDejesEscapar respondió ${response.status}.`);
+    const post = (await response.json().catch(() => []))?.[0];
+    if (!post) return null;
+    const html = String(post.content?.rendered || '');
+    const imageUrl = absoluteUrl(
+      post.yoast_head_json?.og_image?.[0]?.url
+      || post._embedded?.['wp:featuredmedia']?.[0]?.source_url
+      || '',
+    );
+    return {
+      source: 'nolodejesescapar',
+      title: sourceTitle(post.title?.rendered),
+      description: decode(post.excerpt?.rendered || ''),
+      imageUrl,
+      outboundUrl: outboundOfferLinkFromHtml(html, url),
+    };
+  }
+  return null;
+}
+
 /**
  * Extracts only public product metadata. It deliberately does not guess a
  * price from surrounding marketing text: a deal must have a real value before
@@ -142,6 +221,30 @@ export async function extractProductMetadata(url, { fetchImpl = fetch } = {}) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 12000);
   try {
+    const sourceOffer = await publicSourceOffer(
+      url,
+      (requestUrl, options = {}) => fetchImpl(requestUrl, { ...options, signal: controller.signal }),
+    );
+    if (sourceOffer?.outboundUrl) {
+      const resolved = await fetchResolvedDestination(
+        sourceOffer.outboundUrl,
+        (requestUrl, options) => fetchImpl(requestUrl, { ...options, signal: controller.signal }),
+      );
+      if (resolved.finalUrl) {
+        const official = productMetadataFromHtml(resolved.html, resolved.finalUrl);
+        return {
+          ...official,
+          title: official.title || sourceOffer.title,
+          description: official.description || sourceOffer.description,
+          imageUrl: official.imageUrl || sourceOffer.imageUrl,
+          productId: miraviaProductIdFromUrl(resolved.finalUrl) || miraviaProductIdFromHtml(resolved.html),
+          finalUrl: resolved.finalUrl,
+          sourceUrl: url,
+          source: sourceOffer.source,
+          affiliateUrl: resolved.finalUrl,
+        };
+      }
+    }
     const firstPage = await fetchPage(url, (requestUrl, options) => fetchImpl(requestUrl, { ...options, signal: controller.signal }));
     const outboundOfferUrl = outboundOfferLinkFromHtml(firstPage.html, firstPage.finalUrl);
     const directMerchantUrl = merchantLinkFromHtml(firstPage.html, firstPage.finalUrl);
@@ -160,4 +263,3 @@ export async function extractProductMetadata(url, { fetchImpl = fetch } = {}) {
     clearTimeout(timeout);
   }
 }
-import { miraviaProductIdFromHtml, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';

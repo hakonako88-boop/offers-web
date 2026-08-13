@@ -1,6 +1,19 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { COMMUNITY_SOURCES, discoverCommunitySignals, nextCommunitySignalState, parseRssSignals, searchTermsForSignal } from '../scripts/community-signals.mjs';
+import {
+  COMMUNITY_SOURCES,
+  communityMatchForTitle,
+  discoverCommunitySignals,
+  nextCommunitySignalState,
+  parseRssSignals,
+  searchTermsForSignal,
+} from '../scripts/community-signals.mjs';
+
+test('gives MiChollo and NoLoDejesEscapar the two highest discovery priorities', () => {
+  assert.deepEqual(COMMUNITY_SOURCES.slice(0, 2).map((source) => source.id), ['michollo', 'nolodejesescapar']);
+  assert.ok(COMMUNITY_SOURCES[0].weight > COMMUNITY_SOURCES[1].weight);
+  assert.ok(COMMUNITY_SOURCES[1].weight > COMMUNITY_SOURCES[2].weight);
+});
 
 test('extracts compact product terms without copying promotional wording', () => {
   assert.deepEqual(searchTermsForSignal('Ofertón Amazon! Cargador USB-C de 40W con 4 puertos a 6,83€'), ['cargador', 'usb', '40w', 'puertos']);
@@ -49,4 +62,16 @@ test('keeps discovery state bounded and records newly processed signals', () => 
   });
   assert.equal(state.seen.length, 1);
   assert.equal(state.micholloLastCheckedAt, '2026-08-11T12:00:00.000Z');
+});
+
+test('matches a catalogue product only when a priority signal shares concrete terms', () => {
+  const signals = [{
+    id: 'michollo:robot',
+    source: 'michollo',
+    sourceUrl: 'https://michollo.com/chollo-robot-123/',
+    terms: ['xiaomi', 'robot', 'aspirador', 's20'],
+    sourceWeight: 30,
+  }];
+  assert.equal(communityMatchForTitle('Robot aspirador Xiaomi S20 con base', signals)?.source, 'michollo');
+  assert.equal(communityMatchForTitle('Auriculares Bluetooth deportivos', signals), null);
 });

@@ -28,13 +28,28 @@ on:
   repository_dispatch:
     types: [telegram_update]
   schedule:
-    # Cinco tandas diarias sin Amazon (UTC; en verano peninsular, UTC+2).
-    # Cada ejecución puede publicar hasta tres ofertas validadas de su tienda.
-    - cron: "0 7 * * *" # AliExpress: 09:00 todos los días
-    - cron: "0 9 * * *" # Miravia: 11:00 todos los días
-    - cron: "0 11 * * *" # AliExpress: 13:00 todos los días
-    - cron: "0 13 * * *" # Miravia: 15:00 todos los días
-    - cron: "0 15 * * *" # AliExpress: 17:00 todos los días
+    # Cinco tandas de 2 AliExpress + 2 Miravia. GitHub aplica directamente
+    # Europe/Madrid, incluido el cambio automático de verano e invierno.
+    - { cron: "0 9 * * *", timezone: "Europe/Madrid" } # AliExpress
+    - { cron: "4 9 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "8 9 * * *", timezone: "Europe/Madrid" } # AliExpress
+    - { cron: "12 9 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "30 11 * * *", timezone: "Europe/Madrid" } # AliExpress
+    - { cron: "34 11 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "38 11 * * *", timezone: "Europe/Madrid" } # AliExpress
+    - { cron: "42 11 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "30 14 * * *", timezone: "Europe/Madrid" } # AliExpress
+    - { cron: "34 14 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "38 14 * * *", timezone: "Europe/Madrid" } # AliExpress
+    - { cron: "42 14 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "30 18 * * *", timezone: "Europe/Madrid" } # AliExpress
+    - { cron: "34 18 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "38 18 * * *", timezone: "Europe/Madrid" } # AliExpress
+    - { cron: "42 18 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "30 21 * * *", timezone: "Europe/Madrid" } # AliExpress
+    - { cron: "34 21 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "38 21 * * *", timezone: "Europe/Madrid" } # AliExpress
+    - { cron: "42 21 * * *", timezone: "Europe/Madrid" } # Miravia
 
 permissions:
   contents: write
@@ -67,7 +82,7 @@ jobs:
       AWIN_FEED_LIST_URL: ${{ secrets.AWIN_FEED_LIST_URL }}
       # Un lanzamiento manual solicitado por el propietario sirve como prueba
       # real y puede ignorar el intervalo editorial. Los cron conservan el límite.
-      FORCE_AUTOMATIC_PUBLICATION: ${{ github.event_name == 'workflow_dispatch' && inputs.run_automatic_source != 'none' }}
+      FORCE_AUTOMATIC_PUBLICATION: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.run_automatic_source != 'none') }}
     steps:
       - name: Descargar web
         uses: actions/checkout@v4
@@ -124,12 +139,12 @@ jobs:
         run: npm run sync:amazon
 
       - name: Buscar y publicar ofertas de AliExpress
-        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'aliexpress') || (github.event_name == 'schedule' && (github.event.schedule == '0 7 * * *' || github.event.schedule == '0 11 * * *' || github.event.schedule == '0 15 * * *'))) && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'aliexpress') || (github.event_name == 'schedule' && (startsWith(github.event.schedule, '0 ') || startsWith(github.event.schedule, '8 ') || startsWith(github.event.schedule, '30 ') || startsWith(github.event.schedule, '38 ')))) && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         continue-on-error: true
         run: npm run sync:aliexpress
 
       - name: Buscar y publicar ofertas de Miravia
-        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'miravia') || (github.event_name == 'schedule' && (github.event.schedule == '0 9 * * *' || github.event.schedule == '0 13 * * *'))) && env.AWIN_FEED_LIST_URL != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'miravia') || (github.event_name == 'schedule' && (startsWith(github.event.schedule, '4 ') || startsWith(github.event.schedule, '12 ') || startsWith(github.event.schedule, '34 ') || startsWith(github.event.schedule, '42 ')))) && env.AWIN_FEED_LIST_URL != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         continue-on-error: true
         run: npm run sync:miravia
 
@@ -151,7 +166,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json data/telegram-inbox-state.json data/telegram-removals.json data/telegram-caption-repairs.json public/tg
+          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json data/telegram-inbox-state.json data/telegram-removals.json data/telegram-caption-repairs.json public/tg
           git diff --cached --quiet || git commit -m "Actualizar ofertas desde Telegram"
           git pull --rebase origin main
           git push

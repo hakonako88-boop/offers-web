@@ -18,7 +18,7 @@ const PUBLISHED_FILE = path.join(ROOT, 'data', 'aliexpress-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.json');
-const MAX_POSTS_PER_RUN = 3;
+const MAX_POSTS_PER_RUN = 1;
 const MAX_PUBLICATION_ATTEMPTS = 8;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
 const MAX_COMMUNITY_QUERIES_PER_RUN = 3;
@@ -164,6 +164,8 @@ async function saveOfferForWeb(offer, message) {
     price: offer.priceLabel,
     previousPrice: offer.previousPriceLabel,
     store: 'AliExpress',
+    source: offer.communitySource || 'aliexpress-official',
+    source_url: offer.communitySourceUrl || '',
     category: offer.siteCategory,
     description: offer.title,
   };
@@ -196,11 +198,12 @@ const candidates = [];
 
 const communityDiscovery = await discoverCommunitySignals({ state: communityState });
 const communitySignals = [];
-const queriedCommunitySources = new Set();
+const queriedBySource = new Map();
 for (const signal of communityDiscovery.signals) {
-  if (signal.sourceStore === 'Amazon' || signal.terms.length < 2 || queriedCommunitySources.has(signal.source)) continue;
+  const sourceQueries = queriedBySource.get(signal.source) || 0;
+  if (signal.sourceStore === 'Amazon' || signal.terms.length < 2 || sourceQueries >= 2) continue;
   communitySignals.push(signal);
-  queriedCommunitySources.add(signal.source);
+  queriedBySource.set(signal.source, sourceQueries + 1);
   if (communitySignals.length >= MAX_COMMUNITY_QUERIES_PER_RUN) break;
 }
 
@@ -210,7 +213,13 @@ for (const signal of communitySignals) {
     const minimumTitleMatches = Math.min(3, Math.max(2, signal.terms.length));
     for (const product of products) {
       const offer = normalizeAliExpressProduct(product, signal.category, signal.terms, minimumTitleMatches);
-      if (offer && !seenProductIds.has(offer.id)) candidates.push({ ...offer, score: offer.score + signal.sourceWeight, communitySignalId: signal.id });
+      if (offer && !seenProductIds.has(offer.id)) candidates.push({
+        ...offer,
+        score: offer.score + 1_000 + signal.sourceWeight,
+        communitySignalId: signal.id,
+        communitySource: signal.source,
+        communitySourceUrl: signal.sourceUrl,
+      });
     }
   } catch (error) {
     console.warn(`Could not validate community signal from ${signal.source}: ${error.message}`);
@@ -260,6 +269,11 @@ for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
       telegramMessageId: message.message_id,
       price: offer.price,
       url: offer.url,
+      title: offer.title,
+      store: 'AliExpress',
+      source: offer.communitySource || 'aliexpress-official',
+      sourceUrl: offer.communitySourceUrl || '',
+      status: 'PUBLICADO',
     });
     seenProductIds.add(offer.id);
     sent += 1;

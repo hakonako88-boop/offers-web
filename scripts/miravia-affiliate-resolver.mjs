@@ -1,6 +1,21 @@
 const DEFAULT_AWIN_PUBLISHER_ID = '2023977';
 const DEFAULT_MIRAVIA_MERCHANT_ID = '37168';
 
+export function isMiraviaAwinUrl(value = '') {
+  try {
+    const parsed = new URL(value);
+    if (!/(^|\.)awin1?\.com$/iu.test(parsed.hostname)) return false;
+    const merchant = parsed.searchParams.get('m') || parsed.searchParams.get('awinmid') || '';
+    if (merchant === DEFAULT_MIRAVIA_MERCHANT_ID) return true;
+    const destination = parsed.searchParams.get('ued');
+    if (!destination) return false;
+    const host = new URL(destination).hostname.toLowerCase();
+    return host === 'miravia.es' || host.endsWith('.miravia.es');
+  } catch {
+    return false;
+  }
+}
+
 function numericId(value = '', minimumDigits = 6) {
   const id = String(value || '').trim();
   return new RegExp(`^\\d{${minimumDigits},}$`, 'u').test(id) ? id : '';
