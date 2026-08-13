@@ -27,7 +27,7 @@ function similarity(left = '', right = '') {
   return shared / Math.min(a.length, b.length);
 }
 
-function productIdentity(deal = {}) {
+export function productIdentity(deal = {}) {
   const explicit = deal.sourceProductId || deal.source_product_id || deal.productId;
   if (explicit) {
     const raw = String(explicit).toLowerCase();
@@ -52,6 +52,36 @@ function productIdentity(deal = {}) {
     // A title comparison below remains a safe fallback for malformed links.
   }
   return '';
+}
+
+function isVerifiedProductIdentity(identity = '') {
+  return /^(?:aliexpress:\d+|amazon:[a-z0-9]{10}|awin:\d+)$/iu.test(identity);
+}
+
+function canonicalShopUrl(value = '') {
+  try {
+    const url = new URL(value);
+    const host = url.hostname.toLowerCase();
+    const asin = url.pathname.match(/\/(?:dp|gp\/product)\/([a-z0-9]{10})(?:[/?]|$)/iu)?.[1];
+    if (/(^|\.)amazon\./iu.test(host) && asin) return `amazon:${asin.toLowerCase()}`;
+    return `${host}${url.pathname.replace(/\/+$/u, '')}`.toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+/** The private bot must be more conservative than automated-feed curation:
+ * a human-submitted deal is only a duplicate when we can prove it is the same
+ * product. Similar catalogue wording must never discard a new submission. */
+export function isInboxDuplicate(candidate = {}, published = {}) {
+  const candidateIdentity = productIdentity(candidate);
+  const publishedIdentity = productIdentity(published);
+  if (isVerifiedProductIdentity(candidateIdentity)) {
+    return isVerifiedProductIdentity(publishedIdentity) && candidateIdentity === publishedIdentity;
+  }
+  const candidateUrl = canonicalShopUrl(candidate.url);
+  const publishedUrl = canonicalShopUrl(published.url);
+  return Boolean(candidateUrl && publishedUrl && candidateUrl === publishedUrl);
 }
 
 export function isEquivalentDeal(candidate = {}, published = {}) {

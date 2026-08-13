@@ -16,7 +16,7 @@ import {
   urlFromTelegramMessage,
 } from './telegram-inbox-commands.mjs';
 import { extractProductMetadata, parsePrice } from './link-offer-extractor.mjs';
-import { isEquivalentDeal } from './offer-deduplication.mjs';
+import { isInboxDuplicate } from './offer-deduplication.mjs';
 import { resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
 import { miraviaAwinAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
 
@@ -202,7 +202,7 @@ async function publishIfNew(settings, offer, inputMessage) {
   // An expired deal must not keep blocking the same product forever. Only
   // compare against offers that can still be visible on the public site.
   const recentOffers = existingOffers.filter((entry) => Number(entry.date) >= oldestDuplicate);
-  if (recentOffers.some((entry) => isEquivalentDeal(offer, entry))) return { duplicate: true };
+  if (recentOffers.some((entry) => isInboxDuplicate(offer, entry))) return { duplicate: true };
   return { channelMessage: await publishManualOffer(settings, offer, inputMessage), duplicate: false };
 }
 

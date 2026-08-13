@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { filterDuplicateDeals, isEquivalentDeal } from '../scripts/offer-deduplication.mjs';
+import { filterDuplicateDeals, isEquivalentDeal, isInboxDuplicate } from '../scripts/offer-deduplication.mjs';
 
 test('blocks catalogue variants of an offer already published', () => {
   assert.equal(isEquivalentDeal(
@@ -50,5 +50,20 @@ test('never merges different known AliExpress products merely because their titl
   assert.equal(isEquivalentDeal(
     { title: 'TÃ­tulo nuevo', sourceProductId: 'aliexpress:1005012222222222', store: 'AliExpress' },
     { title: 'TÃ­tulo anterior', source_product_id: '1005012222222222', store: 'AliExpress' },
+  ), true);
+});
+
+test('only rejects an inbox offer when the same verified product or direct URL is present', () => {
+  assert.equal(isInboxDuplicate(
+    { title: 'Nuevo difusor para habitación', sourceProductId: 'aliexpress:1005012354617649', url: 'https://s.click.aliexpress.com/e/_nuevo' },
+    { title: 'Difusor de aceites para habitación', source_product_id: 'manual-3000', url: 'https://s.click.aliexpress.com/e/_otro' },
+  ), false);
+  assert.equal(isInboxDuplicate(
+    { sourceProductId: 'aliexpress:1005012354617649' },
+    { source_product_id: '1005012354617649', store: 'AliExpress' },
+  ), true);
+  assert.equal(isInboxDuplicate(
+    { url: 'https://www.amazon.es/dp/B0ABCDE123?tag=one-21' },
+    { url: 'https://www.amazon.es/dp/B0ABCDE123?tag=two-21' },
   ), true);
 });
