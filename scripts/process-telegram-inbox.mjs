@@ -18,6 +18,7 @@ import {
 import { extractProductMetadata, parsePrice } from './link-offer-extractor.mjs';
 import { isEquivalentDeal } from './offer-deduplication.mjs';
 import { resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
+import { miraviaAwinAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
@@ -50,6 +51,10 @@ function config() {
     aliexpressAppKey: process.env.ALIEXPRESS_APP_KEY,
     aliexpressAppSecret: process.env.ALIEXPRESS_APP_SECRET,
     aliexpressTrackingId: process.env.ALIEXPRESS_TRACKING_ID,
+    // These are Awin's public publisher/merchant identifiers. Environment
+    // values may override them later without changing the bot code.
+    awinPublisherId: process.env.AWIN_PUBLISHER_ID || '2023977',
+    awinMiraviaMerchantId: process.env.AWIN_MIRAVIA_MERCHANT_ID || '37168',
   };
 }
 
@@ -235,6 +240,19 @@ function metadataWithOfficialAmazonImage(url, metadata = {}) {
   return imageUrl ? { ...metadata, imageUrl } : metadata;
 }
 
+async function extractMetadataWithRetry(url) {
+  let latestError;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      return await extractProductMetadata(url);
+    } catch (error) {
+      latestError = error;
+      if (attempt === 0) await new Promise((resolve) => setTimeout(resolve, 650));
+    }
+  }
+  throw latestError;
+}
+
 const settings = config();
 if (!settings.token || !settings.channelId) {
   console.log('Telegram inbox skipped: missing Telegram configuration.');
@@ -311,7 +329,7 @@ for (const update of updates || []) {
         '🤖 Bot listo para publicar en el canal y en la web.',
         '✓ Amazon: añade tu tag al enlace directo.',
         '✓ AliExpress: obtiene ficha y enlace desde tu afiliación.',
-        '✓ Miravia: conserva el enlace de afiliación válido.',
+        '✓ Miravia: crea tu enlace Awin cuando detecta el producto.',
         pending ? '⏳ Hay una oferta pendiente: pega ahora su enlace de compra o usa /cancelar.' : '✓ No hay ofertas pendientes.',
       ].join('\n'));
       handled += 1;
@@ -339,7 +357,7 @@ for (const update of updates || []) {
       let metadata = { finalUrl: url };
       let metadataError = '';
       try {
-        metadata = await extractProductMetadata(url);
+        metadata = await extractMetadataWithRetry(url);
       } catch (error) {
         metadataError = safeError(error, settings.token);
         console.warn(`Could not read product metadata for inbox message ${message.message_id}: ${metadataError}`);
@@ -358,6 +376,7 @@ for (const update of updates || []) {
       // is the authoritative product source, so ask it on every AliExpress
       // submission rather than only when the page happens to be blank.
       let generatedAliExpressUrl = '';
+      let generatedMiraviaUrl = '';
       if (resolvedStore === 'AliExpress') {
         try {
           const affiliateMetadata = await resolveAliExpressAffiliateProduct(metadata.finalUrl || url, {
@@ -375,6 +394,14 @@ for (const update of updates || []) {
           console.warn(`AliExpress affiliate lookup failed: ${safeError(error, settings.token)}`);
         }
       }
+      if (resolvedStore === 'Miravia') {
+        const productId = metadata.productId || miraviaProductIdFromUrl(metadata.finalUrl || url);
+        generatedMiraviaUrl = miraviaAwinAffiliateUrl(productId, {
+          publisherId: settings.awinPublisherId,
+          merchantId: settings.awinMiraviaMerchantId,
+        });
+        if (productId) metadata = { ...metadata, productId };
+      }
       metadata = mergeProductMetadata(metadata, metadataFromForward);
       metadata = metadataWithOfficialAmazonImage(metadata.finalUrl || url, metadata);
       const sourceStore = storeFromUrl(url);
@@ -386,7 +413,9 @@ for (const update of updates || []) {
         ? (metadata.finalUrl || url)
         : (resolvedStore === 'AliExpress' && hasAffiliateLink(generatedAliExpressUrl, 'AliExpress')
           ? generatedAliExpressUrl
-          : (sourceStore === resolvedStore ? url : (metadata.finalUrl || url)));
+          : (resolvedStore === 'Miravia' && hasAffiliateLink(generatedMiraviaUrl, 'Miravia')
+            ? generatedMiraviaUrl
+            : (sourceStore === resolvedStore ? url : (metadata.finalUrl || url))));
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
         const outcome = await publishIfNew(settings, result.offer, message);

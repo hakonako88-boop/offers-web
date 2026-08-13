@@ -151,6 +151,7 @@ export async function extractProductMetadata(url, { fetchImpl = fetch } = {}) {
     const finalPage = merchantUrl(resolvedPage.finalUrl) ? resolvedPage : firstPage;
     return {
       ...productMetadataFromHtml(finalPage.html, finalPage.finalUrl),
+      productId: miraviaProductIdFromUrl(finalPage.finalUrl) || miraviaProductIdFromHtml(finalPage.html),
       finalUrl: finalPage.finalUrl,
       sourceUrl: firstPage.finalUrl,
       affiliateUrl: directMerchantUrl || merchantUrl(url) || merchantUrl(resolvedPage.finalUrl) || '',
@@ -159,3 +160,4 @@ export async function extractProductMetadata(url, { fetchImpl = fetch } = {}) {
     clearTimeout(timeout);
   }
 }
+import { miraviaProductIdFromHtml, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';

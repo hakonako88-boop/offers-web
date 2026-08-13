@@ -124,7 +124,7 @@ export function controlHelp() {
     '',
     'Después basta con pegar un enlace. El bot obtiene título, foto, descripción y precio de la ficha pública. Si la tienda oculta el precio, te pedirá solo ese dato.',
     '',
-    'Amazon: puedes mandar el enlace directo; se añade tu tag automáticamente. AliExpress y Miravia: envía el enlace ya generado desde tu afiliación.',
+    'Amazon, AliExpress y Miravia: puedes pegar el enlace normal o el de afiliado. El bot intenta convertirlo al enlace de tu cuenta antes de publicar.',
     '',
     'También puedes reenviar una publicación con foto y pegar después su enlace de compra.',
     '',
@@ -239,7 +239,7 @@ export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag =
       // products with similar catalogue wording from being merged.
       sourceProductId: store === 'AliExpress' && /^\d{8,}$/u.test(String(metadata.productId || ''))
         ? `aliexpress:${metadata.productId}`
-        : '',
+        : (store === 'Miravia' && /^\d{6,}$/u.test(String(metadata.productId || '')) ? `awin:${metadata.productId}` : ''),
       description: compact(metadata.description).slice(0, 220) || `${title.slice(0, 180)} · Oferta publicada en Chollos al Día.`,
     },
   };
