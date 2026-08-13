@@ -62,6 +62,14 @@ export function firstUrl(text) {
 /** Reads a normal URL as well as the hidden destination of Telegram's
  * clickable text (for example, a forwarded “Ver aquí en Amazon” button). */
 export function urlFromTelegramMessage(message = {}, text = '') {
+  // When a card shows its real shop URL in the text, it is more reliable than
+  // Telegram's hidden preview/button URL. A forwarded preview can retain a
+  // stale hidden target from another offer even though the visible product
+  // link is correct.
+  const visibleShopUrl = [...String(text).matchAll(/https?:\/\/[^\s<>]+/giu)]
+    .map((match) => match[0].replace(/[),.;!?]+$/u, ''))
+    .find((url) => ['Amazon', 'AliExpress', 'Miravia'].includes(storeFromUrl(url)));
+  if (visibleShopUrl) return visibleShopUrl;
   const keyboardUrl = message.reply_markup?.inline_keyboard
     ?.flat()
     ?.find((button) => typeof button?.url === 'string' && button.url)?.url;
