@@ -19,6 +19,7 @@ const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.json');
 const MAX_POSTS_PER_RUN = 1;
+const MAX_PUBLICATION_ATTEMPTS = 8;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 6 * 60 * 60 * 1000;
 const MAX_COMMUNITY_QUERIES_PER_RUN = 3;
 
@@ -218,7 +219,15 @@ for (const signal of communitySignals) {
 // páginas no debe dejar el canal vacío. Si no generan ningún candidato válido,
 // usamos dos búsquedas de categorías con demanda y aplicamos el mismo filtro
 // estricto de descuento, ventas y artículos poco interesantes.
-if (!candidates.length) {
+function publishableCandidates(sourceCandidates) {
+  return filterDuplicateDeals(Array.from(new Map(
+    sourceCandidates.sort((left, right) => right.score - left.score).map((offer) => [offer.id, offer]),
+  ).values()), existingWebOffers);
+}
+
+let uniqueCandidates = canPublishNow ? publishableCandidates(candidates) : [];
+
+if (canPublishNow && !uniqueCandidates.length) {
   const fallbackTopics = topicsForAliExpressRun(Number(state.nextTopic || 0), 2);
   for (const topic of fallbackTopics) {
     topics.push(topic);
@@ -232,14 +241,14 @@ if (!candidates.length) {
       console.warn(`Could not search AliExpress fallback topic ${topic.keywords}: ${error.message}`);
     }
   }
+  uniqueCandidates = publishableCandidates(candidates);
 }
 
-const uniqueCandidates = (canPublishNow ? filterDuplicateDeals(Array.from(new Map(
-  candidates.sort((left, right) => right.score - left.score).map((offer) => [offer.id, offer]),
-).values()), existingWebOffers) : []).slice(0, MAX_POSTS_PER_RUN);
-
 let sent = 0;
-for (const offer of uniqueCandidates) {
+let attempted = 0;
+for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
+  if (sent >= MAX_POSTS_PER_RUN) break;
+  attempted += 1;
   try {
     const message = await publishOffer(config, offer);
     await saveOfferForWeb(offer, message);
@@ -263,4 +272,4 @@ writeJson(STATE_FILE, {
 });
 writeJson(COMMUNITY_STATE_FILE, nextCommunitySignalState(communityState, { ...communityDiscovery, signals: communitySignals }));
 writeJson(PUBLISHED_FILE, { published });
-console.log(`AliExpress discovery checked ${communitySignals.length} fresh community signal(s), and published ${sent} validated offer(s).`);
+console.log(`AliExpress discovery checked ${communitySignals.length} fresh community signal(s), found ${uniqueCandidates.length} publishable candidate(s), attempted ${attempted}, and published ${sent} validated offer(s).${canPublishNow ? '' : ' Publication interval is still active.'}`);

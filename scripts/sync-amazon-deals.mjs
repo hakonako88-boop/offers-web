@@ -15,6 +15,7 @@ const PUBLISHED_FILE = path.join(ROOT, 'data', 'amazon-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const MAX_POSTS_PER_RUN = 1;
+const MAX_PUBLICATION_ATTEMPTS = 8;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 4 * 60 * 60 * 1000;
 
 function readJson(file, fallback) {
@@ -200,24 +201,43 @@ const published = (publicationState.published || []).filter((entry) => Date.pars
 const seenAsins = new Set(published.map((entry) => entry.asin));
 const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, Date.parse(entry.publishedAt || '') || 0), 0);
 const canPublishNow = !lastPublicationAt || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
-const accessToken = await getAmazonAccessToken(config);
 const topics = topicsForRun(Number(state.nextTopic || 0), 2);
 const candidates = [];
+const searchErrors = [];
 
-for (const topic of topics) {
-  const items = await searchAmazon(accessToken, config, topic);
-  for (const item of items) {
-    const offer = normalizeAmazonItem(item, topic.category);
-    if (offer && !seenAsins.has(offer.asin)) candidates.push(offer);
+let accessToken = '';
+try {
+  accessToken = await getAmazonAccessToken(config);
+} catch (error) {
+  searchErrors.push(error instanceof Error ? error.message : 'Amazon authentication failed');
+}
+
+if (accessToken) {
+  for (const topic of topics) {
+    try {
+      const items = await searchAmazon(accessToken, config, topic);
+      for (const item of items) {
+        const offer = normalizeAmazonItem(item, topic.category);
+        if (offer && !seenAsins.has(offer.asin)) candidates.push(offer);
+      }
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : 'Amazon search failed';
+      searchErrors.push(detail);
+      console.warn(detail);
+      if (/eligibility requirements/i.test(detail)) break;
+    }
   }
 }
 
 const uniqueCandidates = (canPublishNow ? filterDuplicateDeals(Array.from(new Map(
   candidates.sort((a, b) => b.score - a.score).map((offer) => [offer.asin, offer])
-).values()), existingWebOffers) : []).slice(0, MAX_POSTS_PER_RUN);
+).values()), existingWebOffers) : []);
 
 let sent = 0;
-for (const offer of uniqueCandidates) {
+let attempted = 0;
+for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
+  if (sent >= MAX_POSTS_PER_RUN) break;
+  attempted += 1;
   try {
     const message = await publishOffer(config, offer);
     await saveOfferForWeb(offer, message);
@@ -238,6 +258,7 @@ for (const offer of uniqueCandidates) {
 writeJson(STATE_FILE, {
   nextTopic: (Number(state.nextTopic || 0) + topics.length) % 10,
   lastRunAt: new Date().toISOString(),
+  lastError: searchErrors[0] || '',
 });
 writeJson(PUBLISHED_FILE, { published });
-console.log(`Amazon discovery checked ${topics.map((topic) => topic.keywords).join(', ')} and published ${sent} offer(s).`);
+console.log(`Amazon discovery checked ${topics.map((topic) => topic.keywords).join(', ')}, found ${uniqueCandidates.length} publishable candidate(s), attempted ${attempted}, and published ${sent} offer(s).${searchErrors.length ? ` Source warning: ${searchErrors[0]}` : ''}`);

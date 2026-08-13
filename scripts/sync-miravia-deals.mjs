@@ -24,6 +24,7 @@ const PUBLISHED_FILE = path.join(ROOT, 'data', 'miravia-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const MAX_POSTS_PER_RUN = 1;
+const MAX_PUBLICATION_ATTEMPTS = 12;
 const MAX_PRODUCTS_SCANNED = 40000;
 const MAX_CANDIDATES = 60;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 8 * 60 * 60 * 1000;
@@ -299,10 +300,13 @@ if (!alreadyChecked) {
 
 const candidates = (canPublishToday ? filterDuplicateDeals(Array.from(new Map(
   discovered.candidates.map((offer) => [offer.id, offer]),
-).values()), existingWebOffers) : []).sort((left, right) => right.score - left.score).slice(0, MAX_POSTS_PER_RUN);
+).values()), existingWebOffers) : []).sort((left, right) => right.score - left.score);
 
 let sent = 0;
-for (const offer of candidates) {
+let attempted = 0;
+for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
+  if (sent >= MAX_POSTS_PER_RUN) break;
+  attempted += 1;
   try {
     offer.image = await preferredMiraviaImage(offer);
     const message = await publishOffer(config, offer);
@@ -330,4 +334,4 @@ writeJson(STATE_FILE, {
   lastProductsScanned: discovered.productsScanned,
 });
 writeJson(PUBLISHED_FILE, { published });
-console.log(`Miravia checked feed ${feed.feed_id} (${feed.feed_name}), scanned ${discovered.productsScanned} products, and published ${sent} curated offer(s).`);
+console.log(`Miravia checked feed ${feed.feed_id} (${feed.feed_name}), scanned ${discovered.productsScanned} products, found ${candidates.length} publishable candidate(s), attempted ${attempted}, and published ${sent} curated offer(s).${canPublishToday ? '' : ' Publication interval is still active.'}`);
