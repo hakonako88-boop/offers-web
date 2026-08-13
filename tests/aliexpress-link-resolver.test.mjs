@@ -86,3 +86,25 @@ test('uses the redirect fallback when GitHub fetch cannot open a short AliExpres
   });
   assert.equal(metadata.productId, '1005008265378976');
 });
+
+test('exposes the canonical URL when affiliate data contains a stale product id', async () => {
+  const metadata = await resolveAliExpressAffiliateProduct('https://a.aliexpress.com/_perfume', {
+    appKey: 'test-key',
+    appSecret: 'test-secret',
+    trackingId: 'chollosaldia88id',
+  }, {
+    resolveShortUrl: async () => 'https://es.aliexpress.com/item/1005012721085216.html',
+    fetchImpl: async () => ({
+      json: async () => ({
+        aliexpress_affiliate_product_query_response: { resp_result: { result: { products: { product: [{
+          product_id: '1005012646899284',
+          product_title: 'Respuesta antigua de catálogo',
+          target_sale_price: '19.99',
+          promotion_link: 'https://s.click.aliexpress.com/e/_propio',
+        }] } } } },
+      }),
+    }),
+  });
+  assert.equal(metadata.canonicalUrl, 'https://es.aliexpress.com/item/1005012721085216.html');
+  assert.equal(metadata.productId, '1005012646899284');
+});
