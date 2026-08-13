@@ -15,6 +15,16 @@ on:
         required: false
         default: false
         type: boolean
+      run_automatic_source:
+        description: "Comprobar y publicar una oferta automática de una tienda"
+        required: false
+        default: "none"
+        type: choice
+        options:
+          - none
+          - amazon
+          - aliexpress
+          - miravia
   repository_dispatch:
     types: [telegram_update, automatic_amazon, automatic_aliexpress, automatic_miravia]
   schedule:
@@ -109,15 +119,15 @@ jobs:
         run: npm run send:test-telegram
 
       - name: Buscar y publicar ofertas de Amazon
-        if: ${{ ((github.event_name == 'repository_dispatch' && github.event.action == 'automatic_amazon') || (github.event_name == 'schedule' && (github.event.schedule == '45 6 * * 1-5' || github.event.schedule == '30 13 * * 1-5' || github.event.schedule == '45 8 * * 0,6' || github.event.schedule == '0 14 * * 0,6' || github.event.schedule == '30 19 * * *'))) && env.AMAZON_CREATOR_CREDENTIAL_ID != '' && env.AMAZON_CREATOR_SECRET != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ ((github.event_name == 'repository_dispatch' && github.event.action == 'automatic_amazon') || (github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'amazon') || (github.event_name == 'schedule' && (github.event.schedule == '45 6 * * 1-5' || github.event.schedule == '30 13 * * 1-5' || github.event.schedule == '45 8 * * 0,6' || github.event.schedule == '0 14 * * 0,6' || github.event.schedule == '30 19 * * *'))) && env.AMAZON_CREATOR_CREDENTIAL_ID != '' && env.AMAZON_CREATOR_SECRET != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run sync:amazon
 
       - name: Buscar y publicar ofertas de AliExpress
-        if: ${{ ((github.event_name == 'repository_dispatch' && github.event.action == 'automatic_aliexpress') || (github.event_name == 'schedule' && (github.event.schedule == '45 9 * * 1-5' || github.event.schedule == '0 17 * * 1-5' || github.event.schedule == '0 11 * * 0,6' || github.event.schedule == '15 17 * * 0,6'))) && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ ((github.event_name == 'repository_dispatch' && github.event.action == 'automatic_aliexpress') || (github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'aliexpress') || (github.event_name == 'schedule' && (github.event.schedule == '45 9 * * 1-5' || github.event.schedule == '0 17 * * 1-5' || github.event.schedule == '0 11 * * 0,6' || github.event.schedule == '15 17 * * 0,6'))) && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run sync:aliexpress
 
       - name: Buscar y publicar ofertas de Miravia
-        if: ${{ ((github.event_name == 'repository_dispatch' && github.event.action == 'automatic_miravia') || (github.event_name == 'schedule' && github.event.schedule == '50 16 * * *')) && env.AWIN_FEED_LIST_URL != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ ((github.event_name == 'repository_dispatch' && github.event.action == 'automatic_miravia') || (github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'miravia') || (github.event_name == 'schedule' && github.event.schedule == '50 16 * * *')) && env.AWIN_FEED_LIST_URL != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run sync:miravia
 
       - name: Guardar resultado de la prueba de Telegram
