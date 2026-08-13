@@ -201,6 +201,7 @@ async function publishManualOffer(settings, offer, inputMessage) {
     store: offer.store,
     category: offer.category,
     description: offer.description,
+    source: 'telegram-inbox',
   };
   const withoutPriorVersion = existingOffers.filter((entry) => entry.source_product_id !== record.source_product_id);
   writeJson(OFFERS_FILE, [record, ...withoutPriorVersion]);

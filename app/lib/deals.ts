@@ -27,6 +27,7 @@ type LegacyOffer = {
   store?: string;
   category?: string;
   date?: number;
+  source?: string;
 };
 
 const money = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
@@ -117,6 +118,17 @@ function isUsefulTitle(title: string) {
   return /\p{L}/u.test(compact);
 }
 
+function isValidManualTitle(title: string) {
+  const compact = title.trim();
+  return compact.length >= 8 && !/^https?:\/\//i.test(compact) && /\p{L}/u.test(compact);
+}
+
+function conciseTitle(title: string, maximumWords = 18) {
+  const words = title.trim().split(/\s+/);
+  if (words.length <= maximumWords) return title.trim();
+  return `${words.slice(0, maximumWords).join(" ").replace(/[,.·;:]+$/, "")}…`;
+}
+
 function isSupportedAffiliateUrl(value: string, store: string) {
   try {
     const url = new URL(value);
@@ -142,7 +154,7 @@ function isRecent(timestamp?: number) {
  * Keep the storefront selective without deleting the historical source data
  * or blocking an offer explicitly sent by the owner through Telegram. */
 function isWebworthyMiraviaOffer(offer: LegacyOffer, title: string, price: number) {
-  if (offer.store !== "Miravia" || /^manual-/i.test(String(offer.source_product_id || ""))) return true;
+  if (offer.store !== "Miravia" || offer.source === "telegram-inbox" || /^manual-/i.test(String(offer.source_product_id || ""))) return true;
   const text = normalise(`${offer.category ?? ""} ${title}`);
   const usefulDepartments = /tecnolog|electron|informat|mobile|telefono|data|memory|software|gaming|consola|videojuego|cocina|cafe|freidora|beauty|belleza|salud|health|deporte|sport|juguete|toy|baby|herramienta|bricolaje|diy/.test(text);
   const catalogueTerms = /\b(?:correa|cuerda|malla|relleno|mantel|bolso|cardigan|sandalia|botin|gafas|cuaderno|papeleria|funda|recambio|repuesto)\b/.test(text);
@@ -153,7 +165,6 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
   const id = sourceId(offer);
   const price = parsePrice(offer.price);
   const previous = parsePrice(offer.previousPrice);
-  const title = cleanTitle(offer.title);
   const store = offer.store === "Amazon" || offer.store === "AliExpress" || offer.store === "Miravia" ? offer.store : "";
   const coupon = couponFor(offer.text);
   const hasDemonstrableSaving = previous > price || Boolean(coupon);
@@ -161,9 +172,12 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
   // current price but no reliable previous-price comparison. They are still
   // useful for the website when all of the product essentials are present.
   // Imported/automatic offers keep the stricter savings-or-coupon rule.
-  const isManualTelegramOffer = /^manual-/i.test(String(offer.source_product_id || ""));
+  const isManualTelegramOffer = offer.source === "telegram-inbox"
+    || /^(?:manual-|aliexpress:)/i.test(String(offer.source_product_id || ""));
+  const title = conciseTitle(cleanTitle(offer.title), isManualTelegramOffer ? 18 : 22);
   const hasPublishablePrice = hasDemonstrableSaving || isManualTelegramOffer;
-  if (!id || !price || !hasPublishablePrice || !isUsefulTitle(title) || !isWebworthyMiraviaOffer(offer, title, price) || !offer.url || !offer.image || !store || !isRecent(offer.date) || !isSupportedAffiliateUrl(offer.url, store)) return [];
+  const hasValidTitle = isManualTelegramOffer ? isValidManualTitle(title) : isUsefulTitle(title);
+  if (!id || !price || !hasPublishablePrice || !hasValidTitle || !isWebworthyMiraviaOffer(offer, title, price) || !offer.url || !offer.image || !store || !isRecent(offer.date) || !isSupportedAffiliateUrl(offer.url, store)) return [];
   const date = formatDate(offer.date);
   return [{
     id,
@@ -189,8 +203,7 @@ export const publishedDeals: PublishedDeal[] = candidates
     if (seenAffiliateUrls.has(key)) return false;
     seenAffiliateUrls.add(key);
     return true;
-  })
-  .slice(0, 30);
+  });
 
 export function dealHref(id: string) {
   return `/oferta/${encodeURIComponent(id)}`;
