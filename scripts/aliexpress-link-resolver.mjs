@@ -40,6 +40,25 @@ function isAliExpressUrl(value = '') {
   }
 }
 
+function isShortAliExpressUrl(value = '') {
+  try {
+    const host = new URL(value).hostname.toLowerCase();
+    return host === 's.click.aliexpress.com' || host === 'a.aliexpress.com';
+  } catch {
+    return false;
+  }
+}
+
+async function resolveWithCurl(url, execFileImpl) {
+  const { stdout } = await execFileImpl('curl', [
+    '--location', '--silent', '--show-error', '--max-time', '12',
+    '--output', process.platform === 'win32' ? 'NUL' : '/dev/null',
+    '--write-out', '%{url_effective}', String(url),
+  ]);
+  const finalUrl = String(stdout || '').trim();
+  return isAliExpressUrl(finalUrl) ? finalUrl : '';
+}
+
 /**
  * AliExpress frequently rejects GitHub's normal page reader on its shortened
  * tracking URLs. Resolve only known AliExpress links, first through fetch and
@@ -59,6 +78,17 @@ export async function resolveAliExpressProductUrl(url, {
       // Continue with the browser-like redirect readers below.
     }
   }
+  // A short link can make fetch stop on a generic storefront or an old
+  // redirect. curl's redirect engine gives the actual item destination, so
+  // make it the primary resolver for submitted a.aliexpress/s.click links.
+  if (isShortAliExpressUrl(url)) {
+    try {
+      const finalUrl = await resolveWithCurl(url, execFileImpl);
+      if (aliexpressProductId(finalUrl)) return finalUrl;
+    } catch {
+      // The fetch reader below is a useful fallback when curl is unavailable.
+    }
+  }
   try {
     const response = await fetchImpl(url, {
       redirect: 'follow',
@@ -69,13 +99,8 @@ export async function resolveAliExpressProductUrl(url, {
     // curl below handles redirects when a shop blocks fetch.
   }
   try {
-    const { stdout } = await execFileImpl('curl', [
-      '--location', '--silent', '--show-error', '--max-time', '12',
-      '--output', process.platform === 'win32' ? 'NUL' : '/dev/null',
-      '--write-out', '%{url_effective}', String(url),
-    ]);
-    const finalUrl = String(stdout || '').trim();
-    return isAliExpressUrl(finalUrl) ? finalUrl : String(url || '');
+    const finalUrl = await resolveWithCurl(url, execFileImpl);
+    return finalUrl || String(url || '');
   } catch {
     return String(url || '');
   }
