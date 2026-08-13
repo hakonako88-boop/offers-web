@@ -347,6 +347,14 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
         productId: metadata.productId,
         fallbackUrl: metadata.canonicalUrl || pendingUrl,
       });
+      if (!generatedUrl) {
+        metadata = {
+          ...metadata,
+          finalUrl: pendingUrl,
+          sourceUrl: pendingUrl,
+          affiliateUrl: '',
+        };
+      }
       result = offerFromProductMetadata({
         url: pendingUrl,
         metadata,
@@ -499,6 +507,14 @@ for (const update of updates || []) {
           : (resolvedStore === 'Miravia' && /^https:\/\/(?:www\.)?awin1\.com\//iu.test(generatedMiraviaUrl)
             ? generatedMiraviaUrl
             : (metadata.finalUrl || url)));
+      if (resolvedStore === 'AliExpress' && !generatedAliExpressUrl) {
+        metadata = {
+          ...metadata,
+          finalUrl: affiliateUrl,
+          sourceUrl: affiliateUrl,
+          affiliateUrl: '',
+        };
+      }
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
         const outcome = await publishIfNew(settings, result.offer, message);
