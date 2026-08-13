@@ -45,8 +45,20 @@ function isAliExpressUrl(value = '') {
  * tracking URLs. Resolve only known AliExpress links, first through fetch and
  * then through curl's redirect engine as a safe server-side fallback.
  */
-export async function resolveAliExpressProductUrl(url, { fetchImpl = fetch, execFileImpl = execFileAsync } = {}) {
+export async function resolveAliExpressProductUrl(url, {
+  fetchImpl = fetch,
+  execFileImpl = execFileAsync,
+  resolveShortUrl,
+} = {}) {
   if (!isAliExpressUrl(url)) return String(url || '');
+  if (typeof resolveShortUrl === 'function') {
+    try {
+      const finalUrl = await resolveShortUrl(url);
+      if (isAliExpressUrl(finalUrl)) return String(finalUrl);
+    } catch {
+      // Continue with the browser-like redirect readers below.
+    }
+  }
   try {
     const response = await fetchImpl(url, {
       redirect: 'follow',
@@ -71,8 +83,9 @@ export async function resolveAliExpressProductUrl(url, { fetchImpl = fetch, exec
 
 /** Fetches product facts through the affiliate API, preserving the original
  * user-supplied tracking link for publication. */
-export async function resolveAliExpressAffiliateProduct(url, config, { fetchImpl = fetch, execFileImpl = execFileAsync } = {}) {
-  const canonicalUrl = await resolveAliExpressProductUrl(url, { fetchImpl, execFileImpl });
+export async function resolveAliExpressAffiliateProduct(url, config, options = {}) {
+  const { fetchImpl = fetch } = options;
+  const canonicalUrl = await resolveAliExpressProductUrl(url, options);
   const productId = aliexpressProductId(canonicalUrl);
   if (!productId || !config.appKey || !config.appSecret || !config.trackingId) return {};
   const unsigned = {
