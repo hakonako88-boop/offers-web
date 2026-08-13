@@ -366,7 +366,8 @@ for (const update of updates || []) {
           // the owner's original short link, or an unrelated offer could be
           // rejected as a duplicate.
           const canonicalProductId = aliexpressProductId(affiliateMetadata.canonicalUrl || metadata.finalUrl || url);
-          if (canonicalProductId) {
+          const catalogueProductId = String(affiliateMetadata.productId || '');
+          if (canonicalProductId && (!catalogueProductId || catalogueProductId === canonicalProductId)) {
             generatedAliExpressUrl = String(affiliateMetadata.affiliateUrl || '');
             metadata = {
               ...metadata,
@@ -378,8 +379,10 @@ for (const update of updates || []) {
             // Without a verified product destination, affiliate catalogue
             // facts may refer to a different item. Keep only the owner/card
             // data and ask for any missing price rather than publishing the
-            // wrong product.
-            console.warn('AliExpress short link could not be resolved to a verified product id.');
+            // wrong product. A mismatched ID is treated exactly as unsafe:
+            // the original title/photo can remain, but product facts and an
+            // affiliate URL from a different catalogue entry are discarded.
+            console.warn(`AliExpress catalogue identity mismatch: resolved=${canonicalProductId || 'none'} catalogue=${catalogueProductId || 'none'}.`);
           }
         } catch (error) {
           console.warn(`AliExpress affiliate lookup failed: ${safeError(error, settings.token)}`);
