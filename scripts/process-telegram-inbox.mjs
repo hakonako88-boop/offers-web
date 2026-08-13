@@ -26,6 +26,7 @@ const OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const MAX_PROCESSED_UPDATES = 400;
 const DUPLICATE_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
+const MAX_CHAT_DIAGNOSTICS = 20;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -262,6 +263,39 @@ const state = readJson(STATE_FILE, { processedUpdateIds: [] });
 const processed = new Set((state.processedUpdateIds || []).map(Number));
 const authorizedChatIds = new Set((state.authorizedChatIds || []).map(String));
 const pendingByChat = state.pendingByChat && typeof state.pendingByChat === 'object' ? state.pendingByChat : {};
+const diagnosticsByChat = state.diagnosticsByChat && typeof state.diagnosticsByChat === 'object' ? state.diagnosticsByChat : {};
+
+// This is deliberately small and contains no URLs, tokens or shop response
+// bodies. It lets the owner see the exact *stage* that failed without turning
+// the committed runtime state into a record of sensitive links.
+function recordDiagnostic(chatKey, status, detail = '') {
+  diagnosticsByChat[String(chatKey)] = {
+    status,
+    detail: String(detail || '').replace(/\s+/gu, ' ').trim().slice(0, 180),
+    at: new Date().toISOString(),
+  };
+}
+
+function diagnosticReply(chatKey) {
+  const current = diagnosticsByChat[String(chatKey)];
+  const pending = pendingByChat[String(chatKey)]?.draft || pendingByChat[String(chatKey)];
+  const labels = {
+    processing: 'Comprobando la ficha y el enlace de afiliado.',
+    published: 'La última oferta se publicó correctamente.',
+    duplicate: 'No se publicó porque es el mismo producto que una oferta reciente.',
+    pending: 'Faltan datos de la ficha; el bot conserva la oferta pendiente.',
+    unsupported: 'El enlace no se pudo identificar como Amazon, AliExpress o Miravia.',
+    failed: 'Hubo un problema técnico antes de publicar. No se envió nada al canal.',
+  };
+  return [
+    '🩺 Diagnóstico del bot',
+    current ? `Último resultado: ${labels[current.status] || 'Revisado.'}` : 'Aún no hay ningún intento registrado en este chat.',
+    current?.detail ? `Detalle: ${current.detail}` : '',
+    current?.at ? `Hora del último intento: ${new Date(current.at).toLocaleString('es-ES', { timeZone: 'Europe/Madrid' })}.` : '',
+    pending ? '⏳ Hay una oferta pendiente. Puedes enviar el precio como “Precio: 19,99 €”, reenviar su enlace o usar /cancelar.' : '✓ No hay ofertas pendientes.',
+    'Si el último resultado fue técnico, reenvía el enlace una vez; el bot volverá a intentarlo sin publicar duplicados.',
+  ].filter(Boolean).join('\n');
+}
 let updates;
 const webhookUpdate = String(process.env.TELEGRAM_WEBHOOK_UPDATE || '').trim();
 if (webhookUpdate && webhookUpdate !== 'null') {
@@ -291,12 +325,14 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
   try {
     const outcome = await publishIfNew(settings, result.offer, { message_id: pending.messageId || `pending-${chatKey}` });
     await reply(settings.token, chatKey, outcome.duplicate
-      ? '♻️ Esa oferta pendiente ya estaba publicada. No la repito en el canal.'
+      ? '♻️ No la publico porque he identificado el mismo producto que ya existe en el canal.'
       : publicationSuccessReply());
+    recordDiagnostic(chatKey, outcome.duplicate ? 'duplicate' : 'published');
     if (!outcome.duplicate) published += 1;
     delete pendingByChat[chatKey];
   } catch (error) {
     console.warn(`Pending Telegram offer for ${chatKey} could not be published: ${safeError(error, settings.token)}`);
+    recordDiagnostic(chatKey, 'failed', 'No se pudo entregar la publicación a Telegram; se conservará como pendiente.');
   }
 }
 for (const update of updates || []) {
@@ -333,6 +369,9 @@ for (const update of updates || []) {
         pending ? '⏳ Hay una oferta pendiente: pega ahora su enlace de compra o usa /cancelar.' : '✓ No hay ofertas pendientes.',
       ].join('\n'));
       handled += 1;
+    } else if (isAuthorizedChat && /^\/diagnostico(?:@\w+)?\s*$/i.test(String(text).trim())) {
+      await reply(settings.token, message.chat.id, diagnosticReply(chatKey));
+      handled += 1;
     } else if (isAuthorizedChat && /^\/cancelar(?:@\w+)?\s*$/i.test(String(text).trim())) {
       const hadPending = Boolean(pendingByChat[chatKey]);
       delete pendingByChat[chatKey];
@@ -354,6 +393,7 @@ for (const update of updates || []) {
         // publication when Telegram delays a private reply.
         console.warn(`Telegram acknowledgement could not be sent: ${safeError(error, settings.token)}`);
       }
+      recordDiagnostic(chatKey, 'processing', 'Intentando obtener título, precio, foto y enlace de afiliado.');
       let metadata = { finalUrl: url };
       let metadataError = '';
       try {
@@ -420,20 +460,23 @@ for (const update of updates || []) {
       if (result.status === 'ready') {
         const outcome = await publishIfNew(settings, result.offer, message);
         if (outcome.duplicate) {
-          await reply(settings.token, message.chat.id, '♻️ Esa oferta o un producto equivalente ya está publicado. No la repito en el canal.');
+          await reply(settings.token, message.chat.id, '♻️ No la publico porque he identificado el mismo producto que ya existe en el canal.');
         } else {
           await reply(settings.token, message.chat.id, publicationSuccessReply());
           published += 1;
         }
+        recordDiagnostic(chatKey, outcome.duplicate ? 'duplicate' : 'published');
         delete pendingByChat[chatKey];
       } else if (result.status === 'needs_details') {
         pendingByChat[chatKey] = { url: affiliateUrl, metadata };
         const missing = result.missing.join(', ');
         const retry = metadataError
-          ? ' La tienda no ha dejado leer la ficha ahora mismo; pega el enlace directo del producto e inténtalo de nuevo en unos minutos.'
+          ? ' La tienda no ha dejado leer toda la ficha ahora mismo. He guardado el enlace y volveré a usar los datos que hayas reenviado.'
           : '';
-        await reply(settings.token, message.chat.id, `He encontrado el enlace, pero falta ${missing}.${retry} Si solo falta el precio, responde: “Precio: 19,99 €” y, si lo tienes, “Antes: 29,99 €”.`);
+        recordDiagnostic(chatKey, 'pending', `Pendiente: falta ${missing}.`);
+        await reply(settings.token, message.chat.id, `He encontrado el enlace, pero falta ${missing}.${retry} Si solo falta el precio, responde: “Precio: 19,99 €” y, si lo tienes, “Antes: 29,99 €”. Usa /diagnostico para ver el estado.`);
       } else {
+        recordDiagnostic(chatKey, 'unsupported', 'No se pudo validar una ficha de tienda compatible detrás del enlace.');
         await reply(settings.token, message.chat.id, `⚠️ ${result.message}`);
       }
       handled += 1;
@@ -455,13 +498,15 @@ for (const update of updates || []) {
           if (newestPhoto) result.offer.photoFileId = newestPhoto;
           const outcome = await publishIfNew(settings, result.offer, message);
           if (outcome.duplicate) {
-            await reply(settings.token, message.chat.id, '♻️ Esa oferta o un producto equivalente ya está publicado. No la repito en el canal.');
+            await reply(settings.token, message.chat.id, '♻️ No la publico porque he identificado el mismo producto que ya existe en el canal.');
           } else {
             await reply(settings.token, message.chat.id, publicationSuccessReply());
             published += 1;
           }
+          recordDiagnostic(chatKey, outcome.duplicate ? 'duplicate' : 'published');
           delete pendingByChat[chatKey];
         } else {
+          recordDiagnostic(chatKey, 'pending', `Pendiente: falta ${result.missing?.join(', ') || 'información de la ficha'}.`);
           await reply(settings.token, message.chat.id, `⚠️ Aún falta ${result.missing?.join(', ') || 'información'} para publicar.`);
         }
       }
@@ -476,6 +521,7 @@ for (const update of updates || []) {
         draft: forwardedOfferMetadata(text, largestPhoto),
         messageId: message.message_id,
       };
+      recordDiagnostic(chatKey, 'pending', 'Oferta reenviada guardada: falta su enlace de compra.');
       await reply(settings.token, message.chat.id, 'He guardado la foto, el título y los precios de la publicación. Telegram elimina los botones de compra al reenviarla, así que pega ahora el enlace de Amazon, AliExpress o Miravia y la publicaré con tu afiliado.');
       handled += 1;
     } else {
@@ -492,11 +538,12 @@ for (const update of updates || []) {
       } else if (result.status === 'ready') {
         const outcome = await publishIfNew(settings, result.offer, message);
         if (outcome.duplicate) {
-          await reply(settings.token, message.chat.id, '♻️ Esa oferta o un producto equivalente ya está publicado. No la repito en el canal.');
+          await reply(settings.token, message.chat.id, '♻️ No la publico porque he identificado el mismo producto que ya existe en el canal.');
         } else {
           await reply(settings.token, message.chat.id, publicationSuccessReply());
           published += 1;
         }
+        recordDiagnostic(chatKey, outcome.duplicate ? 'duplicate' : 'published');
         handled += 1;
       } else if (result.status === 'unauthorized') {
         await reply(settings.token, message.chat.id, '⛔ Este chat no está autorizado para publicar ofertas.');
@@ -508,6 +555,7 @@ for (const update of updates || []) {
     }
   } catch (error) {
     console.warn(`Telegram private message ${message.message_id} could not be processed: ${safeError(error, settings.token)}`);
+    recordDiagnostic(message.chat.id, 'failed', 'Error técnico al comprobar o publicar la oferta. No se ha publicado nada.');
     try {
       await reply(settings.token, message.chat.id, inboxFailureReply(error));
     } catch {
@@ -521,6 +569,9 @@ writeJson(STATE_FILE, {
   processedUpdateIds: Array.from(processed).sort((left, right) => left - right).slice(-MAX_PROCESSED_UPDATES),
   authorizedChatIds: Array.from(authorizedChatIds).slice(-20),
   pendingByChat,
+  diagnosticsByChat: Object.fromEntries(Object.entries(diagnosticsByChat)
+    .sort(([, left], [, right]) => String(left?.at || '').localeCompare(String(right?.at || '')))
+    .slice(-MAX_CHAT_DIAGNOSTICS)),
   lastCheckedAt: new Date().toISOString(),
 });
 console.log(`Telegram private inbox handled ${handled} message(s) and published ${published} offer(s).`);

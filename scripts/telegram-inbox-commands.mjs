@@ -128,7 +128,7 @@ export function controlHelp() {
     '',
     'También puedes reenviar una publicación con foto y pegar después su enlace de compra.',
     '',
-    '/estado comprueba si el bot está listo. /cancelar descarta el reenvío pendiente.',
+    '/estado comprueba si el bot está listo. /diagnostico muestra el resultado del último intento. /cancelar descarta el reenvío pendiente.',
   ].join('\n');
 }
 
