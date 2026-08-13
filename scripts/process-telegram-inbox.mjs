@@ -8,6 +8,7 @@ import {
   formatManualWebsiteText,
   manualOfferFromMessage,
   mergeProductMetadata,
+  hasAffiliateLink,
   offerFromProductMetadata,
   processingOfferReply,
   storeFromUrl,
@@ -101,7 +102,10 @@ async function downloadProductImage(url) {
 }
 
 async function sendProductPhoto(settings, offer) {
-  const photos = [...new Set([offer.photoFileId, offer.imageUrl].filter(Boolean))];
+  // A shop/API image is the product photo. A forwarded Telegram image is a
+  // fallback only: it often contains a banner, blank margins or another
+  // channel's branding.
+  const photos = [...new Set([offer.imageUrl, offer.photoFileId].filter(Boolean))];
   let lastError;
   for (const photo of photos) {
     const replyMarkup = {
@@ -226,7 +230,7 @@ function inboxFailureReply(error) {
 }
 
 function metadataWithOfficialAmazonImage(url, metadata = {}) {
-  if (storeFromUrl(url) !== 'Amazon' || metadata.imageUrl) return metadata;
+  if (storeFromUrl(url) !== 'Amazon') return metadata;
   const imageUrl = amazonProductImageFromUrl(url);
   return imageUrl ? { ...metadata, imageUrl } : metadata;
 }
@@ -301,6 +305,23 @@ for (const update of updates || []) {
     } else if (/^\/(?:start|ayuda)(?:@\w+)?\b/i.test(String(text).trim())) {
       await reply(settings.token, message.chat.id, controlHelp());
       handled += 1;
+    } else if (isAuthorizedChat && /^\/estado(?:@\w+)?\s*$/i.test(String(text).trim())) {
+      const pending = pendingByChat[chatKey]?.draft || pendingByChat[chatKey];
+      await reply(settings.token, message.chat.id, [
+        '🤖 Bot listo para publicar en el canal y en la web.',
+        '✓ Amazon: añade tu tag al enlace directo.',
+        '✓ AliExpress: obtiene ficha y enlace desde tu afiliación.',
+        '✓ Miravia: conserva el enlace de afiliación válido.',
+        pending ? '⏳ Hay una oferta pendiente: pega ahora su enlace de compra o usa /cancelar.' : '✓ No hay ofertas pendientes.',
+      ].join('\n'));
+      handled += 1;
+    } else if (isAuthorizedChat && /^\/cancelar(?:@\w+)?\s*$/i.test(String(text).trim())) {
+      const hadPending = Boolean(pendingByChat[chatKey]);
+      delete pendingByChat[chatKey];
+      await reply(settings.token, message.chat.id, hadPending
+        ? '🗑️ He descartado la oferta pendiente. Puedes enviar o reenviar otra.'
+        : 'No había ninguna oferta pendiente. Puedes enviar o reenviar una oferta.');
+      handled += 1;
     } else if (message.voice) {
       await reply(settings.token, message.chat.id, '🎙️ Esta versión gratuita no transcribe audios. Pega el enlace del producto por escrito.\n\n' + controlHelp());
       handled += 1;
@@ -336,6 +357,7 @@ for (const update of updates || []) {
       // or an incomplete price to automated readers. Its affiliate catalogue
       // is the authoritative product source, so ask it on every AliExpress
       // submission rather than only when the page happens to be blank.
+      let generatedAliExpressUrl = '';
       if (resolvedStore === 'AliExpress') {
         try {
           const affiliateMetadata = await resolveAliExpressAffiliateProduct(metadata.finalUrl || url, {
@@ -343,7 +365,12 @@ for (const update of updates || []) {
             appSecret: settings.aliexpressAppSecret,
             trackingId: settings.aliexpressTrackingId,
           });
-          metadata = { ...metadata, ...Object.fromEntries(Object.entries(affiliateMetadata).filter(([, value]) => value)) };
+          generatedAliExpressUrl = String(affiliateMetadata.affiliateUrl || '');
+          metadata = {
+            ...metadata,
+            ...Object.fromEntries(Object.entries(affiliateMetadata)
+              .filter(([key, value]) => key !== 'affiliateUrl' && value)),
+          };
         } catch (error) {
           console.warn(`AliExpress affiliate lookup failed: ${safeError(error, settings.token)}`);
         }
@@ -357,7 +384,9 @@ for (const update of updates || []) {
       // always replaced with this account's configured tag.
       const affiliateUrl = resolvedStore === 'Amazon'
         ? (metadata.finalUrl || url)
-        : (sourceStore === resolvedStore ? url : (metadata.finalUrl || url));
+        : (resolvedStore === 'AliExpress' && hasAffiliateLink(generatedAliExpressUrl, 'AliExpress')
+          ? generatedAliExpressUrl
+          : (sourceStore === resolvedStore ? url : (metadata.finalUrl || url)));
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
         const outcome = await publishIfNew(settings, result.offer, message);

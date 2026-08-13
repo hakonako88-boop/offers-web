@@ -73,6 +73,20 @@ test('builds a ready Amazon offer from public product metadata and adds the tag'
   assert.equal(result.offer.imageUrl, 'https://images.example/product.jpg');
 });
 
+test('does not publish an unresolved Amazon short link because its tag cannot be verified', () => {
+  const result = offerFromProductMetadata({
+    url: 'https://amzn.to/example',
+    partnerTag: 'example-21',
+    metadata: {
+      title: 'Auriculares inalÃ¡mbricos SoundPEATS',
+      imageUrl: 'https://images.example/product.jpg',
+      price: 19.99,
+    },
+  });
+  assert.equal(result.status, 'needs_affiliate');
+  assert.match(result.message, /enlace directo/i);
+});
+
 test('confirms that a product link is being checked before publication', () => {
   assert.match(processingOfferReply('Amazon'), /ficha de Amazon/);
   assert.match(processingOfferReply('Tienda'), /ficha de la tienda/);
@@ -140,6 +154,15 @@ test('reads an Amazon link hidden behind a forwarded Telegram card and uses its 
   assert.equal(metadata.previousPrice, 17.08);
   assert.equal(metadata.imageUrl, 'telegram-forwarded-photo');
   assert.doesNotMatch(metadata.description, /oferta reenviada/i);
+});
+
+test('uses an available inline button URL from Telegram before falling back to card text', () => {
+  const url = urlFromTelegramMessage({
+    reply_markup: {
+      inline_keyboard: [[{ text: 'VER OFERTA', url: 'https://www.amazon.es/dp/B0ABCDE123' }]],
+    },
+  }, 'Ventilador de prueba\nPrecio: 17,78 â‚¬');
+  assert.equal(url, 'https://www.amazon.es/dp/B0ABCDE123');
 });
 
 test('formats a forwarded fan offer without exposing its forwarded origin', () => {
