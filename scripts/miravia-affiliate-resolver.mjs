@@ -43,3 +43,35 @@ export function miraviaAwinAffiliateUrl(productId, {
   const query = new URLSearchParams({ p: id, a: publisher, m: merchant });
   return `https://www.awin1.com/pclick.php?${query}`;
 }
+
+/** Creates this publisher's Awin deep link for an official Miravia product
+ * page. Unlike a feed product click, this also works when the owner sends a
+ * normal miravia.es URL and no Awin product id is visible. */
+export function miraviaAwinDeepLink(destinationUrl, {
+  publisherId = DEFAULT_AWIN_PUBLISHER_ID,
+  merchantId = DEFAULT_MIRAVIA_MERCHANT_ID,
+} = {}) {
+  const publisher = numericId(publisherId, 3);
+  const merchant = numericId(merchantId, 3);
+  let destination = '';
+  try {
+    const parsed = new URL(destinationUrl);
+    const host = parsed.hostname.toLowerCase();
+    if (parsed.protocol !== 'https:' || !(host === 'miravia.es' || host.endsWith('.miravia.es'))) return '';
+    parsed.hash = '';
+    destination = parsed.toString();
+  } catch {
+    return '';
+  }
+  if (!publisher || !merchant) return '';
+  const query = new URLSearchParams({ awinmid: merchant, awinaffid: publisher, ued: destination });
+  return `https://www.awin1.com/cread.php?${query}`;
+}
+
+/** Chooses the safest available Miravia affiliate link. A resolved official
+ * destination identifies the exact product, while an Awin feed id remains a
+ * fallback for redirects that cannot be opened. */
+export function miraviaAffiliateUrl({ productId = '', destinationUrl = '' } = {}, options = {}) {
+  return miraviaAwinDeepLink(destinationUrl, options)
+    || miraviaAwinAffiliateUrl(productId, options);
+}

@@ -1,78 +1,51 @@
 # Automatización de ChollosAlDía
 
-La web recibe ofertas mediante `POST /api/deals` y puede publicarlas en Telegram. La publicación pública usa GitHub Actions cada 30 minutos.
+Las ofertas automáticas se seleccionan, validan y publican mediante GitHub Actions. Cada oferta aceptada se envía a Telegram y se guarda en `data/offers.json` para aparecer también en la web.
+
+## Horarios activos
+
+Mientras Amazon no tenga acceso aprobado a Creators API, las ejecuciones automáticas se reparten así:
+
+| Hora peninsular de verano | Tienda | Máximo por tanda |
+| --- | --- | ---: |
+| 09:00 | AliExpress | 3 |
+| 11:00 | Miravia | 3 |
+| 13:00 | AliExpress | 3 |
+| 15:00 | Miravia | 3 |
+| 17:00 | AliExpress | 3 |
+
+GitHub programa las tareas en UTC. Los valores actuales corresponden al horario de verano español (UTC+2); al comenzar el horario de invierno deben desplazarse una hora para conservar las horas peninsulares indicadas.
+
+El máximo teórico es de 15 publicaciones diarias. No se completa una tanda con datos inventados: si no hay tres productos nuevos con precio, imagen, descuento y enlace verificables, se publican solo los que superen todos los controles.
+
+Amazon no participa en ninguna ejecución programada. Permanece disponible para publicaciones manuales y para pruebas manuales de la API cuando la cuenta obtenga elegibilidad.
+
+## Enlaces de afiliación
+
+- **AliExpress:** la API oficial consulta el producto y devuelve `promotion_link` usando `ALIEXPRESS_TRACKING_ID`. En el bot privado se vuelve a generar el enlace aunque la URL recibida sea un enlace corto o proceda de otro canal.
+- **Miravia:** las ofertas automáticas usan el enlace atribuido del feed privado de Awin. En el bot privado, una URL directa de `miravia.es` se convierte en un enlace Awin asociado al publisher `2023977` y al programa Miravia `37168`. Si se recibe un enlace Awin con un identificador de producto, el bot puede reconstruirlo para esta cuenta.
+- **Amazon:** el bot añade y verifica `AMAZON_PARTNER_TAG` en publicaciones manuales. La búsqueda automática seguirá desactivada hasta que Amazon apruebe la API.
+
+El bot nunca debe declarar que un enlace está atribuido si no ha podido crear o verificar una URL válida de la red correspondiente.
 
 ## Secretos necesarios
 
-Configura estos valores en GitHub Actions Secrets. Nunca los compartas por chat ni los subas al repositorio.
+Los valores privados se guardan únicamente en GitHub Actions Secrets y nunca deben compartirse por chat ni incluirse en el repositorio:
 
-- `AMAZON_CREATOR_CREDENTIAL_ID`, `AMAZON_CREATOR_SECRET` y `AMAZON_CREATOR_VERSION`: credenciales de Amazon Creators API.
-- `AMAZON_PARTNER_TAG`: tracking ID de Amazon Afiliados (`chollos00a-21`).
-- `ALIEXPRESS_APP_KEY`, `ALIEXPRESS_APP_SECRET` y `ALIEXPRESS_TRACKING_ID`: credenciales oficiales de AliExpress Affiliates API.
-- `AWIN_FEED_LIST_URL`: enlace privado del listado de feeds de Awin para la cuenta de Miravia. Se guarda únicamente como secreto de GitHub.
-- `TELEGRAM_BOT_TOKEN`: token de BotFather.
-- `TELEGRAM_CHANNEL_ID`: ID numérico del canal; el bot debe ser administrador.
-- `TELEGRAM_CONTROL_CODE`: clave privada que autoriza los mensajes de publicación enviados al chat privado del bot. Elige una frase larga y guárdala solo como secreto de GitHub.
-- `IMPORT_SECRET`: contraseña aleatoria para autorizar importaciones al endpoint de la web.
+- `ALIEXPRESS_APP_KEY`, `ALIEXPRESS_APP_SECRET` y `ALIEXPRESS_TRACKING_ID`.
+- `AWIN_FEED_LIST_URL`.
+- `AMAZON_CREATOR_CREDENTIAL_ID`, `AMAZON_CREATOR_SECRET` y `AMAZON_CREATOR_VERSION`, cuando Amazon habilite la cuenta.
+- `AMAZON_PARTNER_TAG`.
+- `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHANNEL_ID`, `TELEGRAM_ALLOWED_CHAT_ID`, `TELEGRAM_WEBHOOK_URL` y `TELEGRAM_WEBHOOK_SECRET`.
 
-## Automatización activa de Amazon
+## Controles editoriales
 
-Cada 30 minutos, GitHub consulta dos categorías rotativas con Amazon Creators API. Solo publica un máximo de dos productos nuevos si tienen una oferta de Amazon o un descuento de al menos el 20%, foto, precio, enlace atribuido y disponibilidad. El sistema no repite ASIN publicados durante 120 días.
+Antes de publicar se comprueba que existan título fiable, precio actual, imagen útil y enlace atribuido. También se rechazan productos sin descuento real suficiente, sin interés probado, agotados, con imágenes pequeñas o repetidos recientemente.
 
-Cada publicación sale primero por Telegram con foto, precio, ahorro y botón de compra. La siguiente sincronización incorpora la misma oferta a la web y la publicación pública se actualiza.
+Chollometro, No Lo Dejes Escapar y MiChollo se utilizan únicamente como señales para descubrir tendencias. Sus textos, fotografías y enlaces de afiliado no se copian. AliExpress o Awin deben volver a confirmar los datos y generar el enlace propio antes de publicar.
 
-Amazon puede devolver `AssociateNotEligible` hasta validar la elegibilidad de la cuenta. En ese caso no se envía nada a Telegram y la web sigue disponible.
+## Publicación desde el bot privado
 
-## AliExpress
+El propietario puede pegar un enlace de Amazon, AliExpress o Miravia, o reenviar una tarjeta que incluya enlace, título, precio y fotografía. El bot intenta obtener la ficha oficial, genera el enlace propio, elimina referencias al canal original, evita duplicados y publica en Telegram y la web.
 
-Cada 30 minutos, GitHub consulta dos categorías rotativas con AliExpress Affiliates API en euros para España. Publica como máximo dos productos nuevos con descuento real de al menos el 20%, foto, precio y el enlace `promotion_link` generado por AliExpress para el Tracking ID configurado. No se repiten productos publicados durante 120 días.
-
-La API no proporciona siempre cupones aplicables a todos los productos. Por eso las publicaciones muestran el descuento real recibido y nunca inventan un cupón. No se extraen precios mediante scraping ni se añaden parámetros de afiliación manuales: evita enlaces sin atribución y precios incorrectos.
-
-## Miravia (Awin)
-
-Cada 30 minutos, GitHub consulta de forma moderada el listado oficial de feeds de Awin para Miravia. Rota los feeds españoles locales, solo descarga los que Awin haya actualizado y analiza una muestra limitada para no sobrecargar el catálogo. Solo publica como máximo una oferta nueva por ejecución cuando el propio feed confirma enlace de seguimiento Awin, imagen, stock, precio y un descuento real de al menos el 20%.
-
-Las ofertas se publican primero con foto y botón en Telegram y se guardan simultáneamente en la web. El enlace de acceso a los feeds nunca se versiona ni se muestra al público.
-
-## Señales públicas de comunidades de chollos
-
-ChollosAlDía revisa con frecuencia moderada los canales RSS o mapas de sitio públicos de Chollometro, No Lo Dejes Escapar y MiChollo. Estas fuentes sirven exclusivamente para descubrir nombres de productos y tendencias: no se reutilizan sus descripciones, imágenes, cupones ni enlaces de afiliado.
-
-Una señal solo se publica si AliExpress confirma de nuevo el producto, precio, imagen, descuento y genera un `promotion_link` oficial para el identificador de seguimiento configurado. Las señales que indican Amazon no se publican mientras la API de Amazon no esté habilitada para la cuenta. MiChollo se consulta como máximo una vez cada seis horas para no sobrecargar su sitemap público.
-
-## Formato de una oferta manual
-
-### Publicar desde el chat privado del bot sin APIs externas
-
-El bot puede recibir una oferta manual desde un chat privado y publicarla en el canal y en la web en la siguiente ejecución programada. No consulta ni extrae precios de Amazon: usa exclusivamente la foto y los datos que envía el administrador, para evitar scraping y precios incorrectos.
-
-Envía **una foto** al bot con este texto como pie de foto, sustituyendo `TU_CLAVE` por el valor de `TELEGRAM_CONTROL_CODE`:
-
-```text
-/publicar TU_CLAVE
-https://www.amazon.es/dp/ASIN?tag=tu-identificador
-Título: Nombre del producto
-Precio: 19,99 €
-Antes: 39,99 €
-Categoría: Tecnología
-```
-
-En Amazon debe ser un enlace directo generado con SiteStripe que conserve `tag=`. El bot confirma por privado cuando la oferta se haya enviado al canal y guardado en la web. Las notas de voz no se transcriben en esta modalidad gratuita; el enlace y los datos deben enviarse por escrito.
-
-```json
-{
-  "id": "sku-o-asin-estable",
-  "title": "Nombre claro del producto",
-  "store": "Amazon",
-  "category": "Tecnología",
-  "price": 29.99,
-  "oldPrice": 59.99,
-  "coupon": "SONIDO10",
-  "imageUrl": "https://.../foto.jpg",
-  "url": "https://www.amazon.es/dp/...",
-  "badge": "Top del día"
-}
-```
-
-Envía las importaciones manuales con `Authorization: Bearer TU_IMPORT_SECRET`.
+Si una tienda bloquea temporalmente la lectura y falta un dato indispensable, el bot conserva los datos seguros del mensaje y solicita únicamente la información que falte; nunca inventa el precio ni sustituye el producto por uno parecido.

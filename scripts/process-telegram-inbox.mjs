@@ -17,6 +17,7 @@ import {
 import { extractProductMetadata, parsePrice } from './link-offer-extractor.mjs';
 import { isInboxDuplicate } from './offer-deduplication.mjs';
 import { aliexpressProductId, resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
+import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
@@ -353,6 +354,7 @@ for (const update of updates || []) {
       // is the authoritative product source, so ask it on every AliExpress
       // submission rather than only when the page happens to be blank.
       let generatedAliExpressUrl = '';
+      let generatedMiraviaUrl = '';
       let aliExpressIdentityMismatch = null;
       if (resolvedStore === 'AliExpress') {
         try {
@@ -399,6 +401,14 @@ for (const update of updates || []) {
           console.warn(`AliExpress affiliate lookup failed: ${safeError(error, settings.token)}`);
         }
       }
+      if (resolvedStore === 'Miravia') {
+        const productId = String(metadata.productId || miraviaProductIdFromUrl(metadata.affiliateUrl || url) || '');
+        generatedMiraviaUrl = miraviaAffiliateUrl({
+          productId,
+          destinationUrl: metadata.finalUrl || '',
+        });
+        if (generatedMiraviaUrl && productId) metadata.productId = productId;
+      }
       metadata = mergeProductMetadata(metadata, metadataFromForward);
       metadata = metadataWithOfficialAmazonImage(metadata.finalUrl || url, metadata);
       if (aliExpressIdentityMismatch) {
@@ -422,7 +432,9 @@ for (const update of updates || []) {
         ? (metadata.finalUrl || url)
         : (resolvedStore === 'AliExpress' && /^https:\/\/(?:s\.click|a)\.aliexpress\.com\//iu.test(generatedAliExpressUrl)
           ? generatedAliExpressUrl
-          : (sourceStore === resolvedStore ? url : (metadata.finalUrl || url)));
+          : (resolvedStore === 'Miravia' && /^https:\/\/(?:www\.)?awin1\.com\//iu.test(generatedMiraviaUrl)
+            ? generatedMiraviaUrl
+            : (sourceStore === resolvedStore ? url : (metadata.finalUrl || url))));
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
         const outcome = await publishIfNew(settings, result.offer, message);

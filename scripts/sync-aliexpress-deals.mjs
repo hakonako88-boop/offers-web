@@ -18,9 +18,9 @@ const PUBLISHED_FILE = path.join(ROOT, 'data', 'aliexpress-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.json');
-const MAX_POSTS_PER_RUN = 1;
+const MAX_POSTS_PER_RUN = 3;
 const MAX_PUBLICATION_ATTEMPTS = 8;
-const MINIMUM_PUBLICATION_INTERVAL_MS = 6 * 60 * 60 * 1000;
+const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
 const MAX_COMMUNITY_QUERIES_PER_RUN = 3;
 
 function readJson(file, fallback) {

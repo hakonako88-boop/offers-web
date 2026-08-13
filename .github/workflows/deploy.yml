@@ -28,11 +28,13 @@ on:
   repository_dispatch:
     types: [telegram_update]
   schedule:
-    # Plan temporal sin Amazon (UTC; en verano peninsular, UTC+2).
-    # Tres oportunidades diarias: dos AliExpress y una Miravia.
-    - cron: "45 9 * * *" # AliExpress: 11:45 todos los días
-    - cron: "30 16 * * *" # Miravia: 18:30 todos los días
-    - cron: "15 19 * * *" # AliExpress: 21:15 todos los días
+    # Cinco tandas diarias sin Amazon (UTC; en verano peninsular, UTC+2).
+    # Cada ejecución puede publicar hasta tres ofertas validadas de su tienda.
+    - cron: "0 7 * * *" # AliExpress: 09:00 todos los días
+    - cron: "0 9 * * *" # Miravia: 11:00 todos los días
+    - cron: "0 11 * * *" # AliExpress: 13:00 todos los días
+    - cron: "0 13 * * *" # Miravia: 15:00 todos los días
+    - cron: "0 15 * * *" # AliExpress: 17:00 todos los días
 
 permissions:
   contents: write
@@ -122,12 +124,12 @@ jobs:
         run: npm run sync:amazon
 
       - name: Buscar y publicar ofertas de AliExpress
-        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'aliexpress') || (github.event_name == 'schedule' && (github.event.schedule == '45 9 * * *' || github.event.schedule == '15 19 * * *'))) && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'aliexpress') || (github.event_name == 'schedule' && (github.event.schedule == '0 7 * * *' || github.event.schedule == '0 11 * * *' || github.event.schedule == '0 15 * * *'))) && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         continue-on-error: true
         run: npm run sync:aliexpress
 
       - name: Buscar y publicar ofertas de Miravia
-        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'miravia') || (github.event_name == 'schedule' && github.event.schedule == '30 16 * * *')) && env.AWIN_FEED_LIST_URL != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'miravia') || (github.event_name == 'schedule' && (github.event.schedule == '0 9 * * *' || github.event.schedule == '0 13 * * *'))) && env.AWIN_FEED_LIST_URL != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         continue-on-error: true
         run: npm run sync:miravia
 

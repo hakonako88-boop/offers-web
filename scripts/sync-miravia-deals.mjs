@@ -23,11 +23,11 @@ const STATE_FILE = path.join(ROOT, 'data', 'miravia-discovery-state.json');
 const PUBLISHED_FILE = path.join(ROOT, 'data', 'miravia-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
-const MAX_POSTS_PER_RUN = 1;
+const MAX_POSTS_PER_RUN = 3;
 const MAX_PUBLICATION_ATTEMPTS = 12;
 const MAX_PRODUCTS_SCANNED = 40000;
 const MAX_CANDIDATES = 60;
-const MINIMUM_PUBLICATION_INTERVAL_MS = 8 * 60 * 60 * 1000;
+const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
