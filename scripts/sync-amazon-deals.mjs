@@ -200,7 +200,9 @@ const cutoff = Date.now() - 120 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
 const seenAsins = new Set(published.map((entry) => entry.asin));
 const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, Date.parse(entry.publishedAt || '') || 0), 0);
-const canPublishNow = !lastPublicationAt || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
+const canPublishNow = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
+  || !lastPublicationAt
+  || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
 const topics = topicsForRun(Number(state.nextTopic || 0), 2);
 const candidates = [];
 const searchErrors = [];

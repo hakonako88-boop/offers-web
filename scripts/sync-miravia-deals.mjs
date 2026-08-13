@@ -276,7 +276,9 @@ const cutoff = Date.now() - 365 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
 const seenProductIds = new Set(published.map((entry) => entry.productId));
 const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, Date.parse(entry.publishedAt || '') || 0), 0);
-const canPublishToday = !lastPublicationAt || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
+const canPublishToday = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
+  || !lastPublicationAt
+  || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
 
 const listResponse = await fetch(config.feedListUrl, {
   headers: { 'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)' },
