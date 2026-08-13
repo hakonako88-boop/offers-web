@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {
   activateChatFromMessage,
+  aliExpressPublicationUrl,
   amazonProductImageFromUrl,
   controlHelp,
   formatManualTelegramCaption,
@@ -340,7 +341,12 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
         ...Object.fromEntries(Object.entries(affiliateMetadata)
           .filter(([key, value]) => key !== 'affiliateUrl' && value)),
       }, pending?.draft || metadata);
-      if (/^https:\/\/(?:s\.click|a)\.aliexpress\.com\//iu.test(generatedUrl)) pendingUrl = generatedUrl;
+      metadata = { ...metadata, affiliateUrl: generatedUrl };
+      pendingUrl = aliExpressPublicationUrl({
+        generatedUrl,
+        productId: metadata.productId,
+        fallbackUrl: metadata.canonicalUrl || pendingUrl,
+      });
       result = offerFromProductMetadata({
         url: pendingUrl,
         metadata,
@@ -445,6 +451,7 @@ for (const update of updates || []) {
             ...metadata,
             ...Object.fromEntries(Object.entries(affiliateMetadata)
               .filter(([key, value]) => key !== 'affiliateUrl' && value)),
+            affiliateUrl: generatedAliExpressUrl,
             ...(canonicalProductId ? { productId: canonicalProductId } : {}),
           };
           console.log(`AliExpress resolved product ${canonicalProductId || 'without-id'}; exact metadata=${affiliateMetadata.identityVerified ? 'yes' : 'page-fallback'}; own affiliate=${generatedAliExpressUrl ? 'yes' : 'no'}.`);
@@ -483,8 +490,12 @@ for (const update of updates || []) {
       // controlled affiliate error below.
       const affiliateUrl = resolvedStore === 'Amazon'
         ? (metadata.finalUrl || url)
-        : (resolvedStore === 'AliExpress' && /^https:\/\/(?:s\.click|a)\.aliexpress\.com\//iu.test(generatedAliExpressUrl)
-          ? generatedAliExpressUrl
+        : (resolvedStore === 'AliExpress'
+          ? aliExpressPublicationUrl({
+            generatedUrl: generatedAliExpressUrl,
+            productId: metadata.productId,
+            fallbackUrl: metadata.canonicalUrl || metadata.finalUrl || url,
+          })
           : (resolvedStore === 'Miravia' && /^https:\/\/(?:www\.)?awin1\.com\//iu.test(generatedMiraviaUrl)
             ? generatedMiraviaUrl
             : (metadata.finalUrl || url)));
@@ -509,7 +520,11 @@ for (const update of updates || []) {
         const retry = metadataError
           ? ' La tienda no ha dejado leer la ficha ahora mismo; pega el enlace directo del producto e inténtalo de nuevo en unos minutos.'
           : '';
-        await reply(settings.token, message.chat.id, `He encontrado el enlace, pero falta ${missing}.${retry} Si solo falta el precio, responde: “Precio: 19,99 €” y, si lo tienes, “Antes: 29,99 €”.`);
+        if (resolvedStore === 'AliExpress' && !generatedAliExpressUrl) {
+          await reply(settings.token, message.chat.id, `He encontrado el producto, pero falta ${missing} y la API oficial de AliExpress no ha podido generar tu enlace afiliado. No publico el enlace original. Prueba con otra ficha del producto o vuelve a enviarlo más tarde.`);
+        } else {
+          await reply(settings.token, message.chat.id, `He encontrado el enlace, pero falta ${missing}.${retry} Si solo falta el precio, responde: “Precio: 19,99 €” y, si lo tienes, “Antes: 29,99 €”.`);
+        }
       } else {
         // A community/deals page occasionally hides its merchant button from
         // GitHub. Preserve the factual card so the next direct shop URL can
@@ -548,7 +563,9 @@ for (const update of updates || []) {
           }
           delete pendingByChat[chatKey];
         } else {
-          await reply(settings.token, message.chat.id, `⚠️ Aún falta ${result.missing?.join(', ') || 'información'} para publicar.`);
+          await reply(settings.token, message.chat.id, result.message
+            ? `⚠️ ${result.message}`
+            : `⚠️ Aún falta ${result.missing?.join(', ') || 'información'} para publicar.`);
         }
       }
       handled += 1;

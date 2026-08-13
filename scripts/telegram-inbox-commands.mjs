@@ -187,6 +187,21 @@ function hasAffiliateLink(url, store) {
   }
 }
 
+export function aliExpressPublicationUrl({ generatedUrl = '', productId = '', fallbackUrl = '' } = {}) {
+  const generated = String(generatedUrl || '').trim().replace(/^http:\/\//iu, 'https://');
+  if (/^https:\/\/(?:s\.click|a)\.aliexpress\.com\//iu.test(generated)) return generated;
+
+  const submittedId = /^\d{8,}$/u.test(String(productId || ''))
+    ? String(productId)
+    : String(fallbackUrl || '').match(/\/item\/(\d{8,})(?:\.html)?(?:[/?#]|$)/iu)?.[1] || '';
+
+  // A short/shared URL may contain another publisher's tracking. Until the
+  // API creates this account's link, keep only a clean canonical product URL.
+  return submittedId
+    ? `https://es.aliexpress.com/item/${submittedId}.html`
+    : 'https://es.aliexpress.com/';
+}
+
 export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag = '' } = {}) {
   const store = storeFromUrl(url);
   if (!['Amazon', 'AliExpress', 'Miravia'].includes(store)) {

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   activateChatFromMessage,
+  aliExpressPublicationUrl,
   amazonProductImageFromUrl,
   forwardedOfferMetadata,
   formatManualTelegramCaption,
@@ -85,6 +86,35 @@ test('does not publish an unresolved Amazon short link because its tag cannot be
   });
   assert.equal(result.status, 'needs_affiliate');
   assert.match(result.message, /enlace directo/i);
+});
+
+test('removes another AliExpress publisher tracking when its own link cannot be generated', () => {
+  const safeUrl = aliExpressPublicationUrl({
+    generatedUrl: '',
+    productId: '1005012721085216',
+    fallbackUrl: 'https://www.aliexpress.com/item/1005012721085216.html?aff_fsk=_foreign&aff_trace_key=foreign',
+  });
+
+  assert.equal(safeUrl, 'https://es.aliexpress.com/item/1005012721085216.html');
+  const result = offerFromProductMetadata({
+    url: safeUrl,
+    metadata: {
+      title: 'Maison Alhambra Jean Lowe Fantasme Eau de Parfum 100 ml',
+      imageUrl: 'https://ae-pic-a1.aliexpress-media.com/kf/perfume.jpeg',
+      price: 19.99,
+      productId: '1005012721085216',
+    },
+  });
+  assert.equal(result.status, 'needs_affiliate');
+  assert.match(result.message, /No he publicado el enlace original/i);
+});
+
+test('uses only the AliExpress affiliate URL generated for this account', () => {
+  assert.equal(aliExpressPublicationUrl({
+    generatedUrl: 'https://s.click.aliexpress.com/e/_propio',
+    productId: '1005012721085216',
+    fallbackUrl: 'https://a.aliexpress.com/_ajeno',
+  }), 'https://s.click.aliexpress.com/e/_propio');
 });
 
 test('confirms that a product link is being checked before publication', () => {
