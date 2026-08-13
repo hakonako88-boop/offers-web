@@ -33,3 +33,22 @@ test('blocks the same affiliate product even if the feed changes its title', () 
     { title: 'Ratón gaming negro edición 2026', store: 'Miravia' },
   ), true);
 });
+
+test('never merges different known AliExpress products merely because their titles overlap', () => {
+  assert.equal(isEquivalentDeal(
+    {
+      title: 'Ventilador de sobremesa 40 W silencioso',
+      sourceProductId: 'aliexpress:1005011111111111',
+      store: 'AliExpress',
+    },
+    {
+      title: 'Ventilador de sobremesa 40 W con 3 velocidades',
+      source_product_id: 'manual-2999',
+      store: 'AliExpress',
+    },
+  ), false);
+  assert.equal(isEquivalentDeal(
+    { title: 'TÃ­tulo nuevo', sourceProductId: 'aliexpress:1005012222222222', store: 'AliExpress' },
+    { title: 'TÃ­tulo anterior', source_product_id: '1005012222222222', store: 'AliExpress' },
+  ), true);
+});

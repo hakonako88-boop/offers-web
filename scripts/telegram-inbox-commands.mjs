@@ -235,6 +235,11 @@ export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag =
       discount,
       url: finalUrl,
       imageUrl,
+      // Kept only for duplicate detection. It prevents two AliExpress
+      // products with similar catalogue wording from being merged.
+      sourceProductId: store === 'AliExpress' && /^\d{8,}$/u.test(String(metadata.productId || ''))
+        ? `aliexpress:${metadata.productId}`
+        : '',
       description: compact(metadata.description).slice(0, 220) || `${title.slice(0, 180)} · Oferta publicada en Chollos al Día.`,
     },
   };

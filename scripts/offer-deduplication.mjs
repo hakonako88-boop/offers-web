@@ -29,7 +29,17 @@ function similarity(left = '', right = '') {
 
 function productIdentity(deal = {}) {
   const explicit = deal.sourceProductId || deal.source_product_id || deal.productId;
-  if (explicit) return String(explicit).toLowerCase().replace(/^miravia-/, '');
+  if (explicit) {
+    const raw = String(explicit).toLowerCase();
+    if (/^aliexpress:\d+$/u.test(raw) || /^amazon:[a-z0-9]{10}$/u.test(raw) || /^awin:\d+$/u.test(raw)) return raw;
+    const miraviaId = raw.match(/^miravia-(\d+)$/u)?.[1];
+    if (miraviaId) return `awin:${miraviaId}`;
+    // Older automatic AliExpress records saved the product id without a
+    // prefix. Make them comparable with the new inbox records.
+    if (deal.store === 'AliExpress' && /^\d{8,}$/u.test(raw)) return `aliexpress:${raw}`;
+    if (deal.store === 'Miravia' && /^\d+$/u.test(raw)) return `awin:${raw}`;
+    return raw.replace(/^miravia-/, '');
+  }
   try {
     const url = new URL(deal.url || '');
     const pclickProduct = url.searchParams.get('p');
@@ -47,7 +57,7 @@ function productIdentity(deal = {}) {
 export function isEquivalentDeal(candidate = {}, published = {}) {
   const candidateIdentity = productIdentity(candidate);
   const publishedIdentity = productIdentity(published);
-  if (candidateIdentity && publishedIdentity && candidateIdentity === publishedIdentity) return true;
+  if (candidateIdentity && publishedIdentity) return candidateIdentity === publishedIdentity;
   const candidateTitle = normalise(candidate.title);
   const publishedTitle = normalise(published.title);
   if (!candidateTitle || !publishedTitle) return false;

@@ -79,5 +79,8 @@ export async function resolveAliExpressAffiliateProduct(url, config, { fetchImpl
   const data = await response.json().catch(() => ({}));
   const products = data?.aliexpress_affiliate_product_query_response?.resp_result?.result?.products?.product || [];
   const product = Array.isArray(products) ? products[0] : products;
-  return metadataFromAliExpressProduct(product);
+  return {
+    ...metadataFromAliExpressProduct(product),
+    productId: String(product?.product_id || productId),
+  };
 }
