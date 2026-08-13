@@ -18,6 +18,20 @@ export function aliexpressProductId(url = '') {
   return match?.[1] || '';
 }
 
+export function isOwnedAliExpressAffiliateUrl(value = '', invitationCode = '') {
+  const expected = String(invitationCode || '').trim();
+  if (!expected) return false;
+  try {
+    const parsed = new URL(value);
+    if (!isAliExpressUrl(parsed.toString())) return false;
+    return [parsed.searchParams.get('invitationCode'), parsed.searchParams.get('spreadCode')]
+      .filter(Boolean)
+      .some((code) => code === expected);
+  } catch {
+    return false;
+  }
+}
+
 function canonicalAliExpressItemUrl(url = '') {
   const productId = aliexpressProductId(url);
   return productId ? `https://es.aliexpress.com/item/${productId}.html` : String(url || '');

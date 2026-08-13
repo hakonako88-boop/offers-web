@@ -17,7 +17,7 @@ import {
 } from './telegram-inbox-commands.mjs';
 import { extractProductMetadata, parsePrice } from './link-offer-extractor.mjs';
 import { isInboxDuplicate } from './offer-deduplication.mjs';
-import { aliexpressProductId, resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
+import { aliexpressProductId, isOwnedAliExpressAffiliateUrl, resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
 import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
 import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
 
@@ -52,6 +52,7 @@ function config() {
     aliexpressAppKey: process.env.ALIEXPRESS_APP_KEY,
     aliexpressAppSecret: process.env.ALIEXPRESS_APP_SECRET,
     aliexpressTrackingId: process.env.ALIEXPRESS_TRACKING_ID,
+    aliexpressInvitationCode: process.env.ALIEXPRESS_INVITATION_CODE,
     awinFeedListUrl: process.env.AWIN_FEED_LIST_URL,
   };
 }
@@ -335,14 +336,26 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
         appSecret: settings.aliexpressAppSecret,
         trackingId: settings.aliexpressTrackingId,
       });
-      const generatedUrl = String(affiliateMetadata.affiliateUrl || '');
+      const storedOwnedUrl = String(pending?.metadata?.ownedAffiliateUrl || '');
+      const resolvedOwnedUrl = isOwnedAliExpressAffiliateUrl(
+        refreshed.finalUrl || metadata.finalUrl || '',
+        settings.aliexpressInvitationCode,
+      ) ? pendingUrl : '';
+      const ownedAffiliateUrl = /^https:\/\/(?:s\.click|a)\.aliexpress\.com\//iu.test(storedOwnedUrl)
+        ? storedOwnedUrl
+        : resolvedOwnedUrl;
+      const generatedUrl = String(affiliateMetadata.affiliateUrl || ownedAffiliateUrl || '');
       const storedMetadata = mergeProductMetadata(pending?.draft || {}, metadata);
       metadata = mergeProductMetadata({
         ...refreshed,
         ...Object.fromEntries(Object.entries(affiliateMetadata)
           .filter(([key, value]) => key !== 'affiliateUrl' && value)),
       }, storedMetadata);
-      metadata = { ...metadata, affiliateUrl: generatedUrl };
+      metadata = {
+        ...metadata,
+        affiliateUrl: generatedUrl,
+        ...(ownedAffiliateUrl ? { ownedAffiliateUrl } : {}),
+      };
       pendingUrl = aliExpressPublicationUrl({
         generatedUrl,
         productId: metadata.productId,
@@ -448,6 +461,13 @@ for (const update of updates || []) {
       let generatedAliExpressUrl = '';
       let generatedMiraviaUrl = '';
       if (resolvedStore === 'AliExpress') {
+        const submittedOwnedAffiliateUrl = isOwnedAliExpressAffiliateUrl(
+          metadata.finalUrl || '',
+          settings.aliexpressInvitationCode,
+        ) && /^https:\/\/(?:s\.click|a)\.aliexpress\.com\//iu.test(url)
+          ? url
+          : '';
+        generatedAliExpressUrl = submittedOwnedAffiliateUrl;
         try {
           const affiliateMetadata = await resolveAliExpressAffiliateProduct(metadata.finalUrl || url, {
             appKey: settings.aliexpressAppKey,
@@ -455,12 +475,13 @@ for (const update of updates || []) {
             trackingId: settings.aliexpressTrackingId,
           });
           const canonicalProductId = aliexpressProductId(affiliateMetadata.canonicalUrl || metadata.finalUrl || url);
-          generatedAliExpressUrl = String(affiliateMetadata.affiliateUrl || '');
+          generatedAliExpressUrl = String(affiliateMetadata.affiliateUrl || generatedAliExpressUrl || '');
           metadata = {
             ...metadata,
             ...Object.fromEntries(Object.entries(affiliateMetadata)
               .filter(([key, value]) => key !== 'affiliateUrl' && value)),
             affiliateUrl: generatedAliExpressUrl,
+            ...(submittedOwnedAffiliateUrl ? { ownedAffiliateUrl: submittedOwnedAffiliateUrl } : {}),
             ...(canonicalProductId ? { productId: canonicalProductId } : {}),
           };
           console.log(`AliExpress resolved product ${canonicalProductId || 'without-id'}; exact metadata=${affiliateMetadata.identityVerified ? 'yes' : 'page-fallback'}; own affiliate=${generatedAliExpressUrl ? 'yes' : 'no'}.`);

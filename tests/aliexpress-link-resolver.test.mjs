@@ -1,9 +1,22 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { aliexpressProductId, metadataFromAliExpressHtml, metadataFromAliExpressProduct, metadataFromAliExpressReader, resolveAliExpressAffiliateProduct, resolveAliExpressProductUrl } from '../scripts/aliexpress-link-resolver.mjs';
+import { aliexpressProductId, isOwnedAliExpressAffiliateUrl, metadataFromAliExpressHtml, metadataFromAliExpressProduct, metadataFromAliExpressReader, resolveAliExpressAffiliateProduct, resolveAliExpressProductUrl } from '../scripts/aliexpress-link-resolver.mjs';
 
 test('extracts an AliExpress product id from an attributed destination URL', () => {
   assert.equal(aliexpressProductId('https://www.aliexpress.com/item/1005011620902362.html?aff_fsk=example'), '1005011620902362');
+});
+
+test('recognizes only the owner invitation code in an AliExpress redirect', () => {
+  const ownCode = 'owner-invitation-code';
+  assert.equal(isOwnedAliExpressAffiliateUrl(
+    `https://es.aliexpress.com/item/1005012721085216.html?invitationCode=${ownCode}&aff_fsk=_EIjlCYe`,
+    ownCode,
+  ), true);
+  assert.equal(isOwnedAliExpressAffiliateUrl(
+    'https://es.aliexpress.com/item/1005012721085216.html?invitationCode=another-publisher',
+    ownCode,
+  ), false);
+  assert.equal(isOwnedAliExpressAffiliateUrl('https://example.com/?invitationCode=owner-invitation-code', ownCode), false);
 });
 
 test('converts affiliate API product data into publishable metadata', () => {
