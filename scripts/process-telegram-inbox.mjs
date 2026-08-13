@@ -353,6 +353,7 @@ for (const update of updates || []) {
       // is the authoritative product source, so ask it on every AliExpress
       // submission rather than only when the page happens to be blank.
       let generatedAliExpressUrl = '';
+      let aliExpressIdentityMismatch = null;
       if (resolvedStore === 'AliExpress') {
         try {
           const affiliateMetadata = await resolveAliExpressAffiliateProduct(metadata.finalUrl || url, {
@@ -382,6 +383,16 @@ for (const update of updates || []) {
             // wrong product. A mismatched ID is treated exactly as unsafe:
             // the original title/photo can remain, but product facts and an
             // affiliate URL from a different catalogue entry are discarded.
+            const canonicalUrl = String(affiliateMetadata.canonicalUrl || metadata.finalUrl || url);
+            aliExpressIdentityMismatch = { canonicalUrl, canonicalProductId, catalogueProductId };
+            // Discard every fact received from the unverified shop/API reader.
+            // It can describe a different product, as happened with a perfume
+            // link incorrectly returning a humidifier. Only owner-supplied
+            // card data remains available for the assisted retry.
+            metadata = {
+              finalUrl: canonicalUrl,
+              ...metadataFromForward,
+            };
             console.warn(`AliExpress catalogue identity mismatch: resolved=${canonicalProductId || 'none'} catalogue=${catalogueProductId || 'none'}.`);
           }
         } catch (error) {
@@ -390,6 +401,18 @@ for (const update of updates || []) {
       }
       metadata = mergeProductMetadata(metadata, metadataFromForward);
       metadata = metadataWithOfficialAmazonImage(metadata.finalUrl || url, metadata);
+      if (aliExpressIdentityMismatch) {
+        const directUrl = aliExpressIdentityMismatch.canonicalUrl;
+        await reply(settings.token, message.chat.id, [
+          '⚠️ No he publicado esta oferta: AliExpress ha devuelto datos de otro producto y no voy a mezclar fichas.',
+          '',
+          `✅ Producto detectado: ${directUrl}`,
+          '',
+          'Para terminarla de forma segura, genera en tu panel de AliExpress el enlace de afiliado de ese producto y envíamelo junto con el precio. Si reenvías la oferta con foto y título, los conservaré.',
+        ].join('\n'));
+        handled += 1;
+        continue;
+      }
       const sourceStore = storeFromUrl(url);
       // An affiliate redirect found inside another publisher's post may belong
       // to that publisher. We only reuse a non-Amazon link when the user sent
