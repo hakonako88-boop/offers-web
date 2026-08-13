@@ -70,14 +70,6 @@ export function urlFromTelegramMessage(message = {}, text = '') {
     const candidate = String(text).slice(Number(entity.offset || 0), Number(entity.offset || 0) + Number(entity.length || 0));
     if (candidate) return candidate;
   }
-  // Telegram normally removes an original channel button when a post is
-  // forwarded, but it is retained in some message types. Prefer it whenever
-  // it is available so the owner does not need to copy the URL twice.
-  const buttonUrl = (message.reply_markup?.inline_keyboard || [])
-    .flat()
-    .map((button) => String(button?.url || ''))
-    .find((candidate) => ['Amazon', 'AliExpress', 'Miravia'].includes(storeFromUrl(candidate)));
-  if (buttonUrl) return buttonUrl;
   return firstUrl(text);
 }
 
@@ -124,11 +116,9 @@ export function controlHelp() {
     '',
     'Después basta con pegar un enlace. El bot obtiene título, foto, descripción y precio de la ficha pública. Si la tienda oculta el precio, te pedirá solo ese dato.',
     '',
-    'Amazon, AliExpress y Miravia: puedes pegar el enlace normal o el de afiliado. El bot intenta convertirlo al enlace de tu cuenta antes de publicar.',
+    'Amazon: puedes mandar el enlace directo; se añade tu tag automáticamente. AliExpress y Miravia: envía el enlace ya generado desde tu afiliación.',
     '',
     'También puedes reenviar una publicación con foto y pegar después su enlace de compra.',
-    '',
-    '/estado comprueba si el bot está listo. /diagnostico muestra el resultado del último intento. /cancelar descarta el reenvío pendiente.',
   ].join('\n');
 }
 
@@ -172,20 +162,12 @@ export function amazonProductImageFromUrl(url = '') {
   }
 }
 
-export function hasAffiliateLink(url, store) {
+function hasAffiliateLink(url, store) {
   try {
     const host = new URL(url).hostname.toLowerCase();
     if (store === 'AliExpress') return /(^|\.)s\.click\.aliexpress\.com$/.test(host) || /(^|\.)a\.aliexpress\.com$/.test(host);
     if (store === 'Miravia') return /(^|\.)awin1\.com$/.test(host) || /(^|\.)awin\.com$/.test(host);
     return true;
-  } catch {
-    return false;
-  }
-}
-
-function hasAmazonPartnerTag(url, partnerTag) {
-  try {
-    return Boolean(partnerTag) && new URL(url).searchParams.get('tag') === partnerTag;
   } catch {
     return false;
   }
@@ -210,11 +192,8 @@ export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag =
       missing: [!isReliableProductTitle(title) && 'título fiable', !imageUrl && 'foto', !price && 'precio'].filter(Boolean),
     };
   }
-  if (store === 'Amazon' && !hasAmazonPartnerTag(finalUrl, partnerTag)) {
-    return {
-      status: 'needs_affiliate',
-      message: 'No he podido preparar tu enlace de Amazon con tu tag. Pega el enlace directo del producto de Amazon (por ejemplo, el que contiene /dp/...) y lo convertiré antes de publicarlo.',
-    };
+  if (store === 'Amazon' && !partnerTag && !/[?&]tag=/i.test(finalUrl)) {
+    return { status: 'needs_affiliate', message: 'Falta configurar el tag de Amazon para poder crear tu enlace de afiliado.' };
   }
   if ((store === 'AliExpress' || store === 'Miravia') && !hasAffiliateLink(finalUrl, store)) {
     return { status: 'needs_affiliate', message: `Ese enlace de ${store} no parece ser de afiliación. Genera el enlace desde tu panel de afiliado y envíamelo de nuevo.` };
@@ -235,11 +214,11 @@ export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag =
       discount,
       url: finalUrl,
       imageUrl,
-      // Kept only for duplicate detection. It prevents two AliExpress
-      // products with similar catalogue wording from being merged.
+      // Keep a store-provided identifier so the inbox can distinguish two
+      // different products with similar wording without using title guesses.
       sourceProductId: store === 'AliExpress' && /^\d{8,}$/u.test(String(metadata.productId || ''))
         ? `aliexpress:${metadata.productId}`
-        : (store === 'Miravia' && /^\d{6,}$/u.test(String(metadata.productId || '')) ? `awin:${metadata.productId}` : ''),
+        : '',
       description: compact(metadata.description).slice(0, 220) || `${title.slice(0, 180)} · Oferta publicada en Chollos al Día.`,
     },
   };
