@@ -144,6 +144,23 @@ test('requires meaningful demand for an unbranded Miravia catalogue product', ()
   }), 0);
 });
 
+test('accepts a proven-brand deal without feed reviews only when its saving is substantial', () => {
+  assert.ok(miraviaQualityScore({
+    title: 'Sony Auriculares inalÃ¡mbricos con cancelaciÃ³n de ruido',
+    category: 'Electronics > Audio',
+    price: 49.99,
+    oldPrice: 109.99,
+    reviews: 0,
+  }) > 0);
+  assert.equal(miraviaQualityScore({
+    title: 'Sony Auriculares inalÃ¡mbricos',
+    category: 'Electronics > Audio',
+    price: 39.99,
+    oldPrice: 59.99,
+    reviews: 0,
+  }), 0);
+});
+
 test('recognizes the gzip downloads produced by Awin feeds', () => {
   assert.equal(isGzipFeed('https://feeds.example/compression/gzip/products'), true);
   assert.equal(isGzipFeed('https://feeds.example/products', 'gzip'), true);

@@ -213,6 +213,26 @@ for (const signal of communitySignals) {
   }
 }
 
+// Las comunidades son una señal editorial muy valiosa, pero una caída de sus
+// páginas no debe dejar el canal vacío. Si no generan ningún candidato válido,
+// usamos dos búsquedas de categorías con demanda y aplicamos el mismo filtro
+// estricto de descuento, ventas y artículos poco interesantes.
+if (!candidates.length) {
+  const fallbackTopics = topicsForAliExpressRun(Number(state.nextTopic || 0), 2);
+  for (const topic of fallbackTopics) {
+    topics.push(topic);
+    try {
+      const products = await searchAliExpress(config, topic);
+      for (const product of products) {
+        const offer = normalizeAliExpressProduct(product, topic.category, topic.titleTerms, 1);
+        if (offer && !seenProductIds.has(offer.id)) candidates.push(offer);
+      }
+    } catch (error) {
+      console.warn(`Could not search AliExpress fallback topic ${topic.keywords}: ${error.message}`);
+    }
+  }
+}
+
 const uniqueCandidates = (canPublishNow ? filterDuplicateDeals(Array.from(new Map(
   candidates.sort((left, right) => right.score - left.score).map((offer) => [offer.id, offer]),
 ).values()), existingWebOffers) : []).slice(0, MAX_POSTS_PER_RUN);

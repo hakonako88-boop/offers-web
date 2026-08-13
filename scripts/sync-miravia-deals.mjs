@@ -8,6 +8,7 @@ import {
   highResolutionMiraviaImage,
   isMiraviaProductImageLargeEnough,
   isGzipFeed,
+  MIRAVIA_QUALITY_POLICY_VERSION,
   miraviaFeedEntries,
   miraviaRecordFromColumns,
   normalizeMiraviaProduct,
@@ -285,7 +286,9 @@ const entries = miraviaFeedEntries(parseFeedList(await listResponse.text()));
 const feed = selectMiraviaFeed(entries, state.nextFeed);
 if (!feed) throw new Error('No Spanish Miravia product feed is available for this publisher account.');
 
-const feedVersion = `gzip-v2:${String(feed.last_imported || feed.last_checked || 'unknown')}`;
+// Al cambiar la política editorial volvemos a evaluar cada feed una vez, sin
+// olvidar los productos que ya se publicaron durante el último año.
+const feedVersion = `${MIRAVIA_QUALITY_POLICY_VERSION}:${String(feed.last_imported || feed.last_checked || 'unknown')}`;
 const alreadyChecked = state.feedVersions?.[feed.feed_id] === feedVersion;
 let discovered = { candidates: [], productsScanned: 0 };
 if (!alreadyChecked) {

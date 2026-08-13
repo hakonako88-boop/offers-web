@@ -26,6 +26,7 @@ const TRUSTED_BRANDS = [
 // them. This guard is deliberately conservative: it rejects the tiny feed
 // rendition, without treating a normal product photo as an error.
 export const MIN_MIRAVIA_PRODUCT_IMAGE_BYTES = 12_000;
+export const MIRAVIA_QUALITY_POLICY_VERSION = 'v3';
 
 export function isMiraviaProductImageLargeEnough(byteLength = 0) {
   return Number(byteLength) >= MIN_MIRAVIA_PRODUCT_IMAGE_BYTES;
@@ -157,7 +158,12 @@ export function miraviaQualityScore({ title = '', category = '', price = 0, oldP
   // A catalogue percentage by itself is not enough. Products without a
   // recognised brand need strong buyer demand before they occupy the channel.
   // This prevents cheap, generic listings with an inflated reference price.
-  if (branded ? popular < 20 : popular < 120) return 0;
+  // Los feeds de Awin no siempre incluyen el contador de reseñas. En ese
+  // caso solo aceptamos una marca reconocida con una rebaja y ahorro realmente
+  // altos; los productos genéricos siguen exigiendo prueba de demanda.
+  if (branded && popular > 0 && popular < 20) return 0;
+  if (!branded && popular < 120) return 0;
+  if (branded && !popular && (discount < 45 || saving < 15 || price < 20)) return 0;
   if (price < 12 && (saving < 25 || popular < 180)) return 0;
   if (discount > 70 && popular < (branded ? 75 : 250)) return 0;
 
