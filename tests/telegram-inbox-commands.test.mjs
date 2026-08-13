@@ -150,6 +150,22 @@ test('keeps the official AliExpress catalogue facts ahead of forwarded wording',
   assert.equal(metadata.imageUrl, 'https://images.example/xiaomi-band.jpg');
 });
 
+test('keeps recovered product facts when a pending Telegram draft is empty', () => {
+  const recovered = {
+    title: 'Maison Alhambra Jean Lowe Fantasme Eau de Parfum 100 ml',
+    description: 'Perfume unisex con notas de té negro y cítricos.',
+    imageUrl: 'https://ae-pic-a1.aliexpress-media.com/kf/perfume.jpeg',
+    price: 0,
+  };
+  const emptyDraft = { title: '', description: '', imageUrl: '', price: 0 };
+  const storedMetadata = mergeProductMetadata(emptyDraft, recovered);
+  const refreshedMetadata = mergeProductMetadata({ finalUrl: 'https://es.aliexpress.com/item/1005012721085216.html' }, storedMetadata);
+
+  assert.equal(refreshedMetadata.title, recovered.title);
+  assert.equal(refreshedMetadata.description, recovered.description);
+  assert.equal(refreshedMetadata.imageUrl, recovered.imageUrl);
+});
+
 test('does not use an URL or a generic storefront as a product title', () => {
   assert.equal(isReliableProductTitle('https://s.click.aliexpress.com/e/example'), false);
   assert.equal(isReliableProductTitle('AHORRA UN 34% #Perfumes #Amazon'), false);

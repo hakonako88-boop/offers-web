@@ -336,11 +336,12 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
         trackingId: settings.aliexpressTrackingId,
       });
       const generatedUrl = String(affiliateMetadata.affiliateUrl || '');
+      const storedMetadata = mergeProductMetadata(pending?.draft || {}, metadata);
       metadata = mergeProductMetadata({
         ...refreshed,
         ...Object.fromEntries(Object.entries(affiliateMetadata)
           .filter(([key, value]) => key !== 'affiliateUrl' && value)),
-      }, pending?.draft || metadata);
+      }, storedMetadata);
       metadata = { ...metadata, affiliateUrl: generatedUrl };
       pendingUrl = aliExpressPublicationUrl({
         generatedUrl,
