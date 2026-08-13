@@ -8,6 +8,7 @@ import {
   formatManualTelegramCaption,
   isReliableProductTitle,
   manualOfferFromMessage,
+  metadataForIncomingProductLink,
   mergeProductMetadata,
   offerFromProductMetadata,
   processingOfferReply,
@@ -158,12 +159,26 @@ test('keeps recovered product facts when a pending Telegram draft is empty', () 
     price: 0,
   };
   const emptyDraft = { title: '', description: '', imageUrl: '', price: 0 };
-  const storedMetadata = mergeProductMetadata(emptyDraft, recovered);
+  const storedMetadata = mergeProductMetadata(recovered, emptyDraft);
   const refreshedMetadata = mergeProductMetadata({ finalUrl: 'https://es.aliexpress.com/item/1005012721085216.html' }, storedMetadata);
 
   assert.equal(refreshedMetadata.title, recovered.title);
   assert.equal(refreshedMetadata.description, recovered.description);
   assert.equal(refreshedMetadata.imageUrl, recovered.imageUrl);
+});
+
+test('keeps the current pending product ahead of an obsolete earlier draft', () => {
+  const current = {
+    title: 'Japan Genuine NH35 Automatic Mechanical Movement',
+    imageUrl: 'https://images.example/nh35.png',
+  };
+  const obsoleteDraft = {
+    title: 'Maison Alhambra Jean Lowe Fantasme Eau de Parfum',
+    imageUrl: 'https://images.example/perfume.jpg',
+  };
+  const storedMetadata = mergeProductMetadata(current, obsoleteDraft);
+  assert.equal(storedMetadata.title, current.title);
+  assert.equal(storedMetadata.imageUrl, current.imageUrl);
 });
 
 test('does not use an URL or a generic storefront as a product title', () => {
@@ -268,6 +283,26 @@ test('keeps a forwarded card photo as a fallback when the official shop image is
   const card = forwardedOfferMetadata('Ventilador SPARK 10 pulgadas\nPrecio: 17,78 €', 'forwarded-card-photo');
   const metadata = mergeProductMetadata({ title: 'Ventilador SPARK 10 pulgadas', price: 17.78 }, card);
   assert.equal(metadata.imageUrl, 'forwarded-card-photo');
+});
+
+test('does not mix a new product URL with the previous pending product draft', () => {
+  const metadata = metadataForIncomingProductLink({
+    pending: {
+      url: 'https://a.aliexpress.com/_old-product',
+      draft: { title: 'Perfume anterior', imageUrl: 'old-photo' },
+    },
+    text: 'https://s.click.aliexpress.com/e/_new-product',
+  });
+  assert.equal(metadata.title, '');
+  assert.equal(metadata.imageUrl, '');
+});
+
+test('reuses a forwarded card only while it is waiting for its first product URL', () => {
+  const draft = { title: 'Oferta reenviada', imageUrl: 'forwarded-photo', price: 17.78 };
+  assert.deepEqual(metadataForIncomingProductLink({
+    pending: { draft },
+    text: 'https://a.aliexpress.com/_product',
+  }), draft);
 });
 
 test('reads price labels from a forwarded offer even when the label has no colon', () => {

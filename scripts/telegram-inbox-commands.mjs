@@ -281,6 +281,14 @@ export function forwardedOfferMetadata(text = '', photoFileId = '') {
   };
 }
 
+export function metadataForIncomingProductLink({ pending = null, text = '', photoFileId = '' } = {}) {
+  // Reuse a saved forwarded card only while it is explicitly waiting for its
+  // first shop URL. A new URL after an existing pending product is a separate
+  // offer and must not inherit the previous product's title or photograph.
+  if (pending?.draft && !pending?.url) return pending.draft;
+  return forwardedOfferMetadata(text, photoFileId);
+}
+
 export function manualOfferFromMessage({ text = '', photoFileId = '', controlCode = '' } = {}) {
   const source = String(text || '').replace(/\r\n/g, '\n').trim();
   const lines = source.split('\n').map((line) => line.trim()).filter(Boolean);

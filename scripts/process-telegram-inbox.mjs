@@ -8,6 +8,7 @@ import {
   formatManualTelegramCaption,
   formatManualWebsiteText,
   manualOfferFromMessage,
+  metadataForIncomingProductLink,
   mergeProductMetadata,
   offerFromProductMetadata,
   processingOfferReply,
@@ -345,7 +346,7 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
         ? storedOwnedUrl
         : resolvedOwnedUrl;
       const generatedUrl = String(affiliateMetadata.affiliateUrl || ownedAffiliateUrl || '');
-      const storedMetadata = mergeProductMetadata(pending?.draft || {}, metadata);
+      const storedMetadata = mergeProductMetadata(metadata, pending?.draft || {});
       metadata = mergeProductMetadata({
         ...refreshed,
         ...Object.fromEntries(Object.entries(affiliateMetadata)
@@ -374,7 +375,12 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
         metadata,
         partnerTag: settings.amazonPartnerTag,
       });
-      pendingByChat[chatKey] = { ...pending, url: pendingUrl, metadata };
+      pendingByChat[chatKey] = {
+        ...pending,
+        url: pendingUrl,
+        metadata,
+        draft: { ...(pending?.draft || {}), ...storedMetadata },
+      };
       console.log(`Pending AliExpress product ${metadata.productId || 'without-id'}; own affiliate=${generatedUrl ? 'yes' : 'no'}; ready=${result.status === 'ready' ? 'yes' : 'no'}.`);
       if (!generatedUrl && !pending?.affiliateUnavailableNotified) {
         await reply(settings.token, chatKey, `He recuperado el título y la foto del producto ${metadata.productId || ''}, pero la API oficial de AliExpress no ofrece precio ni permite generar tu enlace afiliado para este artículo. No publico el enlace de otra persona. Prueba con otra oferta del mismo producto o vuelve a enviarlo más tarde.`);
@@ -429,7 +435,11 @@ for (const update of updates || []) {
     } else if (isAuthorizedChat && urlFromTelegramMessage(message, text)) {
       const url = urlFromTelegramMessage(message, text);
       const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
-      const forwardedMetadata = pendingByChat[chatKey]?.draft || forwardedOfferMetadata(text, largestPhoto);
+      const forwardedMetadata = metadataForIncomingProductLink({
+        pending: pendingByChat[chatKey],
+        text,
+        photoFileId: largestPhoto,
+      });
       try {
         await reply(settings.token, message.chat.id, processingOfferReply(storeFromUrl(url)));
       } catch (error) {
