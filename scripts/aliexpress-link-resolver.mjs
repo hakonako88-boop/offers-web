@@ -350,11 +350,19 @@ export async function resolveAliExpressAffiliateProduct(url, config, options = {
     .find((entry) => String(entry?.product_id || '') === productId);
   const exactMetadata = product ? metadataFromAliExpressProduct(product) : {};
   let affiliateUrl = String(product?.promotion_link || product?.promotion_link_url || '').trim().replace(/^http:\/\//iu, 'https://');
-  try {
-    affiliateUrl = await generateAliExpressAffiliateLink(canonicalUrl, config, fetchImpl) || affiliateUrl;
-  } catch {
-    // The exact product-detail promotion link is a safe fallback when the
-    // dedicated link generator is temporarily unavailable.
+  const linkCandidates = [...new Set([
+    canonicalUrl,
+    `https://www.aliexpress.com/item/${productId}.html`,
+    isShortAliExpressUrl(url) ? url : '',
+  ].filter(Boolean))];
+  for (const candidate of linkCandidates) {
+    try {
+      affiliateUrl = await generateAliExpressAffiliateLink(candidate, config, fetchImpl) || affiliateUrl;
+      if (affiliateUrl) break;
+    } catch {
+      // Try the next exact URL representation. Product detail's verified
+      // promotion link remains the final safe fallback.
+    }
   }
   return {
     ...pageMetadata,

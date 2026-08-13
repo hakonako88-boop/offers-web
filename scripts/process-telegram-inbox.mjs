@@ -348,6 +348,13 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
       });
       pendingByChat[chatKey] = { ...pending, url: pendingUrl, metadata };
       console.log(`Pending AliExpress product ${metadata.productId || 'without-id'}; own affiliate=${generatedUrl ? 'yes' : 'no'}; ready=${result.status === 'ready' ? 'yes' : 'no'}.`);
+      if (!generatedUrl && !pending?.affiliateUnavailableNotified) {
+        await reply(settings.token, chatKey, `He recuperado el título y la foto del producto ${metadata.productId || ''}, pero la API oficial de AliExpress no ofrece precio ni permite generar tu enlace afiliado para este artículo. No publico el enlace de otra persona. Prueba con otra oferta del mismo producto o vuelve a enviarlo más tarde.`);
+        pendingByChat[chatKey] = {
+          ...pendingByChat[chatKey],
+          affiliateUnavailableNotified: true,
+        };
+      }
     } catch (error) {
       console.warn(`Pending AliExpress metadata refresh failed for ${chatKey}: ${safeError(error, settings.token)}`);
     }
