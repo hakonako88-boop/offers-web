@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { aliexpressProductId, metadataFromAliExpressProduct, resolveAliExpressAffiliateProduct } from '../scripts/aliexpress-link-resolver.mjs';
+import { aliexpressProductId, metadataFromAliExpressProduct, resolveAliExpressAffiliateProduct, resolveAliExpressProductUrl } from '../scripts/aliexpress-link-resolver.mjs';
 
 test('extracts an AliExpress product id from an attributed destination URL', () => {
   assert.equal(aliexpressProductId('https://www.aliexpress.com/item/1005011620902362.html?aff_fsk=example'), '1005011620902362');
@@ -85,6 +85,14 @@ test('uses the redirect fallback when GitHub fetch cannot open a short AliExpres
     resolveShortUrl: async () => 'https://es.aliexpress.com/item/1005008265378976.html?from=short',
   });
   assert.equal(metadata.productId, '1005008265378976');
+});
+
+test('prefers the real curl destination over a generic fetch redirect for an AliExpress short link', async () => {
+  const canonical = await resolveAliExpressProductUrl('https://a.aliexpress.com/_perfume', {
+    fetchImpl: async () => ({ url: 'https://es.aliexpress.com/item/3256812534770464.html' }),
+    execFileImpl: async () => ({ stdout: 'https://es.aliexpress.com/item/1005012721085216.html' }),
+  });
+  assert.equal(canonical, 'https://es.aliexpress.com/item/1005012721085216.html');
 });
 
 test('exposes the canonical URL when affiliate data contains a stale product id', async () => {
