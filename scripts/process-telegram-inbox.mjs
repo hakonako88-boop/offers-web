@@ -16,7 +16,7 @@ import {
 } from './telegram-inbox-commands.mjs';
 import { extractProductMetadata, parsePrice } from './link-offer-extractor.mjs';
 import { isInboxDuplicate } from './offer-deduplication.mjs';
-import { resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
+import { aliexpressProductId, resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
@@ -361,10 +361,17 @@ for (const update of updates || []) {
             trackingId: settings.aliexpressTrackingId,
           });
           generatedAliExpressUrl = String(affiliateMetadata.affiliateUrl || '');
+          // The product id embedded in the resolved AliExpress product URL is
+          // the authoritative identity. Some affiliate responses can contain
+          // stale catalogue facts; never let one replace the id verified from
+          // the owner's original short link, or an unrelated offer could be
+          // rejected as a duplicate.
+          const canonicalProductId = aliexpressProductId(affiliateMetadata.canonicalUrl || metadata.finalUrl || url);
           metadata = {
             ...metadata,
             ...Object.fromEntries(Object.entries(affiliateMetadata)
               .filter(([key, value]) => key !== 'affiliateUrl' && value)),
+            ...(canonicalProductId ? { productId: canonicalProductId } : {}),
           };
         } catch (error) {
           console.warn(`AliExpress affiliate lookup failed: ${safeError(error, settings.token)}`);
