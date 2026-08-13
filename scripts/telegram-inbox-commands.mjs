@@ -62,6 +62,10 @@ export function firstUrl(text) {
 /** Reads a normal URL as well as the hidden destination of Telegram's
  * clickable text (for example, a forwarded “Ver aquí en Amazon” button). */
 export function urlFromTelegramMessage(message = {}, text = '') {
+  const keyboardUrl = message.reply_markup?.inline_keyboard
+    ?.flat()
+    ?.find((button) => typeof button?.url === 'string' && button.url)?.url;
+  if (keyboardUrl) return String(keyboardUrl);
   const entities = [...(message.entities || []), ...(message.caption_entities || [])];
   const linked = entities.find((entity) => entity?.type === 'text_link' && entity.url)?.url;
   if (linked) return String(linked);
@@ -192,8 +196,8 @@ export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag =
       missing: [!isReliableProductTitle(title) && 'título fiable', !imageUrl && 'foto', !price && 'precio'].filter(Boolean),
     };
   }
-  if (store === 'Amazon' && !partnerTag && !/[?&]tag=/i.test(finalUrl)) {
-    return { status: 'needs_affiliate', message: 'Falta configurar el tag de Amazon para poder crear tu enlace de afiliado.' };
+  if (store === 'Amazon' && !/[?&]tag=/i.test(finalUrl)) {
+    return { status: 'needs_affiliate', message: 'Necesito un enlace directo de Amazon para poder añadir y verificar tu tag de afiliado.' };
   }
   if ((store === 'AliExpress' || store === 'Miravia') && !hasAffiliateLink(finalUrl, store)) {
     return { status: 'needs_affiliate', message: `Ese enlace de ${store} no parece ser de afiliación. Genera el enlace desde tu panel de afiliado y envíamelo de nuevo.` };
