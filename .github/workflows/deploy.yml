@@ -87,6 +87,15 @@ jobs:
       - name: Descargar web
         uses: actions/checkout@v4
 
+      - name: Cargar el estado más reciente del bot
+        # repository_dispatch conserva el SHA que existía al recibir el
+        # mensaje. Si llegaron varios mensajes seguidos, el siguiente trabajo
+        # debe avanzar hasta el estado guardado por el anterior antes de leerlo.
+        # La cola de concurrencia garantiza que este avance sea fast-forward.
+        run: |
+          git fetch origin main
+          git merge --ff-only origin/main
+
       - name: Preparar Node
         uses: actions/setup-node@v4
         with:
