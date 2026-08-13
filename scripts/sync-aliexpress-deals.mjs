@@ -7,6 +7,7 @@ import {
   formatAliExpressCaption,
   formatAliExpressTelegramCaption,
   normalizeAliExpressProduct,
+  topicsForAliExpressRun,
 } from './aliexpress-offers.mjs';
 import { discoverCommunitySignals, nextCommunitySignalState } from './community-signals.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
