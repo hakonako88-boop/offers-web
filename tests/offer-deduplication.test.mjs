@@ -53,17 +53,21 @@ test('never merges different known AliExpress products merely because their titl
   ), true);
 });
 
-test('only rejects an inbox offer when the same verified product or direct URL is present', () => {
+test('only rejects an inbox offer when the same verified catalogue product is present', () => {
   assert.equal(isInboxDuplicate(
     { title: 'Nuevo difusor para habitación', sourceProductId: 'aliexpress:1005012354617649', url: 'https://s.click.aliexpress.com/e/_nuevo' },
     { title: 'Difusor de aceites para habitación', source_product_id: 'manual-3000', url: 'https://s.click.aliexpress.com/e/_otro' },
   ), false);
   assert.equal(isInboxDuplicate(
-    { sourceProductId: 'aliexpress:1005012354617649' },
+    { sourceProductId: 'aliexpress:1005012354617649', store: 'AliExpress' },
     { source_product_id: '1005012354617649', store: 'AliExpress' },
   ), true);
   assert.equal(isInboxDuplicate(
     { url: 'https://www.amazon.es/dp/B0ABCDE123?tag=one-21' },
     { url: 'https://www.amazon.es/dp/B0ABCDE123?tag=two-21' },
   ), true);
+  assert.equal(isInboxDuplicate(
+    { url: 'https://a.aliexpress.com/_nueva' },
+    { source_product_id: 'manual-3001', url: 'https://a.aliexpress.com/_anterior' },
+  ), false);
 });
