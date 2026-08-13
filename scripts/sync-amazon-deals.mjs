@@ -46,63 +46,52 @@ function missingConfig(config) {
   return Object.entries({
     AMAZON_CREATOR_CREDENTIAL_ID: config.credentialId,
     AMAZON_CREATOR_SECRET: config.credentialSecret,
-    AMAZON_CREATOR_VERSION: config.version,
     AMAZON_PARTNER_TAG: config.partnerTag,
     TELEGRAM_BOT_TOKEN: config.telegramToken,
     TELEGRAM_CHANNEL_ID: config.telegramChannelId,
   }).filter(([, value]) => !value).map(([name]) => name);
 }
 
-function tokenEndpoint(version) {
+function tokenEndpoints(version) {
   const endpoints = {
-    '2.1': 'https://creatorsapi.auth.us-east-1.amazoncognito.com/oauth2/token',
-    '2.2': 'https://creatorsapi.auth.eu-south-2.amazoncognito.com/oauth2/token',
-    '2.3': 'https://creatorsapi.auth.us-west-2.amazoncognito.com/oauth2/token',
     '3.1': 'https://api.amazon.com/auth/o2/token',
     '3.2': 'https://api.amazon.co.uk/auth/o2/token',
     '3.3': 'https://api.amazon.co.jp/auth/o2/token',
   };
-  const endpoint = endpoints[String(version || '').trim()];
-  if (!endpoint) throw new Error(`Unsupported Amazon credential version: ${version || 'missing'}`);
-  return endpoint;
+  // La tienda española usa la región europea (3.2). Se conserva la versión
+  // configurada como preferencia y se intenta Europa como respaldo: así una
+  // versión antigua o ausente no bloquea todas las publicaciones.
+  return [...new Set([
+    endpoints[String(version || '').trim()],
+    endpoints['3.2'],
+  ].filter(Boolean))];
 }
 
 async function getAmazonAccessToken(config) {
-  const version = String(config.version).trim();
-  const isV3 = version.startsWith('3.');
-  const response = await fetch(tokenEndpoint(version), {
-    method: 'POST',
-    headers: { 'content-type': isV3 ? 'application/json' : 'application/x-www-form-urlencoded' },
-    body: isV3
-      ? JSON.stringify({
-          grant_type: 'client_credentials',
-          client_id: config.credentialId,
-          client_secret: config.credentialSecret,
-          scope: 'creatorsapi::default',
-        })
-      : new URLSearchParams({
-          grant_type: 'client_credentials',
-          client_id: config.credentialId,
-          client_secret: config.credentialSecret,
-          scope: 'creatorsapi/default',
-        }),
-  });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok || !data.access_token) {
-    throw new Error(`Amazon authentication failed: ${data.error_description || data.error || response.status}`);
+  let lastError = 'unknown authentication error';
+  for (const endpoint of tokenEndpoints(config.version)) {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        grant_type: 'client_credentials',
+        client_id: config.credentialId,
+        client_secret: config.credentialSecret,
+        scope: 'creatorsapi::default',
+      }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (response.ok && data.access_token) return data.access_token;
+    lastError = data.error_description || data.error || String(response.status);
   }
-  return data.access_token;
+  throw new Error(`Amazon authentication failed: ${lastError}`);
 }
 
 async function searchAmazon(accessToken, config, topic) {
-  const version = String(config.version).trim();
-  const authorization = version.startsWith('3.')
-    ? `Bearer ${accessToken}`
-    : `Bearer ${accessToken}, Version ${version}`;
   const response = await fetch('https://creatorsapi.amazon/catalog/v1/searchItems', {
     method: 'POST',
     headers: {
-      authorization,
+      authorization: `Bearer ${accessToken}`,
       'content-type': 'application/json',
       'x-marketplace': AMAZON_MARKETPLACE,
     },
