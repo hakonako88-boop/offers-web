@@ -102,3 +102,72 @@ test('uses NoLoDejesEscapar public REST data but ignores an unrelated Awin affil
   assert.equal(result.title, 'Cargador GaN USB-C 65W');
   assert.equal(result.price, 18.49);
 });
+
+test('decodes named HTML entities in Amazon product metadata', () => {
+  const result = productMetadataFromHtml(
+    '<meta property="og:title" content="C&aacute;mara WiFi con visi&oacute;n nocturna &amp; detecci&oacute;n AI : Amazon.es: Electr&oacute;nica">',
+    'https://www.amazon.es/dp/B0G2XCZCC4',
+  );
+  assert.equal(result.title, 'Cámara WiFi con visión nocturna & detección AI');
+});
+
+test('reads a NoLoDejesEscapar numeric post URL through its public API', async () => {
+  const sourceUrl = 'https://nolodejesescapar.com/?p=188821';
+  const amazonUrl = 'https://www.amazon.es/dp/B0G2XCZCC4?tag=otro-21';
+  const fetchImpl = async (url) => {
+    if (url === 'https://nolodejesescapar.com/wp-json/wp/v2/posts/188821?_embed=1') {
+      return new Response(JSON.stringify({
+        title: { rendered: 'Pack de 2 cámaras Imou Ranger 2C Pro' },
+        excerpt: { rendered: 'Cámaras WiFi interiores 2K.' },
+        content: { rendered: `<a href="${amazonUrl}">Ver oferta en Amazon</a>` },
+        yoast_head_json: { og_image: [{ url: 'https://images.example/imou.jpg' }] },
+      }), { status: 200, headers: { 'content-type': 'application/json' } });
+    }
+    if (url === amazonUrl) {
+      return new Response('<meta property="og:title" content="Pack de 2 cámaras Imou Ranger 2C Pro"><meta property="og:image" content="https://images.example/imou.jpg"><meta property="product:price:amount" content="45.90">', { status: 200 });
+    }
+    throw new Error(`unexpected URL ${url}`);
+  };
+  const result = await extractProductMetadata(sourceUrl, { fetchImpl });
+  assert.equal(result.finalUrl, amazonUrl);
+  assert.equal(result.title, 'Pack de 2 cámaras Imou Ranger 2C Pro');
+  assert.equal(result.price, 45.9);
+});
+
+test('keeps the direct Amazon URL when the product page blocks an amzn.to reader', async () => {
+  const shortUrl = 'https://amzn.to/3SszZh4';
+  const directUrl = 'https://www.amazon.es/dp/B0G2XCZCC4?tag=chollos00a-21';
+  const fetchImpl = async (url, options = {}) => {
+    if (url === shortUrl && options.redirect === 'manual') {
+      return new Response('', { status: 301, headers: { location: directUrl } });
+    }
+    if (url === directUrl) return new Response('', { status: 404 });
+    throw new Error(`unexpected URL ${url}`);
+  };
+  const result = await extractProductMetadata(shortUrl, { fetchImpl });
+  assert.equal(result.finalUrl, directUrl);
+  assert.equal(result.sourceUrl, shortUrl);
+});
+
+test('never replaces a resolved Amazon product with a JavaScript placeholder link', async () => {
+  const shortUrl = 'https://amzn.to/3SszZh4';
+  const redirectUrl = 'https://www.amazon.es/dp/B0G2XCZCC4?tag=chollos00a-21';
+  const html = [
+    '<meta property="og:title" content="Cámara Imou Ranger 2C Pro">',
+    '<meta property="og:image" content="https://images.example/imou.jpg">',
+    '<meta property="product:price:amount" content="45.99">',
+    '<a href="/dp/&quot;+t.href+&quot;">script placeholder</a>',
+  ].join('');
+  const fetchImpl = async (url, options = {}) => {
+    if (url === shortUrl && options.redirect === 'manual') {
+      return new Response('', { status: 301, headers: { location: redirectUrl } });
+    }
+    if (url === redirectUrl) {
+      return new Response(html, { status: 200 });
+    }
+    throw new Error(`unexpected URL ${url}`);
+  };
+  const result = await extractProductMetadata(shortUrl, { fetchImpl });
+  assert.equal(result.finalUrl, redirectUrl);
+  assert.equal(result.affiliateUrl, redirectUrl);
+});

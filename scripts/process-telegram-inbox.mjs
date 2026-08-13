@@ -276,7 +276,10 @@ const authorizedChatIds = new Set((state.authorizedChatIds || []).map(String));
 const pendingByChat = state.pendingByChat && typeof state.pendingByChat === 'object' ? state.pendingByChat : {};
 let updates;
 const webhookUpdate = String(process.env.TELEGRAM_WEBHOOK_UPDATE || '').trim();
-if (webhookUpdate && webhookUpdate !== 'null') {
+const pendingOnly = String(process.env.TELEGRAM_PENDING_ONLY || '').toLowerCase() === 'true';
+if (pendingOnly) {
+  updates = [];
+} else if (webhookUpdate && webhookUpdate !== 'null') {
   try {
     const parsed = JSON.parse(webhookUpdate);
     updates = parsed && typeof parsed === 'object' ? [parsed] : [];
@@ -293,12 +296,29 @@ if (webhookUpdate && webhookUpdate !== 'null') {
 let published = 0;
 let handled = 0;
 for (const [chatKey, pending] of Object.entries(pendingByChat)) {
-  const metadata = metadataWithOfficialAmazonImage(pending?.url, pending?.metadata);
-  const result = offerFromProductMetadata({
-    url: pending?.url,
+  let pendingUrl = pending?.url;
+  let metadata = metadataWithOfficialAmazonImage(pendingUrl, pending?.metadata);
+  let result = offerFromProductMetadata({
+    url: pendingUrl,
     metadata,
     partnerTag: settings.amazonPartnerTag,
   });
+  if (result.status !== 'ready' && storeFromUrl(pendingUrl) === 'Amazon') {
+    try {
+      const refreshed = await extractMetadataWithRetry(pendingUrl);
+      metadata = mergeProductMetadata(refreshed, pending?.draft || metadata);
+      pendingUrl = metadata.finalUrl || pendingUrl;
+      metadata = metadataWithOfficialAmazonImage(pendingUrl, metadata);
+      result = offerFromProductMetadata({
+        url: pendingUrl,
+        metadata,
+        partnerTag: settings.amazonPartnerTag,
+      });
+      pendingByChat[chatKey] = { ...pending, url: pendingUrl, metadata };
+    } catch (error) {
+      console.warn(`Pending Amazon metadata refresh failed for ${chatKey}: ${safeError(error, settings.token)}`);
+    }
+  }
   if (result.status !== 'ready') continue;
   try {
     const outcome = await publishIfNew(settings, result.offer, { message_id: pending.messageId || `pending-${chatKey}` });
@@ -439,13 +459,27 @@ for (const update of updates || []) {
         }
         delete pendingByChat[chatKey];
       } else if (result.status === 'needs_details') {
-        pendingByChat[chatKey] = { url: affiliateUrl, metadata };
+        pendingByChat[chatKey] = {
+          url: affiliateUrl,
+          metadata,
+          draft: forwardedMetadata,
+          messageId: pendingByChat[chatKey]?.messageId || message.message_id,
+        };
         const missing = result.missing.join(', ');
         const retry = metadataError
           ? ' La tienda no ha dejado leer la ficha ahora mismo; pega el enlace directo del producto e inténtalo de nuevo en unos minutos.'
           : '';
         await reply(settings.token, message.chat.id, `He encontrado el enlace, pero falta ${missing}.${retry} Si solo falta el precio, responde: “Precio: 19,99 €” y, si lo tienes, “Antes: 29,99 €”.`);
       } else {
+        // A community/deals page occasionally hides its merchant button from
+        // GitHub. Preserve the factual card so the next direct shop URL can
+        // reuse its title, price and Telegram photo instead of starting over.
+        if (forwardedMetadata?.title || forwardedMetadata?.price || forwardedMetadata?.photoFileId) {
+          pendingByChat[chatKey] = {
+            draft: forwardedMetadata,
+            messageId: pendingByChat[chatKey]?.messageId || message.message_id,
+          };
+        }
         await reply(settings.token, message.chat.id, `⚠️ ${result.message}`);
       }
       handled += 1;

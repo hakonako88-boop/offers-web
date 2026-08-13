@@ -136,6 +136,12 @@ jobs:
         if: ${{ github.event_name != 'repository_dispatch' && env.TELEGRAM_WEBHOOK_ACTIVE != 'true' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run sync:inbox
 
+      - name: Recuperar una oferta pendiente tras actualizar el bot
+        if: ${{ github.event_name == 'push' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        env:
+          TELEGRAM_PENDING_ONLY: "true"
+        run: npm run sync:inbox
+
       - name: Enviar mensaje de prueba a Telegram
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[telegram-test]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run send:test-telegram

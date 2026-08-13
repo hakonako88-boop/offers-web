@@ -11,10 +11,17 @@ function sourceTitle(value = '') {
 }
 
 function decode(value = '') {
-  return compact(String(value)
-    .replace(/&amp;/giu, '&')
-    .replace(/&quot;/giu, '"')
-    .replace(/&#39;/giu, "'"));
+  const namedEntities = {
+    amp: '&', quot: '"', apos: "'", nbsp: ' ',
+    aacute: 'á', eacute: 'é', iacute: 'í', oacute: 'ó', uacute: 'ú',
+    agrave: 'à', egrave: 'è', igrave: 'ì', ograve: 'ò', ugrave: 'ù',
+    ntilde: 'ñ', uuml: 'ü', laquo: '«', raquo: '»', hellip: '…',
+  };
+  return compact(String(value).replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/giu, (entity, code) => {
+    if (/^#x/iu.test(code)) return String.fromCodePoint(Number.parseInt(code.slice(2), 16));
+    if (/^#/u.test(code)) return String.fromCodePoint(Number.parseInt(code.slice(1), 10));
+    return namedEntities[String(code).toLowerCase()] ?? entity;
+  }));
 }
 
 /** AliExpress serves its social metadata inside a JavaScript-escaped HTML
@@ -191,14 +198,19 @@ async function publicSourceOffer(url, fetchImpl) {
     };
   }
   if (type === 'nolodejesescapar') {
-    const slug = new URL(url).pathname.split('/').filter(Boolean).at(-1) || '';
-    if (!slug) return null;
-    const endpoint = `https://nolodejesescapar.com/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed=1`;
+    const parsed = new URL(url);
+    const postId = parsed.searchParams.get('p')?.match(/^\d+$/u)?.[0] || '';
+    const slug = parsed.pathname.split('/').filter(Boolean).at(-1) || '';
+    if (!postId && !slug) return null;
+    const endpoint = postId
+      ? `https://nolodejesescapar.com/wp-json/wp/v2/posts/${postId}?_embed=1`
+      : `https://nolodejesescapar.com/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed=1`;
     const response = await fetchImpl(endpoint, {
       headers: { 'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)' },
     });
     if (!response.ok) throw new Error(`NoLoDejesEscapar respondió ${response.status}.`);
-    const post = (await response.json().catch(() => []))?.[0];
+    const payload = await response.json().catch(() => null);
+    const post = Array.isArray(payload) ? payload[0] : payload;
     if (!post) return null;
     const html = String(post.content?.rendered || '');
     const imageUrl = absoluteUrl(
@@ -217,6 +229,23 @@ async function publicSourceOffer(url, fetchImpl) {
   return null;
 }
 
+async function resolveAmazonShortUrl(url, fetchImpl) {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname.toLowerCase() !== 'amzn.to') return '';
+    const response = await fetchImpl(url, {
+      redirect: 'manual',
+      headers: {
+        'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaBot/1.0; +https://chollosaldia.com)',
+        accept: 'text/html,application/xhtml+xml',
+      },
+    });
+    return merchantUrl(response.headers?.get?.('location') || '', url);
+  } catch {
+    return '';
+  }
+}
+
 /**
  * Extracts only public product metadata. It deliberately does not guess a
  * price from surrounding marketing text: a deal must have a real value before
@@ -228,7 +257,8 @@ export function productMetadataFromHtml(html, pageUrl) {
   const offers = Array.isArray(product.offers) ? product.offers[0] : (product.offers || {});
   const image = Array.isArray(product.image) ? product.image[0] : product.image;
   const title = sourceTitle(decode(product.name || htmlMeta(document, ['og:title', 'twitter:title']) || ''))
-    .replace(/\s+-\s+AliExpress(?:\s+\d+)?\s*$/iu, '');
+    .replace(/\s+-\s+AliExpress(?:\s+\d+)?\s*$/iu, '')
+    .replace(/\s*:\s*Amazon\.es(?::.*)?\s*$/iu, '');
   const description = decode(product.description || htmlMeta(document, ['og:description', 'twitter:description', 'description']) || '');
   const rawImage = absoluteUrl(image || htmlMeta(document, ['og:image', 'twitter:image']), pageUrl);
   const storeHost = (() => {
@@ -246,6 +276,12 @@ export async function extractProductMetadata(url, { fetchImpl = fetch } = {}) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 12000);
   try {
+    const originalUrl = url;
+    const resolvedAmazonUrl = await resolveAmazonShortUrl(
+      url,
+      (requestUrl, options = {}) => fetchImpl(requestUrl, { ...options, signal: controller.signal }),
+    );
+    if (resolvedAmazonUrl) url = resolvedAmazonUrl;
     const sourceOffer = await publicSourceOffer(
       url,
       (requestUrl, options = {}) => fetchImpl(requestUrl, { ...options, signal: controller.signal }),
@@ -270,9 +306,37 @@ export async function extractProductMetadata(url, { fetchImpl = fetch } = {}) {
         };
       }
     }
-    const firstPage = await fetchPage(url, (requestUrl, options) => fetchImpl(requestUrl, { ...options, signal: controller.signal }));
-    const outboundOfferUrl = outboundOfferLinkFromHtml(firstPage.html, firstPage.finalUrl);
-    const directMerchantUrl = merchantLinkFromHtml(firstPage.html, firstPage.finalUrl);
+    let firstPage;
+    try {
+      firstPage = await fetchPage(url, (requestUrl, options) => fetchImpl(requestUrl, { ...options, signal: controller.signal }));
+    } catch (error) {
+      // Amazon may block metadata readers after a valid amzn.to redirect. The
+      // direct product URL is still useful and can be combined safely with
+      // the title, price and photo supplied in the forwarded Telegram card.
+      if (resolvedAmazonUrl) {
+        return {
+          title: '',
+          description: '',
+          imageUrl: '',
+          price: 0,
+          previousPrice: 0,
+          productId: '',
+          finalUrl: resolvedAmazonUrl,
+          sourceUrl: originalUrl,
+          affiliateUrl: resolvedAmazonUrl,
+        };
+      }
+      throw error;
+    }
+    // Once the short URL has reached a supported merchant product page, stay
+    // on it. Amazon's HTML contains JavaScript placeholders such as
+    // `"+t.href+"` that must not be mistaken for another offer button.
+    const firstPageMerchantUrl = merchantUrl(firstPage.finalUrl);
+    const outboundOfferUrl = firstPageMerchantUrl
+      ? ''
+      : outboundOfferLinkFromHtml(firstPage.html, firstPage.finalUrl);
+    const directMerchantUrl = firstPageMerchantUrl
+      || merchantLinkFromHtml(firstPage.html, firstPage.finalUrl);
     const resolvedPage = outboundOfferUrl && outboundOfferUrl !== firstPage.finalUrl
       ? await fetchPage(outboundOfferUrl, (requestUrl, options) => fetchImpl(requestUrl, { ...options, signal: controller.signal }))
       : firstPage;
