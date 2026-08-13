@@ -205,7 +205,10 @@ export function DealExplorer() {
   }), [deals]);
 
   const featuredDeal = visibleDeals[0];
-  const gridDeals = visibleDeals.slice(1);
+  // The highlighted deal is repeated in the chronological grid on purpose:
+  // otherwise the newest Telegram publication looks missing to visitors who
+  // go straight to “Chollos de hoy”.
+  const gridDeals = visibleDeals;
 
   function copyCoupon(code: string) {
     navigator.clipboard?.writeText(code);

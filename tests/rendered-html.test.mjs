@@ -90,6 +90,13 @@ test("keeps older Telegram offers beyond the homepage card limit", async () => {
   assert.match(html, /manual-4472\.jpg/);
 });
 
+test("shows the newest Telegram offer in the chronological homepage grid", async () => {
+  const response = await render("/");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /class="dealCard"[\s\S]{0,1200}href="\/oferta\/4473"/);
+});
+
 test("keeps the historical contact URL as a useful, indexable page", async () => {
   const response = await render("/contacto");
   assert.equal(response.status, 200);
