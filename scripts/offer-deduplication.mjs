@@ -29,7 +29,15 @@ function similarity(left = '', right = '') {
 
 function productIdentity(deal = {}) {
   const explicit = deal.sourceProductId || deal.source_product_id || deal.productId;
-  if (explicit) return String(explicit).toLowerCase().replace(/^miravia-/, '');
+  if (explicit) {
+    const value = String(explicit).toLowerCase().replace(/^miravia-/, '');
+    // Older offers stored only the AliExpress catalogue number. Give it the
+    // same stable namespace as new inbox offers before comparing it.
+    if (/^\d{8,}$/u.test(value) && String(deal.store || '').toLowerCase() === 'aliexpress') {
+      return `aliexpress:${value}`;
+    }
+    return value;
+  }
   try {
     const url = new URL(deal.url || '');
     const pclickProduct = url.searchParams.get('p');
@@ -63,16 +71,27 @@ function canonicalShopUrl(deal = {}) {
 export function isInboxDuplicate(candidate = {}, published = {}) {
   const candidateIdentity = productIdentity(candidate);
   const publishedIdentity = productIdentity(published);
-  if (candidateIdentity && publishedIdentity) return candidateIdentity === publishedIdentity;
-  const candidateUrl = canonicalShopUrl(candidate);
-  const publishedUrl = canonicalShopUrl(published);
-  return Boolean(candidateUrl && publishedUrl && candidateUrl === publishedUrl);
+  // Private Telegram submissions are frequently short affiliate links. A
+  // short-link path is not a product identity: AliExpress can reuse or alter
+  // it while resolving tracking, and comparing it caused distinct products to
+  // be rejected as duplicates. Only a proven catalogue identifier can stop a
+  // manual publication. The normal feed still uses isEquivalentDeal below.
+  return isVerifiedCatalogueIdentity(candidateIdentity)
+    && isVerifiedCatalogueIdentity(publishedIdentity)
+    && candidateIdentity === publishedIdentity;
+}
+
+function isVerifiedCatalogueIdentity(value = '') {
+  return /^(?:amazon:[a-z0-9]{10}|aliexpress:\d{8,}|awin:\d{6,})$/iu.test(value);
 }
 
 export function isEquivalentDeal(candidate = {}, published = {}) {
   const candidateIdentity = productIdentity(candidate);
   const publishedIdentity = productIdentity(published);
   if (candidateIdentity && publishedIdentity && candidateIdentity === publishedIdentity) return true;
+  if (candidateIdentity && publishedIdentity
+    && candidateIdentity !== publishedIdentity
+    && (isVerifiedCatalogueIdentity(candidateIdentity) || isVerifiedCatalogueIdentity(publishedIdentity))) return false;
   const candidateTitle = normalise(candidate.title);
   const publishedTitle = normalise(published.title);
   if (!candidateTitle || !publishedTitle) return false;
