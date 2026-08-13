@@ -170,7 +170,10 @@ async function publishManualOffer(settings, offer, inputMessage) {
   const existingOffers = readJson(OFFERS_FILE, []);
   const record = {
     message_id: channelMessage.message_id,
-    source_product_id: `manual-${inputMessage.message_id}`,
+    // Preserve a verified store product id. Future submissions of that exact
+    // catalogue item can be recognised reliably, without turning every
+    // private message into an unrelated "manual" duplicate.
+    source_product_id: offer.sourceProductId || `manual-${inputMessage.message_id}`,
     date: Math.floor(Date.now() / 1000),
     title: offer.title,
     text: formatManualWebsiteText(offer),
