@@ -360,19 +360,27 @@ for (const update of updates || []) {
             appSecret: settings.aliexpressAppSecret,
             trackingId: settings.aliexpressTrackingId,
           });
-          generatedAliExpressUrl = String(affiliateMetadata.affiliateUrl || '');
           // The product id embedded in the resolved AliExpress product URL is
           // the authoritative identity. Some affiliate responses can contain
           // stale catalogue facts; never let one replace the id verified from
           // the owner's original short link, or an unrelated offer could be
           // rejected as a duplicate.
           const canonicalProductId = aliexpressProductId(affiliateMetadata.canonicalUrl || metadata.finalUrl || url);
-          metadata = {
-            ...metadata,
-            ...Object.fromEntries(Object.entries(affiliateMetadata)
-              .filter(([key, value]) => key !== 'affiliateUrl' && value)),
-            ...(canonicalProductId ? { productId: canonicalProductId } : {}),
-          };
+          if (canonicalProductId) {
+            generatedAliExpressUrl = String(affiliateMetadata.affiliateUrl || '');
+            metadata = {
+              ...metadata,
+              ...Object.fromEntries(Object.entries(affiliateMetadata)
+                .filter(([key, value]) => key !== 'affiliateUrl' && value)),
+              productId: canonicalProductId,
+            };
+          } else {
+            // Without a verified product destination, affiliate catalogue
+            // facts may refer to a different item. Keep only the owner/card
+            // data and ask for any missing price rather than publishing the
+            // wrong product.
+            console.warn('AliExpress short link could not be resolved to a verified product id.');
+          }
         } catch (error) {
           console.warn(`AliExpress affiliate lookup failed: ${safeError(error, settings.token)}`);
         }
