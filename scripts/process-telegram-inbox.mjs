@@ -319,6 +319,37 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
       console.warn(`Pending Amazon metadata refresh failed for ${chatKey}: ${safeError(error, settings.token)}`);
     }
   }
+  if (result.status !== 'ready' && storeFromUrl(pendingUrl) === 'AliExpress') {
+    try {
+      let refreshed = { finalUrl: pendingUrl };
+      try {
+        refreshed = await extractMetadataWithRetry(pendingUrl);
+      } catch {
+        // The affiliate resolver has independent redirect and reader paths.
+      }
+      const affiliateMetadata = await resolveAliExpressAffiliateProduct(refreshed.finalUrl || pendingUrl, {
+        appKey: settings.aliexpressAppKey,
+        appSecret: settings.aliexpressAppSecret,
+        trackingId: settings.aliexpressTrackingId,
+      });
+      const generatedUrl = String(affiliateMetadata.affiliateUrl || '');
+      metadata = mergeProductMetadata({
+        ...refreshed,
+        ...Object.fromEntries(Object.entries(affiliateMetadata)
+          .filter(([key, value]) => key !== 'affiliateUrl' && value)),
+      }, pending?.draft || metadata);
+      if (/^https:\/\/(?:s\.click|a)\.aliexpress\.com\//iu.test(generatedUrl)) pendingUrl = generatedUrl;
+      result = offerFromProductMetadata({
+        url: pendingUrl,
+        metadata,
+        partnerTag: settings.amazonPartnerTag,
+      });
+      pendingByChat[chatKey] = { ...pending, url: pendingUrl, metadata };
+      console.log(`Pending AliExpress product ${metadata.productId || 'without-id'}; own affiliate=${generatedUrl ? 'yes' : 'no'}; ready=${result.status === 'ready' ? 'yes' : 'no'}.`);
+    } catch (error) {
+      console.warn(`Pending AliExpress metadata refresh failed for ${chatKey}: ${safeError(error, settings.token)}`);
+    }
+  }
   if (result.status !== 'ready') continue;
   try {
     const outcome = await publishIfNew(settings, result.offer, { message_id: pending.messageId || `pending-${chatKey}` });

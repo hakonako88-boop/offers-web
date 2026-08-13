@@ -18,6 +18,11 @@ export function aliexpressProductId(url = '') {
   return match?.[1] || '';
 }
 
+function canonicalAliExpressItemUrl(url = '') {
+  const productId = aliexpressProductId(url);
+  return productId ? `https://es.aliexpress.com/item/${productId}.html` : String(url || '');
+}
+
 export function metadataFromAliExpressProduct(product = {}) {
   const price = amount(product.target_sale_price);
   const previousPrice = amount(product.target_original_price);
@@ -75,6 +80,55 @@ function cleanAliExpressTitle(value = '') {
   return String(value)
     .replace(/\s+-\s+AliExpress(?:\s+\d+)?\s*$/iu, '')
     .trim();
+}
+
+/** Reads the public text snapshot of an AliExpress page. This is used only
+ * when GitHub's network is intercepted before it reaches the mobile redirect.
+ * No API key, secret or tracking id is ever sent to the reader. */
+export function metadataFromAliExpressReader(text = '') {
+  const body = String(text || '');
+  const productId = aliexpressProductId(body);
+  const candidateTitle = cleanAliExpressTitle(body.match(/^Title:\s*(.+)$/imu)?.[1] || '');
+  const title = /^(?:AliExpress(?:\.com)?\b|Captcha Interception\b)|\bMaintaining\b/iu.test(candidateTitle)
+    ? ''
+    : candidateTitle;
+  const images = [...body.matchAll(/!\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/giu)]
+    .map((match) => match[1])
+    .filter((image) => /\/(?:kf|k)\//iu.test(image));
+  const image = images.find((value) => /_9\d{2}x9\d{2}/u.test(value)) || images.at(-1) || '';
+  return {
+    ...(productId ? { productId } : {}),
+    ...(title ? { title, description: title } : {}),
+    ...(image ? { imageUrl: highResolutionAliExpressImage(image) } : {}),
+  };
+}
+
+async function inspectAliExpressReader(url, fetchImpl) {
+  if (!isAliExpressUrl(url)) return { finalUrl: '', metadata: {} };
+  const parsed = new URL(url);
+  parsed.protocol = 'https:';
+  const readerUrl = `https://r.jina.ai/https://${parsed.host}${parsed.pathname}${parsed.search}`;
+  let lastMetadata = {};
+  for (const bypassCache of [false, true]) {
+    const response = await fetchImpl(readerUrl, {
+      headers: {
+        accept: 'text/plain',
+        'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)',
+        ...(bypassCache ? { 'x-no-cache': 'true' } : {}),
+      },
+    });
+    if (!response?.ok && response?.ok !== undefined) continue;
+    const text = typeof response?.text === 'function' ? await response.text() : '';
+    lastMetadata = metadataFromAliExpressReader(text);
+    const productId = String(lastMetadata.productId || '');
+    if (productId) {
+      return {
+        finalUrl: `https://es.aliexpress.com/item/${productId}.html`,
+        metadata: lastMetadata,
+      };
+    }
+  }
+  return { finalUrl: '', metadata: lastMetadata };
 }
 
 /** AliExpress embeds the useful social card as escaped HTML inside its shell
@@ -136,7 +190,9 @@ async function canonicalAliExpressDestination(url, fetchImpl) {
   for (let attempt = 0; attempt < 3 && isAliExpressUrl(current); attempt += 1) {
     const inspected = await inspectAliExpressDestination(current, fetchImpl);
     metadata = { ...metadata, ...Object.fromEntries(Object.entries(inspected.metadata).filter(([, value]) => value)) };
-    const next = inspected.finalUrl || current;
+    // Strip invitation codes and another publisher's aff_fcid/aff_fsk before
+    // the URL is sent to this account's link-generation endpoint.
+    const next = canonicalAliExpressItemUrl(inspected.finalUrl || current);
     if (next === current && aliexpressProductId(next)) break;
     current = next;
   }
@@ -193,15 +249,24 @@ export async function resolveAliExpressProductUrl(url, {
   }
   try {
     const finalUrl = await resolveWithCurl(url, execFileImpl);
-    if (!finalUrl) return String(url || '');
-    try {
-      return (await canonicalAliExpressDestination(finalUrl, fetchImpl)).finalUrl || finalUrl;
-    } catch {
-      return finalUrl;
+    if (finalUrl) {
+      try {
+        const canonical = (await canonicalAliExpressDestination(finalUrl, fetchImpl)).finalUrl || finalUrl;
+        if (aliexpressProductId(canonical)) return canonical;
+      } catch {
+        if (aliexpressProductId(finalUrl)) return finalUrl;
+      }
     }
   } catch {
-    return String(url || '');
+    // The public snapshot below is the final bounded fallback.
   }
+  try {
+    const reader = await inspectAliExpressReader(url, fetchImpl);
+    if (aliexpressProductId(reader.finalUrl)) return reader.finalUrl;
+  } catch {
+    // Keep the submitted AliExpress URL for a controlled error response.
+  }
+  return String(url || '');
 }
 
 function apiProducts(data = {}, responseKey = '') {
@@ -251,6 +316,20 @@ export async function resolveAliExpressAffiliateProduct(url, config, options = {
     pageMetadata = (await inspectAliExpressDestination(canonicalUrl, fetchImpl)).metadata;
   } catch {
     // The exact affiliate detail endpoint remains authoritative.
+  }
+  if (!pageMetadata.title || !pageMetadata.imageUrl) {
+    for (const readerUrl of [...new Set([url, canonicalUrl])]) {
+      try {
+        const reader = await inspectAliExpressReader(readerUrl, fetchImpl);
+        pageMetadata = {
+          ...reader.metadata,
+          ...Object.fromEntries(Object.entries(pageMetadata).filter(([, value]) => value)),
+        };
+        if (pageMetadata.title && pageMetadata.imageUrl) break;
+      } catch {
+        // Try the other safe URL before relying on product detail alone.
+      }
+    }
   }
   const detailData = await callAliExpressApi('aliexpress.affiliate.productdetail.get', {
     country: 'ES',

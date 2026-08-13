@@ -46,7 +46,14 @@ export function createAliExpressSignature(params, appSecret) {
 export function highResolutionAliExpressImage(image = '') {
   try {
     const parsed = new URL(String(image));
-    if (!/(^|\.)alicdn\.com$/iu.test(parsed.hostname)) return String(image);
+    if (!/(^|\.)(?:alicdn\.com|aliexpress-media\.com)$/iu.test(parsed.hostname)) return String(image);
+    // The public mobile card often exposes an AVIF thumbnail whose path keeps
+    // the original JPEG followed by `_960x960q75.jpeg_.avif`. Removing that
+    // rendition suffix returns the original product photo.
+    parsed.pathname = parsed.pathname.replace(
+      /(\.(?:jpe?g|png|webp))_\d{2,4}x\d{2,4}(?:q\d+)?\.jpe?g_\.avif$/iu,
+      '$1',
+    );
     parsed.pathname = parsed.pathname.replace(
       /_\d{2,4}x\d{2,4}(?:q\d+)?(?=\.(?:jpe?g|png|webp)$)/iu,
       '_1000x1000q75',

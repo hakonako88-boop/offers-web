@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { aliexpressProductId, metadataFromAliExpressHtml, metadataFromAliExpressProduct, resolveAliExpressAffiliateProduct, resolveAliExpressProductUrl } from '../scripts/aliexpress-link-resolver.mjs';
+import { aliexpressProductId, metadataFromAliExpressHtml, metadataFromAliExpressProduct, metadataFromAliExpressReader, resolveAliExpressAffiliateProduct, resolveAliExpressProductUrl } from '../scripts/aliexpress-link-resolver.mjs';
 
 test('extracts an AliExpress product id from an attributed destination URL', () => {
   assert.equal(aliexpressProductId('https://www.aliexpress.com/item/1005011620902362.html?aff_fsk=example'), '1005011620902362');
@@ -188,4 +188,68 @@ test('reads AliExpress title and photo from its escaped social metadata', () => 
   assert.equal(metadata.title, 'Perfume unisex 100 ml');
   assert.equal(metadata.imageUrl, 'https://ae01.alicdn.com/kf/perfume.jpg');
   assert.equal(metadata.productId, '1005012721085216');
+});
+
+test('removes another publisher tracking before affiliate generation', async () => {
+  const tracked = 'https://www.aliexpress.com/item/1005012721085216.html?invitationCode=other&aff_fcid=other&aff_fsk=other';
+  const canonical = await resolveAliExpressProductUrl(tracked, {
+    fetchImpl: async () => ({ ok: true, url: tracked, text: async () => '' }),
+  });
+  assert.equal(canonical, 'https://es.aliexpress.com/item/1005012721085216.html');
+});
+
+test('reads the exact shared product and original photo from a public AliExpress snapshot', () => {
+  const metadata = metadataFromAliExpressReader(`
+Title: Maison Alhambra Jean Lowe Fantasme Eau de Parfum 100 ml - AliExpress 66
+URL Source: https://a.aliexpress.com/_EIjlCYe
+[Product](https://es.aliexpress.com/item/1005012721085216.html)
+![Image 8](https://ae-pic-a1.aliexpress-media.com/kf/E5ea719943a9f4312881007df24187640p.jpeg_960x960q75.jpeg_.avif)
+  `);
+  assert.equal(metadata.productId, '1005012721085216');
+  assert.equal(metadata.title, 'Maison Alhambra Jean Lowe Fantasme Eau de Parfum 100 ml');
+  assert.equal(metadata.imageUrl, 'https://ae-pic-a1.aliexpress-media.com/kf/E5ea719943a9f4312881007df24187640p.jpeg');
+});
+
+test('uses the public product snapshot when GitHub cannot expand an a.aliexpress link', async () => {
+  const shortUrl = 'https://a.aliexpress.com/_EIjlCYe';
+  const readerUrl = 'https://r.jina.ai/https://a.aliexpress.com/_EIjlCYe';
+  const canonical = await resolveAliExpressProductUrl(shortUrl, {
+    execFileImpl: async () => ({ stdout: 'https://es.aliexpress.com/' }),
+    fetchImpl: async (url) => {
+      if (url === readerUrl) return {
+        ok: true,
+        text: async () => 'Title: Perfume unisex - AliExpress 66\n[Product](https://es.aliexpress.com/item/1005012721085216.html)',
+      };
+      return { ok: true, url: 'https://es.aliexpress.com/', text: async () => '' };
+    },
+  });
+  assert.equal(canonical, 'https://es.aliexpress.com/item/1005012721085216.html');
+});
+
+test('rejects an AliExpress maintenance page as a product title', () => {
+  const metadata = metadataFromAliExpressReader('Title: AliExpress.com - Maintaining\n[Product](https://es.aliexpress.com/item/1005012721085216.html)');
+  assert.equal(metadata.productId, '1005012721085216');
+  assert.equal(metadata.title, undefined);
+});
+
+test('bypasses a cached maintenance page to recover the shared product id', async () => {
+  const shortUrl = 'https://a.aliexpress.com/_EIjlCYe';
+  let readerCalls = 0;
+  const canonical = await resolveAliExpressProductUrl(shortUrl, {
+    execFileImpl: async () => ({ stdout: 'https://es.aliexpress.com/' }),
+    fetchImpl: async (url, options = {}) => {
+      if (String(url).startsWith('https://r.jina.ai/')) {
+        readerCalls += 1;
+        return {
+          ok: true,
+          text: async () => options.headers?.['x-no-cache']
+            ? 'Title: Captcha Interception\n[Original](https://www.aliexpress.com/item/1005012721085216.html)'
+            : 'Title: AliExpress.com - Maintaining',
+        };
+      }
+      return { ok: true, url: 'https://es.aliexpress.com/', text: async () => '' };
+    },
+  });
+  assert.equal(canonical, 'https://es.aliexpress.com/item/1005012721085216.html');
+  assert.equal(readerCalls, 2);
 });
