@@ -129,7 +129,7 @@ export function controlHelp() {
     '',
     'Después basta con pegar un enlace. El bot obtiene título, foto, descripción y precio de la ficha pública. Si la tienda oculta el precio, te pedirá solo ese dato.',
     '',
-    'Amazon: puedes mandar el enlace directo; se añade tu tag automáticamente. AliExpress y Miravia: envía el enlace ya generado desde tu afiliación.',
+    'Amazon: añade tu tag automáticamente. AliExpress y Miravia: convierte el enlace directo o acortado a tu propia afiliación antes de publicar.',
     '',
     'También puedes reenviar una publicación con foto y pegar después su enlace de compra.',
   ].join('\n');
@@ -210,7 +210,7 @@ export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag =
     return { status: 'needs_affiliate', message: 'Necesito un enlace directo de Amazon para poder añadir y verificar tu tag de afiliado.' };
   }
   if ((store === 'AliExpress' || store === 'Miravia') && !hasAffiliateLink(finalUrl, store)) {
-    return { status: 'needs_affiliate', message: `Ese enlace de ${store} no parece ser de afiliación. Genera el enlace desde tu panel de afiliado y envíamelo de nuevo.` };
+    return { status: 'needs_affiliate', message: `No he podido generar y verificar tu enlace de afiliado de ${store}. No he publicado el enlace original. Envía el enlace directo del producto y volveré a intentarlo.` };
   }
   const discount = previousPrice ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
   return {

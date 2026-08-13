@@ -49,14 +49,98 @@ function isShortAliExpressUrl(value = '') {
   }
 }
 
+function decodeAliExpressMarkup(value = '') {
+  return String(value)
+    .replace(/\\u003c/giu, '<')
+    .replace(/\\u003e/giu, '>')
+    .replace(/\\u0026/giu, '&')
+    .replace(/\\u0022/giu, '"')
+    .replace(/\\u0027/giu, "'")
+    .replace(/\\\//gu, '/')
+    .replace(/\\"/gu, '"');
+}
+
+function metaContent(html = '', key = '') {
+  for (const tag of decodeAliExpressMarkup(html).match(/<meta\b[^>]*>/giu) || []) {
+    const property = tag.match(/\b(?:property|name)\s*=\s*["']([^"']+)["']/iu)?.[1]?.toLowerCase();
+    if (property !== key.toLowerCase()) continue;
+    return String(tag.match(/\bcontent\s*=\s*["']([^"']*)["']/iu)?.[1] || '')
+      .replaceAll('&amp;', '&')
+      .trim();
+  }
+  return '';
+}
+
+function cleanAliExpressTitle(value = '') {
+  return String(value)
+    .replace(/\s+-\s+AliExpress(?:\s+\d+)?\s*$/iu, '')
+    .trim();
+}
+
+/** AliExpress embeds the useful social card as escaped HTML inside its shell
+ * document. Reading that card gives us the exact title and full-size image
+ * even when the interactive product application is unavailable to GitHub. */
+export function metadataFromAliExpressHtml(html = '') {
+  const decoded = decodeAliExpressMarkup(html);
+  const productId = aliexpressProductId(metaContent(decoded, 'al:android:url'))
+    || aliexpressProductId(metaContent(decoded, 'al:iphone:url'));
+  return {
+    ...(productId ? { productId } : {}),
+    title: cleanAliExpressTitle(metaContent(decoded, 'og:title')),
+    description: String(metaContent(decoded, 'og:description') || '').trim(),
+    imageUrl: highResolutionAliExpressImage(metaContent(decoded, 'og:image')),
+  };
+}
+
 async function resolveWithCurl(url, execFileImpl) {
   const { stdout } = await execFileImpl('curl', [
     '--location', '--silent', '--show-error', '--max-time', '12',
+    '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140.0 Safari/537.36',
+    '--header', 'Accept-Language: es-ES,es;q=0.9',
     '--output', process.platform === 'win32' ? 'NUL' : '/dev/null',
     '--write-out', '%{url_effective}', String(url),
   ]);
   const finalUrl = String(stdout || '').trim();
   return isAliExpressUrl(finalUrl) ? finalUrl : '';
+}
+
+async function inspectAliExpressDestination(url, fetchImpl) {
+  if (!isAliExpressUrl(url)) return { finalUrl: '', metadata: {} };
+  const response = await fetchImpl(url, {
+    redirect: 'follow',
+    headers: {
+      'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140.0 Safari/537.36',
+      'accept-language': 'es-ES,es;q=0.9',
+      accept: 'text/html,application/xhtml+xml',
+    },
+  });
+  const responseUrl = isAliExpressUrl(response?.url) ? String(response.url) : String(url);
+  let metadata = {};
+  if (typeof response?.text === 'function') {
+    try {
+      metadata = metadataFromAliExpressHtml((await response.text()).slice(0, 1_500_000));
+    } catch {
+      // The redirect URL alone is still useful when the body cannot be read.
+    }
+  }
+  const embeddedProductId = String(metadata.productId || '');
+  const finalUrl = embeddedProductId
+    ? `https://es.aliexpress.com/item/${embeddedProductId}.html`
+    : responseUrl;
+  return { finalUrl, metadata };
+}
+
+async function canonicalAliExpressDestination(url, fetchImpl) {
+  let current = String(url || '');
+  let metadata = {};
+  for (let attempt = 0; attempt < 3 && isAliExpressUrl(current); attempt += 1) {
+    const inspected = await inspectAliExpressDestination(current, fetchImpl);
+    metadata = { ...metadata, ...Object.fromEntries(Object.entries(inspected.metadata).filter(([, value]) => value)) };
+    const next = inspected.finalUrl || current;
+    if (next === current && aliexpressProductId(next)) break;
+    current = next;
+  }
+  return { finalUrl: current, metadata };
 }
 
 /**
@@ -73,7 +157,13 @@ export async function resolveAliExpressProductUrl(url, {
   if (typeof resolveShortUrl === 'function') {
     try {
       const finalUrl = await resolveShortUrl(url);
-      if (isAliExpressUrl(finalUrl)) return String(finalUrl);
+      if (isAliExpressUrl(finalUrl)) {
+        try {
+          return (await canonicalAliExpressDestination(finalUrl, fetchImpl)).finalUrl || String(finalUrl);
+        } catch {
+          return String(finalUrl);
+        }
+      }
     } catch {
       // Continue with the browser-like redirect readers below.
     }
@@ -84,26 +174,69 @@ export async function resolveAliExpressProductUrl(url, {
   if (isShortAliExpressUrl(url)) {
     try {
       const finalUrl = await resolveWithCurl(url, execFileImpl);
-      if (aliexpressProductId(finalUrl)) return finalUrl;
+      if (aliexpressProductId(finalUrl)) {
+        try {
+          return (await canonicalAliExpressDestination(finalUrl, fetchImpl)).finalUrl || finalUrl;
+        } catch {
+          return finalUrl;
+        }
+      }
     } catch {
       // The fetch reader below is a useful fallback when curl is unavailable.
     }
   }
   try {
-    const response = await fetchImpl(url, {
-      redirect: 'follow',
-      headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaBot/1.0)' },
-    });
-    if (response?.url && isAliExpressUrl(response.url)) return response.url;
+    const inspected = await canonicalAliExpressDestination(url, fetchImpl);
+    if (aliexpressProductId(inspected.finalUrl)) return inspected.finalUrl;
   } catch {
     // curl below handles redirects when a shop blocks fetch.
   }
   try {
     const finalUrl = await resolveWithCurl(url, execFileImpl);
-    return finalUrl || String(url || '');
+    if (!finalUrl) return String(url || '');
+    try {
+      return (await canonicalAliExpressDestination(finalUrl, fetchImpl)).finalUrl || finalUrl;
+    } catch {
+      return finalUrl;
+    }
   } catch {
     return String(url || '');
   }
+}
+
+function apiProducts(data = {}, responseKey = '') {
+  const products = data?.[responseKey]?.resp_result?.result?.products?.product || [];
+  return Array.isArray(products) ? products : (products ? [products] : []);
+}
+
+async function callAliExpressApi(method, fields, config, fetchImpl) {
+  const unsigned = {
+    app_key: config.appKey,
+    format: 'json',
+    method,
+    ...fields,
+    sign_method: 'sha256',
+    timestamp: timestamp(),
+    v: '2.0',
+  };
+  const params = { ...unsigned, sign: createAliExpressSignature(unsigned, config.appSecret) };
+  const response = await fetchImpl(`${ALIEXPRESS_ENDPOINT}?${new URLSearchParams(params)}`);
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok && response.ok !== undefined) {
+    throw new Error(`AliExpress API responded ${response.status || 'without status'}.`);
+  }
+  return data;
+}
+
+async function generateAliExpressAffiliateLink(sourceUrl, config, fetchImpl) {
+  const data = await callAliExpressApi('aliexpress.affiliate.link.generate', {
+    promotion_link_type: '0',
+    source_values: sourceUrl,
+    tracking_id: config.trackingId,
+  }, config, fetchImpl);
+  const links = data?.aliexpress_affiliate_link_generate_response?.resp_result?.result?.promotion_links?.promotion_link || [];
+  const first = Array.isArray(links) ? links[0] : links;
+  return String(first?.promotion_link || '').trim().replace(/^http:\/\//iu, 'https://');
 }
 
 /** Fetches product facts through the affiliate API, preserving the original
@@ -113,30 +246,36 @@ export async function resolveAliExpressAffiliateProduct(url, config, options = {
   const canonicalUrl = await resolveAliExpressProductUrl(url, options);
   const productId = aliexpressProductId(canonicalUrl);
   if (!productId || !config.appKey || !config.appSecret || !config.trackingId) return {};
-  const unsigned = {
-    app_key: config.appKey,
-    format: 'json',
-    method: 'aliexpress.affiliate.product.query',
+  let pageMetadata = {};
+  try {
+    pageMetadata = (await inspectAliExpressDestination(canonicalUrl, fetchImpl)).metadata;
+  } catch {
+    // The exact affiliate detail endpoint remains authoritative.
+  }
+  const detailData = await callAliExpressApi('aliexpress.affiliate.productdetail.get', {
+    country: 'ES',
     product_ids: productId,
     target_currency: 'EUR',
     target_language: 'ES',
-    country: 'ES',
     tracking_id: config.trackingId,
     fields: 'product_id,product_title,target_sale_price,target_original_price,product_main_image_url,promotion_link',
-    sign_method: 'sha256',
-    timestamp: timestamp(),
-    v: '2.0',
-  };
-  const params = { ...unsigned, sign: createAliExpressSignature(unsigned, config.appSecret) };
-  const response = await fetchImpl(`${ALIEXPRESS_ENDPOINT}?${new URLSearchParams(params)}`);
-  const data = await response.json().catch(() => ({}));
-  const products = data?.aliexpress_affiliate_product_query_response?.resp_result?.result?.products?.product || [];
-  const product = Array.isArray(products) ? products[0] : products;
-  const metadata = metadataFromAliExpressProduct(product);
+  }, config, fetchImpl);
+  const product = apiProducts(detailData, 'aliexpress_affiliate_productdetail_get_response')
+    .find((entry) => String(entry?.product_id || '') === productId);
+  const exactMetadata = product ? metadataFromAliExpressProduct(product) : {};
+  let affiliateUrl = String(product?.promotion_link || product?.promotion_link_url || '').trim().replace(/^http:\/\//iu, 'https://');
+  try {
+    affiliateUrl = await generateAliExpressAffiliateLink(canonicalUrl, config, fetchImpl) || affiliateUrl;
+  } catch {
+    // The exact product-detail promotion link is a safe fallback when the
+    // dedicated link generator is temporarily unavailable.
+  }
   return {
-    ...metadata,
-    productId: metadata.productId || productId,
+    ...pageMetadata,
+    ...Object.fromEntries(Object.entries(exactMetadata).filter(([, value]) => value)),
+    productId,
     canonicalUrl,
-    affiliateUrl: String(product.promotion_link || product.promotion_link_url || '').trim(),
+    affiliateUrl,
+    identityVerified: Boolean(product),
   };
 }

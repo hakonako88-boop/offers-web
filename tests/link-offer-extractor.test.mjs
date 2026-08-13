@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { extractProductMetadata, merchantLinkFromHtml, outboundOfferLinkFromHtml, productMetadataFromHtml } from '../scripts/link-offer-extractor.mjs';
+import { decodeStorefrontMarkup, extractProductMetadata, merchantLinkFromHtml, outboundOfferLinkFromHtml, productMetadataFromHtml } from '../scripts/link-offer-extractor.mjs';
 
 test('extracts title, image and prices from public product metadata', () => {
   const result = productMetadataFromHtml(`
@@ -12,6 +12,14 @@ test('extracts title, image and prices from public product metadata', () => {
   assert.equal(result.imageUrl, 'https://tienda.example/producto.jpg');
   assert.equal(result.price, 19.99);
   assert.equal(result.previousPrice, 39.99);
+});
+
+test('decodes AliExpress escaped Open Graph title and product photo', () => {
+  const escaped = String.raw`\u003cmeta property=\"og:title\" content=\"Maison Alhambra Jean Lowe Fantasme - AliExpress 66\" /\u003e \u003cmeta property=\"og:image\" content=\"https://ae01.alicdn.com/kf/perfume.jpg\" /\u003e`;
+  assert.match(decodeStorefrontMarkup(escaped), /<meta property="og:title"/u);
+  const result = productMetadataFromHtml(escaped, 'https://es.aliexpress.com/item/1005012721085216.html');
+  assert.equal(result.title, 'Maison Alhambra Jean Lowe Fantasme');
+  assert.equal(result.imageUrl, 'https://ae01.alicdn.com/kf/perfume.jpg');
 });
 
 test('follows a merchant button from a forwarded deals page to the product page', async () => {

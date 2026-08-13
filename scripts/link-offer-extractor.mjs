@@ -1,4 +1,6 @@
 import { isMiraviaAwinUrl, miraviaProductIdFromHtml, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
+import { highResolutionAliExpressImage } from './aliexpress-offers.mjs';
+import { highResolutionMiraviaImage } from './miravia-offers.mjs';
 
 function compact(value = '') {
   return String(value).replace(/\s+/gu, ' ').trim();
@@ -13,6 +15,20 @@ function decode(value = '') {
     .replace(/&amp;/giu, '&')
     .replace(/&quot;/giu, '"')
     .replace(/&#39;/giu, "'"));
+}
+
+/** AliExpress serves its social metadata inside a JavaScript-escaped HTML
+ * shell. Decode only the harmless markup escapes needed by the metadata
+ * reader; no script is executed. */
+export function decodeStorefrontMarkup(value = '') {
+  return String(value)
+    .replace(/\\u003c/giu, '<')
+    .replace(/\\u003e/giu, '>')
+    .replace(/\\u0026/giu, '&')
+    .replace(/\\u0022/giu, '"')
+    .replace(/\\u0027/giu, "'")
+    .replace(/\\\//gu, '/')
+    .replace(/\\"/gu, '"');
 }
 
 function htmlMeta(html = '', keys = []) {
@@ -60,6 +76,7 @@ export function parsePrice(value = '') {
 }
 
 function absoluteUrl(value, baseUrl) {
+  if (!String(value || '').trim()) return '';
   try {
     return baseUrl ? new URL(value, baseUrl).toString() : new URL(value).toString();
   } catch {
@@ -206,14 +223,22 @@ async function publicSourceOffer(url, fetchImpl) {
  * it can be published to the channel.
  */
 export function productMetadataFromHtml(html, pageUrl) {
-  const product = jsonLdProducts(html)[0] || {};
+  const document = decodeStorefrontMarkup(html);
+  const product = jsonLdProducts(document)[0] || {};
   const offers = Array.isArray(product.offers) ? product.offers[0] : (product.offers || {});
   const image = Array.isArray(product.image) ? product.image[0] : product.image;
-  const title = decode(product.name || htmlMeta(html, ['og:title', 'twitter:title']) || '');
-  const description = decode(product.description || htmlMeta(html, ['og:description', 'twitter:description', 'description']) || '');
-  const imageUrl = absoluteUrl(image || htmlMeta(html, ['og:image', 'twitter:image']), pageUrl);
-  const price = parsePrice(offers.price || offers.lowPrice || htmlMeta(html, ['product:price:amount', 'og:price:amount']));
-  const previousPrice = parsePrice(offers.highPrice || '');
+  const title = sourceTitle(decode(product.name || htmlMeta(document, ['og:title', 'twitter:title']) || ''))
+    .replace(/\s+-\s+AliExpress(?:\s+\d+)?\s*$/iu, '');
+  const description = decode(product.description || htmlMeta(document, ['og:description', 'twitter:description', 'description']) || '');
+  const rawImage = absoluteUrl(image || htmlMeta(document, ['og:image', 'twitter:image']), pageUrl);
+  const storeHost = (() => {
+    try { return new URL(pageUrl).hostname.toLowerCase(); } catch { return ''; }
+  })();
+  const imageUrl = /(^|\.)aliexpress\./u.test(storeHost)
+    ? highResolutionAliExpressImage(rawImage)
+    : (/^miravia\.es$|\.miravia\.es$/u.test(storeHost) ? highResolutionMiraviaImage(rawImage) : rawImage);
+  const price = parsePrice(offers.price || offers.lowPrice || htmlMeta(document, ['product:price:amount', 'og:price:amount']));
+  const previousPrice = parsePrice(offers.highPrice || htmlMeta(document, ['product:original_price:amount', 'product:price:standard_amount']));
   return { title, description, imageUrl, price, previousPrice };
 }
 

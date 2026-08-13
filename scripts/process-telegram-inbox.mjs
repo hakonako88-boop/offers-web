@@ -18,6 +18,7 @@ import { extractProductMetadata, parsePrice } from './link-offer-extractor.mjs';
 import { isInboxDuplicate } from './offer-deduplication.mjs';
 import { aliexpressProductId, resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
 import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
+import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
@@ -50,6 +51,7 @@ function config() {
     aliexpressAppKey: process.env.ALIEXPRESS_APP_KEY,
     aliexpressAppSecret: process.env.ALIEXPRESS_APP_SECRET,
     aliexpressTrackingId: process.env.ALIEXPRESS_TRACKING_ID,
+    awinFeedListUrl: process.env.AWIN_FEED_LIST_URL,
   };
 }
 
@@ -78,6 +80,20 @@ async function telegramForm(token, method, form) {
   return data.result;
 }
 
+export function detectedProductImageMime(bytes, contentType = '') {
+  const data = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes || []);
+  const ascii = (start, length) => String.fromCharCode(...data.slice(start, start + length));
+  if (data[0] === 0xff && data[1] === 0xd8 && data[2] === 0xff) return 'image/jpeg';
+  if (data[0] === 0x89 && ascii(1, 3) === 'PNG') return 'image/png';
+  if (ascii(0, 4) === 'RIFF' && ascii(8, 4) === 'WEBP') return 'image/webp';
+  if (ascii(0, 4) === 'GIF8') return 'image/gif';
+  if (ascii(4, 8).startsWith('ftypavi')) return 'image/avif';
+  const declared = String(contentType || '').split(';')[0].trim().toLowerCase();
+  return /^image\/(?:jpeg|jpg|png|webp|gif|avif)$/u.test(declared)
+    ? declared.replace('image/jpg', 'image/jpeg')
+    : '';
+}
+
 async function downloadProductImage(url) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 12_000);
@@ -90,12 +106,12 @@ async function downloadProductImage(url) {
       },
     });
     const contentType = response.headers.get('content-type') || '';
-    if (!response.ok || !contentType.toLowerCase().startsWith('image/')) {
-      throw new Error(`La imagen respondió ${response.status || 'sin estado'}.`);
-    }
-    const bytes = await response.arrayBuffer();
+    if (!response.ok) throw new Error(`La imagen respondió ${response.status || 'sin estado'}.`);
+    const bytes = new Uint8Array(await response.arrayBuffer());
     if (!bytes.byteLength) throw new Error('La imagen estaba vacía.');
-    return new Blob([bytes], { type: contentType.split(';')[0] || 'image/jpeg' });
+    const mimeType = detectedProductImageMime(bytes, contentType);
+    if (!mimeType) throw new Error(`La dirección no devolvió una fotografía válida (${contentType || 'sin tipo'}).`);
+    return new Blob([bytes], { type: mimeType });
   } finally {
     clearTimeout(timeout);
   }
@@ -355,7 +371,6 @@ for (const update of updates || []) {
       // submission rather than only when the page happens to be blank.
       let generatedAliExpressUrl = '';
       let generatedMiraviaUrl = '';
-      let aliExpressIdentityMismatch = null;
       if (resolvedStore === 'AliExpress') {
         try {
           const affiliateMetadata = await resolveAliExpressAffiliateProduct(metadata.finalUrl || url, {
@@ -363,46 +378,36 @@ for (const update of updates || []) {
             appSecret: settings.aliexpressAppSecret,
             trackingId: settings.aliexpressTrackingId,
           });
-          // The product id embedded in the resolved AliExpress product URL is
-          // the authoritative identity. Some affiliate responses can contain
-          // stale catalogue facts; never let one replace the id verified from
-          // the owner's original short link, or an unrelated offer could be
-          // rejected as a duplicate.
           const canonicalProductId = aliexpressProductId(affiliateMetadata.canonicalUrl || metadata.finalUrl || url);
-          const catalogueProductId = String(affiliateMetadata.productId || '');
-          if (canonicalProductId && (!catalogueProductId || catalogueProductId === canonicalProductId)) {
-            generatedAliExpressUrl = String(affiliateMetadata.affiliateUrl || '');
-            metadata = {
-              ...metadata,
-              ...Object.fromEntries(Object.entries(affiliateMetadata)
-                .filter(([key, value]) => key !== 'affiliateUrl' && value)),
-              productId: canonicalProductId,
-            };
-          } else {
-            // Without a verified product destination, affiliate catalogue
-            // facts may refer to a different item. Keep only the owner/card
-            // data and ask for any missing price rather than publishing the
-            // wrong product. A mismatched ID is treated exactly as unsafe:
-            // the original title/photo can remain, but product facts and an
-            // affiliate URL from a different catalogue entry are discarded.
-            const canonicalUrl = String(affiliateMetadata.canonicalUrl || metadata.finalUrl || url);
-            aliExpressIdentityMismatch = { canonicalUrl, canonicalProductId, catalogueProductId };
-            // Discard every fact received from the unverified shop/API reader.
-            // It can describe a different product, as happened with a perfume
-            // link incorrectly returning a humidifier. Only owner-supplied
-            // card data remains available for the assisted retry.
-            metadata = {
-              finalUrl: canonicalUrl,
-              ...metadataFromForward,
-            };
-            console.warn(`AliExpress catalogue identity mismatch: resolved=${canonicalProductId || 'none'} catalogue=${catalogueProductId || 'none'}.`);
-          }
+          generatedAliExpressUrl = String(affiliateMetadata.affiliateUrl || '');
+          metadata = {
+            ...metadata,
+            ...Object.fromEntries(Object.entries(affiliateMetadata)
+              .filter(([key, value]) => key !== 'affiliateUrl' && value)),
+            ...(canonicalProductId ? { productId: canonicalProductId } : {}),
+          };
+          console.log(`AliExpress resolved product ${canonicalProductId || 'without-id'}; exact metadata=${affiliateMetadata.identityVerified ? 'yes' : 'page-fallback'}; own affiliate=${generatedAliExpressUrl ? 'yes' : 'no'}.`);
         } catch (error) {
           console.warn(`AliExpress affiliate lookup failed: ${safeError(error, settings.token)}`);
         }
       }
       if (resolvedStore === 'Miravia') {
-        const productId = String(metadata.productId || miraviaProductIdFromUrl(metadata.affiliateUrl || url) || '');
+        const submittedProductId = String(miraviaProductIdFromUrl(url) || miraviaProductIdFromUrl(metadata.affiliateUrl || '') || '');
+        if (settings.awinFeedListUrl && (!metadata.title || !metadata.imageUrl || !metadata.price)) {
+          try {
+            const feedMetadata = await resolveMiraviaFeedMetadata(
+              submittedProductId ? url : (metadata.finalUrl || url),
+              settings.awinFeedListUrl,
+            );
+            metadata = mergeProductMetadata(feedMetadata, metadata);
+            if (feedMetadata.finalUrl) metadata.finalUrl = feedMetadata.finalUrl;
+            if (feedMetadata.productId) metadata.productId = feedMetadata.productId;
+            console.log(`Miravia feed lookup product ${feedMetadata.productId || submittedProductId || 'without-id'}; metadata=${feedMetadata.title && feedMetadata.imageUrl ? 'yes' : 'no'}.`);
+          } catch (error) {
+            console.warn(`Miravia feed lookup failed: ${safeError(error, settings.token)}`);
+          }
+        }
+        const productId = String(metadata.productId || submittedProductId || '');
         generatedMiraviaUrl = miraviaAffiliateUrl({
           productId,
           destinationUrl: metadata.finalUrl || '',
@@ -411,30 +416,17 @@ for (const update of updates || []) {
       }
       metadata = mergeProductMetadata(metadata, metadataFromForward);
       metadata = metadataWithOfficialAmazonImage(metadata.finalUrl || url, metadata);
-      if (aliExpressIdentityMismatch) {
-        const directUrl = aliExpressIdentityMismatch.canonicalUrl;
-        await reply(settings.token, message.chat.id, [
-          '⚠️ No he publicado esta oferta: AliExpress ha devuelto datos de otro producto y no voy a mezclar fichas.',
-          '',
-          `✅ Producto detectado: ${directUrl}`,
-          '',
-          'Para terminarla de forma segura, genera en tu panel de AliExpress el enlace de afiliado de ese producto y envíamelo junto con el precio. Si reenvías la oferta con foto y título, los conservaré.',
-        ].join('\n'));
-        handled += 1;
-        continue;
-      }
-      const sourceStore = storeFromUrl(url);
-      // An affiliate redirect found inside another publisher's post may belong
-      // to that publisher. We only reuse a non-Amazon link when the user sent
-      // the shop/tracking link directly; Amazon is safe because its tag is
-      // always replaced with this account's configured tag.
+      // A shortened link copied from another publisher must never reach the
+      // channel unchanged. AliExpress and Miravia leave this block only with
+      // a link generated for this account; a direct URL otherwise triggers a
+      // controlled affiliate error below.
       const affiliateUrl = resolvedStore === 'Amazon'
         ? (metadata.finalUrl || url)
         : (resolvedStore === 'AliExpress' && /^https:\/\/(?:s\.click|a)\.aliexpress\.com\//iu.test(generatedAliExpressUrl)
           ? generatedAliExpressUrl
           : (resolvedStore === 'Miravia' && /^https:\/\/(?:www\.)?awin1\.com\//iu.test(generatedMiraviaUrl)
             ? generatedMiraviaUrl
-            : (sourceStore === resolvedStore ? url : (metadata.finalUrl || url))));
+            : (metadata.finalUrl || url)));
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
         const outcome = await publishIfNew(settings, result.offer, message);
