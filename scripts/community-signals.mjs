@@ -5,7 +5,13 @@ const MAX_SIGNAL_AGE_MS = 48 * 60 * 60 * 1000;
 const MICHOLLO_REFRESH_MS = 6 * 60 * 60 * 1000;
 
 export const COMMUNITY_SOURCES = [
-  { id: 'chollometro', kind: 'rss', url: 'https://www.chollometro.com/rss', weight: 14 },
+  {
+    id: 'chollometro-aliexpress',
+    kind: 'rss',
+    url: 'https://www.chollometro.com/rss/nuevos',
+    merchant: 'AliExpress',
+    weight: 14,
+  },
   { id: 'nolodejesescapar', kind: 'rss', url: 'https://nolodejesescapar.com/feed/', weight: 12 },
   { id: 'michollo', kind: 'sitemap', url: 'https://michollo.com/assets/sitemap-chollos-0.xml.gz', weight: 8 },
 ];
@@ -64,7 +70,7 @@ export function searchTermsForSignal(title) {
   return [...new Set(words.filter((word) => !STOP_WORDS.has(word)))].slice(0, 7);
 }
 
-function makeSignal(source, link, title, publishedAt) {
+function makeSignal(source, link, title, publishedAt, merchant = '') {
   const terms = searchTermsForSignal(title);
   return {
     id: `${source.id}:${link}`,
@@ -72,7 +78,8 @@ function makeSignal(source, link, title, publishedAt) {
     sourceUrl: link,
     title: cleanText(title).slice(0, 220),
     publishedAt: publishedAt || new Date().toISOString(),
-    sourceStore: sourceStore(title),
+    merchant: cleanText(merchant),
+    sourceStore: sourceStore(merchant || title),
     category: categoryFor(title),
     terms,
     searchQuery: cleanText(title)
@@ -85,12 +92,14 @@ function makeSignal(source, link, title, publishedAt) {
 
 export function parseRssSignals(source, xml, limit = 10) {
   return [...String(xml).matchAll(/<item\b[\s\S]*?<\/item>/gi)]
-    .slice(0, limit)
     .map((match) => {
       const item = match[0];
-      return makeSignal(source, xmlField(item, 'link'), xmlField(item, 'title'), xmlField(item, 'pubDate'));
+      const merchant = cleanText(item.match(/<pepper:merchant\b[^>]*\bname=["']([^"']+)["']/i)?.[1] || '');
+      if (source.merchant && normalise(merchant) !== normalise(source.merchant)) return null;
+      return makeSignal(source, xmlField(item, 'link'), xmlField(item, 'title'), xmlField(item, 'pubDate'), merchant);
     })
-    .filter((signal) => signal.sourceUrl && signal.title && signal.terms.length >= 2);
+    .filter((signal) => signal?.sourceUrl && signal.title && signal.terms.length >= 2)
+    .slice(0, limit);
 }
 
 export function parseMicholloSitemap(source, compressedXml, limit = 10) {

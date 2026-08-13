@@ -16,6 +16,20 @@ test('parses public RSS entries as discovery signals', () => {
   assert.deepEqual(signals[0].terms, ['auriculares', 'bluetooth', '40h']);
 });
 
+test('uses only the AliExpress section from Chollometro RSS', () => {
+  const source = COMMUNITY_SOURCES.find((entry) => entry.id === 'chollometro-aliexpress');
+  const signals = parseRssSignals(source, `<?xml version="1.0"?><rss><channel>
+    <item><pepper:merchant name="Amazon" price="19,99€"/><title>Auriculares Bluetooth Amazon</title><link>https://source.example/amazon</link></item>
+    <item><pepper:merchant name="AliExpress" price="12,99€"/><title>Auriculares Bluetooth con cancelación de ruido</title><link>https://source.example/aliexpress</link></item>
+  </channel></rss>`);
+
+  assert.equal(signals.length, 1);
+  assert.equal(signals[0].source, 'chollometro-aliexpress');
+  assert.equal(signals[0].merchant, 'AliExpress');
+  assert.equal(signals[0].sourceStore, 'AliExpress');
+  assert.equal(signals[0].sourceUrl, 'https://source.example/aliexpress');
+});
+
 test('skips Amazon community signals until an official attributed lookup is available', async () => {
   const now = Date.parse('2026-08-11T12:00:00.000Z');
   const response = `<?xml version="1.0"?><rss><channel><item><title>Oferta Amazon! Cafetera 900W a 29€</title><link>https://source.example/cafetera</link><pubDate>Tue, 11 Aug 2026 11:20:05 +0000</pubDate></item></channel></rss>`;
