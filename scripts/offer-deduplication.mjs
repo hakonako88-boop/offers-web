@@ -27,19 +27,9 @@ function similarity(left = '', right = '') {
   return shared / Math.min(a.length, b.length);
 }
 
-export function productIdentity(deal = {}) {
+function productIdentity(deal = {}) {
   const explicit = deal.sourceProductId || deal.source_product_id || deal.productId;
-  if (explicit) {
-    const raw = String(explicit).toLowerCase();
-    if (/^aliexpress:\d+$/u.test(raw) || /^amazon:[a-z0-9]{10}$/u.test(raw) || /^awin:\d+$/u.test(raw)) return raw;
-    const miraviaId = raw.match(/^miravia-(\d+)$/u)?.[1];
-    if (miraviaId) return `awin:${miraviaId}`;
-    // Older automatic AliExpress records saved the product id without a
-    // prefix. Make them comparable with the new inbox records.
-    if (deal.store === 'AliExpress' && /^\d{8,}$/u.test(raw)) return `aliexpress:${raw}`;
-    if (deal.store === 'Miravia' && /^\d+$/u.test(raw)) return `awin:${raw}`;
-    return raw.replace(/^miravia-/, '');
-  }
+  if (explicit) return String(explicit).toLowerCase().replace(/^miravia-/, '');
   try {
     const url = new URL(deal.url || '');
     const pclickProduct = url.searchParams.get('p');
@@ -54,40 +44,35 @@ export function productIdentity(deal = {}) {
   return '';
 }
 
-function isVerifiedProductIdentity(identity = '') {
-  return /^(?:aliexpress:\d+|amazon:[a-z0-9]{10}|awin:\d+)$/iu.test(identity);
-}
-
-function canonicalShopUrl(value = '') {
+function canonicalShopUrl(deal = {}) {
   try {
-    const url = new URL(value);
-    const host = url.hostname.toLowerCase();
-    const asin = url.pathname.match(/\/(?:dp|gp\/product)\/([a-z0-9]{10})(?:[/?]|$)/iu)?.[1];
-    if (/(^|\.)amazon\./iu.test(host) && asin) return `amazon:${asin.toLowerCase()}`;
-    return `${host}${url.pathname.replace(/\/+$/u, '')}`.toLowerCase();
+    const parsed = new URL(deal.url || '');
+    const asin = parsed.pathname.match(/\/(?:dp|gp\/product)\/([a-z0-9]{10})(?:[/?]|$)/iu)?.[1];
+    if (asin) return `amazon:${asin.toLowerCase()}`;
+    const product = parsed.pathname.match(/\/item\/(\d+)\.html/iu)?.[1];
+    if (product) return `aliexpress:${product}`;
+    return `${parsed.hostname.toLowerCase()}${parsed.pathname.replace(/\/$/u, '')}`;
   } catch {
     return '';
   }
 }
 
-/** The private bot must be more conservative than automated-feed curation:
- * a human-submitted deal is only a duplicate when we can prove it is the same
- * product. Similar catalogue wording must never discard a new submission. */
+/** A privately submitted offer must never be rejected because another title
+ * merely looks similar. It is a duplicate only when we can prove it is the
+ * same product ID, or the exact same canonical link. */
 export function isInboxDuplicate(candidate = {}, published = {}) {
   const candidateIdentity = productIdentity(candidate);
   const publishedIdentity = productIdentity(published);
-  if (isVerifiedProductIdentity(candidateIdentity)) {
-    return isVerifiedProductIdentity(publishedIdentity) && candidateIdentity === publishedIdentity;
-  }
-  const candidateUrl = canonicalShopUrl(candidate.url);
-  const publishedUrl = canonicalShopUrl(published.url);
+  if (candidateIdentity && publishedIdentity) return candidateIdentity === publishedIdentity;
+  const candidateUrl = canonicalShopUrl(candidate);
+  const publishedUrl = canonicalShopUrl(published);
   return Boolean(candidateUrl && publishedUrl && candidateUrl === publishedUrl);
 }
 
 export function isEquivalentDeal(candidate = {}, published = {}) {
   const candidateIdentity = productIdentity(candidate);
   const publishedIdentity = productIdentity(published);
-  if (candidateIdentity && publishedIdentity) return candidateIdentity === publishedIdentity;
+  if (candidateIdentity && publishedIdentity && candidateIdentity === publishedIdentity) return true;
   const candidateTitle = normalise(candidate.title);
   const publishedTitle = normalise(published.title);
   if (!candidateTitle || !publishedTitle) return false;
