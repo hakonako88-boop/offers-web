@@ -53,6 +53,7 @@ for (const id of offerIds) {
   await render(`/oferta/${encodedId}`, `oferta/${encodedId}/index.html`);
 }
 await render("/robots.txt", "robots.txt");
+await render("/ads.txt", "ads.txt");
 await render("/sitemap.xml", "sitemap.xml");
 await render("/feed.xml", "feed.xml");
 await writeFile(path.join(output, "CNAME"), "chollosaldia.com\n", "utf8");

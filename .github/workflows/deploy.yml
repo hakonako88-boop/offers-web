@@ -84,6 +84,9 @@ jobs:
       # the product API cannot generate a second copy of that same link.
       ALIEXPRESS_INVITATION_CODE: "US95SzVNcTdJdzYyN0doRjBKZ09JRTJEcFF4WmMySDZicDBuY0RBd2hHS2VQemFTZUJrNWVWT0s1MU1hdTAyWg"
       AWIN_FEED_LIST_URL: ${{ secrets.AWIN_FEED_LIST_URL }}
+      NEXT_PUBLIC_ADSENSE_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_ADSENSE_CLIENT_ID }}
+      NEXT_PUBLIC_ADSENSE_HOME_SLOT: ${{ secrets.NEXT_PUBLIC_ADSENSE_HOME_SLOT }}
+      NEXT_PUBLIC_ADSENSE_OFFER_SLOT: ${{ secrets.NEXT_PUBLIC_ADSENSE_OFFER_SLOT }}
       # Un lanzamiento manual solicitado por el propietario sirve como prueba
       # real y puede ignorar el intervalo editorial. Los cron conservan el límite.
       FORCE_AUTOMATIC_PUBLICATION: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.run_automatic_source != 'none') }}

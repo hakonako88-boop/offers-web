@@ -34,6 +34,16 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.doesNotMatch(html, /Relleno de coj[ií]n|Mantel impermeable|Malla Ocultaci[oó]n/i);
   assert.doesNotMatch(html, /t\.href/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/);
+  assert.doesNotMatch(html, /ca-pub-(?:0000|1234|x+)/i);
+});
+
+test("publishes an ads.txt endpoint without inventing an AdSense publisher", async () => {
+  const response = await render("/ads.txt");
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") ?? "", /^text\/plain\b/i);
+  const text = await response.text();
+  assert.match(text, /AdSense pendiente de configuración|google\.com, pub-\d+, DIRECT, f08c47fec0942fa0/);
+  assert.doesNotMatch(text, /pub-(?:0000|1234)/);
 });
 
 test("publishes a feed with only the reviewed active offers", async () => {

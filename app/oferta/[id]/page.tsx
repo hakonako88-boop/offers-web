@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import AdSlot from "../../components/AdSlot";
+import { adsenseOfferSlot } from "../../lib/adsense";
 import {
   dealDescription,
   dealDiscount,
@@ -159,6 +161,8 @@ export default async function OfferPage({ params }: OfferPageProps) {
             <section className="cons"><h3><span aria-hidden="true">!</span> A tener en cuenta</h3><ul>{cons.map((item) => <li key={item}>{item}</li>)}</ul></section>
           </div>
         </section>
+
+        <AdSlot slot={adsenseOfferSlot} placement="offer" />
 
         {relatedDeals.length > 0 && <section className="relatedDeals" aria-labelledby="related-title"><div className="sectionIntro"><div><p className="eyebrow"><span aria-hidden="true" />SIGUE AHORRANDO</p><h2 id="related-title">Otras ofertas que te pueden interesar.</h2></div><p>Selección activa de la misma tienda o categoría.</p></div><div className="dealGrid">{relatedDeals.map((related) => <article className="dealCard" key={related.id}><Link className="imageWrap dealPreviewLink" href={dealHref(related.id)} aria-label={`Ver oferta: ${related.title}`}><img src={related.imageUrl} alt={related.title} width={720} height={560} /><span className="storeBadge">{related.store}</span></Link><div className="dealBody"><p className="categoryLabel">{related.category}</p><h3><Link href={dealHref(related.id)}>{related.title}</Link></h3><div className="priceRow"><strong>{money.format(related.price)}</strong>{related.oldPrice > related.price && <span>Antes <s>{money.format(related.oldPrice)}</s></span>}</div><Link className="dealButton" href={dealHref(related.id)}>Ver oferta <span aria-hidden="true">→</span></Link></div></article>)}</div></section>}
 

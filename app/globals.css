@@ -174,3 +174,12 @@ body { background: var(--paper); }
 .relatedDeals { padding: 0 0 92px; }.relatedDeals .sectionIntro { margin-bottom: 26px; }.relatedDeals .sectionIntro h2 { max-width: 670px; }
 @media (max-width: 640px) { .relatedDeals { padding-bottom: 68px; }.relatedDeals .sectionIntro h2 { font-size: 38px; } }
 @media (max-width: 640px) { .analyticsConsent { right: 14px; bottom: 14px; align-items: flex-start; flex-direction: column; gap: 13px; padding: 16px; }.analyticsConsent p { max-width: none; }.analyticsConsentActions { width: 100%; justify-content: flex-start; }.analyticsConsentActions a, .analyticsConsentActions button { padding: 10px; } }
+
+/* Google AdSense is rendered only when a real publisher and slot are configured.
+   The reserved area reduces layout shift while keeping the editorial layout calm. */
+.adSection { padding-block: 30px; }
+.adPlacement { width: 100%; overflow: hidden; border-block: 1px solid var(--line); padding: 13px 0; text-align: center; }
+.adPlacement > span { display: block; margin-bottom: 8px; color: #7c8798; font-family: var(--font-geist-mono), monospace; font-size: 9px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+.adPlacement .adsbygoogle { width: 100%; min-height: 100px; }
+.adPlacement--offer { margin: 0 0 78px; }
+@media (max-width: 640px) { .adSection { padding-block: 20px; }.adPlacement { padding-block: 10px; }.adPlacement .adsbygoogle { min-height: 80px; }.adPlacement--offer { margin-bottom: 56px; } }

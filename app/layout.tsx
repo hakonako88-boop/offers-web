@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import AnalyticsConsent from "./components/AnalyticsConsent";
+import { adsenseClientId, adsenseEnabled } from "./lib/adsense";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -31,6 +32,7 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
   },
   category: "shopping",
+  ...(adsenseEnabled ? { other: { "google-adsense-account": adsenseClientId } } : {}),
 };
 
 export const viewport: Viewport = { themeColor: "#f04b37", colorScheme: "light" };
@@ -38,6 +40,15 @@ export const viewport: Viewport = { themeColor: "#f04b37", colorScheme: "light" 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
+      <head>
+        {adsenseEnabled && (
+          <script
+            async
+            crossOrigin="anonymous"
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
+          />
+        )}
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}<AnalyticsConsent /></body>
     </html>
   );

@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import rawOffers from "../../data/offers.json";
+import AdSlot from "./AdSlot";
+import { adsenseHomeSlot } from "../lib/adsense";
 import { publishedDeals } from "../lib/deals";
 
 export type Deal = {
@@ -300,6 +302,10 @@ export function DealExplorer() {
           <div className="pulseStat"><strong>{storeCount}</strong><span>tiendas revisadas</span></div>
         </div>
       </section>
+
+      {adsenseHomeSlot && <div className="shell adSection">
+        <AdSlot slot={adsenseHomeSlot} />
+      </div>}
 
       <section className="offersSection" id="ofertas" aria-labelledby="offers-title">
         <div className="shell">
