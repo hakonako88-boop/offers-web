@@ -257,6 +257,16 @@ URL Source: https://a.aliexpress.com/_EIjlCYe
   assert.equal(metadata.imageUrl, 'https://ae-pic-a1.aliexpress-media.com/kf/E5ea719943a9f4312881007df24187640p.jpeg');
 });
 
+test('does not promote URL Source to title when the reader title is empty', () => {
+  const metadata = metadataFromAliExpressReader(`
+Title:
+URL Source: https://www.aliexpress.com/item/1005012721085216.html?aff_fsk=_foreign
+[Product](https://es.aliexpress.com/item/1005012721085216.html)
+  `);
+  assert.equal(metadata.productId, '1005012721085216');
+  assert.equal(metadata.title, undefined);
+});
+
 test('uses the public product snapshot when GitHub cannot expand an a.aliexpress link', async () => {
   const shortUrl = 'https://a.aliexpress.com/_EIjlCYe';
   const readerUrl = 'https://r.jina.ai/https://a.aliexpress.com/_EIjlCYe';

@@ -80,7 +80,7 @@ function cleanAliExpressTitle(value = '') {
   const title = String(value)
     .replace(/\s+-\s+AliExpress(?:\s+\d+)?\s*$/iu, '')
     .trim();
-  return /captcha|maintaining|page under maintenance/iu.test(title) ? '' : title;
+  return /captcha|maintaining|page under maintenance|^URL Source\s*:/iu.test(title) ? '' : title;
 }
 
 /** Reads the public text snapshot of an AliExpress page. This is used only
@@ -89,7 +89,9 @@ function cleanAliExpressTitle(value = '') {
 export function metadataFromAliExpressReader(text = '') {
   const body = String(text || '');
   const productId = aliexpressProductId(body);
-  const candidateTitle = cleanAliExpressTitle(body.match(/^Title:\s*(.+)$/imu)?.[1] || '');
+  // Keep horizontal whitespace here: `\s*` can consume the newline after an
+  // empty Title field and incorrectly promote `URL Source:` into the title.
+  const candidateTitle = cleanAliExpressTitle(body.match(/^Title:[^\S\r\n]*(.*)$/imu)?.[1] || '');
   const title = /^(?:AliExpress(?:\.com)?\b|Captcha Interception\b)|\bMaintaining\b/iu.test(candidateTitle)
     ? ''
     : candidateTitle;
@@ -120,16 +122,24 @@ async function inspectAliExpressReader(url, fetchImpl) {
     });
     if (!response?.ok && response?.ok !== undefined) continue;
     const text = typeof response?.text === 'function' ? await response.text() : '';
-    lastMetadata = metadataFromAliExpressReader(text);
+    const attemptMetadata = metadataFromAliExpressReader(text);
+    lastMetadata = {
+      ...lastMetadata,
+      ...Object.fromEntries(Object.entries(attemptMetadata).filter(([, value]) => value)),
+    };
     const productId = String(lastMetadata.productId || '');
-    if (productId) {
+    if (productId && lastMetadata.title && lastMetadata.imageUrl) {
       return {
         finalUrl: `https://es.aliexpress.com/item/${productId}.html`,
         metadata: lastMetadata,
       };
     }
   }
-  return { finalUrl: '', metadata: lastMetadata };
+  const productId = String(lastMetadata.productId || '');
+  return {
+    finalUrl: productId ? `https://es.aliexpress.com/item/${productId}.html` : '',
+    metadata: lastMetadata,
+  };
 }
 
 /** AliExpress embeds the useful social card as escaped HTML inside its shell
