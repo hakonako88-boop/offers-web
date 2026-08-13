@@ -77,9 +77,10 @@ function metaContent(html = '', key = '') {
 }
 
 function cleanAliExpressTitle(value = '') {
-  return String(value)
+  const title = String(value)
     .replace(/\s+-\s+AliExpress(?:\s+\d+)?\s*$/iu, '')
     .trim();
+  return /captcha|maintaining|page under maintenance/iu.test(title) ? '' : title;
 }
 
 /** Reads the public text snapshot of an AliExpress page. This is used only
@@ -210,6 +211,12 @@ export async function resolveAliExpressProductUrl(url, {
   resolveShortUrl,
 } = {}) {
   if (!isAliExpressUrl(url)) return String(url || '');
+  // A submitted item URL already contains the exact catalogue identity. Do
+  // not let AliExpress's compatibility redirect replace it with an obsolete
+  // legacy id before the affiliate API lookup.
+  if (!isShortAliExpressUrl(url) && aliexpressProductId(url)) {
+    return canonicalAliExpressItemUrl(url);
+  }
   if (typeof resolveShortUrl === 'function') {
     try {
       const finalUrl = await resolveShortUrl(url);

@@ -198,6 +198,24 @@ test('removes another publisher tracking before affiliate generation', async () 
   assert.equal(canonical, 'https://es.aliexpress.com/item/1005012721085216.html');
 });
 
+test('keeps the submitted item id ahead of an obsolete compatibility redirect', async () => {
+  const tracked = 'https://www.aliexpress.com/item/1005012721085216.html?aff_fcid=other';
+  let networkCalled = false;
+  const canonical = await resolveAliExpressProductUrl(tracked, {
+    fetchImpl: async () => {
+      networkCalled = true;
+      return { ok: true, url: 'https://es.aliexpress.com/item/3256812534770464.html', text: async () => '' };
+    },
+  });
+  assert.equal(canonical, 'https://es.aliexpress.com/item/1005012721085216.html');
+  assert.equal(networkCalled, false);
+});
+
+test('does not accept a CAPTCHA as an AliExpress product title', () => {
+  const metadata = metadataFromAliExpressHtml('<meta property="og:title" content="CAPTCHA Verification"><meta property="og:image" content="https://example.test/captcha.jpg">');
+  assert.equal(metadata.title, '');
+});
+
 test('reads the exact shared product and original photo from a public AliExpress snapshot', () => {
   const metadata = metadataFromAliExpressReader(`
 Title: Maison Alhambra Jean Lowe Fantasme Eau de Parfum 100 ml - AliExpress 66

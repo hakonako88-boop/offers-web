@@ -327,7 +327,9 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
       } catch {
         // The affiliate resolver has independent redirect and reader paths.
       }
-      const affiliateMetadata = await resolveAliExpressAffiliateProduct(refreshed.finalUrl || pendingUrl, {
+      // The pending URL is the identity the owner actually submitted. A page
+      // reader may expose AliExpress's old compatibility id in finalUrl.
+      const affiliateMetadata = await resolveAliExpressAffiliateProduct(pendingUrl, {
         appKey: settings.aliexpressAppKey,
         appSecret: settings.aliexpressAppSecret,
         trackingId: settings.aliexpressTrackingId,
