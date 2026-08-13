@@ -165,6 +165,13 @@ test('uses an available inline button URL from Telegram before falling back to c
   assert.equal(url, 'https://www.amazon.es/dp/B0ABCDE123');
 });
 
+test('uses a visible direct shop URL before a stale hidden Telegram preview URL', () => {
+  const url = urlFromTelegramMessage({
+    entities: [{ type: 'text_link', offset: 0, length: 8, url: 'https://s.click.aliexpress.com/e/_old-product' }],
+  }, 'Perfume Maison Alhambra\nhttps://a.aliexpress.com/_new-product');
+  assert.equal(url, 'https://a.aliexpress.com/_new-product');
+});
+
 test('formats a forwarded fan offer without exposing its forwarded origin', () => {
   const card = formatTelegramDealCard({
     title: 'SPARK- VENTILADOR DE 10\". POTENCIA 40W. 3 VELOCIDADES. 3 ASPAS DE ALUMINIO. OPERACIÓN SILENCIOSA.',
