@@ -10,6 +10,7 @@ import {
   manualOfferFromMessage,
   metadataForIncomingProductLink,
   mergeProductMetadata,
+  metadataMatchesOfficialProduct,
   offerFromProductMetadata,
   processingOfferReply,
   storeFromUrl,
@@ -462,7 +463,7 @@ for (const update of updates || []) {
       // access even though the owner has sent a complete offer. The supported
       // store/link validation below still prevents image-only channel links
       // from being published as products.
-      const metadataFromForward = Object.fromEntries(Object.entries(forwardedMetadata)
+      let metadataFromForward = Object.fromEntries(Object.entries(forwardedMetadata)
         .filter(([key, value]) => key !== 'photoFileId' && value));
       // AliExpress's public page frequently returns a generic storefront title
       // or an incomplete price to automated readers. Its affiliate catalogue
@@ -470,6 +471,7 @@ for (const update of updates || []) {
       // submission rather than only when the page happens to be blank.
       let generatedAliExpressUrl = '';
       let generatedMiraviaUrl = '';
+      let aliExpressIdentityVerified = false;
       if (resolvedStore === 'AliExpress') {
         const submittedOwnedAffiliateUrl = isOwnedAliExpressAffiliateUrl(
           metadata.finalUrl || '',
@@ -486,6 +488,7 @@ for (const update of updates || []) {
           });
           const canonicalProductId = aliexpressProductId(affiliateMetadata.canonicalUrl || metadata.finalUrl || url);
           generatedAliExpressUrl = String(affiliateMetadata.affiliateUrl || generatedAliExpressUrl || '');
+          aliExpressIdentityVerified = Boolean(affiliateMetadata.identityVerified);
           metadata = {
             ...metadata,
             ...Object.fromEntries(Object.entries(affiliateMetadata)
@@ -498,6 +501,12 @@ for (const update of updates || []) {
         } catch (error) {
           console.warn(`AliExpress affiliate lookup failed: ${safeError(error, settings.token)}`);
         }
+      }
+      if (resolvedStore === 'AliExpress'
+        && aliExpressIdentityVerified
+        && !metadataMatchesOfficialProduct(metadata.title, metadataFromForward.title)) {
+        console.warn('Forwarded AliExpress card does not match the verified product; ignoring its copied title, photo and prices.');
+        metadataFromForward = {};
       }
       if (resolvedStore === 'Miravia') {
         const submittedProductId = String(miraviaProductIdFromUrl(url) || miraviaProductIdFromUrl(metadata.affiliateUrl || '') || '');

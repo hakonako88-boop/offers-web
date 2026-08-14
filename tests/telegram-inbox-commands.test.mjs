@@ -7,6 +7,7 @@ import {
   forwardedOfferMetadata,
   formatManualTelegramCaption,
   isReliableProductTitle,
+  metadataMatchesOfficialProduct,
   manualOfferFromMessage,
   metadataForIncomingProductLink,
   mergeProductMetadata,
@@ -283,6 +284,17 @@ test('keeps a forwarded card photo as a fallback when the official shop image is
   const card = forwardedOfferMetadata('Ventilador SPARK 10 pulgadas\nPrecio: 17,78 €', 'forwarded-card-photo');
   const metadata = mergeProductMetadata({ title: 'Ventilador SPARK 10 pulgadas', price: 17.78 }, card);
   assert.equal(metadata.imageUrl, 'forwarded-card-photo');
+});
+
+test('does not combine a pending forwarded card with a different verified AliExpress product', () => {
+  assert.equal(metadataMatchesOfficialProduct(
+    'Handmade Coconut Oil Cheese Moldable Squishy Blind Box Stress Relief Toy',
+    'Móvil Xiaomi Redmi Note 15 4G 8GB 256GB AMOLED NFC',
+  ), false);
+  assert.equal(metadataMatchesOfficialProduct(
+    'Ventilador de techo WOOX Super Big 54 pulgadas con luz',
+    'Ventilador WOOX de techo con luz y mando a distancia',
+  ), true);
 });
 
 test('does not mix a new product URL with the previous pending product draft', () => {

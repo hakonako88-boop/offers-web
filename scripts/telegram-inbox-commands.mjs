@@ -14,6 +14,27 @@ export function isReliableProductTitle(value = '') {
     && !/^(?:amazon|aliexpress|miravia)(?:\s+(?:españa|espana|es))?$/iu.test(title);
 }
 
+/** A forwarded card may be left pending and then accidentally be completed
+ * with the next unrelated short URL. Never combine its price or photo with an
+ * officially identified AliExpress product unless their meaningful words
+ * overlap. This is deliberately a safety guard: a false negative asks for a
+ * direct link, while a false positive could publish a wrong price. */
+export function metadataMatchesOfficialProduct(officialTitle = '', forwardedTitle = '') {
+  if (!isReliableProductTitle(officialTitle) || !isReliableProductTitle(forwardedTitle)) return true;
+  const ignored = new Set(['para', 'con', 'sin', 'desde', 'hasta', 'oferta', 'precio', 'producto', 'miravia', 'aliexpress', 'amazon']);
+  const words = (value) => new Set(String(value)
+    .toLocaleLowerCase('es')
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .match(/[a-z0-9]{3,}/gu)
+    ?.filter((word) => !ignored.has(word)) || []);
+  const official = words(officialTitle);
+  const forwarded = words(forwardedTitle);
+  if (!official.size || !forwarded.size) return true;
+  const overlap = [...official].filter((word) => forwarded.has(word)).length;
+  return overlap >= 2 || (overlap >= 1 && (official.size <= 3 || forwarded.size <= 3));
+}
+
 /** Keeps facts supplied by the shop/API ahead of text copied from a forwarded
  * card. Forwarded titles are only a fallback: source channels often truncate
  * or embellish them, which made AliExpress posts look inaccurate. */
