@@ -239,7 +239,9 @@ function publishableCandidates(sourceCandidates) {
 let uniqueCandidates = canPublishNow ? publishableCandidates(candidates) : [];
 
 if (canPublishNow && !uniqueCandidates.length) {
-  const fallbackTopics = topicsForAliExpressRun(Number(state.nextTopic || 0), 2);
+  // Cuatro categorías rotatorias dan margen cuando las fuentes comunitarias
+  // están vacías o no responden, pero se conserva el filtro de calidad.
+  const fallbackTopics = topicsForAliExpressRun(Number(state.nextTopic || 0), 4);
   for (const topic of fallbackTopics) {
     topics.push(topic);
     try {

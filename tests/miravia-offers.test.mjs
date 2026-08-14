@@ -161,6 +161,23 @@ test('accepts a proven-brand deal without feed reviews only when its saving is s
   }), 0);
 });
 
+test('accepts a verified brand without feed reviews when the editorial floor is met', () => {
+  assert.ok(miraviaQualityScore({
+    title: 'ASUS Ratón gaming inalámbrico',
+    category: 'Electronics > Gaming',
+    price: 18,
+    oldPrice: 30,
+    reviews: 0,
+  }) > 0);
+  assert.equal(miraviaQualityScore({
+    title: 'ASUS Ratón gaming inalámbrico',
+    category: 'Electronics > Gaming',
+    price: 17.99,
+    oldPrice: 29.99,
+    reviews: 0,
+  }), 0);
+});
+
 test('recognizes the gzip downloads produced by Awin feeds', () => {
   assert.equal(isGzipFeed('https://feeds.example/compression/gzip/products'), true);
   assert.equal(isGzipFeed('https://feeds.example/products', 'gzip'), true);

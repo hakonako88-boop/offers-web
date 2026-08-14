@@ -19,6 +19,11 @@ const TRUSTED_BRANDS = [
   'playstation', 'logitech', 'razer', 'jbl', 'bose', 'philips', 'dyson', 'ghd',
   'oral b', 'braun', 'rowenta', 'bosch', 'siemens', 'lg', 'tp link', 'amazon',
   'lego', 'hasbro', 'barbie', 'adidas', 'nike', 'puma', 'new balance',
+  // Marcas de compra recurrente en categorías relevantes. El feed de Awin no
+  // siempre trae reseñas, por lo que reconocerlas evita vaciar el canal sin
+  // abrir la puerta a productos genéricos de catálogo.
+  'asus', 'acer', 'lenovo', 'hp', 'dell', 'msi', 'corsair', 'huawei', 'honor',
+  'garmin', 'fitbit', 'canon', 'epson', 'cecotec', 'karcher', 'intex',
 ];
 
 // The Awin feed frequently supplies 200 px thumbnails that weigh only a few
@@ -141,7 +146,7 @@ function containsOne(value = '', terms = []) {
 
 function highInterestCategory(value = '') {
   const normalized = normalizeKey(value);
-  return /electron|informat|telefono|mobile|computer|software|gaming|appliance|cocina|beauty|belleza|health|salud|sport|deporte|toy|juguete|baby|bebe/.test(normalized);
+  return /electron|informat|telefono|mobile|computer|software|gaming|consola|videojuego|appliance|cocina|beauty|belleza|health|salud|sport|deporte|toy|juguete|baby|bebe/.test(normalized);
 }
 
 /** Editorial score used to prefer proven, useful products over the largest
@@ -163,7 +168,9 @@ export function miraviaQualityScore({ title = '', category = '', price = 0, oldP
   // altos; los productos genéricos siguen exigiendo prueba de demanda.
   if (branded && popular > 0 && popular < 20) return 0;
   if (!branded && popular < 120) return 0;
-  if (branded && !popular && (discount < 45 || saving < 15 || price < 20)) return 0;
+  // Sin reseñas en Awin solo entra una marca reconocida con rebaja y ahorro
+  // demostrables; sigue quedando fuera el producto barato o poco relevante.
+  if (branded && !popular && (discount < 40 || saving < 12 || price < 18)) return 0;
   if (price < 12 && (saving < 25 || popular < 180)) return 0;
   if (discount > 70 && popular < (branded ? 75 : 250)) return 0;
 
