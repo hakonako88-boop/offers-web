@@ -4,6 +4,7 @@ import {
   activateChatFromMessage,
   aliExpressPublicationUrl,
   amazonProductImageFromUrl,
+  campaignFromTelegramMessage,
   forwardedOfferMetadata,
   formatManualTelegramCaption,
   isReliableProductTitle,
@@ -52,6 +53,36 @@ test('does not let an incorrect control code publish an offer', () => {
     text: '/publicar wrong-code\nhttps://www.amazon.es/dp/B0ABCDE123?tag=example-21\nTítulo: Producto\nPrecio: 19,99 €',
   });
   assert.equal(result.status, 'unauthorized');
+});
+
+test('publishes an AliExpress coupon campaign with the supplied text, photo and link', () => {
+  const result = campaignFromTelegramMessage({
+    photoFileId: 'telegram-campaign-photo',
+    url: 'https://s.click.aliexpress.com/e/_campaign',
+    text: [
+      'Fase de Calentamiento desde el Viernes 14 de Agosto hasta el Domingo 16 de Agosto',
+      'Comienza la promoción desde el Lunes 17 hasta el Miércoles 26 de Agosto',
+      'Se pueden combinar con los cupones',
+      'ESNS03 DSES03 3€ descuento para compra superior a 15€',
+      'https://s.click.aliexpress.com/e/_campaign',
+    ].join('\n'),
+  });
+  assert.equal(result.status, 'ready');
+  assert.equal(result.offer.kind, 'campaign');
+  assert.equal(result.offer.photoFileId, 'telegram-campaign-photo');
+  assert.equal(result.offer.url, 'https://s.click.aliexpress.com/e/_campaign');
+  assert.match(formatManualTelegramCaption(result.offer), /CAMPAÑA DE CUPONES ALIEXPRESS/);
+  assert.match(formatManualTelegramCaption(result.offer), /ESNS03 DSES03/);
+  assert.doesNotMatch(formatManualTelegramCaption(result.offer), /PRECIO OFERTA/);
+});
+
+test('does not accept a campaign without the supplied photo', () => {
+  const result = campaignFromTelegramMessage({
+    url: 'https://s.click.aliexpress.com/e/_campaign',
+    text: 'Fase de Calentamiento\nComienza la promoción\nCupones para compra superior a 15€',
+  });
+  assert.equal(result.status, 'invalid');
+  assert.match(result.message, /foto/i);
 });
 
 test('activates a private chat before it accepts URL-only publications', () => {

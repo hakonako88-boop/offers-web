@@ -5,6 +5,7 @@ import {
   aliExpressPublicationUrl,
   amazonProductImageFromUrl,
   controlHelp,
+  campaignFromTelegramMessage,
   formatManualTelegramCaption,
   formatManualWebsiteText,
   manualOfferFromMessage,
@@ -218,6 +219,9 @@ async function publishIfNew(settings, offer, inputMessage) {
   // An expired deal must not keep blocking the same product forever. Only
   // compare against offers that can still be visible on the public site.
   const recentOffers = existingOffers.filter((entry) => Number(entry.date) >= oldestDuplicate);
+  if (offer.kind === 'campaign' && recentOffers.some((entry) => entry.source_product_id === offer.sourceProductId)) {
+    return { duplicate: true };
+  }
   if (recentOffers.some((entry) => isInboxDuplicate(offer, entry))) return { duplicate: true };
   return { channelMessage: await publishManualOffer(settings, offer, inputMessage), duplicate: false };
 }
@@ -419,6 +423,9 @@ for (const update of updates || []) {
     const text = message.caption || message.text || '';
     const chatKey = String(message.chat.id);
     const isAuthorizedChat = authorizedChatIds.has(chatKey) || (settings.allowedChatId && chatKey === String(settings.allowedChatId));
+    const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
+    const incomingUrl = urlFromTelegramMessage(message, text);
+    const campaign = campaignFromTelegramMessage({ text, photoFileId: largestPhoto, url: incomingUrl });
     const activation = activateChatFromMessage({ text, controlCode: settings.controlCode });
     if (activation.status === 'authorized') {
       authorizedChatIds.add(chatKey);
@@ -433,9 +440,20 @@ for (const update of updates || []) {
     } else if (message.voice) {
       await reply(settings.token, message.chat.id, '🎙️ Esta versión gratuita no transcribe audios. Pega el enlace del producto por escrito.\n\n' + controlHelp());
       handled += 1;
-    } else if (isAuthorizedChat && urlFromTelegramMessage(message, text)) {
-      const url = urlFromTelegramMessage(message, text);
-      const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
+    } else if (isAuthorizedChat && campaign.status !== 'ignore') {
+      if (campaign.status === 'invalid') {
+        await reply(settings.token, message.chat.id, `⚠️ ${campaign.message}`);
+      } else {
+        const outcome = await publishIfNew(settings, campaign.offer, message);
+        await reply(settings.token, message.chat.id, outcome.duplicate
+          ? '♻️ Esta campaña ya está publicada. No la repito en el canal.'
+          : '✅ Campaña publicada en el canal con tu foto, texto y enlace.');
+        if (!outcome.duplicate) published += 1;
+        delete pendingByChat[chatKey];
+      }
+      handled += 1;
+    } else if (isAuthorizedChat && incomingUrl) {
+      const url = incomingUrl;
       const forwardedMetadata = metadataForIncomingProductLink({
         pending: pendingByChat[chatKey],
         text,
@@ -639,7 +657,6 @@ for (const update of updates || []) {
       await reply(settings.token, message.chat.id, 'He guardado la foto, el título y los precios de la publicación. Telegram elimina los botones de compra al reenviarla, así que pega ahora el enlace de Amazon, AliExpress o Miravia y la publicaré con tu afiliado.');
       handled += 1;
     } else {
-      const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
       const result = manualOfferFromMessage({
         text,
         photoFileId: largestPhoto,

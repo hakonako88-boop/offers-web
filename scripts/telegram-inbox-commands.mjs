@@ -310,6 +310,57 @@ export function metadataForIncomingProductLink({ pending = null, text = '', phot
   return forwardedOfferMetadata(text, photoFileId);
 }
 
+/** Recognises an editorial promotion (dates, coupon ladder and one shop link)
+ * so it is not sent through the product resolver. These posts intentionally
+ * use the owner's supplied image and link and do not invent product facts. */
+export function campaignFromTelegramMessage({ text = '', photoFileId = '', url = '' } = {}) {
+  const source = String(text || '').replace(/\r\n/gu, '\n').trim();
+  const campaignSignals = [
+    /fase\s+de\s+calentamiento/iu,
+    /comienza\s+la\s+promoci[oó]n/iu,
+    /cupones?/iu,
+    /compra(?:s)?\s+(?:m[ií]nima|superior)/iu,
+  ].filter((pattern) => pattern.test(source)).length;
+  if (campaignSignals < 3) return { status: 'ignore' };
+
+  const campaignUrl = String(url || firstUrl(source)).trim();
+  if (storeFromUrl(campaignUrl) !== 'AliExpress') {
+    return { status: 'invalid', message: 'La campaña necesita un enlace de AliExpress válido.' };
+  }
+  if (!photoFileId) {
+    return { status: 'invalid', message: 'La campaña necesita una foto. Envía el texto, el enlace y la imagen en el mismo mensaje.' };
+  }
+
+  const body = source
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line && !line.includes(campaignUrl) && !/^\[[^\]]+\]\(https?:\/\//iu.test(line))
+    .join('\n\n')
+    .slice(0, 850);
+  const identity = crypto.createHash('sha256').update(`${campaignUrl}\n${body}`).digest('hex').slice(0, 16);
+  return {
+    status: 'ready',
+    offer: {
+      kind: 'campaign',
+      title: 'Campaña de cupones AliExpress',
+      store: 'AliExpress',
+      category: 'Cupones',
+      price: 0,
+      priceLabel: '',
+      previousPrice: 0,
+      previousPriceLabel: '',
+      discount: 0,
+      coupon: '',
+      url: campaignUrl,
+      imageUrl: photoFileId,
+      photoFileId,
+      description: body.slice(0, 220),
+      campaignText: body,
+      sourceProductId: `campaign:${identity}`,
+    },
+  };
+}
+
 export function manualOfferFromMessage({ text = '', photoFileId = '', controlCode = '' } = {}) {
   const source = String(text || '').replace(/\r\n/g, '\n').trim();
   const lines = source.split('\n').map((line) => line.trim()).filter(Boolean);
@@ -366,6 +417,21 @@ export function manualOfferFromMessage({ text = '', photoFileId = '', controlCod
 }
 
 export function formatManualTelegramCaption(offer) {
+  if (offer.kind === 'campaign') {
+    const escaped = String(offer.campaignText || '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;');
+    return [
+      '<b>🔥 CAMPAÑA DE CUPONES ALIEXPRESS</b>',
+      '',
+      escaped,
+      '',
+      '<b>👇 Pulsa el botón para ver la promoción</b>',
+      '',
+      '🪐 Más en @aldiachollos #Publi',
+    ].join('\n').slice(0, 1024);
+  }
   return formatTelegramDealCard({
     title: offer.title,
     store: offer.store,
@@ -381,6 +447,7 @@ export function formatManualTelegramCaption(offer) {
 }
 
 export function formatManualWebsiteText(offer) {
+  if (offer.kind === 'campaign') return `CAMPAÑA ALIEXPRESS\n${offer.campaignText || offer.description || ''}`;
   return formatWebsiteDealText({
     title: offer.title,
     store: offer.store,
