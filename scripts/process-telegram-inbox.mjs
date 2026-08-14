@@ -127,7 +127,10 @@ async function sendProductPhoto(settings, offer) {
   let lastError;
   for (const photo of photos) {
     const replyMarkup = {
-      inline_keyboard: [[{ text: '👉🏻 VER OFERTA', url: offer.url }]],
+      inline_keyboard: [[{
+        text: offer.kind === 'campaign' ? '👉🏻 VER PROMOCIÓN' : '👉🏻 VER OFERTA',
+        url: offer.url,
+      }]],
     };
     const payload = {
       chat_id: settings.channelId,
