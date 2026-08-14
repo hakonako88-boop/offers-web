@@ -162,6 +162,9 @@ function isWebworthyMiraviaOffer(offer: LegacyOffer, title: string, price: numbe
 }
 
 const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer) => {
+  // Retired channel posts remain in the audit data but must never be exposed
+  // by the website, sitemap or feed while we keep a trace for de-duplication.
+  if (offer.source === "removed") return [];
   const id = sourceId(offer);
   const price = parsePrice(offer.price);
   const previous = parsePrice(offer.previousPrice);
