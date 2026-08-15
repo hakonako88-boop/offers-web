@@ -534,7 +534,11 @@ for (const update of updates || []) {
       } else if (callback.data === 'offer:confirm') {
         const pending = pendingConfirmations[callbackChatKey];
         if (!pending) {
-          await reply(settings.token, callbackChatId, '⌛ Esa vista previa ya no está pendiente. Envía la oferta otra vez.');
+          // Telegram Web may keep an old keyboard cached after the offer was
+          // already published or cancelled. Remove the keyboard from the
+          // exact message the owner tapped so it cannot keep looking active.
+          await removePreviewButtons(settings, callbackChatId, callback.message?.message_id);
+          await reply(settings.token, callbackChatId, 'ℹ️ Esa vista previa ya estaba procesada. He desactivado sus botones para que no puedas publicarla dos veces.');
         } else {
           const outcome = await publishIfNew(settings, pending.offer, { message_id: pending.inputMessageId });
           await reply(settings.token, callbackChatId, outcome.duplicate
@@ -542,6 +546,9 @@ for (const update of updates || []) {
             : publicationSuccessReply());
           if (!outcome.duplicate) published += 1;
           await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
+          if (callback.message?.message_id !== pending.previewMessageId) {
+            await removePreviewButtons(settings, callbackChatId, callback.message?.message_id);
+          }
           delete pendingConfirmations[callbackChatKey];
         }
       } else if (callback.data === 'offer:edit') {
