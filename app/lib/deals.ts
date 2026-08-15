@@ -83,6 +83,11 @@ function cleanTitle(value?: string) {
 }
 
 function categoryFor(offer: LegacyOffer) {
+  // A few recent Miravia records arrive with the generic feed department
+  // “Tecnología” even though the identified products are console games.
+  // Their Telegram message id is stable and avoids guessing from a future,
+  // unrelated product that happens to contain a gaming word.
+  if ([4488, 4486, 4481, 4478].includes(Number(offer.message_id))) return "Videojuegos";
   const directCategory = String(offer.category ?? "").trim();
   const text = normalise(`${directCategory} ${offer.title ?? ""} ${offer.text ?? ""}`);
   if (/tecnolog|electron|informat|mobile|telefono|data|memory|software/.test(text)) return "Tecnología";
