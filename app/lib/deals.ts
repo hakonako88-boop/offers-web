@@ -52,10 +52,16 @@ function cleanTitle(value?: string) {
   const original = String(value ?? "")
     .replace(/^[^\p{L}\p{N}]+/u, "")
     .replace(/^(OFERT[ÓO]N\s+(AMAZON|ALIEXPRESS|MIRAVIA)\s*[-–—:]?\s*)/i, "")
+    .replace(/\s*[|·-]?\s*#(?:Amazon|AliExpress|Miravia|Publicidad|Publi|OfertaFlash)\b/giu, "")
+    .replace(/\s*\[(?:en\s+stock|disponible|oferta)\]\s*$/iu, "")
     .replace(/\b(\d+)\s*[xX×]\s*(\d+)\s*Cm\b/gu, "$1×$2 cm")
     .trim();
   const text = normalise(original);
   if (!original) return "Oferta destacada";
+  if (/maison alhambra jean lowe fantasme/.test(text)) return "Maison Alhambra Jean Lowe Fantasme Eau de Parfum 100 ml";
+  if (/playstation gran turismo 7/.test(text)) return "Gran Turismo 7 Standard Edition para PS4 · edición física PAL España";
+  if (/13 sentinels aegis rim/.test(text)) return "13 Sentinels: Aegis Rim para PS4 · edición física PAL España";
+  if (/battlefield 2042.*ps4/.test(text)) return "Battlefield 2042 para PS4 · edición física";
   if (/relleno\s+de\s+cojin/.test(text)) {
     const brand = original.match(/(?:^|\s)([\p{L}\p{N}-]{2,})\s+Relleno\s+de\s+Coj[ií]n/iu)?.[1]
       || original.match(/Relleno\s+de\s+Coj[ií]n\s+([\p{L}\p{N}-]{2,})/iu)?.[1]
@@ -80,7 +86,7 @@ function categoryFor(offer: LegacyOffer) {
   const directCategory = String(offer.category ?? "").trim();
   const text = normalise(`${directCategory} ${offer.title ?? ""} ${offer.text ?? ""}`);
   if (/tecnolog|electron|informat|mobile|telefono|data|memory|software/.test(text)) return "Tecnología";
-  if (/gaming|consola|videojuego/.test(text)) return "Videojuegos";
+  if (/gaming|consola|videojuego|playstation|\bps[345]\b|nintendo|switch|xbox|battlefield|gran turismo|13 sentinels/.test(text)) return "Videojuegos";
   if (/cafe|capsula|freidora|aceite|cocina|taper/.test(text)) return "Cocina";
   if (/hogar|vileda|piscina|jardin|mueble|limpieza|bedding|bath|pillow/.test(text)) return "Hogar";
   if (/herramienta|bricolaje|diy|taladro/.test(text)) return "Bricolaje";
@@ -120,7 +126,12 @@ function isUsefulTitle(title: string) {
 
 function isValidManualTitle(title: string) {
   const compact = title.trim();
-  return compact.length >= 8 && !/^https?:\/\//i.test(compact) && /\p{L}/u.test(compact);
+  if (compact.length < 8 || /^https?:\/\//i.test(compact) || !/\p{L}/u.test(compact)) return false;
+  // These are placeholders produced by blocked or incomplete shop pages. A
+  // price and a photo are not enough if visitors cannot identify the item.
+  if (/^(?:auriculares|producto|art[ií]culo|oferta|amazon|aliexpress|miravia)$/iu.test(compact)) return false;
+  if (/\b(?:en stock|loading|undefined|null)\b/iu.test(compact)) return false;
+  return true;
 }
 
 function conciseTitle(title: string, maximumWords = 18) {
