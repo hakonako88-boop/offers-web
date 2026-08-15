@@ -4,23 +4,23 @@ Las ofertas automáticas se descubren mediante fuentes públicas permitidas, se 
 
 ## Horario Europe/Madrid
 
-Hay cinco tandas diarias. Cada tanda reserva dos posiciones para AliExpress y dos para Miravia:
+Hay cinco tandas diarias. Cada tanda reserva dos posiciones para AliExpress, dos para Miravia y una para Amazon cuando Creators API está disponible:
 
-| Tanda | AliExpress | Miravia | AliExpress | Miravia |
-| --- | --- | --- | --- | --- |
-| 09:00 | 09:00 | 09:04 | 09:08 | 09:12 |
-| 11:30 | 11:30 | 11:34 | 11:38 | 11:42 |
-| 14:30 | 14:30 | 14:34 | 14:38 | 14:42 |
-| 18:30 | 18:30 | 18:34 | 18:38 | 18:42 |
-| 21:30 | 21:30 | 21:34 | 21:38 | 21:42 |
+| Tanda | AliExpress | Miravia | AliExpress | Miravia | Amazon |
+| --- | --- | --- | --- | --- | --- |
+| 09:00 | 09:00 | 09:04 | 09:08 | 09:12 | 09:16 |
+| 11:30 | 11:30 | 11:34 | 11:38 | 11:42 | 11:46 |
+| 14:30 | 14:30 | 14:34 | 14:38 | 14:42 | 14:46 |
+| 18:30 | 18:30 | 18:34 | 18:38 | 18:42 | 18:46 |
+| 21:30 | 21:30 | 21:34 | 21:38 | 21:42 | 21:46 |
 
-El máximo teórico es de veinte ofertas al día: diez de AliExpress y diez de Miravia. Cada posición es una ejecución independiente. El fallo de una tienda, una imagen o un producto no cancela las posiciones posteriores.
+El máximo teórico es de veinticinco ofertas al día: diez de AliExpress, diez de Miravia y cinco de Amazon. Cada posición es una ejecución independiente. El fallo de una tienda, una imagen o un producto no cancela las posiciones posteriores.
 
 Cada horario declara directamente `timezone: Europe/Madrid`. GitHub ajusta automáticamente el cambio de verano e invierno, por lo que las horas peninsulares se conservan durante todo el año.
 
 Una posición puede quedar vacía. Nunca se publica un producto inventado o incompleto para alcanzar el máximo.
 
-Amazon no participa en ejecuciones programadas mientras la cuenta no tenga acceso aprobado a Creators API. Continúa disponible para publicaciones manuales.
+Amazon se comprueba en sus posiciones programadas, pero solo publica cuando la cuenta tiene acceso aprobado a Creators API y la respuesta oficial incluye ASIN, imagen, precio y disponibilidad. Sin elegibilidad no copia contenido externo ni publica datos incompletos. Continúa disponible para publicaciones manuales creadas con SiteStripe o Mobile GetLink.
 
 ## Descubrimiento prioritario
 
@@ -53,7 +53,7 @@ También se admite `Miravia` en `store`. El lector utiliza exclusivamente la vis
 
 - **AliExpress:** la API oficial genera `promotion_link` usando `ALIEXPRESS_TRACKING_ID`. El enlace debe corresponder al mismo identificador de producto encontrado en la fuente.
 - **Miravia:** las ofertas automáticas usan enlaces atribuidos del feed privado de Awin. Las entradas manuales se reconstruyen para el publisher `2023977` y el programa Miravia `37168` cuando se conoce la URL oficial o el identificador Awin del producto.
-- **Amazon:** las publicaciones manuales usan `AMAZON_PARTNER_TAG`; la búsqueda automática permanece desactivada.
+- **Amazon:** las publicaciones manuales y automáticas usan `AMAZON_PARTNER_TAG`. Las automáticas solo consultan Creators API, verifican el ASIN exacto y conservan la imagen en la URL oficial de Amazon; sin una respuesta autorizada no publican.
 
 Nunca se conserva como destino final el identificador de afiliación de MiChollo, NoLoDejesEscapar u otro canal.
 
@@ -79,7 +79,7 @@ Los cupones, valoraciones, ventas, envío gratuito y precios anteriores se muest
 
 ## Duplicados e historial
 
-La identidad se compara primero por product ID, SKU o identificador Awin/AliExpress; después por URL canónica y, solo como respaldo, por similitud de título. El historial almacena tienda, producto, título, precio, afiliado, fuente, fecha y estado. Los productos ya publicados se excluyen de las posiciones posteriores.
+La identidad se compara primero por ASIN, product ID, SKU o identificador Awin/AliExpress; después por URL canónica y, solo como respaldo, por similitud de título. El historial almacena tienda, producto, título, precio, afiliado, fuente, fecha y estado. Los productos ya publicados se excluyen de las posiciones posteriores.
 
 ## Bot privado
 

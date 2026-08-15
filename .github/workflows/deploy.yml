@@ -28,28 +28,34 @@ on:
   repository_dispatch:
     types: [telegram_update]
   schedule:
-    # Cinco tandas de 2 AliExpress + 2 Miravia. GitHub aplica directamente
+    # Cinco tandas de 2 AliExpress + 2 Miravia + 1 Amazon. Amazon solo publica
+    # cuando Creators API confirma la elegibilidad y devuelve datos oficiales.
     # Europe/Madrid, incluido el cambio automático de verano e invierno.
     - { cron: "0 9 * * *", timezone: "Europe/Madrid" } # AliExpress
     - { cron: "4 9 * * *", timezone: "Europe/Madrid" } # Miravia
     - { cron: "8 9 * * *", timezone: "Europe/Madrid" } # AliExpress
     - { cron: "12 9 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "16 9 * * *", timezone: "Europe/Madrid" } # Amazon
     - { cron: "30 11 * * *", timezone: "Europe/Madrid" } # AliExpress
     - { cron: "34 11 * * *", timezone: "Europe/Madrid" } # Miravia
     - { cron: "38 11 * * *", timezone: "Europe/Madrid" } # AliExpress
     - { cron: "42 11 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "46 11 * * *", timezone: "Europe/Madrid" } # Amazon
     - { cron: "30 14 * * *", timezone: "Europe/Madrid" } # AliExpress
     - { cron: "34 14 * * *", timezone: "Europe/Madrid" } # Miravia
     - { cron: "38 14 * * *", timezone: "Europe/Madrid" } # AliExpress
     - { cron: "42 14 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "46 14 * * *", timezone: "Europe/Madrid" } # Amazon
     - { cron: "30 18 * * *", timezone: "Europe/Madrid" } # AliExpress
     - { cron: "34 18 * * *", timezone: "Europe/Madrid" } # Miravia
     - { cron: "38 18 * * *", timezone: "Europe/Madrid" } # AliExpress
     - { cron: "42 18 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "46 18 * * *", timezone: "Europe/Madrid" } # Amazon
     - { cron: "30 21 * * *", timezone: "Europe/Madrid" } # AliExpress
     - { cron: "34 21 * * *", timezone: "Europe/Madrid" } # Miravia
     - { cron: "38 21 * * *", timezone: "Europe/Madrid" } # AliExpress
     - { cron: "42 21 * * *", timezone: "Europe/Madrid" } # Miravia
+    - { cron: "46 21 * * *", timezone: "Europe/Madrid" } # Amazon
 
 permissions:
   contents: write
@@ -158,9 +164,10 @@ jobs:
         run: npm run send:test-telegram
 
       - name: Buscar y publicar ofertas de Amazon
-        # Amazon queda disponible solo para una prueba manual hasta que la API
-        # confirme la elegibilidad de la cuenta; nunca se ejecuta por horario.
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'amazon' && env.AMAZON_CREATOR_CREDENTIAL_ID != '' && env.AMAZON_CREATOR_SECRET != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        # Los horarios pueden comprobar la API sin copiar contenido de otros
+        # canales. Si Amazon aún no ha aprobado la cuenta, el script registra el
+        # aviso de elegibilidad y no publica nada.
+        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'amazon') || (github.event_name == 'schedule' && (startsWith(github.event.schedule, '16 ') || startsWith(github.event.schedule, '46 ')))) && env.AMAZON_CREATOR_CREDENTIAL_ID != '' && env.AMAZON_CREATOR_SECRET != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         continue-on-error: true
         run: npm run sync:amazon
 
@@ -192,7 +199,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json data/telegram-inbox-state.json data/telegram-removals.json data/telegram-caption-repairs.json public/tg
+          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/amazon-community-signal-state.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json data/telegram-inbox-state.json data/telegram-removals.json data/telegram-caption-repairs.json public/tg
           git diff --cached --quiet || git commit -m "Actualizar ofertas desde Telegram"
           git pull --rebase origin main
           git push

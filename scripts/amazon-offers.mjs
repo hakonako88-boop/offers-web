@@ -65,7 +65,7 @@ export function normalizeAmazonItem(item, category) {
 }
 
 export function formatAmazonCaption(offer) {
-  return formatWebsiteDealText({
+  const card = formatWebsiteDealText({
     title: offer.title,
     store: 'Amazon',
     price: offer.price,
@@ -73,6 +73,16 @@ export function formatAmazonCaption(offer) {
     savings: offer.savings,
     discount: offer.discount,
   });
+  return `${card}\nPrecio Amazon comprobado: ${amazonCheckedAt(offer.checkedAt)}. El precio y la disponibilidad pueden cambiar; se aplican los mostrados en Amazon al comprar.`;
+}
+
+function amazonCheckedAt(value) {
+  const date = Number.isFinite(Date.parse(value || '')) ? new Date(value) : new Date();
+  return new Intl.DateTimeFormat('es-ES', {
+    timeZone: 'Europe/Madrid',
+    dateStyle: 'short',
+    timeStyle: 'short',
+  }).format(date);
 }
 
 export function formatAmazonTelegramCaption(offer) {
@@ -80,7 +90,7 @@ export function formatAmazonTelegramCaption(offer) {
     offer.dealType ? 'Oferta temporal' : '',
     offer.isPrime ? 'Envío Prime' : '',
   ].filter(Boolean).join(' · ');
-  return formatTelegramDealCard({
+  const card = formatTelegramDealCard({
     title: offer.title,
     store: 'Amazon',
     category: offer.category,
@@ -91,4 +101,5 @@ export function formatAmazonTelegramCaption(offer) {
     highlight: highlights,
     url: offer.url,
   });
+  return `${card}\n\n⚠️ Precio Amazon comprobado: ${amazonCheckedAt(offer.checkedAt)}. Puede cambiar; se aplica el mostrado en Amazon al comprar.`.slice(0, 1024);
 }

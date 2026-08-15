@@ -97,6 +97,22 @@ test('accepts a configured chz.to AliExpress shortener but leaves it for officia
   assert.equal(signal.merchantUrl, 'https://chz.to/8y1al');
 });
 
+test('detects Amazon product links only for a consumer that explicitly enables Amazon signals', async () => {
+  const now = Date.parse('2026-08-15T12:00:00.000Z');
+  const page = `<div class="tgme_widget_message_wrap"><div class="tgme_widget_message" data-post="chollosdiario/42">
+    <div class="tgme_widget_message_text">Robot aspirador con base automática y navegación láser #Amazon</div>
+    <a href="https://www.amazon.es/dp/B0TESTASIN1">Ver producto</a>
+    <time datetime="2026-08-15T11:30:00+00:00"></time>
+  </div></div>`;
+  const fetchImpl = async (url) => String(url).includes('t.me/s/chollosdiario')
+    ? new Response(page, { status: 200 })
+    : new Response('<?xml version="1.0"?><rss><channel></channel></rss>', { status: 200 });
+  const withoutAmazon = await discoverCommunitySignals({ now, state: { micholloLastCheckedAt: new Date(now).toISOString() }, fetchImpl });
+  const withAmazon = await discoverCommunitySignals({ now, state: { micholloLastCheckedAt: new Date(now).toISOString() }, fetchImpl, includeAmazon: true });
+  assert.equal(withoutAmazon.signals.some((signal) => signal.sourceStore === 'Amazon'), false);
+  assert.equal(withAmazon.signals.some((signal) => signal.sourceStore === 'Amazon'), true);
+});
+
 test('skips Amazon community signals until an official attributed lookup is available', async () => {
   const now = Date.parse('2026-08-11T12:00:00.000Z');
   const response = `<?xml version="1.0"?><rss><channel><item><title>Oferta Amazon! Cafetera 900W a 29€</title><link>https://source.example/cafetera</link><pubDate>Tue, 11 Aug 2026 11:20:05 +0000</pubDate></item></channel></rss>`;

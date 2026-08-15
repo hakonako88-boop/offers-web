@@ -29,6 +29,7 @@ test('keeps only real Amazon discounts with all publishable data', () => {
   assert.match(formatAmazonCaption(offer), /CHOLLO EN AMAZON/);
   assert.match(formatAmazonCaption(offer), /Ahora: 39,99 €/);
   assert.match(formatAmazonCaption(offer), /Antes: 79,99 €/);
+  assert.match(formatAmazonCaption({ ...offer, checkedAt: '2026-08-15T10:00:00.000Z' }), /Precio Amazon comprobado/);
 });
 
 test('does not publish a normal product with no deal or meaningful discount', () => {

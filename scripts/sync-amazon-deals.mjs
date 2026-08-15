@@ -7,13 +7,15 @@ import {
   normalizeAmazonItem,
   topicsForRun,
 } from './amazon-offers.mjs';
+import { communityMatchForTitle, discoverCommunitySignals, nextCommunitySignalState } from './community-signals.mjs';
+import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'amazon-discovery-state.json');
 const PUBLISHED_FILE = path.join(ROOT, 'data', 'amazon-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
-const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
+const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'amazon-community-signal-state.json');
 const MAX_POSTS_PER_RUN = 1;
 const MAX_PUBLICATION_ATTEMPTS = 8;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 4 * 60 * 60 * 1000;
@@ -100,7 +102,7 @@ async function searchAmazon(accessToken, config, topic) {
       marketplace: AMAZON_MARKETPLACE,
       partnerTag: config.partnerTag,
       keywords: topic.keywords,
-      searchIndex: topic.searchIndex,
+      searchIndex: topic.searchIndex || 'All',
       condition: 'New',
       itemCount: 10,
       resources: [
@@ -137,32 +139,47 @@ async function telegram(method, token, payload) {
   return data.result;
 }
 
+async function telegramPhoto(token, payload, photo, filename) {
+  const form = new FormData();
+  form.set('chat_id', String(payload.chat_id));
+  form.set('caption', payload.caption);
+  form.set('parse_mode', payload.parse_mode);
+  form.set('reply_markup', JSON.stringify(payload.reply_markup));
+  form.set('photo', new Blob([photo], { type: 'image/jpeg' }), filename);
+  const response = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: form });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.ok) throw new Error(`Telegram sendPhoto failed: ${data.description || response.status}`);
+  return data.result;
+}
+
 async function publishOffer(config, offer) {
-  return telegram('sendPhoto', config.telegramToken, {
+  const payload = {
     chat_id: config.telegramChannelId,
-    photo: offer.image,
     caption: formatAmazonTelegramCaption(offer),
     parse_mode: 'HTML',
     reply_markup: {
       inline_keyboard: [[{ text: '👉🏻 VER OFERTA', url: offer.url }]],
     },
-  });
+  };
+  try {
+    const card = await createDealImageCard({
+      imageUrl: offer.image,
+      store: 'Amazon',
+      price: offer.price,
+      previousPrice: offer.previousPrice,
+      discount: offer.discount,
+    });
+    return telegramPhoto(config.telegramToken, payload, card, dealImageCardFilename('amazon', offer.asin));
+  } catch (error) {
+    console.warn(`Could not build the branded Amazon image for ${offer.asin}: ${error.message}`);
+    return telegram('sendPhoto', config.telegramToken, { ...payload, photo: offer.image });
+  }
 }
 
 async function mirrorImageForWeb(offer) {
-  const filename = `amazon-${offer.asin}.jpg`;
-  const localImage = path.join(WEB_IMAGES_DIR, filename);
-  if (fs.existsSync(localImage)) return `/tg/${filename}`;
-  try {
-    const response = await fetch(offer.image, { signal: AbortSignal.timeout(15_000) });
-    if (!response.ok) throw new Error(`image status ${response.status}`);
-    fs.mkdirSync(WEB_IMAGES_DIR, { recursive: true });
-    fs.writeFileSync(localImage, Buffer.from(await response.arrayBuffer()));
-    return `/tg/${filename}`;
-  } catch (error) {
-    console.warn(`Could not mirror Amazon image ${offer.asin}: ${error.message}`);
-    return offer.image;
-  }
+  // Amazon product content remains on Amazon's API-provided URL. We do not
+  // create a permanent local copy of its catalogue image.
+  return offer.image;
 }
 
 async function saveOfferForWeb(offer, message) {
@@ -179,6 +196,8 @@ async function saveOfferForWeb(offer, message) {
     price: offer.price,
     previousPrice: offer.previousPrice,
     store: 'Amazon',
+    source: offer.communitySource || 'amazon-creators-api',
+    source_url: offer.communitySourceUrl || '',
     category: offer.category,
     description: offer.title,
   };
@@ -194,6 +213,7 @@ if (missing.length) {
 }
 
 const state = readJson(STATE_FILE, { nextTopic: 0 });
+const communityState = readJson(COMMUNITY_STATE_FILE, { seen: [] });
 const publicationState = readJson(PUBLISHED_FILE, { published: [] });
 const existingWebOffers = readJson(WEB_OFFERS_FILE, []);
 const cutoff = Date.now() - 120 * 24 * 60 * 60 * 1000;
@@ -203,7 +223,18 @@ const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, D
 const canPublishNow = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
   || !lastPublicationAt
   || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
-const topics = topicsForRun(Number(state.nextTopic || 0), 2);
+const communityDiscovery = await discoverCommunitySignals({ state: communityState, includeAmazon: true });
+const selectedSources = new Set();
+const amazonSignals = [];
+for (const signal of communityDiscovery.signals) {
+  if (signal.sourceStore !== 'Amazon' || signal.terms.length < 2 || selectedSources.has(signal.source)) continue;
+  amazonSignals.push(signal);
+  selectedSources.add(signal.source);
+  if (amazonSignals.length >= 8) break;
+}
+const topics = amazonSignals.length
+  ? amazonSignals.map((signal) => ({ keywords: signal.searchQuery, searchIndex: 'All', category: signal.category, signal }))
+  : topicsForRun(Number(state.nextTopic || 0), 2);
 const candidates = [];
 const searchErrors = [];
 
@@ -219,8 +250,18 @@ if (accessToken) {
     try {
       const items = await searchAmazon(accessToken, config, topic);
       for (const item of items) {
-        const offer = normalizeAmazonItem(item, topic.category);
-        if (offer && !seenAsins.has(offer.asin)) candidates.push(offer);
+        let offer = normalizeAmazonItem(item, topic.category);
+        if (offer && topic.signal) {
+          const match = communityMatchForTitle(offer.title, [topic.signal]);
+          offer = match ? {
+            ...offer,
+            score: offer.score + 1_000 + match.score,
+            communitySignalId: topic.signal.id,
+            communitySource: topic.signal.source,
+            communitySourceUrl: topic.signal.sourceUrl,
+          } : null;
+        }
+        if (offer && !seenAsins.has(offer.asin)) candidates.push({ ...offer, checkedAt: new Date().toISOString() });
       }
     } catch (error) {
       const detail = error instanceof Error ? error.message : 'Amazon search failed';
@@ -249,6 +290,8 @@ for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
       telegramMessageId: message.message_id,
       price: offer.price,
       url: offer.url,
+      source: offer.communitySource || 'amazon-creators-api',
+      sourceUrl: offer.communitySourceUrl || '',
     });
     seenAsins.add(offer.asin);
     sent += 1;
@@ -263,4 +306,5 @@ writeJson(STATE_FILE, {
   lastError: searchErrors[0] || '',
 });
 writeJson(PUBLISHED_FILE, { published });
+writeJson(COMMUNITY_STATE_FILE, nextCommunitySignalState(communityState, { ...communityDiscovery, signals: amazonSignals }));
 console.log(`Amazon discovery checked ${topics.map((topic) => topic.keywords).join(', ')}, found ${uniqueCandidates.length} publishable candidate(s), attempted ${attempted}, and published ${sent} offer(s).${searchErrors.length ? ` Source warning: ${searchErrors[0]}` : ''}`);

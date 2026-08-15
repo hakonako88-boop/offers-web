@@ -150,6 +150,7 @@ function decodedAttribute(value = '') {
 function productStoreFromUrl(value = '', context = '', expectedStore = '') {
   try {
     const host = new URL(decodedAttribute(value)).hostname.toLowerCase();
+    if (host === 'amazon.es' || host.endsWith('.amazon.es') || host === 'amzn.to') return 'Amazon';
     if (host === 'aliexpress.com' || host.endsWith('.aliexpress.com')) return 'AliExpress';
     if (host === 'miravia.es' || host.endsWith('.miravia.es') || host === 'awin1.com' || host.endsWith('.awin1.com')) return 'Miravia';
     // Tiesometro uses chz.to as its public AliExpress shortener. The scanner
@@ -249,7 +250,7 @@ async function fetchSource(url, fetchImpl) {
   return response;
 }
 
-export async function discoverCommunitySignals({ state = {}, fetchImpl = fetch, now = Date.now() } = {}) {
+export async function discoverCommunitySignals({ state = {}, fetchImpl = fetch, now = Date.now(), includeAmazon = false } = {}) {
   const known = new Set((state.seen || []).map((entry) => entry.id));
   const sourceHealth = [];
   const signals = [];
@@ -275,7 +276,7 @@ export async function discoverCommunitySignals({ state = {}, fetchImpl = fetch, 
 
   return {
     signals: signals
-      .filter((signal) => signal.sourceStore !== 'Amazon')
+      .filter((signal) => includeAmazon || signal.sourceStore !== 'Amazon')
       .sort((left, right) => right.sourceWeight - left.sourceWeight || Date.parse(right.publishedAt) - Date.parse(left.publishedAt)),
     sourceHealth,
     checkedAt: new Date(now).toISOString(),
