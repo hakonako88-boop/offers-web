@@ -69,7 +69,6 @@ jobs:
       TELEGRAM_CONTROL_CODE: ${{ secrets.TELEGRAM_CONTROL_CODE }}
       TELEGRAM_ALLOWED_CHAT_ID: ${{ secrets.TELEGRAM_ALLOWED_CHAT_ID }}
       TELEGRAM_WEBHOOK_ACTIVE: ${{ secrets.TELEGRAM_WEBHOOK_ACTIVE }}
-      TELEGRAM_WEBHOOK_UPDATE: ${{ toJSON(github.event.client_payload.update) }}
       TELEGRAM_WEBHOOK_URL: ${{ secrets.TELEGRAM_WEBHOOK_URL }}
       TELEGRAM_WEBHOOK_SECRET: ${{ secrets.TELEGRAM_WEBHOOK_SECRET }}
       AMAZON_CREATOR_CREDENTIAL_ID: ${{ secrets.AMAZON_CREATOR_CREDENTIAL_ID }}
@@ -109,6 +108,13 @@ jobs:
           node-version: "22"
           cache: npm
 
+      # A callback button expires quickly in Telegram. This processor only
+      # uses Node's built-in APIs, so it can run before npm ci and answer the
+      # owner several seconds earlier.
+      - name: Procesar ofertas enviadas al bot privado
+        if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_update' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        run: npm run sync:inbox
+
       - name: Instalar dependencias
         run: npm ci
 
@@ -136,10 +142,6 @@ jobs:
         # allowed_updates changes (for example, to receive inline button taps).
         if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.configure_telegram_webhook) || (github.event_name == 'push' && env.TELEGRAM_WEBHOOK_ACTIVE == 'true')) && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_WEBHOOK_URL != '' && env.TELEGRAM_WEBHOOK_SECRET != '' }}
         run: node scripts/configure-telegram-webhook.mjs
-
-      - name: Procesar ofertas enviadas al bot privado
-        if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_update' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
-        run: npm run sync:inbox
 
       - name: Procesar ofertas enviadas al bot privado (modo de respaldo)
         if: ${{ github.event_name != 'repository_dispatch' && env.TELEGRAM_WEBHOOK_ACTIVE != 'true' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}

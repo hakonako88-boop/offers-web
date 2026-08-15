@@ -369,7 +369,20 @@ const pendingConfirmations = state.pendingConfirmations && typeof state.pendingC
   ? state.pendingConfirmations
   : {};
 let updates;
-const webhookUpdate = String(process.env.TELEGRAM_WEBHOOK_UPDATE || '').trim();
+let webhookUpdate = String(process.env.TELEGRAM_WEBHOOK_UPDATE || '').trim();
+// GitHub stores the repository_dispatch payload in GITHUB_EVENT_PATH. Reading
+// it from that private runner file prevents the complete Telegram message from
+// being echoed as a job-level environment value in public Actions logs.
+if ((!webhookUpdate || webhookUpdate === 'null') && process.env.GITHUB_EVENT_PATH) {
+  try {
+    const githubEvent = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'));
+    if (githubEvent?.client_payload?.update && typeof githubEvent.client_payload.update === 'object') {
+      webhookUpdate = JSON.stringify(githubEvent.client_payload.update);
+    }
+  } catch (error) {
+    console.warn(`GitHub event payload could not be read: ${safeError(error, settings.token)}`);
+  }
+}
 const pendingOnly = String(process.env.TELEGRAM_PENDING_ONLY || '').toLowerCase() === 'true';
 if (pendingOnly) {
   updates = [];
@@ -508,7 +521,14 @@ for (const update of updates || []) {
     const isAuthorizedCallback = authorizedChatIds.has(callbackChatKey)
       || (settings.allowedChatId && callbackChatKey === String(settings.allowedChatId));
     try {
-      await telegram(settings.token, 'answerCallbackQuery', { callback_query_id: callback.id });
+      // GitHub Actions can start after Telegram's short callback acknowledgement
+      // window has elapsed. A stale answerCallbackQuery must never prevent the
+      // requested confirm/edit/photo/cancel action from being executed.
+      try {
+        await telegram(settings.token, 'answerCallbackQuery', { callback_query_id: callback.id });
+      } catch (error) {
+        console.warn(`Telegram callback acknowledgement arrived too late: ${safeError(error, settings.token)}`);
+      }
       if (!callbackChatId || !isAuthorizedCallback) {
         if (callbackChatId) await reply(settings.token, callbackChatId, '⛔ Este chat no está autorizado.');
       } else if (callback.data === 'offer:confirm') {
