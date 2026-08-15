@@ -132,7 +132,9 @@ jobs:
         run: npm run repair:telegram
 
       - name: Conectar Telegram con el webhook inmediato
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.configure_telegram_webhook && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_WEBHOOK_URL != '' && env.TELEGRAM_WEBHOOK_SECRET != '' }}
+        # Reapply the webhook on bot deployments too. This is important when
+        # allowed_updates changes (for example, to receive inline button taps).
+        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.configure_telegram_webhook) || (github.event_name == 'push' && env.TELEGRAM_WEBHOOK_ACTIVE == 'true')) && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_WEBHOOK_URL != '' && env.TELEGRAM_WEBHOOK_SECRET != '' }}
         run: node scripts/configure-telegram-webhook.mjs
 
       - name: Procesar ofertas enviadas al bot privado

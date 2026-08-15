@@ -170,6 +170,9 @@ async function sendOfferPreview(settings, chatId, offer) {
       [{ text: '✅ CONFIRMAR PUBLICACIÓN', callback_data: 'offer:confirm' }],
       [
         { text: '✏️ CORREGIR', callback_data: 'offer:edit' },
+        { text: '🖼️ CAMBIAR FOTO', callback_data: 'offer:photo' },
+      ],
+      [
         { text: '❌ CANCELAR', callback_data: 'offer:cancel' },
       ],
     ],
@@ -203,6 +206,21 @@ async function sendOfferPreview(settings, chatId, offer) {
     }
   }
   throw lastError || new Error('No se recibió una foto válida para la vista previa.');
+}
+
+async function removePreviewButtons(settings, chatId, messageId) {
+  if (!chatId || !messageId) return;
+  try {
+    await telegram(settings.token, 'editMessageReplyMarkup', {
+      chat_id: chatId,
+      message_id: messageId,
+      reply_markup: { inline_keyboard: [] },
+    });
+  } catch (error) {
+    // The publication flow must continue if Telegram already removed the
+    // keyboard or the preview is too old to edit.
+    console.warn(`Preview buttons could not be removed: ${safeError(error, settings.token)}`);
+  }
 }
 
 async function mirrorTelegramPhoto(token, fileId, reference) {
@@ -503,12 +521,27 @@ for (const update of updates || []) {
             ? '♻️ No la publico porque ese producto ya existe en el canal.'
             : publicationSuccessReply());
           if (!outcome.duplicate) published += 1;
+          await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
           delete pendingConfirmations[callbackChatKey];
         }
       } else if (callback.data === 'offer:edit') {
+        const pending = pendingConfirmations[callbackChatKey];
+        await removePreviewButtons(settings, callbackChatId, pending?.previewMessageId);
         delete pendingConfirmations[callbackChatKey];
         await reply(settings.token, callbackChatId, '✏️ Vista previa descartada. Reenvía la oferta corregida o pega de nuevo el enlace con los datos correctos. No se ha publicado nada.');
+      } else if (callback.data === 'offer:photo') {
+        const pending = pendingConfirmations[callbackChatKey];
+        if (!pending) {
+          await reply(settings.token, callbackChatId, '⌛ Esa vista previa ya no está pendiente. Envía la oferta otra vez.');
+        } else {
+          pending.awaitingPhoto = true;
+          pending.updatedAt = Date.now();
+          await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
+          await reply(settings.token, callbackChatId, '🖼️ Envía ahora la nueva foto del producto. Sustituiré la anterior y te mostraré otra vista previa antes de publicar.');
+        }
       } else if (callback.data === 'offer:cancel') {
+        const pending = pendingConfirmations[callbackChatKey];
+        await removePreviewButtons(settings, callbackChatId, pending?.previewMessageId);
         delete pendingConfirmations[callbackChatKey];
         await reply(settings.token, callbackChatId, '❌ Publicación cancelada. No se ha enviado nada al canal ni a la web.');
       }
@@ -548,6 +581,23 @@ for (const update of updates || []) {
       handled += 1;
     } else if (message.voice) {
       await reply(settings.token, message.chat.id, '🎙️ Esta versión gratuita no transcribe audios. Pega el enlace del producto por escrito.\n\n' + controlHelp());
+      handled += 1;
+    } else if (isAuthorizedChat && pendingConfirmations[chatKey]?.awaitingPhoto) {
+      const pending = pendingConfirmations[chatKey];
+      if (!largestPhoto) {
+        await reply(settings.token, message.chat.id, '🖼️ Aún estoy esperando una imagen. Envíala como foto (no como enlace ni como documento).');
+      } else {
+        pending.offer = {
+          ...pending.offer,
+          photoFileId: largestPhoto,
+          imageUrl: largestPhoto,
+        };
+        pending.awaitingPhoto = false;
+        pending.updatedAt = Date.now();
+        const previewMessage = await sendOfferPreview(settings, message.chat.id, pending.offer);
+        pending.previewMessageId = previewMessage.message_id;
+        await reply(settings.token, message.chat.id, '✅ Foto sustituida. Revisa la nueva vista previa y pulsa «CONFIRMAR PUBLICACIÓN» si está correcta.');
+      }
       handled += 1;
     } else if (isAuthorizedChat && campaign.status !== 'ignore') {
       if (campaign.status === 'invalid') {

@@ -12,7 +12,10 @@ const response = await fetch(`https://api.telegram.org/bot${token}/setWebhook`, 
   body: JSON.stringify({
     url,
     secret_token: secretToken,
-    allowed_updates: ['message'],
+    // Inline keyboard presses arrive as callback_query updates. Keeping this
+    // list explicit avoids unrelated update types while allowing every offer
+    // preview button to reach the inbox processor.
+    allowed_updates: ['message', 'callback_query'],
     drop_pending_updates: false,
   }),
 });
