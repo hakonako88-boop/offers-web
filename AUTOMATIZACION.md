@@ -34,6 +34,21 @@ Las páginas de chollos sirven para descubrir productos y tendencias. Sus descri
 
 Chollometro puede permanecer como señal secundaria de respaldo para AliExpress, con una prioridad inferior a MiChollo y NoLoDejesEscapar.
 
+### Canales públicos de Telegram
+
+Los canales públicos aprobados por el propietario se declaran en `data/telegram-source-channels.json`. El formato de cada fuente es:
+
+```json
+{
+  "id": "nombre-interno",
+  "url": "https://t.me/nombre_publico",
+  "store": "AliExpress",
+  "weight": 20
+}
+```
+
+También se admite `Miravia` en `store`. El lector utiliza exclusivamente la vista pública `t.me/s/...`; no inicia sesión con una cuenta personal, no entra en grupos privados y no descarga las fotografías del canal. Solo conserva el enlace de producto, la hora y términos suficientes para identificar el artículo en la fuente oficial. Los enlaces acortados de AliExpress se resuelven hasta el identificador exacto y se convierten mediante la API de esta cuenta. En Miravia, el producto debe coincidir con el feed Awin de esta cuenta.
+
 ## Afiliación
 
 - **AliExpress:** la API oficial genera `promotion_link` usando `ALIEXPRESS_TRACKING_ID`. El enlace debe corresponder al mismo identificador de producto encontrado en la fuente.
@@ -41,6 +56,12 @@ Chollometro puede permanecer como señal secundaria de respaldo para AliExpress,
 - **Amazon:** las publicaciones manuales usan `AMAZON_PARTNER_TAG`; la búsqueda automática permanece desactivada.
 
 Nunca se conserva como destino final el identificador de afiliación de MiChollo, NoLoDejesEscapar u otro canal.
+
+## Imagen de la publicación
+
+Telegram recibe una creatividad cuadrada propia de ChollosAlDía generada a partir de la fotografía limpia del catálogo oficial. La franja inferior muestra tienda, precio actual, precio anterior y descuento únicamente cuando esos datos están verificados. Si no se puede construir la creatividad, el proceso conserva como respaldo la imagen oficial del producto; nunca usa como fotografía automática la tarjeta editada por otro canal.
+
+La web mantiene la fotografía limpia del producto para que las fichas y las tarjetas carguen con mejor calidad y sin texto incrustado.
 
 ## Validación editorial
 

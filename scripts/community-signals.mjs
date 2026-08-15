@@ -1,8 +1,33 @@
+import { readFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 
 const USER_AGENT = 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)';
 const MAX_SIGNAL_AGE_MS = 48 * 60 * 60 * 1000;
 const MICHOLLO_REFRESH_MS = 6 * 60 * 60 * 1000;
+
+function telegramChannelSources() {
+  try {
+    const file = new URL('../data/telegram-source-channels.json', import.meta.url);
+    const parsed = JSON.parse(readFileSync(file, 'utf8'));
+    return (parsed.channels || []).map((entry, index) => {
+      const username = String(entry.username || entry.url || '')
+        .replace(/^https?:\/\/(?:www\.)?t\.me\/(?:s\/)?/iu, '')
+        .replace(/^@/u, '')
+        .split(/[/?#]/u)[0]
+        .trim();
+      return {
+        id: String(entry.id || `telegram-${username || index + 1}`),
+        kind: 'telegram-public',
+        username,
+        url: username ? `https://t.me/s/${username}` : '',
+        merchant: String(entry.store || ''),
+        weight: Math.max(1, Math.min(40, Number(entry.weight) || 20)),
+      };
+    }).filter((source) => /^[a-z0-9_]{5,}$/iu.test(source.username));
+  } catch {
+    return [];
+  }
+}
 
 export const COMMUNITY_SOURCES = [
   { id: 'michollo', kind: 'sitemap', url: 'https://michollo.com/assets/sitemap-chollos-0.xml.gz', weight: 30 },
@@ -14,6 +39,7 @@ export const COMMUNITY_SOURCES = [
     merchant: 'AliExpress',
     weight: 8,
   },
+  ...telegramChannelSources(),
 ];
 
 const STOP_WORDS = new Set([
@@ -114,6 +140,57 @@ function makeSignal(source, link, title, publishedAt, merchant = '') {
   };
 }
 
+function decodedAttribute(value = '') {
+  return cleanText(value)
+    .replace(/&amp;/gi, '&')
+    .replace(/&#x2F;/gi, '/')
+    .replace(/&#x3A;/gi, ':');
+}
+
+function productStoreFromUrl(value = '') {
+  try {
+    const host = new URL(decodedAttribute(value)).hostname.toLowerCase();
+    if (host === 'aliexpress.com' || host.endsWith('.aliexpress.com')) return 'AliExpress';
+    if (host === 'miravia.es' || host.endsWith('.miravia.es') || host === 'awin1.com' || host.endsWith('.awin1.com')) return 'Miravia';
+  } catch {
+    return '';
+  }
+  return '';
+}
+
+/** Reads Telegram's public channel preview without using a personal account.
+ * It extracts product links and factual discovery terms only; photographs and
+ * promotional copy from the source channel never become publication assets. */
+export function parseTelegramPublicSignals(source, html, limit = 12) {
+  const page = String(html);
+  const starts = [...page.matchAll(/<div[^>]+class=["'][^"']*tgme_widget_message_wrap/giu)]
+    .map((match) => match.index)
+    .filter(Number.isInteger);
+  const blocks = starts.map((start, index) => page.slice(start, starts[index + 1] ?? page.length));
+  const signals = [];
+  for (const block of blocks) {
+    const post = decodedAttribute(block.match(/\bdata-post=["']([^"']+)["']/iu)?.[1] || '');
+    const messageId = post.split('/').at(-1) || '';
+    const textHtml = block.match(/<div[^>]+class=["'][^"']*tgme_widget_message_text[^"']*["'][^>]*>([\s\S]*?)<\/div>/iu)?.[1] || '';
+    const title = cleanText(textHtml);
+    const publishedAt = decodedAttribute(block.match(/<time[^>]+datetime=["']([^"']+)["']/iu)?.[1] || '');
+    const links = [...block.matchAll(/\bhref=["']([^"']+)["']/giu)]
+      .map((match) => decodedAttribute(match[1]))
+      .filter((link) => productStoreFromUrl(link));
+    for (const merchantUrl of [...new Set(links)]) {
+      const merchant = productStoreFromUrl(merchantUrl);
+      if (source.merchant && normalise(source.merchant) !== normalise(merchant)) continue;
+      const sourceUrl = messageId ? `https://t.me/${source.username}/${messageId}` : source.url;
+      const signal = makeSignal(source, sourceUrl, title, publishedAt, merchant);
+      signal.id = `${source.id}:${post || messageId}:${merchantUrl}`;
+      signal.merchantUrl = merchantUrl;
+      if (signal.title && signal.terms.length >= 2) signals.push(signal);
+      if (signals.length >= limit) return signals;
+    }
+  }
+  return signals;
+}
+
 export function parseRssSignals(source, xml, limit = 10) {
   return [...String(xml).matchAll(/<item\b[\s\S]*?<\/item>/gi)]
     .map((match) => {
@@ -178,7 +255,9 @@ export async function discoverCommunitySignals({ state = {}, fetchImpl = fetch, 
       const response = await fetchSource(source.url, fetchImpl);
       const parsed = source.kind === 'rss'
         ? parseRssSignals(source, await response.text())
-        : parseMicholloSitemap(source, await response.arrayBuffer());
+        : source.kind === 'telegram-public'
+          ? parseTelegramPublicSignals(source, await response.text())
+          : parseMicholloSitemap(source, await response.arrayBuffer());
       signals.push(...parsed.filter((signal) => isFresh(signal, now) && !known.has(signal.id)));
       sourceHealth.push({ source: source.id, status: 'ok', found: parsed.length });
     } catch (error) {

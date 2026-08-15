@@ -10,7 +10,9 @@ import {
   topicsForAliExpressRun,
 } from './aliexpress-offers.mjs';
 import { discoverCommunitySignals, nextCommunitySignalState } from './community-signals.mjs';
+import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
+import { resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'aliexpress-discovery-state.json');
@@ -121,16 +123,73 @@ async function telegram(method, token, payload) {
   return data.result;
 }
 
+function linkedAliExpressOffer(metadata, signal) {
+  const id = String(metadata.productId || '').trim();
+  const title = String(metadata.title || '').trim();
+  const image = String(metadata.imageUrl || '').trim();
+  const url = String(metadata.affiliateUrl || '').trim();
+  const price = Number(metadata.price) || 0;
+  const previousPrice = Number(metadata.previousPrice) || 0;
+  const discount = previousPrice > price ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
+  if (!metadata.identityVerified || !id || !title || !image || !url || price < 5 || previousPrice <= price || discount < 30) return null;
+  const euro = (amount) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(amount);
+  return {
+    id,
+    title,
+    image,
+    url,
+    category: 'AliExpress',
+    siteCategory: signal.category || 'Tecnología',
+    price,
+    priceLabel: euro(price),
+    previousPrice,
+    previousPriceLabel: euro(previousPrice),
+    discount,
+    volume: 0,
+    commission: 0,
+    score: 1_500 + Number(signal.sourceWeight || 0) + discount,
+    matchedTitleTerms: signal.terms?.length || 0,
+    communitySignalId: signal.id,
+    communitySource: signal.source,
+    communitySourceUrl: signal.sourceUrl,
+  };
+}
+
+async function telegramPhoto(token, payload, photo, filename) {
+  const form = new FormData();
+  form.set('chat_id', String(payload.chat_id));
+  form.set('caption', payload.caption);
+  form.set('parse_mode', payload.parse_mode);
+  form.set('reply_markup', JSON.stringify(payload.reply_markup));
+  form.set('photo', new Blob([photo], { type: 'image/jpeg' }), filename);
+  const response = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: form });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.ok) throw new Error(`Telegram sendPhoto failed: ${data.description || response.status}`);
+  return data.result;
+}
+
 async function publishOffer(config, offer) {
-  return telegram('sendPhoto', config.telegramToken, {
+  const payload = {
     chat_id: config.telegramChannelId,
-    photo: offer.image,
     caption: formatAliExpressTelegramCaption(offer),
     parse_mode: 'HTML',
     reply_markup: {
       inline_keyboard: [[{ text: '👉🏻 VER OFERTA', url: offer.url }]],
     },
-  });
+  };
+  try {
+    const card = await createDealImageCard({
+      imageUrl: offer.image,
+      store: 'AliExpress',
+      price: offer.priceLabel,
+      previousPrice: offer.previousPriceLabel,
+      discount: offer.discount,
+    });
+    return telegramPhoto(config.telegramToken, payload, card, dealImageCardFilename('aliexpress', offer.id));
+  } catch (error) {
+    console.warn(`Could not build the branded AliExpress image for ${offer.id}: ${error.message}`);
+    return telegram('sendPhoto', config.telegramToken, { ...payload, photo: offer.image });
+  }
 }
 
 async function mirrorImageForWeb(offer) {
@@ -208,6 +267,18 @@ for (const signal of communityDiscovery.signals) {
 }
 
 for (const signal of communitySignals) {
+  if (signal.sourceStore === 'AliExpress' && signal.merchantUrl) {
+    try {
+      const metadata = await resolveAliExpressAffiliateProduct(signal.merchantUrl, config);
+      const linkedOffer = linkedAliExpressOffer(metadata, signal);
+      if (linkedOffer && !seenProductIds.has(linkedOffer.id)) {
+        candidates.push(linkedOffer);
+        continue;
+      }
+    } catch (error) {
+      console.warn(`Could not resolve the exact Telegram AliExpress link from ${signal.source}: ${error.message}`);
+    }
+  }
   try {
     const products = await searchAliExpress(config, { keywords: signal.searchQuery });
     const minimumTitleMatches = Math.min(3, Math.max(2, signal.terms.length));

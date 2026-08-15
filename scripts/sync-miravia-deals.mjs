@@ -18,6 +18,8 @@ import {
 } from './miravia-offers.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { communityMatchForTitle, discoverCommunitySignals } from './community-signals.mjs';
+import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
+import { miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'miravia-discovery-state.json');
@@ -80,16 +82,41 @@ async function telegram(method, token, payload) {
   return data.result;
 }
 
+async function telegramPhoto(token, payload, photo, filename) {
+  const form = new FormData();
+  form.set('chat_id', String(payload.chat_id));
+  form.set('caption', payload.caption);
+  form.set('parse_mode', payload.parse_mode);
+  form.set('reply_markup', JSON.stringify(payload.reply_markup));
+  form.set('photo', new Blob([photo], { type: 'image/jpeg' }), filename);
+  const response = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: form });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.ok) throw new Error(`Telegram sendPhoto failed: ${data.description || response.status}`);
+  return data.result;
+}
+
 async function publishOffer(config, offer) {
-  return telegram('sendPhoto', config.telegramToken, {
+  const payload = {
     chat_id: config.telegramChannelId,
-    photo: offer.image,
     caption: formatMiraviaTelegramCaption(offer),
     parse_mode: 'HTML',
     reply_markup: {
       inline_keyboard: [[{ text: '👉🏻 VER OFERTA', url: offer.url }]],
     },
-  });
+  };
+  try {
+    const card = await createDealImageCard({
+      imageUrl: offer.image,
+      store: 'Miravia',
+      price: offer.priceLabel,
+      previousPrice: offer.previousPriceLabel,
+      discount: offer.discount,
+    });
+    return telegramPhoto(config.telegramToken, payload, card, dealImageCardFilename('miravia', offer.id));
+  } catch (error) {
+    console.warn(`Could not build the branded Miravia image for ${offer.id}: ${error.message}`);
+    return telegram('sendPhoto', config.telegramToken, { ...payload, photo: offer.image });
+  }
 }
 
 async function preferredMiraviaImage(offer) {
@@ -337,7 +364,18 @@ if (!alreadyChecked || queuedOffers.length < 5) {
 const mergedCandidates = Array.from(new Map(
   [...queuedOffers, ...discovered.candidates].map((offer) => [offer.id, offer]),
 ).values()).map((offer) => {
-  const communityMatch = communityMatchForTitle(offer.title, communitySignals);
+  const exactCommunityMatch = communitySignals.find((signal) => {
+    const linkedProductId = miraviaProductIdFromUrl(signal.merchantUrl || '');
+    return linkedProductId && linkedProductId === String(offer.sourceProductId || offer.id || '');
+  });
+  const communityMatch = exactCommunityMatch
+    ? {
+        id: exactCommunityMatch.id,
+        source: exactCommunityMatch.source,
+        sourceUrl: exactCommunityMatch.sourceUrl,
+        score: 100 + Number(exactCommunityMatch.sourceWeight || 0),
+      }
+    : communityMatchForTitle(offer.title, communitySignals);
   return communityMatch ? {
     ...offer,
     score: offer.score + 1_000 + communityMatch.score,

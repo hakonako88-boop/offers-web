@@ -6,6 +6,7 @@ import {
   discoverCommunitySignals,
   nextCommunitySignalState,
   parseRssSignals,
+  parseTelegramPublicSignals,
   searchTermsForSignal,
 } from '../scripts/community-signals.mjs';
 
@@ -41,6 +42,22 @@ test('uses only the AliExpress section from Chollometro RSS', () => {
   assert.equal(signals[0].merchant, 'AliExpress');
   assert.equal(signals[0].sourceStore, 'AliExpress');
   assert.equal(signals[0].sourceUrl, 'https://source.example/aliexpress');
+});
+
+test('extracts AliExpress and Miravia links from a public Telegram channel without copying its image', () => {
+  const source = { id: 'telegram-ofertas', kind: 'telegram-public', username: 'ofertas_publicas', url: 'https://t.me/s/ofertas_publicas', weight: 20 };
+  const html = `<div class="tgme_widget_message_wrap"><div class="tgme_widget_message" data-post="ofertas_publicas/321">
+    <div class="tgme_widget_message_text">Robot aspirador Xiaomi S40 Pro con fregado y base</div>
+    <a href="https://s.click.aliexpress.com/e/_Example">Ver oferta</a>
+    <time datetime="2026-08-15T08:00:00+00:00"></time>
+    <a class="tgme_widget_message_photo_wrap" style="background-image:url('https://cdn.example/copied-channel-image.jpg')"></a>
+  </div></div>`;
+  const signals = parseTelegramPublicSignals(source, html);
+  assert.equal(signals.length, 1);
+  assert.equal(signals[0].sourceStore, 'AliExpress');
+  assert.equal(signals[0].merchantUrl, 'https://s.click.aliexpress.com/e/_Example');
+  assert.equal(signals[0].sourceUrl, 'https://t.me/ofertas_publicas/321');
+  assert.equal('image' in signals[0], false);
 });
 
 test('skips Amazon community signals until an official attributed lookup is available', async () => {
