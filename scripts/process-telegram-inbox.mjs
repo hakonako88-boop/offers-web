@@ -163,6 +163,48 @@ async function sendProductPhoto(settings, offer) {
   throw lastError || new Error('No se recibió una foto válida del producto.');
 }
 
+async function sendOfferPreview(settings, chatId, offer) {
+  const photos = [...new Set([offer.photoFileId, offer.imageUrl].filter(Boolean))];
+  const replyMarkup = {
+    inline_keyboard: [
+      [{ text: '✅ CONFIRMAR PUBLICACIÓN', callback_data: 'offer:confirm' }],
+      [
+        { text: '✏️ CORREGIR', callback_data: 'offer:edit' },
+        { text: '❌ CANCELAR', callback_data: 'offer:cancel' },
+      ],
+    ],
+  };
+  let lastError;
+  for (const photo of photos) {
+    const payload = {
+      chat_id: chatId,
+      photo,
+      caption: formatManualTelegramCaption(offer),
+      parse_mode: 'HTML',
+      reply_markup: replyMarkup,
+    };
+    try {
+      return await telegram(settings.token, 'sendPhoto', payload);
+    } catch (error) {
+      lastError = error;
+      if (!/^https?:\/\//iu.test(String(photo))) continue;
+      try {
+        const image = await downloadProductImage(photo);
+        const form = new FormData();
+        form.set('chat_id', String(chatId));
+        form.set('caption', formatManualTelegramCaption(offer));
+        form.set('parse_mode', 'HTML');
+        form.set('reply_markup', JSON.stringify(replyMarkup));
+        form.set('photo', image, 'vista-previa.jpg');
+        return await telegramForm(settings.token, 'sendPhoto', form);
+      } catch (uploadError) {
+        lastError = uploadError;
+      }
+    }
+  }
+  throw lastError || new Error('No se recibió una foto válida para la vista previa.');
+}
+
 async function mirrorTelegramPhoto(token, fileId, reference) {
   const file = await telegram(token, 'getFile', { file_id: fileId });
   if (!file?.file_path) throw new Error('Telegram did not return the uploaded photo.');
@@ -229,6 +271,26 @@ async function publishIfNew(settings, offer, inputMessage) {
   return { channelMessage: await publishManualOffer(settings, offer, inputMessage), duplicate: false };
 }
 
+function offerIsDuplicate(offer) {
+  const existingOffers = readJson(OFFERS_FILE, []);
+  const oldestDuplicate = Math.floor((Date.now() - DUPLICATE_WINDOW_MS) / 1000);
+  const recentOffers = existingOffers.filter((entry) => Number(entry.date) >= oldestDuplicate);
+  if (offer.kind === 'campaign' && recentOffers.some((entry) => entry.source_product_id === offer.sourceProductId)) return true;
+  return recentOffers.some((entry) => isInboxDuplicate(offer, entry));
+}
+
+async function queueOfferPreview(settings, pendingConfirmations, chatId, offer, inputMessage) {
+  if (offerIsDuplicate(offer)) return { duplicate: true };
+  const previewMessage = await sendOfferPreview(settings, chatId, offer);
+  pendingConfirmations[String(chatId)] = {
+    offer,
+    inputMessageId: inputMessage?.message_id || `preview-${chatId}`,
+    previewMessageId: previewMessage.message_id,
+    createdAt: Date.now(),
+  };
+  return { duplicate: false, previewMessage };
+}
+
 function publicationSuccessReply() {
   return [
     '✅ Publicada en el canal.',
@@ -285,6 +347,9 @@ const state = readJson(STATE_FILE, { processedUpdateIds: [] });
 const processed = new Set((state.processedUpdateIds || []).map(Number));
 const authorizedChatIds = new Set((state.authorizedChatIds || []).map(String));
 const pendingByChat = state.pendingByChat && typeof state.pendingByChat === 'object' ? state.pendingByChat : {};
+const pendingConfirmations = state.pendingConfirmations && typeof state.pendingConfirmations === 'object'
+  ? state.pendingConfirmations
+  : {};
 let updates;
 const webhookUpdate = String(process.env.TELEGRAM_WEBHOOK_UPDATE || '').trim();
 const pendingOnly = String(process.env.TELEGRAM_PENDING_ONLY || '').toLowerCase() === 'true';
@@ -307,6 +372,7 @@ if (pendingOnly) {
 let published = 0;
 let handled = 0;
 for (const [chatKey, pending] of Object.entries(pendingByChat)) {
+  if (pendingConfirmations[chatKey]) continue;
   let pendingUrl = pending?.url;
   let metadata = metadataWithOfficialAmazonImage(pendingUrl, pending?.metadata);
   let result = offerFromProductMetadata({
@@ -403,19 +469,59 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
   }
   if (result.status !== 'ready') continue;
   try {
-    const outcome = await publishIfNew(settings, result.offer, { message_id: pending.messageId || `pending-${chatKey}` });
+    const outcome = await queueOfferPreview(settings, pendingConfirmations, chatKey, result.offer, {
+      message_id: pending.messageId || `pending-${chatKey}`,
+    });
     await reply(settings.token, chatKey, outcome.duplicate
       ? '♻️ Esa oferta pendiente ya estaba publicada. No la repito en el canal.'
-      : publicationSuccessReply());
-    if (!outcome.duplicate) published += 1;
+      : '👀 Esta es la vista previa. Revisa todos los datos; no se publicará hasta que pulses «✅ CONFIRMAR PUBLICACIÓN».');
     delete pendingByChat[chatKey];
   } catch (error) {
-    console.warn(`Pending Telegram offer for ${chatKey} could not be published: ${safeError(error, settings.token)}`);
+    console.warn(`Pending Telegram preview for ${chatKey} could not be prepared: ${safeError(error, settings.token)}`);
   }
 }
 for (const update of updates || []) {
   const updateId = Number(update.update_id);
   if (!Number.isFinite(updateId) || processed.has(updateId)) continue;
+  const callback = update.callback_query;
+  if (callback) {
+    const callbackChatId = callback.message?.chat?.id;
+    const callbackChatKey = String(callbackChatId || '');
+    const isAuthorizedCallback = authorizedChatIds.has(callbackChatKey)
+      || (settings.allowedChatId && callbackChatKey === String(settings.allowedChatId));
+    try {
+      await telegram(settings.token, 'answerCallbackQuery', { callback_query_id: callback.id });
+      if (!callbackChatId || !isAuthorizedCallback) {
+        if (callbackChatId) await reply(settings.token, callbackChatId, '⛔ Este chat no está autorizado.');
+      } else if (callback.data === 'offer:confirm') {
+        const pending = pendingConfirmations[callbackChatKey];
+        if (!pending) {
+          await reply(settings.token, callbackChatId, '⌛ Esa vista previa ya no está pendiente. Envía la oferta otra vez.');
+        } else {
+          const outcome = await publishIfNew(settings, pending.offer, { message_id: pending.inputMessageId });
+          await reply(settings.token, callbackChatId, outcome.duplicate
+            ? '♻️ No la publico porque ese producto ya existe en el canal.'
+            : publicationSuccessReply());
+          if (!outcome.duplicate) published += 1;
+          delete pendingConfirmations[callbackChatKey];
+        }
+      } else if (callback.data === 'offer:edit') {
+        delete pendingConfirmations[callbackChatKey];
+        await reply(settings.token, callbackChatId, '✏️ Vista previa descartada. Reenvía la oferta corregida o pega de nuevo el enlace con los datos correctos. No se ha publicado nada.');
+      } else if (callback.data === 'offer:cancel') {
+        delete pendingConfirmations[callbackChatKey];
+        await reply(settings.token, callbackChatId, '❌ Publicación cancelada. No se ha enviado nada al canal ni a la web.');
+      }
+      handled += 1;
+    } catch (error) {
+      console.warn(`Telegram confirmation callback could not be processed: ${safeError(error, settings.token)}`);
+      if (callbackChatId) {
+        try { await reply(settings.token, callbackChatId, inboxFailureReply(error)); } catch {}
+      }
+    }
+    processed.add(updateId);
+    continue;
+  }
   const message = update.message;
   if (!message || message.chat?.type !== 'private') {
     processed.add(updateId);
@@ -447,11 +553,10 @@ for (const update of updates || []) {
       if (campaign.status === 'invalid') {
         await reply(settings.token, message.chat.id, `⚠️ ${campaign.message}`);
       } else {
-        const outcome = await publishIfNew(settings, campaign.offer, message);
+        const outcome = await queueOfferPreview(settings, pendingConfirmations, message.chat.id, campaign.offer, message);
         await reply(settings.token, message.chat.id, outcome.duplicate
           ? '♻️ Esta campaña ya está publicada. No la repito en el canal.'
-          : '✅ Campaña publicada en el canal con tu foto, texto y enlace.');
-        if (!outcome.duplicate) published += 1;
+          : '👀 Vista previa preparada. La campaña no se publicará hasta que pulses «✅ CONFIRMAR PUBLICACIÓN».');
         delete pendingByChat[chatKey];
       }
       handled += 1;
@@ -579,12 +684,11 @@ for (const update of updates || []) {
       }
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
-        const outcome = await publishIfNew(settings, result.offer, message);
+        const outcome = await queueOfferPreview(settings, pendingConfirmations, message.chat.id, result.offer, message);
         if (outcome.duplicate) {
           await reply(settings.token, message.chat.id, '♻️ No la publico porque he identificado el mismo producto que ya existe en el canal.');
         } else {
-          await reply(settings.token, message.chat.id, publicationSuccessReply());
-          published += 1;
+          await reply(settings.token, message.chat.id, '👀 Esta es la vista previa. Comprueba todos los datos y pulsa «✅ CONFIRMAR PUBLICACIÓN» solo si está correcta.');
         }
         delete pendingByChat[chatKey];
       } else if (result.status === 'needs_details') {
@@ -632,12 +736,11 @@ for (const update of updates || []) {
           // Keep it so a previously incomplete forwarded offer can finish.
           const newestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
           if (newestPhoto) result.offer.photoFileId = newestPhoto;
-          const outcome = await publishIfNew(settings, result.offer, message);
+          const outcome = await queueOfferPreview(settings, pendingConfirmations, message.chat.id, result.offer, message);
           if (outcome.duplicate) {
             await reply(settings.token, message.chat.id, '♻️ No la publico porque he identificado el mismo producto que ya existe en el canal.');
           } else {
-            await reply(settings.token, message.chat.id, publicationSuccessReply());
-            published += 1;
+            await reply(settings.token, message.chat.id, '👀 Vista previa preparada. Revisa los datos y confirma con el botón; todavía no se ha publicado.');
           }
           delete pendingByChat[chatKey];
         } else {
@@ -670,12 +773,11 @@ for (const update of updates || []) {
         await reply(settings.token, message.chat.id, `⚠️ ${result.message}`);
         handled += 1;
       } else if (result.status === 'ready') {
-        const outcome = await publishIfNew(settings, result.offer, message);
+        const outcome = await queueOfferPreview(settings, pendingConfirmations, message.chat.id, result.offer, message);
         if (outcome.duplicate) {
           await reply(settings.token, message.chat.id, '♻️ No la publico porque he identificado el mismo producto que ya existe en el canal.');
         } else {
-          await reply(settings.token, message.chat.id, publicationSuccessReply());
-          published += 1;
+          await reply(settings.token, message.chat.id, '👀 Vista previa preparada. Pulsa «✅ CONFIRMAR PUBLICACIÓN» para enviarla al canal y a la web.');
         }
         handled += 1;
       } else if (result.status === 'unauthorized') {
@@ -701,6 +803,7 @@ writeJson(STATE_FILE, {
   processedUpdateIds: Array.from(processed).sort((left, right) => left - right).slice(-MAX_PROCESSED_UPDATES),
   authorizedChatIds: Array.from(authorizedChatIds).slice(-20),
   pendingByChat,
+  pendingConfirmations,
   lastCheckedAt: new Date().toISOString(),
 });
 console.log(`Telegram private inbox handled ${handled} message(s) and published ${published} offer(s).`);
