@@ -2,25 +2,15 @@
 
 Las ofertas automáticas se descubren mediante fuentes públicas permitidas, se comprueban de nuevo en el catálogo oficial de la tienda y se publican mediante GitHub Actions. Cada oferta aceptada llega a Telegram y se guarda en la web.
 
-## Horario Europe/Madrid
+## Publicación por novedades, sin horarios fijos
 
-Hay cinco tandas diarias. Cada tanda reserva dos posiciones para AliExpress, dos para Miravia y una para Amazon cuando Creators API está disponible:
+No existen tandas ni horas de publicación. Un flujo ligero consulta cada cinco minutos la vista pública de los canales aprobados y guarda el último identificador visto de cada canal. Cuando alguno avanza, se lanza una revisión de Amazon, AliExpress y Miravia. Si no hay mensajes nuevos, no se reconstruye la web ni se intenta publicar.
 
-| Tanda | AliExpress | Miravia | AliExpress | Miravia | Amazon |
-| --- | --- | --- | --- | --- | --- |
-| 09:00 | 09:00 | 09:04 | 09:08 | 09:12 | 09:16 |
-| 11:30 | 11:30 | 11:34 | 11:38 | 11:42 | 11:46 |
-| 14:30 | 14:30 | 14:34 | 14:38 | 14:42 | 14:46 |
-| 18:30 | 18:30 | 18:34 | 18:38 | 18:42 | 18:46 |
-| 21:30 | 21:30 | 21:34 | 21:38 | 21:42 | 21:46 |
+La reacción habitual es de hasta cinco minutos, más el tiempo de cola de GitHub Actions y la consulta a la tienda. GitHub no garantiza ejecución al segundo, por lo que puede existir un pequeño retraso. Una novedad no obliga a publicar: los filtros de tienda, calidad, duplicados, imagen, precio y afiliación siguen siendo obligatorios.
 
-El máximo teórico es de veinticinco ofertas al día: diez de AliExpress, diez de Miravia y cinco de Amazon. Cada posición es una ejecución independiente. El fallo de una tienda, una imagen o un producto no cancela las posiciones posteriores.
+En cada revisión se publica como máximo una oferta validada por tienda. Si llegan varias novedades juntas, quedan disponibles para las revisiones siguientes y nunca se inventan productos para alcanzar una cantidad.
 
-Cada horario declara directamente `timezone: Europe/Madrid`. GitHub ajusta automáticamente el cambio de verano e invierno, por lo que las horas peninsulares se conservan durante todo el año.
-
-Una posición puede quedar vacía. Nunca se publica un producto inventado o incompleto para alcanzar el máximo.
-
-Amazon se comprueba en sus posiciones programadas, pero solo publica cuando la cuenta tiene acceso aprobado a Creators API y la respuesta oficial incluye ASIN, imagen, precio y disponibilidad. Sin elegibilidad no copia contenido externo ni publica datos incompletos. Continúa disponible para publicaciones manuales creadas con SiteStripe o Mobile GetLink.
+Amazon solo publica cuando la cuenta tiene acceso aprobado a Creators API y la respuesta oficial incluye ASIN, imagen, precio y disponibilidad. Sin elegibilidad no copia contenido externo ni publica datos incompletos. Continúa disponible para publicaciones manuales creadas con SiteStripe o Mobile GetLink.
 
 ## Descubrimiento prioritario
 
@@ -36,7 +26,7 @@ Chollometro puede permanecer como señal secundaria de respaldo para AliExpress,
 
 ### Canales públicos de Telegram
 
-Los canales públicos aprobados por el propietario se declaran en `data/telegram-source-channels.json`. El formato de cada fuente es:
+Los canales públicos aprobados por el propietario se declaran en `data/telegram-source-channels.json`. El vigilante guarda su posición en `data/telegram-channel-checkpoints.json`. El formato de cada fuente es:
 
 ```json
 {
