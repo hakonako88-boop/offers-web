@@ -60,6 +60,43 @@ test('extracts AliExpress and Miravia links from a public Telegram channel witho
   assert.equal('image' in signals[0], false);
 });
 
+test('registers every Telegram channel approved by the owner', () => {
+  const usernames = COMMUNITY_SOURCES
+    .filter((source) => source.kind === 'telegram-public')
+    .map((source) => source.username.toLowerCase());
+  assert.deepEqual(usernames, [
+    'chollosdiario',
+    'ofertos',
+    'ofertassupermercadoses',
+    'una_ganga',
+    'tiesometro',
+    'erroresde_precio',
+    'paramanitas',
+  ]);
+});
+
+test('accepts an Awin tidd.ly link as Miravia only when the Telegram post identifies the store', () => {
+  const source = { id: 'telegram-mixed', kind: 'telegram-public', username: 'mixed', url: 'https://t.me/s/mixed', weight: 20 };
+  const miravia = `<div class="tgme_widget_message_wrap"><div class="tgme_widget_message" data-post="mixed/8">
+    <div class="tgme_widget_message_text">Freidora Xiaomi de 6,5 L #Miravia con cupón especial</div>
+    <a href="https://tidd.ly/3QCoL8S">Ver oferta</a>
+  </div></div>`;
+  const unknownMerchant = miravia.replace('#Miravia', '#Oferta');
+  assert.equal(parseTelegramPublicSignals(source, miravia)[0]?.sourceStore, 'Miravia');
+  assert.equal(parseTelegramPublicSignals(source, unknownMerchant).length, 0);
+});
+
+test('accepts a configured chz.to AliExpress shortener but leaves it for official resolution', () => {
+  const source = { id: 'telegram-tiesometro', kind: 'telegram-public', username: 'tiesometro', url: 'https://t.me/s/tiesometro', merchant: 'AliExpress', weight: 22 };
+  const html = `<div class="tgme_widget_message_wrap"><div class="tgme_widget_message" data-post="tiesometro/123">
+    <div class="tgme_widget_message_text">Taladro percutor inalámbrico con dos baterías</div>
+    <a href="https://chz.to/8y1al">Ver producto</a>
+  </div></div>`;
+  const signal = parseTelegramPublicSignals(source, html)[0];
+  assert.equal(signal.sourceStore, 'AliExpress');
+  assert.equal(signal.merchantUrl, 'https://chz.to/8y1al');
+});
+
 test('skips Amazon community signals until an official attributed lookup is available', async () => {
   const now = Date.parse('2026-08-11T12:00:00.000Z');
   const response = `<?xml version="1.0"?><rss><channel><item><title>Oferta Amazon! Cafetera 900W a 29€</title><link>https://source.example/cafetera</link><pubDate>Tue, 11 Aug 2026 11:20:05 +0000</pubDate></item></channel></rss>`;

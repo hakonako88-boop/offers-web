@@ -147,11 +147,19 @@ function decodedAttribute(value = '') {
     .replace(/&#x3A;/gi, ':');
 }
 
-function productStoreFromUrl(value = '') {
+function productStoreFromUrl(value = '', context = '', expectedStore = '') {
   try {
     const host = new URL(decodedAttribute(value)).hostname.toLowerCase();
     if (host === 'aliexpress.com' || host.endsWith('.aliexpress.com')) return 'AliExpress';
     if (host === 'miravia.es' || host.endsWith('.miravia.es') || host === 'awin1.com' || host.endsWith('.awin1.com')) return 'Miravia';
+    // Tiesometro uses chz.to as its public AliExpress shortener. The scanner
+    // resolves this address and verifies the final aliexpress.com product
+    // before it is ever considered publishable.
+    if (host === 'chz.to' && normalise(expectedStore) === 'aliexpress') return 'AliExpress';
+    // tidd.ly is Awin's public shortener and can point to many merchants. It
+    // is accepted as Miravia only when the same Telegram post explicitly says
+    // Miravia; the destination is verified again against the private Awin feed.
+    if ((host === 'tidd.ly' || host.endsWith('.tidd.ly')) && /(?:#|\b)miravia\b/iu.test(normalise(context))) return 'Miravia';
   } catch {
     return '';
   }
@@ -176,9 +184,9 @@ export function parseTelegramPublicSignals(source, html, limit = 12) {
     const publishedAt = decodedAttribute(block.match(/<time[^>]+datetime=["']([^"']+)["']/iu)?.[1] || '');
     const links = [...block.matchAll(/\bhref=["']([^"']+)["']/giu)]
       .map((match) => decodedAttribute(match[1]))
-      .filter((link) => productStoreFromUrl(link));
+      .filter((link) => productStoreFromUrl(link, title, source.merchant));
     for (const merchantUrl of [...new Set(links)]) {
-      const merchant = productStoreFromUrl(merchantUrl);
+      const merchant = productStoreFromUrl(merchantUrl, title, source.merchant);
       if (source.merchant && normalise(source.merchant) !== normalise(merchant)) continue;
       const sourceUrl = messageId ? `https://t.me/${source.username}/${messageId}` : source.url;
       const signal = makeSignal(source, sourceUrl, title, publishedAt, merchant);

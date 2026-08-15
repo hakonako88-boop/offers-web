@@ -23,7 +23,7 @@ const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.jso
 const MAX_POSTS_PER_RUN = 1;
 const MAX_PUBLICATION_ATTEMPTS = 8;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
-const MAX_COMMUNITY_QUERIES_PER_RUN = 3;
+const MAX_COMMUNITY_QUERIES_PER_RUN = 8;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -155,6 +155,23 @@ function linkedAliExpressOffer(metadata, signal) {
   };
 }
 
+async function resolvedAliExpressSignalUrl(signal) {
+  const submitted = String(signal.merchantUrl || '');
+  try {
+    const host = new URL(submitted).hostname.toLowerCase();
+    if (host === 'aliexpress.com' || host.endsWith('.aliexpress.com')) return submitted;
+    const response = await fetch(submitted, {
+      redirect: 'follow',
+      headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaBot/1.0; +https://chollosaldia.com)' },
+      signal: AbortSignal.timeout(15_000),
+    });
+    const finalHost = new URL(response.url).hostname.toLowerCase();
+    return finalHost === 'aliexpress.com' || finalHost.endsWith('.aliexpress.com') ? response.url : '';
+  } catch {
+    return '';
+  }
+}
+
 async function telegramPhoto(token, payload, photo, filename) {
   const form = new FormData();
   form.set('chat_id', String(payload.chat_id));
@@ -257,19 +274,24 @@ const candidates = [];
 
 const communityDiscovery = await discoverCommunitySignals({ state: communityState });
 const communitySignals = [];
-const queriedBySource = new Map();
+const selectedSources = new Set();
 for (const signal of communityDiscovery.signals) {
-  const sourceQueries = queriedBySource.get(signal.source) || 0;
-  if (signal.sourceStore === 'Amazon' || signal.terms.length < 2 || sourceQueries >= 2) continue;
+  // Take the strongest fresh post from every source before considering more
+  // posts from the same channel. This prevents a large channel from hiding
+  // all offers discovered by the other owner-approved channels.
+  if (signal.sourceStore === 'Amazon' || signal.terms.length < 2 || selectedSources.has(signal.source)) continue;
   communitySignals.push(signal);
-  queriedBySource.set(signal.source, sourceQueries + 1);
+  selectedSources.add(signal.source);
   if (communitySignals.length >= MAX_COMMUNITY_QUERIES_PER_RUN) break;
 }
 
 for (const signal of communitySignals) {
   if (signal.sourceStore === 'AliExpress' && signal.merchantUrl) {
     try {
-      const metadata = await resolveAliExpressAffiliateProduct(signal.merchantUrl, config);
+      const verifiedSignalUrl = await resolvedAliExpressSignalUrl(signal);
+      const metadata = verifiedSignalUrl
+        ? await resolveAliExpressAffiliateProduct(verifiedSignalUrl, config)
+        : {};
       const linkedOffer = linkedAliExpressOffer(metadata, signal);
       if (linkedOffer && !seenProductIds.has(linkedOffer.id)) {
         candidates.push(linkedOffer);
