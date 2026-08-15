@@ -16,6 +16,12 @@ export const metadata: Metadata = {
   authors: [{ name: "Chollos al Día" }],
   creator: "Chollos al Día",
   publisher: "Chollos al Día",
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: [{ url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" }],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/favicon-192.png", sizes: "192x192", type: "image/png" }],
+  },
   referrer: "origin-when-cross-origin",
   openGraph: {
     type: "website",
@@ -35,7 +41,7 @@ export const metadata: Metadata = {
   ...(adsenseEnabled ? { other: { "google-adsense-account": adsenseClientId } } : {}),
 };
 
-export const viewport: Viewport = { themeColor: "#f04b37", colorScheme: "light" };
+export const viewport: Viewport = { themeColor: "#18213e", colorScheme: "light" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

@@ -34,6 +34,12 @@ const websiteSchema = {
       "@id": "https://chollosaldia.com/#organization",
       name: "Chollos al Día",
       url: "https://chollosaldia.com/",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://chollosaldia.com/favicon-512.png",
+        width: 512,
+        height: 512,
+      },
       sameAs: ["https://t.me/aldiachollos"],
       email: "chollosaldia@gmail.com",
       contactPoint: [{ "@type": "ContactPoint", email: "chollosaldia@gmail.com", contactType: "customer support", availableLanguage: "Spanish" }],

@@ -158,6 +158,10 @@ function dealDetailsUrl(deal: Pick<Deal, "id">) {
   return `/oferta/${encodeURIComponent(deal.id)}`;
 }
 
+function offerCountLabel(total: number) {
+  return `${total} ${total === 1 ? "oferta" : "ofertas"}`;
+}
+
 export function DealExplorer() {
   const [deals] = useState<Deal[]>(initialDeals);
   const [category, setCategory] = useState("Todos");
@@ -185,18 +189,11 @@ export function DealExplorer() {
     if (!discounted.length) return 0;
     return Math.round(discounted.reduce((total, deal) => total + (1 - deal.price / deal.oldPrice) * 100, 0) / discounted.length);
   }, [deals]);
-  const storeCount = useMemo(() => new Set(deals.map((deal) => deal.store)).size, [deals]);
-  const bestDiscount = useMemo(
-    () => Math.max(0, ...deals.map((deal) => Math.round((1 - deal.price / deal.oldPrice) * 100))),
-    [deals],
-  );
-  const highestSavings = useMemo(
-    () => deals
-      .filter((deal) => deal.oldPrice > deal.price)
-      .sort((left, right) => (right.oldPrice - right.price) - (left.oldPrice - left.price))
-      .slice(0, 3),
-    [deals],
-  );
+  const storeTotals = useMemo(() => ({
+    Amazon: deals.filter((deal) => deal.store === "Amazon").length,
+    AliExpress: deals.filter((deal) => deal.store === "AliExpress").length,
+    Miravia: deals.filter((deal) => deal.store === "Miravia").length,
+  }), [deals]);
   const sectionCovers = useMemo(() => ({
     amazon: deals.find((deal) => deal.store === "Amazon"),
     aliexpress: deals.find((deal) => deal.store === "AliExpress"),
@@ -219,7 +216,7 @@ export function DealExplorer() {
   }
 
   return (
-    <main id="inicio">
+    <main className="dealHome" id="inicio">
       <div className="announcement" role="status">
         <div className="shell announcementInner">
           <span><b>Actualizado a diario</b> · precios y enlaces comprobados</span>
@@ -243,17 +240,17 @@ export function DealExplorer() {
 
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="heroCopy">
-          <p className="eyebrow"><span aria-hidden="true" />RADAR DE CHOLLOS · AMAZON · ALIEXPRESS · MIRAVIA</p>
-          <h1 id="hero-title">Chollos de hoy<br />que <em>sí merece</em> la pena abrir.</h1>
-          <p className="heroLead">Una selección diaria de ofertas con precio claro, ahorro calculado y acceso directo a la tienda. Menos ruido, mejores decisiones de compra.</p>
+          <p className="eyebrow"><span aria-hidden="true" />OFERTAS NUEVAS DURANTE TODO EL DÍA</p>
+          <h1 id="hero-title">Ofertas reales.<br /><em>Ahorro sin vueltas.</em></h1>
+          <p className="heroLead">Descubre chollos seleccionados de Amazon, AliExpress y Miravia. Precio visible, descuento claro y acceso directo a cada oferta.</p>
           <div className="heroActions">
-            <a className="primaryButton" href="#ofertas">Explorar chollos de hoy <span aria-hidden="true">↓</span></a>
+            <a className="primaryButton" href="#ofertas">Ver ofertas ahora <span aria-hidden="true">↓</span></a>
             <a className="quietLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis <span aria-hidden="true">↗</span></a>
           </div>
           <ul className="trustList" aria-label="Compromisos de Chollos al Día">
-            <li>Descuento claro</li>
-            <li>Enlace de afiliado identificado</li>
-            <li>Sin coste adicional para ti</li>
+            <li>Precios a la vista</li>
+            <li>Ofertas revisadas</li>
+            <li>Alertas gratis</li>
           </ul>
         </div>
         {featuredDeal ? (
@@ -264,43 +261,11 @@ export function DealExplorer() {
         ) : <aside className="savingsPanel" aria-label="Resumen de las ofertas publicadas"><div className="panelTop"><span className="liveDot" /> EN DIRECTO</div><p>Descuento medio de las ofertas activas</p><strong>−{averageDiscount}%</strong></aside>}
       </section>
 
-      <section className="editorialStrip" aria-label="Criterios de selección">
-        <div className="shell editorialStripInner">
-          <p><b>Selección editorial</b><span>Solo se publican productos identificables, con enlace válido y precio registrado.</span></p>
-          <div className="editorialMetrics" aria-label="Resumen de ofertas">
-            <span><b>{deals.length}</b> chollos</span>
-            <span><b>{storeCount}</b> tiendas</span>
-            <span><b>−{averageDiscount}%</b> ahorro medio</span>
-          </div>
-        </div>
-      </section>
-
-      {highestSavings.length > 0 && <section className="savingsSpotlight shell" aria-labelledby="savings-spotlight-title">
-        <div className="savingsSpotlightIntro"><p className="eyebrow"><span aria-hidden="true" />MAYOR AHORRO REGISTRADO</p><h2 id="savings-spotlight-title">Tres precios que merece la pena revisar.</h2><p>El orden se calcula con el ahorro entre el precio anterior registrado y el precio publicado. Comprueba siempre la ficha final antes de comprar.</p></div>
-        <div className="savingsSpotlightGrid">
-          {highestSavings.map((deal) => {
-            const discount = Math.max(0, Math.round((1 - deal.price / deal.oldPrice) * 100));
-            return <a className="savingsSpotlightCard" href={dealDetailsUrl(deal)} key={deal.id}><img src={deal.imageUrl} alt="" width={200} height={160} /><div><span>{deal.store} · −{discount}%</span><b>{shortTitle(deal.title, 56)}</b><strong>{money.format(deal.price)} <small>ahorras {money.format(deal.oldPrice - deal.price)}</small></strong></div><i aria-hidden="true">→</i></a>;
-          })}
-        </div>
-      </section>}
-
-      <section className="benefitBand" aria-label="Ventajas de Chollos al Día">
-        <div className="shell benefitGrid">
-          <article><span aria-hidden="true">01</span><h2>Precio a la vista</h2><p>Ves el importe actual, el precio anterior y el ahorro antes de salir de la web.</p></article>
-          <article><span aria-hidden="true">02</span><h2>Compra sin rodeos</h2><p>Cada chollo lleva a su ficha con contexto y un enlace directo a la tienda.</p></article>
-          <article><span aria-hidden="true">03</span><h2>Alertas cuando importan</h2><p>Las oportunidades nuevas también llegan al canal de Telegram para no llegar tarde.</p></article>
-        </div>
-      </section>
-
-      <section className="dealPulse" aria-label="Resumen de las ofertas activas">
-        <div className="shell dealPulseInner">
-          <div className="pulseIntro"><span className="liveDot" aria-hidden="true" /><div><b>RADAR CHOLLOS AL DÍA</b><p>Selección en movimiento</p></div></div>
-          <div className="pulseStat"><strong>{deals.length}</strong><span>ofertas activas</span></div>
-          <div className="pulseStat"><strong>−{averageDiscount}%</strong><span>descuento medio</span></div>
-          <div className="pulseStat"><strong>−{bestDiscount}%</strong><span>mejor descuento</span></div>
-          <div className="pulseStat"><strong>{storeCount}</strong><span>tiendas revisadas</span></div>
-        </div>
+      <section className="storeRail shell" aria-label="Explorar ofertas por tienda">
+        <div className="storeRailLead"><span className="liveDot" aria-hidden="true" /><div><b>{deals.length} ofertas activas</b><small>Actualizadas durante el día</small></div></div>
+        <a className="storeQuick storeQuickAmazon" href="/ofertas/amazon"><span>a</span><div><b>Amazon</b><small>{offerCountLabel(storeTotals.Amazon)}</small></div><i aria-hidden="true">→</i></a>
+        <a className="storeQuick storeQuickAli" href="/ofertas/aliexpress"><span>AE</span><div><b>AliExpress</b><small>{offerCountLabel(storeTotals.AliExpress)}</small></div><i aria-hidden="true">→</i></a>
+        <a className="storeQuick storeQuickMiravia" href="/ofertas/miravia"><span>M</span><div><b>Miravia</b><small>{offerCountLabel(storeTotals.Miravia)}</small></div><i aria-hidden="true">→</i></a>
       </section>
 
       {adsenseHomeSlot && <div className="shell adSection">
@@ -311,8 +276,8 @@ export function DealExplorer() {
         <div className="shell">
           <div className="sectionIntro">
             <div>
-              <p className="eyebrow"><span aria-hidden="true" />LO ÚLTIMO QUE MERECE LA PENA</p>
-              <h2 id="offers-title">Chollos de hoy</h2>
+              <p className="eyebrow"><span aria-hidden="true" />RECIÉN PUBLICADOS</p>
+              <h2 id="offers-title">Últimos chollos</h2>
             </div>
             <p>Precios válidos en el momento de la publicación. Pueden cambiar o agotarse.</p>
           </div>
@@ -334,7 +299,7 @@ export function DealExplorer() {
             {gridDeals.map((deal) => {
               const discount = Math.max(0, Math.round((1 - deal.price / deal.oldPrice) * 100));
               return (
-                <article className="dealCard" key={deal.id}>
+                <article className="dealCard" data-store={deal.store} key={deal.id}>
                   <a className="imageWrap dealPreviewLink" href={dealDetailsUrl(deal)} aria-label={`Ver análisis de ${deal.title}`}>
                     <img src={deal.imageUrl} alt={deal.title} loading="lazy" decoding="async" width={720} height={560} />
                     {discount > 0 && <span className="discountBadge">−{discount}%</span>}
@@ -353,7 +318,7 @@ export function DealExplorer() {
                         <span>Cupón</span><b>{copied === deal.coupon ? "¡Copiado!" : deal.coupon}</b><i aria-hidden="true">□</i>
                       </button>
                     ) : <p className="noCoupon">Precio directo, sin cupón extra</p>}
-                    <a className="dealButton" href={dealDetailsUrl(deal)}>Ver oferta y análisis <span aria-hidden="true">→</span></a>
+                    <a className="dealButton" href={dealDetailsUrl(deal)}>Ver el chollo <span aria-hidden="true">→</span></a>
                     <p className="verified"><span aria-hidden="true" />Oferta activa · {deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt}</p>
                   </div>
                 </article>
