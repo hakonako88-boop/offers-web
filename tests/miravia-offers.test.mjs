@@ -132,6 +132,9 @@ test('rejects the tiny Miravia feed thumbnails before publication', () => {
   assert.equal(isMiraviaProductImageLargeEnough(3_732), false);
   assert.equal(isMiraviaProductImageLargeEnough(11_999), false);
   assert.equal(isMiraviaProductImageLargeEnough(12_000), true);
+  assert.equal(isMiraviaProductImageLargeEnough(3_732, { width: 720, height: 720 }), true);
+  assert.equal(isMiraviaProductImageLargeEnough(20_000, { width: 200, height: 200 }), false);
+  assert.equal(isMiraviaProductImageLargeEnough(2_499, { width: 720, height: 720 }), false);
 });
 
 test('requires meaningful demand for an unbranded Miravia catalogue product', () => {

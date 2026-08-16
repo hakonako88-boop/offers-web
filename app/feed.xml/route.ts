@@ -24,7 +24,7 @@ export function GET() {
       "<item>",
       `<title>${escapeXml(`${deal.title} en ${deal.store}`)}</title>`,
       `<link>${escapeXml(url)}</link>`,
-      `<guid isPermaLink=\"true\">${escapeXml(url)}</guid>`,
+      `<guid isPermaLink="true">${escapeXml(url)}</guid>`,
       `<description>${escapeXml(dealDescription(deal))}</description>`,
       `<category>${escapeXml(deal.category)}</category>`,
       `<pubDate>${publicationDate(deal.verifiedDate)}</pubDate>`,

@@ -2,6 +2,7 @@
  * Telegram webhook bridge for Chollos al Dia.
  * It verifies Telegram, then starts the existing GitHub offer pipeline.
  */
+/* global GITHUB_OWNER, GITHUB_REPO, GITHUB_DISPATCH_TOKEN, TELEGRAM_WEBHOOK_SECRET */
 const json = (value, status = 200) => new Response(JSON.stringify(value), {
   status,
   headers: { 'content-type': 'application/json; charset=utf-8' },

@@ -37,10 +37,10 @@ export default function AnalyticsConsent() {
   useEffect(() => {
     const saved = window.localStorage.getItem(preferenceKey);
     if (saved === "granted") {
-      setPreference("granted");
+      queueMicrotask(() => setPreference("granted"));
       startAnalytics();
     } else {
-      setPreference(saved === "denied" ? "denied" : null);
+      queueMicrotask(() => setPreference(saved === "denied" ? "denied" : null));
     }
   }, []);
 

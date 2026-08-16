@@ -26,7 +26,15 @@ for (const messageId of messageIds) {
       body: JSON.stringify({ chat_id: channelId, message_id: messageId }),
     });
     const result = await response.json().catch(() => ({}));
-    if (!response.ok || !result.ok) throw new Error(result.description || `HTTP ${response.status}`);
+    const description = String(result.description || '');
+    // Telegram returns 400 when a message has already disappeared. Keeping that
+    // id in the retry file can never succeed and makes every otherwise healthy
+    // deployment show a false error annotation.
+    if ((!response.ok || !result.ok) && /message to delete not found/iu.test(description)) {
+      console.log(`Publicación ${messageId} ya no estaba en el canal; retirada completada.`);
+      continue;
+    }
+    if (!response.ok || !result.ok) throw new Error(description || `HTTP ${response.status}`);
     console.log(`Publicación ${messageId} retirada del canal.`);
   } catch (error) {
     remaining.push(messageId);

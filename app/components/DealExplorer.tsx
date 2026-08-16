@@ -1,5 +1,9 @@
 "use client";
 
+/* The site is statically exported to GitHub Pages, so native links and the
+ * already-optimized merchant images are intentional in this client view. */
+/* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element */
+
 import { useMemo, useState } from "react";
 import rawOffers from "../../data/offers.json";
 import AdSlot from "./AdSlot";

@@ -31,9 +31,23 @@ const TRUSTED_BRANDS = [
 // them. This guard is deliberately conservative: it rejects the tiny feed
 // rendition, without treating a normal product photo as an error.
 export const MIN_MIRAVIA_PRODUCT_IMAGE_BYTES = 12_000;
-export const MIRAVIA_QUALITY_POLICY_VERSION = 'v3';
+export const MIN_MIRAVIA_PRODUCT_IMAGE_DIMENSION = 500;
+export const MIN_MIRAVIA_OPTIMIZED_IMAGE_BYTES = 2_500;
+export const MIRAVIA_QUALITY_POLICY_VERSION = 'v4';
 
-export function isMiraviaProductImageLargeEnough(byteLength = 0) {
+export function isMiraviaProductImageLargeEnough(byteLength = 0, dimensions = {}) {
+  const width = Number(dimensions.width || 0);
+  const height = Number(dimensions.height || 0);
+  // File weight alone is not a quality measurement: a mostly-white 720 px
+  // WebP can legitimately weigh 3–6 KB. When decoded dimensions are known,
+  // require a card-ready size and only keep a small anti-placeholder floor.
+  if (width > 0 && height > 0) {
+    return Number(byteLength) >= MIN_MIRAVIA_OPTIMIZED_IMAGE_BYTES
+      && width >= MIN_MIRAVIA_PRODUCT_IMAGE_DIMENSION
+      && height >= MIN_MIRAVIA_PRODUCT_IMAGE_DIMENSION;
+  }
+  // Preserve the conservative fallback for old cached files whose dimensions
+  // have not yet been inspected.
   return Number(byteLength) >= MIN_MIRAVIA_PRODUCT_IMAGE_BYTES;
 }
 

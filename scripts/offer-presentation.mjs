@@ -78,7 +78,7 @@ export function improveOfferTitle(value = '') {
     const brand = original.match(/\b(SPARK)\b/iu)?.[1] || '';
     const inches = original.match(/\b(?:de\s+)?(\d{1,2})\s*(?:"|pulgadas?\b)/iu)?.[1] || '';
     const power = original.match(/\b(\d{2,4})\s*W\b/iu)?.[1] || '';
-    return trimAtWord(`Ventilador${brand ? ` ${brand}` : ''}${inches ? ` de sobremesa · ${inches}\"` : ''}${power ? ` · ${power} W` : ''}`);
+    return trimAtWord(`Ventilador${brand ? ` ${brand}` : ''}${inches ? ` de sobremesa · ${inches}"` : ''}${power ? ` · ${power} W` : ''}`);
   }
 
   if (/baliza\s+v16|luz\s+de\s+emergencia.*(?:dgt|coche)/.test(text)) {

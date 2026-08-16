@@ -52,19 +52,6 @@ function productIdentity(deal = {}) {
   return '';
 }
 
-function canonicalShopUrl(deal = {}) {
-  try {
-    const parsed = new URL(deal.url || '');
-    const asin = parsed.pathname.match(/\/(?:dp|gp\/product)\/([a-z0-9]{10})(?:[/?]|$)/iu)?.[1];
-    if (asin) return `amazon:${asin.toLowerCase()}`;
-    const product = parsed.pathname.match(/\/item\/(\d+)\.html/iu)?.[1];
-    if (product) return `aliexpress:${product}`;
-    return `${parsed.hostname.toLowerCase()}${parsed.pathname.replace(/\/$/u, '')}`;
-  } catch {
-    return '';
-  }
-}
-
 /** A privately submitted offer must never be rejected because another title
  * merely looks similar. It is a duplicate only when we can prove it is the
  * same product ID, or the exact same canonical link. */

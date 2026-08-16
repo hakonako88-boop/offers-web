@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 import { createGunzip } from 'node:zlib';
+import sharp from 'sharp';
 import {
   formatMiraviaCaption,
   formatMiraviaTelegramCaption,
@@ -141,9 +142,10 @@ async function preferredMiraviaImage(offer) {
   const response = await fetch(imageUrl, { signal: AbortSignal.timeout(15_000) });
   const contentType = response.headers.get('content-type') || '';
   if (!response.ok || !contentType.toLowerCase().startsWith('image/')) throw new Error(`Miravia image status ${response.status}`);
-  const image = await response.arrayBuffer();
-  if (!isMiraviaProductImageLargeEnough(image.byteLength)) {
-    throw new Error(`Miravia image is too small (${image.byteLength} bytes)`);
+  const image = Buffer.from(await response.arrayBuffer());
+  const dimensions = await sharp(image, { failOn: 'none' }).metadata();
+  if (!isMiraviaProductImageLargeEnough(image.byteLength, dimensions)) {
+    throw new Error(`Miravia image is too small (${image.byteLength} bytes, ${dimensions.width || 0}x${dimensions.height || 0}px)`);
   }
   return imageUrl;
 }
@@ -154,14 +156,23 @@ async function mirrorImageForWeb(offer, imageUrl = offer.image) {
   const existingBytes = fs.existsSync(localImage) ? fs.statSync(localImage).size : 0;
   // Do not repeatedly download good originals, but give old catalogue
   // thumbnails a chance to be replaced when a better rendition is available.
-  if (isMiraviaProductImageLargeEnough(existingBytes)) return `/tg/${filename}`;
+  if (existingBytes) {
+    try {
+      const existingDimensions = await sharp(localImage, { failOn: 'none' }).metadata();
+      if (isMiraviaProductImageLargeEnough(existingBytes, existingDimensions)) return `/tg/${filename}`;
+    } catch {
+      // A corrupt legacy cache entry is replaced by the verified download.
+    }
+  }
 
   try {
     const response = await fetch(imageUrl);
     if (!response.ok) throw new Error(`image status ${response.status}`);
     const image = Buffer.from(await response.arrayBuffer());
-    if (!isMiraviaProductImageLargeEnough(image.length)) throw new Error(`image too small (${image.length} bytes)`);
-    if (existingBytes && image.length <= existingBytes) return `/tg/${filename}`;
+    const dimensions = await sharp(image, { failOn: 'none' }).metadata();
+    if (!isMiraviaProductImageLargeEnough(image.length, dimensions)) {
+      throw new Error(`image too small (${image.length} bytes, ${dimensions.width || 0}x${dimensions.height || 0}px)`);
+    }
     fs.mkdirSync(WEB_IMAGES_DIR, { recursive: true });
     fs.writeFileSync(localImage, image);
     return `/tg/${filename}`;

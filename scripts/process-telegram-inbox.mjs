@@ -576,7 +576,10 @@ for (const update of updates || []) {
     } catch (error) {
       console.warn(`Telegram confirmation callback could not be processed: ${safeError(error, settings.token)}`);
       if (callbackChatId) {
-        try { await reply(settings.token, callbackChatId, inboxFailureReply(error)); } catch {}
+        try { await reply(settings.token, callbackChatId, inboxFailureReply(error)); } catch {
+          // The callback was already acknowledged; Telegram can reject a late
+          // diagnostic reply without changing the processed update state.
+        }
       }
     }
     processed.add(updateId);
