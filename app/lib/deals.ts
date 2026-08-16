@@ -170,7 +170,7 @@ function isRecent(timestamp?: number) {
  * Keep the storefront selective without deleting the historical source data
  * or blocking an offer explicitly sent by the owner through Telegram. */
 function isWebworthyMiraviaOffer(offer: LegacyOffer, title: string, price: number) {
-  if (offer.store !== "Miravia" || offer.source === "telegram-inbox" || /^manual-/i.test(String(offer.source_product_id || ""))) return true;
+  if (offer.store !== "Miravia" || /^telegram-/i.test(String(offer.source || "")) || /^manual-/i.test(String(offer.source_product_id || ""))) return true;
   const text = normalise(`${offer.category ?? ""} ${title}`);
   const usefulDepartments = /tecnolog|electron|informat|mobile|telefono|data|memory|software|gaming|consola|videojuego|cocina|cafe|freidora|beauty|belleza|salud|health|deporte|sport|juguete|toy|baby|herramienta|bricolaje|diy/.test(text);
   const catalogueTerms = /\b(?:correa|cuerda|malla|relleno|mantel|bolso|cardigan|sandalia|botin|gafas|cuaderno|papeleria|funda|recambio|repuesto)\b/.test(text);
@@ -191,11 +191,15 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
   // current price but no reliable previous-price comparison. They are still
   // useful for the website when all of the product essentials are present.
   // Imported/automatic offers keep the stricter savings-or-coupon rule.
-  const isManualTelegramOffer = offer.source === "telegram-inbox"
+  // Every record written by the Telegram processors has already passed the
+  // exact product, price, image and affiliate-link checks.  Source-channel
+  // publications often do not expose a trustworthy previous price, so accept
+  // their verified current price just as we do for the owner's inbox.
+  const isVerifiedTelegramOffer = /^telegram-/i.test(String(offer.source || ""))
     || /^(?:manual-|aliexpress:)/i.test(String(offer.source_product_id || ""));
-  const title = conciseTitle(cleanTitle(offer.title), isManualTelegramOffer ? 18 : 22);
-  const hasPublishablePrice = hasDemonstrableSaving || isManualTelegramOffer;
-  const hasValidTitle = isManualTelegramOffer ? isValidManualTitle(title) : isUsefulTitle(title);
+  const title = conciseTitle(cleanTitle(offer.title), isVerifiedTelegramOffer ? 18 : 22);
+  const hasPublishablePrice = hasDemonstrableSaving || isVerifiedTelegramOffer;
+  const hasValidTitle = isVerifiedTelegramOffer ? isValidManualTitle(title) : isUsefulTitle(title);
   if (!id || !price || !hasPublishablePrice || !hasValidTitle || !isWebworthyMiraviaOffer(offer, title, price) || !offer.url || !offer.image || !store || !isRecent(offer.date) || !isSupportedAffiliateUrl(offer.url, store)) return [];
   const date = formatDate(offer.date);
   return [{
@@ -214,11 +218,30 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
 });
 
 /** Homepage, sitemap and offer pages share this editorial list. */
+function affiliateIdentity(value: string) {
+  try {
+    const url = new URL(value);
+    const host = url.hostname.toLowerCase();
+    if (host === "awin1.com" || host === "www.awin1.com") {
+      // Awin uses the same /cread.php or /pclick.php path for every product.
+      // The destination/product query value is therefore part of its identity;
+      // dropping the complete query collapses unrelated Miravia products.
+      const destination = url.searchParams.get("ued");
+      if (destination) return `awin-destination:${destination.toLowerCase().replace(/[?#].*$/, "")}`;
+      const product = url.searchParams.get("p");
+      if (product) return `awin-product:${product.toLowerCase()}`;
+    }
+    return `${url.origin}${url.pathname}`.toLowerCase().replace(/\/$/, "");
+  } catch {
+    return value.replace(/\?.*$/, "").toLowerCase();
+  }
+}
+
 const seenAffiliateUrls = new Set<string>();
 export const publishedDeals: PublishedDeal[] = candidates
   .sort((left, right) => Date.parse(right.verifiedDate || "") - Date.parse(left.verifiedDate || ""))
   .filter((deal) => {
-    const key = deal.affiliateUrl.replace(/\?.*$/, "").toLowerCase();
+    const key = affiliateIdentity(deal.affiliateUrl);
     if (seenAffiliateUrls.has(key)) return false;
     seenAffiliateUrls.add(key);
     return true;
