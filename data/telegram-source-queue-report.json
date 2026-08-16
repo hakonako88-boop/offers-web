@@ -1,20 +1,31 @@
 {
-  "updatedAt": "2026-08-16T13:56:00.308Z",
+  "updatedAt": "2026-08-16T14:13:29.583Z",
   "summary": {
     "published": 20,
     "blocked": 17,
-    "rejected": 19,
-    "pending": 5
+    "rejected": 22,
+    "pending": 3
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:90974:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 90974,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/90974",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:90973:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 90973,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/90973",
       "resultUrl": ""
     },
@@ -23,9 +34,9 @@
       "source": "telegram-errores-de-precio",
       "messageId": 15428,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/erroresde_precio/15428",
       "resultUrl": ""
     },
@@ -34,9 +45,9 @@
       "source": "telegram-una-ganga",
       "messageId": 90972,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/90972",
       "resultUrl": ""
     },
@@ -67,9 +78,9 @@
       "source": "telegram-una-ganga",
       "messageId": 90969,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/90969",
       "resultUrl": ""
     },
@@ -123,8 +134,8 @@
       "messageId": 90965,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/una_ganga/90965",
       "resultUrl": ""
     },
