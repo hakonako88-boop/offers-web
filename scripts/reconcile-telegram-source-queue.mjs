@@ -1,0 +1,82 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ROOT = process.cwd();
+const QUEUE_FILE = path.join(ROOT, 'data', 'telegram-source-queue.json');
+const REPORT_FILE = path.join(ROOT, 'data', 'telegram-source-queue-report.json');
+const AMAZON_STATE_FILE = path.join(ROOT, 'data', 'amazon-discovery-state.json');
+const PUBLICATION_FILES = [
+  path.join(ROOT, 'data', 'aliexpress-publications.json'),
+  path.join(ROOT, 'data', 'miravia-publications.json'),
+  path.join(ROOT, 'data', 'amazon-publications.json'),
+];
+const MAX_ATTEMPTS = 3;
+
+function readJson(file, fallback) {
+  try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return fallback; }
+}
+
+function writeJson(file, value) {
+  fs.writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+}
+
+const queue = readJson(QUEUE_FILE, { version: 1, items: [] });
+const publications = PUBLICATION_FILES.flatMap((file) => readJson(file, { published: [] }).published || []);
+const publicationBySignal = new Map(publications
+  .filter((entry) => entry.communitySignalId)
+  .map((entry) => [entry.communitySignalId, entry]));
+const amazonError = String(readJson(AMAZON_STATE_FILE, {}).lastError || '');
+const now = new Date().toISOString();
+
+for (const item of queue.items || []) {
+  if (item.status !== 'pending') continue;
+  const publication = publicationBySignal.get(item.id);
+  if (publication) {
+    item.status = 'published';
+    item.reason = 'Oferta verificada y publicada con la afiliación de ChollosAlDía';
+    item.telegramMessageId = publication.telegramMessageId || publication.message_id || null;
+    item.resultUrl = publication.url || '';
+    item.updatedAt = now;
+    continue;
+  }
+
+  if (item.store === 'Amazon' && /eligibility requirements/iu.test(amazonError)) {
+    item.status = 'blocked';
+    item.reason = 'Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad';
+    item.updatedAt = now;
+    continue;
+  }
+
+  item.attempts = Number(item.attempts || 0) + 1;
+  item.updatedAt = now;
+  if (item.attempts >= MAX_ATTEMPTS) {
+    item.status = 'rejected';
+    item.reason = `No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de ${MAX_ATTEMPTS} intentos`;
+  } else {
+    item.reason = `Pendiente de reintento (${item.attempts}/${MAX_ATTEMPTS})`;
+  }
+}
+
+const summary = (queue.items || []).reduce((counts, item) => {
+  counts[item.status] = (counts[item.status] || 0) + 1;
+  return counts;
+}, {});
+const report = {
+  updatedAt: now,
+  summary,
+  recent: [...(queue.items || [])].reverse().slice(0, 100).map((item) => ({
+    id: item.id,
+    source: item.source,
+    messageId: item.messageId,
+    store: item.store,
+    status: item.status,
+    attempts: item.attempts,
+    reason: item.reason,
+    sourceUrl: item.sourceUrl,
+    resultUrl: item.resultUrl || '',
+  })),
+};
+
+writeJson(QUEUE_FILE, queue);
+writeJson(REPORT_FILE, report);
+console.log(`Telegram source queue: ${JSON.stringify(summary)}.`);

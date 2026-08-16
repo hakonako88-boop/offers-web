@@ -16,7 +16,7 @@ const STATE_FILE = path.join(ROOT, 'data', 'amazon-discovery-state.json');
 const PUBLISHED_FILE = path.join(ROOT, 'data', 'amazon-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'amazon-community-signal-state.json');
-const MAX_POSTS_PER_RUN = 1;
+const MAX_POSTS_PER_RUN = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 3 : 1;
 const MAX_PUBLICATION_ATTEMPTS = 8;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 4 * 60 * 60 * 1000;
 
@@ -227,10 +227,10 @@ const communityDiscovery = await discoverCommunitySignals({ state: communityStat
 const selectedSources = new Set();
 const amazonSignals = [];
 for (const signal of communityDiscovery.signals) {
-  if (signal.sourceStore !== 'Amazon' || signal.terms.length < 2 || selectedSources.has(signal.source)) continue;
+  if (signal.sourceStore !== 'Amazon' || signal.terms.length < 2 || (!signal.queueItemId && selectedSources.has(signal.source))) continue;
   amazonSignals.push(signal);
-  selectedSources.add(signal.source);
-  if (amazonSignals.length >= 8) break;
+  if (!signal.queueItemId) selectedSources.add(signal.source);
+  if (amazonSignals.length >= (process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 18 : 8)) break;
 }
 const topics = amazonSignals.length
   ? amazonSignals.map((signal) => ({ keywords: signal.searchQuery, searchIndex: 'All', category: signal.category, signal }))
@@ -292,6 +292,7 @@ for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
       url: offer.url,
       source: offer.communitySource || 'amazon-creators-api',
       sourceUrl: offer.communitySourceUrl || '',
+      communitySignalId: offer.communitySignalId || '',
     });
     seenAsins.add(offer.asin);
     sent += 1;

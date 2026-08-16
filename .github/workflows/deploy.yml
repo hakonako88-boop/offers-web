@@ -66,6 +66,7 @@ jobs:
       # Una novedad real en las fuentes y una prueba manual pueden ignorar el
       # intervalo editorial; los filtros de calidad y duplicados siguen activos.
       FORCE_AUTOMATIC_PUBLICATION: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || (github.event_name == 'workflow_dispatch' && inputs.run_automatic_source != 'none') }}
+      TELEGRAM_SOURCE_QUEUE_MODE: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed' }}
     steps:
       - name: Descargar web
         uses: actions/checkout@v4
@@ -151,6 +152,10 @@ jobs:
         continue-on-error: true
         run: npm run sync:miravia
 
+      - name: Clasificar mensajes pendientes de los canales
+        if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed' }}
+        run: node scripts/reconcile-telegram-source-queue.mjs
+
       - name: Guardar resultado de la prueba de Telegram
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[telegram-test]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: |
@@ -169,7 +174,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/amazon-community-signal-state.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json data/telegram-inbox-state.json data/telegram-removals.json data/telegram-caption-repairs.json public/tg
+          git add data/offers.json data/amazon-discovery-state.json data/amazon-publications.json data/amazon-community-signal-state.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json data/telegram-inbox-state.json data/telegram-removals.json data/telegram-caption-repairs.json data/telegram-source-queue.json data/telegram-source-queue-report.json public/tg
           git diff --cached --quiet || git commit -m "Actualizar ofertas desde Telegram"
           git pull --rebase origin main
           git push

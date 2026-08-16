@@ -20,10 +20,10 @@ const PUBLISHED_FILE = path.join(ROOT, 'data', 'aliexpress-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.json');
-const MAX_POSTS_PER_RUN = 1;
+const MAX_POSTS_PER_RUN = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 3 : 1;
 const MAX_PUBLICATION_ATTEMPTS = 8;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
-const MAX_COMMUNITY_QUERIES_PER_RUN = 8;
+const MAX_COMMUNITY_QUERIES_PER_RUN = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 18 : 8;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -279,9 +279,12 @@ for (const signal of communityDiscovery.signals) {
   // Take the strongest fresh post from every source before considering more
   // posts from the same channel. This prevents a large channel from hiding
   // all offers discovered by the other owner-approved channels.
-  if (signal.sourceStore === 'Amazon' || signal.terms.length < 2 || selectedSources.has(signal.source)) continue;
+  if (signal.sourceStore === 'Amazon'
+    || (signal.queueItemId && signal.sourceStore !== 'AliExpress')
+    || signal.terms.length < 2
+    || (!signal.queueItemId && selectedSources.has(signal.source))) continue;
   communitySignals.push(signal);
-  selectedSources.add(signal.source);
+  if (!signal.queueItemId) selectedSources.add(signal.source);
   if (communitySignals.length >= MAX_COMMUNITY_QUERIES_PER_RUN) break;
 }
 
@@ -368,6 +371,7 @@ for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
       store: 'AliExpress',
       source: offer.communitySource || 'aliexpress-official',
       sourceUrl: offer.communitySourceUrl || '',
+      communitySignalId: offer.communitySignalId || '',
       status: 'PUBLICADO',
     });
     seenProductIds.add(offer.id);

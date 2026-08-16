@@ -5,6 +5,7 @@ import {
   channelUsername,
   compareCheckpoint,
   latestPublicMessageId,
+  parseTelegramPublicMessages,
 } from '../scripts/check-telegram-source-changes.mjs';
 
 test('normalizes public Telegram channel URLs', () => {
@@ -26,4 +27,38 @@ test('initializes a channel without publishing its existing backlog', () => {
   assert.deepEqual(compareCheckpoint(undefined, 105), { changed: false, nextId: 105 });
   assert.deepEqual(compareCheckpoint(105, 106), { changed: true, nextId: 106 });
   assert.deepEqual(compareCheckpoint(106, 105), { changed: false, nextId: 106 });
+});
+
+test('extracts every supported product link as an individual queue candidate', () => {
+  const html = `
+    <div class="tgme_widget_message_wrap"><div data-post="Ofertos/106">
+      <div class="tgme_widget_message_text">Robot aspirador Xiaomi en AliExpress</div>
+      <a href="https://s.click.aliexpress.com/e/_abc">Comprar</a>
+      <time datetime="2026-08-16T08:00:00Z"></time>
+    </div></div>
+    <div class="tgme_widget_message_wrap"><div data-post="Ofertos/107">
+      <div class="tgme_widget_message_text">Fire TV Stick en Amazon</div>
+      <a href="https://www.amazon.es/dp/B012345678">Ver oferta</a>
+      <time datetime="2026-08-16T08:01:00Z"></time>
+    </div></div>`;
+  const messages = parseTelegramPublicMessages({ store: '' }, html);
+  assert.deepEqual(messages.map((message) => message.messageId), [106, 107]);
+  assert.deepEqual(messages.map((message) => message.links[0].store), ['AliExpress', 'Amazon']);
+  assert.equal(messages[0].text, 'Robot aspirador Xiaomi en AliExpress');
+});
+
+test('recognizes the official and channel-specific shorteners used by the configured sources', () => {
+  const html = `
+    <div class="tgme_widget_message_wrap"><div data-post="una_ganga/201">
+      <div class="tgme_widget_message_text">Oferta Amazon con descuento</div>
+      <a href="https://link.amazon/ABC">Comprar</a>
+    </div></div>
+    <div class="tgme_widget_message_wrap"><div data-post="tiesometro/202">
+      <div class="tgme_widget_message_text">Taladro en AliExpress</div>
+      <a href="https://www.cholloschina.com/oferta/taladro">Comprar</a>
+    </div></div>`;
+  const amazon = parseTelegramPublicMessages({ store: '' }, html)[0];
+  const aliExpress = parseTelegramPublicMessages({ store: 'AliExpress' }, html)[1];
+  assert.equal(amazon.links[0].store, 'Amazon');
+  assert.equal(aliExpress.links[0].store, 'AliExpress');
 });

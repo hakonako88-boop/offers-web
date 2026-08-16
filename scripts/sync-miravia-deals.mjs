@@ -27,7 +27,7 @@ const PUBLISHED_FILE = path.join(ROOT, 'data', 'miravia-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'miravia-community-signal-state.json');
-const MAX_POSTS_PER_RUN = 1;
+const MAX_POSTS_PER_RUN = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 3 : 1;
 const MAX_PUBLICATION_ATTEMPTS = 12;
 const MAX_PRODUCTS_SCANNED = 40000;
 const MAX_CANDIDATES = 60;
@@ -316,14 +316,15 @@ const canPublishToday = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
 
 const signalCutoff = Date.now() - COMMUNITY_SIGNAL_RETENTION_MS;
 let communitySignals = (storedCommunityState.recentSignals || [])
+  .filter((signal) => !signal.queueItemId || signal.sourceStore === 'Miravia')
   .filter((signal) => !Number.isFinite(Date.parse(signal.publishedAt || '')) || Date.parse(signal.publishedAt) > signalCutoff);
 const lastCommunityCheck = Date.parse(storedCommunityState.lastCheckedAt || '');
 let communityHealth = storedCommunityState.sourceHealth || [];
 let micholloLastCheckedAt = storedCommunityState.micholloLastCheckedAt;
-if (!Number.isFinite(lastCommunityCheck) || Date.now() - lastCommunityCheck >= COMMUNITY_REFRESH_MS) {
+if (process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' || !Number.isFinite(lastCommunityCheck) || Date.now() - lastCommunityCheck >= COMMUNITY_REFRESH_MS) {
   const discovery = await discoverCommunitySignals({ state: { ...storedCommunityState, seen: [] } });
   const mergedSignals = new Map(communitySignals.map((signal) => [signal.id, signal]));
-  for (const signal of discovery.signals) mergedSignals.set(signal.id, signal);
+  for (const signal of discovery.signals.filter((entry) => !entry.queueItemId || entry.sourceStore === 'Miravia')) mergedSignals.set(signal.id, signal);
   communitySignals = [...mergedSignals.values()]
     .filter((signal) => !Number.isFinite(Date.parse(signal.publishedAt || '')) || Date.parse(signal.publishedAt) > signalCutoff)
     .sort((left, right) => Number(right.sourceWeight || 0) - Number(left.sourceWeight || 0))
@@ -409,6 +410,7 @@ for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
       store: 'Miravia',
       source: offer.communitySource || 'miravia-awin-feed',
       sourceUrl: offer.communitySourceUrl || '',
+      communitySignalId: offer.communitySignalId || '',
       status: 'PUBLICADO',
     });
     seenProductIds.add(offer.id);

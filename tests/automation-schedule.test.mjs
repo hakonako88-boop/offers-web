@@ -27,10 +27,11 @@ test('runs the three stores only after a source change or an explicit manual che
 });
 
 test('publishes one validated offer in each independently isolated slot', () => {
-  assert.match(aliExpressSync, /const MAX_POSTS_PER_RUN = 1;/u);
-  assert.match(miraviaSync, /const MAX_POSTS_PER_RUN = 1;/u);
-  assert.match(amazonSync, /const MAX_POSTS_PER_RUN = 1;/u);
+  assert.match(aliExpressSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
+  assert.match(miraviaSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
+  assert.match(amazonSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
   assert.match(aliExpressSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
   assert.match(miraviaSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
   assert.match(workflow, /FORCE_AUTOMATIC_PUBLICATION:.*telegram_sources_changed/u);
+  assert.match(workflow, /Clasificar mensajes pendientes de los canales/u);
 });

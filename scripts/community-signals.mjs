@@ -140,6 +140,32 @@ function makeSignal(source, link, title, publishedAt, merchant = '') {
   };
 }
 
+function queuedTelegramSignals() {
+  try {
+    const queueFile = new URL('../data/telegram-source-queue.json', import.meta.url);
+    const queue = JSON.parse(readFileSync(queueFile, 'utf8'));
+    const sources = new Map(telegramChannelSources().map((source) => [source.id, source]));
+    return (queue.items || [])
+      .filter((item) => item.status === 'pending' && /^(Amazon|AliExpress|Miravia)$/u.test(String(item.store || '')))
+      .map((item) => {
+        const source = sources.get(item.source) || {
+          id: item.source,
+          weight: 20,
+          username: item.username,
+          merchant: item.store,
+        };
+        const signal = makeSignal(source, item.sourceUrl, item.text, item.publishedAt, item.store);
+        signal.id = item.id;
+        signal.queueItemId = item.id;
+        signal.merchantUrl = item.merchantUrl;
+        return signal;
+      })
+      .filter((signal) => signal.title && signal.terms.length >= 2);
+  } catch {
+    return [];
+  }
+}
+
 function decodedAttribute(value = '') {
   return cleanText(value)
     .replace(/&amp;/gi, '&')
@@ -250,12 +276,17 @@ async function fetchSource(url, fetchImpl) {
   return response;
 }
 
-export async function discoverCommunitySignals({ state = {}, fetchImpl = fetch, now = Date.now(), includeAmazon = false } = {}) {
+export async function discoverCommunitySignals({ state = {}, fetchImpl = fetch, now = Date.now(), includeAmazon = false, includeTelegramQueue = true } = {}) {
   const known = new Set((state.seen || []).map((entry) => entry.id));
   const sourceHealth = [];
-  const signals = [];
+  const signals = includeTelegramQueue ? queuedTelegramSignals().filter((signal) => isFresh(signal, now)) : [];
+  if (signals.length) sourceHealth.push({ source: 'telegram-source-queue', status: 'ok', found: signals.length });
 
   for (const source of COMMUNITY_SOURCES) {
+    // Telegram is collected by the persistent per-message queue. Reading the
+    // same public pages here would create duplicates and could mark a message
+    // as seen before every store has classified it.
+    if (source.kind === 'telegram-public') continue;
     if (source.id === 'michollo' && !shouldRefreshMichollo(state, now)) {
       sourceHealth.push({ source: source.id, status: 'deferred' });
       continue;

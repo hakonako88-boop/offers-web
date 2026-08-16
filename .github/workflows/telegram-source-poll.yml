@@ -34,7 +34,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/telegram-channel-checkpoints.json
+          git add data/telegram-channel-checkpoints.json data/telegram-source-queue.json
           git diff --cached --quiet || git commit -m "Actualizar vigilancia de canales [source-watch]"
           git pull --rebase origin main
           git push

@@ -4,11 +4,11 @@ Las ofertas automáticas se descubren mediante fuentes públicas permitidas, se 
 
 ## Publicación por novedades, sin horarios fijos
 
-No existen tandas ni horas de publicación. Un flujo ligero consulta cada cinco minutos la vista pública de los canales aprobados y guarda el último identificador visto de cada canal. Cuando alguno avanza, se lanza una revisión de Amazon, AliExpress y Miravia. Si no hay mensajes nuevos, no se reconstruye la web ni se intenta publicar.
+No existen tandas ni horas de publicación. Un flujo ligero consulta periódicamente la vista pública de los canales aprobados, recorre las páginas necesarias hasta el último identificador ya guardado y crea una entrada independiente por cada mensaje nuevo. Cuando alguno avanza, se lanza una revisión de Amazon, AliExpress y Miravia.
 
 La reacción habitual es de hasta cinco minutos, más el tiempo de cola de GitHub Actions y la consulta a la tienda. GitHub no garantiza ejecución al segundo, por lo que puede existir un pequeño retraso. Una novedad no obliga a publicar: los filtros de tienda, calidad, duplicados, imagen, precio y afiliación siguen siendo obligatorios.
 
-En cada revisión se publica como máximo una oferta validada por tienda. Si llegan varias novedades juntas, quedan disponibles para las revisiones siguientes y nunca se inventan productos para alcanzar una cantidad.
+La cola persiste en `data/telegram-source-queue.json`. Cada entrada conserva canal, mensaje, tienda, enlace comercial, intentos, estado y motivo. Los estados posibles son `pending`, `published`, `rejected`, `blocked` e `ignored`. Mientras existan entradas `pending`, las revisiones siguientes continúan aunque el canal no haya publicado otro mensaje. En modo cola pueden publicarse hasta tres ofertas validadas por tienda y ejecución. Tras tres intentos sin poder verificar producto, precio, imagen y afiliación, la entrada se clasifica como rechazada en lugar de desaparecer silenciosamente.
 
 Amazon solo publica cuando la cuenta tiene acceso aprobado a Creators API y la respuesta oficial incluye ASIN, imagen, precio y disponibilidad. Sin elegibilidad no copia contenido externo ni publica datos incompletos. Continúa disponible para publicaciones manuales creadas con SiteStripe o Mobile GetLink.
 
@@ -26,7 +26,7 @@ Chollometro puede permanecer como señal secundaria de respaldo para AliExpress,
 
 ### Canales públicos de Telegram
 
-Los canales públicos aprobados por el propietario se declaran en `data/telegram-source-channels.json`. El vigilante guarda su posición en `data/telegram-channel-checkpoints.json`. El formato de cada fuente es:
+Los canales públicos aprobados por el propietario se declaran en `data/telegram-source-channels.json`. El vigilante guarda su posición en `data/telegram-channel-checkpoints.json`, la cola completa en `data/telegram-source-queue.json` y un resumen auditable en `data/telegram-source-queue-report.json`. El formato de cada fuente es:
 
 ```json
 {
