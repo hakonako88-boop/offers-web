@@ -1,20 +1,42 @@
 {
-  "updatedAt": "2026-08-16T17:10:22.900Z",
+  "updatedAt": "2026-08-16T17:33:20.134Z",
   "summary": {
     "published": 27,
-    "blocked": 22,
-    "rejected": 33,
+    "blocked": 23,
+    "rejected": 34,
     "pending": 4
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:90988:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 90988,
+      "store": "Amazon",
+      "status": "blocked",
+      "attempts": 0,
+      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
+      "sourceUrl": "https://t.me/una_ganga/90988",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:90987:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 90987,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/90987",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:6974:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 6974,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/tiesometro/6974",
       "resultUrl": ""
     },
@@ -24,8 +46,8 @@
       "messageId": 90986,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/90986",
       "resultUrl": ""
     },
@@ -34,9 +56,9 @@
       "source": "telegram-una-ganga",
       "messageId": 90985,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/90985",
       "resultUrl": ""
     },
@@ -111,9 +133,9 @@
       "source": "telegram-una-ganga",
       "messageId": 90983,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/90983",
       "resultUrl": ""
     },
@@ -144,9 +166,9 @@
       "source": "telegram-paramanitas",
       "messageId": 4572,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/paramanitas/4572",
       "resultUrl": ""
     },
