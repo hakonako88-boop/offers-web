@@ -11,6 +11,7 @@ const PUBLICATION_FILES = [
   path.join(ROOT, 'data', 'amazon-publications.json'),
 ];
 const MAX_ATTEMPTS = 3;
+const MIRAVIA_RETRY_POLICY = 'exact-official-page-v1';
 
 function readJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return fallback; }
@@ -28,8 +29,29 @@ const publicationBySignal = new Map(publications
 const amazonError = String(readJson(AMAZON_STATE_FILE, {}).lastError || '');
 const now = new Date().toISOString();
 
+// The former Miravia reader could not expand tidd.ly and rejected otherwise
+// valid posts. Reopen recent affected items exactly once after installing the
+// official-page resolver; every offer still has to pass the normal validation.
+const retryCutoff = Date.now() - 48 * 60 * 60 * 1000;
+const reopenedIds = new Set();
+for (const item of queue.items || []) {
+  const publishedAt = Date.parse(item.publishedAt || '');
+  if (item.store === 'Miravia'
+    && item.status === 'rejected'
+    && item.retryPolicyVersion !== MIRAVIA_RETRY_POLICY
+    && (!Number.isFinite(publishedAt) || publishedAt >= retryCutoff)) {
+    item.status = 'pending';
+    item.attempts = 0;
+    item.reason = 'Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio';
+    item.retryPolicyVersion = MIRAVIA_RETRY_POLICY;
+    item.updatedAt = now;
+    reopenedIds.add(item.id);
+  }
+}
+
 for (const item of queue.items || []) {
   if (item.status !== 'pending') continue;
+  if (reopenedIds.has(item.id)) continue;
   const publication = publicationBySignal.get(item.id);
   if (publication) {
     item.status = 'published';
