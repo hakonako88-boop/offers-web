@@ -128,10 +128,16 @@ function linkedAliExpressOffer(metadata, signal) {
   const title = String(metadata.title || '').trim();
   const image = String(metadata.imageUrl || '').trim();
   const url = String(metadata.affiliateUrl || '').trim();
-  const price = Number(metadata.price) || 0;
-  const previousPrice = Number(metadata.previousPrice) || 0;
+  // The affiliate API is authoritative when it supplies a price. Some exact
+  // product-detail responses omit the old/PVP field; a queued Telegram post
+  // may still provide a factual current price, so it can be published without
+  // inventing a discount.
+  const price = Number(metadata.price) || Number(signal.price) || 0;
+  const previousPrice = Number(metadata.previousPrice) || Number(signal.previousPrice) || 0;
   const discount = previousPrice > price ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
-  if (!metadata.identityVerified || !id || !title || !image || !url || price < 5 || previousPrice <= price || discount < 30) return null;
+  const hasProvenDiscount = previousPrice > price && discount >= 30;
+  const isExactQueuedOffer = Boolean(signal.queueItemId && price >= 5);
+  if (!metadata.identityVerified || !id || !title || !image || !url || price < 5 || (!hasProvenDiscount && !isExactQueuedOffer)) return null;
   const euro = (amount) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(amount);
   return {
     id,
@@ -299,6 +305,17 @@ for (const signal of communitySignals) {
       if (linkedOffer && !seenProductIds.has(linkedOffer.id)) {
         candidates.push(linkedOffer);
         continue;
+      }
+      if (signal.queueItemId) {
+        const missing = [
+          !metadata.identityVerified && 'identidad API',
+          !metadata.productId && 'id',
+          !metadata.title && 'título',
+          !metadata.imageUrl && 'foto',
+          !metadata.affiliateUrl && 'enlace afiliado',
+          !(Number(metadata.price) || Number(signal.price)) && 'precio',
+        ].filter(Boolean).join(', ');
+        console.warn(`Exact AliExpress queue item ${signal.id} was not publishable${missing ? `; missing ${missing}` : '; it did not pass the verified deal rules'}.`);
       }
     } catch (error) {
       console.warn(`Could not resolve the exact Telegram AliExpress link from ${signal.source}: ${error.message}`);

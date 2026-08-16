@@ -110,6 +110,17 @@ test('detects an Amazon product in an individual Telegram message', () => {
   assert.equal(signals[0].merchantUrl, 'https://www.amazon.es/dp/B0TESTASIN1');
 });
 
+test('keeps factual prices from a queued Telegram offer without inventing a previous price', () => {
+  const source = COMMUNITY_SOURCES.find((entry) => entry.id === 'telegram-una-ganga');
+  const html = `<div class="tgme_widget_message_wrap" data-post="una_ganga/90934">
+    <div class="tgme_widget_message_text">Máquina cortadora láser Precio: 221,69€ <a href="https://s.click.aliexpress.com/e/_c3IR4A8n">Enlace</a></div>
+    <time datetime="2026-08-16T01:02:55+00:00"></time>
+  </div>`;
+  const [signal] = parseTelegramPublicSignals(source, html);
+  assert.equal(signal.price, 221.69);
+  assert.equal(signal.previousPrice, 0);
+});
+
 test('skips Amazon community signals until an official attributed lookup is available', async () => {
   const now = Date.parse('2026-08-11T12:00:00.000Z');
   const response = `<?xml version="1.0"?><rss><channel><item><title>Oferta Amazon! Cafetera 900W a 29€</title><link>https://source.example/cafetera</link><pubDate>Tue, 11 Aug 2026 11:20:05 +0000</pubDate></item></channel></rss>`;

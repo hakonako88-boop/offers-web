@@ -122,6 +122,9 @@ export function searchTermsForSignal(title) {
 
 function makeSignal(source, link, title, publishedAt, merchant = '') {
   const terms = searchTermsForSignal(title);
+  const currentPrice = cleanText(title).match(/\b(?:precio(?:\s+oferta)?|por)\s*:?\s*(\d{1,5}(?:[.,]\d{1,2})?)\s*€/iu)?.[1] || '';
+  const previousPrice = cleanText(title).match(/\b(?:antes|pvp|precio\s+(?:anterior|recomendado))\s*:?\s*(\d{1,5}(?:[.,]\d{1,2})?)\s*€/iu)?.[1] || '';
+  const amount = (value) => Number.parseFloat(String(value || '').replace(',', '.')) || 0;
   return {
     id: `${source.id}:${link}`,
     source: source.id,
@@ -137,6 +140,8 @@ function makeSignal(source, link, title, publishedAt, merchant = '') {
       .replace(/\b\d+(?:[.,]\d+)?\s*€/gi, '')
       .slice(0, 115),
     sourceWeight: source.weight,
+    price: amount(currentPrice),
+    previousPrice: amount(previousPrice),
   };
 }
 
