@@ -153,6 +153,12 @@ async function scanFeed(feed, identities, fetchImpl, signal) {
   const stream = /gzip/iu.test(`${feed.url} ${response.headers.get('content-encoding') || ''}`)
     ? raw.pipe(createGunzip())
     : raw;
+  // Aborting the shared controller after another feed finds the product can
+  // emit an asynchronous stream error after the iterator has already left.
+  // Keep a listener attached so that expected cancellation never terminates
+  // the complete GitHub job with an unhandled AbortError.
+  raw.on('error', () => {});
+  if (stream !== raw) stream.on('error', () => {});
   try {
     for await (const chunk of stream) {
       reader.push(decoder.decode(chunk, { stream: true }));

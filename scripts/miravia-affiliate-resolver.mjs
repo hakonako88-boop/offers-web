@@ -32,7 +32,8 @@ export function miraviaProductIdFromUrl(url = '') {
       .find(Boolean);
     if (fromQuery) return fromQuery;
     const fromPath = parsed.pathname.match(/(?:product|item|p)[/-](\d{6,})(?:[/?-]|$)/iu)?.[1];
-    return numericId(fromPath);
+    const miraviaPageIdentity = parsed.pathname.match(/\/p\/i(\d{8,})(?:-s\d+)?\.html(?:$|\/)/iu)?.[1];
+    return numericId(fromPath || miraviaPageIdentity);
   } catch {
     return '';
   }

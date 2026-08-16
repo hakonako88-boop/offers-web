@@ -39,6 +39,13 @@ test('creates this publisher’s Awin deep link from a direct Miravia product UR
   );
 });
 
+test('extracts the stable identity from a modern Miravia product path', () => {
+  assert.equal(
+    miraviaProductIdFromUrl('https://www.miravia.es/p/i1374701289803985-s6187725364703441.html?awc=other'),
+    '1374701289803985',
+  );
+});
+
 test('removes another publisher tracking before creating the Miravia deep link', () => {
   const link = miraviaAwinDeepLink('https://www.miravia.es/p/i1374701289803985-s6187725364703441.html?aw_affid=1235944&awc=37166_x&publishertagid=975134');
   const destination = new URL(link).searchParams.get('ued');

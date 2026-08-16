@@ -22,6 +22,7 @@ import { communityMatchForTitle, discoverCommunitySignals } from './community-si
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
 import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
+import { extractProductMetadata } from './link-offer-extractor.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'miravia-discovery-state.json');
@@ -377,6 +378,9 @@ const canPublishToday = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
   || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
 
 const signalCutoff = Date.now() - COMMUNITY_SIGNAL_RETENTION_MS;
+const pendingMiraviaQueueIds = new Set(readJson(path.join(ROOT, 'data', 'telegram-source-queue.json'), { items: [] }).items
+  .filter((item) => item.status === 'pending' && item.store === 'Miravia')
+  .map((item) => item.id));
 let communitySignals = (storedCommunityState.recentSignals || [])
   .filter((signal) => !signal.queueItemId || signal.sourceStore === 'Miravia')
   .filter((signal) => !Number.isFinite(Date.parse(signal.publishedAt || '')) || Date.parse(signal.publishedAt) > signalCutoff);
@@ -417,12 +421,18 @@ if (!feed) throw new Error('No Spanish Miravia product feed is available for thi
 // publisher's private Awin feeds, so neither another channel's photo nor its
 // affiliate tracking is reused.
 const exactQueueCandidates = [];
-for (const signal of communitySignals.filter((entry) => entry.queueItemId && entry.sourceStore === 'Miravia').slice(0, 3)) {
+for (const signal of communitySignals.filter((entry) => pendingMiraviaQueueIds.has(entry.queueItemId)).slice(0, 3)) {
   try {
     const destinationUrl = await resolvedMiraviaSignalUrl(signal);
-    const metadata = destinationUrl
-      ? await resolveMiraviaFeedMetadata(destinationUrl, config.feedListUrl)
-      : {};
+    let metadata = destinationUrl ? await extractProductMetadata(destinationUrl).catch(() => ({})) : {};
+    if (destinationUrl && (!metadata.title || !metadata.imageUrl || !metadata.price)) {
+      const feedMetadata = await resolveMiraviaFeedMetadata(destinationUrl, config.feedListUrl);
+      metadata = {
+        ...metadata,
+        ...Object.fromEntries(Object.entries(feedMetadata).filter(([, value]) => value)),
+      };
+    }
+    if (!metadata.productId) metadata.productId = miraviaProductIdFromUrl(metadata.finalUrl || destinationUrl);
     const exactOffer = exactMiraviaOffer(metadata, signal, metadata.finalUrl || destinationUrl);
     if (exactOffer && !seenProductIds.has(exactOffer.id)) exactQueueCandidates.push(exactOffer);
     else console.warn(`Exact Miravia queue item ${signal.id} could not be verified in the Awin feed.`);
