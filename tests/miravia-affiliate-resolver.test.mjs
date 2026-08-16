@@ -39,6 +39,12 @@ test('creates this publisher’s Awin deep link from a direct Miravia product UR
   );
 });
 
+test('removes another publisher tracking before creating the Miravia deep link', () => {
+  const link = miraviaAwinDeepLink('https://www.miravia.es/p/i1374701289803985-s6187725364703441.html?aw_affid=1235944&awc=37166_x&publishertagid=975134');
+  const destination = new URL(link).searchParams.get('ued');
+  assert.equal(destination, 'https://www.miravia.es/p/i1374701289803985-s6187725364703441.html');
+});
+
 test('prefers the exact Miravia destination over an unverified feed id', () => {
   assert.match(
     miraviaAffiliateUrl({ productId: '42552297239', destinationUrl: 'https://www.miravia.es/p/producto-i1234567890.html' }),

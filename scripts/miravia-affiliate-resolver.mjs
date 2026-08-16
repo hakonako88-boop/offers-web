@@ -74,6 +74,9 @@ export function miraviaAwinDeepLink(destinationUrl, {
     const host = parsed.hostname.toLowerCase();
     if (parsed.protocol !== 'https:' || !(host === 'miravia.es' || host.endsWith('.miravia.es'))) return '';
     parsed.hash = '';
+    for (const key of [...parsed.searchParams.keys()]) {
+      if (/^(?:aw_|awc$|publishertag|sitename$|affiliatedomain$|exlaz$)/iu.test(key)) parsed.searchParams.delete(key);
+    }
     destination = parsed.toString();
   } catch {
     return '';

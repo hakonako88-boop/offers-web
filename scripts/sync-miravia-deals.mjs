@@ -20,7 +20,8 @@ import {
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { communityMatchForTitle, discoverCommunitySignals } from './community-signals.mjs';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
-import { miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
+import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
+import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'miravia-discovery-state.json');
@@ -68,6 +69,56 @@ function missingConfig(config) {
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function euro(value) {
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(value);
+}
+
+async function resolvedMiraviaSignalUrl(signal) {
+  const submitted = String(signal.merchantUrl || '');
+  try {
+    const response = await fetch(submitted, {
+      redirect: 'follow',
+      headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaBot/1.0; +https://chollosaldia.com)' },
+      signal: AbortSignal.timeout(15_000),
+    });
+    const finalUrl = new URL(response.url);
+    const host = finalUrl.hostname.toLowerCase();
+    return host === 'miravia.es' || host.endsWith('.miravia.es') ? finalUrl.toString() : '';
+  } catch {
+    return '';
+  }
+}
+
+function exactMiraviaOffer(metadata, signal, destinationUrl) {
+  const id = String(metadata.productId || '').trim();
+  const title = String(metadata.title || '').trim();
+  const image = String(metadata.imageUrl || '').trim();
+  const price = Number(metadata.price) || Number(signal.price) || 0;
+  const previousPrice = Number(metadata.previousPrice) || Number(signal.previousPrice) || 0;
+  const url = miraviaAffiliateUrl({ productId: id, destinationUrl });
+  if (!id || !title || !image || !price || !url) return null;
+  const discount = previousPrice > price ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
+  return {
+    id: `miravia-${id}`,
+    sourceProductId: id,
+    store: 'Miravia',
+    title,
+    image,
+    url,
+    price,
+    priceLabel: euro(price),
+    previousPrice: previousPrice > price ? previousPrice : 0,
+    previousPriceLabel: previousPrice > price ? euro(previousPrice) : '',
+    discount,
+    category: signal.category || 'Miravia',
+    titleTerms: signal.terms || [],
+    score: 2_000 + Number(signal.sourceWeight || 0) + discount,
+    communitySignalId: signal.id,
+    communitySource: signal.source,
+    communitySourceUrl: signal.sourceUrl,
+  };
 }
 
 async function telegram(method, token, payload) {
@@ -361,6 +412,25 @@ const entries = miraviaFeedEntries(parseFeedList(await listResponse.text()));
 const feed = selectMiraviaFeed(entries, state.nextFeed);
 if (!feed) throw new Error('No Spanish Miravia product feed is available for this publisher account.');
 
+// Resolve every queued tidd.ly link to the official Miravia product first.
+// The exact identities embedded in /p/i…-s….html are then looked up in this
+// publisher's private Awin feeds, so neither another channel's photo nor its
+// affiliate tracking is reused.
+const exactQueueCandidates = [];
+for (const signal of communitySignals.filter((entry) => entry.queueItemId && entry.sourceStore === 'Miravia').slice(0, 3)) {
+  try {
+    const destinationUrl = await resolvedMiraviaSignalUrl(signal);
+    const metadata = destinationUrl
+      ? await resolveMiraviaFeedMetadata(destinationUrl, config.feedListUrl)
+      : {};
+    const exactOffer = exactMiraviaOffer(metadata, signal, metadata.finalUrl || destinationUrl);
+    if (exactOffer && !seenProductIds.has(exactOffer.id)) exactQueueCandidates.push(exactOffer);
+    else console.warn(`Exact Miravia queue item ${signal.id} could not be verified in the Awin feed.`);
+  } catch (error) {
+    console.warn(`Exact Miravia queue item ${signal.id} failed: ${error.message}`);
+  }
+}
+
 // Al cambiar la política editorial volvemos a evaluar cada feed una vez, sin
 // olvidar los productos que ya se publicaron durante el último año.
 const feedVersion = `${MIRAVIA_QUALITY_POLICY_VERSION}:${String(feed.last_imported || feed.last_checked || 'unknown')}`;
@@ -374,7 +444,7 @@ if (!alreadyChecked || queuedOffers.length < 5) {
 }
 
 const mergedCandidates = Array.from(new Map(
-  [...queuedOffers, ...discovered.candidates].map((offer) => [offer.id, offer]),
+  [...exactQueueCandidates, ...queuedOffers, ...discovered.candidates].map((offer) => [offer.id, offer]),
 ).values()).map((offer) => {
   const exactCommunityMatch = communitySignals.find((signal) => {
     const linkedProductId = miraviaProductIdFromUrl(signal.merchantUrl || '');

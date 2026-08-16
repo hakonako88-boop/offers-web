@@ -62,3 +62,18 @@ test('recognizes the official and channel-specific shorteners used by the config
   assert.equal(amazon.links[0].store, 'Amazon');
   assert.equal(aliExpress.links[0].store, 'AliExpress');
 });
+
+test('ignores linked channel images and repeated campaign buttons', () => {
+  const source = { id: 'telegram-tiesometro', url: 'https://t.me/tiesometro', store: 'AliExpress' };
+  const posts = [301, 302, 303].map((id) => `<div class="tgme_widget_message_wrap"><div data-post="tiesometro/${id}"></div>
+    <div class="tgme_widget_message_text">Oferta AliExpress ${id}</div>
+    <a href="https://www.cholloschina.com/uploads/product-${id}.jpg">foto</a>
+    <a href="https://chz.to/product-${id}">producto</a>
+    <a href="https://s.click.aliexpress.com/e/_campaign">cupones</a></div>`).join('');
+  const messages = parseTelegramPublicMessages(source, posts);
+  assert.deepEqual(messages.map((message) => message.links.map((link) => link.url)), [
+    ['https://chz.to/product-301'],
+    ['https://chz.to/product-302'],
+    ['https://chz.to/product-303'],
+  ]);
+});

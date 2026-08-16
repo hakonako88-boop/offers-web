@@ -40,6 +40,9 @@ function storeForUrl(value = '', context = '', configuredStore = '') {
   try {
     const url = new URL(decodeHtml(value));
     const host = url.hostname.toLowerCase();
+    // Telegram wraps both the product button and the post image in anchors.
+    // A JPG/PNG/WebP is an asset, never a merchant destination.
+    if (/\.(?:avif|gif|jpe?g|png|webp)(?:$|[?#])/iu.test(url.pathname)) return '';
     if (host === 'amazon.es' || host.endsWith('.amazon.es') || host === 'amzn.to' || host === 'link.amazon') return 'Amazon';
     if (host === 'aliexpress.com' || host.endsWith('.aliexpress.com')) return 'AliExpress';
     if (host === 'miravia.es' || host.endsWith('.miravia.es') || host === 'awin1.com' || host.endsWith('.awin1.com')) return 'Miravia';
@@ -76,6 +79,19 @@ export function parseTelegramPublicMessages(source, html) {
       .map((url) => ({ url, store: storeForUrl(url, text, source.store) }))
       .filter((entry) => entry.store);
     messages.push({ messageId, text, publishedAt, links: [...new Map(links.map((entry) => [entry.url, entry])).values()] });
+  }
+  // Channels often add the same coupon/campaign button to every post. It is
+  // not the advertised product and would otherwise create one false queue
+  // item per message. Direct catalogue URLs remain eligible even if repeated.
+  const appearances = new Map();
+  for (const message of messages) {
+    for (const link of message.links) appearances.set(link.url, (appearances.get(link.url) || 0) + 1);
+  }
+  for (const message of messages) {
+    message.links = message.links.filter((link) => {
+      if ((appearances.get(link.url) || 0) < 3) return true;
+      return /\/(?:dp|gp\/product)\/[A-Z0-9]{10}(?:[/?]|$)|\/item\/\d+\.html/iu.test(link.url);
+    });
   }
   return messages.sort((left, right) => left.messageId - right.messageId);
 }
