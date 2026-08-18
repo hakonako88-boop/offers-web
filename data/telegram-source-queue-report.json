@@ -1,13 +1,57 @@
 {
-  "updatedAt": "2026-08-18T11:56:28.286Z",
+  "updatedAt": "2026-08-18T12:19:53.415Z",
   "summary": {
     "published": 87,
-    "blocked": 130,
-    "rejected": 278,
+    "blocked": 132,
+    "rejected": 279,
     "ignored": 14,
-    "pending": 1
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:91157:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91157,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/91157",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:40481:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 40481,
+      "store": "Amazon",
+      "status": "blocked",
+      "attempts": 0,
+      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
+      "sourceUrl": "https://t.me/Ofertos/40481",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:40480:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 40480,
+      "store": "Amazon",
+      "status": "blocked",
+      "attempts": 0,
+      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
+      "sourceUrl": "https://t.me/Ofertos/40480",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:40479:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 40479,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/40479",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:91156:miravia:0",
       "source": "telegram-una-ganga",
@@ -24,9 +68,9 @@
       "source": "telegram-errores-de-precio",
       "messageId": 15457,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/erroresde_precio/15457",
       "resultUrl": ""
     },
@@ -1062,50 +1106,6 @@
       "attempts": 0,
       "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
       "sourceUrl": "https://t.me/una_ganga/91102",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:40454:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 40454,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/40454",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:40453:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 40453,
-      "store": "Amazon",
-      "status": "blocked",
-      "attempts": 0,
-      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
-      "sourceUrl": "https://t.me/Ofertos/40453",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:40452:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 40452,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/40452",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:40451:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 40451,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/40451",
       "resultUrl": ""
     }
   ]
