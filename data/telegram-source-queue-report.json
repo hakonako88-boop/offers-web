@@ -1,21 +1,54 @@
 {
-  "updatedAt": "2026-08-19T07:12:15.853Z",
+  "updatedAt": "2026-08-19T07:53:31.680Z",
   "summary": {
-    "published": 118,
-    "blocked": 170,
-    "rejected": 307,
+    "published": 119,
+    "blocked": 171,
+    "rejected": 308,
     "ignored": 18,
     "pending": 4
   },
   "recent": [
+    {
+      "id": "telegram-errores-de-precio:15461:aliexpress:0",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15461,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/erroresde_precio/15461",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:91217:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91217,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/91217",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:91216:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91216,
+      "store": "Amazon",
+      "status": "blocked",
+      "attempts": 0,
+      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
+      "sourceUrl": "https://t.me/una_ganga/91216",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-errores-de-precio:15460:aliexpress:0",
       "source": "telegram-errores-de-precio",
       "messageId": 15460,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/erroresde_precio/15460",
       "resultUrl": ""
     },
@@ -36,8 +69,8 @@
       "messageId": 91215,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/91215",
       "resultUrl": ""
     },
@@ -46,11 +79,11 @@
       "source": "telegram-una-ganga",
       "messageId": 91214,
       "store": "AliExpress",
-      "status": "pending",
+      "status": "published",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/una_ganga/91214",
-      "resultUrl": ""
+      "resultUrl": "https://s.click.aliexpress.com/e/_c4nn45zH"
     },
     {
       "id": "telegram-una-ganga:91213:amazon:0",
@@ -145,9 +178,9 @@
       "source": "telegram-una-ganga",
       "messageId": 91205,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/91205",
       "resultUrl": ""
     },
@@ -1074,39 +1107,6 @@
       "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
       "sourceUrl": "https://t.me/una_ganga/91161",
       "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:40482:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 40482,
-      "store": "Amazon",
-      "status": "blocked",
-      "attempts": 0,
-      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
-      "sourceUrl": "https://t.me/Ofertos/40482",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-tiesometro:7014:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7014,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/tiesometro/7014",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91160:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91160,
-      "store": "AliExpress",
-      "status": "published",
-      "attempts": 2,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/una_ganga/91160",
-      "resultUrl": "https://s.click.aliexpress.com/e/_c3zYUYJH"
     }
   ]
 }
