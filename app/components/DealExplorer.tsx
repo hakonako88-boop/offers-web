@@ -9,6 +9,7 @@ import rawOffers from "../../data/offers.json";
 import AdSlot from "./AdSlot";
 import { adsenseHomeSlot } from "../lib/adsense";
 import { publishedDeals } from "../lib/deals";
+import { postHref, publishedPosts } from "../lib/posts";
 
 export type Deal = {
   id: string;
@@ -236,6 +237,7 @@ export function DealExplorer() {
           </a>
           <nav aria-label="Navegación principal">
             <a href="#ofertas">Ofertas de hoy</a>
+            {publishedPosts.length > 0 && <a href="#novedades">Novedades</a>}
             <a href="#como-funciona">Cómo seleccionamos</a>
             <a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram <span aria-hidden="true">↗</span></a>
           </nav>
@@ -275,6 +277,14 @@ export function DealExplorer() {
       {adsenseHomeSlot && <div className="shell adSection">
         <AdSlot slot={adsenseHomeSlot} />
       </div>}
+
+      {publishedPosts.length > 0 && <section className="editorialPosts shell" id="novedades" aria-labelledby="posts-title">
+        <div className="sectionIntro"><div><p className="eyebrow"><span aria-hidden="true" />PUBLICADO DESDE TELEGRAM</p><h2 id="posts-title">Novedades y avisos</h2></div><p>Campañas, noticias y contenidos añadidos directamente por Chollos al Día.</p></div>
+        <div className="postGrid">{publishedPosts.slice(0, 6).map((post) => <article className="postCard" key={post.id}>
+          <a className="postCardImage" href={postHref(post.id)}><img src={post.imageUrl} alt={post.title} loading="lazy" decoding="async" width={720} height={480} /></a>
+          <div><time dateTime={post.publishedAt}>{post.publishedLabel}</time><h3><a href={postHref(post.id)}>{post.title}</a></h3><p>{shortTitle(post.body.replace(/\s+/gu, " "), 150)}</p><a className="postRead" href={postHref(post.id)}>Leer publicación <span aria-hidden="true">→</span></a></div>
+        </article>)}</div>
+      </section>}
 
       <section className="offersSection" id="ofertas" aria-labelledby="offers-title">
         <div className="shell">
