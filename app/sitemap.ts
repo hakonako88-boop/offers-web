@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
 import { categoryIsIndexable, categoryPages } from "./lib/categories";
 import { dealHref, publishedDeals } from "./lib/deals";
+import { postHref, publishedPosts } from "./lib/posts";
 
 const siteUrl = "https://chollosaldia.com";
-const latestPublication = Math.max(0, ...publishedDeals.map((deal) => Date.parse(deal.verifiedDate || "") || 0));
+const latestPublication = Math.max(0, ...publishedDeals.map((deal) => Date.parse(deal.verifiedDate || "") || 0), ...publishedPosts.map((post) => Date.parse(post.publishedAt) || 0));
 const homepageLastModified = latestPublication ? new Date(latestPublication) : new Date("2026-08-11T00:00:00.000Z");
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -31,6 +32,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: deal.verifiedDate ? new Date(deal.verifiedDate) : homepageLastModified,
       changeFrequency: "weekly" as const,
       priority: 0.6,
+    })),
+    ...publishedPosts.map((post) => ({
+      url: `${siteUrl}${postHref(post.id)}`,
+      lastModified: new Date(post.publishedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
     })),
   ];
 }
