@@ -5,6 +5,7 @@ import {
   aliExpressPublicationUrl,
   amazonProductImageFromUrl,
   campaignFromTelegramMessage,
+  editorialPostFromMessage,
   forwardedOfferMetadata,
   formatManualTelegramCaption,
   formatManualWebsiteText,
@@ -20,6 +21,33 @@ import {
 import { formatTelegramDealCard } from '../scripts/offer-presentation.mjs';
 
 const controlCode = 'test-private-code';
+
+test('creates an editorial web and Telegram post from a photo and text', () => {
+  const result = editorialPostFromMessage({
+    photoFileId: 'telegram-post-photo',
+    text: [
+      '/post',
+      'Nuevos cupones de la semana',
+      'Ya están disponibles los códigos para ahorrar durante esta campaña.',
+      'https://chollosaldia.com/',
+    ].join('\n'),
+  });
+  assert.equal(result.status, 'ready');
+  assert.equal(result.offer.kind, 'post');
+  assert.equal(result.offer.title, 'Nuevos cupones de la semana');
+  assert.match(result.offer.postBody, /códigos para ahorrar/);
+  assert.equal(result.offer.url, 'https://chollosaldia.com/');
+  assert.match(formatManualTelegramCaption(result.offer), /Nuevos cupones de la semana/);
+  assert.match(formatManualTelegramCaption(result.offer), /Pulsa el botón/);
+});
+
+test('allows an editorial post without an external link but requires its photo', () => {
+  const ready = editorialPostFromMessage({ photoFileId: 'photo', text: '/post\nAviso importante\nTexto del aviso para la comunidad.' });
+  assert.equal(ready.status, 'ready');
+  assert.equal(ready.offer.url, '');
+  assert.doesNotMatch(formatManualTelegramCaption(ready.offer), /Pulsa el botón/);
+  assert.equal(editorialPostFromMessage({ text: '/post\nAviso importante\nTexto' }).status, 'invalid');
+});
 
 test('accepts a complete private publication command with an Amazon affiliate URL', () => {
   const result = manualOfferFromMessage({
