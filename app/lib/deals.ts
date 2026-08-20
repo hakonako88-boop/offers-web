@@ -24,6 +24,7 @@ type LegacyOffer = {
   url?: string;
   price?: string;
   previousPrice?: string;
+  coupon?: string;
   store?: string;
   category?: string;
   date?: number;
@@ -185,7 +186,7 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
   const price = parsePrice(offer.price);
   const previous = parsePrice(offer.previousPrice);
   const store = offer.store === "Amazon" || offer.store === "AliExpress" || offer.store === "Miravia" ? offer.store : "";
-  const coupon = couponFor(offer.text);
+  const coupon = String(offer.coupon || couponFor(offer.text) || '').trim() || undefined;
   const hasDemonstrableSaving = previous > price || Boolean(coupon);
   // Offers received from the owner's authorised Telegram chat may contain a
   // current price but no reliable previous-price comparison. They are still
