@@ -6,6 +6,7 @@ import {
   amazonProductImageFromUrl,
   controlHelp,
   campaignFromTelegramMessage,
+  editorialPostFromMessage,
   formatManualTelegramCaption,
   formatManualWebsiteText,
   manualOfferFromMessage,
@@ -27,6 +28,7 @@ import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
 const OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
+const POSTS_FILE = path.join(ROOT, 'data', 'posts.json');
 const IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const MAX_PROCESSED_UPDATES = 400;
 const DUPLICATE_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
@@ -126,18 +128,16 @@ async function sendProductPhoto(settings, offer) {
   const photos = [...new Set([offer.photoFileId, offer.imageUrl].filter(Boolean))];
   let lastError;
   for (const photo of photos) {
-    const replyMarkup = {
-      inline_keyboard: [[{
-        text: offer.kind === 'campaign' ? '👉🏻 VER PROMOCIÓN' : '👉🏻 VER OFERTA',
-        url: offer.url,
-      }]],
-    };
+    const replyMarkup = offer.url ? { inline_keyboard: [[{
+      text: offer.kind === 'campaign' ? '👉🏻 VER PROMOCIÓN' : offer.kind === 'post' ? '👉🏻 ABRIR ENLACE' : '👉🏻 VER OFERTA',
+      url: offer.url,
+    }]] } : undefined;
     const payload = {
       chat_id: settings.channelId,
       photo,
       caption: formatManualTelegramCaption(offer),
       parse_mode: 'HTML',
-      reply_markup: replyMarkup,
+      ...(replyMarkup ? { reply_markup: replyMarkup } : {}),
     };
     try {
       return await telegram(settings.token, 'sendPhoto', payload);
@@ -152,7 +152,7 @@ async function sendProductPhoto(settings, offer) {
         form.set('chat_id', String(settings.channelId));
         form.set('caption', formatManualTelegramCaption(offer));
         form.set('parse_mode', 'HTML');
-        form.set('reply_markup', JSON.stringify(replyMarkup));
+        if (replyMarkup) form.set('reply_markup', JSON.stringify(replyMarkup));
         form.set('photo', image, 'oferta.jpg');
         return await telegramForm(settings.token, 'sendPhoto', form);
       } catch (uploadError) {
@@ -165,13 +165,17 @@ async function sendProductPhoto(settings, offer) {
 
 async function sendOfferPreview(settings, chatId, offer) {
   const photos = [...new Set([offer.photoFileId, offer.imageUrl].filter(Boolean))];
+  const isPost = offer.kind === 'post';
   const replyMarkup = {
     inline_keyboard: [
       [{ text: '✅ CONFIRMAR PUBLICACIÓN', callback_data: 'offer:confirm' }],
       [
         { text: '✏️ CAMBIAR TÍTULO', callback_data: 'offer:title' },
-        { text: '🎟️ AÑADIR CUPÓN', callback_data: 'offer:coupon' },
+        ...(isPost
+          ? [{ text: '📝 CAMBIAR TEXTO', callback_data: 'offer:body' }]
+          : [{ text: '🎟️ AÑADIR CUPÓN', callback_data: 'offer:coupon' }]),
       ],
+      ...(isPost ? [[{ text: offer.url ? '🔗 CAMBIAR ENLACE' : '🔗 AÑADIR ENLACE', callback_data: 'offer:link' }]] : []),
       [
         { text: '🖼️ CAMBIAR FOTO', callback_data: 'offer:photo' },
       ],
@@ -255,6 +259,22 @@ async function publishManualOffer(settings, offer, inputMessage) {
   const postedPhotoId = channelMessage.photo?.at(-1)?.file_id || offer.photoFileId;
   if (!postedPhotoId) throw new Error('Telegram did not return a reusable product image.');
   const image = await mirrorTelegramPhoto(settings.token, postedPhotoId, channelMessage.message_id);
+  if (offer.kind === 'post') {
+    const existingPosts = readJson(POSTS_FILE, []);
+    const record = {
+      id: `post-${channelMessage.message_id}`,
+      message_id: channelMessage.message_id,
+      source_product_id: offer.sourceProductId || `post:${inputMessage.message_id}`,
+      date: Math.floor(Date.now() / 1000),
+      title: offer.title,
+      body: offer.postBody || offer.description,
+      image,
+      url: offer.url || '',
+      source: 'telegram-inbox',
+    };
+    writeJson(POSTS_FILE, [record, ...existingPosts.filter((entry) => entry.source_product_id !== record.source_product_id)]);
+    return channelMessage;
+  }
   const existingOffers = readJson(OFFERS_FILE, []);
   const record = {
     message_id: channelMessage.message_id,
@@ -281,6 +301,12 @@ async function publishManualOffer(settings, offer, inputMessage) {
 }
 
 async function publishIfNew(settings, offer, inputMessage) {
+  if (offer.kind === 'post') {
+    const posts = readJson(POSTS_FILE, []);
+    const duplicate = posts.some((post) => post.source_product_id === offer.sourceProductId
+      || (post.title === offer.title && post.body === (offer.postBody || offer.description)));
+    return duplicate ? { duplicate: true } : { channelMessage: await publishManualOffer(settings, offer, inputMessage), duplicate: false };
+  }
   const existingOffers = readJson(OFFERS_FILE, []);
   const oldestDuplicate = Math.floor((Date.now() - DUPLICATE_WINDOW_MS) / 1000);
   // An expired deal must not keep blocking the same product forever. Only
@@ -294,6 +320,10 @@ async function publishIfNew(settings, offer, inputMessage) {
 }
 
 function offerIsDuplicate(offer) {
+  if (offer.kind === 'post') {
+    return readJson(POSTS_FILE, []).some((post) => post.source_product_id === offer.sourceProductId
+      || (post.title === offer.title && post.body === (offer.postBody || offer.description)));
+  }
   const existingOffers = readJson(OFFERS_FILE, []);
   const oldestDuplicate = Math.floor((Date.now() - DUPLICATE_WINDOW_MS) / 1000);
   const recentOffers = existingOffers.filter((entry) => Number(entry.date) >= oldestDuplicate);
@@ -562,6 +592,8 @@ for (const update of updates || []) {
         } else {
           pending.awaitingTitle = true;
           pending.awaitingCoupon = false;
+          pending.awaitingBody = false;
+          pending.awaitingLink = false;
           pending.awaitingPhoto = false;
           pending.updatedAt = Date.now();
           await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
@@ -574,10 +606,40 @@ for (const update of updates || []) {
         } else {
           pending.awaitingCoupon = true;
           pending.awaitingTitle = false;
+          pending.awaitingBody = false;
+          pending.awaitingLink = false;
           pending.awaitingPhoto = false;
           pending.updatedAt = Date.now();
           await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
           await reply(settings.token, callbackChatId, '🎟️ Escribe el código del cupón. Para eliminar uno existente, responde «SIN CUPÓN». Después te mostraré otra vista previa.');
+        }
+      } else if (callback.data === 'offer:body') {
+        const pending = pendingConfirmations[callbackChatKey];
+        if (!pending?.offer || pending.offer.kind !== 'post') {
+          await reply(settings.token, callbackChatId, '⌛ Esa publicación ya no está pendiente. Envía el post otra vez.');
+        } else {
+          pending.awaitingBody = true;
+          pending.awaitingTitle = false;
+          pending.awaitingCoupon = false;
+          pending.awaitingLink = false;
+          pending.awaitingPhoto = false;
+          pending.updatedAt = Date.now();
+          await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
+          await reply(settings.token, callbackChatId, '📝 Escribe ahora el texto completo de la publicación. Después te mostraré otra vista previa.');
+        }
+      } else if (callback.data === 'offer:link') {
+        const pending = pendingConfirmations[callbackChatKey];
+        if (!pending?.offer || pending.offer.kind !== 'post') {
+          await reply(settings.token, callbackChatId, '⌛ Esa publicación ya no está pendiente. Envía el post otra vez.');
+        } else {
+          pending.awaitingLink = true;
+          pending.awaitingTitle = false;
+          pending.awaitingCoupon = false;
+          pending.awaitingBody = false;
+          pending.awaitingPhoto = false;
+          pending.updatedAt = Date.now();
+          await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
+          await reply(settings.token, callbackChatId, '🔗 Envía el enlace que quieres añadir. Para publicar sin botón, responde «SIN ENLACE».');
         }
       } else if (callback.data === 'offer:photo') {
         const pending = pendingConfirmations[callbackChatKey];
@@ -587,6 +649,8 @@ for (const update of updates || []) {
           pending.awaitingPhoto = true;
           pending.awaitingTitle = false;
           pending.awaitingCoupon = false;
+          pending.awaitingBody = false;
+          pending.awaitingLink = false;
           pending.updatedAt = Date.now();
           await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
           await reply(settings.token, callbackChatId, '🖼️ Envía ahora la nueva foto del producto. Sustituiré la anterior y te mostraré otra vista previa antes de publicar.');
@@ -623,6 +687,7 @@ for (const update of updates || []) {
     const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
     const incomingUrl = urlFromTelegramMessage(message, text);
     const campaign = campaignFromTelegramMessage({ text, photoFileId: largestPhoto, url: incomingUrl });
+    const editorialPost = editorialPostFromMessage({ text, photoFileId: largestPhoto });
     const activation = activateChatFromMessage({ text, controlCode: settings.controlCode });
     if (activation.status === 'authorized') {
       authorizedChatIds.add(chatKey);
@@ -668,6 +733,38 @@ for (const update of updates || []) {
           : '✅ Cupón añadido. Revisa la vista previa y confirma o sigue editando.');
       }
       handled += 1;
+    } else if (isAuthorizedChat && pendingConfirmations[chatKey]?.awaitingBody) {
+      const pending = pendingConfirmations[chatKey];
+      const body = String(text || '').replace(/^texto\s*:\s*/iu, '').trim();
+      if (body.length < 5 || body.length > 3500) {
+        await reply(settings.token, message.chat.id, '📝 El texto debe tener entre 5 y 3.500 caracteres. Escríbelo de nuevo.');
+      } else {
+        pending.offer = { ...pending.offer, description: body, postBody: body };
+        pending.awaitingBody = false;
+        pending.updatedAt = Date.now();
+        const previewMessage = await sendOfferPreview(settings, message.chat.id, pending.offer);
+        pending.previewMessageId = previewMessage.message_id;
+        await reply(settings.token, message.chat.id, '✅ Texto actualizado. Revisa la vista previa y confirma o sigue editando.');
+      }
+      handled += 1;
+    } else if (isAuthorizedChat && pendingConfirmations[chatKey]?.awaitingLink) {
+      const pending = pendingConfirmations[chatKey];
+      const removeLink = /^(?:sin\s+enlace|quitar|eliminar|ninguno|-)$/iu.test(String(text || '').trim());
+      let link = removeLink ? '' : incomingUrl;
+      try {
+        if (link && !/^https?:$/u.test(new URL(link).protocol)) link = '';
+      } catch { link = ''; }
+      if (!removeLink && !link) {
+        await reply(settings.token, message.chat.id, '🔗 No he encontrado un enlace válido. Pega una dirección que empiece por https:// o responde «SIN ENLACE».');
+      } else {
+        pending.offer = { ...pending.offer, url: link };
+        pending.awaitingLink = false;
+        pending.updatedAt = Date.now();
+        const previewMessage = await sendOfferPreview(settings, message.chat.id, pending.offer);
+        pending.previewMessageId = previewMessage.message_id;
+        await reply(settings.token, message.chat.id, link ? '✅ Enlace actualizado. Revisa la vista previa.' : '✅ Enlace eliminado. El post se publicará sin botón externo.');
+      }
+      handled += 1;
     } else if (isAuthorizedChat && pendingConfirmations[chatKey]?.awaitingPhoto) {
       const pending = pendingConfirmations[chatKey];
       if (!largestPhoto) {
@@ -683,6 +780,17 @@ for (const update of updates || []) {
         const previewMessage = await sendOfferPreview(settings, message.chat.id, pending.offer);
         pending.previewMessageId = previewMessage.message_id;
         await reply(settings.token, message.chat.id, '✅ Foto sustituida. Revisa la nueva vista previa y pulsa «CONFIRMAR PUBLICACIÓN» si está correcta.');
+      }
+      handled += 1;
+    } else if (isAuthorizedChat && editorialPost.status !== 'ignore') {
+      if (editorialPost.status === 'invalid') {
+        await reply(settings.token, message.chat.id, `⚠️ ${editorialPost.message}`);
+      } else {
+        const outcome = await queueOfferPreview(settings, pendingConfirmations, message.chat.id, editorialPost.offer, message);
+        await reply(settings.token, message.chat.id, outcome.duplicate
+          ? '♻️ Esa publicación ya existe. No la repito.'
+          : '👀 Vista previa del post preparada. Puedes cambiar título, texto, enlace o foto antes de confirmar.');
+        delete pendingByChat[chatKey];
       }
       handled += 1;
     } else if (isAuthorizedChat && campaign.status !== 'ignore') {
