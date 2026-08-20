@@ -67,6 +67,16 @@ test('recognizes a substantial owner-written external promotion as an implicit p
   assert.match(result.offer.imageUrl, /chollosaldia\.com\/og\.png/);
 });
 
+test('recognizes a forwarded external promotion when its shop is unsupported', () => {
+  const result = editorialPostFromMessage({
+    allowImplicit: true,
+    text: 'Curso gratuito para estudiantes\nAcceso durante doce meses para personas que cumplan los requisitos de la promoción.\nhttps://example.org/estudiantes',
+  });
+
+  assert.equal(result.status, 'ready');
+  assert.equal(result.offer.title, 'Curso gratuito para estudiantes');
+});
+
 test('accepts a complete private publication command with an Amazon affiliate URL', () => {
   const result = manualOfferFromMessage({
     controlCode,

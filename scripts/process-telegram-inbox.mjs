@@ -691,8 +691,6 @@ for (const update of updates || []) {
       text,
       photoFileId: largestPhoto,
       allowImplicit: isAuthorizedChat
-        && !message.forward_origin
-        && !message.forward_date
         && storeFromUrl(incomingUrl) === 'Tienda',
     });
     const activation = activateChatFromMessage({ text, controlCode: settings.controlCode });
@@ -791,7 +789,9 @@ for (const update of updates || []) {
       handled += 1;
     } else if (isAuthorizedChat && editorialPost.status !== 'ignore') {
       if (editorialPost.status === 'invalid') {
-        await reply(settings.token, message.chat.id, `⚠️ ${editorialPost.message}`);
+        await reply(settings.token, message.chat.id, /^\/(?:post|publicacion)(?:@\w+)?\s*$/iu.test(String(text).trim())
+          ? 'ℹ️ Envía /post, el título y el texto juntos en un solo mensaje. También puedes reenviar directamente un post completo y te mostraré la vista previa.'
+          : `⚠️ ${editorialPost.message}`);
       } else {
         const outcome = await queueOfferPreview(settings, pendingConfirmations, message.chat.id, editorialPost.offer, message);
         await reply(settings.token, message.chat.id, outcome.duplicate

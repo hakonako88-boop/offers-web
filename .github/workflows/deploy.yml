@@ -32,13 +32,59 @@ permissions:
   contents: write
 
 concurrency:
-  group: chollosaldia-production
+  group: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_update' && 'chollosaldia-telegram-inbox' || 'chollosaldia-production' }}
   # Un reenvío de Telegram no puede perderse porque coincida con otra oferta
   # o con una ejecución programada. GitHub lo deja en cola y lo procesa.
   cancel-in-progress: false
 
 jobs:
+  telegram-inbox:
+    if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_update' }}
+    runs-on: ubuntu-latest
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      TELEGRAM_CONTROL_CODE: ${{ secrets.TELEGRAM_CONTROL_CODE }}
+      TELEGRAM_ALLOWED_CHAT_ID: ${{ secrets.TELEGRAM_ALLOWED_CHAT_ID }}
+      AMAZON_PARTNER_TAG: ${{ secrets.AMAZON_PARTNER_TAG }}
+      ALIEXPRESS_APP_KEY: ${{ secrets.ALIEXPRESS_APP_KEY }}
+      ALIEXPRESS_APP_SECRET: ${{ secrets.ALIEXPRESS_APP_SECRET }}
+      ALIEXPRESS_TRACKING_ID: ${{ secrets.ALIEXPRESS_TRACKING_ID }}
+      ALIEXPRESS_INVITATION_CODE: "US95SzVNcTdJdzYyN0doRjBKZ09JRTJEcFF4WmMySDZicDBuY0RBd2hHS2VQemFTZUJrNWVWT0s1MU1hdTAyWg"
+      AWIN_FEED_LIST_URL: ${{ secrets.AWIN_FEED_LIST_URL }}
+    steps:
+      - name: Descargar web
+        uses: actions/checkout@v5
+
+      - name: Cargar el estado más reciente del bot
+        run: |
+          git fetch origin main
+          git merge --ff-only origin/main
+
+      - name: Preparar Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      - name: Procesar inmediatamente el mensaje privado
+        run: npm run sync:inbox
+
+      - name: Guardar la respuesta del bot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -z "$(git status --porcelain -- data/offers.json data/posts.json public/tg)" ]; then
+            commit_message="Guardar estado del bot [telegram-state]"
+          else
+            commit_message="Actualizar contenido desde Telegram [telegram-content]"
+          fi
+          git add data/offers.json data/posts.json data/telegram-inbox-state.json public/tg
+          git diff --cached --quiet || git commit -m "$commit_message"
+          git pull --rebase origin main
+          git push
+
   build-and-deploy:
+    if: ${{ !(github.event_name == 'repository_dispatch' && github.event.action == 'telegram_update') && !(github.event_name == 'push' && contains(github.event.head_commit.message, '[telegram-state]')) }}
     runs-on: ubuntu-latest
     env:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -126,7 +172,7 @@ jobs:
         run: npm run sync:inbox
 
       - name: Recuperar una oferta pendiente tras actualizar el bot
-        if: ${{ github.event_name == 'push' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '[telegram-content]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         env:
           TELEGRAM_PENDING_ONLY: "true"
         run: npm run sync:inbox
