@@ -169,7 +169,10 @@ async function sendOfferPreview(settings, chatId, offer) {
     inline_keyboard: [
       [{ text: '✅ CONFIRMAR PUBLICACIÓN', callback_data: 'offer:confirm' }],
       [
-        { text: '✏️ CORREGIR', callback_data: 'offer:edit' },
+        { text: '✏️ CAMBIAR TÍTULO', callback_data: 'offer:title' },
+        { text: '🎟️ AÑADIR CUPÓN', callback_data: 'offer:coupon' },
+      ],
+      [
         { text: '🖼️ CAMBIAR FOTO', callback_data: 'offer:photo' },
       ],
       [
@@ -268,6 +271,7 @@ async function publishManualOffer(settings, offer, inputMessage) {
     previousPrice: offer.previousPriceLabel,
     store: offer.store,
     category: offer.category,
+    coupon: offer.coupon || '',
     description: offer.description,
     source: 'telegram-inbox',
   };
@@ -551,17 +555,38 @@ for (const update of updates || []) {
           }
           delete pendingConfirmations[callbackChatKey];
         }
-      } else if (callback.data === 'offer:edit') {
+      } else if (callback.data === 'offer:title' || callback.data === 'offer:edit') {
         const pending = pendingConfirmations[callbackChatKey];
-        await removePreviewButtons(settings, callbackChatId, pending?.previewMessageId);
-        delete pendingConfirmations[callbackChatKey];
-        await reply(settings.token, callbackChatId, '✏️ Vista previa descartada. Reenvía la oferta corregida o pega de nuevo el enlace con los datos correctos. No se ha publicado nada.');
+        if (!pending) {
+          await reply(settings.token, callbackChatId, '⌛ Esa vista previa ya no está pendiente. Envía la oferta otra vez.');
+        } else {
+          pending.awaitingTitle = true;
+          pending.awaitingCoupon = false;
+          pending.awaitingPhoto = false;
+          pending.updatedAt = Date.now();
+          await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
+          await reply(settings.token, callbackChatId, '✏️ Escribe ahora el título que quieres mostrar. Conservaré la foto, el precio, el cupón y el enlace, y te enseñaré otra vista previa.');
+        }
+      } else if (callback.data === 'offer:coupon') {
+        const pending = pendingConfirmations[callbackChatKey];
+        if (!pending) {
+          await reply(settings.token, callbackChatId, '⌛ Esa vista previa ya no está pendiente. Envía la oferta otra vez.');
+        } else {
+          pending.awaitingCoupon = true;
+          pending.awaitingTitle = false;
+          pending.awaitingPhoto = false;
+          pending.updatedAt = Date.now();
+          await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
+          await reply(settings.token, callbackChatId, '🎟️ Escribe el código del cupón. Para eliminar uno existente, responde «SIN CUPÓN». Después te mostraré otra vista previa.');
+        }
       } else if (callback.data === 'offer:photo') {
         const pending = pendingConfirmations[callbackChatKey];
         if (!pending) {
           await reply(settings.token, callbackChatId, '⌛ Esa vista previa ya no está pendiente. Envía la oferta otra vez.');
         } else {
           pending.awaitingPhoto = true;
+          pending.awaitingTitle = false;
+          pending.awaitingCoupon = false;
           pending.updatedAt = Date.now();
           await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
           await reply(settings.token, callbackChatId, '🖼️ Envía ahora la nueva foto del producto. Sustituiré la anterior y te mostraré otra vista previa antes de publicar.');
@@ -611,6 +636,37 @@ for (const update of updates || []) {
       handled += 1;
     } else if (message.voice) {
       await reply(settings.token, message.chat.id, '🎙️ Esta versión gratuita no transcribe audios. Pega el enlace del producto por escrito.\n\n' + controlHelp());
+      handled += 1;
+    } else if (isAuthorizedChat && pendingConfirmations[chatKey]?.awaitingTitle) {
+      const pending = pendingConfirmations[chatKey];
+      const title = String(text || '').replace(/^(?:t[ií]tulo|producto)\s*:\s*/iu, '').replace(/\s+/gu, ' ').trim();
+      if (title.length < 5 || title.length > 180 || /^https?:\/\//iu.test(title)) {
+        await reply(settings.token, message.chat.id, '✏️ El título debe tener entre 5 y 180 caracteres y no puede ser solamente un enlace. Escríbelo de nuevo.');
+      } else {
+        pending.offer = { ...pending.offer, title };
+        pending.awaitingTitle = false;
+        pending.updatedAt = Date.now();
+        const previewMessage = await sendOfferPreview(settings, message.chat.id, pending.offer);
+        pending.previewMessageId = previewMessage.message_id;
+        await reply(settings.token, message.chat.id, '✅ Título actualizado. Revisa la vista previa y confirma o sigue editando.');
+      }
+      handled += 1;
+    } else if (isAuthorizedChat && pendingConfirmations[chatKey]?.awaitingCoupon) {
+      const pending = pendingConfirmations[chatKey];
+      const supplied = String(text || '').replace(/^(?:cup[oó]n|c[oó]digo)\s*:\s*/iu, '').replace(/\s+/gu, ' ').trim();
+      const removeCoupon = /^(?:sin\s+cup[oó]n|quitar|eliminar|ninguno|-)$/iu.test(supplied);
+      if (!removeCoupon && (!supplied || supplied.length > 40 || /^https?:\/\//iu.test(supplied))) {
+        await reply(settings.token, message.chat.id, '🎟️ Escribe solamente el código del cupón (máximo 40 caracteres) o responde «SIN CUPÓN».');
+      } else {
+        pending.offer = { ...pending.offer, coupon: removeCoupon ? '' : supplied };
+        pending.awaitingCoupon = false;
+        pending.updatedAt = Date.now();
+        const previewMessage = await sendOfferPreview(settings, message.chat.id, pending.offer);
+        pending.previewMessageId = previewMessage.message_id;
+        await reply(settings.token, message.chat.id, removeCoupon
+          ? '✅ Cupón eliminado. Revisa la vista previa y confirma o sigue editando.'
+          : '✅ Cupón añadido. Revisa la vista previa y confirma o sigue editando.');
+      }
       handled += 1;
     } else if (isAuthorizedChat && pendingConfirmations[chatKey]?.awaitingPhoto) {
       const pending = pendingConfirmations[chatKey];
