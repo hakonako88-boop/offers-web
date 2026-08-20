@@ -24,4 +24,20 @@ if (!response.ok || !result.ok) {
   throw new Error(`Telegram could not configure the webhook: ${result.description || response.status}`);
 }
 
-console.log('Telegram webhook configured successfully.');
+const commandsResponse = await fetch(`https://api.telegram.org/bot${token}/setMyCommands`, {
+  method: 'POST',
+  headers: { 'content-type': 'application/json' },
+  body: JSON.stringify({
+    commands: [
+      { command: 'post', description: 'Publicar una foto y texto en Telegram y web' },
+      { command: 'ayuda', description: 'Ver cómo enviar ofertas y publicaciones' },
+      { command: 'start', description: 'Abrir la ayuda del bot' },
+    ],
+  }),
+});
+const commandsResult = await commandsResponse.json().catch(() => ({}));
+if (!commandsResponse.ok || !commandsResult.ok) {
+  throw new Error(`Telegram could not configure the command menu: ${commandsResult.description || commandsResponse.status}`);
+}
+
+console.log('Telegram webhook and command menu configured successfully.');
