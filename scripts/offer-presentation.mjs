@@ -178,7 +178,7 @@ export function formatTelegramDealCard({
   ].filter((line, index) => line || index === 1 || index === 3 || index === 7 || index === 9).join('\n').slice(0, 1000);
 }
 
-export function formatWebsiteDealText({ title, store, price, previousPrice = '', savings = '', discount = 0 } = {}) {
+export function formatWebsiteDealText({ title, store, price, previousPrice = '', savings = '', discount = 0, coupon = '' } = {}) {
   const before = previousPrice ? `Antes: ${previousPrice}  →  ` : '';
   const saving = savings ? `\nAhorras: ${savings}` : '';
   const percentage = Number(discount) > 0 ? ` · −${Math.round(Number(discount))}%` : '';
@@ -186,5 +186,6 @@ export function formatWebsiteDealText({ title, store, price, previousPrice = '',
     `CHOLLO EN ${compact(store).toUpperCase()}`,
     improveOfferTitle(title),
     `${before}Ahora: ${price}${percentage}${saving}`,
-  ].join('\n');
+    coupon ? `Cupón: ${compact(coupon).slice(0, 40)}` : '',
+  ].filter(Boolean).join('\n');
 }
