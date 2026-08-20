@@ -153,6 +153,8 @@ export function controlHelp() {
     'Amazon: añade tu tag automáticamente. AliExpress y Miravia: convierte el enlace directo o acortado a tu propia afiliación antes de publicar.',
     '',
     'También puedes reenviar una publicación con foto y pegar después su enlace de compra.',
+    '',
+    'Para publicar una novedad o aviso sin precio, envía una foto con /post en la primera línea, el título en la segunda y el texto debajo. El enlace es opcional.',
   ].join('\n');
 }
 
@@ -361,6 +363,36 @@ export function campaignFromTelegramMessage({ text = '', photoFileId = '', url =
   };
 }
 
+/** Creates an editorial post from the owner's private Telegram chat. Unlike
+ * an offer, a post does not require a price, shop or affiliate link. */
+export function editorialPostFromMessage({ text = '', photoFileId = '' } = {}) {
+  const source = String(text || '').replace(/\r\n/gu, '\n').trim();
+  const lines = source.split('\n');
+  if (!/^\/(?:post|publicacion)(?:@\w+)?\s*$/iu.test(lines[0]?.trim() || '')) return { status: 'ignore' };
+  if (!photoFileId) return { status: 'invalid', message: 'La publicación necesita una foto. Envíala junto al texto usando /post en la primera línea.' };
+
+  const supplied = lines.slice(1).map((line) => line.trim());
+  const url = firstUrl(supplied.join('\n'));
+  const contentLines = supplied
+    .filter((line) => line && line !== url && !/^enlace\s*:\s*https?:\/\//iu.test(line))
+    .map((line) => line.replace(/^texto\s*:\s*/iu, ''));
+  const explicitTitle = fieldValue(contentLines, ['titulo', 'título', 'title']);
+  const titleLine = explicitTitle
+    ? contentLines.findIndex((line) => /^(?:titulo|título|title)\s*:/iu.test(line))
+    : contentLines.findIndex(Boolean);
+  const title = compact(explicitTitle || contentLines[titleLine] || '').slice(0, 180);
+  const body = contentLines.filter((_, index) => index !== titleLine).join('\n\n').trim().slice(0, 3500) || title;
+  if (title.length < 5) return { status: 'invalid', message: 'Escribe un título de al menos 5 caracteres debajo de /post.' };
+  const identity = crypto.createHash('sha256').update(`${title}\n${body}\n${url}`).digest('hex').slice(0, 16);
+  return {
+    status: 'ready',
+    offer: {
+      kind: 'post', title, description: body, postBody: body, url,
+      imageUrl: photoFileId, photoFileId, sourceProductId: `post:${identity}`,
+    },
+  };
+}
+
 export function manualOfferFromMessage({ text = '', photoFileId = '', controlCode = '' } = {}) {
   const source = String(text || '').replace(/\r\n/g, '\n').trim();
   const lines = source.split('\n').map((line) => line.trim()).filter(Boolean);
@@ -417,6 +449,15 @@ export function manualOfferFromMessage({ text = '', photoFileId = '', controlCod
 }
 
 export function formatManualTelegramCaption(offer) {
+  if (offer.kind === 'post') {
+    const escape = (value) => String(value || '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+    return [
+      `<b>${escape(offer.title)}</b>`, '',
+      escape(offer.postBody || offer.description), '',
+      offer.url ? '<b>👇 Pulsa el botón para abrir el enlace</b>' : '', '',
+      '🪐 Más en @aldiachollos',
+    ].join('\n').slice(0, 1024);
+  }
   if (offer.kind === 'campaign') {
     const escaped = String(offer.campaignText || '')
       .replaceAll('&', '&amp;')
