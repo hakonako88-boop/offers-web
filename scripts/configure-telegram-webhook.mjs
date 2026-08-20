@@ -29,6 +29,7 @@ const commandsResponse = await fetch(`https://api.telegram.org/bot${token}/setMy
   headers: { 'content-type': 'application/json' },
   body: JSON.stringify({
     commands: [
+      { command: 'oferta', description: 'Publicar una oferta completa con foto y datos' },
       { command: 'post', description: 'Publicar una foto y texto en Telegram y web' },
       { command: 'ayuda', description: 'Ver cómo enviar ofertas y publicaciones' },
       { command: 'start', description: 'Abrir la ayuda del bot' },

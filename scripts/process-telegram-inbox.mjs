@@ -804,7 +804,7 @@ for (const update of updates || []) {
         delete pendingByChat[chatKey];
       }
       handled += 1;
-    } else if (isAuthorizedChat && incomingUrl) {
+    } else if (isAuthorizedChat && incomingUrl && !/^\/(?:oferta|publicar)(?:@\w+)?\b/iu.test(String(text).trim())) {
       const url = incomingUrl;
       const forwardedMetadata = metadataForIncomingProductLink({
         pending: pendingByChat[chatKey],
@@ -996,7 +996,7 @@ for (const update of updates || []) {
       handled += 1;
     } else if (
       isAuthorizedChat
-      && !/^\/publicar(?:@\w+)?\b/i.test(String(text).trim())
+      && !/^\/(?:oferta|publicar)(?:@\w+)?\b/i.test(String(text).trim())
       && (message.forward_origin || message.forward_date || Array.isArray(message.photo))
     ) {
       const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
@@ -1011,6 +1011,7 @@ for (const update of updates || []) {
         text,
         photoFileId: largestPhoto,
         controlCode: settings.controlCode,
+        authorized: isAuthorizedChat,
       });
 
       if (result.status === 'invalid') {

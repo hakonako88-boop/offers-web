@@ -94,6 +94,37 @@ test('keeps a manually supplied coupon in Telegram and in the website record', (
   assert.match(formatManualWebsiteText(result.offer), /Cupón: AHORRA10/);
 });
 
+test('accepts /oferta without a secret in an already authorized chat', () => {
+  const result = manualOfferFromMessage({
+    authorized: true,
+    photoFileId: 'telegram-photo-id',
+    text: [
+      '/oferta',
+      'Título: Ventilador silencioso de sobremesa',
+      'Precio: 17,78 €',
+      'Antes: 29,99 €',
+      'Cupón: VERANO5',
+      'Descripción: Tres velocidades y cabezal ajustable.',
+      'https://s.click.aliexpress.com/e/_example',
+    ].join('\n'),
+  });
+
+  assert.equal(result.status, 'ready');
+  assert.equal(result.offer.price, 17.78);
+  assert.equal(result.offer.coupon, 'VERANO5');
+  assert.equal(result.offer.store, 'AliExpress');
+});
+
+test('rejects /oferta when the private chat has not been authorized', () => {
+  const result = manualOfferFromMessage({
+    authorized: false,
+    photoFileId: 'telegram-photo-id',
+    text: '/oferta\nTítulo: Producto de prueba\nPrecio: 10 €\nhttps://s.click.aliexpress.com/e/_example',
+  });
+
+  assert.equal(result.status, 'unauthorized');
+});
+
 test('does not let an incorrect control code publish an offer', () => {
   const result = manualOfferFromMessage({
     controlCode,

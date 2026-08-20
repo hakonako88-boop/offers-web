@@ -154,6 +154,8 @@ export function controlHelp() {
     '',
     'También puedes reenviar una publicación con foto y pegar después su enlace de compra.',
     '',
+    'Para crear una oferta completa tú mismo, envía una foto con /oferta en la primera línea y después Título:, Precio:, Cupón:, Descripción: y el enlace. Solo título, precio, foto y enlace son obligatorios.',
+    '',
     'Para publicar una novedad o aviso sin precio, envía una foto con /post en la primera línea, el título en la segunda y el texto debajo. El enlace es opcional.',
   ].join('\n');
 }
@@ -393,14 +395,16 @@ export function editorialPostFromMessage({ text = '', photoFileId = '' } = {}) {
   };
 }
 
-export function manualOfferFromMessage({ text = '', photoFileId = '', controlCode = '' } = {}) {
+export function manualOfferFromMessage({ text = '', photoFileId = '', controlCode = '', authorized = false } = {}) {
   const source = String(text || '').replace(/\r\n/g, '\n').trim();
   const lines = source.split('\n').map((line) => line.trim()).filter(Boolean);
   const first = lines[0] || '';
-  const command = first.match(/^\/publicar(?:@\w+)?\s+(\S+)\s*$/i);
+  const simpleCommand = /^\/oferta(?:@\w+)?\s*$/i.test(first);
+  const protectedCommand = first.match(/^\/publicar(?:@\w+)?\s+(\S+)\s*$/i);
 
-  if (!command) return { status: 'ignore' };
-  if (!commandCodeMatches(command[1], controlCode)) return { status: 'unauthorized' };
+  if (!simpleCommand && !protectedCommand) return { status: 'ignore' };
+  if (simpleCommand && !authorized) return { status: 'unauthorized' };
+  if (protectedCommand && !commandCodeMatches(protectedCommand[1], controlCode)) return { status: 'unauthorized' };
 
   const bodyLines = lines.slice(1);
   const url = firstUrl(bodyLines.join('\n'));
