@@ -687,7 +687,14 @@ for (const update of updates || []) {
     const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
     const incomingUrl = urlFromTelegramMessage(message, text);
     const campaign = campaignFromTelegramMessage({ text, photoFileId: largestPhoto, url: incomingUrl });
-    const editorialPost = editorialPostFromMessage({ text, photoFileId: largestPhoto });
+    const editorialPost = editorialPostFromMessage({
+      text,
+      photoFileId: largestPhoto,
+      allowImplicit: isAuthorizedChat
+        && !message.forward_origin
+        && !message.forward_date
+        && storeFromUrl(incomingUrl) === 'Tienda',
+    });
     const activation = activateChatFromMessage({ text, controlCode: settings.controlCode });
     if (activation.status === 'authorized') {
       authorizedChatIds.add(chatKey);

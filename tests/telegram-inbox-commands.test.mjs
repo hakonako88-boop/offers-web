@@ -41,12 +41,30 @@ test('creates an editorial web and Telegram post from a photo and text', () => {
   assert.match(formatManualTelegramCaption(result.offer), /Pulsa el botón/);
 });
 
-test('allows an editorial post without an external link but requires its photo', () => {
+test('allows an editorial post without an external link or supplied photo', () => {
   const ready = editorialPostFromMessage({ photoFileId: 'photo', text: '/post\nAviso importante\nTexto del aviso para la comunidad.' });
   assert.equal(ready.status, 'ready');
   assert.equal(ready.offer.url, '');
   assert.doesNotMatch(formatManualTelegramCaption(ready.offer), /Pulsa el botón/);
-  assert.equal(editorialPostFromMessage({ text: '/post\nAviso importante\nTexto' }).status, 'invalid');
+  const fallback = editorialPostFromMessage({ text: '/post\nAviso importante\nTexto del aviso sin fotografía propia.' });
+  assert.equal(fallback.status, 'ready');
+  assert.equal(fallback.offer.imageUrl, 'https://chollosaldia.com/og.png');
+});
+
+test('recognizes a substantial owner-written external promotion as an implicit post', () => {
+  const result = editorialPostFromMessage({
+    allowImplicit: true,
+    text: [
+      'GRATIS: 1 Año de Google Gemini AI Plus para estudiantes',
+      'La promoción está disponible para universitarios mayores de 18 años que cumplan los requisitos.',
+      'https://gemini.google/students',
+    ].join('\n'),
+  });
+
+  assert.equal(result.status, 'ready');
+  assert.equal(result.offer.kind, 'post');
+  assert.equal(result.offer.url, 'https://gemini.google/students');
+  assert.match(result.offer.imageUrl, /chollosaldia\.com\/og\.png/);
 });
 
 test('accepts a complete private publication command with an Amazon affiliate URL', () => {

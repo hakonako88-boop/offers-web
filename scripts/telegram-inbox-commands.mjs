@@ -2,6 +2,8 @@ import crypto from 'node:crypto';
 import { formatTelegramDealCard, formatWebsiteDealText, improveOfferTitle } from './offer-presentation.mjs';
 import { isMiraviaAwinUrl } from './miravia-affiliate-resolver.mjs';
 
+const DEFAULT_POST_IMAGE_URL = 'https://chollosaldia.com/og.png';
+
 function compact(value = '') {
   return String(value).replace(/\s+/gu, ' ').trim();
 }
@@ -367,13 +369,14 @@ export function campaignFromTelegramMessage({ text = '', photoFileId = '', url =
 
 /** Creates an editorial post from the owner's private Telegram chat. Unlike
  * an offer, a post does not require a price, shop or affiliate link. */
-export function editorialPostFromMessage({ text = '', photoFileId = '' } = {}) {
+export function editorialPostFromMessage({ text = '', photoFileId = '', allowImplicit = false } = {}) {
   const source = String(text || '').replace(/\r\n/gu, '\n').trim();
   const lines = source.split('\n');
-  if (!/^\/(?:post|publicacion)(?:@\w+)?\s*$/iu.test(lines[0]?.trim() || '')) return { status: 'ignore' };
-  if (!photoFileId) return { status: 'invalid', message: 'La publicación necesita una foto. Envíala junto al texto usando /post en la primera línea.' };
+  const explicitCommand = /^\/(?:post|publicacion)(?:@\w+)?\s*$/iu.test(lines[0]?.trim() || '');
+  if (!explicitCommand && !allowImplicit) return { status: 'ignore' };
+  if (!explicitCommand && /^\/\w+/u.test(lines[0]?.trim() || '')) return { status: 'ignore' };
 
-  const supplied = lines.slice(1).map((line) => line.trim());
+  const supplied = (explicitCommand ? lines.slice(1) : lines).map((line) => line.trim());
   const url = firstUrl(supplied.join('\n'));
   const contentLines = supplied
     .filter((line) => line && line !== url && !/^enlace\s*:\s*https?:\/\//iu.test(line))
@@ -385,12 +388,15 @@ export function editorialPostFromMessage({ text = '', photoFileId = '' } = {}) {
   const title = compact(explicitTitle || contentLines[titleLine] || '').slice(0, 180);
   const body = contentLines.filter((_, index) => index !== titleLine).join('\n\n').trim().slice(0, 3500) || title;
   if (title.length < 5) return { status: 'invalid', message: 'Escribe un título de al menos 5 caracteres debajo de /post.' };
+  if (!explicitCommand && body.length < 30) return { status: 'ignore' };
   const identity = crypto.createHash('sha256').update(`${title}\n${body}\n${url}`).digest('hex').slice(0, 16);
   return {
     status: 'ready',
     offer: {
       kind: 'post', title, description: body, postBody: body, url,
-      imageUrl: photoFileId, photoFileId, sourceProductId: `post:${identity}`,
+      imageUrl: photoFileId || DEFAULT_POST_IMAGE_URL,
+      photoFileId,
+      sourceProductId: `post:${identity}`,
     },
   };
 }
