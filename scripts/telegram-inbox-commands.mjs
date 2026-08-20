@@ -455,5 +455,6 @@ export function formatManualWebsiteText(offer) {
     previousPrice: offer.previousPriceLabel,
     savings: offer.previousPrice > offer.price ? euro(offer.previousPrice - offer.price) : '',
     discount: offer.discount,
+    coupon: offer.coupon,
   });
 }
