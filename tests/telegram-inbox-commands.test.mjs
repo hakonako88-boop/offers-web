@@ -7,6 +7,7 @@ import {
   campaignFromTelegramMessage,
   forwardedOfferMetadata,
   formatManualTelegramCaption,
+  formatManualWebsiteText,
   isReliableProductTitle,
   metadataMatchesOfficialProduct,
   manualOfferFromMessage,
@@ -44,6 +45,25 @@ test('accepts a complete private publication command with an Amazon affiliate UR
   assert.match(formatManualTelegramCaption(result.offer), /PRECIO OFERTA/);
   assert.match(formatManualTelegramCaption(result.offer), /Más en @aldiachollos/);
   assert.doesNotMatch(formatManualTelegramCaption(result.offer), /Categoría/);
+});
+
+test('keeps a manually supplied coupon in Telegram and in the website record', () => {
+  const result = manualOfferFromMessage({
+    controlCode,
+    photoFileId: 'telegram-photo-id',
+    text: [
+      '/publicar test-private-code',
+      'https://www.amazon.es/dp/B0ABCDE123?tag=example-21',
+      'Título: Cafetera automática de prueba',
+      'Precio: 49,99 €',
+      'Cupón: AHORRA10',
+    ].join('\n'),
+  });
+
+  assert.equal(result.status, 'ready');
+  assert.equal(result.offer.coupon, 'AHORRA10');
+  assert.match(formatManualTelegramCaption(result.offer), /AHORRA10/);
+  assert.match(formatManualWebsiteText(result.offer), /Cupón: AHORRA10/);
 });
 
 test('does not let an incorrect control code publish an offer', () => {
