@@ -52,6 +52,13 @@ for (const id of offerIds) {
   const encodedId = encodeURIComponent(id);
   await render(`/oferta/${encodedId}`, `oferta/${encodedId}/index.html`);
 }
+const postIds = [...new Set([...sitemap.matchAll(/<loc>https:\/\/chollosaldia\.com\/publicacion\/([^<]+)<\/loc>/g)]
+  .map((match) => decodeURIComponent(match[1]))
+  .filter(Boolean))];
+for (const id of postIds) {
+  const encodedId = encodeURIComponent(id);
+  await render(`/publicacion/${encodedId}`, `publicacion/${encodedId}/index.html`);
+}
 await render("/robots.txt", "robots.txt");
 await render("/ads.txt", "ads.txt");
 await render("/sitemap.xml", "sitemap.xml");
