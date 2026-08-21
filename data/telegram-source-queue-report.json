@@ -1,21 +1,32 @@
 {
-  "updatedAt": "2026-08-21T10:55:34.986Z",
+  "updatedAt": "2026-08-21T11:15:26.875Z",
   "summary": {
     "published": 181,
     "blocked": 331,
-    "rejected": 431,
+    "rejected": 434,
     "ignored": 26,
-    "pending": 4
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:91374:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91374,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/91374",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:91373:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 91373,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/91373",
       "resultUrl": ""
     },
@@ -35,9 +46,9 @@
       "source": "telegram-tiesometro",
       "messageId": 7051,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/tiesometro/7051",
       "resultUrl": ""
     },
@@ -57,9 +68,9 @@
       "source": "telegram-una-ganga",
       "messageId": 91371,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/91371",
       "resultUrl": ""
     },
@@ -79,9 +90,9 @@
       "source": "telegram-ofertos",
       "messageId": 40617,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/40617",
       "resultUrl": ""
     },
@@ -1095,17 +1106,6 @@
       "attempts": 0,
       "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
       "sourceUrl": "https://t.me/Ofertos/40593",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:40592:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 40592,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/40592",
       "resultUrl": ""
     }
   ]
