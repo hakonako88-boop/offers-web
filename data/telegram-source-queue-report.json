@@ -1,13 +1,24 @@
 {
-  "updatedAt": "2026-08-21T15:56:43.398Z",
+  "updatedAt": "2026-08-21T16:19:35.669Z",
   "summary": {
     "published": 188,
     "blocked": 338,
-    "rejected": 442,
+    "rejected": 444,
     "ignored": 26,
-    "pending": 2
+    "pending": 1
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:91390:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91390,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/91390",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:91389:miravia:0",
       "source": "telegram-una-ganga",
@@ -35,9 +46,9 @@
       "source": "telegram-una-ganga",
       "messageId": 91387,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/91387",
       "resultUrl": ""
     },
@@ -156,9 +167,9 @@
       "source": "telegram-una-ganga",
       "messageId": 91379,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/91379",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/una_ganga/91332",
       "resultUrl": "https://s.click.aliexpress.com/e/_c4tIJ8Dz"
-    },
-    {
-      "id": "telegram-ofertos:40596:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 40596,
-      "store": "Amazon",
-      "status": "blocked",
-      "attempts": 0,
-      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
-      "sourceUrl": "https://t.me/Ofertos/40596",
-      "resultUrl": ""
     }
   ]
 }
