@@ -1,13 +1,35 @@
 {
-  "updatedAt": "2026-08-22T05:05:47.360Z",
+  "updatedAt": "2026-08-22T05:37:57.857Z",
   "summary": {
-    "rejected": 426,
-    "blocked": 352,
+    "rejected": 424,
+    "blocked": 353,
     "published": 189,
     "ignored": 32,
-    "pending": 1
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:91430:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91430,
+      "store": "Amazon",
+      "status": "blocked",
+      "attempts": 0,
+      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
+      "sourceUrl": "https://t.me/una_ganga/91430",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:91429:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91429,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/91429",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:91428:miravia:0",
       "source": "telegram-una-ganga",
@@ -80,8 +102,8 @@
       "messageId": 91422,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/91422",
       "resultUrl": ""
     },
@@ -1085,28 +1107,6 @@
       "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
       "sourceUrl": "https://t.me/una_ganga/91382",
       "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91381:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91381,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/91381",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91380:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91380,
-      "store": "AliExpress",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/una_ganga/91380",
-      "resultUrl": "https://s.click.aliexpress.com/e/_c3I5vq1N"
     }
   ]
 }
