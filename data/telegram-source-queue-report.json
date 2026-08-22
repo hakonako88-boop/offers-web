@@ -1,12 +1,35 @@
 {
-  "updatedAt": "2026-08-22T20:28:24.158Z",
+  "updatedAt": "2026-08-22T20:47:42.244Z",
   "summary": {
-    "rejected": 390,
-    "published": 204,
     "blocked": 377,
-    "ignored": 29
+    "published": 204,
+    "rejected": 388,
+    "ignored": 29,
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:91477:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91477,
+      "store": "Miravia",
+      "status": "published",
+      "attempts": 0,
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
+      "sourceUrl": "https://t.me/una_ganga/91477",
+      "resultUrl": "https://www.awin1.com/cread.php?awinmid=37168&awinaffid=2023977&ued=https%3A%2F%2Fwww.miravia.es%2Fp%2Fi1374630949242580-s6187524459968212.html"
+    },
+    {
+      "id": "telegram-una-ganga:91476:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91476,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/91476",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-paramanitas:4606:ignored",
       "source": "telegram-paramanitas",
@@ -144,9 +167,9 @@
       "source": "telegram-una-ganga",
       "messageId": 91473,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/91473",
       "resultUrl": ""
     },
@@ -1083,28 +1106,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/40653",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:40652:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 40652,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/40652",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:40651:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 40651,
-      "store": "Amazon",
-      "status": "blocked",
-      "attempts": 0,
-      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
-      "sourceUrl": "https://t.me/Ofertos/40651",
       "resultUrl": ""
     }
   ]
