@@ -1,43 +1,76 @@
 {
-  "updatedAt": "2026-08-22T19:14:10.920Z",
+  "updatedAt": "2026-08-22T19:36:16.554Z",
   "summary": {
     "rejected": 393,
-    "blocked": 374,
-    "published": 202,
+    "blocked": 375,
+    "published": 204,
     "ignored": 26,
-    "pending": 5
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:91472:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91472,
+      "store": "Amazon",
+      "status": "blocked",
+      "attempts": 0,
+      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
+      "sourceUrl": "https://t.me/una_ganga/91472",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:40688:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 40688,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/40688",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:40687:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 40687,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/40687",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:91471:aliexpress:0",
       "source": "telegram-una-ganga",
       "messageId": 91471,
       "store": "AliExpress",
-      "status": "pending",
+      "status": "published",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/una_ganga/91471",
-      "resultUrl": ""
+      "resultUrl": "https://s.click.aliexpress.com/e/_c39qxZYJ"
     },
     {
       "id": "telegram-tiesometro:7073:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7073,
       "store": "AliExpress",
-      "status": "pending",
+      "status": "published",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/tiesometro/7073",
-      "resultUrl": ""
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3KRQUkx"
     },
     {
       "id": "telegram-tiesometro:7072:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7072,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/tiesometro/7072",
       "resultUrl": ""
     },
@@ -68,9 +101,9 @@
       "source": "telegram-ofertos",
       "messageId": 40686,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/40686",
       "resultUrl": ""
     },
@@ -79,9 +112,9 @@
       "source": "telegram-ofertos",
       "messageId": 40685,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/40685",
       "resultUrl": ""
     },
@@ -1073,39 +1106,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/erroresde_precio/15466",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91431:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91431,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/91431",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91430:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91430,
-      "store": "Amazon",
-      "status": "blocked",
-      "attempts": 0,
-      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
-      "sourceUrl": "https://t.me/una_ganga/91430",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91429:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91429,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/91429",
       "resultUrl": ""
     }
   ]
