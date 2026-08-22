@@ -1,13 +1,24 @@
 {
-  "updatedAt": "2026-08-22T21:30:04.423Z",
+  "updatedAt": "2026-08-22T21:47:04.675Z",
   "summary": {
-    "blocked": 377,
-    "rejected": 388,
+    "rejected": 389,
     "published": 203,
+    "blocked": 376,
     "ignored": 30,
     "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:91480:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91480,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/91480",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:91479:amazon:0",
       "source": "telegram-una-ganga",
@@ -25,8 +36,8 @@
       "messageId": 91478,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/91478",
       "resultUrl": ""
     },
@@ -200,9 +211,9 @@
       "source": "telegram-una-ganga",
       "messageId": 91473,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/91473",
       "resultUrl": ""
     },
@@ -1095,17 +1106,6 @@
       "attempts": 0,
       "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
       "sourceUrl": "https://t.me/chollosdiario/45159",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91439:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91439,
-      "store": "Amazon",
-      "status": "blocked",
-      "attempts": 0,
-      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
-      "sourceUrl": "https://t.me/una_ganga/91439",
       "resultUrl": ""
     }
   ]
