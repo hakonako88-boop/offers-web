@@ -1,21 +1,54 @@
 {
-  "updatedAt": "2026-08-22T06:00:59.676Z",
+  "updatedAt": "2026-08-22T06:35:46.647Z",
   "summary": {
-    "rejected": 424,
-    "blocked": 352,
-    "published": 189,
+    "published": 190,
+    "blocked": 353,
+    "rejected": 423,
     "ignored": 32,
-    "pending": 3
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:91433:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91433,
+      "store": "Amazon",
+      "status": "blocked",
+      "attempts": 0,
+      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
+      "sourceUrl": "https://t.me/una_ganga/91433",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:91432:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91432,
+      "store": "AliExpress",
+      "status": "published",
+      "attempts": 0,
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
+      "sourceUrl": "https://t.me/una_ganga/91432",
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3uOPPVt"
+    },
+    {
+      "id": "telegram-chollosdiario:45158:amazon:0",
+      "source": "telegram-chollosdiario",
+      "messageId": 45158,
+      "store": "Amazon",
+      "status": "blocked",
+      "attempts": 0,
+      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
+      "sourceUrl": "https://t.me/chollosdiario/45158",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-errores-de-precio:15466:aliexpress:0",
       "source": "telegram-errores-de-precio",
       "messageId": 15466,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/erroresde_precio/15466",
       "resultUrl": ""
     },
@@ -25,8 +58,8 @@
       "messageId": 91431,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/91431",
       "resultUrl": ""
     },
@@ -46,9 +79,9 @@
       "source": "telegram-una-ganga",
       "messageId": 91429,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/91429",
       "resultUrl": ""
     },
@@ -1074,39 +1107,6 @@
       "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
       "sourceUrl": "https://t.me/una_ganga/91385",
       "resultUrl": ""
-    },
-    {
-      "id": "telegram-chollosdiario:45151:amazon:0",
-      "source": "telegram-chollosdiario",
-      "messageId": 45151,
-      "store": "Amazon",
-      "status": "blocked",
-      "attempts": 0,
-      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
-      "sourceUrl": "https://t.me/chollosdiario/45151",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91384:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91384,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/91384",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91383:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91383,
-      "store": "Miravia",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/una_ganga/91383",
-      "resultUrl": "https://www.awin1.com/cread.php?awinmid=37168&awinaffid=2023977&ued=https%3A%2F%2Fwww.miravia.es%2Fp%2Fi1374668355833993-s6187615865213065.html"
     }
   ]
 }
