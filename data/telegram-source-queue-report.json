@@ -1,23 +1,45 @@
 {
-  "updatedAt": "2026-08-23T04:02:17.024Z",
+  "updatedAt": "2026-08-23T04:41:11.979Z",
   "summary": {
-    "rejected": 380,
+    "rejected": 379,
     "published": 209,
-    "blocked": 378,
+    "blocked": 379,
     "ignored": 30,
     "pending": 3
   },
   "recent": [
     {
+      "id": "telegram-una-ganga:91500:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91500,
+      "store": "Amazon",
+      "status": "blocked",
+      "attempts": 0,
+      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
+      "sourceUrl": "https://t.me/una_ganga/91500",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:91499:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91499,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/91499",
+      "resultUrl": ""
+    },
+    {
       "id": "telegram-una-ganga:91498:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 91498,
       "store": "Miravia",
-      "status": "pending",
+      "status": "published",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/una_ganga/91498",
-      "resultUrl": ""
+      "resultUrl": "https://www.awin1.com/cread.php?awinmid=37168&awinaffid=2023977&ued=https%3A%2F%2Fwww.miravia.es%2Fp%2Fi1374271866681091-s2090978756933379.html"
     },
     {
       "id": "telegram-una-ganga:91497:amazon:0",
@@ -46,9 +68,9 @@
       "source": "telegram-una-ganga",
       "messageId": 91495,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/91495",
       "resultUrl": ""
     },
@@ -79,9 +101,9 @@
       "source": "telegram-una-ganga",
       "messageId": 91492,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/91492",
       "resultUrl": ""
     },
@@ -146,8 +168,8 @@
       "messageId": 91486,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/91486",
       "resultUrl": ""
     },
@@ -1084,28 +1106,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/91446",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:40667:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 40667,
-      "store": "Amazon",
-      "status": "blocked",
-      "attempts": 0,
-      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
-      "sourceUrl": "https://t.me/Ofertos/40667",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:40666:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 40666,
-      "store": "Amazon",
-      "status": "blocked",
-      "attempts": 0,
-      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
-      "sourceUrl": "https://t.me/Ofertos/40666",
       "resultUrl": ""
     }
   ]
