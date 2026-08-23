@@ -1,21 +1,65 @@
 {
-  "updatedAt": "2026-08-23T21:01:28.175Z",
+  "updatedAt": "2026-08-23T21:25:22.497Z",
   "summary": {
-    "rejected": 351,
+    "rejected": 349,
     "published": 207,
-    "blocked": 407,
-    "ignored": 32,
+    "blocked": 408,
+    "ignored": 33,
     "pending": 3
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7083:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7083,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/tiesometro/7083",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:91552:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91552,
+      "store": "Amazon",
+      "status": "blocked",
+      "attempts": 0,
+      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
+      "sourceUrl": "https://t.me/una_ganga/91552",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:91551:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91551,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/91551",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:40740:ignored",
+      "source": "telegram-ofertos",
+      "messageId": 40740,
+      "store": "Otra",
+      "status": "ignored",
+      "attempts": 0,
+      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
+      "sourceUrl": "https://t.me/Ofertos/40740",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7082:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7082,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/tiesometro/7082",
       "resultUrl": ""
     },
@@ -24,9 +68,9 @@
       "source": "telegram-una-ganga",
       "messageId": 91550,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/91550",
       "resultUrl": ""
     },
@@ -179,8 +223,8 @@
       "messageId": 91547,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/91547",
       "resultUrl": ""
     },
@@ -1062,50 +1106,6 @@
       "attempts": 0,
       "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
       "sourceUrl": "https://t.me/Ofertos/40703",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4607:amazon:0",
-      "source": "telegram-paramanitas",
-      "messageId": 4607,
-      "store": "Amazon",
-      "status": "blocked",
-      "attempts": 0,
-      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
-      "sourceUrl": "https://t.me/paramanitas/4607",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91513:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91513,
-      "store": "Miravia",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/una_ganga/91513",
-      "resultUrl": "https://www.awin1.com/cread.php?awinmid=37168&awinaffid=2023977&ued=https%3A%2F%2Fwww.miravia.es%2Fp%2Fi1359701790077739-s2075487781679915.html"
-    },
-    {
-      "id": "telegram-una-ganga:91512:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91512,
-      "store": "Amazon",
-      "status": "blocked",
-      "attempts": 0,
-      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
-      "sourceUrl": "https://t.me/una_ganga/91512",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:40702:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 40702,
-      "store": "Amazon",
-      "status": "blocked",
-      "attempts": 0,
-      "reason": "Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad",
-      "sourceUrl": "https://t.me/Ofertos/40702",
       "resultUrl": ""
     }
   ]
