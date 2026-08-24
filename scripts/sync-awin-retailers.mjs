@@ -173,7 +173,9 @@ const existingWebOffers = readJson(WEB_OFFERS_FILE, []);
 const listResponse = await fetch(config.feedListUrl, { headers: { 'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)' } });
 if (!listResponse.ok) throw new Error(`Awin feed list returned ${listResponse.status}`);
 const feedList = parseFeedList(await listResponse.text());
-const retailer = AWIN_RETAILERS[Math.abs(Number(state.nextRetailer) || 0) % AWIN_RETAILERS.length];
+const requestedRetailer = String(process.env.AWIN_RETAILER_SLUG || '').trim().toLowerCase();
+const retailer = AWIN_RETAILERS.find((entry) => entry.slug === requestedRetailer)
+  || AWIN_RETAILERS[Math.abs(Number(state.nextRetailer) || 0) % AWIN_RETAILERS.length];
 const entries = retailerFeedEntries(feedList, retailer);
 const feed = selectRetailerFeed(entries, state.feedCursors?.[retailer.merchantId] || 0);
 if (!feed) throw new Error(`No Spanish ${retailer.store} feed is available in Awin publisher ${process.env.AWIN_PUBLISHER_ID || '2021553'}.`);
