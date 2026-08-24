@@ -15,6 +15,7 @@ import {
   recordFromColumns,
   retailerFeedEntries,
   selectRetailerFeed,
+  socialImageFromHtml,
 } from './awin-retailers.mjs';
 
 const ROOT = process.cwd();
@@ -63,6 +64,25 @@ async function verifiedImage(url) {
   const dimensions = await sharp(buffer, { failOn: 'none' }).metadata();
   if ((dimensions.width || 0) < MIN_IMAGE_DIMENSION || (dimensions.height || 0) < MIN_IMAGE_DIMENSION) throw new Error(`image too small (${dimensions.width || 0}x${dimensions.height || 0})`);
   return buffer;
+}
+
+async function preferredOriginalImage(offer, retailer) {
+  try {
+    return { url: offer.image, buffer: await verifiedImage(offer.image) };
+  } catch (thumbnailError) {
+    const response = await fetch(offer.url, {
+      redirect: 'follow',
+      headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaBot/1.0; +https://chollosaldia.com/aviso-legal)' },
+      signal: AbortSignal.timeout(20_000),
+    });
+    if (!response.ok) throw thumbnailError;
+    const finalUrl = new URL(response.url);
+    const officialPage = retailer.domains.some((domain) => finalUrl.hostname === domain || finalUrl.hostname.endsWith(`.${domain}`));
+    if (!officialPage) throw thumbnailError;
+    const image = socialImageFromHtml(await response.text());
+    if (!image || image === offer.image) throw thumbnailError;
+    return { url: image, buffer: await verifiedImage(image) };
+  }
 }
 
 async function publish(config, offer, originalImage) {
@@ -169,7 +189,9 @@ const attempted = new Set();
 for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
   attempts += 1; attempted.add(offer.id);
   try {
-    const originalImage = await verifiedImage(offer.image);
+    const preferredImage = await preferredOriginalImage(offer, retailer);
+    offer.image = preferredImage.url;
+    const originalImage = preferredImage.buffer;
     const message = await publish(config, offer, originalImage);
     await saveForWeb(offer, message, originalImage);
     published.push({ productId: offer.id, publishedAt: new Date().toISOString(), telegramMessageId: message.message_id, price: offer.price, url: offer.url, title: offer.title, store: offer.store, source: `awin-${offer.storeSlug}-feed`, status: 'PUBLICADO' });

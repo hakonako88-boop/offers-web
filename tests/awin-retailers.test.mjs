@@ -7,6 +7,7 @@ import {
   normalizeRetailProduct,
   retailerFeedEntries,
   retailQualityScore,
+  socialImageFromHtml,
 } from '../scripts/awin-retailers.mjs';
 
 const pc = AWIN_RETAILERS.find((retailer) => retailer.store === 'PcComponentes');
@@ -49,4 +50,9 @@ test('normalizes a real discounted product and never borrows another publisher l
   assert.equal(offer.image, 'https://cdn.pccomponentes.com/product-original.jpg');
   assert.equal(isOwnedAwinLink(offer.url, '20982'), true);
   assert.equal(offer.discount, 22);
+});
+
+test('recovers an official high-resolution social image from a product page', () => {
+  const html = '<meta property="og:image" content="https://cdn.example.com/product-1200.jpg?x=1&amp;y=2">';
+  assert.equal(socialImageFromHtml(html), 'https://cdn.example.com/product-1200.jpg?x=1&y=2');
 });

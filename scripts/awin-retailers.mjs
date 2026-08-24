@@ -90,6 +90,17 @@ export function recordFromColumns(headers = [], cells = []) {
   return Object.fromEntries(headers.map((header, index) => [normalizeKey(header), cells[index] ?? '']));
 }
 
+export function socialImageFromHtml(html = '') {
+  const tags = String(html).match(/<meta\b[^>]*>/giu) || [];
+  for (const tag of tags) {
+    const key = tag.match(/\b(?:property|name)\s*=\s*["']([^"']+)["']/iu)?.[1]?.toLowerCase();
+    if (key !== 'og:image' && key !== 'twitter:image') continue;
+    const image = tag.match(/\bcontent\s*=\s*["']([^"']+)["']/iu)?.[1]?.replaceAll('&amp;', '&') || '';
+    try { if (new URL(image).protocol === 'https:') return image; } catch { /* continue */ }
+  }
+  return '';
+}
+
 function categoryFor(input = '', title = '') {
   const text = normalizeKey(`${input} ${title}`).replaceAll('_', ' ');
   if (/mobile|phone|telefon|informat|computer|electron|televis|audio|gaming/.test(text)) return 'Tecnología';
