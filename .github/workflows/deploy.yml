@@ -27,6 +27,7 @@ on:
           - miravia
           - awin
           - awin-pccomponentes
+          - mediamarkt
   repository_dispatch:
     types: [telegram_update, telegram_sources_changed]
 
@@ -109,6 +110,7 @@ jobs:
       ALIEXPRESS_INVITATION_CODE: "US95SzVNcTdJdzYyN0doRjBKZ09JRTJEcFF4WmMySDZicDBuY0RBd2hHS2VQemFTZUJrNWVWT0s1MU1hdTAyWg"
       AWIN_FEED_LIST_URL: ${{ secrets.AWIN_FEED_LIST_URL }}
       AWIN_FEED_LIST_URL_2021553: ${{ secrets.AWIN_FEED_LIST_URL_2021553 }}
+      TRADEDOUBLER_PRODUCTS_TOKEN: ${{ secrets.TRADEDOUBLER_PRODUCTS_TOKEN }}
       NEXT_PUBLIC_ADSENSE_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_ADSENSE_CLIENT_ID }}
       NEXT_PUBLIC_ADSENSE_HOME_SLOT: ${{ secrets.NEXT_PUBLIC_ADSENSE_HOME_SLOT }}
       NEXT_PUBLIC_ADSENSE_OFFER_SLOT: ${{ secrets.NEXT_PUBLIC_ADSENSE_OFFER_SLOT }}
@@ -208,6 +210,11 @@ jobs:
           AWIN_RETAILER_SLUG: ${{ inputs.run_automatic_source == 'awin-pccomponentes' && 'pccomponentes' || '' }}
         run: npm run sync:awin-retailers
 
+      - name: Buscar y publicar ofertas de MediaMarkt España
+        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'mediamarkt') || (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed')) && env.TRADEDOUBLER_PRODUCTS_TOKEN != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        continue-on-error: true
+        run: npm run sync:mediamarkt
+
       - name: Clasificar mensajes pendientes de los canales
         if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed' }}
         run: node scripts/reconcile-telegram-source-queue.mjs
@@ -230,7 +237,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/offers.json data/posts.json data/amazon-discovery-state.json data/amazon-publications.json data/amazon-community-signal-state.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json data/awin-retailers-discovery-state.json data/awin-retailers-publications.json data/telegram-inbox-state.json data/telegram-removals.json data/telegram-caption-repairs.json data/telegram-source-queue.json data/telegram-source-queue-report.json public/tg
+          git add data/offers.json data/posts.json data/amazon-discovery-state.json data/amazon-publications.json data/amazon-community-signal-state.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json data/awin-retailers-discovery-state.json data/awin-retailers-publications.json data/tradedoubler-mediamarkt-discovery-state.json data/tradedoubler-mediamarkt-publications.json data/telegram-inbox-state.json data/telegram-removals.json data/telegram-caption-repairs.json data/telegram-source-queue.json data/telegram-source-queue-report.json public/tg
           git diff --cached --quiet || git commit -m "Actualizar ofertas desde Telegram"
           git pull --rebase origin main
           git push
