@@ -33,15 +33,6 @@ function writeJson(file, value) {
   fs.writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`);
 }
 
-async function telegram(method, token, payload) {
-  const response = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
-    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload),
-  });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok || !data.ok) throw new Error(`Telegram ${method} failed: ${data.description || response.status}`);
-  return data.result;
-}
-
 async function telegramPhoto(token, payload, photo, filename) {
   const form = new FormData();
   form.set('chat_id', String(payload.chat_id));
