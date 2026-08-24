@@ -5,6 +5,7 @@ import {
   createOwnedAwinLink,
   isOwnedAwinLink,
   normalizeRetailProduct,
+  originalImageFromProductServe,
   retailerFeedEntries,
   retailQualityScore,
   socialImageFromHtml,
@@ -55,4 +56,14 @@ test('normalizes a real discounted product and never borrows another publisher l
 test('recovers an official high-resolution social image from a product page', () => {
   const html = '<meta property="og:image" content="https://cdn.example.com/product-1200.jpg?x=1&amp;y=2">';
   assert.equal(socialImageFromHtml(html), 'https://cdn.example.com/product-1200.jpg?x=1&y=2');
+});
+
+test('unwraps PcComponentes original images from Awin thumbnails', () => {
+  const wrapped = 'https://images2.productserve.com/?w=200&h=200&url=ssl%3Aimg.pccomponentes.com%2Farticles%2F1094%2Fproduct.jpg';
+  assert.equal(
+    originalImageFromProductServe(wrapped, pc),
+    'https://img.pccomponentes.com/articles/1094/product.jpg',
+  );
+  const untrusted = 'https://images2.productserve.com/?url=ssl%3Aexample.com%2Fproduct.jpg';
+  assert.equal(originalImageFromProductServe(untrusted, pc), '');
 });

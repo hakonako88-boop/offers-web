@@ -101,6 +101,24 @@ export function socialImageFromHtml(html = '') {
   return '';
 }
 
+export function originalImageFromProductServe(input = '', retailer) {
+  try {
+    const wrapped = new URL(input);
+    if (!/^images\d*\.productserve\.com$/i.test(wrapped.hostname)) return '';
+    const encodedOriginal = wrapped.searchParams.get('url') || '';
+    const candidate = /^ssl:/i.test(encodedOriginal)
+      ? `https://${encodedOriginal.slice(4).replace(/^\/+/, '')}`
+      : encodedOriginal;
+    const original = new URL(candidate);
+    const host = original.hostname.toLowerCase();
+    const trusted = original.protocol === 'https:'
+      && retailer.domains.some((domain) => host === domain || host.endsWith(`.${domain}`));
+    return trusted ? original.toString() : '';
+  } catch {
+    return '';
+  }
+}
+
 function categoryFor(input = '', title = '') {
   const text = normalizeKey(`${input} ${title}`).replaceAll('_', ' ');
   if (/mobile|phone|telefon|informat|computer|electron|televis|audio|gaming/.test(text)) return 'Tecnología';
@@ -130,7 +148,12 @@ export function normalizeRetailProduct(record = {}, retailer) {
   // Awin's aw_image_url is commonly a 200 px ProductServe thumbnail. The
   // merchant image is the original catalogue asset (Xiaomi often supplies an
   // 800 px version), so it must win before the resized Awin fallback.
-  const image = value(record, ['merchant_image_url', 'large_image', 'image_url', 'aw_image_url', 'merchant_thumb_url']);
+  const imageCandidates = ['merchant_image_url', 'large_image', 'image_url', 'aw_image_url', 'merchant_thumb_url']
+    .map((field) => String(record[field] || '').trim())
+    .filter(Boolean);
+  const image = imageCandidates.map((candidate) => originalImageFromProductServe(candidate, retailer)).find(Boolean)
+    || imageCandidates[0]
+    || '';
   const price = amount(value(record, ['search_price', 'store_price', 'sale_price', 'price']));
   const oldPrice = amount(value(record, ['product_price_old', 'rrp_price', 'base_price', 'old_price']));
   const rawCategory = value(record, ['merchant_category', 'category_name', 'product_type', 'merchant_product_category_path']);
