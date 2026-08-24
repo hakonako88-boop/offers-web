@@ -19,7 +19,10 @@ const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const MAX_CANDIDATES = 60;
 const MAX_PUBLICATION_ATTEMPTS = 15;
-const MIN_IMAGE_DIMENSION = 600;
+// MediaMarkt's official catalogue rendition is normally 786x587. It is a
+// clear source asset rather than a thumbnail and is large enough for the
+// branded 1080px Telegram card without visible pixelation.
+const MIN_IMAGE_DIMENSION = 550;
 
 function readJson(file, fallback) {
   try { return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : fallback; } catch { return fallback; }

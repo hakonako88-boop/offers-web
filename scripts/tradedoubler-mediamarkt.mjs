@@ -8,7 +8,7 @@ export const TRADEDOUBLER_MEDIAMARKT = Object.freeze({
   slug: 'mediamarkt',
 });
 
-export const TRADEDOUBLER_QUALITY_POLICY_VERSION = 'v2';
+export const TRADEDOUBLER_QUALITY_POLICY_VERSION = 'v3';
 
 const LOW_INTEREST = /\b(?:funda|protector|cable|adaptador|recambio|repuesto|pegatina|llavero|tornillo|cartucho|pilas?|bombilla|soporte|conector)\b/iu;
 const HIGH_INTEREST = /\b(?:smartphone|m[oó]vil|tablet|port[aá]til|ordenador|monitor|televisor|smart\s*tv|consola|videojuego|auriculares|altavoz|reloj|smartwatch|robot\s+aspirador|aspirador|freidora|cafetera|lavadora|secadora|frigor[ií]fico|lavavajillas|microondas|horno|aire\s+acondicionado|ventilador|patinete|c[aá]mara|objetivo|proyector)\b/iu;
