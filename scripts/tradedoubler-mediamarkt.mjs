@@ -79,6 +79,12 @@ function categoryText(product = {}) {
     .join(' > ');
 }
 
+function fieldValue(product = {}, fieldName = '') {
+  return (Array.isArray(product.fields) ? product.fields : [])
+    .find((entry) => String(entry?.name || '').toLowerCase() === fieldName.toLowerCase())
+    ?.value;
+}
+
 function categoryFor(category = '', title = '') {
   const text = `${category} ${title}`.toLocaleLowerCase('es').normalize('NFD').replace(/\p{Diacritic}/gu, '');
   if (/videojuego|playstation|nintendo|xbox|gaming/.test(text)) return 'Videojuegos';
@@ -94,7 +100,14 @@ function pricesFrom(product = {}, offer = {}) {
     .filter((entry) => entry.value > 0)
     .sort((left, right) => right.date - left.date);
   const current = number(offer.price ?? product.price) || history[0]?.value || 0;
-  const previous = Math.max(0, ...history.slice(1).map((entry) => entry.value), number(offer.previousPrice ?? product.previousPrice));
+  // MediaMarkt publishes the current amount in priceHistory and its genuine
+  // crossed-out retail price in the product-level strike_price custom field.
+  const previous = Math.max(
+    0,
+    ...history.slice(1).map((entry) => entry.value),
+    number(offer.previousPrice ?? product.previousPrice),
+    number(fieldValue(product, 'strike_price')),
+  );
   return { current, previous };
 }
 

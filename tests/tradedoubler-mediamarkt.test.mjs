@@ -38,6 +38,7 @@ test('normalizes a discounted MediaMarkt product with official image and affilia
     description: '<p>Televisor inteligente con panel OLED.</p>',
     productImage: { url: 'https://assets.mediamarkt.es/product.jpg', width: 1200, height: 1200 },
     categories: [{ name: 'Televisores' }],
+    fields: [{ name: 'strike_price', value: '1099.00' }],
     offers: [{
       feedId: 24915,
       sourceProductId: 'sku-42',
@@ -45,7 +46,6 @@ test('normalizes a discounted MediaMarkt product with official image and affilia
       availability: 'In Stock',
       priceHistory: [
         { price: { value: '799.00', currency: 'EUR' }, date: '2026-08-24T10:00:00Z' },
-        { price: { value: '1099.00', currency: 'EUR' }, date: '2026-08-20T10:00:00Z' },
       ],
     }],
   });
