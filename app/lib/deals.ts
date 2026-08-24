@@ -160,11 +160,8 @@ function isSupportedAffiliateUrl(value: string, store: string) {
       const merchant = url.searchParams.get("awinmid") || url.searchParams.get("m");
       return (host === "www.awin1.com" || host === "awin1.com") && publisher === "2021553" && merchant === awinRetailers[store];
     }
-    if (store === "MediaMarkt") {
-      const publisher = url.searchParams.get("awinaffid") || url.searchParams.get("a");
-      const merchant = url.searchParams.get("awinmid") || url.searchParams.get("m");
-      return (host === "www.awin1.com" || host === "awin1.com") && publisher === "2021553" && /^\d+$/.test(merchant || "");
-    }
+    // MediaMarkt España uses TradeDoubler, never the Austrian Awin programme.
+    if (store === "MediaMarkt") return host === "clk.tradedoubler.com";
     return false;
   } catch {
     return false;

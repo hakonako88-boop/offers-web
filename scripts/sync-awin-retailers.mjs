@@ -174,13 +174,11 @@ const listResponse = await fetch(config.feedListUrl, { headers: { 'user-agent': 
 if (!listResponse.ok) throw new Error(`Awin feed list returned ${listResponse.status}`);
 const feedList = parseFeedList(await listResponse.text());
 const requestedRetailer = String(process.env.AWIN_RETAILER_SLUG || '').trim().toLowerCase();
-let retailer = AWIN_RETAILERS.find((entry) => entry.slug === requestedRetailer)
+const retailer = AWIN_RETAILERS.find((entry) => entry.slug === requestedRetailer)
   || AWIN_RETAILERS[Math.abs(Number(state.nextRetailer) || 0) % AWIN_RETAILERS.length];
 const entries = retailerFeedEntries(feedList, retailer);
 const feed = selectRetailerFeed(entries, state.feedCursors?.[retailer.merchantId] || 0);
-if (!feed) throw new Error(`No Spanish ${retailer.store} feed is available in Awin publisher ${process.env.AWIN_PUBLISHER_ID || '2021553'}. The advertiser may still be pending approval or may not provide a product feed.`);
-retailer = { ...retailer, merchantId: retailer.merchantId || String(feed.advertiser_id || feed.merchant_id || '') };
-if (!/^\d+$/.test(retailer.merchantId)) throw new Error(`${retailer.store} feed has no valid Awin advertiser id.`);
+if (!feed) throw new Error(`No Spanish ${retailer.store} feed is available in Awin publisher ${process.env.AWIN_PUBLISHER_ID || '2021553'}.`);
 const retailerStateKey = retailer.merchantId;
 
 const feedVersion = `${AWIN_RETAIL_QUALITY_POLICY_VERSION}:${feed.last_imported || feed.last_checked || 'unknown'}`;
