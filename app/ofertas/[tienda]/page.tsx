@@ -31,6 +31,30 @@ const stores = {
     description: "Ofertas de Miravia con precio registrado y ahorro visible. Solo incluimos productos con una ficha y un enlace de compra identificables.",
     guidance: "Comprueba el vendedor, las condiciones de envio y los cupones activos de Miravia antes de finalizar el pedido.",
   },
+  xiaomi: {
+    name: "Xiaomi",
+    label: "Ofertas Xiaomi",
+    eyebrow: "SELECCION XIAOMI",
+    title: "Ofertas oficiales de Xiaomi con descuento real.",
+    description: "Móviles, wearables y productos Xiaomi seleccionados desde el catálogo oficial, con precio anterior y enlace de afiliación comprobado.",
+    guidance: "Comprueba la configuración, el color, el almacenamiento, el envío y la garantía indicados por Xiaomi antes de comprar.",
+  },
+  pccomponentes: {
+    name: "PcComponentes",
+    label: "Ofertas PcComponentes",
+    eyebrow: "SELECCION PCCOMPONENTES",
+    title: "Chollos de PcComponentes para renovar tu tecnología.",
+    description: "Ofertas de PcComponentes filtradas por ahorro real en informática, gaming, móviles y electrónica de consumo.",
+    guidance: "Revisa si el producto lo vende directamente PcComponentes, su estado, el plazo de entrega y las condiciones de devolución.",
+  },
+  "el-corte-ingles": {
+    name: "El Corte Inglés",
+    label: "Ofertas El Corte Inglés",
+    eyebrow: "SELECCION EL CORTE INGLES",
+    title: "Ofertas seleccionadas de El Corte Inglés.",
+    description: "Descuentos de El Corte Inglés con precio anterior comprobable en tecnología, hogar, belleza, moda y otras categorías útiles.",
+    guidance: "Comprueba la talla o variante, el vendedor, la entrega y si la promoción exige alguna condición adicional.",
+  },
 } as const;
 
 type StoreSlug = keyof typeof stores;

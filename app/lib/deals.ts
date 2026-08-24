@@ -52,8 +52,8 @@ function normalise(value: string) {
 function cleanTitle(value?: string) {
   const original = String(value ?? "")
     .replace(/^[^\p{L}\p{N}]+/u, "")
-    .replace(/^(OFERT[ÓO]N\s+(AMAZON|ALIEXPRESS|MIRAVIA)\s*[-–—:]?\s*)/i, "")
-    .replace(/\s*[|·-]?\s*#(?:Amazon|AliExpress|Miravia|Publicidad|Publi|OfertaFlash)\b/giu, "")
+    .replace(/^(OFERT[ÓO]N\s+(AMAZON|ALIEXPRESS|MIRAVIA|XIAOMI|PCCOMPONENTES|EL CORTE INGL[EÉ]S)\s*[-–—:]?\s*)/i, "")
+    .replace(/\s*[|·-]?\s*#(?:Amazon|AliExpress|Miravia|Xiaomi|PcComponentes|ElCorteIngles|Publicidad|Publi|OfertaFlash)\b/giu, "")
     .replace(/\s*\[(?:en\s+stock|disponible|oferta)\]\s*$/iu, "")
     .replace(/\b(\d+)\s*[xX×]\s*(\d+)\s*Cm\b/gu, "$1×$2 cm")
     .trim();
@@ -154,6 +154,12 @@ function isSupportedAffiliateUrl(value: string, store: string) {
     if (store === "Amazon") return /(^|\.)amazon\./.test(host) || host === "amzn.to";
     if (store === "AliExpress") return host === "s.click.aliexpress.com" || host === "a.aliexpress.com" || host.endsWith(".aliexpress.com");
     if (store === "Miravia") return host === "www.awin1.com" || host === "awin1.com" || host.endsWith(".miravia.es");
+    const awinRetailers: Record<string, string> = { Xiaomi: "23677", "El Corte Inglés": "13075", PcComponentes: "20982" };
+    if (store in awinRetailers) {
+      const publisher = url.searchParams.get("awinaffid") || url.searchParams.get("a");
+      const merchant = url.searchParams.get("awinmid") || url.searchParams.get("m");
+      return (host === "www.awin1.com" || host === "awin1.com") && publisher === "2021553" && merchant === awinRetailers[store];
+    }
     return false;
   } catch {
     return false;
@@ -185,7 +191,8 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
   const id = sourceId(offer);
   const price = parsePrice(offer.price);
   const previous = parsePrice(offer.previousPrice);
-  const store = offer.store === "Amazon" || offer.store === "AliExpress" || offer.store === "Miravia" ? offer.store : "";
+  const supportedStores = new Set(["Amazon", "AliExpress", "Miravia", "Xiaomi", "El Corte Inglés", "PcComponentes"]);
+  const store = supportedStores.has(String(offer.store || "")) ? String(offer.store) : "";
   const coupon = String(offer.coupon || couponFor(offer.text) || '').trim() || undefined;
   const hasDemonstrableSaving = previous > price || Boolean(coupon);
   // Offers received from the owner's authorised Telegram chat may contain a

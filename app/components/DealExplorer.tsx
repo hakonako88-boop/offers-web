@@ -14,7 +14,7 @@ import { postHref, publishedPosts } from "../lib/posts";
 export type Deal = {
   id: string;
   title: string;
-  store: "Amazon" | "AliExpress" | "Miravia" | "Otra";
+  store: "Amazon" | "AliExpress" | "Miravia" | "Xiaomi" | "El Corte Inglés" | "PcComponentes" | "Otra";
   category: string;
   price: number;
   oldPrice: number;
@@ -60,7 +60,7 @@ function normalise(value: string) {
 function cleanTitle(value?: string) {
   const original = String(value ?? "")
     .replace(/^[^\p{L}\p{N}]+/u, "")
-    .replace(/^(OFERT[ÓO]N\s+(AMAZON|ALIEXPRESS|MIRAVIA)\s*[-–—:]?\s*)/i, "")
+    .replace(/^(OFERT[ÓO]N\s+(AMAZON|ALIEXPRESS|MIRAVIA|XIAOMI|PCCOMPONENTES|EL CORTE INGL[EÉ]S)\s*[-–—:]?\s*)/i, "")
     .replace(/🔥|🚨|🛒|📺|🍃|🛢️/gu, "")
     .replace(/\b(\d+)\s*[xX×]\s*(\d+)\s*Cm\b/gu, "$1×$2 cm")
     .trim();
@@ -121,7 +121,8 @@ const importedDeals: Deal[] = (rawOffers as LegacyOffer[]).flatMap((offer) => {
   const previous = parsePrice(offer.previousPrice || extractedPrevious);
   const title = cleanTitle(offer.title);
   if (!price || !title || !offer.url || !offer.image) return [];
-  const store: Deal["store"] = offer.store === "Amazon" || offer.store === "AliExpress" || offer.store === "Miravia" ? offer.store : "Otra";
+  const supportedStores: Deal["store"][] = ["Amazon", "AliExpress", "Miravia", "Xiaomi", "El Corte Inglés", "PcComponentes"];
+  const store: Deal["store"] = supportedStores.includes(offer.store as Deal["store"]) ? offer.store as Deal["store"] : "Otra";
   const date = formatDate(offer.date);
   return [{
     id: String(offer.chollometroId || offer.message_id || offer.url),
@@ -198,11 +199,17 @@ export function DealExplorer() {
     Amazon: deals.filter((deal) => deal.store === "Amazon").length,
     AliExpress: deals.filter((deal) => deal.store === "AliExpress").length,
     Miravia: deals.filter((deal) => deal.store === "Miravia").length,
+    Xiaomi: deals.filter((deal) => deal.store === "Xiaomi").length,
+    PcComponentes: deals.filter((deal) => deal.store === "PcComponentes").length,
+    ElCorteIngles: deals.filter((deal) => deal.store === "El Corte Inglés").length,
   }), [deals]);
   const sectionCovers = useMemo(() => ({
     amazon: deals.find((deal) => deal.store === "Amazon"),
     aliexpress: deals.find((deal) => deal.store === "AliExpress"),
     miravia: deals.find((deal) => deal.store === "Miravia"),
+    xiaomi: deals.find((deal) => deal.store === "Xiaomi"),
+    pccomponentes: deals.find((deal) => deal.store === "PcComponentes"),
+    elCorteIngles: deals.find((deal) => deal.store === "El Corte Inglés"),
     tecnologia: deals.find((deal) => deal.category === "Tecnología"),
     videojuegos: deals.find((deal) => deal.category === "Videojuegos"),
     hogar: deals.find((deal) => deal.category === "Hogar"),
@@ -248,7 +255,7 @@ export function DealExplorer() {
         <div className="heroCopy">
           <p className="eyebrow"><span aria-hidden="true" />OFERTAS NUEVAS DURANTE TODO EL DÍA</p>
           <h1 id="hero-title">Ofertas reales.<br /><em>Ahorro sin vueltas.</em></h1>
-          <p className="heroLead">Descubre chollos seleccionados de Amazon, AliExpress y Miravia. Precio visible, descuento claro y acceso directo a cada oferta.</p>
+          <p className="heroLead">Descubre chollos seleccionados de Amazon, AliExpress, Miravia, Xiaomi, PcComponentes y El Corte Inglés. Precio visible, descuento claro y acceso directo.</p>
           <div className="heroActions">
             <a className="primaryButton" href="#ofertas">Ver ofertas ahora <span aria-hidden="true">↓</span></a>
             <a className="quietLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis <span aria-hidden="true">↗</span></a>
@@ -272,6 +279,7 @@ export function DealExplorer() {
         <a className="storeQuick storeQuickAmazon" href="/ofertas/amazon"><span>a</span><div><b>Amazon</b><small>{offerCountLabel(storeTotals.Amazon)}</small></div><i aria-hidden="true">→</i></a>
         <a className="storeQuick storeQuickAli" href="/ofertas/aliexpress"><span>AE</span><div><b>AliExpress</b><small>{offerCountLabel(storeTotals.AliExpress)}</small></div><i aria-hidden="true">→</i></a>
         <a className="storeQuick storeQuickMiravia" href="/ofertas/miravia"><span>M</span><div><b>Miravia</b><small>{offerCountLabel(storeTotals.Miravia)}</small></div><i aria-hidden="true">→</i></a>
+        <a className="storeQuick" href="/ofertas/pccomponentes"><span>PC</span><div><b>PcComponentes</b><small>{offerCountLabel(storeTotals.PcComponentes)}</small></div><i aria-hidden="true">→</i></a>
       </section>
 
       {adsenseHomeSlot && <div className="shell adSection">
@@ -361,6 +369,9 @@ export function DealExplorer() {
           <a className="sectionCover storeAmazon" href="/ofertas/amazon">{sectionCovers.amazon && <img src={sectionCovers.amazon.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Amazon</span><b>Ofertas con precio y ahorro visible <i aria-hidden="true">→</i></b></a>
           <a className="sectionCover storeAliExpress" href="/ofertas/aliexpress">{sectionCovers.aliexpress && <img src={sectionCovers.aliexpress.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>AliExpress</span><b>Chollos y cupones publicados <i aria-hidden="true">→</i></b></a>
           <a className="sectionCover storeMiravia" href="/ofertas/miravia">{sectionCovers.miravia && <img src={sectionCovers.miravia.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Miravia</span><b>Productos seleccionados de Miravia <i aria-hidden="true">→</i></b></a>
+          <a className="sectionCover storeXiaomi" href="/ofertas/xiaomi">{sectionCovers.xiaomi && <img src={sectionCovers.xiaomi.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Xiaomi</span><b>Tecnología oficial con ahorro real <i aria-hidden="true">→</i></b></a>
+          <a className="sectionCover storePcComponentes" href="/ofertas/pccomponentes">{sectionCovers.pccomponentes && <img src={sectionCovers.pccomponentes.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>PcComponentes</span><b>Informática, gaming y electrónica <i aria-hidden="true">→</i></b></a>
+          <a className="sectionCover storeElCorteIngles" href="/ofertas/el-corte-ingles">{sectionCovers.elCorteIngles && <img src={sectionCovers.elCorteIngles.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>El Corte Inglés</span><b>Selección de descuentos destacados <i aria-hidden="true">→</i></b></a>
         </div>
       </section>
 
@@ -388,7 +399,7 @@ export function DealExplorer() {
       <section className="telegramCta" aria-labelledby="telegram-title">
         <div className="shell telegramInner">
           <div><p className="eyebrow"><span aria-hidden="true" />NO LLEGUES TARDE</p><h2 id="telegram-title">Las alertas llegan<br />antes de que se agoten.</h2></div>
-          <div><p>Entra gratis al canal para recibir nuevos chollos de Amazon, AliExpress y Miravia directamente en Telegram.</p><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis <span aria-hidden="true">↗</span></a><small>No necesitas dejar tu correo ni crear otra cuenta.</small></div>
+          <div><p>Entra gratis al canal para recibir chollos de las principales tiendas directamente en Telegram.</p><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis <span aria-hidden="true">↗</span></a><small>No necesitas dejar tu correo ni crear otra cuenta.</small></div>
         </div>
       </section>
 
