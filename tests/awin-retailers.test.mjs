@@ -35,7 +35,8 @@ test('normalizes a real discounted product and never borrows another publisher l
   const offer = normalizeRetailProduct({
     aw_product_id: 'sku-42',
     product_name: 'Portátil gaming Lenovo 16 GB RAM',
-    aw_image_url: 'https://cdn.pccomponentes.com/product.jpg',
+    aw_image_url: 'https://images2.productserve.com/?w=200&h=200&url=thumbnail.jpg',
+    merchant_image_url: 'https://cdn.pccomponentes.com/product-original.jpg',
     search_price: '699.00',
     product_price_old: '899.00',
     merchant_category: 'Informática',
@@ -45,6 +46,7 @@ test('normalizes a real discounted product and never borrows another publisher l
   }, pc);
   assert.ok(offer);
   assert.equal(offer.store, 'PcComponentes');
+  assert.equal(offer.image, 'https://cdn.pccomponentes.com/product-original.jpg');
   assert.equal(isOwnedAwinLink(offer.url, '20982'), true);
   assert.equal(offer.discount, 22);
 });

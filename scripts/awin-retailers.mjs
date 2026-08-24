@@ -116,7 +116,10 @@ export function retailQualityScore({ title = '', category = '', price = 0, oldPr
 export function normalizeRetailProduct(record = {}, retailer) {
   const sourceProductId = value(record, ['aw_product_id', 'merchant_product_id', 'product_id', 'pid']);
   const title = value(record, ['product_name', 'name', 'title']);
-  const image = value(record, ['aw_image_url', 'large_image', 'merchant_image_url', 'image_url', 'merchant_thumb_url']);
+  // Awin's aw_image_url is commonly a 200 px ProductServe thumbnail. The
+  // merchant image is the original catalogue asset (Xiaomi often supplies an
+  // 800 px version), so it must win before the resized Awin fallback.
+  const image = value(record, ['merchant_image_url', 'large_image', 'image_url', 'aw_image_url', 'merchant_thumb_url']);
   const price = amount(value(record, ['search_price', 'store_price', 'sale_price', 'price']));
   const oldPrice = amount(value(record, ['product_price_old', 'rrp_price', 'base_price', 'old_price']));
   const rawCategory = value(record, ['merchant_category', 'category_name', 'product_type', 'merchant_product_category_path']);
