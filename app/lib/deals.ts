@@ -52,8 +52,8 @@ function normalise(value: string) {
 function cleanTitle(value?: string) {
   const original = String(value ?? "")
     .replace(/^[^\p{L}\p{N}]+/u, "")
-    .replace(/^(OFERT[ÓO]N\s+(AMAZON|ALIEXPRESS|MIRAVIA|XIAOMI|PCCOMPONENTES|EL CORTE INGL[EÉ]S)\s*[-–—:]?\s*)/i, "")
-    .replace(/\s*[|·-]?\s*#(?:Amazon|AliExpress|Miravia|Xiaomi|PcComponentes|ElCorteIngles|Publicidad|Publi|OfertaFlash)\b/giu, "")
+    .replace(/^(OFERT[ÓO]N\s+(AMAZON|ALIEXPRESS|MIRAVIA|XIAOMI|PCCOMPONENTES|MEDIA\s*MARKT|EL CORTE INGL[EÉ]S)\s*[-–—:]?\s*)/i, "")
+    .replace(/\s*[|·-]?\s*#(?:Amazon|AliExpress|Miravia|Xiaomi|PcComponentes|MediaMarkt|ElCorteIngles|Publicidad|Publi|OfertaFlash)\b/giu, "")
     .replace(/\s*\[(?:en\s+stock|disponible|oferta)\]\s*$/iu, "")
     .replace(/\b(\d+)\s*[xX×]\s*(\d+)\s*Cm\b/gu, "$1×$2 cm")
     .trim();
@@ -160,6 +160,11 @@ function isSupportedAffiliateUrl(value: string, store: string) {
       const merchant = url.searchParams.get("awinmid") || url.searchParams.get("m");
       return (host === "www.awin1.com" || host === "awin1.com") && publisher === "2021553" && merchant === awinRetailers[store];
     }
+    if (store === "MediaMarkt") {
+      const publisher = url.searchParams.get("awinaffid") || url.searchParams.get("a");
+      const merchant = url.searchParams.get("awinmid") || url.searchParams.get("m");
+      return (host === "www.awin1.com" || host === "awin1.com") && publisher === "2021553" && /^\d+$/.test(merchant || "");
+    }
     return false;
   } catch {
     return false;
@@ -191,7 +196,7 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
   const id = sourceId(offer);
   const price = parsePrice(offer.price);
   const previous = parsePrice(offer.previousPrice);
-  const supportedStores = new Set(["Amazon", "AliExpress", "Miravia", "Xiaomi", "El Corte Inglés", "PcComponentes"]);
+  const supportedStores = new Set(["Amazon", "AliExpress", "Miravia", "Xiaomi", "El Corte Inglés", "PcComponentes", "MediaMarkt"]);
   const store = supportedStores.has(String(offer.store || "")) ? String(offer.store) : "";
   const coupon = String(offer.coupon || couponFor(offer.text) || '').trim() || undefined;
   const hasDemonstrableSaving = previous > price || Boolean(coupon);

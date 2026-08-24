@@ -55,6 +55,14 @@ const stores = {
     description: "Descuentos de El Corte Inglés con precio anterior comprobable en tecnología, hogar, belleza, moda y otras categorías útiles.",
     guidance: "Comprueba la talla o variante, el vendedor, la entrega y si la promoción exige alguna condición adicional.",
   },
+  mediamarkt: {
+    name: "MediaMarkt",
+    label: "Ofertas MediaMarkt",
+    eyebrow: "SELECCION MEDIAMARKT",
+    title: "Chollos de MediaMarkt en tecnología y hogar.",
+    description: "Ofertas de MediaMarkt filtradas por ahorro real en móviles, informática, televisores, gaming y electrodomésticos.",
+    guidance: "Comprueba la disponibilidad, la modalidad de entrega o recogida, la variante y el vendedor antes de finalizar la compra.",
+  },
 } as const;
 
 type StoreSlug = keyof typeof stores;

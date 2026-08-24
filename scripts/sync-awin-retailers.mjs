@@ -174,14 +174,17 @@ const listResponse = await fetch(config.feedListUrl, { headers: { 'user-agent': 
 if (!listResponse.ok) throw new Error(`Awin feed list returned ${listResponse.status}`);
 const feedList = parseFeedList(await listResponse.text());
 const requestedRetailer = String(process.env.AWIN_RETAILER_SLUG || '').trim().toLowerCase();
-const retailer = AWIN_RETAILERS.find((entry) => entry.slug === requestedRetailer)
+let retailer = AWIN_RETAILERS.find((entry) => entry.slug === requestedRetailer)
   || AWIN_RETAILERS[Math.abs(Number(state.nextRetailer) || 0) % AWIN_RETAILERS.length];
 const entries = retailerFeedEntries(feedList, retailer);
 const feed = selectRetailerFeed(entries, state.feedCursors?.[retailer.merchantId] || 0);
-if (!feed) throw new Error(`No Spanish ${retailer.store} feed is available in Awin publisher ${process.env.AWIN_PUBLISHER_ID || '2021553'}.`);
+if (!feed) throw new Error(`No Spanish ${retailer.store} feed is available in Awin publisher ${process.env.AWIN_PUBLISHER_ID || '2021553'}. The advertiser may still be pending approval or may not provide a product feed.`);
+retailer = { ...retailer, merchantId: retailer.merchantId || String(feed.advertiser_id || feed.merchant_id || '') };
+if (!/^\d+$/.test(retailer.merchantId)) throw new Error(`${retailer.store} feed has no valid Awin advertiser id.`);
+const retailerStateKey = retailer.merchantId;
 
 const feedVersion = `${AWIN_RETAIL_QUALITY_POLICY_VERSION}:${feed.last_imported || feed.last_checked || 'unknown'}`;
-const queued = (state.queuedOffers?.[retailer.merchantId] || []).filter((offer) => offer?.id && !seenIds.has(offer.id));
+const queued = (state.queuedOffers?.[retailerStateKey] || []).filter((offer) => offer?.id && !seenIds.has(offer.id));
 const discovered = state.feedVersions?.[feed.feed_id] !== feedVersion || queued.length < 5 ? await discover(feed.url, retailer, seenIds) : { candidates: [], scanned: 0 };
 const merged = [...new Map([...queued, ...discovered.candidates].map((offer) => [offer.id, offer])).values()];
 const candidates = filterDuplicateDeals(merged, existingWebOffers).sort((a, b) => b.score - a.score);
@@ -201,10 +204,10 @@ for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
   } catch (error) { console.warn(`Could not publish ${offer.id}: ${error.message}`); }
 }
 
-const queues = { ...(state.queuedOffers || {}), [retailer.merchantId]: candidates.filter((offer) => !seenIds.has(offer.id) && !attempted.has(offer.id)).slice(0, MAX_CANDIDATES) };
+const queues = { ...(state.queuedOffers || {}), [retailerStateKey]: candidates.filter((offer) => !seenIds.has(offer.id) && !attempted.has(offer.id)).slice(0, MAX_CANDIDATES) };
 writeJson(STATE_FILE, {
   nextRetailer: Number(state.nextRetailer || 0) + 1,
-  feedCursors: { ...(state.feedCursors || {}), [retailer.merchantId]: Number(state.feedCursors?.[retailer.merchantId] || 0) + 1 },
+  feedCursors: { ...(state.feedCursors || {}), [retailerStateKey]: Number(state.feedCursors?.[retailerStateKey] || 0) + 1 },
   feedVersions: { ...(state.feedVersions || {}), [feed.feed_id]: feedVersion },
   queuedOffers: queues,
   lastRunAt: new Date().toISOString(), lastStore: retailer.store, lastFeedId: feed.feed_id, lastProductsScanned: discovered.scanned,

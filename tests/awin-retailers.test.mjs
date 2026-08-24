@@ -21,6 +21,16 @@ test('keeps only the requested merchant feeds', () => {
   assert.equal(feeds.length, 1);
 });
 
+test('discovers MediaMarkt by its verified Awin advertiser name', () => {
+  const mediaMarkt = AWIN_RETAILERS.find((retailer) => retailer.store === 'MediaMarkt');
+  const feeds = retailerFeedEntries([
+    { advertiser_id: '55555', advertiser_name: 'MediaMarkt ES', language: 'Spanish', url: 'https://feeds.awin.com/mm.csv' },
+    { advertiser_id: '99999', advertiser_name: 'Another Store', language: 'Spanish', url: 'https://feeds.awin.com/other.csv' },
+  ], mediaMarkt);
+  assert.equal(feeds.length, 1);
+  assert.equal(feeds[0].advertiser_id, '55555');
+});
+
 test('creates and validates a link owned by publisher 2021553', () => {
   const link = createOwnedAwinLink('https://www.pccomponentes.com/portatil-ejemplo', pc);
   assert.equal(isOwnedAwinLink(link, pc.merchantId), true);

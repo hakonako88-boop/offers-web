@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}/ofertas/xiaomi`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
     { url: `${siteUrl}/ofertas/pccomponentes`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
     { url: `${siteUrl}/ofertas/el-corte-ingles`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
+    { url: `${siteUrl}/ofertas/mediamarkt`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
     { url: `${siteUrl}/guias/ofertas-amazon`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteUrl}/guias/cupones-aliexpress`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteUrl}/guias/detectar-chollos-reales`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.7 },

@@ -14,7 +14,7 @@ import { postHref, publishedPosts } from "../lib/posts";
 export type Deal = {
   id: string;
   title: string;
-  store: "Amazon" | "AliExpress" | "Miravia" | "Xiaomi" | "El Corte Inglés" | "PcComponentes" | "Otra";
+  store: "Amazon" | "AliExpress" | "Miravia" | "Xiaomi" | "El Corte Inglés" | "PcComponentes" | "MediaMarkt" | "Otra";
   category: string;
   price: number;
   oldPrice: number;
@@ -121,7 +121,7 @@ const importedDeals: Deal[] = (rawOffers as LegacyOffer[]).flatMap((offer) => {
   const previous = parsePrice(offer.previousPrice || extractedPrevious);
   const title = cleanTitle(offer.title);
   if (!price || !title || !offer.url || !offer.image) return [];
-  const supportedStores: Deal["store"][] = ["Amazon", "AliExpress", "Miravia", "Xiaomi", "El Corte Inglés", "PcComponentes"];
+  const supportedStores: Deal["store"][] = ["Amazon", "AliExpress", "Miravia", "Xiaomi", "El Corte Inglés", "PcComponentes", "MediaMarkt"];
   const store: Deal["store"] = supportedStores.includes(offer.store as Deal["store"]) ? offer.store as Deal["store"] : "Otra";
   const date = formatDate(offer.date);
   return [{
@@ -202,6 +202,7 @@ export function DealExplorer() {
     Xiaomi: deals.filter((deal) => deal.store === "Xiaomi").length,
     PcComponentes: deals.filter((deal) => deal.store === "PcComponentes").length,
     ElCorteIngles: deals.filter((deal) => deal.store === "El Corte Inglés").length,
+    MediaMarkt: deals.filter((deal) => deal.store === "MediaMarkt").length,
   }), [deals]);
   const sectionCovers = useMemo(() => ({
     amazon: deals.find((deal) => deal.store === "Amazon"),
@@ -210,6 +211,7 @@ export function DealExplorer() {
     xiaomi: deals.find((deal) => deal.store === "Xiaomi"),
     pccomponentes: deals.find((deal) => deal.store === "PcComponentes"),
     elCorteIngles: deals.find((deal) => deal.store === "El Corte Inglés"),
+    mediamarkt: deals.find((deal) => deal.store === "MediaMarkt"),
     tecnologia: deals.find((deal) => deal.category === "Tecnología"),
     videojuegos: deals.find((deal) => deal.category === "Videojuegos"),
     hogar: deals.find((deal) => deal.category === "Hogar"),
@@ -255,7 +257,7 @@ export function DealExplorer() {
         <div className="heroCopy">
           <p className="eyebrow"><span aria-hidden="true" />OFERTAS NUEVAS DURANTE TODO EL DÍA</p>
           <h1 id="hero-title">Ofertas reales.<br /><em>Ahorro sin vueltas.</em></h1>
-          <p className="heroLead">Descubre chollos seleccionados de Amazon, AliExpress, Miravia, Xiaomi, PcComponentes y El Corte Inglés. Precio visible, descuento claro y acceso directo.</p>
+          <p className="heroLead">Descubre chollos seleccionados de Amazon, AliExpress, Miravia, Xiaomi, PcComponentes, MediaMarkt y El Corte Inglés. Precio visible y descuento claro.</p>
           <div className="heroActions">
             <a className="primaryButton" href="#ofertas">Ver ofertas ahora <span aria-hidden="true">↓</span></a>
             <a className="quietLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis <span aria-hidden="true">↗</span></a>
@@ -372,6 +374,7 @@ export function DealExplorer() {
           <a className="sectionCover storeXiaomi" href="/ofertas/xiaomi">{sectionCovers.xiaomi && <img src={sectionCovers.xiaomi.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Xiaomi</span><b>Tecnología oficial con ahorro real <i aria-hidden="true">→</i></b></a>
           <a className="sectionCover storePcComponentes" href="/ofertas/pccomponentes">{sectionCovers.pccomponentes && <img src={sectionCovers.pccomponentes.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>PcComponentes</span><b>Informática, gaming y electrónica <i aria-hidden="true">→</i></b></a>
           <a className="sectionCover storeElCorteIngles" href="/ofertas/el-corte-ingles">{sectionCovers.elCorteIngles && <img src={sectionCovers.elCorteIngles.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>El Corte Inglés</span><b>Selección de descuentos destacados <i aria-hidden="true">→</i></b></a>
+          <a className="sectionCover storeMediaMarkt" href="/ofertas/mediamarkt">{sectionCovers.mediamarkt && <img src={sectionCovers.mediamarkt.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>MediaMarkt</span><b>Electrónica y electrodomésticos en oferta <i aria-hidden="true">→</i></b></a>
         </div>
       </section>
 

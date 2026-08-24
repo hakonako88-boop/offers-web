@@ -5,6 +5,10 @@ export const AWIN_RETAILERS = Object.freeze([
   { merchantId: '23677', store: 'Xiaomi', slug: 'xiaomi', domains: ['mi.com', 'xiaomi.com'] },
   { merchantId: '13075', store: 'El Corte Inglés', slug: 'el-corte-ingles', domains: ['elcorteingles.es'] },
   { merchantId: '20982', store: 'PcComponentes', slug: 'pccomponentes', domains: ['pccomponentes.com'] },
+  // MediaMarkt's advertiser id is resolved from this publisher's private feed
+  // list. This keeps the integration ready across programme migrations and is
+  // accepted only when Awin labels the advertiser as MediaMarkt Spain.
+  { merchantId: '', advertiserPattern: /media\s*markt/i, store: 'MediaMarkt', slug: 'mediamarkt', domains: ['mediamarkt.es'] },
 ]);
 export const AWIN_RETAIL_QUALITY_POLICY_VERSION = 'v1';
 
@@ -75,7 +79,9 @@ export function createOwnedAwinLink(destination, retailer) {
 
 export function retailerFeedEntries(feedList = [], retailer) {
   return feedList
-    .filter((entry) => String(entry.advertiser_id || entry.merchant_id) === retailer.merchantId)
+    .filter((entry) => retailer.merchantId
+      ? String(entry.advertiser_id || entry.merchant_id) === retailer.merchantId
+      : retailer.advertiserPattern?.test(String(entry.advertiser_name || entry.merchant_name || entry.advertiser || '')))
     .filter((entry) => !entry.language || /^spanish$/i.test(entry.language))
     .filter((entry) => /^https:\/\//i.test(entry.url || ''))
     .sort((left, right) => Number(left.feed_id || 0) - Number(right.feed_id || 0));
