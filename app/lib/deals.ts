@@ -282,13 +282,17 @@ export function dealSavings(deal: Pick<PublishedDeal, "price" | "oldPrice">) {
 
 /** Keeps product facts while removing promotional wording that weakens search titles. */
 export function dealSearchTitle(value: string) {
-  return value
+  const isReconditioned = /^\s*reacondicionado\b/iu.test(value);
+  const cleaned = value
+    .replace(/^\s*reacondicionado(?:\s+seminuevo)?(?:\s+(?:muy\s+bueno|bueno|como\s+nuevo))?\s*/iu, "")
     .replace(/^\s*(?:🔥\s*)?(?:ofert[oó]n|chollazo|super\s+oferta|oferta\s+flash)\s*(?:en\s+)?(?:amazon|aliexpress|miravia)?\s*[:\-–—|]*\s*/iu, "")
     .replace(/\s*[|·\-–—]*\s*#(?:amazon|aliexpress|miravia|publicidad|publi)\b/giu, "")
     .replace(/\s+(?:por\s+solo|a\s+solo)\s+\d[\d.,]*\s*€?\s*$/iu, "")
     .replace(/\s{2,}/gu, " ")
     .replace(/^[\s:|\-–—]+|[\s:|\-–—]+$/gu, "")
-    .trim() || value.trim();
+    .trim();
+  const factualTitle = cleaned || value.trim();
+  return isReconditioned && !/\breacondicionado\b/iu.test(factualTitle) ? `${factualTitle} reacondicionado` : factualTitle;
 }
 
 export function dealDescription(deal: PublishedDeal) {

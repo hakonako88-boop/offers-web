@@ -39,7 +39,8 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
 
   const discount = dealDiscount(deal);
   const productTitle = dealSearchTitle(deal.title);
-  const title = `${productTitle} en oferta por ${money.format(deal.price)}${discount ? ` · -${discount}%` : ""}`.slice(0, 105);
+  const compactTitle = productTitle.length > 68 ? `${productTitle.slice(0, 68).replace(/\s+\S*$/u, "")}…` : productTitle;
+  const title = `${compactTitle} en oferta por ${money.format(deal.price)}${discount ? ` · -${discount}%` : ""}`;
   const description = dealDescription(deal);
   const path = dealHref(deal.id);
 
