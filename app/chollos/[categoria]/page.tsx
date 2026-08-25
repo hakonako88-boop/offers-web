@@ -49,7 +49,7 @@ export default async function CategoryOffersPage({ params }: CategoryPageProps) 
     }, {
       "@type": "BreadcrumbList", itemListElement: [
         { "@type": "ListItem", position: 1, name: "Inicio", item: siteUrl },
-        { "@type": "ListItem", position: 2, name: category.shortName, item: `${siteUrl}/chollos/${categoria}` },
+        { "@type": "ListItem", position: 2, name: category.shortName, item: `${siteUrl}/chollos/${categoria}/` },
       ],
     }],
   };
@@ -61,6 +61,7 @@ export default async function CategoryOffersPage({ params }: CategoryPageProps) 
     <article className="storeArticle shell">
       <nav className="offerBreadcrumb" aria-label="Migas de pan"><Link href="/">Inicio</Link><span>/</span><b>{category.shortName}</b></nav>
       <header className="storeHero categoryHero"><div><p className="eyebrow"><span aria-hidden="true" />{category.eyebrow}</p><h1>{category.title}</h1><p>{category.description}</p></div><aside><strong>{deals.length}</strong><span>ofertas activas</span><b>{averageDiscount ? `-${averageDiscount}%` : "Precio"}</b><small>{averageDiscount ? "descuento medio" : "registrado al publicar"}</small></aside></header>
+      <section className="categoryContext" aria-labelledby="category-context-title"><div><p className="eyebrow"><span aria-hidden="true" />SELECCIÓN EXPLICADA</p><h2 id="category-context-title">Ofertas de {category.shortName.toLowerCase()} con datos que puedes comprobar.</h2><p>{category.searchIntro}</p></div><aside><strong>Antes de comprar</strong><ul>{category.checks.map((check) => <li key={check}>{check}</li>)}</ul></aside></section>
       <section className="storeDeals" aria-labelledby="category-deals-title"><div className="sectionIntro"><div><p className="eyebrow"><span aria-hidden="true" />OFERTAS ACTIVAS</p><h2 id="category-deals-title">Chollos de {category.shortName.toLowerCase()} de hoy</h2></div><p>Las ofertas se retiran de la selección cuando caducan o dejan de cumplir el filtro de calidad.</p></div>{deals.length ? <div className="dealGrid storeDealGrid">{displayedDeals.map((deal) => {
         const discount = dealDiscount(deal); const savings = dealSavings(deal);
         return <article className="dealCard" key={deal.id}><Link className="imageWrap dealPreviewLink" href={dealHref(deal.id)} aria-label={`Ver oferta: ${deal.title}`}><img src={deal.imageUrl} alt={deal.title} width={720} height={560} />{discount > 0 && <span className="discountBadge">-{discount}%</span>}<span className="storeBadge">{deal.store}</span></Link><div className="dealBody"><p className="categoryLabel">{deal.category}</p><h3><Link href={dealHref(deal.id)}>{deal.title}</Link></h3><div className="priceRow"><strong>{money.format(deal.price)}</strong>{discount > 0 && <span>Antes <s>{money.format(deal.oldPrice)}</s></span>}</div>{savings > 0 && <p className="saving">Ahorras {money.format(savings)}</p>}{deal.coupon ? <p className="storeCoupon">Cupon: <b>{deal.coupon}</b></p> : <p className="noCoupon">Precio directo, sin cupon extra</p>}<Link className="dealButton" href={dealHref(deal.id)}>Ver oferta y analisis <span aria-hidden="true">→</span></Link></div></article>;

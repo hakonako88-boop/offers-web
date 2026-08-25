@@ -32,7 +32,7 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.match(html, /Alertas de chollos/);
   assert.match(html, /sectionCover storeAmazon/);
   assert.match(html, /sectionCover categoryGaming/);
-  assert.match(html, /href="\/chollos\/cocina"/);
+  assert.match(html, /href="\/chollos\/cocina\/"/);
   assert.match(html, /Ver 36 ofertas más/);
   assert.ok((html.match(/class="dealCard"/g) ?? []).length <= 43, "homepage should not render hundreds of offer cards at once");
   assert.match(html, /og-chollosaldia-v2\.png/);
@@ -159,6 +159,8 @@ test("renders the technology category with its own collection SEO", async () => 
   assert.match(html, /"@type":"CollectionPage"/);
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/chollos\/tecnologia\/"/);
   assert.match(html, /name="robots" content="index, follow"/);
+  assert.match(html, /Modelo y capacidad exactos/);
+  assert.match(html, /Antes de comprar/);
 });
 
 test("renders expanded category landing pages with canonical metadata", async () => {
@@ -168,6 +170,8 @@ test("renders expanded category landing pages with canonical metadata", async ()
   assert.match(html, /Chollos de cocina/);
   assert.match(html, /"@type":"BreadcrumbList"/);
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/chollos\/cocina\/"/);
+  assert.match(html, /pequeños electrodomésticos/);
+  assert.match(html, /Capacidad y medidas reales/);
 });
 
 test("renders a useful Amazon guide with Article and FAQ SEO", async () => {

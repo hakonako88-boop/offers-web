@@ -587,3 +587,15 @@ body { background: var(--paper); }
 .postNotFound { padding: 80px 0; }
 @media (max-width: 850px) { .postGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .editorialPosts { padding-top: 48px; }.postGrid { grid-template-columns: 1fr; }.postArticle { width: min(100% - 28px, 900px); padding-top: 32px; }.postArticle h1 { font-size: 40px; }.postHeroImage { margin: 25px 0; border-radius: 14px; }.postBody { font-size: 16px; } }
+
+/* Category landing pages: useful buying context before the live deal list. */
+.categoryContext { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr); gap: clamp(28px, 6vw, 78px); margin-top: 28px; padding: clamp(26px, 4vw, 48px); border: 1px solid #dfe4ec; border-radius: 18px; background: #fff; box-shadow: 0 18px 50px rgb(21 34 59 / 7%); }
+.categoryContext h2 { max-width: 760px; margin: 0; font-size: clamp(30px, 3.6vw, 48px); letter-spacing: -.055em; line-height: 1.02; }
+.categoryContext div > p:last-child { max-width: 760px; margin: 18px 0 0; color: var(--ink-soft); font-size: 15px; line-height: 1.75; }
+.categoryContext aside { align-self: stretch; padding: 24px; border-radius: 14px; background: #f2f6fb; }
+.categoryContext aside strong { display: block; margin-bottom: 15px; color: var(--ink); font-size: 13px; letter-spacing: .07em; text-transform: uppercase; }
+.categoryContext ul { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.categoryContext li { position: relative; padding-left: 24px; color: var(--ink-soft); font-size: 13px; line-height: 1.45; }
+.categoryContext li::before { content: "✓"; position: absolute; left: 0; color: #16836f; font-weight: 900; }
+@media (max-width: 850px) { .categoryContext { grid-template-columns: 1fr; gap: 28px; } }
+@media (max-width: 640px) { .categoryContext { width: calc(100% + 28px); margin: 20px 0 0 -14px; padding: 34px 21px; border-radius: 0; }.categoryContext aside { padding: 20px; } }
