@@ -56,6 +56,7 @@ function config() {
     channelId: process.env.TELEGRAM_CHANNEL_ID,
     controlCode: process.env.TELEGRAM_CONTROL_CODE,
     allowedChatId: process.env.TELEGRAM_ALLOWED_CHAT_ID,
+    amazonAutoPublish: String(process.env.AMAZON_AUTO_PUBLISH || '').toLowerCase() === 'true',
     amazonPartnerTag: process.env.AMAZON_PARTNER_TAG,
     aliexpressAppKey: process.env.ALIEXPRESS_APP_KEY,
     aliexpressAppSecret: process.env.ALIEXPRESS_APP_SECRET,
@@ -362,7 +363,34 @@ function updateAmazonReviewQueueItem(itemId, status, reason, extra = {}) {
 
 async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
   const chatId = String(settings.allowedChatId || '').trim();
-  if (!chatId || pendingConfirmations[chatId] || !settings.amazonPartnerTag) return false;
+  if (!chatId || !settings.amazonPartnerTag) return false;
+  let availableSlots = 3;
+  let automaticallyPublished = 0;
+  let duplicatesSkipped = 0;
+
+  // When automatic mode is enabled, complete a preview created by the former
+  // review-only mode. It has already passed the exact same validation rules.
+  const previousPreview = pendingConfirmations[chatId];
+  if (settings.amazonAutoPublish && previousPreview?.offer?.reviewQueueItemId) {
+    try {
+      const outcome = await publishIfNew(settings, previousPreview.offer, { message_id: previousPreview.inputMessageId });
+      updateAmazonReviewQueueItem(
+        previousPreview.offer.reviewQueueItemId,
+        outcome.duplicate ? 'duplicate' : 'published',
+        outcome.duplicate ? 'El mismo ASIN ya estaba publicado recientemente' : 'Publicada automáticamente en Telegram y la web',
+        outcome.channelMessage ? { telegramMessageId: outcome.channelMessage.message_id, resultUrl: previousPreview.offer.url } : {},
+      );
+      await removePreviewButtons(settings, chatId, previousPreview.previewMessageId);
+      delete pendingConfirmations[chatId];
+      if (outcome.duplicate) duplicatesSkipped += 1;
+      else automaticallyPublished += 1;
+      availableSlots -= 1;
+    } catch (error) {
+      console.warn(`Pending automatic Amazon publication failed: ${safeError(error, settings.token)}`);
+      return false;
+    }
+  }
+  if (pendingConfirmations[chatId]) return false;
   const queue = readJson(TELEGRAM_SOURCE_QUEUE_FILE, { version: 1, items: [] });
   const cutoff = Date.now() - 72 * 60 * 60 * 1000;
   const candidates = (queue.items || [])
@@ -379,6 +407,24 @@ async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
       continue;
     }
     try {
+      if (settings.amazonAutoPublish) {
+        const outcome = await publishIfNew(settings, result.offer, {
+          message_id: item.messageId || `amazon-auto-${item.id}`,
+        });
+        updateAmazonReviewQueueItem(
+          item.id,
+          outcome.duplicate ? 'duplicate' : 'published',
+          outcome.duplicate ? 'El mismo ASIN ya estaba publicado recientemente' : 'Publicada automáticamente en Telegram y la web',
+          outcome.channelMessage ? { telegramMessageId: outcome.channelMessage.message_id, resultUrl: result.offer.url } : {},
+        );
+        if (outcome.duplicate) duplicatesSkipped += 1;
+        else {
+          automaticallyPublished += 1;
+          availableSlots -= 1;
+        }
+        if (availableSlots <= 0) break;
+        continue;
+      }
       const outcome = await queueOfferPreview(settings, pendingConfirmations, chatId, result.offer, {
         message_id: item.messageId || `amazon-review-${item.id}`,
       });
@@ -403,7 +449,14 @@ async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
       return false;
     }
   }
-  return false;
+  if (settings.amazonAutoPublish && (automaticallyPublished || duplicatesSkipped)) {
+    await reply(settings.token, chatId, [
+      `🤖 Automatización Amazon terminada: ${automaticallyPublished} oferta(s) publicada(s) en Telegram y la web.`,
+      duplicatesSkipped ? `♻️ ${duplicatesSkipped} producto(s) repetido(s) omitido(s).` : '',
+      `✅ Todos los enlaces publicados llevan tu tag ${settings.amazonPartnerTag}.`,
+    ].filter(Boolean).join('\n'));
+  }
+  return automaticallyPublished > 0;
 }
 
 function publicationSuccessReply() {
@@ -1125,9 +1178,9 @@ for (const update of updates || []) {
   processed.add(updateId);
 }
 
-// Source monitoring and confirmation callbacks both end here. This keeps one
-// reviewed Amazon draft ready at a time and immediately advances to the next
-// candidate after the owner confirms or cancels the previous one.
+// Source monitoring and Telegram callbacks both end here. In automatic mode
+// it publishes at most three fully validated Amazon offers per execution; in
+// review mode it keeps one private preview ready for the owner.
 await queueNextAmazonReviewDraft(settings, pendingConfirmations);
 
 writeJson(STATE_FILE, {

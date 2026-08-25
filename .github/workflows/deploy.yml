@@ -49,6 +49,7 @@ jobs:
       TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
       TELEGRAM_CONTROL_CODE: ${{ secrets.TELEGRAM_CONTROL_CODE }}
       TELEGRAM_ALLOWED_CHAT_ID: ${{ secrets.TELEGRAM_ALLOWED_CHAT_ID }}
+      AMAZON_AUTO_PUBLISH: "true"
       AMAZON_PARTNER_TAG: ${{ secrets.AMAZON_PARTNER_TAG }}
       ALIEXPRESS_APP_KEY: ${{ secrets.ALIEXPRESS_APP_KEY }}
       ALIEXPRESS_APP_SECRET: ${{ secrets.ALIEXPRESS_APP_SECRET }}
@@ -81,7 +82,7 @@ jobs:
           else
             commit_message="Actualizar contenido desde Telegram [telegram-content]"
           fi
-          git add data/offers.json data/posts.json data/telegram-inbox-state.json public/tg
+          git add data/offers.json data/posts.json data/telegram-inbox-state.json data/telegram-source-queue.json public/tg
           git diff --cached --quiet || git commit -m "$commit_message"
           git pull --rebase origin main
           git push
@@ -100,6 +101,7 @@ jobs:
       AMAZON_CREATOR_CREDENTIAL_ID: ${{ secrets.AMAZON_CREATOR_CREDENTIAL_ID }}
       AMAZON_CREATOR_SECRET: ${{ secrets.AMAZON_CREATOR_SECRET }}
       AMAZON_CREATOR_VERSION: ${{ secrets.AMAZON_CREATOR_VERSION }}
+      AMAZON_AUTO_PUBLISH: "true"
       AMAZON_PARTNER_TAG: ${{ secrets.AMAZON_PARTNER_TAG }}
       ALIEXPRESS_APP_KEY: ${{ secrets.ALIEXPRESS_APP_KEY }}
       ALIEXPRESS_APP_SECRET: ${{ secrets.ALIEXPRESS_APP_SECRET }}
