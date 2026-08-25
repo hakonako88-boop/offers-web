@@ -55,6 +55,7 @@ await render("/afiliacion", "afiliacion/index.html");
 await render("/contacto", "contacto/index.html");
 await render("/como-verificamos-ofertas", "como-verificamos-ofertas/index.html");
 await render("/blog", "blog/index.html");
+await render("/buscar", "buscar/index.html");
 await render("/gta-vi-mas-barato-ps5", "gta-vi-mas-barato-ps5/index.html");
 for (const store of ["amazon", "aliexpress", "miravia", "xiaomi", "pccomponentes", "el-corte-ingles", "mediamarkt"]) {
   await render(`/ofertas/${store}`, `ofertas/${store}/index.html`);
@@ -77,6 +78,13 @@ const offerIds = [...new Set([...sitemap.matchAll(/<loc>https:\/\/chollosaldia\.
 for (const id of offerIds) {
   const encodedId = encodeURIComponent(id);
   await render(`/oferta/${encodedId}`, `oferta/${encodedId}/index.html`);
+}
+const productSlugs = [...new Set([...sitemap.matchAll(/<loc>https:\/\/chollosaldia\.com\/producto\/([^<]+)<\/loc>/g)]
+  .map((match) => decodeURIComponent(match[1]).replace(/\/$/, ""))
+  .filter(Boolean))];
+for (const slug of productSlugs) {
+  const encodedSlug = encodeURIComponent(slug);
+  await render(`/producto/${encodedSlug}`, `producto/${encodedSlug}/index.html`);
 }
 const postIds = [...new Set([...sitemap.matchAll(/<loc>https:\/\/chollosaldia\.com\/publicacion\/([^<]+)<\/loc>/g)]
   .map((match) => decodeURIComponent(match[1]).replace(/\/$/, ""))

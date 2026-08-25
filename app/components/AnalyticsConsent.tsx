@@ -24,6 +24,13 @@ function startAnalytics() {
   });
   window.gtag("js", new Date());
   window.gtag("config", measurementId, { anonymize_ip: true });
+  const viewEvent = window.location.pathname.startsWith("/guias/") || window.location.pathname.startsWith("/gta-vi-")
+    ? "guide_view"
+    : window.location.pathname.startsWith("/producto/") ? "product_view" : null;
+  if (viewEvent && !document.documentElement.dataset.chollosViewTracked) {
+    window.gtag("event", viewEvent, { page_path: window.location.pathname });
+    document.documentElement.dataset.chollosViewTracked = "true";
+  }
   const script = document.createElement("script");
   script.id = "google-analytics-tag";
   script.async = true;
@@ -42,6 +49,18 @@ export default function AnalyticsConsent() {
     } else {
       queueMicrotask(() => setPreference(saved === "denied" ? "denied" : null));
     }
+    function trackClick(event: MouseEvent) {
+      const link = (event.target as Element | null)?.closest("a");
+      if (!link || !window.gtag) return;
+      const href = link.getAttribute("href") || "";
+      const eventName = href.includes("t.me/aldiachollos")
+        ? "telegram_click"
+        : link.rel.includes("sponsored") ? "affiliate_click"
+          : href.startsWith("/oferta/") ? "offer_click" : null;
+      if (eventName) window.gtag("event", eventName, { link_url: link.href, link_text: link.textContent?.trim().slice(0, 100) });
+    }
+    document.addEventListener("click", trackClick);
+    return () => document.removeEventListener("click", trackClick);
   }, []);
 
   function choose(value: "granted" | "denied") {

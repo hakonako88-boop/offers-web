@@ -15,6 +15,7 @@ import {
   allDeals,
 } from "../../lib/deals";
 import { categorySlugForName } from "../../lib/categories";
+import { getProductForDeal, productHref } from "../../lib/products";
 
 const money = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
 const siteUrl = "https://chollosaldia.com";
@@ -109,6 +110,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
   const savings = dealSavings(deal);
   const description = dealDescription(deal);
   const assessment = dealPriceAssessment(deal);
+  const product = getProductForDeal(deal);
   const productTitle = dealSearchTitle(deal.title);
   const publicOfferUrl = `${siteUrl}${dealHref(deal.id)}`;
   const categorySlug = categorySlugForName(deal.category);
@@ -166,6 +168,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
             {deal.active ? <a className="offerCta" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ir a la oferta en {deal.store} <span aria-hidden="true">→</span></a> : <div className="expiredNotice"><b>Oferta finalizada</b><p>Este fue el último precio registrado. La tienda puede haber cambiado el precio o retirado el producto.</p></div>}
             <div className="offerShare"><span>¿Conoces a alguien a quien le interese?</span><div><a href={whatsappShareUrl} target="_blank" rel="noreferrer">Compartir por WhatsApp</a><a href={telegramShareUrl} target="_blank" rel="noreferrer">Enviar por Telegram</a></div></div>
             <p className="offerMeta"><span aria-hidden="true" />{deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt} · Precio sujeto a cambios.</p>
+            {product && <Link className="offerProductLink" href={productHref(product)}>Comparar este producto y sus tiendas →</Link>}
             <a className="offerReport" href={reportUrl}>¿Ha cambiado el precio o el stock? Avísanos</a>
           </div>
         </div>

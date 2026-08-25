@@ -4,7 +4,7 @@
  * already-optimized merchant images are intentional in this client view. */
 /* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element */
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import AdSlot from "./AdSlot";
 import { adsenseHomeSlot } from "../lib/adsense";
 import { postHref } from "../lib/posts";
@@ -71,6 +71,12 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
     return new URLSearchParams(window.location.search).get("q")?.slice(0, 80) ?? "";
   });
   const [copied, setCopied] = useState<string | null>(null);
+  const filtersReady = useRef(false);
+
+  useEffect(() => {
+    if (!filtersReady.current) { filtersReady.current = true; return; }
+    window.gtag?.("event", "filter_used", { category, store, minimum_discount: minimumDiscount, date_range: dateRange, coupon_only: couponOnly, sort_by: sortBy });
+  }, [category, store, minimumDiscount, dateRange, couponOnly, sortBy]);
 
   const categories = useMemo(
     () => ["Todos", ...Array.from(new Set(deals.map((deal) => deal.category))).sort((a, b) => a.localeCompare(b, "es"))],
@@ -148,6 +154,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           </a>
           <nav aria-label="Navegación principal">
             <a href="#ofertas">Ofertas de hoy</a>
+            <a href="/buscar/">Buscar</a>
             {posts.length > 0 && <a href="#novedades">Novedades</a>}
             <a href="#como-funciona">Cómo seleccionamos</a>
             <a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram <span aria-hidden="true">↗</span></a>
@@ -323,7 +330,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
       <footer>
         <div className="shell footerGrid">
           <div className="footerBrand"><a className="brand" href="#inicio"><span className="brandMark" aria-hidden="true">€</span><span>Chollos <span>al</span>Día</span></a><p>Ofertas verificadas para comprar mejor cada día.</p></div>
-          <div><strong>Explora</strong><a href="#ofertas">Ofertas de hoy</a><a href="/blog/">Blog de chollos</a><a href="/guias/detectar-chollos-reales/">Guias para ahorrar</a><a href="/guias/chollos-electronica/">Guía de electrónica</a><a href="/guias/ofertas-cocina/">Guía de cocina</a><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Canal de Telegram</a></div>
+          <div><strong>Explora</strong><a href="#ofertas">Ofertas de hoy</a><a href="/buscar/">Buscar productos</a><a href="/blog/">Blog de chollos</a><a href="/guias/detectar-chollos-reales/">Guias para ahorrar</a><a href="/guias/chollos-electronica/">Guía de electrónica</a><a href="/guias/ofertas-cocina/">Guía de cocina</a><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Canal de Telegram</a></div>
           <div><strong>Información</strong><a href="/contacto">Contacto</a><a href="/como-verificamos-ofertas">Cómo verificamos las ofertas</a><a href="mailto:chollosaldia@gmail.com">chollosaldia@gmail.com</a><a href="/aviso-legal">Aviso legal</a><a href="/privacidad">Privacidad</a><a href="/afiliacion">Política de afiliación</a></div>
         </div>
         <div className="shell footnote"><span>© {new Date().getFullYear()} Chollos al Día</span><p>Como afiliado, Chollos al Día puede recibir una comisión por compras que cumplen los requisitos. El precio para ti no cambia.</p></div>

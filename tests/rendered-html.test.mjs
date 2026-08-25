@@ -205,6 +205,21 @@ test("renders the GTA VI regional-price guide with transparent SEO and Wise affi
   assert.doesNotMatch(html, /100 % legal|más barato del mundo|jugar ahora/i);
 });
 
+test("renders conservative product pages with current offers and honest history", async () => {
+  const sitemapResponse = await render("/sitemap.xml");
+  const sitemap = await sitemapResponse.text();
+  const productPath = sitemap.match(/https:\/\/chollosaldia\.com(\/producto\/[^<]+)/)?.[1];
+  assert.ok(productPath, "the sitemap should expose active product pages");
+  const response = await render(productPath);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Mejor precio activo/);
+  assert.match(html, /COMPARA TIENDAS/);
+  assert.match(html, /HISTÓRICO REAL/);
+  assert.match(html, /"@type":"Product"/);
+  assert.doesNotMatch(html, /mínimo histórico garantizado/i);
+});
+
 test("renders new electronics and kitchen search guides", async () => {
   const [electronicsResponse, kitchenResponse] = await Promise.all([
     render("/guias/chollos-electronica"),
@@ -219,6 +234,16 @@ test("renders new electronics and kitchen search guides", async () => {
   assert.match(kitchen, /capacidad, las medidas, la potencia/);
   assert.match(kitchen, /href="\/chollos\/cocina\/"/);
   assert.match(kitchen, /"@type":"FAQPage"/);
+});
+
+test("renders the unified search without indexing internal result URLs", async () => {
+  const response = await render("/buscar");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /BÚSQUEDA GLOBAL/);
+  assert.match(html, /Buscar producto, marca, categoría, tienda o guía/);
+  assert.match(html, /name="robots" content="noindex, follow"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/buscar\/"/);
 });
 
 test("renders an indexable blog hub for existing search demand", async () => {
@@ -245,6 +270,7 @@ test("exports every linked store and category to GitHub Pages", async () => {
   const exporter = await readFile(new URL("../scripts/export-github.mjs", import.meta.url), "utf8");
   assert.match(exporter, /blog\/index\.html/);
   assert.match(exporter, /gta-vi-mas-barato-ps5\/index\.html/);
+  assert.match(exporter, /buscar\/index\.html/);
   for (const slug of ["amazon", "aliexpress", "miravia", "xiaomi", "pccomponentes", "el-corte-ingles", "mediamarkt"]) {
     assert.match(exporter, new RegExp(`\\b${slug}\\b`));
   }

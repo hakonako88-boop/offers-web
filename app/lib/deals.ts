@@ -3,6 +3,7 @@ import { classifyProduct } from "./taxonomy";
 
 export type PublishedDeal = {
   id: string;
+  sourceProductId?: string;
   title: string;
   store: string;
   category: string;
@@ -206,6 +207,7 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
   const classification = classifyProduct(title, String(offer.category ?? ""));
   return [{
     id,
+    sourceProductId: String(offer.source_product_id || "").trim() || undefined,
     title,
     store,
     category: classification.category,
