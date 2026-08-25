@@ -184,6 +184,22 @@ test("renders a useful Amazon guide with Article and FAQ SEO", async () => {
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/guias\/ofertas-amazon\/"/);
 });
 
+test("renders new electronics and kitchen search guides", async () => {
+  const [electronicsResponse, kitchenResponse] = await Promise.all([
+    render("/guias/chollos-electronica"),
+    render("/guias/ofertas-cocina"),
+  ]);
+  assert.equal(electronicsResponse.status, 200);
+  assert.equal(kitchenResponse.status, 200);
+  const [electronics, kitchen] = await Promise.all([electronicsResponse.text(), kitchenResponse.text()]);
+  assert.match(electronics, /modelo ofertado/);
+  assert.match(electronics, /href="\/chollos\/tecnologia\/"/);
+  assert.match(electronics, /rel="canonical" href="https:\/\/chollosaldia\.com\/guias\/chollos-electronica\/"/);
+  assert.match(kitchen, /capacidad, las medidas, la potencia/);
+  assert.match(kitchen, /href="\/chollos\/cocina\/"/);
+  assert.match(kitchen, /"@type":"FAQPage"/);
+});
+
 test("keeps affiliate credentials out of the client source", async () => {
   const [client, example] = await Promise.all([
     readFile(new URL("../app/components/DealExplorer.tsx", import.meta.url), "utf8"),

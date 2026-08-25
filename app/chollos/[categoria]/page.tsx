@@ -41,6 +41,11 @@ export default async function CategoryOffersPage({ params }: CategoryPageProps) 
   const displayedDeals = deals.slice(0, 60);
   const averageDiscount = deals.length ? Math.round(deals.reduce((total, deal) => total + dealDiscount(deal), 0) / deals.length) : 0;
   const indexable = categoryIsIndexable(categoria, publishedDeals);
+  const relatedGuide = categoria === "tecnologia"
+    ? { href: "/guias/chollos-electronica/", label: "Leer la guía para comparar ofertas de electrónica" }
+    : categoria === "cocina"
+      ? { href: "/guias/ofertas-cocina/", label: "Leer la guía para elegir ofertas de cocina" }
+      : null;
   const schema = {
     "@context": "https://schema.org", "@graph": [{
       "@type": "CollectionPage", "@id": `${siteUrl}/chollos/${categoria}/`,
@@ -66,7 +71,7 @@ export default async function CategoryOffersPage({ params }: CategoryPageProps) 
         const discount = dealDiscount(deal); const savings = dealSavings(deal);
         return <article className="dealCard" key={deal.id}><Link className="imageWrap dealPreviewLink" href={dealHref(deal.id)} aria-label={`Ver oferta: ${deal.title}`}><img src={deal.imageUrl} alt={deal.title} width={720} height={560} />{discount > 0 && <span className="discountBadge">-{discount}%</span>}<span className="storeBadge">{deal.store}</span></Link><div className="dealBody"><p className="categoryLabel">{deal.category}</p><h3><Link href={dealHref(deal.id)}>{deal.title}</Link></h3><div className="priceRow"><strong>{money.format(deal.price)}</strong>{discount > 0 && <span>Antes <s>{money.format(deal.oldPrice)}</s></span>}</div>{savings > 0 && <p className="saving">Ahorras {money.format(savings)}</p>}{deal.coupon ? <p className="storeCoupon">Cupon: <b>{deal.coupon}</b></p> : <p className="noCoupon">Precio directo, sin cupon extra</p>}<Link className="dealButton" href={dealHref(deal.id)}>Ver oferta y analisis <span aria-hidden="true">→</span></Link></div></article>;
       })}</div> : <div className="empty"><b>No hay ahora mismo chollos activos de {category.shortName.toLowerCase()} que pasen el filtro.</b><span>Preferimos no rellenar esta pagina con productos que no aporten valor.</span><Link href="/#ofertas">Ver todas las ofertas</Link></div>}</section>
-      <section className="storeAdvice"><div><p className="eyebrow"><span aria-hidden="true" />COMPRA CON CRITERIO</p><h2>Lo que debes comprobar.</h2></div><p>{category.guidance} {indexable ? "Esta pagina se actualiza con ofertas que tienen un ahorro demostrable." : "La pagina se activara para Google cuando haya una seleccion suficiente de ofertas validas."}</p></section>
+      <section className="storeAdvice"><div><p className="eyebrow"><span aria-hidden="true" />COMPRA CON CRITERIO</p><h2>Lo que debes comprobar.</h2></div><p>{category.guidance} {indexable ? "Esta pagina se actualiza con ofertas que tienen un ahorro demostrable." : "La pagina se activara para Google cuando haya una seleccion suficiente de ofertas validas."}{relatedGuide && <Link className="categoryGuideLink" href={relatedGuide.href}>{relatedGuide.label}<span aria-hidden="true">→</span></Link>}</p></section>
     </article>
     <footer><div className="shell footnote"><span>© {new Date().getFullYear()} Chollos al Dia</span><p>Algunos enlaces son de afiliacion y pueden generar una comision sin cambiar el precio para ti.</p></div></footer>
   </main>;
