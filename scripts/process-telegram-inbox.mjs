@@ -26,6 +26,7 @@ import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliat
 import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { buildAmazonReviewDraft } from './amazon-review-drafts.mjs';
+import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
@@ -129,13 +130,37 @@ async function downloadProductImage(url) {
 }
 
 async function sendProductPhoto(settings, offer) {
+  const replyMarkup = offerReplyMarkup(
+    offer,
+    offer.kind === 'campaign' ? '👉🏻 VER PROMOCIÓN' : offer.kind === 'post' ? '👉🏻 ABRIR ENLACE' : '👉🏻 VER OFERTA',
+  );
+  // Amazon inbox offers now use the same professional 1200×1200 image card
+  // as the other automatic shops. The clean ASIN image remains the source,
+  // while Telegram and the website receive the branded card with prices.
+  if (offer.store === 'Amazon' && /^https?:\/\//iu.test(String(offer.imageUrl || ''))) {
+    try {
+      const card = await createDealImageCard({
+        imageUrl: offer.imageUrl,
+        store: 'Amazon',
+        price: offer.priceLabel,
+        previousPrice: offer.previousPriceLabel,
+        discount: offer.discount,
+      });
+      const form = new FormData();
+      form.set('chat_id', String(settings.channelId));
+      form.set('caption', formatManualTelegramCaption(offer));
+      form.set('parse_mode', 'HTML');
+      if (replyMarkup) form.set('reply_markup', JSON.stringify(replyMarkup));
+      form.set('photo', new Blob([card], { type: 'image/jpeg' }), dealImageCardFilename('amazon', offer.sourceProductId));
+      return await telegramForm(settings.token, 'sendPhoto', form);
+    } catch (error) {
+      console.warn(`Could not create the branded Amazon image: ${safeError(error, settings.token)}`);
+    }
+  }
+
   const photos = [...new Set([offer.photoFileId, offer.imageUrl].filter(Boolean))];
   let lastError;
   for (const photo of photos) {
-    const replyMarkup = offerReplyMarkup(
-      offer,
-      offer.kind === 'campaign' ? '👉🏻 VER PROMOCIÓN' : offer.kind === 'post' ? '👉🏻 ABRIR ENLACE' : '👉🏻 VER OFERTA',
-    );
     const payload = {
       chat_id: settings.channelId,
       photo,
