@@ -182,3 +182,13 @@ test("keeps affiliate credentials out of the client source", async () => {
   assert.match(example, /AMAZON_ASSOCIATE_TAG=/);
   assert.match(example, /TELEGRAM_BOT_TOKEN=/);
 });
+
+test("exports every linked store and category to GitHub Pages", async () => {
+  const exporter = await readFile(new URL("../scripts/export-github.mjs", import.meta.url), "utf8");
+  for (const slug of ["amazon", "aliexpress", "miravia", "xiaomi", "pccomponentes", "el-corte-ingles", "mediamarkt"]) {
+    assert.match(exporter, new RegExp(`\\b${slug}\\b`));
+  }
+  for (const slug of ["tecnologia", "videojuegos", "hogar", "cocina", "bricolaje", "juguetes", "moda", "deporte", "belleza"]) {
+    assert.match(exporter, new RegExp(`\\b${slug}\\b`));
+  }
+});

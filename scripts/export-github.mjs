@@ -30,10 +30,10 @@ await render("/privacidad", "privacidad/index.html");
 await render("/afiliacion", "afiliacion/index.html");
 await render("/contacto", "contacto/index.html");
 await render("/como-verificamos-ofertas", "como-verificamos-ofertas/index.html");
-for (const store of ["amazon", "aliexpress", "miravia"]) {
+for (const store of ["amazon", "aliexpress", "miravia", "xiaomi", "pccomponentes", "el-corte-ingles", "mediamarkt"]) {
   await render(`/ofertas/${store}`, `ofertas/${store}/index.html`);
 }
-for (const category of ["tecnologia", "videojuegos", "hogar"]) {
+for (const category of ["tecnologia", "videojuegos", "hogar", "cocina", "bricolaje", "juguetes", "moda", "deporte", "belleza"]) {
   await render(`/chollos/${category}`, `chollos/${category}/index.html`);
 }
 for (const guide of ["ofertas-amazon", "cupones-aliexpress", "detectar-chollos-reales"]) {
