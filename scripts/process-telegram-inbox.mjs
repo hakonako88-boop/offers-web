@@ -429,7 +429,12 @@ async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
     .filter((item) => item.store === 'Amazon'
       && ['pending', 'blocked'].includes(item.status)
       && Date.parse(item.publishedAt || item.createdAt || 0) >= cutoff)
-    .sort((left, right) => Date.parse(right.publishedAt || right.createdAt || 0) - Date.parse(left.publishedAt || left.createdAt || 0));
+    .sort((left, right) => {
+      const leftPriority = left.priority || left.source === 'telegram-ofertos' ? 1 : 0;
+      const rightPriority = right.priority || right.source === 'telegram-ofertos' ? 1 : 0;
+      return rightPriority - leftPriority
+        || Date.parse(right.publishedAt || right.createdAt || 0) - Date.parse(left.publishedAt || left.createdAt || 0);
+    });
 
   for (const item of candidates.slice(0, 25)) {
     const result = await buildAmazonReviewDraft({ item, partnerTag: settings.amazonPartnerTag });

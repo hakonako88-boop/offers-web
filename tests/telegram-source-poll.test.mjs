@@ -3,7 +3,9 @@ import test from 'node:test';
 
 import {
   channelUsername,
+  cleanSourceProductText,
   compareCheckpoint,
+  isPromotionalSourcePost,
   latestPublicMessageId,
   parseTelegramPublicMessages,
 } from '../scripts/check-telegram-source-changes.mjs';
@@ -76,4 +78,25 @@ test('ignores linked channel images and repeated campaign buttons', () => {
     ['https://chz.to/product-302'],
     ['https://chz.to/product-303'],
   ]);
+});
+
+test('blocks Ofertos channel-list promotions but keeps real product offers', () => {
+  const source = { id: 'telegram-ofertos', url: 'https://t.me/Ofertos', productOnly: true, priority: true };
+  assert.equal(isPromotionalSourcePost(source, '🔥 NUESTROS CANALES 🔥 Síguenos en nuestros canales. La Casa del Chollo 3X2 Promociones Ofertas Comida Chollos Hogar'), true);
+  assert.equal(isPromotionalSourcePost(source, '🔥 Auriculares Sony #Amazon 🔥 Precio: 59,99€'), false);
+  assert.equal(
+    cleanSourceProductText(source, '🔥 Auriculares Sony #Amazon 🔥 Precio: 59,99€ 📉 Evolución de Precio Te aviso cuando baje el precio de tú producto favorito @Rastreadictos_bot'),
+    '🔥 Auriculares Sony #Amazon 🔥 Precio: 59,99€',
+  );
+});
+
+test('marks an Ofertos self-promotion as blocked while retaining its checkpoint message', () => {
+  const source = { id: 'telegram-ofertos', productOnly: true };
+  const html = `<div class="tgme_widget_message_wrap"><div data-post="Ofertos/500">
+    <div class="tgme_widget_message_text">🔥 NUESTROS CANALES 🔥 Síguenos en nuestros canales</div>
+    <a href="https://t.me/otra_canal">Abrir</a></div></div>`;
+  const [message] = parseTelegramPublicMessages(source, html);
+  assert.equal(message.messageId, 500);
+  assert.equal(message.blocked, true);
+  assert.deepEqual(message.links, []);
 });

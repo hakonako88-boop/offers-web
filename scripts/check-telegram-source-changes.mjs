@@ -60,6 +60,26 @@ function storeForUrl(value = '', context = '', configuredStore = '') {
   return '';
 }
 
+export function isPromotionalSourcePost(source = {}, text = '') {
+  const value = decodeHtml(text);
+  if (!value) return false;
+  const universalPromotion = /(?:‼️\s*LO MEJOR DE TELEGRAM|administraci[oó]n de\s+@labotonera_bot)/iu;
+  const ofertosChannelList = /(?:🔥\s*NUESTROS CANALES|s[ií]guenos en nuestros canales|La Casa del Chollo\s+3⃣|3X2 Promociones[\s\S]*Ofertas Comida[\s\S]*Chollos Hogar)/iu;
+  return universalPromotion.test(value)
+    || (source.id === 'telegram-ofertos' && ofertosChannelList.test(value));
+}
+
+export function cleanSourceProductText(source = {}, text = '') {
+  let value = decodeHtml(text);
+  if (source.id === 'telegram-ofertos') {
+    value = value
+      .replace(/\s*📉\s*Evoluci[oó]n de Precio[\s\S]*?(?=(?:Únete a mi equipo|Te aviso cuando)|$)/giu, ' ')
+      .replace(/\s*Únete a mi equipo de AliExpress[\s\S]*$/iu, '')
+      .replace(/\s*Te aviso cuando baje el precio[\s\S]*$/iu, '');
+  }
+  return value.replace(/\s+/gu, ' ').trim();
+}
+
 export function parseTelegramPublicMessages(source, html) {
   const page = String(html || '');
   const starts = [...page.matchAll(/<div[^>]+class=["'][^"']*tgme_widget_message_wrap/giu)]
@@ -72,13 +92,20 @@ export function parseTelegramPublicMessages(source, html) {
     const messageId = Number(post.split('/').at(-1));
     if (!Number.isSafeInteger(messageId)) continue;
     const textHtml = block.match(/<div[^>]+class=["'][^"']*tgme_widget_message_text[^"']*["'][^>]*>([\s\S]*?)<\/div>/iu)?.[1] || '';
-    const text = decodeHtml(textHtml);
+    const rawText = decodeHtml(textHtml);
+    const text = cleanSourceProductText(source, rawText);
     const publishedAt = decodeHtml(block.match(/<time[^>]+datetime=["']([^"']+)["']/iu)?.[1] || '');
     const links = [...block.matchAll(/\bhref=["']([^"']+)["']/giu)]
       .map((match) => decodeHtml(match[1]))
       .map((url) => ({ url, store: storeForUrl(url, text, source.store) }))
       .filter((entry) => entry.store);
-    messages.push({ messageId, text, publishedAt, links: [...new Map(links.map((entry) => [entry.url, entry])).values()] });
+    messages.push({
+      messageId,
+      text,
+      publishedAt,
+      links: [...new Map(links.map((entry) => [entry.url, entry])).values()],
+      blocked: isPromotionalSourcePost(source, rawText),
+    });
   }
   // Channels often add the same coupon/campaign button to every post. It is
   // not the advertised product and would otherwise create one false queue
@@ -165,6 +192,9 @@ export async function checkTelegramSources({ fetchImpl = fetch } = {}) {
       if (Number.isSafeInteger(previousId)) {
         for (const message of [...fetchedMessages.values()].filter((entry) => entry.messageId > previousId)) {
           const sourceUrl = `https://t.me/${username}/${message.messageId}`;
+          // Product-only sources still advance their checkpoint for channel
+          // lists and self-promotion, but those posts never enter the queue.
+          if (message.blocked || (source.productOnly && !message.links.length)) continue;
           if (!message.links.length) {
             const id = `${source.id}:${message.messageId}:ignored`;
             if (!queueItems.has(id)) queueItems.set(id, {
@@ -180,6 +210,7 @@ export async function checkTelegramSources({ fetchImpl = fetch } = {}) {
               id, source: source.id, username, messageId: message.messageId, sourceUrl,
               publishedAt: message.publishedAt || new Date().toISOString(), text: message.text,
               store: link.store, merchantUrl: link.url, status: 'pending', reason: '',
+              sourceWeight: Number(source.weight) || 20, priority: Boolean(source.priority),
               attempts: 0, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
             });
           });
