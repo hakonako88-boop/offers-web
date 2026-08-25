@@ -74,7 +74,7 @@ test("renders an individual offer with price analysis, pros, cons and Product SE
   const homeHtml = await home.text();
   const id = homeHtml.match(/href="\/oferta\/([^/"?#]+)\/"/)?.[1] ?? "";
   assert.ok(id, "Expected at least one published offer");
-  assert.match(id, /^(?:amazon|aliexpress|awin|miravia|tradedoubler)(?:-|%3A)/iu, "Telegram and web must share a stable product id");
+  assert.match(id, /^(?:amazon|aliexpress|awin|miravia|tradedoubler)-/iu, "Telegram and web must share a static-host-safe product id");
   const response = await render(`/oferta/${id}`);
   assert.equal(response.status, 200);
   const html = await response.text();
@@ -117,7 +117,7 @@ test("keeps older Telegram offers beyond the homepage card limit", async () => {
 });
 
 test("shows a verified coupon on its stable product page", async () => {
-  const response = await render("/oferta/amazon%3AB0GBV9WYXK");
+  const response = await render("/oferta/amazon-B0GBV9WYXK");
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /SZ5C67KL/);

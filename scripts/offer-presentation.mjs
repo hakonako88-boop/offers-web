@@ -17,7 +17,7 @@ function escapeHtml(value = '') {
 }
 
 export function publicOfferUrl(id, siteUrl = 'https://chollosaldia.com') {
-  const cleanId = String(id || '').trim();
+  const cleanId = String(id || '').trim().replace(/[^a-z0-9._~-]+/giu, '-').replace(/^-+|-+$/gu, '');
   if (!cleanId) return '';
   return `${String(siteUrl).replace(/\/$/u, '')}/oferta/${encodeURIComponent(cleanId)}/`;
 }

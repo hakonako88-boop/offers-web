@@ -106,7 +106,11 @@ function sourceId(offer: LegacyOffer) {
   // Telegram's “Ver ficha” button is created before Telegram returns its
   // message number. The shop product id is already known at that point and is
   // therefore the only stable URL shared by the button and the website.
-  return String(offer.chollometroId || offer.source_product_id || offer.message_id || offer.url || "");
+  return publicDealId(offer.chollometroId || offer.source_product_id || offer.message_id || offer.url || "");
+}
+
+function publicDealId(value: unknown) {
+  return String(value ?? "").trim().replace(/[^a-z0-9._~-]+/giu, "-").replace(/^-+|-+$/gu, "");
 }
 
 function isUsefulTitle(title: string) {
@@ -266,7 +270,7 @@ export const allDeals: PublishedDeal[] = candidates
 const legacyMessageIds = new Map(
   (rawOffers as LegacyOffer[])
     .filter((offer) => offer.message_id && offer.source_product_id)
-    .map((offer) => [String(offer.message_id), String(offer.source_product_id)]),
+    .map((offer) => [String(offer.message_id), publicDealId(offer.source_product_id)]),
 );
 
 export function dealHref(id: string) {
@@ -276,7 +280,7 @@ export function dealHref(id: string) {
 export function getDealById(id: string) {
   let requestedId = id;
   try { requestedId = decodeURIComponent(id); } catch { /* Keep malformed input harmless and unmatched. */ }
-  const stableId = legacyMessageIds.get(requestedId) || requestedId;
+  const stableId = legacyMessageIds.get(requestedId) || publicDealId(requestedId);
   return allDeals.find((deal) => deal.id === stableId);
 }
 

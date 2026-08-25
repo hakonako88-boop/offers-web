@@ -24,7 +24,7 @@ const controlCode = 'test-private-code';
 
 test('keeps the affiliate purchase button and adds the exact public offer page', () => {
   const offer = { id: 'aliexpress-ES/ventilador 10', store: 'AliExpress', url: 'https://s.click.aliexpress.com/e/example' };
-  assert.equal(publicOfferUrl(offer.id), 'https://chollosaldia.com/oferta/aliexpress-ES%2Fventilador%2010/');
+  assert.equal(publicOfferUrl(offer.id), 'https://chollosaldia.com/oferta/aliexpress-ES-ventilador-10/');
   assert.deepEqual(offerReplyMarkup(offer), {
     inline_keyboard: [
       [{ text: '👉🏻 VER OFERTA', url: offer.url }],
@@ -33,7 +33,7 @@ test('keeps the affiliate purchase button and adds the exact public offer page',
   });
   assert.equal(
     trackedPublicOfferUrl(offer),
-    'https://chollosaldia.com/oferta/aliexpress-ES%2Fventilador%2010/?utm_source=telegram&utm_medium=social&utm_campaign=ofertas_aliexpress&utm_content=oferta',
+    'https://chollosaldia.com/oferta/aliexpress-ES-ventilador-10/?utm_source=telegram&utm_medium=social&utm_campaign=ofertas_aliexpress&utm_content=oferta',
   );
 });
 

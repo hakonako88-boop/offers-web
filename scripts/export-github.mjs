@@ -16,6 +16,10 @@ const { default: worker } = await import(workerUrl.href);
 const assets = { fetch: async () => new Response("Not found", { status: 404 }) };
 const context = { waitUntil() {}, passThroughOnException() {} };
 
+function publicDealId(value) {
+  return String(value || "").trim().replace(/[^a-z0-9._~-]+/giu, "-").replace(/^-+|-+$/gu, "");
+}
+
 async function render(route, destination) {
   let response = await worker.fetch(new Request(`https://chollosaldia.com${route}`, { headers: { accept: "text/html" } }), { ASSETS: assets }, context);
   if (response.status >= 300 && response.status < 400 && response.headers.get("location")) {
@@ -85,7 +89,7 @@ for (const id of offerIds) {
 const storedOffers = JSON.parse(await readFile(path.join(root, "data", "offers.json"), "utf8"));
 for (const offer of storedOffers) {
   const legacyId = String(offer.message_id || "").trim();
-  const stableId = String(offer.chollometroId || offer.source_product_id || "").trim();
+  const stableId = publicDealId(offer.chollometroId || offer.source_product_id || "");
   if (!legacyId || !stableId || legacyId === stableId || !offerIds.includes(stableId)) continue;
   await writeRedirect(`oferta/${encodeURIComponent(legacyId)}`, `/oferta/${encodeURIComponent(stableId)}/`);
 }
