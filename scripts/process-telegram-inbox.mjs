@@ -25,11 +25,13 @@ import { aliexpressProductId, isOwnedAliExpressAffiliateUrl, resolveAliExpressAf
 import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
 import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
+import { buildAmazonReviewDraft } from './amazon-review-drafts.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
 const OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const POSTS_FILE = path.join(ROOT, 'data', 'posts.json');
+const TELEGRAM_SOURCE_QUEUE_FILE = path.join(ROOT, 'data', 'telegram-source-queue.json');
 const IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const MAX_PROCESSED_UPDATES = 400;
 const DUPLICATE_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
@@ -344,6 +346,66 @@ async function queueOfferPreview(settings, pendingConfirmations, chatId, offer, 
   return { duplicate: false, previewMessage };
 }
 
+function updateAmazonReviewQueueItem(itemId, status, reason, extra = {}) {
+  if (!itemId) return;
+  const queue = readJson(TELEGRAM_SOURCE_QUEUE_FILE, { version: 1, items: [] });
+  const item = (queue.items || []).find((entry) => entry.id === itemId);
+  if (!item) return;
+  Object.assign(item, {
+    status,
+    reason,
+    updatedAt: new Date().toISOString(),
+    ...extra,
+  });
+  writeJson(TELEGRAM_SOURCE_QUEUE_FILE, queue);
+}
+
+async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
+  const chatId = String(settings.allowedChatId || '').trim();
+  if (!chatId || pendingConfirmations[chatId] || !settings.amazonPartnerTag) return false;
+  const queue = readJson(TELEGRAM_SOURCE_QUEUE_FILE, { version: 1, items: [] });
+  const cutoff = Date.now() - 72 * 60 * 60 * 1000;
+  const candidates = (queue.items || [])
+    .filter((item) => item.store === 'Amazon'
+      && ['pending', 'blocked'].includes(item.status)
+      && Date.parse(item.publishedAt || item.createdAt || 0) >= cutoff)
+    .sort((left, right) => Date.parse(right.publishedAt || right.createdAt || 0) - Date.parse(left.publishedAt || left.createdAt || 0));
+
+  for (const item of candidates.slice(0, 25)) {
+    const result = await buildAmazonReviewDraft({ item, partnerTag: settings.amazonPartnerTag });
+    if (result.status !== 'ready') {
+      const missing = result.missing?.join(', ') || 'datos verificables';
+      updateAmazonReviewQueueItem(item.id, 'needs_review', `No se pudo preparar la vista previa: falta ${missing}`);
+      continue;
+    }
+    try {
+      const outcome = await queueOfferPreview(settings, pendingConfirmations, chatId, result.offer, {
+        message_id: item.messageId || `amazon-review-${item.id}`,
+      });
+      if (outcome.duplicate) {
+        updateAmazonReviewQueueItem(item.id, 'duplicate', 'El mismo ASIN ya está publicado recientemente');
+        continue;
+      }
+      updateAmazonReviewQueueItem(item.id, 'awaiting_confirmation', 'Vista previa automática enviada al propietario', {
+        previewMessageId: outcome.previewMessage?.message_id || null,
+        resultUrl: result.offer.url,
+      });
+      await reply(settings.token, chatId, [
+        '🤖 Borrador automático de Amazon preparado.',
+        `✅ El enlace lleva tu tag ${settings.amazonPartnerTag}.`,
+        '🖼️ La foto procede del ASIN oficial de Amazon.',
+        'Comprueba el precio y pulsa «✅ CONFIRMAR PUBLICACIÓN» para enviarlo a Telegram y a la web.',
+      ].join('\n'));
+      return true;
+    } catch (error) {
+      updateAmazonReviewQueueItem(item.id, 'pending', `No se pudo enviar la vista previa: ${safeError(error, settings.token).slice(0, 180)}`);
+      console.warn(`Automatic Amazon preview failed for ${item.id}: ${safeError(error, settings.token)}`);
+      return false;
+    }
+  }
+  return false;
+}
+
 function publicationSuccessReply() {
   return [
     '✅ Publicada en el canal.',
@@ -576,6 +638,14 @@ for (const update of updates || []) {
           await reply(settings.token, callbackChatId, 'ℹ️ Esa vista previa ya estaba procesada. He desactivado sus botones para que no puedas publicarla dos veces.');
         } else {
           const outcome = await publishIfNew(settings, pending.offer, { message_id: pending.inputMessageId });
+          if (pending.offer.reviewQueueItemId) {
+            updateAmazonReviewQueueItem(
+              pending.offer.reviewQueueItemId,
+              outcome.duplicate ? 'duplicate' : 'published',
+              outcome.duplicate ? 'El mismo ASIN ya estaba publicado recientemente' : 'Confirmada por el propietario y publicada en Telegram y la web',
+              outcome.channelMessage ? { telegramMessageId: outcome.channelMessage.message_id, resultUrl: pending.offer.url } : {},
+            );
+          }
           await reply(settings.token, callbackChatId, outcome.duplicate
             ? '♻️ No la publico porque ese producto ya existe en el canal.'
             : publicationSuccessReply());
@@ -659,6 +729,9 @@ for (const update of updates || []) {
       } else if (callback.data === 'offer:cancel') {
         const pending = pendingConfirmations[callbackChatKey];
         await removePreviewButtons(settings, callbackChatId, pending?.previewMessageId);
+        if (pending?.offer?.reviewQueueItemId) {
+          updateAmazonReviewQueueItem(pending.offer.reviewQueueItemId, 'cancelled', 'Vista previa cancelada por el propietario');
+        }
         delete pendingConfirmations[callbackChatKey];
         await reply(settings.token, callbackChatId, '❌ Publicación cancelada. No se ha enviado nada al canal ni a la web.');
       }
@@ -1051,6 +1124,11 @@ for (const update of updates || []) {
   }
   processed.add(updateId);
 }
+
+// Source monitoring and confirmation callbacks both end here. This keeps one
+// reviewed Amazon draft ready at a time and immediately advances to the next
+// candidate after the owner confirms or cancels the previous one.
+await queueNextAmazonReviewDraft(settings, pendingConfirmations);
 
 writeJson(STATE_FILE, {
   processedUpdateIds: Array.from(processed).sort((left, right) => left - right).slice(-MAX_PROCESSED_UPDATES),

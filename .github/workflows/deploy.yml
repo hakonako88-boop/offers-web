@@ -219,6 +219,12 @@ jobs:
         if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed' }}
         run: node scripts/reconcile-telegram-source-queue.mjs
 
+      - name: Preparar vista previa automática de Amazon
+        if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' && env.TELEGRAM_ALLOWED_CHAT_ID != '' && env.AMAZON_PARTNER_TAG != '' }}
+        env:
+          TELEGRAM_PENDING_ONLY: "true"
+        run: npm run sync:inbox
+
       - name: Guardar resultado de la prueba de Telegram
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[telegram-test]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: |

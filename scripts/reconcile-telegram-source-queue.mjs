@@ -63,8 +63,10 @@ for (const item of queue.items || []) {
   }
 
   if (item.store === 'Amazon' && /eligibility requirements/iu.test(amazonError)) {
-    item.status = 'blocked';
-    item.reason = 'Amazon Creators API: la cuenta todavía no cumple los requisitos de elegibilidad';
+    // The catalogue API may still be unavailable, but public source messages
+    // with an ASIN, a factual price and a product title can be prepared as a
+    // private review draft. The owner confirms it before any publication.
+    item.reason = 'Pendiente de vista previa automática con ASIN, imagen oficial y tag propio';
     item.updatedAt = now;
     continue;
   }
