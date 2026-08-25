@@ -44,6 +44,8 @@ export default async function CategoryOffersPage({ params }: CategoryPageProps) 
   const indexable = categoryIsIndexable(categoria, publishedDeals);
   const relatedGuide = categoria === "tecnologia"
     ? { href: "/guias/chollos-electronica/", label: "Leer la guía para comparar ofertas de electrónica" }
+    : categoria === "videojuegos"
+      ? { href: "/gta-vi-mas-barato-ps5/", label: "GTA 6 barato en PS5: precio, requisitos y fecha de lanzamiento" }
     : categoria === "cocina"
       ? { href: "/guias/ofertas-cocina/", label: "Leer la guía para elegir ofertas de cocina" }
       : null;

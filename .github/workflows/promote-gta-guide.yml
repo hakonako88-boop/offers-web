@@ -1,0 +1,39 @@
+name: Difundir guía actualizada de GTA VI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  publish:
+    if: contains(github.event.head_commit.message, '[promote-gta-guide]')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: "-1002549368004"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publicar la actualización en Telegram
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = await import('node:fs');
+          const token = process.env.TELEGRAM_BOT_TOKEN;
+          const chatId = process.env.TELEGRAM_CHANNEL_ID;
+          if (!token) throw new Error('Falta TELEGRAM_BOT_TOKEN');
+
+          const caption = `<b>🔥 GTA 6 barato en PS5: precio, fecha y última hora</b>\n\n🎮 Rockstar mostrará una presentación ampliada de GTA VI el <b>jueves 27 de agosto a las 21:00</b>, hora peninsular española.\n\n🇪🇸 <b>Precio oficial en España:</b> 79,99 €\n🇮🇳 <b>Referencia regional analizada:</b> ₹5.999 ≈ 53,91 €\n💶 <b>Diferencia teórica:</b> unos 26 €\n📅 <b>Lanzamiento:</b> 19 de noviembre de 2026\n\nEn la guía comprobamos el precio, el cambio, las restricciones regionales, GTA+ y los costes que pueden hacer que el ahorro real sea diferente.\n\n⚠️ Comparativa informativa: PlayStation exige que la región y los datos de la cuenta sean correctos.\n\n🪐 Más guías y chollos en @aldiachollos\n#GTA6 #GTAVI #PS5 #Gaming #Chollos #Publi`;
+          const articleUrl = 'https://chollosaldia.com/gta-vi-mas-barato-ps5/?utm_source=telegram&utm_medium=social&utm_campaign=gta_vi_actualidad_20260825&utm_content=post_actualizado';
+          const form = new FormData();
+          form.set('chat_id', chatId);
+          form.set('photo', new Blob([fs.readFileSync('public/images/gta-vi-official.jpg')], { type: 'image/jpeg' }), 'gta-vi-precio-ps5.jpg');
+          form.set('caption', caption);
+          form.set('parse_mode', 'HTML');
+          form.set('reply_markup', JSON.stringify({ inline_keyboard: [[{ text: '🎮 VER PRECIO Y GUÍA COMPLETA', url: articleUrl }]] }));
+          const response = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: form });
+          const result = await response.json();
+          if (!result.ok) throw new Error(result.description || `Telegram respondió ${response.status}`);
+          console.log(`Guía difundida en Telegram con mensaje ${result.result.message_id}`);
+          NODE

@@ -190,10 +190,13 @@ test("renders the GTA VI regional-price guide with transparent SEO and Wise affi
   const response = await render("/gta-vi-mas-barato-ps5");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Cómo conseguir GTA VI por unos 54 €/);
+  assert.match(html, /GTA VI \(GTA 6\) más barato en PS5/);
+  assert.match(html, /presentación ampliada de GTA VI el 27 de agosto/);
+  assert.match(html, /<title>GTA 6 barato en PS5/);
   assert.match(html, /19 de noviembre de 2026/);
   assert.match(html, /PlayStation Store India/);
   assert.match(html, /"@type":"Article"/);
+  assert.match(html, /"@type":"BreadcrumbList"/);
   assert.match(html, /"@type":"FAQPage"/);
   assert.match(html, /wise\.com\/invite\/ahpc\/pedrojesush5/);
   assert.equal((html.match(/<a href="https:\/\/wise\.com\/invite\/ahpc\/pedrojesush5"/g) ?? []).length, 3);

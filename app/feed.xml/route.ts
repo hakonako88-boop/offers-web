@@ -18,7 +18,17 @@ function publicationDate(value?: string) {
 
 export function GET() {
   const latest = publishedDeals[0]?.verifiedDate;
-  const items = publishedDeals.slice(0, 30).map((deal) => {
+  const gtaGuide = [
+    "<item>",
+    "<title>GTA 6 barato en PS5: 54 € frente a 79,99 €</title>",
+    `<link>${siteUrl}/gta-vi-mas-barato-ps5/</link>`,
+    `<guid isPermaLink="true">${siteUrl}/gta-vi-mas-barato-ps5/</guid>`,
+    "<description>Precio de GTA 6 en PS5, comparación regional, requisitos, riesgos, presentación del 27 de agosto y fecha oficial de lanzamiento.</description>",
+    "<category>Gaming</category>",
+    `<pubDate>${new Date("2026-08-25T13:00:00.000Z").toUTCString()}</pubDate>`,
+    "</item>",
+  ].join("");
+  const items = gtaGuide + publishedDeals.slice(0, 29).map((deal) => {
     const url = `${siteUrl}${dealHref(deal.id)}`;
     return [
       "<item>",
