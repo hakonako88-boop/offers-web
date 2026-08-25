@@ -24,6 +24,26 @@ async function render(route, destination) {
   await writeFile(target, await response.text(), "utf8");
 }
 
+async function writeRedirect(destination, target) {
+  const escapedTarget = target.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+  const html = `<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex,follow">
+  <meta http-equiv="refresh" content="0;url=${escapedTarget}">
+  <link rel="canonical" href="https://chollosaldia.com${escapedTarget}">
+  <title>Página trasladada | Chollos al Día</title>
+</head>
+<body>
+  <p>Esta página se ha trasladado. <a href="${escapedTarget}">Continuar en Chollos al Día</a>.</p>
+</body>
+</html>`;
+  const targetFile = path.join(output, destination, "index.html");
+  await mkdir(path.dirname(targetFile), { recursive: true });
+  await writeFile(targetFile, html, "utf8");
+}
+
 await render("/", "index.html");
 await render("/aviso-legal", "aviso-legal/index.html");
 await render("/privacidad", "privacidad/index.html");
@@ -63,6 +83,15 @@ await render("/robots.txt", "robots.txt");
 await render("/ads.txt", "ads.txt");
 await render("/sitemap.xml", "sitemap.xml");
 await render("/feed.xml", "feed.xml");
+
+// Only redirect obsolete URLs when there is a clear equivalent destination.
+// Expired product URLs intentionally remain 404 instead of being redirected
+// to unrelated deals, which would be misleading for visitors and search bots.
+await writeRedirect("publicacion/[id]/page", "/");
+await writeRedirect("&", "/");
+await writeRedirect("$", "/");
+await writeRedirect("blog/top-5-chollos-julio", "/guias/detectar-chollos-reales");
+await writeRedirect("blog/mejores-chollos-julio-2025", "/guias/detectar-chollos-reales");
 await writeFile(path.join(output, "CNAME"), "chollosaldia.com\n", "utf8");
 await writeFile(path.join(output, ".nojekyll"), "", "utf8");
 
