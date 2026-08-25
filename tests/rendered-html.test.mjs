@@ -186,6 +186,22 @@ test("renders a useful Amazon guide with Article and FAQ SEO", async () => {
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/guias\/ofertas-amazon\/"/);
 });
 
+test("renders the GTA VI regional-price guide with transparent SEO and Wise affiliation", async () => {
+  const response = await render("/gta-vi-mas-barato-ps5");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Cómo conseguir GTA VI por unos 54 €/);
+  assert.match(html, /19 de noviembre de 2026/);
+  assert.match(html, /PlayStation Store India/);
+  assert.match(html, /"@type":"Article"/);
+  assert.match(html, /"@type":"FAQPage"/);
+  assert.match(html, /wise\.com\/invite\/ahpc\/pedrojesush5/);
+  assert.equal((html.match(/<a href="https:\/\/wise\.com\/invite\/ahpc\/pedrojesush5"/g) ?? []).length, 3);
+  assert.match(html, /rel="sponsored noopener noreferrer"/);
+  assert.match(html, /no recomienda proporcionar datos inexactos/);
+  assert.doesNotMatch(html, /100 % legal|más barato del mundo|jugar ahora/i);
+});
+
 test("renders new electronics and kitchen search guides", async () => {
   const [electronicsResponse, kitchenResponse] = await Promise.all([
     render("/guias/chollos-electronica"),
@@ -225,6 +241,7 @@ test("keeps affiliate credentials out of the client source", async () => {
 test("exports every linked store and category to GitHub Pages", async () => {
   const exporter = await readFile(new URL("../scripts/export-github.mjs", import.meta.url), "utf8");
   assert.match(exporter, /blog\/index\.html/);
+  assert.match(exporter, /gta-vi-mas-barato-ps5\/index\.html/);
   for (const slug of ["amazon", "aliexpress", "miravia", "xiaomi", "pccomponentes", "el-corte-ingles", "mediamarkt"]) {
     assert.match(exporter, new RegExp(`\\b${slug}\\b`));
   }

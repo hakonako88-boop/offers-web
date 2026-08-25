@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 const guideCards = [
+  { href: "/gta-vi-mas-barato-ps5/", label: "GAMING", title: "GTA VI: España frente al precio regional de India", text: "Compara precios, cambio, requisitos de región y riesgos antes de reservar." },
   { href: "/guias/chollos-electronica/", label: "ELECTRÓNICA", title: "Cómo comparar chollos de electrónica", text: "Modelo, capacidad, accesorios, vendedor y garantía antes de decidir." },
   { href: "/guias/ofertas-cocina/", label: "COCINA", title: "Cómo elegir ofertas de cocina", text: "Capacidad, potencia, medidas, recambios y precio final." },
   { href: "/guias/ofertas-amazon/", label: "AMAZON", title: "Cómo encontrar ofertas reales en Amazon", text: "Comprueba la variante, el envío y las condiciones de la ficha." },
