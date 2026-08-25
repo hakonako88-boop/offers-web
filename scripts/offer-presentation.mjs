@@ -22,10 +22,32 @@ export function publicOfferUrl(id, siteUrl = 'https://chollosaldia.com') {
   return `${String(siteUrl).replace(/\/$/u, '')}/oferta/${encodeURIComponent(cleanId)}/`;
 }
 
+function campaignSlug(value = '') {
+  return normalized(value)
+    .replace(/[^a-z0-9]+/gu, '_')
+    .replace(/^_+|_+$/gu, '')
+    .slice(0, 50) || 'general';
+}
+
+export function trackedPublicOfferUrl(offer = {}, siteUrl = 'https://chollosaldia.com') {
+  const base = publicOfferUrl(offer.id, siteUrl);
+  if (!base) return '';
+  const inferredStore = String(offer.id || '').split(/[-_:]/u)[0];
+  const store = campaignSlug(offer.storeSlug || offer.store || inferredStore);
+  const sourceType = campaignSlug(offer.kind || 'oferta');
+  const params = new URLSearchParams({
+    utm_source: 'telegram',
+    utm_medium: 'social',
+    utm_campaign: `ofertas_${store}`,
+    utm_content: sourceType,
+  });
+  return `${base}?${params.toString()}`;
+}
+
 export function offerReplyMarkup(offer = {}, purchaseLabel = '👉🏻 VER OFERTA') {
   const rows = [];
   if (offer.url) rows.push([{ text: purchaseLabel, url: offer.url }]);
-  const webUrl = publicOfferUrl(offer.id);
+  const webUrl = trackedPublicOfferUrl(offer);
   if (webUrl) rows.push([{ text: '🔎 VER FICHA Y ANÁLISIS', url: webUrl }]);
   return rows.length ? { inline_keyboard: rows } : undefined;
 }

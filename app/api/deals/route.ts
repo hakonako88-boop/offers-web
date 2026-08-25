@@ -37,7 +37,7 @@ async function publishToTelegram(deal: Required<Pick<DealInput, "title"|"store"|
   const caption = [`🔥 <b>${deal.title}</b>`, ``, `🏷 <b>${deal.price.toFixed(2).replace(".", ",")} €</b> <s>${deal.oldPrice.toFixed(2).replace(".", ",")} €</s> · −${discount}%`, deal.coupon ? `🎟 Cupón: <code>${deal.coupon}</code>` : "", `🏪 ${deal.store}`, ``, `<a href="${deal.affiliateUrl.replace(/&/g, "&amp;")}">👉 VER OFERTA</a>`, ``, `<i>El precio puede cambiar. Enlace de afiliado.</i>`].filter(Boolean).join("\n");
   const reply_markup = { inline_keyboard: [
     [{ text: "👉🏻 VER OFERTA", url: deal.affiliateUrl }],
-    [{ text: "🔎 VER FICHA Y ANÁLISIS", url: `https://chollosaldia.com/oferta/${encodeURIComponent(deal.id)}/` }],
+    [{ text: "🔎 VER FICHA Y ANÁLISIS", url: `https://chollosaldia.com/oferta/${encodeURIComponent(deal.id)}/?utm_source=telegram&utm_medium=social&utm_campaign=ofertas_${encodeURIComponent(deal.store.toLowerCase().replace(/[^a-z0-9]+/g, "_"))}&utm_content=api` }],
   ] };
   const response = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ chat_id: env.TELEGRAM_CHANNEL_ID, photo: deal.imageUrl, caption, parse_mode: "HTML", reply_markup }) });
   if (!response.ok) throw new Error(`Telegram respondió ${response.status}`);
