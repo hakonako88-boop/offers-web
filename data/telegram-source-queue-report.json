@@ -1,22 +1,56 @@
 {
-  "updatedAt": "2026-08-25T21:16:56.398Z",
+  "updatedAt": "2026-08-25T21:45:48.298Z",
   "summary": {
-    "blocked": 419,
-    "published": 223,
-    "rejected": 311,
+    "blocked": 411,
+    "published": 227,
+    "rejected": 312,
     "ignored": 36,
-    "needs_review": 8,
-    "pending": 3
+    "needs_review": 9,
+    "duplicate": 1,
+    "pending": 4
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7101:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7101,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/tiesometro/7101",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:91700:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91700,
+      "store": "Miravia",
+      "status": "published",
+      "attempts": 0,
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
+      "sourceUrl": "https://t.me/una_ganga/91700",
+      "resultUrl": "https://www.awin1.com/cread.php?awinmid=37168&awinaffid=2023977&ued=https%3A%2F%2Fwww.miravia.es%2Fp%2Fi1374595399489521-s6187374161602545.html"
+    },
+    {
+      "id": "telegram-una-ganga:91699:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91699,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/91699",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7100:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7100,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/tiesometro/7100",
       "resultUrl": ""
     },
@@ -26,8 +60,8 @@
       "messageId": 91698,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/91698",
       "resultUrl": ""
     },
@@ -47,9 +81,9 @@
       "source": "telegram-una-ganga",
       "messageId": 91697,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/91697",
       "resultUrl": ""
     },
@@ -1075,39 +1109,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/40838",
       "resultUrl": "https://www.amazon.es/dp/B0B36K15ZT?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:40837:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 40837,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/40837",
-      "resultUrl": "https://www.amazon.es/dp/B0F2G84CMC?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-chollosdiario:45190:amazon:0",
-      "source": "telegram-chollosdiario",
-      "messageId": 45190,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/chollosdiario/45190",
-      "resultUrl": "https://www.amazon.es/dp/B0949DC3M4?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-tiesometro:7093:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7093,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/tiesometro/7093",
-      "resultUrl": ""
     }
   ]
 }
