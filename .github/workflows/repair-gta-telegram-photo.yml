@@ -21,7 +21,7 @@ jobs:
         shell: bash
         run: |
           node <<'NODE'
-          const fs = require('node:fs');
+          const fs = await import('node:fs');
 
           const token = process.env.TELEGRAM_BOT_TOKEN;
           const chatId = process.env.TELEGRAM_CHANNEL_ID;
