@@ -21,8 +21,9 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, /<html lang="es">/i);
-  assert.match(html, /Chollos de hoy: ofertas, descuentos y cupones/);
-  assert.match(html, /Ahorro sin vueltas/);
+  assert.match(html, /Chollos de hoy y ofertas del día/);
+  assert.match(html, /Ofertas del día que merecen la pena/);
+  assert.match(html, /CHOLLOS DIARIOS/);
   assert.match(html, /Últimos chollos/);
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/"/);

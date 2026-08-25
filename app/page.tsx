@@ -3,8 +3,8 @@ import { DealExplorer, type Deal, type DealSummary } from "./components/DealExpl
 import { dealDiscount, publishedDeals } from "./lib/deals";
 import { publishedPosts } from "./lib/posts";
 
-const title = "Chollos de hoy: ofertas, descuentos y cupones";
-const description = "Chollos de hoy en Amazon, AliExpress, Miravia y más tiendas. Ofertas seleccionadas con precio, descuento, cupón y enlace directo para ahorrar.";
+const title = "Chollos de hoy y ofertas del día";
+const description = "Consulta chollos del día en Amazon, AliExpress, Miravia y más tiendas. Ofertas diarias seleccionadas con precio, descuento, cupón y enlace directo.";
 
 export const metadata: Metadata = {
   title,
@@ -52,7 +52,7 @@ const collectionSchema = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
   "@id": "https://chollosaldia.com/#ofertas",
-  name: "Chollos y ofertas de hoy",
+  name: "Chollos de hoy y ofertas del día",
   description,
   inLanguage: "es-ES",
   isPartOf: { "@id": "https://chollosaldia.com/#website" },
