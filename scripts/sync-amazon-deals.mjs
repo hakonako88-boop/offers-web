@@ -10,6 +10,7 @@ import {
 import { communityMatchForTitle, discoverCommunitySignals, nextCommunitySignalState } from './community-signals.mjs';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
+import { offerReplyMarkup } from './offer-presentation.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'amazon-discovery-state.json');
@@ -157,9 +158,7 @@ async function publishOffer(config, offer) {
     chat_id: config.telegramChannelId,
     caption: formatAmazonTelegramCaption(offer),
     parse_mode: 'HTML',
-    reply_markup: {
-      inline_keyboard: [[{ text: '👉🏻 VER OFERTA', url: offer.url }]],
-    },
+    reply_markup: offerReplyMarkup(offer),
   };
   try {
     const card = await createDealImageCard({

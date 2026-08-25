@@ -18,9 +18,20 @@ import {
   processingOfferReply,
   urlFromTelegramMessage,
 } from '../scripts/telegram-inbox-commands.mjs';
-import { formatTelegramDealCard } from '../scripts/offer-presentation.mjs';
+import { formatTelegramDealCard, offerReplyMarkup, publicOfferUrl } from '../scripts/offer-presentation.mjs';
 
 const controlCode = 'test-private-code';
+
+test('keeps the affiliate purchase button and adds the exact public offer page', () => {
+  const offer = { id: 'aliexpress-ES/ventilador 10', url: 'https://s.click.aliexpress.com/e/example' };
+  assert.equal(publicOfferUrl(offer.id), 'https://chollosaldia.com/oferta/aliexpress-ES%2Fventilador%2010/');
+  assert.deepEqual(offerReplyMarkup(offer), {
+    inline_keyboard: [
+      [{ text: '👉🏻 VER OFERTA', url: offer.url }],
+      [{ text: '🔎 VER FICHA Y ANÁLISIS', url: publicOfferUrl(offer.id) }],
+    ],
+  });
+});
 
 test('creates an editorial web and Telegram post from a photo and text', () => {
   const result = editorialPostFromMessage({

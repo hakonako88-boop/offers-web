@@ -3,6 +3,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
+import { offerReplyMarkup } from './offer-presentation.mjs';
 import {
   TRADEDOUBLER_MEDIAMARKT,
   TRADEDOUBLER_QUALITY_POLICY_VERSION,
@@ -66,7 +67,7 @@ async function publish(config, offer, originalImage) {
     chat_id: config.channel,
     caption: formatMediaMarktTelegramCaption(offer),
     parse_mode: 'HTML',
-    reply_markup: { inline_keyboard: [[{ text: '👉🏻 VER OFERTA', url: offer.url }]] },
+    reply_markup: offerReplyMarkup(offer),
   };
   const card = await createDealImageCard({
     imageBuffer: originalImage,

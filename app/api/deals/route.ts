@@ -31,11 +31,15 @@ async function ensureSchema() {
   ]);
 }
 
-async function publishToTelegram(deal: Required<Pick<DealInput, "title"|"store"|"price"|"oldPrice"|"imageUrl">> & { coupon?: string; affiliateUrl: string }) {
+async function publishToTelegram(deal: Required<Pick<DealInput, "title"|"store"|"price"|"oldPrice"|"imageUrl">> & { id: string; coupon?: string | null; affiliateUrl: string }) {
   if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHANNEL_ID) return;
   const discount = Math.max(0, Math.round((1 - deal.price / deal.oldPrice) * 100));
   const caption = [`🔥 <b>${deal.title}</b>`, ``, `🏷 <b>${deal.price.toFixed(2).replace(".", ",")} €</b> <s>${deal.oldPrice.toFixed(2).replace(".", ",")} €</s> · −${discount}%`, deal.coupon ? `🎟 Cupón: <code>${deal.coupon}</code>` : "", `🏪 ${deal.store}`, ``, `<a href="${deal.affiliateUrl.replace(/&/g, "&amp;")}">👉 VER OFERTA</a>`, ``, `<i>El precio puede cambiar. Enlace de afiliado.</i>`].filter(Boolean).join("\n");
-  const response = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ chat_id: env.TELEGRAM_CHANNEL_ID, photo: deal.imageUrl, caption, parse_mode: "HTML" }) });
+  const reply_markup = { inline_keyboard: [
+    [{ text: "👉🏻 VER OFERTA", url: deal.affiliateUrl }],
+    [{ text: "🔎 VER FICHA Y ANÁLISIS", url: `https://chollosaldia.com/oferta/${encodeURIComponent(deal.id)}/` }],
+  ] };
+  const response = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ chat_id: env.TELEGRAM_CHANNEL_ID, photo: deal.imageUrl, caption, parse_mode: "HTML", reply_markup }) });
   if (!response.ok) throw new Error(`Telegram respondió ${response.status}`);
 }
 

@@ -16,6 +16,20 @@ function escapeHtml(value = '') {
     .replace(/>/g, '&gt;');
 }
 
+export function publicOfferUrl(id, siteUrl = 'https://chollosaldia.com') {
+  const cleanId = String(id || '').trim();
+  if (!cleanId) return '';
+  return `${String(siteUrl).replace(/\/$/u, '')}/oferta/${encodeURIComponent(cleanId)}/`;
+}
+
+export function offerReplyMarkup(offer = {}, purchaseLabel = '👉🏻 VER OFERTA') {
+  const rows = [];
+  if (offer.url) rows.push([{ text: purchaseLabel, url: offer.url }]);
+  const webUrl = publicOfferUrl(offer.id);
+  if (webUrl) rows.push([{ text: '🔎 VER FICHA Y ANÁLISIS', url: webUrl }]);
+  return rows.length ? { inline_keyboard: rows } : undefined;
+}
+
 function trimAtWord(value, maximum = 108) {
   const text = compact(value);
   if (text.length <= maximum) return text;

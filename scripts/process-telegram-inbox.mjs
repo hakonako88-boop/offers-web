@@ -24,6 +24,7 @@ import { isInboxDuplicate } from './offer-deduplication.mjs';
 import { aliexpressProductId, isOwnedAliExpressAffiliateUrl, resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
 import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
 import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
+import { offerReplyMarkup } from './offer-presentation.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
@@ -128,10 +129,10 @@ async function sendProductPhoto(settings, offer) {
   const photos = [...new Set([offer.photoFileId, offer.imageUrl].filter(Boolean))];
   let lastError;
   for (const photo of photos) {
-    const replyMarkup = offer.url ? { inline_keyboard: [[{
-      text: offer.kind === 'campaign' ? '👉🏻 VER PROMOCIÓN' : offer.kind === 'post' ? '👉🏻 ABRIR ENLACE' : '👉🏻 VER OFERTA',
-      url: offer.url,
-    }]] } : undefined;
+    const replyMarkup = offerReplyMarkup(
+      offer,
+      offer.kind === 'campaign' ? '👉🏻 VER PROMOCIÓN' : offer.kind === 'post' ? '👉🏻 ABRIR ENLACE' : '👉🏻 VER OFERTA',
+    );
     const payload = {
       chat_id: settings.channelId,
       photo,

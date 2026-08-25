@@ -5,6 +5,7 @@ import { createGunzip } from 'node:zlib';
 import sharp from 'sharp';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
+import { offerReplyMarkup } from './offer-presentation.mjs';
 import { isGzipFeed, parseFeedList } from './miravia-offers.mjs';
 import {
   AWIN_RETAILERS,
@@ -86,7 +87,7 @@ async function preferredOriginalImage(offer, retailer) {
 }
 
 async function publish(config, offer, originalImage) {
-  const payload = { chat_id: config.channel, caption: formatRetailTelegramCaption(offer), parse_mode: 'HTML', reply_markup: { inline_keyboard: [[{ text: '👉🏻 VER OFERTA', url: offer.url }]] } };
+  const payload = { chat_id: config.channel, caption: formatRetailTelegramCaption(offer), parse_mode: 'HTML', reply_markup: offerReplyMarkup(offer) };
   try {
     const card = await createDealImageCard({ imageBuffer: originalImage, imageUrl: offer.image, store: offer.store, price: offer.priceLabel, previousPrice: offer.previousPriceLabel, discount: offer.discount });
     return telegramPhoto(config.token, payload, card, dealImageCardFilename(offer.storeSlug, offer.sourceProductId));

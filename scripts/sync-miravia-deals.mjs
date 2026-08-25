@@ -3,6 +3,7 @@ import path from 'node:path';
 import { Readable } from 'node:stream';
 import { createGunzip } from 'node:zlib';
 import sharp from 'sharp';
+import { offerReplyMarkup } from './offer-presentation.mjs';
 import {
   formatMiraviaCaption,
   formatMiraviaTelegramCaption,
@@ -153,9 +154,7 @@ async function publishOffer(config, offer) {
     chat_id: config.telegramChannelId,
     caption: formatMiraviaTelegramCaption(offer),
     parse_mode: 'HTML',
-    reply_markup: {
-      inline_keyboard: [[{ text: '👉🏻 VER OFERTA', url: offer.url }]],
-    },
+    reply_markup: offerReplyMarkup(offer),
   };
   try {
     const card = await createDealImageCard({
