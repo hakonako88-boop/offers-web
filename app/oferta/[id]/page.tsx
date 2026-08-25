@@ -7,6 +7,7 @@ import {
   dealDiscount,
   dealHref,
   dealSavings,
+  dealSearchTitle,
   getDealById,
   publishedDeals,
 } from "../../lib/deals";
@@ -37,7 +38,8 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
   if (!deal) return { title: "Oferta no encontrada", robots: { index: false, follow: false } };
 
   const discount = dealDiscount(deal);
-  const title = `${deal.title} por ${money.format(deal.price)}${discount ? ` (${discount}% dto.)` : ""}`.slice(0, 105);
+  const productTitle = dealSearchTitle(deal.title);
+  const title = `${productTitle} en oferta por ${money.format(deal.price)}${discount ? ` · -${discount}%` : ""}`.slice(0, 105);
   const description = dealDescription(deal);
   const path = dealHref(deal.id);
 
@@ -49,7 +51,7 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
       title: `${title} | Chollos al Día`,
       description,
       url: path,
-      images: [{ url: absoluteImageUrl(deal.imageUrl), alt: deal.title }],
+      images: [{ url: absoluteImageUrl(deal.imageUrl), alt: productTitle }],
     },
     twitter: { card: "summary_large_image", title, description, images: [absoluteImageUrl(deal.imageUrl)] },
   };
@@ -62,7 +64,7 @@ function schemaFor(deal: NonNullable<ReturnType<typeof getDealById>>) {
     "@type": "Product",
     "@id": `${publicUrl}#product`,
     url: publicUrl,
-    name: deal.title,
+    name: dealSearchTitle(deal.title),
     image: [absoluteImageUrl(deal.imageUrl)],
     description: dealDescription(deal),
     category: deal.category,
@@ -79,7 +81,7 @@ function schemaFor(deal: NonNullable<ReturnType<typeof getDealById>>) {
 
 function breadcrumbSchemaFor(deal: NonNullable<ReturnType<typeof getDealById>>) {
   const categorySlug = categorySlugForName(deal.category);
-  const categoryUrl = categorySlug ? `${siteUrl}/chollos/${categorySlug}` : siteUrl;
+  const categoryUrl = categorySlug ? `${siteUrl}/chollos/${categorySlug}/` : siteUrl;
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -101,10 +103,11 @@ export default async function OfferPage({ params }: OfferPageProps) {
   const discount = dealDiscount(deal);
   const savings = dealSavings(deal);
   const description = dealDescription(deal);
+  const productTitle = dealSearchTitle(deal.title);
   const publicOfferUrl = `${siteUrl}${dealHref(deal.id)}`;
   const categorySlug = categorySlugForName(deal.category);
   const categoryHref = categorySlug ? `/chollos/${categorySlug}` : "/#ofertas";
-  const shareText = `${deal.title} por ${money.format(deal.price)} en Chollos al Día`;
+  const shareText = `${productTitle} por ${money.format(deal.price)} en Chollos al Día`;
   const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(`${shareText} ${publicOfferUrl}`)}`;
   const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(publicOfferUrl)}&text=${encodeURIComponent(shareText)}`;
   const reportUrl = `mailto:chollosaldia@gmail.com?subject=${encodeURIComponent(`Aviso sobre una oferta: ${deal.title}`)}&body=${encodeURIComponent(`Hola, he visto un cambio de precio, stock o cupón en esta oferta:\n\n${publicOfferUrl}\n\nCambio observado:`)}`;
@@ -142,10 +145,10 @@ export default async function OfferPage({ params }: OfferPageProps) {
       <article className="offerArticle shell">
         <nav className="offerBreadcrumb" aria-label="Migas de pan"><Link href="/">Inicio</Link><span>/</span><Link href={categoryHref}>{deal.category}</Link><span>/</span><b>Oferta</b></nav>
         <div className="offerHero">
-          <div className="offerGallery"><div className="offerImageWrap"><img src={deal.imageUrl} alt={deal.title} width={960} height={760} /><span className="storeBadge">{deal.store}</span>{discount > 0 && <span className="offerDiscount">−{discount}%</span>}</div><p>Imagen facilitada por la tienda. La variante puede cambiar.</p></div>
+          <div className="offerGallery"><div className="offerImageWrap"><img src={deal.imageUrl} alt={productTitle} width={960} height={760} /><span className="storeBadge">{deal.store}</span>{discount > 0 && <span className="offerDiscount">−{discount}%</span>}</div><p>Imagen facilitada por la tienda. La variante puede cambiar.</p></div>
           <div className="offerSummary">
             <p className="offerKicker">{deal.category} · Oferta activa</p>
-            <h1>{deal.title}</h1>
+            <h1>{productTitle}</h1>
             <p className="offerLead">{description}</p>
             <div className="offerPriceBox">
               <span>PRECIO DE OFERTA</span>

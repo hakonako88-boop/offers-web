@@ -200,6 +200,16 @@ test("renders new electronics and kitchen search guides", async () => {
   assert.match(kitchen, /"@type":"FAQPage"/);
 });
 
+test("renders an indexable blog hub for existing search demand", async () => {
+  const response = await render("/blog");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Blog de chollos, ofertas y ahorro/);
+  assert.match(html, /"@type":"CollectionPage"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/blog\/"/);
+  assert.match(html, /href="\/guias\/chollos-electronica\/"/);
+});
+
 test("keeps affiliate credentials out of the client source", async () => {
   const [client, example] = await Promise.all([
     readFile(new URL("../app/components/DealExplorer.tsx", import.meta.url), "utf8"),
@@ -212,6 +222,7 @@ test("keeps affiliate credentials out of the client source", async () => {
 
 test("exports every linked store and category to GitHub Pages", async () => {
   const exporter = await readFile(new URL("../scripts/export-github.mjs", import.meta.url), "utf8");
+  assert.match(exporter, /blog\/index\.html/);
   for (const slug of ["amazon", "aliexpress", "miravia", "xiaomi", "pccomponentes", "el-corte-ingles", "mediamarkt"]) {
     assert.match(exporter, new RegExp(`\\b${slug}\\b`));
   }

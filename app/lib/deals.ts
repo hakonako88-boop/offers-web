@@ -280,9 +280,20 @@ export function dealSavings(deal: Pick<PublishedDeal, "price" | "oldPrice">) {
   return Math.max(0, deal.oldPrice - deal.price);
 }
 
+/** Keeps product facts while removing promotional wording that weakens search titles. */
+export function dealSearchTitle(value: string) {
+  return value
+    .replace(/^\s*(?:🔥\s*)?(?:ofert[oó]n|chollazo|super\s+oferta|oferta\s+flash)\s*(?:en\s+)?(?:amazon|aliexpress|miravia)?\s*[:\-–—|]*\s*/iu, "")
+    .replace(/\s*[|·\-–—]*\s*#(?:amazon|aliexpress|miravia|publicidad|publi)\b/giu, "")
+    .replace(/\s+(?:por\s+solo|a\s+solo)\s+\d[\d.,]*\s*€?\s*$/iu, "")
+    .replace(/\s{2,}/gu, " ")
+    .replace(/^[\s:|\-–—]+|[\s:|\-–—]+$/gu, "")
+    .trim() || value.trim();
+}
+
 export function dealDescription(deal: PublishedDeal) {
   const savings = dealSavings(deal);
   const discount = dealDiscount(deal);
   const savingText = savings > 0 ? ` Ahorras ${money.format(savings)}${discount ? ` (${discount}% de descuento)` : ""}.` : "";
-  return `${deal.title} es una oferta localizada en ${deal.store}. Su precio registrado al publicarla es ${money.format(deal.price)}.${savingText}`;
+  return `${dealSearchTitle(deal.title)} en oferta en ${deal.store} por ${money.format(deal.price)}.${savingText} Comprueba precio, stock y condiciones en la tienda.`;
 }

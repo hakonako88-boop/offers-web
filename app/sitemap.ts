@@ -22,6 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}/guias/detectar-chollos-reales/`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteUrl}/guias/chollos-electronica/`, lastModified: new Date("2026-08-25T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.72 },
     { url: `${siteUrl}/guias/ofertas-cocina/`, lastModified: new Date("2026-08-25T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.72 },
+    { url: `${siteUrl}/blog/`, lastModified: homepageLastModified, changeFrequency: "weekly", priority: 0.74 },
     { url: `${siteUrl}/como-verificamos-ofertas/`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.65 },
     ...Object.keys(categoryPages)
       .filter((category) => categoryIsIndexable(category, publishedDeals))
