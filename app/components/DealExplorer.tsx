@@ -39,12 +39,6 @@ function normalise(value: string) {
     .toLocaleLowerCase("es-ES");
 }
 
-function displayDate(deals: Deal[]) {
-  const dates = deals.flatMap((deal) => (deal.verifiedDate ? [new Date(deal.verifiedDate)] : []));
-  const latest = dates.sort((a, b) => b.getTime() - a.getTime())[0];
-  return latest ? latest.toLocaleDateString("es-ES", { day: "numeric", month: "long" }) : "hoy";
-}
-
 function shortTitle(title: string, maximum = 92) {
   if (title.length <= maximum) return title;
   const shortened = title.slice(0, maximum + 1).replace(/\s+\S*$/, "").trim();
@@ -97,10 +91,6 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
     hogar: deals.find((deal) => deal.category === "Hogar"),
   }), [deals]);
 
-  const featuredDeal = visibleDeals[0];
-  // The highlighted deal is repeated in the chronological grid on purpose:
-  // otherwise the newest Telegram publication looks missing to visitors who
-  // go straight to “Chollos de hoy”.
   const gridDeals = visibleDeals.slice(0, visibleLimit);
 
   function copyCoupon(code: string) {
@@ -148,12 +138,10 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             <li>Alertas gratis</li>
           </ul>
         </div>
-        {featuredDeal ? (
-          <aside className="featuredPanel" aria-label="Oferta destacada">
-            <a className="featuredImage featuredOfferLink" href={dealDetailsUrl(featuredDeal)}><img src={featuredDeal.imageUrl} alt={featuredDeal.title} width={720} height={560} /><span>DESTACADA</span></a>
-            <div className="featuredBody"><p className="featuredMeta"><span className="liveDot" /> OFERTA ACTIVA · {featuredDeal.store}</p><h2><a href={dealDetailsUrl(featuredDeal)}>{shortTitle(featuredDeal.title, 72)}</a></h2><div className="featuredPrice"><strong>{money.format(featuredDeal.price)}</strong>{featuredDeal.oldPrice > featuredDeal.price && <span>Antes <s>{money.format(featuredDeal.oldPrice)}</s> · −{Math.round((1 - featuredDeal.price / featuredDeal.oldPrice) * 100)}%</span>}</div><a href={dealDetailsUrl(featuredDeal)}>Ver análisis de la oferta <span aria-hidden="true">→</span></a><p className="featuredFoot"><b>{summary.total}</b> ofertas activas · descuento medio −{averageDiscount}% · revisión {displayDate(deals)}</p></div>
-          </aside>
-        ) : <aside className="savingsPanel" aria-label="Resumen de las ofertas publicadas"><div className="panelTop"><span className="liveDot" /> EN DIRECTO</div><p>Descuento medio de las ofertas activas</p><strong>−{averageDiscount}%</strong></aside>}
+        <aside className="featuredPanel gtaPinned" aria-label="Guía destacada de GTA VI">
+          <a className="featuredImage" href="/gta-vi-mas-barato-ps5/"><img src="/images/gta-vi-official.jpg" alt="Arte promocional oficial de Grand Theft Auto VI" width={1200} height={630} /><span>GUÍA DESTACADA</span></a>
+          <div className="featuredBody"><p className="featuredMeta"><span className="liveDot" /> CONTENIDO FIJADO · GAMING</p><h2><a href="/gta-vi-mas-barato-ps5/">GTA VI: 79,99 € en España frente a unos 54 €</a></h2><p className="gtaPinnedLead">Comparamos precios regionales, cambio de moneda, compatibilidad de códigos y requisitos de la cuenta antes de reservar.</p><a href="/gta-vi-mas-barato-ps5/">Leer la guía completa <span aria-hidden="true">→</span></a><p className="featuredFoot">Imagen promocional oficial © Rockstar Games · Información revisada el 25 de agosto de 2026.</p></div>
+        </aside>
       </section>
 
       <section className="storeRail shell" aria-label="Explorar ofertas por tienda">

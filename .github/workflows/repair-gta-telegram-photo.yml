@@ -6,14 +6,14 @@ on:
 
 jobs:
   replace-post:
-    if: contains(github.event.head_commit.message, '[repair-gta-photo]')
+    if: contains(github.event.head_commit.message, '[repair-gta-official]')
     runs-on: ubuntu-latest
     permissions:
       contents: read
     env:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHANNEL_ID: "-1002549368004"
-      OLD_MESSAGE_ID: "4947"
+      OLD_MESSAGE_ID: "4948"
     steps:
       - uses: actions/checkout@v4
 
@@ -33,7 +33,7 @@ jobs:
 
           const form = new FormData();
           form.set('chat_id', chatId);
-          form.set('photo', new Blob([fs.readFileSync('public/images/gta-vi-telegram.jpg')], { type: 'image/jpeg' }), 'gta-vi-telegram.jpg');
+          form.set('photo', new Blob([fs.readFileSync('public/images/gta-vi-official.jpg')], { type: 'image/jpeg' }), 'gta-vi-official.jpg');
           form.set('caption', caption);
           form.set('parse_mode', 'HTML');
           form.set('reply_markup', JSON.stringify({ inline_keyboard: [[{ text: '👉🏻 LEER LA GUÍA COMPLETA', url: articleUrl }]] }));
@@ -41,6 +41,14 @@ jobs:
           const sentResponse = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: form });
           const sent = await sentResponse.json();
           if (!sent.ok) throw new Error(`No se pudo publicar la versión corregida: ${sent.description || sentResponse.status}`);
+
+          const pinResponse = await fetch(`https://api.telegram.org/bot${token}/pinChatMessage`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, message_id: sent.result.message_id, disable_notification: true })
+          });
+          const pinned = await pinResponse.json();
+          if (!pinned.ok) throw new Error(`La publicación se creó, pero no se pudo fijar: ${pinned.description || pinResponse.status}`);
 
           const deleteResponse = await fetch(`https://api.telegram.org/bot${token}/deleteMessage`, {
             method: 'POST',
@@ -50,5 +58,5 @@ jobs:
           const deleted = await deleteResponse.json();
           if (!deleted.ok) throw new Error(`La versión corregida se publicó, pero no se pudo retirar la anterior: ${deleted.description || deleteResponse.status}`);
 
-          console.log(`Publicación corregida: ${sent.result.message_id}. Publicación anterior retirada: ${oldMessageId}.`);
+          console.log(`Publicación corregida y fijada: ${sent.result.message_id}. Publicación anterior retirada: ${oldMessageId}.`);
           NODE

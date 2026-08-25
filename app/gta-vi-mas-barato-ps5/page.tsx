@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   title: "GTA VI por 54 € en PS5: cómo ahorrar unos 26 €",
   description: "Descubre la diferencia regional que sitúa la reserva de GTA VI en PS5 en unos 54 € frente a 79,99 €, sus límites y qué debes comprobar.",
   alternates: { canonical: pageUrl },
-  openGraph: { title: "GTA VI: 79,99 € frente a unos 54 €", description: "Comparativa regional, riesgos y costes que debes comprobar antes de reservar.", url: pageUrl, type: "article", images: ["/images/gta-vi-ahorro-hero-original.webp"] },
+  openGraph: { title: "GTA VI: 79,99 € frente a unos 54 €", description: "Comparativa regional, riesgos y costes que debes comprobar antes de reservar.", url: pageUrl, type: "article", images: ["/images/gta-vi-official.jpg"] },
 };
 
 function WiseCta({ label }: { label: string }) {
@@ -30,12 +30,12 @@ function WiseCta({ label }: { label: string }) {
 }
 
 export default function GtaGuide() {
-  const schema = [{ "@context": "https://schema.org", "@type": "Article", headline: "Cómo conseguir GTA VI por unos 54 € en PS5 y ahorrar más de 25 €", description: metadata.description, datePublished: "2026-08-25", dateModified: "2026-08-25", author: { "@type": "Organization", name: "Chollos al Día" }, publisher: { "@type": "Organization", name: "Chollos al Día" }, image: "https://chollosaldia.com/images/gta-vi-ahorro-hero-original.webp", mainEntityOfPage: pageUrl }, { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) }];
+  const schema = [{ "@context": "https://schema.org", "@type": "Article", headline: "Cómo conseguir GTA VI por unos 54 € en PS5 y ahorrar más de 25 €", description: metadata.description, datePublished: "2026-08-25", dateModified: "2026-08-25", author: { "@type": "Organization", name: "Chollos al Día" }, publisher: { "@type": "Organization", name: "Chollos al Día" }, image: "https://chollosaldia.com/images/gta-vi-official.jpg", mainEntityOfPage: pageUrl }, { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) }];
   return <main className="gtaGuide">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
     <header className="gtaTop"><Link className="brand" href="/"><span className="brandMark">€</span><span>Chollos <span>al</span>Día</span></Link><Link href="/">Ofertas de hoy</Link></header>
     <section className="gtaHero">
-      <Image src="/images/gta-vi-ahorro-hero-original.webp" alt="Ilustración original de una ciudad costera nocturna para la guía de GTA VI" fill priority sizes="100vw" />
+      <Image src="/images/gta-vi-official.jpg" alt="Arte promocional oficial de Grand Theft Auto VI con sus personajes, vehículos y Vice City" fill priority sizes="100vw" />
       <div className="gtaHeroShade" /><div className="gtaHeroCopy"><p>GUÍA ACTUALIZADA · AGOSTO 2026</p><h1>Cómo conseguir GTA VI por unos 54 € en PS5 y ahorrar más de 25 €</h1><h2>Una diferencia entre tiendas oficiales sitúa la reserva aproximadamente un 32 % por debajo de España. Te contamos el dato, sus límites y qué debes comprobar.</h2><div><span>Actualizado: 25 agosto 2026</span><span>Ahorro teórico: ≈26 €</span><span>Lectura: 10 min</span><span>Dificultad: media</span></div><a href="#metodo">Ver la comparativa y los requisitos ↓</a></div>
     </section>
 
