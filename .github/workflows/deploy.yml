@@ -239,8 +239,17 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/offers.json data/posts.json data/amazon-discovery-state.json data/amazon-publications.json data/amazon-community-signal-state.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/community-signal-state.json data/miravia-community-signal-state.json data/miravia-discovery-state.json data/miravia-publications.json data/awin-retailers-discovery-state.json data/awin-retailers-publications.json data/tradedoubler-mediamarkt-discovery-state.json data/tradedoubler-mediamarkt-publications.json data/telegram-inbox-state.json data/telegram-removals.json data/telegram-caption-repairs.json data/telegram-source-queue.json data/telegram-source-queue-report.json public/tg
           git diff --cached --quiet || git commit -m "Actualizar ofertas desde Telegram"
-          git pull --rebase origin main
-          git push
+          if ! git pull --rebase origin main; then
+            echo "Otra automatización actualizó las ofertas al mismo tiempo; se conserva su versión más reciente."
+            git rebase --abort || true
+            git fetch origin main
+            git reset --hard origin/main
+          fi
+          if ! git push; then
+            echo "La rama volvió a cambiar durante el envío; se continúa desplegando la versión remota más reciente."
+            git fetch origin main
+            git reset --hard origin/main
+          fi
 
       - name: Construir web pública
         run: npm run build:github
