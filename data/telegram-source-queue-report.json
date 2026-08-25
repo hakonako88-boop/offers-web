@@ -1,23 +1,34 @@
 {
-  "updatedAt": "2026-08-25T23:18:26.762Z",
+  "updatedAt": "2026-08-25T23:41:55.098Z",
   "summary": {
-    "ignored": 36,
-    "blocked": 389,
-    "rejected": 313,
-    "published": 248,
+    "ignored": 35,
+    "blocked": 372,
+    "rejected": 314,
+    "published": 263,
+    "needs_review": 12,
     "duplicate": 2,
-    "needs_review": 10,
     "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:91705:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91705,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/91705",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:91704:aliexpress:0",
       "source": "telegram-una-ganga",
       "messageId": 91704,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/91704",
       "resultUrl": ""
     },
@@ -26,9 +37,9 @@
       "source": "telegram-tiesometro",
       "messageId": 7103,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/tiesometro/7103",
       "resultUrl": ""
     },
@@ -1098,17 +1109,6 @@
       "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
       "sourceUrl": "https://t.me/una_ganga/91665",
       "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91664:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91664,
-      "store": "Miravia",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/una_ganga/91664",
-      "resultUrl": "https://www.awin1.com/cread.php?awinmid=37168&awinaffid=2023977&ued=https%3A%2F%2Fwww.miravia.es%2Fp%2Fi1361168534802416-s2078256768528368.html"
     }
   ]
 }
