@@ -1,0 +1,54 @@
+name: Corregir foto GTA VI en Telegram
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  replace-post:
+    if: contains(github.event.head_commit.message, '[repair-gta-photo]')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: "-1002549368004"
+      OLD_MESSAGE_ID: "4947"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publicar con la portada correcta y retirar la versión anterior
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+
+          const token = process.env.TELEGRAM_BOT_TOKEN;
+          const chatId = process.env.TELEGRAM_CHANNEL_ID;
+          const oldMessageId = process.env.OLD_MESSAGE_ID;
+          if (!token) throw new Error('Falta TELEGRAM_BOT_TOKEN');
+
+          const caption = `<b>GTA VI: 79,99 € frente a unos 54 €</b>\n\n🎮 Hemos encontrado una diferencia regional muy interesante en el precio de la reserva de GTA VI para PS5.\n\n🇪🇸 <b>Precio en España:</b> 79,99 €\n🇮🇳 <b>Precio de referencia en India:</b> ₹5.999 ≈ 53,91 €\n🔥 <b>Diferencia aproximada:</b> 26,08 € · alrededor del 32 %\n\nEn la guía explicamos:\n✅ De dónde sale la diferencia\n✅ Qué ocurre con la región de la cuenta\n✅ Qué códigos son compatibles\n✅ Cómo calcular cambio y comisiones\n✅ Qué debes saber sobre GTA+ y contenido adicional\n✅ Por qué actualmente solo puedes reservarlo\n\n📅 <b>Lanzamiento previsto:</b> 19 de noviembre de 2026\n\n⚠️ PlayStation exige registrar la región correcta y hacerla coincidir con la información de la cuenta. La comparativa es informativa y no recomienda proporcionar datos inexactos.\n\n🪐 Más guías y chollos en @aldiachollos\n#GTAVI #PS5 #Gaming #Chollos #Publi`;
+          const articleUrl = 'https://chollosaldia.com/gta-vi-mas-barato-ps5/?utm_source=telegram&utm_medium=social&utm_campaign=guia_gta_vi&utm_content=publicacion';
+
+          const form = new FormData();
+          form.set('chat_id', chatId);
+          form.set('photo', new Blob([fs.readFileSync('public/images/gta-vi-telegram.jpg')], { type: 'image/jpeg' }), 'gta-vi-telegram.jpg');
+          form.set('caption', caption);
+          form.set('parse_mode', 'HTML');
+          form.set('reply_markup', JSON.stringify({ inline_keyboard: [[{ text: '👉🏻 LEER LA GUÍA COMPLETA', url: articleUrl }]] }));
+
+          const sentResponse = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: form });
+          const sent = await sentResponse.json();
+          if (!sent.ok) throw new Error(`No se pudo publicar la versión corregida: ${sent.description || sentResponse.status}`);
+
+          const deleteResponse = await fetch(`https://api.telegram.org/bot${token}/deleteMessage`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, message_id: Number(oldMessageId) })
+          });
+          const deleted = await deleteResponse.json();
+          if (!deleted.ok) throw new Error(`La versión corregida se publicó, pero no se pudo retirar la anterior: ${deleted.description || deleteResponse.status}`);
+
+          console.log(`Publicación corregida: ${sent.result.message_id}. Publicación anterior retirada: ${oldMessageId}.`);
+          NODE
