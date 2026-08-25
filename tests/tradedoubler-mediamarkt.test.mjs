@@ -31,6 +31,15 @@ test('rejects accessories and weak or implausible discounts', () => {
   assert.equal(mediaMarktQualityScore({ title: 'Portátil gaming', price: 99, oldPrice: 999 }), 0);
 });
 
+test('rejects refurbished and expensive weak MediaMarkt deals', () => {
+  assert.equal(mediaMarktQualityScore({ title: 'REACONDICIONADO Seminuevo Bueno Frigorífico Balay', category: 'Hogar', price: 557, oldPrice: 899 }), 0);
+  assert.equal(mediaMarktQualityScore({ title: 'TV OLED Samsung 55 pulgadas', category: 'Televisores', price: 2032, oldPrice: 2459 }), 0);
+  assert.equal(mediaMarktQualityScore({ title: 'TV Micro LED Samsung 85 pulgadas', category: 'Televisores', price: 4197, oldPrice: 5079 }), 0);
+  assert.equal(mediaMarktQualityScore({ title: 'Cafetera superautomática premium', category: 'Hogar', price: 1499, oldPrice: 2099 }), 0);
+  assert.ok(mediaMarktQualityScore({ title: 'Portátil gaming HP Victus RTX 5060', category: 'Informática', price: 1099, oldPrice: 1499 }) > 0);
+  assert.ok(mediaMarktQualityScore({ title: 'Robot aspirador iRobot Roomba Plus 505', category: 'Hogar', price: 499, oldPrice: 799 }) > 0);
+});
+
 test('normalizes a discounted MediaMarkt product with official image and affiliate link', () => {
   const result = normalizeMediaMarktProduct({
     id: 'td-1',

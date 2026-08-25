@@ -14,6 +14,7 @@ import {
   formatRetailTelegramCaption,
   normalizeRetailProduct,
   recordFromColumns,
+  retailQualityScore,
   retailerFeedEntries,
   selectRetailerFeed,
   socialImageFromHtml,
@@ -183,7 +184,13 @@ if (!feed) throw new Error(`No Spanish ${retailer.store} feed is available in Aw
 const retailerStateKey = retailer.merchantId;
 
 const feedVersion = `${AWIN_RETAIL_QUALITY_POLICY_VERSION}:${feed.last_imported || feed.last_checked || 'unknown'}`;
-const queued = (state.queuedOffers?.[retailerStateKey] || []).filter((offer) => offer?.id && !seenIds.has(offer.id));
+const queued = (state.queuedOffers?.[retailerStateKey] || [])
+  .filter((offer) => offer?.id && !seenIds.has(offer.id))
+  .map((offer) => ({
+    ...offer,
+    score: retailQualityScore({ title: offer.title, category: offer.category, price: offer.price, oldPrice: offer.previousPrice }, retailer),
+  }))
+  .filter((offer) => offer.score > 0);
 const discovered = state.feedVersions?.[feed.feed_id] !== feedVersion || queued.length < 5 ? await discover(feed.url, retailer, seenIds) : { candidates: [], scanned: 0 };
 const merged = [...new Map([...queued, ...discovered.candidates].map((offer) => [offer.id, offer])).values()];
 const candidates = filterDuplicateDeals(merged, existingWebOffers).sort((a, b) => b.score - a.score);

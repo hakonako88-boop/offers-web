@@ -12,6 +12,7 @@ import {
 } from '../scripts/awin-retailers.mjs';
 
 const pc = AWIN_RETAILERS.find((retailer) => retailer.store === 'PcComponentes');
+const eci = AWIN_RETAILERS.find((retailer) => retailer.store === 'El Corte Inglés');
 
 test('keeps only the requested merchant feeds', () => {
   const feeds = retailerFeedEntries([
@@ -31,6 +32,15 @@ test('creates and validates a link owned by publisher 2021553', () => {
 test('rejects inflated or uninteresting catalogue rows', () => {
   assert.equal(retailQualityScore({ title: 'Funda de plástico', price: 4, oldPrice: 40 }), 0);
   assert.equal(retailQualityScore({ title: 'Portátil gaming Lenovo', category: 'Informática', price: 699, oldPrice: 899 }) > 0, true);
+});
+
+test('applies a stricter El Corte Inglés editorial filter', () => {
+  assert.equal(retailQualityScore({ title: 'Maxi pamela de paja', category: 'Moda', price: 176, oldPrice: 440 }, eci), 0);
+  assert.equal(retailQualityScore({ title: 'Colchón de muelles ensacados', category: 'Hogar', price: 580, oldPrice: 1160 }, eci), 0);
+  assert.equal(retailQualityScore({ title: 'Vestido de fiesta con pedrería', category: 'Moda', price: 75, oldPrice: 250 }, eci), 0);
+  assert.equal(retailQualityScore({ title: 'Bolso de mano marca desconocida', category: 'Moda', price: 140, oldPrice: 350 }, eci), 0);
+  assert.ok(retailQualityScore({ title: 'Proyector Samsung The Freestyle Smart TV', category: 'Tecnología', price: 449, oldPrice: 999 }, eci) > 0);
+  assert.ok(retailQualityScore({ title: 'Zapatillas Adidas Ultraboost', category: 'Moda y calzado', price: 72, oldPrice: 130 }, eci) > 0);
 });
 
 test('normalizes a real discounted product and never borrows another publisher link', () => {

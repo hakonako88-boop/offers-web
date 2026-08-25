@@ -6,10 +6,14 @@ export const AWIN_RETAILERS = Object.freeze([
   { merchantId: '13075', store: 'El Corte Inglés', slug: 'el-corte-ingles', domains: ['elcorteingles.es'] },
   { merchantId: '20982', store: 'PcComponentes', slug: 'pccomponentes', domains: ['pccomponentes.com'] },
 ]);
-export const AWIN_RETAIL_QUALITY_POLICY_VERSION = 'v1';
+export const AWIN_RETAIL_QUALITY_POLICY_VERSION = 'v2';
 
 const LOW_INTEREST = /\b(?:funda|protector|cable|adaptador|recambio|repuesto|pegatina|llavero|calcetin|servilleta|mantel|bolsa|tornillo|cartucho compatible)\b/i;
 const HIGH_INTEREST = /(?:smartphone|movil|tablet|portatil|ordenador|monitor|televisor|smart tv|consola|videojuego|auriculares|altavoz|reloj|smartwatch|robot aspirador|aspirador|freidora|cafetera|lavadora|secadora|frigorifico|lavavajillas|microondas|horno|colchon|perfume|zapatillas|lego|juguete|herramienta)/i;
+const ECI_LOW_INTEREST = /\b(?:pamela|tocado|pedreria|ceremonia|fiesta|salon(?:es)?\s+destalonad|traje\s+cruzado|mueble\s+de\s+bano|colchon|canape|somier|alfombra|cortina|vajilla|cuberteria)\b/i;
+const ECI_FASHION = /\b(?:moda|fashion|ropa|calzado|mujer|hombre|vestidos?|americanas?|cazadoras?|chaquetas?|abrigos?|jerseys?|camisetas?|sudaderas?|pantalones?|vaqueros?|zapatillas?|zapatos?|bolsos?)\b/i;
+const ECI_POPULAR_FASHION = /\b(?:zapatillas?|deportiv(?:a|o|as|os)?|sudaderas?|chaquetas?|cazadoras?|abrigos?|jerseys?|camisetas?|pantalones?|vaqueros?|vestidos?|bolsos?|mochilas?)\b/i;
+const ECI_RECOGNISABLE_FASHION_BRAND = /\b(?:adidas|nike|puma|reebok|new\s+balance|vans|skechers|levi'?s|tommy\s+hilfiger|lacoste|calvin\s+klein|ralph\s+lauren|guess|michael\s+kors|tous|geox|asics|salomon|under\s+armour|columbia|the\s+north\s+face|jack\s*&?\s*jones|mango)\b/i;
 
 function normalizeKey(value = '') {
   return String(value).trim().toLocaleLowerCase('es').normalize('NFD').replace(/\p{Diacritic}/gu, '').replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
@@ -131,12 +135,21 @@ function categoryFor(input = '', title = '') {
   return 'Ofertas';
 }
 
-export function retailQualityScore({ title = '', category = '', price = 0, oldPrice = 0 } = {}) {
+export function retailQualityScore({ title = '', category = '', price = 0, oldPrice = 0 } = {}, retailer = {}) {
   const searchable = normalizeKey(`${title} ${category}`).replaceAll('_', ' ');
   const saving = oldPrice - price;
   const discount = oldPrice > price ? (saving / oldPrice) * 100 : 0;
   if (!title || LOW_INTEREST.test(searchable) || !price || price < 10 || price > 3500) return 0;
   if (oldPrice <= price || discount < 20 || saving < 10) return 0;
+  if (retailer.slug === 'el-corte-ingles') {
+    if (ECI_LOW_INTEREST.test(searchable) || price > 2500 || discount > 70) return 0;
+    if (ECI_FASHION.test(searchable)) {
+      if (!ECI_POPULAR_FASHION.test(searchable) || !ECI_RECOGNISABLE_FASHION_BRAND.test(searchable) || price > 250 || discount < 40 || saving < 30) return 0;
+    } else if (HIGH_INTEREST.test(searchable)) {
+      if (discount < 25 || saving < 25) return 0;
+    } else if (discount < 35 || saving < 40) return 0;
+    return Math.round(discount * 2 + Math.min(saving, 250) + (HIGH_INTEREST.test(searchable) ? 45 : 0) + (price <= 1200 ? 20 : 0));
+  }
   if (!HIGH_INTEREST.test(searchable) && (discount < 30 || saving < 20)) return 0;
   if (discount > 75) return 0;
   return Math.round(discount * 2 + Math.min(saving, 250) + (HIGH_INTEREST.test(searchable) ? 30 : 0));
@@ -161,7 +174,7 @@ export function normalizeRetailProduct(record = {}, retailer) {
   const destination = value(record, ['merchant_deep_link', 'merchant_product_url', 'product_url', 'deep_link']);
   const url = isOwnedAwinLink(rawLink, retailer.merchantId) ? rawLink : createOwnedAwinLink(destination, retailer);
   const stock = value(record, ['in_stock', 'is_for_sale', 'stock_status', 'availability']).toLowerCase();
-  const score = retailQualityScore({ title, category: rawCategory, price, oldPrice });
+  const score = retailQualityScore({ title, category: rawCategory, price, oldPrice }, retailer);
   if (!sourceProductId || !title || !image || !url || !score || /^(0|false|no|out.of.stock|agotado|unavailable)$/i.test(stock)) return null;
   try { if (new URL(image).protocol !== 'https:') return null; } catch { return null; }
   const discount = Math.round(((oldPrice - price) / oldPrice) * 100);

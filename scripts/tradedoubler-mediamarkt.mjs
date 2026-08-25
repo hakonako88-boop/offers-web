@@ -8,10 +8,11 @@ export const TRADEDOUBLER_MEDIAMARKT = Object.freeze({
   slug: 'mediamarkt',
 });
 
-export const TRADEDOUBLER_QUALITY_POLICY_VERSION = 'v3';
+export const TRADEDOUBLER_QUALITY_POLICY_VERSION = 'v4';
 
 const LOW_INTEREST = /\b(?:funda|protector|cable|adaptador|recambio|repuesto|pegatina|llavero|tornillo|cartucho|pilas?|bombilla|soporte|conector)\b/iu;
 const HIGH_INTEREST = /\b(?:smartphone|m[oó]vil|tablet|port[aá]til|ordenador|monitor|televisor|smart\s*tv|consola|videojuego|auriculares|altavoz|reloj|smartwatch|robot\s+aspirador|aspirador|freidora|cafetera|lavadora|secadora|frigor[ií]fico|lavavajillas|microondas|horno|aire\s+acondicionado|ventilador|patinete|c[aá]mara|objetivo|proyector)\b/iu;
+const UNSUITABLE_CONDITION = /\b(?:reacondicionado|seminuevo|funcional|outlet|exposici[oó]n|segunda\s+mano|embalaje\s+dañado|defectos?\s+est[eé]ticos?)\b/iu;
 
 function number(input) {
   if (typeof input === 'number') return Number.isFinite(input) ? input : 0;
@@ -115,10 +116,19 @@ export function mediaMarktQualityScore({ title = '', category = '', price = 0, o
   const text = `${title} ${category}`.toLocaleLowerCase('es').normalize('NFD').replace(/\p{Diacritic}/gu, '');
   const saving = oldPrice - price;
   const discount = oldPrice > price ? (saving / oldPrice) * 100 : 0;
-  if (!title || LOW_INTEREST.test(text) || price < 15 || price > 5000) return 0;
-  if (oldPrice <= price || saving < 15 || discount < 15 || discount > 70) return 0;
-  if (!HIGH_INTEREST.test(text) && (saving < 30 || discount < 25)) return 0;
-  return Math.round(discount * 2 + Math.min(saving, 300) + (HIGH_INTEREST.test(text) ? 35 : 0));
+  if (!title || LOW_INTEREST.test(text) || UNSUITABLE_CONDITION.test(text) || price < 15 || price > 3000) return 0;
+  if (/\bcafetera\b/iu.test(text) && price > 1000) return 0;
+  if (oldPrice <= price || discount > 65) return 0;
+  const tier = price < 100
+    ? { discount: 25, saving: 15 }
+    : price < 500
+      ? { discount: 20, saving: 30 }
+      : price < 1500
+        ? { discount: 20, saving: 75 }
+        : { discount: 22, saving: 150 };
+  if (discount < tier.discount || saving < tier.saving) return 0;
+  if (!HIGH_INTEREST.test(text) && (saving < 50 || discount < 30)) return 0;
+  return Math.round(discount * 2 + Math.min(saving, 350) + (HIGH_INTEREST.test(text) ? 45 : 0) + (price <= 1200 ? 25 : 0));
 }
 
 export function normalizeMediaMarktProduct(product = {}) {

@@ -10,6 +10,7 @@ import {
   extractMediaMarktCandidates,
   formatMediaMarktTelegramCaption,
   formatMediaMarktWebsiteText,
+  mediaMarktQualityScore,
   tradeDoublerProductsUrl,
 } from './tradedoubler-mediamarkt.mjs';
 
@@ -133,7 +134,13 @@ const response = await fetch(tradeDoublerProductsUrl(config.productsToken), {
 if (!response.ok) throw new Error(`TradeDoubler Products API returned ${response.status}`);
 const payload = await response.json();
 const feedVersion = `${TRADEDOUBLER_QUALITY_POLICY_VERSION}:${payload.productHeader?.totalHits || 0}:${payload.products?.[0]?.offers?.[0]?.modified || 'unknown'}`;
-const queued = (state.queuedOffers || []).filter((offer) => offer?.id && !seenIds.has(offer.id));
+const queued = (state.queuedOffers || [])
+  .filter((offer) => offer?.id && !seenIds.has(offer.id))
+  .map((offer) => ({
+    ...offer,
+    score: mediaMarktQualityScore({ title: offer.title, category: offer.category, price: offer.price, oldPrice: offer.previousPrice }),
+  }))
+  .filter((offer) => offer.score > 0);
 const discovered = feedVersion === state.feedVersion ? [] : extractMediaMarktCandidates(payload, seenIds);
 const candidates = [...queued, ...discovered]
   .filter((offer, index, list) => list.findIndex((entry) => entry.id === offer.id) === index)
