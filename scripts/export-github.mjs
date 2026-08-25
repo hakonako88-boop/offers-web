@@ -17,7 +17,11 @@ const assets = { fetch: async () => new Response("Not found", { status: 404 }) }
 const context = { waitUntil() {}, passThroughOnException() {} };
 
 async function render(route, destination) {
-  const response = await worker.fetch(new Request(`https://chollosaldia.com${route}`, { headers: { accept: "text/html" } }), { ASSETS: assets }, context);
+  let response = await worker.fetch(new Request(`https://chollosaldia.com${route}`, { headers: { accept: "text/html" } }), { ASSETS: assets }, context);
+  if (response.status >= 300 && response.status < 400 && response.headers.get("location")) {
+    const redirectedUrl = new URL(response.headers.get("location"), `https://chollosaldia.com${route}`);
+    response = await worker.fetch(new Request(redirectedUrl, { headers: { accept: "text/html" } }), { ASSETS: assets }, context);
+  }
   if (!response.ok) throw new Error(`No se pudo exportar ${route}: ${response.status}`);
   const target = path.join(output, destination);
   await mkdir(path.dirname(target), { recursive: true });

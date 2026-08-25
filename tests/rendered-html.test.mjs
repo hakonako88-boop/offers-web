@@ -6,7 +6,13 @@ async function render(route = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
-  return worker.fetch(new Request(`http://localhost${route}`, { headers: { accept: "text/html" } }), { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } }, { waitUntil() {}, passThroughOnException() {} });
+  const env = { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } };
+  const context = { waitUntil() {}, passThroughOnException() {} };
+  let response = await worker.fetch(new Request(`http://localhost${route}`, { headers: { accept: "text/html" } }), env, context);
+  if (response.status >= 300 && response.status < 400 && response.headers.get("location")) {
+    response = await worker.fetch(new Request(new URL(response.headers.get("location"), `http://localhost${route}`), { headers: { accept: "text/html" } }), env, context);
+  }
+  return response;
 }
 
 test("renders the Chollos al Día storefront and SEO metadata", async () => {
@@ -19,7 +25,7 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.match(html, /Ahorro sin vueltas/);
   assert.match(html, /Últimos chollos/);
   assert.match(html, /application\/ld\+json/);
-  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/"/);
   assert.match(html, /href="\/oferta\//);
   assert.match(html, /storeRail/);
   assert.match(html, /Alertas de chollos/);
