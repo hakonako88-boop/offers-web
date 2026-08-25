@@ -192,7 +192,11 @@ test("renders the GTA VI regional-price guide with transparent SEO and Wise affi
   const html = await response.text();
   assert.match(html, /GTA VI \(GTA 6\) más barato en PS5/);
   assert.match(html, /presentación ampliada de GTA VI el 27 de agosto/);
-  assert.match(html, /<title>GTA 6 barato en PS5/);
+  assert.match(html, /<title>GTA 6 barato en PS5: precio, reserva y fecha/);
+  assert.match(html, /comprar GTA 6 barato PS5/);
+  assert.match(html, /precio GTA VI España/);
+  assert.match(html, /Reservar GTA VI para PS5/);
+  assert.match(html, /Grand Theft Auto VI/);
   assert.match(html, /19 de noviembre de 2026/);
   assert.match(html, /PlayStation Store India/);
   assert.match(html, /"@type":"Article"/);
