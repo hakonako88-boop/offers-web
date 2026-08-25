@@ -1,10 +1,14 @@
 import rawOffers from "../../data/offers.json";
+import { classifyProduct } from "./taxonomy";
 
 export type PublishedDeal = {
   id: string;
   title: string;
   store: string;
   category: string;
+  subcategory?: string;
+  categoryConfidence: number;
+  active: boolean;
   price: number;
   oldPrice: number;
   coupon?: string;
@@ -81,26 +85,6 @@ function cleanTitle(value?: string) {
   if (/alfombrilla.*(?:raton|mouse)|mousepad/.test(text)) return `Alfombrilla gaming${/charizard/.test(text) ? " Charizard" : ""}${/xxl/.test(text) ? " XXL" : ""}`;
   if (/freidora.*aire/.test(text) && /silicona/.test(text)) return "Molde de silicona para freidora de aire";
   return original;
-}
-
-function categoryFor(offer: LegacyOffer) {
-  // A few recent Miravia records arrive with the generic feed department
-  // “Tecnología” even though the identified products are console games.
-  // Their Telegram message id is stable and avoids guessing from a future,
-  // unrelated product that happens to contain a gaming word.
-  if ([4488, 4486, 4481, 4478].includes(Number(offer.message_id))) return "Videojuegos";
-  const directCategory = String(offer.category ?? "").trim();
-  const text = normalise(`${directCategory} ${offer.title ?? ""} ${offer.text ?? ""}`);
-  if (/gaming|consola|videojuego|playstation|\bps[345]\b|nintendo|switch|xbox|battlefield|gran turismo|13 sentinels/.test(text)) return "Videojuegos";
-  if (/tecnolog|electron|informat|mobile|telefono|data|memory|software|smartwatch|reloj inteligente|auricular|altavoz bluetooth|impresora|proyector|televisor|\btv\b/.test(text)) return "Tecnología";
-  if (/cafe|capsula|freidora|aceite|cocina|taper/.test(text)) return "Cocina";
-  if (/hogar|vileda|piscina|jardin|mueble|limpieza|bedding|bath|pillow/.test(text)) return "Hogar";
-  if (/herramienta|bricolaje|diy|taladro/.test(text)) return "Bricolaje";
-  if (/juguete|tamagotchi|muneco|nino|toy|baby/.test(text)) return "Juguetes";
-  if (/belleza|beauty|salud|health|perfume|parfum|afeitadora|barba|gillette|cortapelo|cosmet/.test(text)) return "Belleza";
-  if (/\breloj\b|moda|fashion|ropa|calzado|sandalia|mocasin|zapatilla|vestido|bolso|bag/.test(text)) return "Moda";
-  if (/deporte|sport/.test(text)) return "Deporte";
-  return directCategory && directCategory.length <= 30 ? directCategory : "Ofertas";
 }
 
 function couponFor(text?: string) {
@@ -217,13 +201,17 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
   const title = conciseTitle(cleanTitle(offer.title), isVerifiedTelegramOffer ? 18 : 22);
   const hasPublishablePrice = hasDemonstrableSaving || isVerifiedTelegramOffer;
   const hasValidTitle = isVerifiedTelegramOffer ? isValidManualTitle(title) : isUsefulTitle(title);
-  if (!id || !price || !hasPublishablePrice || !hasValidTitle || !isWebworthyMiraviaOffer(offer, title, price) || !offer.url || !offer.image || !store || !isRecent(offer.date) || !isSupportedAffiliateUrl(offer.url, store)) return [];
+  if (!id || !price || !hasPublishablePrice || !hasValidTitle || !isWebworthyMiraviaOffer(offer, title, price) || !offer.url || !offer.image || !store || !isSupportedAffiliateUrl(offer.url, store)) return [];
   const date = formatDate(offer.date);
+  const classification = classifyProduct(title, String(offer.category ?? ""));
   return [{
     id,
     title,
     store,
-    category: categoryFor(offer),
+    category: classification.category,
+    subcategory: classification.subcategory,
+    categoryConfidence: classification.confidence,
+    active: isRecent(offer.date),
     price,
     oldPrice: previous > price ? previous : price,
     coupon,
@@ -258,18 +246,38 @@ const seenAffiliateUrls = new Set<string>();
 export const publishedDeals: PublishedDeal[] = candidates
   .sort((left, right) => Date.parse(right.verifiedDate || "") - Date.parse(left.verifiedDate || ""))
   .filter((deal) => {
+    if (!deal.active) return false;
     const key = affiliateIdentity(deal.affiliateUrl);
     if (seenAffiliateUrls.has(key)) return false;
     seenAffiliateUrls.add(key);
     return true;
   });
 
+/** Current and expired records share stable URLs. Expired records stay out of
+ * the homepage and sitemap collections but remain useful to returning users. */
+export const allDeals: PublishedDeal[] = candidates
+  .sort((left, right) => Date.parse(right.verifiedDate || "") - Date.parse(left.verifiedDate || ""));
+
 export function dealHref(id: string) {
   return `/oferta/${encodeURIComponent(id)}/`;
 }
 
 export function getDealById(id: string) {
-  return publishedDeals.find((deal) => deal.id === id);
+  return allDeals.find((deal) => deal.id === id);
+}
+
+export function dealPriceAssessment(deal: Pick<PublishedDeal, "price" | "oldPrice" | "coupon">) {
+  const discount = deal.oldPrice > deal.price ? Math.round((1 - deal.price / deal.oldPrice) * 100) : 0;
+  const savings = Math.max(0, deal.oldPrice - deal.price);
+  return {
+    label: "Histórico en recopilación",
+    level: "unknown" as const,
+    explanation: discount > 0
+      ? `La tienda muestra un ahorro de ${money.format(savings)} (${discount} %), pero todavía no tenemos suficientes comprobaciones independientes para afirmar que sea un mínimo o un precio excepcional.`
+      : deal.coupon
+        ? "La oferta utiliza un cupón, pero todavía no tenemos suficientes comprobaciones independientes para compararla con su precio habitual."
+        : "Todavía no tenemos suficiente histórico para valorar este precio.",
+  };
 }
 
 export function dealDiscount(deal: Pick<PublishedDeal, "price" | "oldPrice">) {

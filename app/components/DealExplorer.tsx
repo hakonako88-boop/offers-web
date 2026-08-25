@@ -15,6 +15,8 @@ export type Deal = {
   title: string;
   store: "Amazon" | "AliExpress" | "Miravia" | "Xiaomi" | "El Corte Inglés" | "PcComponentes" | "MediaMarkt" | "Otra";
   category: string;
+  subcategory?: string;
+  categoryConfidence: number;
   price: number;
   oldPrice: number;
   coupon?: string;
@@ -57,6 +59,13 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
   const [deals] = useState<Deal[]>(initialDeals);
   const [visibleLimit, setVisibleLimit] = useState(36);
   const [category, setCategory] = useState("Todos");
+  const [store, setStore] = useState("Todas");
+  const [minimumPrice, setMinimumPrice] = useState("");
+  const [maximumPrice, setMaximumPrice] = useState("");
+  const [minimumDiscount, setMinimumDiscount] = useState(0);
+  const [dateRange, setDateRange] = useState("all");
+  const [couponOnly, setCouponOnly] = useState(false);
+  const [sortBy, setSortBy] = useState("recent");
   const [query, setQuery] = useState(() => {
     if (typeof window === "undefined") return "";
     return new URLSearchParams(window.location.search).get("q")?.slice(0, 80) ?? "";
@@ -67,16 +76,39 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
     () => ["Todos", ...Array.from(new Set(deals.map((deal) => deal.category))).sort((a, b) => a.localeCompare(b, "es"))],
     [deals],
   );
+  const stores = useMemo(() => ["Todas", ...Array.from(new Set(deals.map((deal) => deal.store))).sort((a, b) => a.localeCompare(b, "es"))], [deals]);
 
   const visibleDeals = useMemo(() => {
     const needle = normalise(query.trim());
-    return deals.filter((deal) => (
+    const min = Number.parseFloat(minimumPrice.replace(",", "."));
+    const max = Number.parseFloat(maximumPrice.replace(",", "."));
+    const newestTimestamp = deals.reduce((latest, deal) => Math.max(latest, Date.parse(deal.verifiedDate || "") || 0), 0);
+    const maximumAge = dateRange === "today" ? 24 * 60 * 60 * 1000 : dateRange === "3d" ? 3 * 24 * 60 * 60 * 1000 : dateRange === "7d" ? 7 * 24 * 60 * 60 * 1000 : Infinity;
+    const filtered = deals.filter((deal) => (
       (category === "Todos" || deal.category === category)
-      && (!needle || normalise(deal.title).includes(needle))
+      && (store === "Todas" || deal.store === store)
+      && (!needle || normalise(`${deal.title} ${deal.category} ${deal.subcategory || ""} ${deal.store}`).includes(needle))
+      && (!Number.isFinite(min) || deal.price >= min)
+      && (!Number.isFinite(max) || deal.price <= max)
+      && (deal.oldPrice > deal.price ? Math.round((1 - deal.price / deal.oldPrice) * 100) : 0) >= minimumDiscount
+      && (!couponOnly || Boolean(deal.coupon))
+      && (!Number.isFinite(maximumAge) || Boolean(deal.verifiedDate && newestTimestamp - Date.parse(deal.verifiedDate) <= maximumAge))
     ));
-  }, [deals, category, query]);
+    return filtered.sort((left, right) => {
+      if (sortBy === "discount") return ((1 - right.price / right.oldPrice) || 0) - ((1 - left.price / left.oldPrice) || 0);
+      if (sortBy === "saving") return (right.oldPrice - right.price) - (left.oldPrice - left.price);
+      if (sortBy === "price") return left.price - right.price;
+      return Date.parse(right.verifiedDate || "") - Date.parse(left.verifiedDate || "");
+    });
+  }, [deals, category, store, query, minimumPrice, maximumPrice, minimumDiscount, dateRange, couponOnly, sortBy]);
 
-  const averageDiscount = summary.averageDiscount;
+  const filtersActive = category !== "Todos" || store !== "Todas" || query.trim() !== "" || minimumPrice !== "" || maximumPrice !== "" || minimumDiscount > 0 || dateRange !== "all" || couponOnly || sortBy !== "recent";
+
+  function clearFilters() {
+    setCategory("Todos"); setStore("Todas"); setQuery(""); setMinimumPrice(""); setMaximumPrice("");
+    setMinimumDiscount(0); setDateRange("all"); setCouponOnly(false); setSortBy("recent");
+  }
+
   const storeTotals = summary.stores;
   const sectionCovers = useMemo(() => ({
     amazon: deals.find((deal) => deal.store === "Amazon"),
@@ -87,7 +119,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
     elCorteIngles: deals.find((deal) => deal.store === "El Corte Inglés"),
     mediamarkt: deals.find((deal) => deal.store === "MediaMarkt"),
     tecnologia: deals.find((deal) => deal.category === "Tecnología"),
-    videojuegos: deals.find((deal) => deal.category === "Videojuegos"),
+    videojuegos: deals.find((deal) => deal.category === "Gaming"),
     hogar: deals.find((deal) => deal.category === "Hogar"),
   }), [deals]);
 
@@ -175,18 +207,20 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           </div>
 
           <div className="controls">
-            <div className="filters" role="group" aria-label="Filtrar ofertas por categoría">
-              {categories.map((item) => (
-                <button key={item} className={category === item ? "active" : ""} onClick={() => setCategory(item)}>{item}</button>
-              ))}
-            </div>
-            <label className="search">
-              <span aria-hidden="true">⌕</span>
-              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar una oferta" aria-label="Buscar ofertas" />
-            </label>
+            <label className="search"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar producto, marca, categoría o tienda" aria-label="Buscar ofertas" /></label>
+            <details className="advancedFilters"><summary>Filtros <span>{filtersActive ? "activos" : ""}</span></summary><div className="filterGrid">
+              <label>Categoría<select value={category} onChange={(event) => setCategory(event.target.value)}>{categories.map((item) => <option key={item}>{item}</option>)}</select></label>
+              <label>Tienda<select value={store} onChange={(event) => setStore(event.target.value)}>{stores.map((item) => <option key={item}>{item}</option>)}</select></label>
+              <label>Precio desde<input inputMode="decimal" value={minimumPrice} onChange={(event) => setMinimumPrice(event.target.value)} placeholder="0 €" /></label>
+              <label>Precio hasta<input inputMode="decimal" value={maximumPrice} onChange={(event) => setMaximumPrice(event.target.value)} placeholder="Sin límite" /></label>
+              <label>Descuento mínimo<select value={minimumDiscount} onChange={(event) => setMinimumDiscount(Number(event.target.value))}><option value="0">Cualquiera</option><option value="10">10 %</option><option value="20">20 %</option><option value="30">30 %</option><option value="40">40 %</option><option value="50">50 %+</option></select></label>
+              <label>Fecha<select value={dateRange} onChange={(event) => setDateRange(event.target.value)}><option value="all">Últimas 2 semanas</option><option value="today">Últimas 24 horas</option><option value="3d">Últimos 3 días</option><option value="7d">Última semana</option></select></label>
+              <label>Ordenar<select value={sortBy} onChange={(event) => setSortBy(event.target.value)}><option value="recent">Más recientes</option><option value="discount">Mayor descuento</option><option value="saving">Mayor ahorro en €</option><option value="price">Precio más bajo</option></select></label>
+              <label className="couponFilter"><input type="checkbox" checked={couponOnly} onChange={(event) => setCouponOnly(event.target.checked)} /> Solo con cupón</label>
+            </div>{filtersActive && <button className="clearFilters" onClick={clearFilters}>Quitar todos los filtros</button>}</details>
           </div>
 
-          <p className="resultsSummary" aria-live="polite"><b>{visibleDeals.length}</b> {visibleDeals.length === 1 ? "oferta encontrada" : "ofertas encontradas"} · mostrando {Math.min(gridDeals.length, visibleDeals.length)}</p>
+          <p className="resultsSummary" aria-live="polite"><b>{summary.total}</b> ofertas activas · <b>{visibleDeals.length}</b> {visibleDeals.length === 1 ? "coincide" : "coinciden"} con tus filtros · mostrando {Math.min(gridDeals.length, visibleDeals.length)}</p>
           <div className="dealGrid">
             {gridDeals.map((deal) => {
               const discount = Math.max(0, Math.round((1 - deal.price / deal.oldPrice) * 100));
@@ -251,11 +285,11 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
         <div><p className="eyebrow"><span aria-hidden="true" />CHOLLOS POR CATEGORIA</p><h2 id="categories-title">Ve directo a lo que buscas.</h2></div>
         <div className="categoryDirectoryGrid">
           <a className="sectionCover categoryTech" href="/chollos/tecnologia/">{sectionCovers.tecnologia && <img src={sectionCovers.tecnologia.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Tecnología</span><b>Chollos de electrónica e informática <i aria-hidden="true">→</i></b></a>
-          <a className="sectionCover categoryGaming" href="/chollos/videojuegos/">{sectionCovers.videojuegos && <img src={sectionCovers.videojuegos.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Videojuegos</span><b>Ofertas gaming y accesorios <i aria-hidden="true">→</i></b></a>
+          <a className="sectionCover categoryGaming" href="/chollos/videojuegos/">{sectionCovers.videojuegos && <img src={sectionCovers.videojuegos.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Gaming</span><b>Videojuegos, consolas y accesorios <i aria-hidden="true">→</i></b></a>
           <a className="sectionCover categoryHome" href="/chollos/hogar/">{sectionCovers.hogar && <img src={sectionCovers.hogar.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Hogar</span><b>Chollos para casa y cocina <i aria-hidden="true">→</i></b></a>
         </div>
         <nav className="seoCategoryLinks" aria-label="Todas las categorías de chollos">
-          <a href="/chollos/tecnologia/">Chollos de tecnología</a><a href="/chollos/videojuegos/">Ofertas de videojuegos</a><a href="/chollos/hogar/">Chollos para el hogar</a><a href="/chollos/cocina/">Ofertas de cocina</a><a href="/chollos/bricolaje/">Chollos de bricolaje</a><a href="/chollos/juguetes/">Ofertas de juguetes</a><a href="/chollos/moda/">Chollos de moda</a><a href="/chollos/deporte/">Ofertas de deporte</a><a href="/chollos/belleza/">Chollos de belleza</a>
+          <a href="/chollos/tecnologia/">Chollos de tecnología</a><a href="/chollos/informatica/">Ofertas de informática</a><a href="/chollos/telefonia/">Chollos de telefonía</a><a href="/chollos/videojuegos/">Ofertas gaming</a><a href="/chollos/electrodomesticos/">Electrodomésticos baratos</a><a href="/chollos/hogar/">Chollos para el hogar</a><a href="/chollos/cocina/">Ofertas de cocina</a><a href="/chollos/bricolaje/">Chollos de bricolaje</a><a href="/chollos/juguetes/">Ofertas de juguetes</a><a href="/chollos/moda/">Chollos de moda</a><a href="/chollos/deporte/">Ofertas de deporte</a><a href="/chollos/belleza/">Chollos de belleza</a>
         </nav>
       </section>
 

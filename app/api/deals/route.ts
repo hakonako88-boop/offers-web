@@ -1,4 +1,5 @@
 import { env } from "cloudflare:workers";
+import { classifyProduct } from "../../lib/taxonomy";
 
 type DealInput = {
   id?: string; title?: string; store?: string; category?: string; price?: number; oldPrice?: number;
@@ -25,9 +26,12 @@ function affiliateUrl(input: DealInput) {
 
 async function ensureSchema() {
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS deals (id TEXT PRIMARY KEY NOT NULL, title TEXT NOT NULL, store TEXT NOT NULL, category TEXT NOT NULL, price REAL NOT NULL, old_price REAL NOT NULL, coupon TEXT, image_url TEXT NOT NULL, affiliate_url TEXT NOT NULL, badge TEXT, verified_at TEXT NOT NULL, active INTEGER DEFAULT 1 NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)").run();
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS price_history (id TEXT PRIMARY KEY NOT NULL, product_id TEXT NOT NULL, store_id TEXT NOT NULL, price REAL NOT NULL, checked_at TEXT NOT NULL, currency TEXT DEFAULT 'EUR' NOT NULL, availability TEXT DEFAULT 'unknown' NOT NULL)").run();
   await env.DB.batch([
     env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_deals_active_updated ON deals (active, updated_at)"),
     env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_deals_category ON deals (category)"),
+    env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_price_history_product_checked ON price_history (product_id, checked_at)"),
+    env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_price_history_store_checked ON price_history (store_id, checked_at)"),
   ]);
 }
 
@@ -58,7 +62,13 @@ export async function POST(request: Request) {
   try { input = await request.json() as DealInput; } catch { return json({ error: "JSON no válido" }, 400); }
   const title = cleanText(input.title);
   const storeRaw = cleanText(input.store, 30);
-  const store = ["Amazon", "AliExpress"].includes(storeRaw) ? storeRaw : "Otra";
+  const supportedStores = new Map([
+    ["amazon", "Amazon"], ["aliexpress", "AliExpress"], ["miravia", "Miravia"],
+    ["xiaomi", "Xiaomi"], ["el corte inglés", "El Corte Inglés"],
+    ["el corte ingles", "El Corte Inglés"], ["pccomponentes", "PcComponentes"],
+    ["mediamarkt", "MediaMarkt"],
+  ]);
+  const store = supportedStores.get(storeRaw.toLocaleLowerCase("es")) || "Otra";
   const imageUrl = safeHttpUrl(input.imageUrl);
   const finalUrl = affiliateUrl(input);
   const price = Number(input.price);
@@ -66,10 +76,13 @@ export async function POST(request: Request) {
   if (!title || !imageUrl || !finalUrl || !Number.isFinite(price) || price <= 0 || !Number.isFinite(oldPrice) || oldPrice < price) return json({ error: "Faltan datos o los precios/URLs no son válidos" }, 422);
   if (store === "AliExpress" && !safeHttpUrl(input.affiliateUrl)) return json({ error: "AliExpress requiere affiliateUrl generado por su portal/API de afiliados" }, 422);
   const now = new Date().toISOString();
-  const deal = { id: makeId(input), title, store, category: cleanText(input.category, 40) || "Otros", price, oldPrice, coupon: cleanText(input.coupon, 40) || null, imageUrl, affiliateUrl: finalUrl, badge: cleanText(input.badge, 30) || null, verifiedAt: now };
+  const classification = classifyProduct(title, cleanText(input.category, 40));
+  const deal = { id: makeId(input), title, store, category: classification.category, price, oldPrice, coupon: cleanText(input.coupon, 40) || null, imageUrl, affiliateUrl: finalUrl, badge: cleanText(input.badge, 30) || null, verifiedAt: now };
   await ensureSchema();
   await env.DB.prepare("INSERT INTO deals (id,title,store,category,price,old_price,coupon,image_url,affiliate_url,badge,verified_at,active,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET title=excluded.title,store=excluded.store,category=excluded.category,price=excluded.price,old_price=excluded.old_price,coupon=excluded.coupon,image_url=excluded.image_url,affiliate_url=excluded.affiliate_url,badge=excluded.badge,verified_at=excluded.verified_at,active=excluded.active,updated_at=excluded.updated_at")
     .bind(deal.id,deal.title,deal.store,deal.category,deal.price,deal.oldPrice,deal.coupon,deal.imageUrl,deal.affiliateUrl,deal.badge,deal.verifiedAt,input.active === false ? 0 : 1,now,now).run();
+  await env.DB.prepare("INSERT INTO price_history (id,product_id,store_id,price,checked_at,currency,availability) VALUES (?,?,?,?,?,?,?)")
+    .bind(`${deal.id}:${Date.now()}`, deal.id, deal.store, deal.price, now, "EUR", input.active === false ? "out_of_stock" : "available").run();
   let telegram = "omitido";
   try { await publishToTelegram(deal); telegram = "publicado"; } catch (error) { telegram = error instanceof Error ? error.message : "error"; }
   return json({ ok: true, id: deal.id, telegram }, 201);

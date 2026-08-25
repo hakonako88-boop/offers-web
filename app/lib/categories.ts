@@ -100,6 +100,15 @@ export const categoryPages = {
     checks: ["Cantidad, formato y unidades", "Ingredientes o modelo exacto", "Vendedor, precinto y devolución"],
     guidance: "Comprueba el tamaño, la cantidad, el modelo, los ingredientes y que el vendedor sea adecuado antes de pagar.",
   },
+  informatica: { name: "Informática", shortName: "Informática", eyebrow: "ORDENADORES Y PERIFÉRICOS", title: "Chollos de informática con el modelo bien identificado.", seoTitle: "Chollos de informática hoy: ordenadores y periféricos", description: "Ofertas de ordenadores, monitores, componentes y periféricos clasificadas por el producto real.", searchIntro: "Separamos informática de la electrónica general para que puedas comparar equipos, componentes y periféricos equivalentes.", checks: ["Modelo, procesador y memoria", "Compatibilidad y conexiones", "Garantía y vendedor"], guidance: "Comprueba la referencia, configuración, compatibilidad y garantía." },
+  telefonia: { name: "Telefonía", shortName: "Telefonía", eyebrow: "MÓVILES Y ACCESORIOS", title: "Ofertas de telefonía sin mezclarlas con juguetes.", seoTitle: "Chollos de móviles hoy: ofertas de telefonía", description: "Ofertas de smartphones y accesorios con modelo, capacidad y precio claramente identificados.", searchIntro: "El título del producto prevalece sobre una categoría incorrecta recibida de la tienda.", checks: ["Modelo, memoria y versión", "Garantía y vendedor", "Compatibilidad y cargador"], guidance: "Revisa versión, memoria, garantía y compatibilidad de red." },
+  electrodomesticos: { name: "Electrodomésticos", shortName: "Electrodomésticos", eyebrow: "ELECTRODOMÉSTICOS", title: "Electrodomésticos en oferta con datos comparables.", seoTitle: "Electrodomésticos en oferta hoy", description: "Descuentos en cocina, limpieza y equipamiento del hogar con precio y modelo visibles.", searchIntro: "Agrupamos aparatos de cocina y limpieza sin confundirlos con menaje o decoración.", checks: ["Capacidad y potencia", "Consumo y medidas", "Garantía y accesorios"], guidance: "Comprueba medidas, potencia, consumo, accesorios y garantía." },
+  motor: { name: "Motor", shortName: "Motor", eyebrow: "COCHE Y MOTO", title: "Ofertas de motor y accesorios.", seoTitle: "Chollos de motor hoy: coche y moto", description: "Ofertas para coche y moto con compatibilidad y condiciones comprobables.", searchIntro: "La compatibilidad exacta es más importante que un porcentaje llamativo.", checks: ["Modelo compatible", "Homologación", "Instalación y garantía"], guidance: "Verifica compatibilidad y homologación antes de comprar." },
+  alimentacion: { name: "Alimentación", shortName: "Alimentación", eyebrow: "ALIMENTACIÓN", title: "Ofertas de alimentación con precio por unidad claro.", seoTitle: "Ofertas de alimentación hoy", description: "Descuentos de alimentación seleccionados con formato y unidades identificables.", searchIntro: "Comparamos la misma cantidad y presentación para no inflar el ahorro.", checks: ["Cantidad y unidades", "Precio por kilo o litro", "Caducidad y conservación"], guidance: "Compara cantidad, formato y precio por unidad." },
+  bebes: { name: "Bebés", shortName: "Bebés", eyebrow: "BEBÉS", title: "Ofertas para bebés clasificadas con cuidado.", seoTitle: "Chollos para bebés hoy", description: "Productos para bebés con edad, formato y condiciones visibles.", searchIntro: "Los productos de bebé se separan de juguetes cuando su uso principal es cuidado, alimentación o transporte.", checks: ["Edad y peso", "Seguridad", "Unidades y medidas"], guidance: "Comprueba edad, medidas y advertencias de seguridad." },
+  viajes: { name: "Viajes", shortName: "Viajes", eyebrow: "VIAJES", title: "Ofertas de viajes con condiciones a la vista.", seoTitle: "Ofertas de viajes y escapadas", description: "Promociones de viajes cuando fechas, condiciones y precio se pueden comprobar.", searchIntro: "No mostramos urgencia ni disponibilidad que el proveedor no haya confirmado.", checks: ["Fechas y ocupación", "Cancelación", "Tasas y coste final"], guidance: "Revisa fechas, tasas y cancelación." },
+  servicios: { name: "Servicios", shortName: "Servicios", eyebrow: "SERVICIOS Y SUSCRIPCIONES", title: "Promociones de servicios explicadas.", seoTitle: "Ofertas de servicios y suscripciones", description: "Promociones de software, tarifas y suscripciones con renovación y condiciones visibles.", searchIntro: "El precio inicial no se presenta como ahorro permanente si existe renovación.", checks: ["Duración", "Renovación", "Cancelación"], guidance: "Comprueba permanencia, renovación y cancelación." },
+  otros: { name: "Otros / Sin clasificar", shortName: "Otros", eyebrow: "PENDIENTE DE CLASIFICACIÓN", title: "Ofertas pendientes de una categoría fiable.", seoTitle: "Otras ofertas verificadas", description: "Productos con precio y enlace comprobados cuya categoría todavía no tiene suficiente confianza.", searchIntro: "Preferimos una categoría genérica a colocar un producto en una sección absurda.", checks: ["Producto exacto", "Variante", "Precio final"], guidance: "Comprueba el producto y la variante exacta." },
 } as const;
 
 export type CategorySlug = keyof typeof categoryPages;
@@ -110,7 +119,9 @@ export function getCategoryPage(slug: string) {
 
 export function categoryDeals(slug: string, deals: PublishedDeal[]) {
   const category = getCategoryPage(slug);
-  return category ? deals.filter((deal) => deal.category === category.name) : [];
+  const aliases: Partial<Record<CategorySlug, string[]>> = { videojuegos: ["Gaming"], cocina: ["Electrodomésticos"], bricolaje: ["Hogar"], belleza: ["Belleza y cuidado personal"] };
+  const accepted = category ? aliases[slug as CategorySlug] || [category.name] : [];
+  return category ? deals.filter((deal) => accepted.includes(deal.category)) : [];
 }
 
 /** A category needs enough current inventory before it is useful to index. */
@@ -119,5 +130,6 @@ export function categoryIsIndexable(slug: string, deals: PublishedDeal[]) {
 }
 
 export function categorySlugForName(name: string) {
-  return (Object.entries(categoryPages).find(([, category]) => category.name === name)?.[0] as CategorySlug | undefined);
+  const aliases: Record<string, CategorySlug> = { Gaming: "videojuegos", Electrodomésticos: "electrodomesticos", "Belleza y cuidado personal": "belleza", "Otros / Sin clasificar": "otros" };
+  return aliases[name] || (Object.entries(categoryPages).find(([, category]) => category.name === name)?.[0] as CategorySlug | undefined);
 }

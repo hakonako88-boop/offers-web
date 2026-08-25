@@ -7,10 +7,12 @@ import {
   dealDescription,
   dealDiscount,
   dealHref,
+  dealPriceAssessment,
   dealSavings,
   dealSearchTitle,
   getDealById,
   publishedDeals,
+  allDeals,
 } from "../../lib/deals";
 import { categorySlugForName } from "../../lib/categories";
 
@@ -30,7 +32,7 @@ type OfferPageProps = {
 };
 
 export function generateStaticParams() {
-  return publishedDeals.map((deal) => ({ id: deal.id }));
+  return allDeals.map((deal) => ({ id: deal.id }));
 }
 
 export async function generateMetadata({ params }: OfferPageProps): Promise<Metadata> {
@@ -56,6 +58,7 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
       images: [{ url: absoluteImageUrl(deal.imageUrl), alt: productTitle }],
     },
     twitter: { card: "summary_large_image", title, description, images: [absoluteImageUrl(deal.imageUrl)] },
+    robots: deal.active ? { index: true, follow: true } : { index: false, follow: true },
   };
 }
 
@@ -75,7 +78,7 @@ function schemaFor(deal: NonNullable<ReturnType<typeof getDealById>>) {
       url: publicUrl,
       priceCurrency: "EUR",
       price: deal.price.toFixed(2),
-      availability: "https://schema.org/InStock",
+      availability: deal.active ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
       seller: { "@type": "Organization", name: deal.store },
     },
   };
@@ -105,6 +108,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
   const discount = dealDiscount(deal);
   const savings = dealSavings(deal);
   const description = dealDescription(deal);
+  const assessment = dealPriceAssessment(deal);
   const productTitle = dealSearchTitle(deal.title);
   const publicOfferUrl = `${siteUrl}${dealHref(deal.id)}`;
   const categorySlug = categorySlugForName(deal.category);
@@ -149,7 +153,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
         <div className="offerHero">
           <div className="offerGallery"><div className="offerImageWrap"><img src={deal.imageUrl} alt={productTitle} width={960} height={760} /><span className="storeBadge">{deal.store}</span>{discount > 0 && <span className="offerDiscount">−{discount}%</span>}</div><p>Imagen facilitada por la tienda. La variante puede cambiar.</p></div>
           <div className="offerSummary">
-            <p className="offerKicker">{deal.category} · Oferta activa</p>
+            <p className="offerKicker">{deal.category}{deal.subcategory ? ` · ${deal.subcategory}` : ""} · {deal.active ? "Oferta activa" : "Oferta finalizada"}</p>
             <h1>{productTitle}</h1>
             <p className="offerLead">{description}</p>
             <div className="offerPriceBox">
@@ -159,7 +163,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
               {savings > 0 && <em>Ahorras {money.format(savings)}</em>}
             </div>
             {deal.coupon && <CouponCopy code={deal.coupon} />}
-            <a className="offerCta" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ir a la oferta en {deal.store} <span aria-hidden="true">→</span></a>
+            {deal.active ? <a className="offerCta" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ir a la oferta en {deal.store} <span aria-hidden="true">→</span></a> : <div className="expiredNotice"><b>Oferta finalizada</b><p>Este fue el último precio registrado. La tienda puede haber cambiado el precio o retirado el producto.</p></div>}
             <div className="offerShare"><span>¿Conoces a alguien a quien le interese?</span><div><a href={whatsappShareUrl} target="_blank" rel="noreferrer">Compartir por WhatsApp</a><a href={telegramShareUrl} target="_blank" rel="noreferrer">Enviar por Telegram</a></div></div>
             <p className="offerMeta"><span aria-hidden="true" />{deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt} · Precio sujeto a cambios.</p>
             <a className="offerReport" href={reportUrl}>¿Ha cambiado el precio o el stock? Avísanos</a>
@@ -174,11 +178,15 @@ export default async function OfferPage({ params }: OfferPageProps) {
           </div>
         </section>
 
+        <section className="offerDecision" aria-labelledby="decision-title"><div><p className="eyebrow"><span aria-hidden="true" />DECISIÓN CON DATOS</p><h2 id="decision-title">¿Merece la pena?</h2><span className="assessmentBadge">{assessment.label}</span><p>{assessment.explanation}</p></div><dl><div><dt>Precio actual o último registrado</dt><dd>{money.format(deal.price)}</dd></div><div><dt>Precio anterior publicado</dt><dd>{deal.oldPrice > deal.price ? money.format(deal.oldPrice) : "No disponible"}</dd></div><div><dt>Ahorro publicado</dt><dd>{savings > 0 ? `${money.format(savings)} · ${discount} %` : "No verificable"}</dd></div><div><dt>Cupón necesario</dt><dd>{deal.coupon ? `Sí · ${deal.coupon}` : "No indicado"}</dd></div><div><dt>Tienda</dt><dd>{deal.store}</dd></div><div><dt>Vendedor</dt><dd>No disponible</dd></div><div><dt>Gastos de envío</dt><dd>No disponibles · comprobar en tienda</dd></div><div><dt>Detección / última comprobación</dt><dd>{deal.verifiedAt}</dd></div><div><dt>Confianza de categoría</dt><dd>{Math.round(deal.categoryConfidence * 100)} %</dd></div></dl></section>
+
+        <section className="priceHistoryEmpty" aria-labelledby="history-title"><p className="eyebrow"><span aria-hidden="true" />SEGUIMIENTO REAL</p><h2 id="history-title">Evolución del precio</h2><p>Estamos empezando a registrar el historial de este producto. Mostraremos los periodos de 30 días, 90 días y máximo disponible cuando existan suficientes comprobaciones reales.</p><div><span>Precio actual<strong>{money.format(deal.price)}</strong></span><span>Mínimo registrado<strong>Sin datos suficientes</strong></span><span>Precio medio<strong>Sin datos suficientes</strong></span><span>Máximo registrado<strong>Sin datos suficientes</strong></span></div></section>
+
         <AdSlot slot={adsenseOfferSlot} placement="offer" />
 
         {relatedDeals.length > 0 && <section className="relatedDeals" aria-labelledby="related-title"><div className="sectionIntro"><div><p className="eyebrow"><span aria-hidden="true" />SIGUE AHORRANDO</p><h2 id="related-title">Otras ofertas que te pueden interesar.</h2></div><p>Selección activa de la misma tienda o categoría.</p></div><div className="dealGrid">{relatedDeals.map((related) => <article className="dealCard" key={related.id}><Link className="imageWrap dealPreviewLink" href={dealHref(related.id)} aria-label={`Ver oferta: ${related.title}`}><img src={related.imageUrl} alt={related.title} width={720} height={560} /><span className="storeBadge">{related.store}</span></Link><div className="dealBody"><p className="categoryLabel">{related.category}</p><h3><Link href={dealHref(related.id)}>{related.title}</Link></h3><div className="priceRow"><strong>{money.format(related.price)}</strong>{related.oldPrice > related.price && <span>Antes <s>{money.format(related.oldPrice)}</s></span>}</div><Link className="dealButton" href={dealHref(related.id)}>Ver oferta <span aria-hidden="true">→</span></Link></div></article>)}</div></section>}
 
-        <section className="offerPurchase" aria-labelledby="purchase-title"><div><p className="eyebrow"><span aria-hidden="true" />¿TE ENCAJA?</p><h2 id="purchase-title">Comprueba el precio final antes de pagar.</h2><p>El enlace te lleva a la tienda. Allí podrás revisar disponibilidad, gastos de envío, variantes y condiciones de compra.</p></div><a className="primaryButton" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ver oferta en {deal.store} <span aria-hidden="true">→</span></a></section>
+        <section className="offerPurchase" aria-labelledby="purchase-title"><div><p className="eyebrow"><span aria-hidden="true" />{deal.active ? "¿TE ENCAJA?" : "BUSCA UNA ALTERNATIVA"}</p><h2 id="purchase-title">{deal.active ? "Comprueba el precio final antes de pagar." : "Esta oferta terminó, pero hay alternativas actuales."}</h2><p>{deal.active ? "El enlace te lleva a la tienda. Allí podrás revisar disponibilidad, gastos de envío, variantes y condiciones de compra." : "Conservamos el último precio para que puedas comparar. Revisa las ofertas activas relacionadas antes de decidir."}</p></div>{deal.active ? <a className="primaryButton" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ver oferta en {deal.store} <span aria-hidden="true">→</span></a> : <Link className="primaryButton" href="/#ofertas">Ver ofertas actuales <span aria-hidden="true">→</span></Link>}</section>
       </article>
       <footer><div className="shell footnote"><span>© {new Date().getFullYear()} Chollos al Día</span><p><Link href="/contacto">Contacto</Link> · <a href="mailto:chollosaldia@gmail.com">chollosaldia@gmail.com</a></p><p>Algunos enlaces son de afiliación y pueden generar una comisión sin cambiar el precio para ti.</p></div></footer>
     </main>

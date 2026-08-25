@@ -93,7 +93,10 @@ const faqSchema = {
 export default function Home() {
   // Keep the landing page fast: every active offer remains available through
   // its own indexable URL, sitemap, store and category pages.
-  const homepageDeals = publishedDeals.slice(0, 108).map((deal) => ({ ...deal, store: deal.store as Deal["store"] }));
+  // The browser receives the complete active inventory so counts and filters
+  // describe the same set. DealExplorer still renders only 36 cards initially,
+  // so remote product images remain lazy and bounded.
+  const homepageDeals = publishedDeals.map((deal) => ({ ...deal, store: deal.store as Deal["store"] }));
   const discountedDeals = publishedDeals.filter((deal) => deal.oldPrice > deal.price);
   const summary: DealSummary = {
     total: publishedDeals.length,
