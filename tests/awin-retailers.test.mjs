@@ -43,6 +43,19 @@ test('applies a stricter El Corte Inglés editorial filter', () => {
   assert.ok(retailQualityScore({ title: 'Zapatillas Adidas Ultraboost', category: 'Moda y calzado', price: 72, oldPrice: 130 }, eci) > 0);
 });
 
+test('applies a PcComponentes filter for popular products and credible brands', () => {
+  assert.equal(retailQualityScore({ title: 'AMD EPYC 7443 2.85GHz servidor', category: 'Procesadores', price: 789, oldPrice: 2875 }, pc), 0);
+  assert.equal(retailQualityScore({ title: 'Epical-Q Soho179 Ryzen 7 ordenador', category: 'Ordenadores', price: 799, oldPrice: 2429 }, pc), 0);
+  assert.equal(retailQualityScore({ title: 'TV Philips 43HFL6214U 43\" 4K Smart TV', category: 'Televisores', price: 423, oldPrice: 800 }, pc), 0);
+  assert.equal(retailQualityScore({ title: 'Auriculares Jabra Engage 50 para contact center', category: 'Audio', price: 162, oldPrice: 436 }, pc), 0);
+  assert.equal(retailQualityScore({ title: 'Marco de fotos digital Arzopa 15 pulgadas', category: 'Electrónica', price: 125, oldPrice: 499 }, pc), 0);
+  assert.equal(retailQualityScore({ title: 'Bicicleta eléctrica URLIFE plegable', category: 'Movilidad', price: 449, oldPrice: 999 }, pc), 0);
+  assert.equal(retailQualityScore({ title: 'TV LG OLED 83 pulgadas', category: 'Televisores', price: 2275, oldPrice: 5999 }, pc), 0);
+  assert.ok(retailQualityScore({ title: 'Portátil gaming Lenovo Legion RTX 5070', category: 'Informática', price: 1199, oldPrice: 1599 }, pc) > 0);
+  assert.ok(retailQualityScore({ title: 'Samsung QLED The Frame 50 pulgadas Smart TV', category: 'Televisores', price: 669, oldPrice: 1299 }, pc) > 0);
+  assert.ok(retailQualityScore({ title: 'Roborock robot aspirador con autovaciado', category: 'Hogar', price: 259, oldPrice: 599 }, pc) > 0);
+});
+
 test('normalizes a real discounted product and never borrows another publisher link', () => {
   const offer = normalizeRetailProduct({
     aw_product_id: 'sku-42',

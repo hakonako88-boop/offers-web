@@ -6,7 +6,7 @@ export const AWIN_RETAILERS = Object.freeze([
   { merchantId: '13075', store: 'El Corte Inglés', slug: 'el-corte-ingles', domains: ['elcorteingles.es'] },
   { merchantId: '20982', store: 'PcComponentes', slug: 'pccomponentes', domains: ['pccomponentes.com'] },
 ]);
-export const AWIN_RETAIL_QUALITY_POLICY_VERSION = 'v2';
+export const AWIN_RETAIL_QUALITY_POLICY_VERSION = 'v3';
 
 const LOW_INTEREST = /\b(?:funda|protector|cable|adaptador|recambio|repuesto|pegatina|llavero|calcetin|servilleta|mantel|bolsa|tornillo|cartucho compatible)\b/i;
 const HIGH_INTEREST = /(?:smartphone|movil|tablet|portatil|ordenador|monitor|televisor|smart tv|consola|videojuego|auriculares|altavoz|reloj|smartwatch|robot aspirador|aspirador|freidora|cafetera|lavadora|secadora|frigorifico|lavavajillas|microondas|horno|colchon|perfume|zapatillas|lego|juguete|herramienta)/i;
@@ -14,6 +14,9 @@ const ECI_LOW_INTEREST = /\b(?:pamela|tocado|pedreria|ceremonia|fiesta|salon(?:e
 const ECI_FASHION = /\b(?:moda|fashion|ropa|calzado|mujer|hombre|vestidos?|americanas?|cazadoras?|chaquetas?|abrigos?|jerseys?|camisetas?|sudaderas?|pantalones?|vaqueros?|zapatillas?|zapatos?|bolsos?)\b/i;
 const ECI_POPULAR_FASHION = /\b(?:zapatillas?|deportiv(?:a|o|as|os)?|sudaderas?|chaquetas?|cazadoras?|abrigos?|jerseys?|camisetas?|pantalones?|vaqueros?|vestidos?|bolsos?|mochilas?)\b/i;
 const ECI_RECOGNISABLE_FASHION_BRAND = /\b(?:adidas|nike|puma|reebok|new\s+balance|vans|skechers|levi'?s|tommy\s+hilfiger|lacoste|calvin\s+klein|ralph\s+lauren|guess|michael\s+kors|tous|geox|asics|salomon|under\s+armour|columbia|the\s+north\s+face|jack\s*&?\s*jones|mango)\b/i;
+const PC_COMPONENTS_LOW_INTEREST = /\b(?:reacondicionado|seminuevo|outlet|segunda\s+mano|marco\s+de\s+fotos|mesa\s+gaming|silla\s+gaming|epical|epyc|xeon|servidor|workstation|rack|\d+hfl\d+[a-z]*|hfl\d+[a-z]*|hospitality|profesional\s+signage|jabra\s+engage|contact\s+center|licencia|suscripcion|t[oó]ner)\b/i;
+const PC_COMPONENTS_HIGH_INTEREST = /\b(?:smartphone|movil|tablet|portatil|ordenador|monitor|televisor|smart\s*tv|oled|qled|consola|playstation|xbox|nintendo|videojuego|auriculares|altavoz|smartwatch|robot\s+aspirador|aspirador|freidora|cafetera|patinete|bicicleta\s+electrica|tarjeta\s+grafica|geforce|radeon|procesador|ryzen|core\s+i[3579]|ssd|memoria\s+ram|placa\s+base|fuente\s+de\s+alimentacion|gafas\s+xr)\b/i;
+const PC_COMPONENTS_RECOGNISABLE_BRAND = /\b(?:acer|amd|apple|asus|balay|be\s+quiet|beko|bosch|cecotec|corsair|crucial|dell|de'?longhi|dreame|eureka|garmin|gigabyte|google|haier|hisense|hp|huawei|intel|irobot|jabra|jeep|kingston|kioxia|lenovo|lg|logitech|medion|miele|msi|new\s+balance|nintendo|nothing|nvidia|oneplus|oppo|panasonic|philips|pioneer|playstation|razer|realme|roborock|samsung|sandisk|seagate|segway|sony|tefal|teka|tcl|tp-link|viture|western\s+digital|whirlpool|xiaomi|xbox)\b/i;
 
 function normalizeKey(value = '') {
   return String(value).trim().toLocaleLowerCase('es').normalize('NFD').replace(/\p{Diacritic}/gu, '').replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
@@ -149,6 +152,20 @@ export function retailQualityScore({ title = '', category = '', price = 0, oldPr
       if (discount < 25 || saving < 25) return 0;
     } else if (discount < 35 || saving < 40) return 0;
     return Math.round(discount * 2 + Math.min(saving, 250) + (HIGH_INTEREST.test(searchable) ? 45 : 0) + (price <= 1200 ? 20 : 0));
+  }
+  if (retailer.slug === 'pccomponentes') {
+    if (PC_COMPONENTS_LOW_INTEREST.test(searchable) || !PC_COMPONENTS_HIGH_INTEREST.test(searchable)
+      || !PC_COMPONENTS_RECOGNISABLE_BRAND.test(searchable) || price < 20 || price > 2500 || discount > 65) return 0;
+    const tier = price < 100
+      ? { discount: 25, saving: 20 }
+      : price < 500
+        ? { discount: 22, saving: 35 }
+        : { discount: 20, saving: 75 };
+    if (discount < tier.discount || saving < tier.saving) return 0;
+    if (/\b(?:patinete|bicicleta\s+electrica)\b/i.test(searchable)
+      && !/\b(?:cecotec|jeep|segway|xiaomi)\b/i.test(searchable)) return 0;
+    if (/\b(?:televisor|smart\s*tv|oled|qled)\b/i.test(searchable) && price > 2000) return 0;
+    return Math.round(discount * 2 + Math.min(saving, 350) + 55 + (price <= 1200 ? 25 : 0));
   }
   if (!HIGH_INTEREST.test(searchable) && (discount < 30 || saving < 20)) return 0;
   if (discount > 75) return 0;

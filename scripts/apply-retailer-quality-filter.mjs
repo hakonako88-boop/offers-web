@@ -6,6 +6,7 @@ import { mediaMarktQualityScore } from './tradedoubler-mediamarkt.mjs';
 const file = path.join(process.cwd(), 'data', 'offers.json');
 const offers = JSON.parse(fs.readFileSync(file, 'utf8'));
 const eci = AWIN_RETAILERS.find((retailer) => retailer.slug === 'el-corte-ingles');
+const pcComponentes = AWIN_RETAILERS.find((retailer) => retailer.slug === 'pccomponentes');
 
 function numeric(value = '') {
   const raw = String(value).replace(/\u00a0|\s/gu, '').replace(/[^0-9,.-]/gu, '');
@@ -17,7 +18,7 @@ function numeric(value = '') {
 
 const removed = [];
 const kept = offers.filter((offer) => {
-  if (!['El Corte Inglés', 'MediaMarkt'].includes(offer.store)) return true;
+  if (!['El Corte Inglés', 'MediaMarkt', 'PcComponentes'].includes(offer.store)) return true;
   const input = {
     title: offer.title,
     category: offer.category,
@@ -26,7 +27,7 @@ const kept = offers.filter((offer) => {
   };
   const score = offer.store === 'MediaMarkt'
     ? mediaMarktQualityScore(input)
-    : retailQualityScore(input, eci);
+    : retailQualityScore(input, offer.store === 'PcComponentes' ? pcComponentes : eci);
   if (score > 0) return true;
   removed.push({ store: offer.store, title: offer.title, price: offer.price, previousPrice: offer.previousPrice });
   return false;
