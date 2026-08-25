@@ -154,11 +154,12 @@ async function telegramPhoto(token, payload, photo, filename) {
 }
 
 async function publishOffer(config, offer) {
+  const presentationOffer = { ...offer, id: `amazon-${offer.asin}`, store: 'Amazon', storeSlug: 'amazon' };
   const payload = {
     chat_id: config.telegramChannelId,
     caption: formatAmazonTelegramCaption(offer),
     parse_mode: 'HTML',
-    reply_markup: offerReplyMarkup(offer),
+    reply_markup: offerReplyMarkup(presentationOffer),
   };
   try {
     const card = await createDealImageCard({

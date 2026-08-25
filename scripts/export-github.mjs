@@ -1,4 +1,4 @@
-import { cp, mkdir, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -78,6 +78,16 @@ const offerIds = [...new Set([...sitemap.matchAll(/<loc>https:\/\/chollosaldia\.
 for (const id of offerIds) {
   const encodedId = encodeURIComponent(id);
   await render(`/oferta/${encodedId}`, `oferta/${encodedId}/index.html`);
+}
+// Preserve links already shared by Telegram before product ids became the
+// canonical offer URL. Search engines and older channel buttons are redirected
+// to the same real product page instead of landing on a 404.
+const storedOffers = JSON.parse(await readFile(path.join(root, "data", "offers.json"), "utf8"));
+for (const offer of storedOffers) {
+  const legacyId = String(offer.message_id || "").trim();
+  const stableId = String(offer.chollometroId || offer.source_product_id || "").trim();
+  if (!legacyId || !stableId || legacyId === stableId || !offerIds.includes(stableId)) continue;
+  await writeRedirect(`oferta/${encodeURIComponent(legacyId)}`, `/oferta/${encodeURIComponent(stableId)}/`);
 }
 const productSlugs = [...new Set([...sitemap.matchAll(/<loc>https:\/\/chollosaldia\.com\/producto\/([^<]+)<\/loc>/g)]
   .map((match) => decodeURIComponent(match[1]).replace(/\/$/, ""))

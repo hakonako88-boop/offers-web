@@ -290,7 +290,13 @@ async function reply(token, chatId, text) {
 }
 
 async function publishManualOffer(settings, offer, inputMessage) {
-  const channelMessage = await sendProductPhoto(settings, offer);
+  // Use one stable identity both in Telegram's public button and in the web
+  // record. Previously the button used offer.id while the JSON record fell
+  // back to the input message id, producing a real publication with a 404
+  // “Ver ficha” destination.
+  const websiteOfferId = offer.sourceProductId || offer.id || `manual-${inputMessage.message_id}`;
+  const publishedOffer = { ...offer, id: websiteOfferId };
+  const channelMessage = await sendProductPhoto(settings, publishedOffer);
 
   const postedPhotoId = channelMessage.photo?.at(-1)?.file_id || offer.photoFileId;
   if (!postedPhotoId) throw new Error('Telegram did not return a reusable product image.');
@@ -300,7 +306,7 @@ async function publishManualOffer(settings, offer, inputMessage) {
     const record = {
       id: `post-${channelMessage.message_id}`,
       message_id: channelMessage.message_id,
-      source_product_id: offer.sourceProductId || `post:${inputMessage.message_id}`,
+      source_product_id: websiteOfferId,
       date: Math.floor(Date.now() / 1000),
       title: offer.title,
       body: offer.postBody || offer.description,
@@ -317,7 +323,7 @@ async function publishManualOffer(settings, offer, inputMessage) {
     // Preserve a verified store product id. Future submissions of that exact
     // catalogue item can be recognised reliably, without turning every
     // private message into an unrelated "manual" duplicate.
-    source_product_id: offer.sourceProductId || `manual-${inputMessage.message_id}`,
+    source_product_id: websiteOfferId,
     date: Math.floor(Date.now() / 1000),
     title: offer.title,
     text: formatManualWebsiteText(offer),
