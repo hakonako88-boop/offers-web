@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import CouponCopy from "../../components/CouponCopy";
 import AdSlot from "../../components/AdSlot";
 import { adsenseOfferSlot } from "../../lib/adsense";
 import {
@@ -157,7 +158,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
               {deal.oldPrice > deal.price && <p>Antes <s>{money.format(deal.oldPrice)}</s> <b>−{discount}%</b></p>}
               {savings > 0 && <em>Ahorras {money.format(savings)}</em>}
             </div>
-            {deal.coupon && <div className="offerCoupon"><span>CUPÓN</span><b>{deal.coupon}</b><p>Aplica el código en la tienda si sigue disponible.</p></div>}
+            {deal.coupon && <CouponCopy code={deal.coupon} />}
             <a className="offerCta" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ir a la oferta en {deal.store} <span aria-hidden="true">→</span></a>
             <div className="offerShare"><span>¿Conoces a alguien a quien le interese?</span><div><a href={whatsappShareUrl} target="_blank" rel="noreferrer">Compartir por WhatsApp</a><a href={telegramShareUrl} target="_blank" rel="noreferrer">Enviar por Telegram</a></div></div>
             <p className="offerMeta"><span aria-hidden="true" />{deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt} · Precio sujeto a cambios.</p>

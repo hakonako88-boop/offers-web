@@ -109,6 +109,16 @@ body { background: var(--paper); }
 .offerCoupon > span { grid-column: 1; margin: 0; align-self: center; }
 .offerCoupon b { grid-column: 2; color: var(--coral-dark); font-size: 16px; letter-spacing: .08em; }
 .offerCoupon p { grid-column: 2; margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+.couponCopy { display: grid; width: 100%; grid-template-columns: auto 1fr auto; align-items: center; gap: 3px 13px; margin-top: 14px; padding: 14px 16px; border: 1px dashed var(--coral); border-radius: 10px; background: #fff7f1; color: var(--ink); text-align: left; cursor: pointer; transition: border-color .2s ease, background .2s ease, transform .2s ease; }
+.couponCopy:hover { border-color: var(--coral-dark); background: #ffede4; transform: translateY(-1px); }
+.couponCopy > span { color: #a85246; font-family: var(--font-geist-mono), monospace; font-size: 10px; font-weight: 850; letter-spacing: .08em; }
+.couponCopy > b { overflow-wrap: anywhere; color: var(--coral-dark); font-size: 17px; letter-spacing: .08em; }
+.couponCopy > strong { border-radius: 6px; background: var(--coral); padding: 8px 10px; color: #fff; font-size: 10px; letter-spacing: .04em; }
+.couponCopy > small { grid-column: 2 / 4; color: var(--muted); font-size: 10px; }
+.couponCopyCompact { min-height: 46px; margin-top: 16px; padding: 8px 10px; border-radius: 7px; }
+.couponCopyCompact > b { font-size: 13px; }
+.couponCopyCompact > strong { padding: 7px 8px; }
+@media (max-width: 420px) { .couponCopy { grid-template-columns: auto 1fr; }.couponCopy > strong { grid-column: 1 / 3; margin-top: 6px; text-align: center; }.couponCopy > small { grid-column: 1 / 3; }.couponCopyCompact > strong { grid-column: auto; margin: 0; }.couponCopyCompact { grid-template-columns: auto 1fr auto; } }
 .offerCta { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; border-radius: 9px; background: var(--coral); padding: 17px 19px; color: #fff; font-size: 15px; font-weight: 850; transition: background .2s ease, transform .2s ease; }
 .offerCta:hover { background: var(--coral-dark); transform: translateY(-2px); }
 .offerShare { margin-top: 16px; padding-top: 15px; border-top: 1px solid var(--line); }.offerShare > span { display: block; margin-bottom: 9px; color: var(--muted); font-size: 11px; }.offerShare > div { display: flex; flex-wrap: wrap; gap: 8px; }.offerShare a { border: 1px solid #cfd5df; border-radius: 999px; padding: 8px 10px; color: #26344d; font-size: 11px; font-weight: 800; }.offerShare a:hover { border-color: var(--coral); color: var(--coral); }

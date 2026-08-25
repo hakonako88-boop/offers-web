@@ -45,6 +45,7 @@ export function mergeProductMetadata(official = {}, forwarded = {}) {
   if (!isReliableProductTitle(result.title) && isReliableProductTitle(forwarded.title)) result.title = forwarded.title;
   if (!compact(result.description) && compact(forwarded.description)) result.description = forwarded.description;
   if (!compact(result.imageUrl) && compact(forwarded.imageUrl)) result.imageUrl = forwarded.imageUrl;
+  if (!compact(result.coupon) && compact(forwarded.coupon)) result.coupon = forwarded.coupon;
   if (!(Number(result.price) > 0) && Number(forwarded.price) > 0) result.price = Number(forwarded.price);
   if (!(Number(result.previousPrice) > Number(result.price)) && Number(forwarded.previousPrice) > Number(result.price)) {
     result.previousPrice = Number(forwarded.previousPrice);
@@ -262,7 +263,7 @@ export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag =
       title: improveOfferTitle(title),
       store,
       category: 'Ofertas',
-      coupon: '',
+      coupon: compact(metadata.coupon).slice(0, 40),
       price,
       priceLabel: euro(price),
       previousPrice,
@@ -292,6 +293,7 @@ export function forwardedOfferMetadata(text = '', photoFileId = '') {
     && !/(?:precio\s+m[aá]s\s+bajo|antes|pvp)\b/iu.test(line)
   )) || lines.find((line) => /\d+(?:[.,]\d{1,2})?\s*€/u.test(line)) || '';
   const previousLine = lines.find((line) => /precio\s+m[aá]s\s+bajo|\b(?:pvp|antes)\b/iu.test(line)) || '';
+  const coupon = String(text).match(/(?:cup[oó]n|c[oó]digo)\s*[:：]\s*([a-z0-9][a-z0-9_-]{2,39})\b/iu)?.[1] || '';
   const lastAmount = (value = '') => [...String(value).matchAll(/\d+(?:[.,]\d{1,2})?/gu)].at(-1)?.[0] || '';
   const price = parseAmount(lastAmount(priceLine));
   const previousPrice = parseAmount(lastAmount(previousLine));
@@ -304,6 +306,7 @@ export function forwardedOfferMetadata(text = '', photoFileId = '') {
     imageUrl: photoFileId,
     price,
     previousPrice: previousPrice > price ? previousPrice : 0,
+    coupon,
     photoFileId,
   };
 }

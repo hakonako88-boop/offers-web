@@ -137,6 +137,13 @@ test('keeps a manually supplied coupon in Telegram and in the website record', (
   assert.match(formatManualWebsiteText(result.offer), /Cupón: AHORRA10/);
 });
 
+test('keeps an explicitly labelled coupon from a forwarded offer without inventing one', () => {
+  const withCoupon = forwardedOfferMetadata('Auriculares Bluetooth\nPrecio: 19,99 €\nCupón: SONIDO8');
+  assert.equal(withCoupon.coupon, 'SONIDO8');
+  assert.equal(forwardedOfferMetadata('Auriculares con cupón disponible\nPrecio: 19,99 €').coupon, '');
+  assert.equal(mergeProductMetadata({ title: 'Auriculares Bluetooth' }, withCoupon).coupon, 'SONIDO8');
+});
+
 test('accepts /oferta without a secret in an already authorized chat', () => {
   const result = manualOfferFromMessage({
     authorized: true,
