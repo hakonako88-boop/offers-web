@@ -265,7 +265,7 @@ export const publishedDeals: PublishedDeal[] = candidates
   });
 
 export function dealHref(id: string) {
-  return `/oferta/${encodeURIComponent(id)}`;
+  return `/oferta/${encodeURIComponent(id)}/`;
 }
 
 export function getDealById(id: string) {

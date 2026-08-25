@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: GuidePageProps): Promise<Meta
   const { guia } = await params;
   const guide = getGuide(guia);
   if (!guide) return { title: "Guia no encontrada", robots: { index: false, follow: false } };
-  const path = `/guias/${guia}`;
+  const path = `/guias/${guia}/`;
   return { title: guide.seoTitle, description: guide.description, alternates: { canonical: path }, openGraph: { title: `${guide.seoTitle} | Chollos al Dia`, description: guide.description, url: path, images: [{ url: "/og-chollosaldia-v2.png", width: 1731, height: 909, alt: guide.title }] }, twitter: { card: "summary_large_image", title: guide.seoTitle, description: guide.description, images: ["/og-chollosaldia-v2.png"] } };
 }
 
@@ -23,7 +23,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
   const guide = getGuide(guia);
   if (!guide) notFound();
   const deals = publishedDeals.filter(guide.matches).slice(0, 3);
-  const articleSchema = { "@context": "https://schema.org", "@type": "Article", headline: guide.title, description: guide.description, inLanguage: "es-ES", datePublished: "2026-08-12", dateModified: "2026-08-12", mainEntityOfPage: `${siteUrl}/guias/${guia}`, author: { "@type": "Organization", name: "Chollos al Dia" }, publisher: { "@type": "Organization", name: "Chollos al Dia", url: siteUrl } };
+  const articleSchema = { "@context": "https://schema.org", "@type": "Article", headline: guide.title, description: guide.description, inLanguage: "es-ES", datePublished: "2026-08-12", dateModified: "2026-08-12", mainEntityOfPage: `${siteUrl}/guias/${guia}/`, author: { "@type": "Organization", name: "Chollos al Dia" }, publisher: { "@type": "Organization", name: "Chollos al Dia", url: siteUrl } };
   const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: guide.faqs.map(([question, answer]) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) };
   return <main className="guidePage">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema).replace(/</g, "\\u003c") }} />

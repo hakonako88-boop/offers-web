@@ -65,7 +65,7 @@ test("publishes a feed with only the reviewed active offers", async () => {
 test("renders an individual offer with price analysis, pros, cons and Product SEO", async () => {
   const home = await render();
   const homeHtml = await home.text();
-  const id = homeHtml.match(/href="\/oferta\/([^"?#]+)"/)?.[1] ?? "";
+  const id = homeHtml.match(/href="\/oferta\/([^/"?#]+)\/"/)?.[1] ?? "";
   assert.ok(id, "Expected at least one published offer");
   const response = await render(`/oferta/${encodeURIComponent(id)}`);
   assert.equal(response.status, 200);
@@ -83,7 +83,7 @@ test("renders an individual offer with price analysis, pros, cons and Product SE
   assert.match(html, /"@type":"BreadcrumbList"/);
   assert.doesNotMatch(html, /priceValidUntil/);
   assert.match(html, /rel="nofollow sponsored noreferrer"/);
-  assert.match(html, new RegExp(`rel="canonical" href="https://chollosaldia\\.com/oferta/${id}"`));
+  assert.match(html, new RegExp(`rel="canonical" href="https://chollosaldia\\.com/oferta/${id}/"`));
 });
 
 test("keeps a Telegram AliExpress offer on the website even without a previous price", async () => {
@@ -121,7 +121,7 @@ test("keeps the historical contact URL as a useful, indexable page", async () =>
   assert.match(html, /Has visto un chollo/i);
   assert.match(html, /t\.me\/aldiachollos/);
   assert.match(html, /mailto:chollosaldia@gmail\.com/);
-  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/contacto"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/contacto\/"/);
 });
 
 test("explains the editorial verification method in an indexable page", async () => {
@@ -131,7 +131,7 @@ test("explains the editorial verification method in an indexable page", async ()
   assert.match(html, /C[oó]mo verificamos las ofertas/);
   assert.match(html, /Filtramos el ruido/);
   assert.match(html, /"@type":"Article"/);
-  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/como-verificamos-ofertas"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/como-verificamos-ofertas\/"/);
 });
 
 test("renders store pages with active offers and collection SEO", async () => {
@@ -140,7 +140,7 @@ test("renders store pages with active offers and collection SEO", async () => {
   const html = await response.text();
   assert.match(html, /Ofertas Amazon de hoy/);
   assert.match(html, /"@type":"CollectionPage"/);
-  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/ofertas\/amazon"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/ofertas\/amazon\/"/);
   assert.match(html, /href="\/oferta\//);
 });
 
@@ -150,7 +150,7 @@ test("renders the technology category with its own collection SEO", async () => 
   const html = await response.text();
   assert.match(html, /Chollos de tecnolog[ií]a/);
   assert.match(html, /"@type":"CollectionPage"/);
-  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/chollos\/tecnologia"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/chollos\/tecnologia\/"/);
   assert.match(html, /name="robots" content="index, follow"/);
 });
 
@@ -160,7 +160,7 @@ test("renders expanded category landing pages with canonical metadata", async ()
   const html = await response.text();
   assert.match(html, /Chollos de cocina/);
   assert.match(html, /"@type":"BreadcrumbList"/);
-  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/chollos\/cocina"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/chollos\/cocina\/"/);
 });
 
 test("renders a useful Amazon guide with Article and FAQ SEO", async () => {
@@ -170,7 +170,7 @@ test("renders a useful Amazon guide with Article and FAQ SEO", async () => {
   assert.match(html, /Como encontrar ofertas reales en Amazon/);
   assert.match(html, /"@type":"Article"/);
   assert.match(html, /"@type":"FAQPage"/);
-  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/guias\/ofertas-amazon"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/guias\/ofertas-amazon\/"/);
 });
 
 test("keeps affiliate credentials out of the client source", async () => {

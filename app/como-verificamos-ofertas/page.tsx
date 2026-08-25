@@ -8,7 +8,7 @@ const description = "Conoce el método de Chollos al Día para seleccionar ofert
 export const metadata: Metadata = {
   title,
   description,
-  alternates: { canonical: "/como-verificamos-ofertas" },
+  alternates: { canonical: "/como-verificamos-ofertas/" },
   openGraph: { title: `${title} | Chollos al Día`, description, url: "/como-verificamos-ofertas" },
 };
 
@@ -18,7 +18,7 @@ const articleSchema = {
   headline: title,
   description,
   inLanguage: "es-ES",
-  mainEntityOfPage: "https://chollosaldia.com/como-verificamos-ofertas",
+  mainEntityOfPage: "https://chollosaldia.com/como-verificamos-ofertas/",
   author: { "@type": "Organization", name: "Chollos al Día", url: "https://chollosaldia.com" },
   publisher: { "@type": "Organization", name: "Chollos al Día" },
   datePublished: "2026-08-12",

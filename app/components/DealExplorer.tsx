@@ -52,7 +52,7 @@ function shortTitle(title: string, maximum = 92) {
 }
 
 function dealDetailsUrl(deal: Pick<Deal, "id">) {
-  return `/oferta/${encodeURIComponent(deal.id)}`;
+  return `/oferta/${encodeURIComponent(deal.id)}/`;
 }
 
 function offerCountLabel(total: number) {

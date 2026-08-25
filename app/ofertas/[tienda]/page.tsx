@@ -88,7 +88,7 @@ export async function generateMetadata({ params }: StorePageProps): Promise<Meta
   const { tienda } = await params;
   const store = getStore(tienda);
   if (!store) return { title: "Pagina no encontrada", robots: { index: false, follow: false } };
-  const path = `/ofertas/${tienda}`;
+  const path = `/ofertas/${tienda}/`;
   const title = `${store.label} de hoy: descuentos y precios`;
   return {
     title,
@@ -110,7 +110,7 @@ export default async function StoreOffersPage({ params }: StorePageProps) {
   const collectionSchema = {
     "@context": "https://schema.org",
     "@graph": [{
-      "@type": "CollectionPage", "@id": `${siteUrl}/ofertas/${tienda}`,
+      "@type": "CollectionPage", "@id": `${siteUrl}/ofertas/${tienda}/`,
       name: store.label, description: store.description, inLanguage: "es-ES", isPartOf: { "@id": `${siteUrl}/#website` },
       mainEntity: { "@type": "ItemList", numberOfItems: displayedDeals.length, itemListElement: displayedDeals.map((deal, index) => ({ "@type": "ListItem", position: index + 1, url: `${siteUrl}${dealHref(deal.id)}`, name: deal.title, image: absoluteImageUrl(deal.imageUrl) })) },
     }, {

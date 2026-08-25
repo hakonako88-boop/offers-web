@@ -5,7 +5,7 @@ import "../legal.css";
 export const metadata: Metadata = {
   title: "Contacto",
   description: "Contacta con Chollos al Día para proponer una oferta o seguir las alertas de chollos.",
-  alternates: { canonical: "/contacto" },
+  alternates: { canonical: "/contacto/" },
 };
 
 export default function ContactPage() {

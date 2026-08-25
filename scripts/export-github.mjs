@@ -66,14 +66,14 @@ const sitemapResponse = await worker.fetch(new Request("https://chollosaldia.com
 if (!sitemapResponse.ok) throw new Error("No se pudo leer el mapa del sitio para exportar las ofertas activas.");
 const sitemap = await sitemapResponse.text();
 const offerIds = [...new Set([...sitemap.matchAll(/<loc>https:\/\/chollosaldia\.com\/oferta\/([^<]+)<\/loc>/g)]
-  .map((match) => decodeURIComponent(match[1]))
+  .map((match) => decodeURIComponent(match[1]).replace(/\/$/, ""))
   .filter(Boolean))];
 for (const id of offerIds) {
   const encodedId = encodeURIComponent(id);
   await render(`/oferta/${encodedId}`, `oferta/${encodedId}/index.html`);
 }
 const postIds = [...new Set([...sitemap.matchAll(/<loc>https:\/\/chollosaldia\.com\/publicacion\/([^<]+)<\/loc>/g)]
-  .map((match) => decodeURIComponent(match[1]))
+  .map((match) => decodeURIComponent(match[1]).replace(/\/$/, ""))
   .filter(Boolean))];
 for (const id of postIds) {
   const encodedId = encodeURIComponent(id);
@@ -90,8 +90,8 @@ await render("/feed.xml", "feed.xml");
 await writeRedirect("publicacion/[id]/page", "/");
 await writeRedirect("&", "/");
 await writeRedirect("$", "/");
-await writeRedirect("blog/top-5-chollos-julio", "/guias/detectar-chollos-reales");
-await writeRedirect("blog/mejores-chollos-julio-2025", "/guias/detectar-chollos-reales");
+await writeRedirect("blog/top-5-chollos-julio", "/guias/detectar-chollos-reales/");
+await writeRedirect("blog/mejores-chollos-julio-2025", "/guias/detectar-chollos-reales/");
 await writeFile(path.join(output, "CNAME"), "chollosaldia.com\n", "utf8");
 await writeFile(path.join(output, ".nojekyll"), "", "utf8");
 

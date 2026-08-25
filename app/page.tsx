@@ -62,7 +62,7 @@ const collectionSchema = {
     itemListElement: publishedDeals.slice(0, 20).map((deal, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      url: `https://chollosaldia.com/oferta/${encodeURIComponent(deal.id)}`,
+      url: `https://chollosaldia.com/oferta/${encodeURIComponent(deal.id)}/`,
       name: deal.title,
     })),
   },

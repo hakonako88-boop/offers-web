@@ -1,7 +1,7 @@
 import Link from "next/link";
 import "../legal.css";
 
-export const metadata = { title: "Política de privacidad" };
+export const metadata = { title: "Política de privacidad", alternates: { canonical: "/privacidad/" } };
 
 export default function Page() {
   return (

@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const category = getCategoryPage(categoria);
   if (!category) return { title: "Pagina no encontrada", robots: { index: false, follow: false } };
   const deals = categoryDeals(categoria, publishedDeals);
-  const path = `/chollos/${categoria}`;
+  const path = `/chollos/${categoria}/`;
   return {
     title: category.seoTitle,
     description: category.description,
@@ -43,7 +43,7 @@ export default async function CategoryOffersPage({ params }: CategoryPageProps) 
   const indexable = categoryIsIndexable(categoria, publishedDeals);
   const schema = {
     "@context": "https://schema.org", "@graph": [{
-      "@type": "CollectionPage", "@id": `${siteUrl}/chollos/${categoria}`,
+      "@type": "CollectionPage", "@id": `${siteUrl}/chollos/${categoria}/`,
       name: category.seoTitle, description: category.description, inLanguage: "es-ES", isPartOf: { "@id": `${siteUrl}/#website` },
       mainEntity: { "@type": "ItemList", numberOfItems: displayedDeals.length, itemListElement: displayedDeals.map((deal, index) => ({ "@type": "ListItem", position: index + 1, url: `${siteUrl}${dealHref(deal.id)}`, name: deal.title, image: absoluteImageUrl(deal.imageUrl) })) },
     }, {

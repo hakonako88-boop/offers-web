@@ -56,7 +56,7 @@ export const publishedPosts: PublishedPost[] = (rawPosts as StoredPost[])
   .sort((left, right) => Date.parse(right.publishedAt) - Date.parse(left.publishedAt));
 
 export function postHref(id: string) {
-  return `/publicacion/${encodeURIComponent(id)}`;
+  return `/publicacion/${encodeURIComponent(id)}/`;
 }
 
 export function getPostById(id: string) {
