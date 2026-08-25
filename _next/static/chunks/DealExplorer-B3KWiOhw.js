@@ -1,4 +1,34 @@
-import{r as e}from"./rolldown-runtime-C60lm6uB.js";import{i as t,r as n}from"./framework-BaE7mD_r.js";import r,{t as i}from"./AdSlot-DG6XFrSN.js";var a=e(n(),1),o=[{id:`post-4707`,message_id:4707,source_product_id:`post:c899073864303489`,date:1787251560,title:`GRATIS :: 1 Año de Google Gemini AI Plus | Estudiantes | +Ofertas Google AI Pro + YouTube Premium 5.49€ / mes`,body:`La oferta de Google AI Plus sin coste está disponible para estudiantes universitarios de entre mayores de 18 años que cumplan los requisitos. Pueden optar a la oferta tanto usuarios nuevos como estudiantes cuya prueba de AI Pro del 2025 haya caducado. Para mantener el acceso, se debe verificar cada año que se cumplen los requisitos.
+import{r as e}from"./rolldown-runtime-C60lm6uB.js";import{i as t,r as n}from"./framework-BaE7mD_r.js";import r,{t as i}from"./AdSlot-DG6XFrSN.js";var a=e(n(),1),o=[{id:`post-4947`,message_id:4947,source_product_id:`post:75ab5b714950e8d5`,date:1787658642,title:`GTA VI: 79,99 € frente a unos 54 €`,body:`🎮 Hemos encontrado una diferencia regional muy interesante en el precio de la reserva de GTA VI para PS5.
+
+🇪🇸 Precio en España: 79,99 €
+
+🇮🇳 Precio de referencia en India: ₹5.999 ≈ 53,91 €
+
+🔥 Diferencia aproximada: 26,08 € · alrededor del 32 %
+
+En la guía explicamos:
+
+✅ De dónde sale la diferencia
+
+✅ Qué ocurre con la región de la cuenta
+
+✅ Qué códigos son compatibles
+
+✅ Cómo calcular cambio y comisiones
+
+✅ Qué debes saber sobre GTA+ y contenido adicional
+
+✅ Por qué actualmente solo puedes reservarlo
+
+📅 Lanzamiento previsto: 19 de noviembre de 2026
+
+⚠️ PlayStation exige registrar la región correcta y hacerla coincidir con la información de la cuenta. La comparativa es informativa y no recomienda proporcionar datos inexactos.
+
+👇 Lee la guía completa
+
+🪐 Más guías y chollos en @aldiachollos
+
+#GTAVI #PS5 #Gaming #Chollos #Publi`,image:`/tg/manual-4947.jpg`,url:`https://chollosaldia.com/gta-vi-mas-barato-ps5/?utm_source=telegram&utm_medium=social&utm_campaign=guia_gta_vi&utm_content=publicacion`,source:`telegram-inbox`},{id:`post-4707`,message_id:4707,source_product_id:`post:c899073864303489`,date:1787251560,title:`GRATIS :: 1 Año de Google Gemini AI Plus | Estudiantes | +Ofertas Google AI Pro + YouTube Premium 5.49€ / mes`,body:`La oferta de Google AI Plus sin coste está disponible para estudiantes universitarios de entre mayores de 18 años que cumplan los requisitos. Pueden optar a la oferta tanto usuarios nuevos como estudiantes cuya prueba de AI Pro del 2025 haya caducado. Para mantener el acceso, se debe verificar cada año que se cumplen los requisitos.
 
 gemini.google/students
 
