@@ -5,11 +5,10 @@
 /* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element */
 
 import { useMemo, useState } from "react";
-import rawOffers from "../../data/offers.json";
 import AdSlot from "./AdSlot";
 import { adsenseHomeSlot } from "../lib/adsense";
-import { publishedDeals } from "../lib/deals";
-import { postHref, publishedPosts } from "../lib/posts";
+import { postHref } from "../lib/posts";
+import type { PublishedPost } from "../lib/posts";
 
 export type Deal = {
   id: string;
@@ -25,30 +24,13 @@ export type Deal = {
   verifiedDate?: string;
 };
 
-type LegacyOffer = {
-  message_id?: number;
-  chollometroId?: string;
-  title?: string;
-  text?: string;
-  image?: string;
-  url?: string;
-  price?: string;
-  previousPrice?: string;
-  store?: string;
-  category?: string;
-  date?: number;
+export type DealSummary = {
+  total: number;
+  averageDiscount: number;
+  stores: Record<"Amazon" | "AliExpress" | "Miravia" | "Xiaomi" | "PcComponentes" | "ElCorteIngles" | "MediaMarkt", number>;
 };
 
 const money = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
-
-function parsePrice(value?: string) {
-  const normalized = String(value ?? "")
-    .replace(/[^\d,.]/g, "")
-    .replace(/\.(?=\d{3}(?:\D|$))/g, "")
-    .replace(",", ".");
-  const parsed = Number.parseFloat(normalized);
-  return Number.isFinite(parsed) ? parsed : 0;
-}
 
 function normalise(value: string) {
   return value
@@ -56,97 +38,6 @@ function normalise(value: string) {
     .replace(/[\u0300-\u036f]/g, "")
     .toLocaleLowerCase("es-ES");
 }
-
-function cleanTitle(value?: string) {
-  const original = String(value ?? "")
-    .replace(/^[^\p{L}\p{N}]+/u, "")
-    .replace(/^(OFERT[ÓO]N\s+(AMAZON|ALIEXPRESS|MIRAVIA|XIAOMI|PCCOMPONENTES|EL CORTE INGL[EÉ]S)\s*[-–—:]?\s*)/i, "")
-    .replace(/🔥|🚨|🛒|📺|🍃|🛢️/gu, "")
-    .replace(/\b(\d+)\s*[xX×]\s*(\d+)\s*Cm\b/gu, "$1×$2 cm")
-    .trim();
-  const text = normalise(original);
-  if (!original) return "Oferta destacada";
-  if (/relleno\s+de\s+cojin/.test(text)) {
-    const brand = original.match(/(?:^|\s)([\p{L}\p{N}-]{2,})\s+Relleno\s+de\s+Coj[ií]n/iu)?.[1]
-      || original.match(/Relleno\s+de\s+Coj[ií]n\s+([\p{L}\p{N}-]{2,})/iu)?.[1]
-      || "";
-    const size = original.match(/\b(\d+(?:[.,]\d+)?)\s*[x×]\s*(\d+(?:[.,]\d+)?)\s*(cm|mm|m)\b/i);
-    return `Relleno de cojín${brand ? ` ${brand}` : ""}${size ? ` ${size[1]}×${size[2]} ${size[3].toLowerCase()}` : ""}${/siliconad/.test(text) ? " de fibra siliconada" : ""}`;
-  }
-  if (/sandalia/.test(text)) {
-    const brand = original.match(/\b[A-Z]{3,}\b/)?.[0] || "";
-    return `Sandalias de fiesta para mujer${brand ? ` ${brand}` : ""}`;
-  }
-  if (/bolso/.test(text) && /mujer|women/.test(text)) return "Bolso de mujer para ocasiones especiales";
-  if (/mantel|table cloth/.test(text)) return "Mantel impermeable y fácil de limpiar";
-  if (/cuaderno|notebook/.test(text)) return "Cuaderno con accesorios";
-  if (/robot/.test(text) && /nino|educacion|ai/.test(text)) return "Robot educativo interactivo para niños";
-  if (/alfombrilla.*(?:raton|mouse)|mousepad/.test(text)) return `Alfombrilla gaming${/charizard/.test(text) ? " Charizard" : ""}${/xxl/.test(text) ? " XXL" : ""}`;
-  if (/freidora.*aire/.test(text) && /silicona/.test(text)) return "Molde de silicona para freidora de aire";
-  if (/cuerda.*deform/.test(text)) return /nino|juguete/.test(text) ? "Cuerda deformable antiestrés para niños" : "Cuerda deformable antiestrés";
-  return original;
-}
-
-function categoryFor(offer: LegacyOffer) {
-  const directCategory = String(offer.category ?? "").trim();
-  const text = normalise(`${directCategory} ${offer.title ?? ""} ${offer.text ?? ""}`);
-  if (/gaming|gamer|consola|videojuego/.test(text)) return "Videojuegos";
-  if (/electron|informat|telefono|mobile|data|memory|software/.test(text)) return "Tecnología";
-  if (/cafe|capsula|freidora|aceite|cocina|taper/.test(text)) return "Cocina";
-  if (/hogar|vileda|piscina|jardin|mueble|limpieza|bedding|bath|pillow/.test(text)) return "Hogar";
-  if (/herramienta|bricolaje|diy|taladro/.test(text)) return "Bricolaje";
-  if (/juguete|tamagotchi|muneco|nino|toy|baby/.test(text)) return "Juguetes";
-  if (/reloj|moda|barba|gillette|fashion|ropa|calzado|bolso|bag/.test(text)) return "Moda";
-  if (/stationery|paper|notebook|cuaderno/.test(text)) return "Papelería";
-  return directCategory && !["Otros", "Todas"].includes(directCategory) && directCategory.length <= 28 ? directCategory : "Ofertas";
-}
-
-function couponFor(text?: string) {
-  return text?.match(/CUP[ÓO]N(?:ES|\s+DESCUENTO)?\s*:?\s*([A-Z0-9-]{3,24})/i)?.[1];
-}
-
-function formatDate(timestamp?: number) {
-  if (!timestamp) return { label: "Revisado recientemente", dateTime: undefined };
-  const date = new Date(timestamp * 1000);
-  if (Number.isNaN(date.getTime())) return { label: "Revisado recientemente", dateTime: undefined };
-  return {
-    label: `Revisado el ${date.toLocaleDateString("es-ES", { day: "numeric", month: "short" })}`,
-    dateTime: date.toISOString(),
-  };
-}
-
-const importedDeals: Deal[] = (rawOffers as LegacyOffer[]).flatMap((offer) => {
-  const price = parsePrice(offer.price);
-  const extractedPrevious = offer.text?.match(/(?:PRECIO ANTERIOR|ANTES):\s*([\d.,]+)\s*(?:€|EUR)/i)?.[1];
-  const previous = parsePrice(offer.previousPrice || extractedPrevious);
-  const title = cleanTitle(offer.title);
-  if (!price || !title || !offer.url || !offer.image) return [];
-  const supportedStores: Deal["store"][] = ["Amazon", "AliExpress", "Miravia", "Xiaomi", "El Corte Inglés", "PcComponentes", "MediaMarkt"];
-  const store: Deal["store"] = supportedStores.includes(offer.store as Deal["store"]) ? offer.store as Deal["store"] : "Otra";
-  const date = formatDate(offer.date);
-  return [{
-    id: String(offer.chollometroId || offer.message_id || offer.url),
-    title,
-    store,
-    category: categoryFor(offer),
-    price,
-    oldPrice: previous > price ? previous : price,
-    coupon: couponFor(offer.text),
-    imageUrl: offer.image,
-    affiliateUrl: offer.url,
-    verifiedAt: date.label,
-    verifiedDate: date.dateTime,
-  }];
-});
-
-// The browser view uses exactly the same curated list as the sitemap and the
-// individual offer pages. The legacy conversion remains only as a safe empty
-// state during a broken local import.
-const curatedDeals: Deal[] = publishedDeals.map((deal) => ({
-  ...deal,
-  store: deal.store as Deal["store"],
-}));
-const initialDeals = curatedDeals.length ? curatedDeals : importedDeals;
 
 function displayDate(deals: Deal[]) {
   const dates = deals.flatMap((deal) => (deal.verifiedDate ? [new Date(deal.verifiedDate)] : []));
@@ -168,8 +59,9 @@ function offerCountLabel(total: number) {
   return `${total} ${total === 1 ? "oferta" : "ofertas"}`;
 }
 
-export function DealExplorer() {
+export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: Deal[]; posts: PublishedPost[]; summary: DealSummary }) {
   const [deals] = useState<Deal[]>(initialDeals);
+  const [visibleLimit, setVisibleLimit] = useState(36);
   const [category, setCategory] = useState("Todos");
   const [query, setQuery] = useState(() => {
     if (typeof window === "undefined") return "";
@@ -190,20 +82,8 @@ export function DealExplorer() {
     ));
   }, [deals, category, query]);
 
-  const averageDiscount = useMemo(() => {
-    const discounted = deals.filter((deal) => deal.oldPrice > deal.price);
-    if (!discounted.length) return 0;
-    return Math.round(discounted.reduce((total, deal) => total + (1 - deal.price / deal.oldPrice) * 100, 0) / discounted.length);
-  }, [deals]);
-  const storeTotals = useMemo(() => ({
-    Amazon: deals.filter((deal) => deal.store === "Amazon").length,
-    AliExpress: deals.filter((deal) => deal.store === "AliExpress").length,
-    Miravia: deals.filter((deal) => deal.store === "Miravia").length,
-    Xiaomi: deals.filter((deal) => deal.store === "Xiaomi").length,
-    PcComponentes: deals.filter((deal) => deal.store === "PcComponentes").length,
-    ElCorteIngles: deals.filter((deal) => deal.store === "El Corte Inglés").length,
-    MediaMarkt: deals.filter((deal) => deal.store === "MediaMarkt").length,
-  }), [deals]);
+  const averageDiscount = summary.averageDiscount;
+  const storeTotals = summary.stores;
   const sectionCovers = useMemo(() => ({
     amazon: deals.find((deal) => deal.store === "Amazon"),
     aliexpress: deals.find((deal) => deal.store === "AliExpress"),
@@ -221,7 +101,7 @@ export function DealExplorer() {
   // The highlighted deal is repeated in the chronological grid on purpose:
   // otherwise the newest Telegram publication looks missing to visitors who
   // go straight to “Chollos de hoy”.
-  const gridDeals = visibleDeals;
+  const gridDeals = visibleDeals.slice(0, visibleLimit);
 
   function copyCoupon(code: string) {
     navigator.clipboard?.writeText(code);
@@ -246,7 +126,7 @@ export function DealExplorer() {
           </a>
           <nav aria-label="Navegación principal">
             <a href="#ofertas">Ofertas de hoy</a>
-            {publishedPosts.length > 0 && <a href="#novedades">Novedades</a>}
+            {posts.length > 0 && <a href="#novedades">Novedades</a>}
             <a href="#como-funciona">Cómo seleccionamos</a>
             <a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram <span aria-hidden="true">↗</span></a>
           </nav>
@@ -271,13 +151,13 @@ export function DealExplorer() {
         {featuredDeal ? (
           <aside className="featuredPanel" aria-label="Oferta destacada">
             <a className="featuredImage featuredOfferLink" href={dealDetailsUrl(featuredDeal)}><img src={featuredDeal.imageUrl} alt={featuredDeal.title} width={720} height={560} /><span>DESTACADA</span></a>
-            <div className="featuredBody"><p className="featuredMeta"><span className="liveDot" /> OFERTA ACTIVA · {featuredDeal.store}</p><h2><a href={dealDetailsUrl(featuredDeal)}>{shortTitle(featuredDeal.title, 72)}</a></h2><div className="featuredPrice"><strong>{money.format(featuredDeal.price)}</strong>{featuredDeal.oldPrice > featuredDeal.price && <span>Antes <s>{money.format(featuredDeal.oldPrice)}</s> · −{Math.round((1 - featuredDeal.price / featuredDeal.oldPrice) * 100)}%</span>}</div><a href={dealDetailsUrl(featuredDeal)}>Ver análisis de la oferta <span aria-hidden="true">→</span></a><p className="featuredFoot"><b>{deals.length}</b> ofertas activas · descuento medio −{averageDiscount}% · revisión {displayDate(deals)}</p></div>
+            <div className="featuredBody"><p className="featuredMeta"><span className="liveDot" /> OFERTA ACTIVA · {featuredDeal.store}</p><h2><a href={dealDetailsUrl(featuredDeal)}>{shortTitle(featuredDeal.title, 72)}</a></h2><div className="featuredPrice"><strong>{money.format(featuredDeal.price)}</strong>{featuredDeal.oldPrice > featuredDeal.price && <span>Antes <s>{money.format(featuredDeal.oldPrice)}</s> · −{Math.round((1 - featuredDeal.price / featuredDeal.oldPrice) * 100)}%</span>}</div><a href={dealDetailsUrl(featuredDeal)}>Ver análisis de la oferta <span aria-hidden="true">→</span></a><p className="featuredFoot"><b>{summary.total}</b> ofertas activas · descuento medio −{averageDiscount}% · revisión {displayDate(deals)}</p></div>
           </aside>
         ) : <aside className="savingsPanel" aria-label="Resumen de las ofertas publicadas"><div className="panelTop"><span className="liveDot" /> EN DIRECTO</div><p>Descuento medio de las ofertas activas</p><strong>−{averageDiscount}%</strong></aside>}
       </section>
 
       <section className="storeRail shell" aria-label="Explorar ofertas por tienda">
-        <div className="storeRailLead"><span className="liveDot" aria-hidden="true" /><div><b>{deals.length} ofertas activas</b><small>Actualizadas durante el día</small></div></div>
+        <div className="storeRailLead"><span className="liveDot" aria-hidden="true" /><div><b>{summary.total} ofertas activas</b><small>Actualizadas durante el día</small></div></div>
         <a className="storeQuick storeQuickAmazon" href="/ofertas/amazon"><span>a</span><div><b>Amazon</b><small>{offerCountLabel(storeTotals.Amazon)}</small></div><i aria-hidden="true">→</i></a>
         <a className="storeQuick storeQuickAli" href="/ofertas/aliexpress"><span>AE</span><div><b>AliExpress</b><small>{offerCountLabel(storeTotals.AliExpress)}</small></div><i aria-hidden="true">→</i></a>
         <a className="storeQuick storeQuickMiravia" href="/ofertas/miravia"><span>M</span><div><b>Miravia</b><small>{offerCountLabel(storeTotals.Miravia)}</small></div><i aria-hidden="true">→</i></a>
@@ -288,9 +168,9 @@ export function DealExplorer() {
         <AdSlot slot={adsenseHomeSlot} />
       </div>}
 
-      {publishedPosts.length > 0 && <section className="editorialPosts shell" id="novedades" aria-labelledby="posts-title">
+      {posts.length > 0 && <section className="editorialPosts shell" id="novedades" aria-labelledby="posts-title">
         <div className="sectionIntro"><div><p className="eyebrow"><span aria-hidden="true" />PUBLICADO DESDE TELEGRAM</p><h2 id="posts-title">Novedades y avisos</h2></div><p>Campañas, noticias y contenidos añadidos directamente por Chollos al Día.</p></div>
-        <div className="postGrid">{publishedPosts.slice(0, 6).map((post) => <article className="postCard" key={post.id}>
+        <div className="postGrid">{posts.map((post) => <article className="postCard" key={post.id}>
           <a className="postCardImage" href={postHref(post.id)}><img src={post.imageUrl} alt={post.title} loading="lazy" decoding="async" width={720} height={480} /></a>
           <div><time dateTime={post.publishedAt}>{post.publishedLabel}</time><h3><a href={postHref(post.id)}>{post.title}</a></h3><p>{shortTitle(post.body.replace(/\s+/gu, " "), 150)}</p><a className="postRead" href={postHref(post.id)}>Leer publicación <span aria-hidden="true">→</span></a></div>
         </article>)}</div>
@@ -318,7 +198,7 @@ export function DealExplorer() {
             </label>
           </div>
 
-          <p className="resultsSummary" aria-live="polite"><b>{visibleDeals.length}</b> {visibleDeals.length === 1 ? "oferta encontrada" : "ofertas encontradas"}</p>
+          <p className="resultsSummary" aria-live="polite"><b>{visibleDeals.length}</b> {visibleDeals.length === 1 ? "oferta encontrada" : "ofertas encontradas"} · mostrando {Math.min(gridDeals.length, visibleDeals.length)}</p>
           <div className="dealGrid">
             {gridDeals.map((deal) => {
               const discount = Math.max(0, Math.round((1 - deal.price / deal.oldPrice) * 100));
@@ -349,6 +229,7 @@ export function DealExplorer() {
               );
             })}
           </div>
+          {gridDeals.length < visibleDeals.length && <div className="loadMoreWrap"><button className="loadMoreButton" onClick={() => setVisibleLimit((current) => current + 36)}>Ver 36 ofertas más</button><p>También puedes entrar en una tienda o categoría para encontrar antes lo que buscas.</p></div>}
           {!visibleDeals.length && <div className="empty"><b>No hemos encontrado ofertas con esa búsqueda.</b><span>Prueba con otra palabra o vuelve a “Todos”.</span></div>}
         </div>
       </section>
@@ -385,6 +266,9 @@ export function DealExplorer() {
           <a className="sectionCover categoryGaming" href="/chollos/videojuegos">{sectionCovers.videojuegos && <img src={sectionCovers.videojuegos.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Videojuegos</span><b>Gaming y accesorios para jugar <i aria-hidden="true">→</i></b></a>
           <a className="sectionCover categoryHome" href="/chollos/hogar">{sectionCovers.hogar && <img src={sectionCovers.hogar.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Hogar</span><b>Selección útil para casa y cocina <i aria-hidden="true">→</i></b></a>
         </div>
+        <nav className="seoCategoryLinks" aria-label="Todas las categorías de chollos">
+          <a href="/chollos/tecnologia">Tecnología</a><a href="/chollos/videojuegos">Videojuegos</a><a href="/chollos/hogar">Hogar</a><a href="/chollos/cocina">Cocina</a><a href="/chollos/bricolaje">Bricolaje</a><a href="/chollos/juguetes">Juguetes</a><a href="/chollos/moda">Moda</a><a href="/chollos/deporte">Deporte</a><a href="/chollos/belleza">Belleza</a>
+        </nav>
       </section>
 
       <section className="process shell" id="como-funciona" aria-labelledby="process-title">

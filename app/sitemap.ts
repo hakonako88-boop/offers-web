@@ -27,7 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}/aviso-legal`, lastModified: new Date("2026-08-11T00:00:00.000Z"), changeFrequency: "yearly", priority: 0.3 },
     { url: `${siteUrl}/privacidad`, lastModified: new Date("2026-08-11T00:00:00.000Z"), changeFrequency: "yearly", priority: 0.3 },
     { url: `${siteUrl}/afiliacion`, lastModified: new Date("2026-08-11T00:00:00.000Z"), changeFrequency: "yearly", priority: 0.3 },
-    { url: `${siteUrl}/contacto`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.4 },
+    { url: `${siteUrl}/contacto`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.4 },
   ];
   return [
     ...staticPages,

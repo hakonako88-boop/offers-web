@@ -91,14 +91,14 @@ function categoryFor(offer: LegacyOffer) {
   if ([4488, 4486, 4481, 4478].includes(Number(offer.message_id))) return "Videojuegos";
   const directCategory = String(offer.category ?? "").trim();
   const text = normalise(`${directCategory} ${offer.title ?? ""} ${offer.text ?? ""}`);
-  if (/tecnolog|electron|informat|mobile|telefono|data|memory|software/.test(text)) return "Tecnología";
   if (/gaming|consola|videojuego|playstation|\bps[345]\b|nintendo|switch|xbox|battlefield|gran turismo|13 sentinels/.test(text)) return "Videojuegos";
+  if (/tecnolog|electron|informat|mobile|telefono|data|memory|software|smartwatch|reloj inteligente|auricular|altavoz bluetooth|impresora|proyector|televisor|\btv\b/.test(text)) return "Tecnología";
   if (/cafe|capsula|freidora|aceite|cocina|taper/.test(text)) return "Cocina";
   if (/hogar|vileda|piscina|jardin|mueble|limpieza|bedding|bath|pillow/.test(text)) return "Hogar";
   if (/herramienta|bricolaje|diy|taladro/.test(text)) return "Bricolaje";
   if (/juguete|tamagotchi|muneco|nino|toy|baby/.test(text)) return "Juguetes";
-  if (/reloj|moda|barba|gillette|fashion|ropa|calzado|bolso|bag/.test(text)) return "Moda";
-  if (/belleza|beauty|salud|health/.test(text)) return "Belleza";
+  if (/belleza|beauty|salud|health|perfume|parfum|afeitadora|barba|gillette|cortapelo|cosmet/.test(text)) return "Belleza";
+  if (/\breloj\b|moda|fashion|ropa|calzado|sandalia|mocasin|zapatilla|vestido|bolso|bag/.test(text)) return "Moda";
   if (/deporte|sport/.test(text)) return "Deporte";
   return directCategory && directCategory.length <= 30 ? directCategory : "Ofertas";
 }

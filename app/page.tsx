@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { DealExplorer } from "./components/DealExplorer";
-import { publishedDeals } from "./lib/deals";
+import { DealExplorer, type Deal, type DealSummary } from "./components/DealExplorer";
+import { dealDiscount, publishedDeals } from "./lib/deals";
+import { publishedPosts } from "./lib/posts";
 
 const title = "Chollos de hoy: ofertas, descuentos y cupones";
 const description = "Chollos de hoy en Amazon, AliExpress, Miravia y más tiendas. Ofertas seleccionadas con precio, descuento, cupón y enlace directo para ahorrar.";
@@ -90,12 +91,29 @@ const faqSchema = {
 };
 
 export default function Home() {
+  // Keep the landing page fast: every active offer remains available through
+  // its own indexable URL, sitemap, store and category pages.
+  const homepageDeals = publishedDeals.slice(0, 108).map((deal) => ({ ...deal, store: deal.store as Deal["store"] }));
+  const discountedDeals = publishedDeals.filter((deal) => deal.oldPrice > deal.price);
+  const summary: DealSummary = {
+    total: publishedDeals.length,
+    averageDiscount: discountedDeals.length ? Math.round(discountedDeals.reduce((total, deal) => total + dealDiscount(deal), 0) / discountedDeals.length) : 0,
+    stores: {
+      Amazon: publishedDeals.filter((deal) => deal.store === "Amazon").length,
+      AliExpress: publishedDeals.filter((deal) => deal.store === "AliExpress").length,
+      Miravia: publishedDeals.filter((deal) => deal.store === "Miravia").length,
+      Xiaomi: publishedDeals.filter((deal) => deal.store === "Xiaomi").length,
+      PcComponentes: publishedDeals.filter((deal) => deal.store === "PcComponentes").length,
+      ElCorteIngles: publishedDeals.filter((deal) => deal.store === "El Corte Inglés").length,
+      MediaMarkt: publishedDeals.filter((deal) => deal.store === "MediaMarkt").length,
+    },
+  };
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <DealExplorer />
+      <DealExplorer initialDeals={homepageDeals} posts={publishedPosts.slice(0, 6)} summary={summary} />
     </>
   );
 }

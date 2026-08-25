@@ -25,6 +25,9 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.match(html, /Alertas de chollos/);
   assert.match(html, /sectionCover storeAmazon/);
   assert.match(html, /sectionCover categoryGaming/);
+  assert.match(html, /href="\/chollos\/cocina"/);
+  assert.match(html, /Ver 36 ofertas más/);
+  assert.ok((html.match(/class="dealCard"/g) ?? []).length <= 43, "homepage should not render hundreds of offer cards at once");
   assert.match(html, /og-chollosaldia-v2\.png/);
   assert.match(html, /rel="icon" href="\/favicon\.ico" sizes="48x48"/);
   assert.match(html, /href="\/site\.webmanifest"/);
@@ -78,6 +81,7 @@ test("renders an individual offer with price analysis, pros, cons and Product SE
   assert.match(html, /PRECIO DE OFERTA/);
   assert.match(html, /"@type":"Product"/);
   assert.match(html, /"@type":"BreadcrumbList"/);
+  assert.doesNotMatch(html, /priceValidUntil/);
   assert.match(html, /rel="nofollow sponsored noreferrer"/);
   assert.match(html, new RegExp(`rel="canonical" href="https://chollosaldia\\.com/oferta/${id}"`));
 });
@@ -102,11 +106,12 @@ test("keeps older Telegram offers beyond the homepage card limit", async () => {
   assert.match(html, /manual-4472\.jpg/);
 });
 
-test("shows the newest Telegram offer in the chronological homepage grid", async () => {
+test("shows the newest offers in a bounded chronological homepage grid", async () => {
   const response = await render("/");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /class="dealCard"[\s\S]{0,1200}href="\/oferta\/4473"/);
+  assert.match(html, /class="dealCard"[\s\S]{0,1200}href="\/oferta\//);
+  assert.match(html, /mostrando[\s\S]{0,30}36/);
 });
 
 test("keeps the historical contact URL as a useful, indexable page", async () => {
@@ -143,10 +148,19 @@ test("renders the technology category with its own collection SEO", async () => 
   const response = await render("/chollos/tecnologia");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Chollos de tecnologia/);
+  assert.match(html, /Chollos de tecnolog[ií]a/);
   assert.match(html, /"@type":"CollectionPage"/);
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/chollos\/tecnologia"/);
   assert.match(html, /name="robots" content="index, follow"/);
+});
+
+test("renders expanded category landing pages with canonical metadata", async () => {
+  const response = await render("/chollos/cocina");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Chollos de cocina/);
+  assert.match(html, /"@type":"BreadcrumbList"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/chollos\/cocina"/);
 });
 
 test("renders a useful Amazon guide with Article and FAQ SEO", async () => {

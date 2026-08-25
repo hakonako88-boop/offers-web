@@ -10,6 +10,7 @@ import {
   getDealById,
   publishedDeals,
 } from "../../lib/deals";
+import { categorySlugForName } from "../../lib/categories";
 
 const money = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
 const siteUrl = "https://chollosaldia.com";
@@ -55,32 +56,36 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
 }
 
 function schemaFor(deal: NonNullable<ReturnType<typeof getDealById>>) {
+  const publicUrl = `${siteUrl}${dealHref(deal.id)}`;
   return {
     "@context": "https://schema.org",
     "@type": "Product",
+    "@id": `${publicUrl}#product`,
+    url: publicUrl,
     name: deal.title,
     image: [absoluteImageUrl(deal.imageUrl)],
     description: dealDescription(deal),
     category: deal.category,
     offers: {
       "@type": "Offer",
-      url: deal.affiliateUrl,
+      url: publicUrl,
       priceCurrency: "EUR",
       price: deal.price.toFixed(2),
       availability: "https://schema.org/InStock",
       seller: { "@type": "Organization", name: deal.store },
-      priceValidUntil: new Date(Date.now() + (24 * 60 * 60 * 1000)).toISOString().slice(0, 10),
     },
   };
 }
 
 function breadcrumbSchemaFor(deal: NonNullable<ReturnType<typeof getDealById>>) {
+  const categorySlug = categorySlugForName(deal.category);
+  const categoryUrl = categorySlug ? `${siteUrl}/chollos/${categorySlug}` : siteUrl;
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Inicio", item: siteUrl },
-      { "@type": "ListItem", position: 2, name: deal.category, item: `${siteUrl}/?categoria=${encodeURIComponent(deal.category)}` },
+      { "@type": "ListItem", position: 2, name: deal.category, item: categoryUrl },
       { "@type": "ListItem", position: 3, name: deal.title, item: `${siteUrl}${dealHref(deal.id)}` },
     ],
   };
@@ -97,6 +102,8 @@ export default async function OfferPage({ params }: OfferPageProps) {
   const savings = dealSavings(deal);
   const description = dealDescription(deal);
   const publicOfferUrl = `${siteUrl}${dealHref(deal.id)}`;
+  const categorySlug = categorySlugForName(deal.category);
+  const categoryHref = categorySlug ? `/chollos/${categorySlug}` : "/#ofertas";
   const shareText = `${deal.title} por ${money.format(deal.price)} en Chollos al Día`;
   const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(`${shareText} ${publicOfferUrl}`)}`;
   const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(publicOfferUrl)}&text=${encodeURIComponent(shareText)}`;
@@ -133,7 +140,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
       </header>
 
       <article className="offerArticle shell">
-        <nav className="offerBreadcrumb" aria-label="Migas de pan"><Link href="/">Inicio</Link><span>/</span><Link href={`/?categoria=${encodeURIComponent(deal.category)}`}>{deal.category}</Link><span>/</span><b>Oferta</b></nav>
+        <nav className="offerBreadcrumb" aria-label="Migas de pan"><Link href="/">Inicio</Link><span>/</span><Link href={categoryHref}>{deal.category}</Link><span>/</span><b>Oferta</b></nav>
         <div className="offerHero">
           <div className="offerGallery"><div className="offerImageWrap"><img src={deal.imageUrl} alt={deal.title} width={960} height={760} /><span className="storeBadge">{deal.store}</span>{discount > 0 && <span className="offerDiscount">−{discount}%</span>}</div><p>Imagen facilitada por la tienda. La variante puede cambiar.</p></div>
           <div className="offerSummary">

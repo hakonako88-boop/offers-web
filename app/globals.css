@@ -378,6 +378,10 @@ body { background: var(--paper); }
 .dealHome .search { border-color: #d6dce8; border-radius: 10px; }
 .dealHome .resultsSummary { margin: 18px 1px; }
 .dealHome .resultsSummary b { color: var(--home-orange); }
+.dealHome .loadMoreWrap { display: grid; justify-items: center; gap: 9px; margin-top: 34px; text-align: center; }
+.dealHome .loadMoreButton { border: 1px solid #101828; border-radius: 11px; background: #101828; padding: 13px 22px; color: #fff; font-size: 13px; font-weight: 850; transition: transform .2s ease, background .2s ease; }
+.dealHome .loadMoreButton:hover { transform: translateY(-2px); background: #263452; }
+.dealHome .loadMoreWrap p { margin: 0; color: var(--home-muted); font-size: 11px; }
 .dealHome .dealGrid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
@@ -465,6 +469,9 @@ body { background: var(--paper); }
 .dealHome .faq { background: transparent; }
 .dealHome .telegramCta { background: linear-gradient(120deg, #087f65, #095e62); }
 .dealHome .telegramDock { border-radius: 13px; background: #087f65; box-shadow: 0 12px 28px rgb(8 127 101 / 30%); }
+.dealHome .seoCategoryLinks { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; padding-top: 19px; border-top: 1px solid var(--home-line); }
+.dealHome .seoCategoryLinks a { display: inline-flex; border: 1px solid #d8deea; border-radius: 999px; background: #fff; padding: 9px 13px; color: #344054; font-size: 11px; font-weight: 780; }
+.dealHome .seoCategoryLinks a:hover { border-color: #ff5a36; color: #c83f20; }
 
 .dealHome ~ .analyticsConsent,
 .analyticsConsent {
@@ -544,6 +551,8 @@ body { background: var(--paper); }
   .dealHome .noCoupon { min-height: 32px; margin-top: 9px; padding-inline: 5px; font-size: 9px; text-align: center; }
   .dealHome .dealButton { padding: 11px; }
   .dealHome .verified { line-height: 1.3; }
+  .dealHome .seoCategoryLinks { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+  .dealHome .seoCategoryLinks a { flex: 0 0 auto; }
   .analyticsConsent { right: 10px; bottom: 10px; width: calc(100% - 20px); padding: 14px; }
 }
 @media (max-width: 370px) {

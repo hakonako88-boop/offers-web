@@ -105,20 +105,20 @@ export default async function StoreOffersPage({ params }: StorePageProps) {
   if (!store) notFound();
 
   const deals = publishedDeals.filter((deal) => deal.store === store.name);
+  const displayedDeals = deals.slice(0, 60);
   const averageDiscount = deals.length ? Math.round(deals.reduce((total, deal) => total + dealDiscount(deal), 0) / deals.length) : 0;
   const collectionSchema = {
     "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "@id": `${siteUrl}/ofertas/${tienda}`,
-    name: store.label,
-    description: store.description,
-    inLanguage: "es-ES",
-    isPartOf: { "@id": `${siteUrl}/#website` },
-    mainEntity: {
-      "@type": "ItemList",
-      numberOfItems: deals.length,
-      itemListElement: deals.map((deal, index) => ({ "@type": "ListItem", position: index + 1, url: `${siteUrl}${dealHref(deal.id)}`, name: deal.title, image: absoluteImageUrl(deal.imageUrl) })),
-    },
+    "@graph": [{
+      "@type": "CollectionPage", "@id": `${siteUrl}/ofertas/${tienda}`,
+      name: store.label, description: store.description, inLanguage: "es-ES", isPartOf: { "@id": `${siteUrl}/#website` },
+      mainEntity: { "@type": "ItemList", numberOfItems: displayedDeals.length, itemListElement: displayedDeals.map((deal, index) => ({ "@type": "ListItem", position: index + 1, url: `${siteUrl}${dealHref(deal.id)}`, name: deal.title, image: absoluteImageUrl(deal.imageUrl) })) },
+    }, {
+      "@type": "BreadcrumbList", itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Inicio", item: siteUrl },
+        { "@type": "ListItem", position: 2, name: store.label, item: `${siteUrl}/ofertas/${tienda}` },
+      ],
+    }],
   };
 
   return (
@@ -129,7 +129,7 @@ export default async function StoreOffersPage({ params }: StorePageProps) {
       <article className="storeArticle shell">
         <nav className="offerBreadcrumb" aria-label="Migas de pan"><Link href="/">Inicio</Link><span>/</span><b>{store.label}</b></nav>
         <header className="storeHero"><div><p className="eyebrow"><span aria-hidden="true" />{store.eyebrow}</p><h1>{store.title}</h1><p>{store.description}</p></div><aside><strong>{deals.length}</strong><span>ofertas activas</span><b>{averageDiscount ? `-${averageDiscount}%` : "Precio"}</b><small>{averageDiscount ? "descuento medio" : "registrado al publicar"}</small></aside></header>
-        <section className="storeDeals" aria-labelledby="store-deals-title"><div className="sectionIntro"><div><p className="eyebrow"><span aria-hidden="true" />OFERTAS ACTIVAS</p><h2 id="store-deals-title">{store.label} de hoy</h2></div><p>Los precios, el stock y los cupones pueden cambiar en cualquier momento.</p></div>{deals.length ? <div className="dealGrid storeDealGrid">{deals.map((deal) => {
+        <section className="storeDeals" aria-labelledby="store-deals-title"><div className="sectionIntro"><div><p className="eyebrow"><span aria-hidden="true" />OFERTAS ACTIVAS</p><h2 id="store-deals-title">{store.label} de hoy</h2></div><p>Mostramos primero las {Math.min(60, deals.length)} ofertas más recientes. Los precios, el stock y los cupones pueden cambiar.</p></div>{deals.length ? <div className="dealGrid storeDealGrid">{displayedDeals.map((deal) => {
           const discount = dealDiscount(deal); const savings = dealSavings(deal);
           return <article className="dealCard" key={deal.id}><Link className="imageWrap dealPreviewLink" href={dealHref(deal.id)} aria-label={`Ver oferta: ${deal.title}`}><img src={deal.imageUrl} alt={deal.title} width={720} height={560} />{discount > 0 && <span className="discountBadge">-{discount}%</span>}<span className="storeBadge">{deal.store}</span></Link><div className="dealBody"><p className="categoryLabel">{deal.category}</p><h3><Link href={dealHref(deal.id)}>{deal.title}</Link></h3><div className="priceRow"><strong>{money.format(deal.price)}</strong>{discount > 0 && <span>Antes <s>{money.format(deal.oldPrice)}</s></span>}</div>{savings > 0 && <p className="saving">Ahorras {money.format(savings)}</p>}{deal.coupon ? <p className="storeCoupon">Cupon: <b>{deal.coupon}</b></p> : <p className="noCoupon">Precio directo, sin cupon extra</p>}<Link className="dealButton" href={dealHref(deal.id)}>Ver oferta y analisis <span aria-hidden="true">→</span></Link></div></article>;
         })}</div> : <div className="empty"><b>Ahora mismo no hay ofertas activas de {store.name} que pasen nuestro filtro.</b><span>Vuelve pronto o consulta todas las ofertas seleccionadas.</span><Link href="/#ofertas">Ver todas las ofertas</Link></div>}</section>
