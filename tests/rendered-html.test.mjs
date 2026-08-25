@@ -218,4 +218,7 @@ test("exports every linked store and category to GitHub Pages", async () => {
   for (const slug of ["tecnologia", "videojuegos", "hogar", "cocina", "bricolaje", "juguetes", "moda", "deporte", "belleza"]) {
     assert.match(exporter, new RegExp(`\\b${slug}\\b`));
   }
+  for (const slug of ["ofertas-amazon", "cupones-aliexpress", "detectar-chollos-reales", "chollos-electronica", "ofertas-cocina"]) {
+    assert.match(exporter, new RegExp(`\\b${slug}\\b`));
+  }
 });

@@ -60,7 +60,7 @@ for (const store of ["amazon", "aliexpress", "miravia", "xiaomi", "pccomponentes
 for (const category of ["tecnologia", "videojuegos", "hogar", "cocina", "bricolaje", "juguetes", "moda", "deporte", "belleza"]) {
   await render(`/chollos/${category}`, `chollos/${category}/index.html`);
 }
-for (const guide of ["ofertas-amazon", "cupones-aliexpress", "detectar-chollos-reales"]) {
+for (const guide of ["ofertas-amazon", "cupones-aliexpress", "detectar-chollos-reales", "chollos-electronica", "ofertas-cocina"]) {
   await render(`/guias/${guide}`, `guias/${guide}/index.html`);
 }
 // The sitemap is built from the same reviewed list used by the application.
