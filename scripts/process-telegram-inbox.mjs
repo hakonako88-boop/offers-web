@@ -120,7 +120,7 @@ async function downloadProductImage(url) {
     const contentType = response.headers.get('content-type') || '';
     if (!response.ok) throw new Error(`La imagen respondió ${response.status || 'sin estado'}.`);
     const bytes = new Uint8Array(await response.arrayBuffer());
-    if (!bytes.byteLength) throw new Error('La imagen estaba vacía.');
+    if (bytes.byteLength < 2_000) throw new Error('La imagen era un marcador vacío o demasiado pequeño.');
     const mimeType = detectedProductImageMime(bytes, contentType);
     if (!mimeType) throw new Error(`La dirección no devolvió una fotografía válida (${contentType || 'sin tipo'}).`);
     return new Blob([bytes], { type: mimeType });
@@ -158,7 +158,12 @@ async function sendProductPhoto(settings, offer) {
     }
   }
 
-  const photos = [...new Set([offer.photoFileId, offer.imageUrl].filter(Boolean))];
+  // Never hand Amazon's unverified fallback URL straight to Telegram: an HTTP
+  // 200 placeholder is accepted and converted into a blank 285-byte JPEG.
+  const photos = [...new Set([
+    offer.photoFileId,
+    ...(offer.store === 'Amazon' ? [] : [offer.imageUrl]),
+  ].filter(Boolean))];
   let lastError;
   for (const photo of photos) {
     const payload = {
@@ -268,8 +273,10 @@ async function mirrorTelegramPhoto(token, fileId, reference) {
   if (!fs.existsSync(localPath)) {
     const imageResponse = await fetch(`https://api.telegram.org/file/bot${token}/${file.file_path}`);
     if (!imageResponse.ok) throw new Error(`Could not download Telegram image: ${imageResponse.status}`);
+    const bytes = Buffer.from(await imageResponse.arrayBuffer());
+    if (bytes.length < 2_000) throw new Error('Telegram devolvió una imagen vacía; la oferta no se guardará sin foto.');
     fs.mkdirSync(IMAGES_DIR, { recursive: true });
-    fs.writeFileSync(localPath, Buffer.from(await imageResponse.arrayBuffer()));
+    fs.writeFileSync(localPath, bytes);
   }
   return `/tg/${filename}`;
 }

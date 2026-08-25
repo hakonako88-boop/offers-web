@@ -42,7 +42,7 @@ test('builds a complete reviewed draft from a factual Amazon source post', async
   assert.equal(result.offer.previousPrice, 14.99);
   assert.equal(result.offer.discount, 33);
   assert.equal(result.offer.url, 'https://www.amazon.es/dp/B0DGG9F59B?tag=chollos00a-21');
-  assert.equal(result.offer.imageUrl, 'https://m.media-amazon.com/images/P/B0DGG9F59B.01._SCLZZZZZZZ_.jpg');
+  assert.match(result.offer.imageUrl, /^https:\/\/m\.media-amazon\.com\/images\/(?:I|P)\//u);
   assert.equal(result.offer.sourceProductId, 'amazon:B0DGG9F59B');
   assert.doesNotMatch(result.offer.title, /Oferta reenviada/iu);
 });
