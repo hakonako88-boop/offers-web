@@ -33,12 +33,14 @@ test('keeps only discounted AliExpress products with an affiliate link', () => {
     lastest_volume: 250,
     commission_rate: '8.5%',
     first_level_category_name: 'Electrónica',
+    promo_code: 'ESOFERTA10',
   }, 'Tecnología', ['auriculares']);
 
   assert.equal(offer.id, '123456');
   assert.equal(offer.price, 24.99);
   assert.equal(offer.discount, 58);
   assert.equal(offer.siteCategory, 'Tecnología');
+  assert.equal(offer.coupon, 'ESOFERTA10');
   assert.match(formatAliExpressCaption(offer), /24,99\s?€/);
   assert.match(formatAliExpressCaption(offer), /58%/);
   assert.match(formatAliExpressCaption(offer), /Ahorras/);
@@ -46,6 +48,7 @@ test('keeps only discounted AliExpress products with an affiliate link', () => {
   assert.match(formatAliExpressTelegramCaption(offer), /#AliExpress/);
   assert.match(formatAliExpressTelegramCaption(offer), /<s>59,99 €<\/s>/);
   assert.match(formatAliExpressTelegramCaption(offer), /PRECIO OFERTA/);
+  assert.match(formatAliExpressTelegramCaption(offer), /ESOFERTA10/);
   assert.match(formatAliExpressTelegramCaption(offer), /250\+ pedidos recientes/);
   assert.match(formatAliExpressTelegramCaption(offer), /👇🏻 <b>Toca el botón VER OFERTA<\/b> para comprar/);
   assert.doesNotMatch(formatAliExpressTelegramCaption(offer), /Categoría/);

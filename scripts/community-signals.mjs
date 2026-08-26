@@ -89,6 +89,17 @@ function sourceStore(value = '') {
   return 'Otra';
 }
 
+/** Extracts only explicitly labelled coupon codes from source copy. Coupon
+ * prose is never inferred: this keeps third-party posts useful as discovery
+ * signals without inventing a code or a saving. */
+export function couponCodesFromText(value = '') {
+  const text = cleanText(value);
+  const labelled = text.match(/(?:cupones?|c[oó]digos?)\s*[:：]\s*([^\n]{3,100})/iu)?.[1] || '';
+  if (!labelled) return '';
+  const codes = labelled.match(/\b(?=[A-Z0-9_-]{4,20}\b)(?=[A-Z0-9_-]*[A-Z])(?=[A-Z0-9_-]*\d)[A-Z0-9_-]+\b/gu) || [];
+  return [...new Set(codes)].slice(0, 4).join(' / ');
+}
+
 /** Returns the strongest recent community signal that describes the same
  * product. Two concrete terms are required, so generic words cannot make an
  * unrelated catalogue item look community-validated. */
@@ -142,6 +153,7 @@ function makeSignal(source, link, title, publishedAt, merchant = '') {
     sourceWeight: source.weight,
     price: amount(currentPrice),
     previousPrice: amount(previousPrice),
+    coupon: couponCodesFromText(title),
   };
 }
 

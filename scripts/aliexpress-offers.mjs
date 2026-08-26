@@ -88,6 +88,18 @@ function euro(value) {
   }).format(value);
 }
 
+function productCoupon(product = {}) {
+  const direct = [product.promo_code, product.coupon_code, product.code]
+    .map((value) => String(value || '').trim())
+    .find((value) => /^(?=.*[a-z])(?=.*\d)[a-z0-9_-]{4,20}$/iu.test(value));
+  if (direct) return direct.toUpperCase();
+  const info = product.promo_code_info;
+  const candidates = typeof info === 'string'
+    ? info.match(/\b(?=[A-Z0-9_-]{4,20}\b)(?=[A-Z0-9_-]*[A-Z])(?=[A-Z0-9_-]*\d)[A-Z0-9_-]+\b/gu) || []
+    : [info?.promo_code, info?.code, info?.coupon_code];
+  return [...new Set(candidates.map((value) => String(value || '').trim()).filter(Boolean))].slice(0, 4).join(' / ');
+}
+
 export function normalizeAliExpressProduct(product, category, titleTerms = [], minimumTitleMatches = 1) {
   const id = String(product?.product_id || '').trim();
   const title = String(product?.product_title || '').trim();
@@ -128,6 +140,7 @@ export function normalizeAliExpressProduct(product, category, titleTerms = [], m
     commission,
     score: discount + Math.min(volume, 500) / 50 + commission,
     matchedTitleTerms,
+    coupon: productCoupon(product),
   };
 }
 
@@ -139,6 +152,7 @@ export function formatAliExpressCaption(offer) {
     previousPrice: offer.previousPriceLabel,
     savings: offer.previousPrice > offer.price ? euro(offer.previousPrice - offer.price) : '',
     discount: offer.discount,
+    coupon: offer.coupon,
   });
 }
 
@@ -153,6 +167,7 @@ export function formatAliExpressTelegramCaption(offer) {
     savings: offer.previousPrice > offer.price ? euro(offer.previousPrice - offer.price) : '',
     discount: offer.discount,
     highlight: popularity,
+    coupon: offer.coupon,
     url: offer.url,
   });
 }

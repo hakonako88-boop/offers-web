@@ -100,6 +100,9 @@ async function searchAliExpress(config, topic) {
       'lastest_volume',
       'commission_rate',
       'first_level_category_name',
+      'promo_code',
+      'promo_code_info',
+      'coupon_code',
     ].join(','),
   });
   const response = await fetch(`${ALIEXPRESS_ENDPOINT}?${new URLSearchParams(params)}`);
@@ -156,6 +159,7 @@ function linkedAliExpressOffer(metadata, signal) {
     commission: 0,
     score: 1_500 + Number(signal.sourceWeight || 0) + discount,
     matchedTitleTerms: signal.terms?.length || 0,
+    coupon: String(metadata.coupon || signal.coupon || '').trim(),
     communitySignalId: signal.id,
     communitySource: signal.source,
     communitySourceUrl: signal.sourceUrl,
@@ -249,6 +253,7 @@ async function saveOfferForWeb(offer, message) {
     source_url: offer.communitySourceUrl || '',
     category: offer.siteCategory,
     description: offer.title,
+    coupon: offer.coupon || '',
   };
   const withoutPreviousVersion = existingOffers.filter((entry) => String(entry.source_product_id || '') !== offer.id);
   writeJson(WEB_OFFERS_FILE, [record, ...withoutPreviousVersion]);

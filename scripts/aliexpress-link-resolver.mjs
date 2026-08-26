@@ -47,6 +47,9 @@ export function metadataFromAliExpressProduct(product = {}) {
     imageUrl: highResolutionAliExpressImage(product.product_main_image_url || ''),
     price,
     previousPrice: previousPrice > price ? previousPrice : 0,
+    ...(String(product.promo_code || product.coupon_code || product?.promo_code_info?.promo_code || '').trim()
+      ? { coupon: String(product.promo_code || product.coupon_code || product?.promo_code_info?.promo_code).trim() }
+      : {}),
   };
 }
 
@@ -368,7 +371,7 @@ export async function resolveAliExpressAffiliateProduct(url, config, options = {
     target_currency: 'EUR',
     target_language: 'ES',
     tracking_id: config.trackingId,
-    fields: 'product_id,product_title,target_sale_price,target_original_price,product_main_image_url,promotion_link',
+    fields: 'product_id,product_title,target_sale_price,target_original_price,product_main_image_url,promotion_link,promo_code,promo_code_info,coupon_code',
   }, config, fetchImpl);
   const product = apiProducts(detailData, 'aliexpress_affiliate_productdetail_get_response')
     .find((entry) => String(entry?.product_id || '') === productId);

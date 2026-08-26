@@ -192,7 +192,7 @@ export function formatTelegramDealCard({
   const discountLabel = Number(discount) > 0 ? ` · <b>−${Math.round(Number(discount))}%</b>` : '';
   const savingsText = savings ? `Ahorras <b>${escapeHtml(savings)}</b>${discountLabel}` : (discountLabel ? `Descuento${discountLabel}` : 'Precio sujeto a stock');
   const actionLine = coupon
-    ? `🔻 Usa el cupón <code>${escapeHtml(coupon)}</code> al tramitar`
+    ? `🎟️ Usa el cupón <code>${escapeHtml(coupon)}</code> al tramitar${highlight ? `\n📈 ${escapeHtml(highlight)}` : ''}`
     : highlight
       ? `🔻 ${escapeHtml(highlight)}`
       : `🔻 ${savingsText}`;

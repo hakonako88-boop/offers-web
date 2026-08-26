@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  couponCodesFromText,
   COMMUNITY_SOURCES,
   communityMatchForTitle,
   discoverCommunitySignals,
@@ -18,6 +19,14 @@ test('gives MiChollo and NoLoDejesEscapar the two highest discovery priorities',
 
 test('extracts compact product terms without copying promotional wording', () => {
   assert.deepEqual(searchTermsForSignal('Ofertón Amazon! Cargador USB-C de 40W con 4 puertos a 6,83€'), ['cargador', 'usb', '40w', 'puertos']);
+});
+
+test('keeps explicitly labelled AliExpress coupon codes without copying surrounding promotion text', () => {
+  assert.equal(
+    couponCodesFromText('Precio: 125,77€ · Cupones: ESNS10 KODIES10 DSES10 🇪🇸 Envío desde España'),
+    'ESNS10 / KODIES10 / DSES10',
+  );
+  assert.equal(couponCodesFromText('Hay cupones disponibles, consulta condiciones'), '');
 });
 
 test('parses public RSS entries as discovery signals', () => {
