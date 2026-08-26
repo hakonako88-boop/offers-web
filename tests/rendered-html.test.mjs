@@ -269,6 +269,17 @@ test("renders an indexable blog hub for existing search demand", async () => {
   assert.match(html, /href="\/guias\/chollos-electronica\/"/);
 });
 
+test("renders an indexable Telegram acquisition page with a direct join action", async () => {
+  const response = await render("/telegram");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Canal de Telegram de chollos y ofertas/);
+  assert.match(html, /Unirme gratis a @aldiachollos/);
+  assert.match(html, /href="https:\/\/t\.me\/aldiachollos"/);
+  assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/telegram\/"/);
+  assert.match(html, /"@type":"FAQPage"/);
+});
+
 test("keeps affiliate credentials out of the client source", async () => {
   const [client, example] = await Promise.all([
     readFile(new URL("../app/components/DealExplorer.tsx", import.meta.url), "utf8"),
@@ -284,6 +295,7 @@ test("exports every linked store and category to GitHub Pages", async () => {
   assert.match(exporter, /blog\/index\.html/);
   assert.match(exporter, /gta-vi-mas-barato-ps5\/index\.html/);
   assert.match(exporter, /buscar\/index\.html/);
+  assert.match(exporter, /telegram\/index\.html/);
   for (const slug of ["amazon", "aliexpress", "miravia", "xiaomi", "pccomponentes", "el-corte-ingles", "mediamarkt"]) {
     assert.match(exporter, new RegExp(`\\b${slug}\\b`));
   }

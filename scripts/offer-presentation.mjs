@@ -49,6 +49,7 @@ export function offerReplyMarkup(offer = {}, purchaseLabel = '👉🏻 VER OFERT
   if (offer.url) rows.push([{ text: purchaseLabel, url: offer.url }]);
   const webUrl = trackedPublicOfferUrl(offer);
   if (webUrl) rows.push([{ text: '🔎 VER FICHA Y ANÁLISIS', url: webUrl }]);
+  rows.push([{ text: '🔔 UNIRME A CHOLLOS AL DÍA', url: 'https://t.me/aldiachollos' }]);
   return rows.length ? { inline_keyboard: rows } : undefined;
 }
 
@@ -209,7 +210,7 @@ export function formatTelegramDealCard({
     '',
     linkLine,
     '',
-    '🪐 Más en @aldiachollos #Publi',
+    '🔔 <b>Sigue @aldiachollos</b> para recibir los próximos chollos · Compártelo si puede ayudar',
     `🔥 TOP CHOLLOS ${escapeHtml(store).toUpperCase()}`,
   ].filter((line, index) => line || index === 1 || index === 3 || index === 7 || index === 9).join('\n').slice(0, 1000);
 }

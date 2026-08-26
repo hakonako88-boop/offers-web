@@ -29,6 +29,7 @@ test('keeps the affiliate purchase button and adds the exact public offer page',
     inline_keyboard: [
       [{ text: '👉🏻 VER OFERTA', url: offer.url }],
       [{ text: '🔎 VER FICHA Y ANÁLISIS', url: trackedPublicOfferUrl(offer) }],
+      [{ text: '🔔 UNIRME A CHOLLOS AL DÍA', url: 'https://t.me/aldiachollos' }],
     ],
   });
   assert.equal(
@@ -114,7 +115,7 @@ test('accepts a complete private publication command with an Amazon affiliate UR
   assert.match(formatManualTelegramCaption(result.offer), /<s>59,99\s€<\/s>/);
   assert.match(formatManualTelegramCaption(result.offer), /#Amazon/);
   assert.match(formatManualTelegramCaption(result.offer), /PRECIO OFERTA/);
-  assert.match(formatManualTelegramCaption(result.offer), /Más en @aldiachollos/);
+  assert.match(formatManualTelegramCaption(result.offer), /Sigue @aldiachollos/);
   assert.doesNotMatch(formatManualTelegramCaption(result.offer), /Categoría/);
 });
 

@@ -60,6 +60,7 @@ await render("/contacto", "contacto/index.html");
 await render("/como-verificamos-ofertas", "como-verificamos-ofertas/index.html");
 await render("/blog", "blog/index.html");
 await render("/buscar", "buscar/index.html");
+await render("/telegram", "telegram/index.html");
 await render("/gta-vi-mas-barato-ps5", "gta-vi-mas-barato-ps5/index.html");
 for (const store of ["amazon", "aliexpress", "miravia", "xiaomi", "pccomponentes", "el-corte-ingles", "mediamarkt"]) {
   await render(`/ofertas/${store}`, `ofertas/${store}/index.html`);
