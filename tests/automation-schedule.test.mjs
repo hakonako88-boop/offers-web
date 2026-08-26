@@ -8,6 +8,7 @@ const aliExpressSync = fs.readFileSync(new URL('../scripts/sync-aliexpress-deals
 const miraviaSync = fs.readFileSync(new URL('../scripts/sync-miravia-deals.mjs', import.meta.url), 'utf8');
 const amazonSync = fs.readFileSync(new URL('../scripts/sync-amazon-deals.mjs', import.meta.url), 'utf8');
 const inboxSync = fs.readFileSync(new URL('../scripts/process-telegram-inbox.mjs', import.meta.url), 'utf8');
+const buttonRepair = fs.readFileSync(new URL('../scripts/repair-telegram-offer-buttons.mjs', import.meta.url), 'utf8');
 
 test('removes fixed publication times and checks channels every five minutes', () => {
   assert.doesNotMatch(workflow, /^\s+schedule:/mu);
@@ -41,4 +42,7 @@ test('uses the same stable product id for Telegram buttons and website records',
   assert.match(amazonSync, /presentationOffer = \{ \.\.\.offer, id: `amazon-\$\{offer\.asin\}`/u);
   assert.match(inboxSync, /websiteOfferId = offer\.sourceProductId \|\| offer\.id/u);
   assert.match(inboxSync, /source_product_id: websiteOfferId/u);
+  assert.match(workflow, /Corregir botones Ver ficha de Telegram/u);
+  assert.match(buttonRepair, /editMessageReplyMarkup/u);
+  assert.match(buttonRepair, /offerReplyMarkup/u);
 });
