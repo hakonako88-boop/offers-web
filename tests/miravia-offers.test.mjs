@@ -9,6 +9,7 @@ import {
   miraviaQualityScore,
   miraviaFeedEntries,
   normalizeMiraviaProduct,
+  miraviaCommunityQualityScore,
   parseFeedList,
   productImageFromPage,
   selectMiraviaFeed,
@@ -179,6 +180,16 @@ test('accepts a verified brand without feed reviews when the editorial floor is 
     oldPrice: 29.99,
     reviews: 0,
   }), 0);
+});
+
+test('filters exact Miravia community links before they reach Telegram', () => {
+  assert.equal(miraviaCommunityQualityScore({ title: 'Mantón flamenco bordado tradicional', price: 28.44, sourceWeight: 24 }), 0);
+  assert.equal(miraviaCommunityQualityScore({ title: 'S7 STAR maleta mediana 24 pulgadas', price: 29.49, sourceWeight: 24 }), 0);
+  assert.equal(miraviaCommunityQualityScore({ title: 'Pack condroprotector para perros', price: 38.85, sourceWeight: 24 }), 0);
+  assert.equal(miraviaCommunityQualityScore({ title: 'Samsung Galaxy Tab S10 FE 128GB Tablet', price: 201.98, sourceWeight: 24 }) > 0, true);
+  assert.equal(miraviaCommunityQualityScore({ title: 'LEGO 75643 ONE PIECE Tony Tony Chopper', price: 66.49, sourceWeight: 24 }) > 0, true);
+  assert.equal(miraviaCommunityQualityScore({ title: 'Apple AirPods 4 auriculares inalámbricos', price: 112.99, sourceWeight: 24 }) > 0, true);
+  assert.equal(miraviaCommunityQualityScore({ title: 'Samsung Galaxy Tab S10 FE', price: 201.98, oldPrice: 210, sourceWeight: 24 }), 0);
 });
 
 test('recognizes the gzip downloads produced by Awin feeds', () => {

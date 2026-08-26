@@ -12,6 +12,11 @@ const LOW_INTEREST_TERMS = [
   'tela', 'persiana', 'recambio', 'repuesto', 'tornillo', 'brida', 'pegatina',
   'adhesivo', 'organizador', 'bolsa de', 'filtro de', 'protector de', 'mantel',
   'table cloth', 'table linen', 'camino de mesa', 'servilleta',
+  'manton', 'flamenco', 'colchon', 'almohada', 'maleta', 'equipaje',
+  'carro de compra', 'silla gaming', 'banco de abdominales', 'armario',
+  'suplemento para perros', 'condroprotector', 'calmante para perros',
+  'proteina', 'creatina', 'pienso', 'comedero', 'arena para gatos',
+  'invernadero', 'growtent', 'aceite para moto', 'grifo cocina',
 ];
 
 const TRUSTED_BRANDS = [
@@ -24,6 +29,21 @@ const TRUSTED_BRANDS = [
   // abrir la puerta a productos genéricos de catálogo.
   'asus', 'acer', 'lenovo', 'hp', 'dell', 'msi', 'corsair', 'huawei', 'honor',
   'garmin', 'fitbit', 'canon', 'epson', 'cecotec', 'karcher', 'intex',
+  'tefal', 'bra', 'cosori', 'taurus', 'mellerware', 'masterpro', 'vileda',
+  'skechers', 'lacoste', 'vans', 'asics', 'joma', 'ray ban', 'casio',
+  'maserati', 'la roche posay', 'olaplex', 'durex', 'gillette', 'dove',
+  'nescafe', 'dolce gusto', 'huggies', 'dodot', 'rolser', 'shokz',
+  'haier', 'vivo', 'oneplus', 'oppo', 'realme', 'motorola', 'airpods',
+];
+
+const COMMUNITY_HIGH_INTEREST = [
+  'smartphone', 'movil', 'telefono', 'tablet', 'galaxy tab', 'portatil', 'ordenador',
+  'monitor', 'smart tv', 'televisor', 'qled', 'oled', 'consola', 'videojuego',
+  'playstation', 'nintendo switch', 'auriculares', 'airpods', 'altavoz',
+  'smartwatch', 'reloj', 'impresora', 'camara', 'robot aspirador', 'aspirador',
+  'freidora de aire', 'cafetera', 'batidora', 'secadora', 'cepillo electrico',
+  'afeitadora', 'depiladora', 'oneblade', 'irrigador', 'lego', 'barbie',
+  'zapatilla', 'pañales', 'sarten', 'paddle surf',
 ];
 
 // The Awin feed frequently supplies 200 px thumbnails that weigh only a few
@@ -33,7 +53,7 @@ const TRUSTED_BRANDS = [
 export const MIN_MIRAVIA_PRODUCT_IMAGE_BYTES = 12_000;
 export const MIN_MIRAVIA_PRODUCT_IMAGE_DIMENSION = 500;
 export const MIN_MIRAVIA_OPTIMIZED_IMAGE_BYTES = 2_500;
-export const MIRAVIA_QUALITY_POLICY_VERSION = 'v4';
+export const MIRAVIA_QUALITY_POLICY_VERSION = 'v5';
 
 export function isMiraviaProductImageLargeEnough(byteLength = 0, dimensions = {}) {
   const width = Number(dimensions.width || 0);
@@ -196,6 +216,23 @@ export function miraviaQualityScore({ title = '', category = '', price = 0, oldP
   );
 }
 
+/** Community posts are useful discovery signals, but they do not get a free
+ * pass into the channel. This policy accepts recognisable, high-intent
+ * products and rejects catalogue filler even when the product page itself is
+ * technically valid. A claimed previous price is optional, but if present it
+ * must represent a credible, meaningful saving. */
+export function miraviaCommunityQualityScore({ title = '', price = 0, oldPrice = 0, sourceWeight = 0 } = {}) {
+  const searchable = `${title}`;
+  const branded = containsOne(title, TRUSTED_BRANDS);
+  const highInterest = containsOne(title, COMMUNITY_HIGH_INTEREST);
+  const saving = Number(oldPrice) - Number(price);
+  const discount = oldPrice > price ? (saving / oldPrice) * 100 : 0;
+  if (!title || price < 10 || price > 1800 || containsOne(searchable, LOW_INTEREST_TERMS)) return 0;
+  if (!highInterest || !branded || Number(sourceWeight) < 20) return 0;
+  if (oldPrice > price && (discount < 18 || saving < 8 || discount > 65)) return 0;
+  return Math.round(70 + Math.min(Number(sourceWeight), 40) + Math.min(Math.max(saving, 0), 120) + Math.min(discount, 60));
+}
+
 export function parseCsvRow(line = '') {
   const cells = [];
   let cell = '';
@@ -276,7 +313,9 @@ export function normalizeMiraviaProduct(record = {}) {
   const rawCategory = columnValue(record, ['merchant_category', 'category_name', 'product_type', 'merchant_product_category_path']);
   const category = categoryFor(rawCategory);
   const titleTerms = normalizeKey(title).split('_').filter((term) => term.length >= 4 && !STOP_WORDS.has(term));
-  const popularity = Number.parseInt(columnValue(record, ['reviews', 'rating_count', 'review_count', 'number_available']), 10) || 0;
+  // Stock is not popularity. Treating number_available as reviews allowed
+  // generic products with large inventories to masquerade as proven deals.
+  const popularity = Number.parseInt(columnValue(record, ['reviews', 'rating_count', 'review_count']), 10) || 0;
   const qualityScore = miraviaQualityScore({ title, category: rawCategory, price, oldPrice, reviews: popularity });
   if (!qualityScore) return null;
 

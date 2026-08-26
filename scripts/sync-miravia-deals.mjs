@@ -14,6 +14,7 @@ import {
   miraviaFeedEntries,
   miraviaRecordFromColumns,
   normalizeMiraviaProduct,
+  miraviaCommunityQualityScore,
   parseFeedList,
   productImageFromPage,
   selectMiraviaFeed,
@@ -102,6 +103,13 @@ function exactMiraviaOffer(metadata, signal, destinationUrl) {
   const url = miraviaAffiliateUrl({ productId: id, destinationUrl });
   if (!id || !title || !image || !price || !url) return null;
   const discount = previousPrice > price ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
+  const editorialScore = miraviaCommunityQualityScore({
+    title,
+    price,
+    oldPrice: previousPrice,
+    sourceWeight: signal.sourceWeight,
+  });
+  if (!editorialScore) return null;
   return {
     id: `miravia-${id}`,
     sourceProductId: id,
@@ -116,7 +124,7 @@ function exactMiraviaOffer(metadata, signal, destinationUrl) {
     discount,
     category: signal.category || 'Miravia',
     titleTerms: signal.terms || [],
-    score: 2_000 + Number(signal.sourceWeight || 0) + discount,
+    score: 2_000 + editorialScore,
     communitySignalId: signal.id,
     communitySource: signal.source,
     communitySourceUrl: signal.sourceUrl,
