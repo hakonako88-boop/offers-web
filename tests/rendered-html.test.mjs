@@ -82,6 +82,8 @@ test("renders an individual offer with price analysis, pros, cons and Product SE
   assert.doesNotMatch(html, /<title>REACONDICIONADO Seminuevo Muy bueno/);
   assert.doesNotMatch(html, /<title>[^<]*\be \| Chollos al Día<\/title>/);
   assert.match(html, /Puntos a favor/);
+  assert.match(html, /Recibe el próximo chollo antes de que se agote/);
+  assert.match(html, /Unirme a @aldiachollos/);
   assert.match(html, /A tener en cuenta/);
   assert.match(html, /Otras ofertas que te pueden interesar/);
   assert.match(html, /Compartir por WhatsApp/);
