@@ -5,6 +5,8 @@ on:
     # Las 00:00 de Madrid son las 22:00 UTC en verano y las 23:00 UTC en invierno.
     # El script comprueba la hora local y solo publica en la ejecución correcta.
     - cron: "0 22,23 * * *"
+  repository_dispatch:
+    types: [daily_summary]
   workflow_dispatch:
 
 permissions:

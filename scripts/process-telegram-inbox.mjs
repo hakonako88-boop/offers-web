@@ -11,6 +11,7 @@ import {
   formatManualWebsiteText,
   manualOfferFromMessage,
   metadataForIncomingProductLink,
+  mergeOwnerSuppliedMetadata,
   mergeProductMetadata,
   metadataMatchesOfficialProduct,
   offerFromProductMetadata,
@@ -981,7 +982,7 @@ for (const update of updates || []) {
         delete pendingByChat[chatKey];
       }
       handled += 1;
-    } else if (isAuthorizedChat && incomingUrl && !/^\/(?:oferta|publicar)(?:@\w+)?\b/iu.test(String(text).trim())) {
+    } else if (isAuthorizedChat && incomingUrl && !/^\/publicar(?:@\w+)?\b/iu.test(String(text).trim())) {
       const url = incomingUrl;
       const forwardedMetadata = metadataForIncomingProductLink({
         pending: pendingByChat[chatKey],
@@ -1078,7 +1079,9 @@ for (const update of updates || []) {
         });
         if (generatedMiraviaUrl && productId) metadata.productId = productId;
       }
-      metadata = mergeProductMetadata(metadata, metadataFromForward);
+      // In /oferta mode the owner is the authority for the commercial wording
+      // and prices. Product identity and the catalogue photo stay official.
+      metadata = mergeOwnerSuppliedMetadata(metadata, metadataFromForward);
       metadata = metadataWithOfficialAmazonImage(metadata.finalUrl || url, metadata);
       // A shortened link copied from another publisher must never reach the
       // channel unchanged. AliExpress and Miravia leave this block only with

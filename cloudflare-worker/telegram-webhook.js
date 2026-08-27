@@ -42,17 +42,30 @@ async function githubDispatch(eventType, payload = {}) {
   throw latestError || new Error('GitHub dispatch failed without a response.');
 }
 
-/** Cloudflare is the reliable clock for source monitoring. It starts the
+/** Cloudflare is the reliable clock for source monitoring and the nightly
+ * Madrid summary. It starts the
  * lightweight GitHub watcher; only when that watcher finds a genuinely new
  * merchant post does it launch the slower publication pipeline. GitHub's own
  * schedule remains as a fallback, but it is not trusted as the primary clock. */
 async function dispatchAutomaticScan(cron) {
-  if (cron !== '*/10 * * * *') return;
-  await githubDispatch('source_poll', {
-    source: 'cloudflare-cron',
-    cron,
-    scheduledAt: new Date().toISOString(),
-  });
+  if (cron === '*/10 * * * *') {
+    await githubDispatch('source_poll', {
+      source: 'cloudflare-cron',
+      cron,
+      scheduledAt: new Date().toISOString(),
+    });
+    return;
+  }
+  // Madrid changes between UTC+1 and UTC+2. Trigger both possible UTC
+  // midnights; publish-daily-summary.mjs checks Europe/Madrid and only the
+  // correct invocation publishes. Its state also prevents duplicates.
+  if (cron === '0 22,23 * * *') {
+    await githubDispatch('daily_summary', {
+      source: 'cloudflare-cron',
+      cron,
+      scheduledAt: new Date().toISOString(),
+    });
+  }
 }
 
 async function handleRequest(request) {

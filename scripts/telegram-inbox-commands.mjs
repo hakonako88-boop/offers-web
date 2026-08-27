@@ -157,7 +157,7 @@ export function controlHelp() {
     '',
     'También puedes reenviar una publicación con foto y pegar después su enlace de compra.',
     '',
-    'Para crear una oferta completa tú mismo, envía una foto con /oferta en la primera línea y después Título:, Precio:, Cupón:, Descripción: y el enlace. Solo título, precio, foto y enlace son obligatorios.',
+    'Para crear una oferta tú mismo, envía /oferta en la primera línea y después Título:, Precio:, Antes: (opcional), Cupón: (opcional), Descripción: (opcional) y el enlace del producto. El bot buscará la foto oficial, convertirá el enlace a tu afiliación y te mostrará una vista previa antes de publicar.',
     '',
     'Para publicar una novedad o aviso sin precio, envía una foto con /post en la primera línea, el título en la segunda y el texto debajo. El enlace es opcional.',
   ].join('\n');
@@ -285,6 +285,25 @@ export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag =
  * the original price wording and does not invent a discount or description. */
 export function forwardedOfferMetadata(text = '', photoFileId = '') {
   const lines = String(text).replace(/\r\n/g, '\n').split('\n').map((line) => compact(line)).filter(Boolean);
+  const isOwnerManualOffer = /^\/(?:oferta|publicar)(?:@\w+)?(?:\s|$)/iu.test(lines[0] || '');
+  if (isOwnerManualOffer) {
+    const bodyLines = lines.slice(1);
+    const title = fieldValue(bodyLines, ['titulo', 'título', 'title', 'producto']) || fallbackTitle(bodyLines);
+    const price = parseAmount(fieldValue(bodyLines, ['precio', 'precio final', 'precio oferta']));
+    const previousPrice = parseAmount(fieldValue(bodyLines, ['antes', 'precio anterior', 'pvp']));
+    const description = fieldValue(bodyLines, ['descripcion', 'descripción', 'detalle', 'texto']);
+    const coupon = fieldValue(bodyLines, ['cupon', 'cupón', 'codigo', 'código']);
+    return {
+      title,
+      description,
+      imageUrl: photoFileId,
+      price,
+      previousPrice: previousPrice > price ? previousPrice : 0,
+      coupon,
+      photoFileId,
+      ownerSupplied: true,
+    };
+  }
   const headline = lines.find((line) => !/^https?:\/\//iu.test(line)
     && !/(?:descuento\s*:|precio(?:\s+(?:oferta|final|actual))?\s*:|precio más bajo|compra recurrente|compra única|ver aquí)/iu.test(line)) || '';
   const title = compact(headline.replace(/[🔥✨💥]+/gu, '').replace(/\|\s*#.+$/u, ''));
@@ -317,6 +336,25 @@ export function metadataForIncomingProductLink({ pending = null, text = '', phot
   // offer and must not inherit the previous product's title or photograph.
   if (pending?.draft && !pending?.url) return pending.draft;
   return forwardedOfferMetadata(text, photoFileId);
+}
+
+/** Applies the fields deliberately typed by the owner while retaining the
+ * verified product identity and official catalogue image. Empty optional
+ * fields do not erase information returned by the shop. */
+export function mergeOwnerSuppliedMetadata(official = {}, supplied = {}) {
+  const merged = mergeProductMetadata(official, supplied);
+  if (!supplied.ownerSupplied) return merged;
+  return {
+    ...merged,
+    ...Object.fromEntries(Object.entries({
+      title: supplied.title,
+      description: supplied.description,
+      price: supplied.price,
+      previousPrice: supplied.previousPrice,
+      coupon: supplied.coupon,
+    }).filter(([, value]) => value !== '' && value !== 0 && value != null)),
+    imageUrl: compact(official.imageUrl) || compact(merged.imageUrl),
+  };
 }
 
 /** Recognises an editorial promotion (dates, coupon ladder and one shop link)
@@ -429,7 +467,10 @@ export function manualOfferFromMessage({ text = '', photoFileId = '', controlCod
   if (!url) missing.push('el enlace');
   if (!title) missing.push('el título');
   if (!price) missing.push('el precio');
-  if (!photoFileId) missing.push('la foto');
+  // /oferta messages that include a shop URL are completed by the product
+  // resolver in process-telegram-inbox.mjs. This standalone parser still
+  // accepts a supplied photo for backwards compatibility.
+  if (!photoFileId) missing.push('la foto oficial (el bot la buscará desde el enlace)');
   if (store === 'Amazon' && !/[?&]tag=/i.test(url)) missing.push('un enlace de Amazon directo con tag=');
 
   if (missing.length) {

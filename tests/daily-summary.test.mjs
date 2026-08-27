@@ -42,6 +42,7 @@ test('schedules both possible Madrid midnights and stores duplicate protection',
   const workflow = fs.readFileSync(new URL('../.github/workflows/daily-summary.yml', import.meta.url), 'utf8');
   const script = fs.readFileSync(new URL('../scripts/publish-daily-summary.mjs', import.meta.url), 'utf8');
   assert.match(workflow, /cron:\s*"0 22,23 \* \* \*"/u);
+  assert.match(workflow, /types:\s*\[daily_summary\]/u);
   assert.match(workflow, /TELEGRAM_BOT_TOKEN/u);
   assert.match(script, /Europe\/Madrid/u);
   assert.match(script, /publishedDates/u);

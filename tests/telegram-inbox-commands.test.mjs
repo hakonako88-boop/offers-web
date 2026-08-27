@@ -11,6 +11,7 @@ import {
   formatManualWebsiteText,
   isReliableProductTitle,
   metadataMatchesOfficialProduct,
+  mergeOwnerSuppliedMetadata,
   manualOfferFromMessage,
   metadataForIncomingProductLink,
   mergeProductMetadata,
@@ -164,6 +165,50 @@ test('accepts /oferta without a secret in an already authorized chat', () => {
   assert.equal(result.offer.price, 17.78);
   assert.equal(result.offer.coupon, 'VERANO5');
   assert.equal(result.offer.store, 'AliExpress');
+});
+
+test('reads an owner supplied /oferta without requiring an attached Telegram photo', () => {
+  const metadata = forwardedOfferMetadata([
+    '/oferta',
+    'Título: Perfume unisex de 100 ml',
+    'Precio: 17,78 €',
+    'Antes: 29,99 €',
+    'Cupón: PERFUME5',
+    'Descripción: Fragancia duradera para uso diario.',
+    'https://s.click.aliexpress.com/e/_example',
+  ].join('\n'));
+
+  assert.equal(metadata.ownerSupplied, true);
+  assert.equal(metadata.title, 'Perfume unisex de 100 ml');
+  assert.equal(metadata.price, 17.78);
+  assert.equal(metadata.previousPrice, 29.99);
+  assert.equal(metadata.coupon, 'PERFUME5');
+  assert.equal(metadata.imageUrl, '');
+});
+
+test('keeps owner prices and wording but always uses the official product photo', () => {
+  const result = mergeOwnerSuppliedMetadata({
+    title: 'Título largo de la tienda',
+    price: 21.99,
+    previousPrice: 0,
+    coupon: '',
+    imageUrl: 'https://cdn.aliexpress.com/foto-oficial.jpg',
+    productId: '1005000000000000',
+  }, {
+    ownerSupplied: true,
+    title: 'Mi título claro para la oferta',
+    price: 17.78,
+    previousPrice: 29.99,
+    coupon: 'AHORRA5',
+    imageUrl: 'telegram-photo-copied',
+  });
+
+  assert.equal(result.title, 'Mi título claro para la oferta');
+  assert.equal(result.price, 17.78);
+  assert.equal(result.previousPrice, 29.99);
+  assert.equal(result.coupon, 'AHORRA5');
+  assert.equal(result.imageUrl, 'https://cdn.aliexpress.com/foto-oficial.jpg');
+  assert.equal(result.productId, '1005000000000000');
 });
 
 test('rejects /oferta when the private chat has not been authorized', () => {
