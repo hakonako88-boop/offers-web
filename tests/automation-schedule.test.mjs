@@ -10,11 +10,16 @@ const amazonSync = fs.readFileSync(new URL('../scripts/sync-amazon-deals.mjs', i
 const inboxSync = fs.readFileSync(new URL('../scripts/process-telegram-inbox.mjs', import.meta.url), 'utf8');
 const buttonRepair = fs.readFileSync(new URL('../scripts/repair-telegram-offer-buttons.mjs', import.meta.url), 'utf8');
 const welcomePublisher = fs.readFileSync(new URL('../scripts/publish-telegram-welcome.mjs', import.meta.url), 'utf8');
+const cloudflareWorker = fs.readFileSync(new URL('../cloudflare-worker/telegram-webhook.js', import.meta.url), 'utf8');
 
 test('removes fixed publication times and checks channels every five minutes', () => {
   assert.doesNotMatch(workflow, /^\s+schedule:/mu);
   assert.match(sourcePollWorkflow, /cron:\s*"\*\/5 \* \* \* \*"/u);
+  assert.match(sourcePollWorkflow, /types:\s*\[source_poll\]/u);
   assert.match(sourcePollWorkflow, /telegram_sources_changed/u);
+  assert.match(cloudflareWorker, /cron !== '\*\/5 \* \* \* \*'/u);
+  assert.match(cloudflareWorker, /githubDispatch\('source_poll'/u);
+  assert.doesNotMatch(cloudflareWorker, /automatic_(?:amazon|aliexpress|miravia)/u);
 });
 
 test('runs the three stores only after a source change or an explicit manual check', () => {

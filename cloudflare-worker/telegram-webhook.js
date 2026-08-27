@@ -42,18 +42,17 @@ async function githubDispatch(eventType, payload = {}) {
   throw latestError || new Error('GitHub dispatch failed without a response.');
 }
 
-/** Runs one source at a fixed Cloudflare cron time. The four schedules are
- * deliberately separated so the channel gets a curated rhythm instead of a
- * burst of unrelated products. */
+/** Cloudflare is the reliable clock for source monitoring. It starts the
+ * lightweight GitHub watcher; only when that watcher finds a genuinely new
+ * merchant post does it launch the slower publication pipeline. GitHub's own
+ * schedule remains as a fallback, but it is not trusted as the primary clock. */
 async function dispatchAutomaticScan(cron) {
-  const eventType = {
-    '15 7 * * *': 'automatic_amazon',
-    '15 11 * * *': 'automatic_aliexpress',
-    '15 15 * * *': 'automatic_amazon',
-    '15 19 * * *': 'automatic_miravia',
-  }[cron];
-  if (!eventType) return;
-  await githubDispatch(eventType, { source: 'cloudflare-cron', cron, scheduledAt: new Date().toISOString() });
+  if (cron !== '*/5 * * * *') return;
+  await githubDispatch('source_poll', {
+    source: 'cloudflare-cron',
+    cron,
+    scheduledAt: new Date().toISOString(),
+  });
 }
 
 async function handleRequest(request) {
