@@ -32,6 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       .map((category) => ({ url: `${siteUrl}/chollos/${category}/`, lastModified: homepageLastModified, changeFrequency: "daily" as const, priority: 0.75 })),
     { url: `${siteUrl}/aviso-legal/`, lastModified: new Date("2026-08-11T00:00:00.000Z"), changeFrequency: "yearly", priority: 0.3 },
     { url: `${siteUrl}/privacidad/`, lastModified: new Date("2026-08-11T00:00:00.000Z"), changeFrequency: "yearly", priority: 0.3 },
+    { url: `${siteUrl}/terminos/`, lastModified: new Date("2026-08-28T00:00:00.000Z"), changeFrequency: "yearly", priority: 0.3 },
     { url: `${siteUrl}/afiliacion/`, lastModified: new Date("2026-08-11T00:00:00.000Z"), changeFrequency: "yearly", priority: 0.3 },
     { url: `${siteUrl}/contacto/`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.4 },
   ];
