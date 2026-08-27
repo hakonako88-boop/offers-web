@@ -52,6 +52,15 @@ test('keeps automatic source runs fast and prevents state commits from redeployi
   }
 });
 
+test('isolates source publication and leaves its queue to the lightweight watcher', () => {
+  assert.match(workflow, /telegram_sources_changed' && 'chollosaldia-source-publication'/u);
+  const saveStep = workflow.match(/- name: Guardar ofertas nuevas[\s\S]*?(?=\n\s{6}- name:|$)/u)?.[0] || '';
+  assert.match(saveStep, /git restore -- data\/telegram-source-queue\.json/u);
+  const stagedLine = saveStep.split('\n').find((line) => line.includes('git add data/offers.json')) || '';
+  assert.doesNotMatch(stagedLine, /data\/telegram-source-queue\.json/u);
+  assert.match(stagedLine, /data\/telegram-source-queue-report\.json/u);
+});
+
 test('publishes one validated offer in each independently isolated slot', () => {
   assert.match(aliExpressSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
   assert.match(miraviaSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
