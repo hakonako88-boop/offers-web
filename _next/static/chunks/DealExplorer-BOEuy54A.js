@@ -1,4 +1,21 @@
-import{r as e}from"./rolldown-runtime-C60lm6uB.js";import{i as t,r as n}from"./framework-BaE7mD_r.js";import r,{t as i}from"./AdSlot-DG6XFrSN.js";var a=e(n(),1),o=[{id:`post-4947`,message_id:4947,source_product_id:`post:75ab5b714950e8d5`,date:1787658642,title:`GTA VI: 79,99 € frente a unos 54 €`,body:`🎮 Hemos encontrado una diferencia regional muy interesante en el precio de la reserva de GTA VI para PS5.
+import{r as e}from"./rolldown-runtime-C60lm6uB.js";import{i as t,r as n}from"./framework-BaE7mD_r.js";import r,{t as i}from"./AdSlot-DG6XFrSN.js";var a=e(n(),1),o=[{id:`resumen-diario-2026-08-27`,source_product_id:`daily-summary:2026-08-27`,date:1787868048,title:`Las mejores ofertas del 27 de agosto de 2026`,body:`Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.
+
+1. Báscula de baño - Beurer BF1000, 10 Memorias + Modo invitado, Hasta 200 kg, Apagado automático, 8…
+189,00\xA0€ en MediaMarkt
+
+2. SanDisk Extreme Portable 8TB Disco SSD Externo Portátil 1050MB/s USB-C 3.2 Gen 2 Negro
+1194,16\xA0€ en PcComponentes
+
+3. Cecotec - Base de autovaciado Conga Home 10.000.
+169,95\xA0€ en El Corte Inglés
+
+4. roborock Qrevo S Pro Robot Aspirador (Versión Mejorada del QV 35A) Succión de 18500 Pa, Base Todo en Uno,…
+399,98\xA0€ en Amazon
+
+5. Aspiradora Inalámbrica Portátil COTIAR R11 de 500W y 50000PA para el Hogar, con Depósito de Polvo de 1.2L y Batería Extraíble
+55,99\xA0€ en AliExpress
+
+Los precios y el stock pueden cambiar. Comprueba siempre las condiciones en la tienda antes de comprar.`,image:`/tg/tradedoubler-270504-1539644.jpg`,url:`https://chollosaldia.com/`,source:`daily-summary`,message_id:5316},{id:`post-4947`,message_id:4947,source_product_id:`post:75ab5b714950e8d5`,date:1787658642,title:`GTA VI: 79,99 € frente a unos 54 €`,body:`🎮 Hemos encontrado una diferencia regional muy interesante en el precio de la reserva de GTA VI para PS5.
 
 🇪🇸 Precio en España: 79,99 €
 
