@@ -34,6 +34,24 @@ test('runs the three stores only after a source change or an explicit manual che
   assert.doesNotMatch(workflow, /automatic_amazon/u);
 });
 
+test('keeps automatic source runs fast and prevents state commits from redeploying twice', () => {
+  assert.match(workflow, /contains\(github\.event\.head_commit\.message, '\[source-watch\]'\)/u);
+  assert.match(workflow, /contains\(github\.event\.head_commit\.message, '\[automation-state\]'\)/u);
+  assert.match(workflow, /Actualizar ofertas desde Telegram \[automation-state\]/u);
+  for (const stepName of [
+    'Comprobar acceso seguro a Telegram',
+    'Optimizar perfil público del canal de Telegram',
+    'Publicar y fijar bienvenida del canal',
+    'Retirar publicaciones con datos erróneos',
+    'Limpiar pies de foto pendientes en Telegram',
+    'Corregir botones Ver ficha de Telegram',
+  ]) {
+    const escaped = stepName.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
+    const step = workflow.match(new RegExp(`- name: ${escaped}[\\s\\S]*?(?=\\n\\s{6}- name:|$)`, 'u'))?.[0] || '';
+    assert.match(step, /github\.event_name != 'repository_dispatch'/u);
+  }
+});
+
 test('publishes one validated offer in each independently isolated slot', () => {
   assert.match(aliExpressSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
   assert.match(miraviaSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
