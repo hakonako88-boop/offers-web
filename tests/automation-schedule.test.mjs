@@ -12,12 +12,12 @@ const buttonRepair = fs.readFileSync(new URL('../scripts/repair-telegram-offer-b
 const welcomePublisher = fs.readFileSync(new URL('../scripts/publish-telegram-welcome.mjs', import.meta.url), 'utf8');
 const cloudflareWorker = fs.readFileSync(new URL('../cloudflare-worker/telegram-webhook.js', import.meta.url), 'utf8');
 
-test('removes fixed publication times and checks channels every five minutes', () => {
+test('uses a ten-minute Cloudflare clock with a staggered GitHub fallback', () => {
   assert.doesNotMatch(workflow, /^\s+schedule:/mu);
-  assert.match(sourcePollWorkflow, /cron:\s*"\*\/5 \* \* \* \*"/u);
+  assert.match(sourcePollWorkflow, /cron:\s*"7,37 \* \* \* \*"/u);
   assert.match(sourcePollWorkflow, /types:\s*\[source_poll\]/u);
   assert.match(sourcePollWorkflow, /telegram_sources_changed/u);
-  assert.match(cloudflareWorker, /cron !== '\*\/5 \* \* \* \*'/u);
+  assert.match(cloudflareWorker, /cron !== '\*\/10 \* \* \* \*'/u);
   assert.match(cloudflareWorker, /githubDispatch\('source_poll'/u);
   assert.doesNotMatch(cloudflareWorker, /automatic_(?:amazon|aliexpress|miravia)/u);
 });

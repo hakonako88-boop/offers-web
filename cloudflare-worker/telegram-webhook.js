@@ -47,7 +47,7 @@ async function githubDispatch(eventType, payload = {}) {
  * merchant post does it launch the slower publication pipeline. GitHub's own
  * schedule remains as a fallback, but it is not trusted as the primary clock. */
 async function dispatchAutomaticScan(cron) {
-  if (cron !== '*/5 * * * *') return;
+  if (cron !== '*/10 * * * *') return;
   await githubDispatch('source_poll', {
     source: 'cloudflare-cron',
     cron,
