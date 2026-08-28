@@ -2,7 +2,7 @@
  * Telegram webhook bridge for Chollos al Dia.
  * It verifies Telegram, then starts the existing GitHub offer pipeline.
  */
-/* global GITHUB_OWNER, GITHUB_REPO, GITHUB_DISPATCH_TOKEN, TELEGRAM_WEBHOOK_SECRET, TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET, TIKTOK_SANDBOX_CLIENT_KEY, TIKTOK_SANDBOX_CLIENT_SECRET, TIKTOK_ACTIVE_MODE, TIKTOK_ADMIN_SECRET, TIKTOK_AUTH */
+/* global GITHUB_OWNER, GITHUB_REPO, GITHUB_DISPATCH_TOKEN, TELEGRAM_WEBHOOK_SECRET, TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET, TIKTOK_SANDBOX_CLIENT_KEY, TIKTOK_SANDBOX_CLIENT_SECRET, TIKTOK_ACTIVE_MODE, TIKTOK_ADMIN_SECRET, TIKTOK_CONNECT_TOKEN, TIKTOK_AUTH */
 const json = (value, status = 200) => new Response(JSON.stringify(value), {
   status,
   headers: { 'content-type': 'application/json; charset=utf-8' },
@@ -10,6 +10,7 @@ const json = (value, status = 200) => new Response(JSON.stringify(value), {
 const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 const TIKTOK_REDIRECT_URI = 'https://chollosaldia-telegram.peitolerito.workers.dev/tiktok/oauth/callback';
 const TIKTOK_SCOPES = 'user.info.basic,video.upload,video.publish';
+const TIKTOK_CONNECT_COMPLETE_KEY = 'tiktok:connect-complete';
 
 function tikTokMode() {
   return typeof TIKTOK_ACTIVE_MODE !== 'undefined' && TIKTOK_ACTIVE_MODE === 'sandbox'
@@ -44,12 +45,13 @@ function tikTokOAuthStateKey(state) {
   return `tiktok:${tikTokMode()}:oauth-state:${state}`;
 }
 
-const html = (value, status = 200) => new Response(value, {
+const html = (value, status = 200, extraHeaders = {}) => new Response(value, {
   status,
   headers: {
     'content-type': 'text/html; charset=utf-8',
     'cache-control': 'no-store',
     'x-content-type-options': 'nosniff',
+    ...extraHeaders,
   },
 });
 
@@ -157,6 +159,50 @@ async function startTikTokOAuth(request) {
   return json({ ok: true, authorize_url: authorize.toString() });
 }
 
+function tikTokConnectPage() {
+  return html(`<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer"><title>Conectar TikTok con ChollosAlDía</title>
+<style>body{font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#0f172a;color:#fff}.box{max-width:34rem;padding:2rem;border-radius:1rem;background:#1e293b}p{line-height:1.55}.error{color:#fca5a5}</style></head>
+<body><main class="box"><h1>Conectando TikTok…</h1><p id="status">Preparando la autorización segura.</p></main>
+<script>
+(async()=>{const status=document.getElementById('status');const token=location.hash.slice(1);history.replaceState(null,'',location.pathname);
+if(!token){status.className='error';status.textContent='El enlace privado no contiene el token de conexión.';return;}
+try{const response=await fetch('/tiktok/oauth/direct',{method:'POST',headers:{'X-Chollos-Connect-Token':token}});const data=await response.json();
+if(!response.ok||!data.authorize_url)throw new Error(data.error||'No se pudo iniciar la conexión');location.replace(data.authorize_url);
+}catch(error){status.className='error';status.textContent=error.message||'No se pudo iniciar la conexión';}})();
+</script></body></html>`, 200, {
+    'content-security-policy': "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+    'referrer-policy': 'no-referrer',
+  });
+}
+
+async function startDirectTikTokOAuth(request) {
+  if (typeof TIKTOK_CONNECT_TOKEN === 'undefined' || !TIKTOK_CONNECT_TOKEN) {
+    return json({ ok: false, error: 'Direct connection is not configured' }, 503);
+  }
+  if (await TIKTOK_AUTH.get(TIKTOK_CONNECT_COMPLETE_KEY)) {
+    return json({ ok: false, error: 'This private connection link has already been used' }, 410);
+  }
+  const supplied = request.headers.get('X-Chollos-Connect-Token') || '';
+  if (!(await safeEqual(supplied, TIKTOK_CONNECT_TOKEN))) {
+    return json({ ok: false, error: 'Unauthorized' }, 401);
+  }
+  const credentials = tikTokCredentials();
+  const state = randomToken();
+  await TIKTOK_AUTH.put(tikTokOAuthStateKey(state), '1', { expirationTtl: 600 });
+  const authorize = new URL('https://www.tiktok.com/v2/auth/authorize/');
+  authorize.search = new URLSearchParams({
+    client_key: credentials.clientKey,
+    response_type: 'code',
+    scope: TIKTOK_SCOPES,
+    redirect_uri: TIKTOK_REDIRECT_URI,
+    state,
+    disable_auto_auth: '1',
+  }).toString();
+  return json({ ok: true, authorize_url: authorize.toString() });
+}
+
 async function finishTikTokOAuth(url) {
   const error = url.searchParams.get('error');
   if (error) return html(`<h1>No se autorizó TikTok</h1><p>${String(url.searchParams.get('error_description') || error).replace(/[<>]/g, '')}</p>`, 400);
@@ -178,6 +224,7 @@ async function finishTikTokOAuth(url) {
     if (missing.length) {
       return html(`<h1>TikTok conectado parcialmente</h1><p>Faltan permisos: ${missing.join(', ')}</p>`, 409);
     }
+    await TIKTOK_AUTH.put(TIKTOK_CONNECT_COMPLETE_KEY, '1');
     return html('<h1>✅ TikTok conectado con Rocky</h1><p>La autorización se ha guardado de forma cifrada en Cloudflare. Ya puedes cerrar esta pestaña.</p>');
   } catch (tokenError) {
     return html(`<h1>No se pudo terminar la conexión</h1><p>${publicError(tokenError)}</p>`, 502);
@@ -349,6 +396,8 @@ async function handleRequest(request) {
       return json({ ok: true, service: 'chollosaldia-telegram-webhook' });
     }
     if (request.method === 'POST' && url.pathname === '/tiktok/oauth/start') return startTikTokOAuth(request);
+    if (request.method === 'GET' && url.pathname === '/tiktok/connect') return tikTokConnectPage();
+    if (request.method === 'POST' && url.pathname === '/tiktok/oauth/direct') return startDirectTikTokOAuth(request);
     if (request.method === 'GET' && url.pathname === '/tiktok/oauth/callback') return finishTikTokOAuth(url);
     if (request.method === 'GET' && url.pathname === '/tiktok/status') return tiktokStatus(request);
     if (request.method === 'POST' && url.pathname === '/tiktok/preview') return createTikTokPreview(request);
