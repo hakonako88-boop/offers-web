@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
+import { publicationAllowance } from '../scripts/publication-policy.mjs';
 
 const workflow = fs.readFileSync(new URL('../.github/workflows/deploy.yml', import.meta.url), 'utf8');
 const sourcePollWorkflow = fs.readFileSync(new URL('../.github/workflows/telegram-source-poll.yml', import.meta.url), 'utf8');
@@ -19,7 +20,7 @@ test('uses a ten-minute Cloudflare clock with a staggered GitHub fallback', () =
   assert.match(sourcePollWorkflow, /telegram_sources_changed/u);
   assert.match(cloudflareWorker, /cron === '\*\/10 \* \* \* \*'/u);
   assert.match(cloudflareWorker, /githubDispatch\('source_poll'/u);
-  assert.match(cloudflareWorker, /cron === '0 22,23 \* \* \*'/u);
+  assert.match(cloudflareWorker, /cron === '45 20,21 \* \* \*'/u);
   assert.match(cloudflareWorker, /githubDispatch\('daily_summary'/u);
   assert.doesNotMatch(cloudflareWorker, /automatic_(?:amazon|aliexpress|miravia)/u);
 });
@@ -70,6 +71,7 @@ test('publishes one validated offer in each independently isolated slot', () => 
   assert.match(aliExpressSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
   assert.match(miraviaSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
   assert.match(workflow, /FORCE_AUTOMATIC_PUBLICATION:.*telegram_sources_changed/u);
+  assert.match(workflow, /BYPASS_PUBLICATION_SCHEDULE:.*workflow_dispatch/u);
   assert.match(workflow, /Clasificar mensajes pendientes de los canales/u);
 });
 
@@ -98,4 +100,16 @@ test('publishes the channel welcome only once and pins it without notifying subs
   assert.match(welcomePublisher, /disable_notification: true/u);
   assert.match(welcomePublisher, /Telegram welcome already published/u);
   assert.match(welcomePublisher, /COMPARTIR EL CANAL/u);
+});
+
+test('spreads publications through Madrid daytime and enforces retailer caps', () => {
+  const night = publicationAllowance({ store: 'Amazon', now: new Date('2026-08-28T03:00:00+02:00') });
+  assert.equal(night.reason, 'quiet-hours');
+  const offers = Array.from({ length: 2 }, () => ({
+    store: 'Miravia',
+    date: Math.floor(Date.parse('2026-08-28T13:00:00+02:00') / 1000),
+  }));
+  const capped = publicationAllowance({ store: 'Miravia', offers, now: new Date('2026-08-28T21:00:00+02:00') });
+  assert.equal(capped.reason, 'store-daily-limit');
+  assert.equal(publicationAllowance({ store: 'Miravia', offers, now: new Date(), bypass: true }).allowed, true);
 });

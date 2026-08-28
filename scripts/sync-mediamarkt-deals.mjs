@@ -4,6 +4,7 @@ import sharp from 'sharp';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
+import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
 import {
   TRADEDOUBLER_MEDIAMARKT,
   TRADEDOUBLER_QUALITY_POLICY_VERSION,
@@ -146,11 +147,12 @@ const candidates = [...queued, ...discovered]
   .filter((offer, index, list) => list.findIndex((entry) => entry.id === offer.id) === index)
   .sort((left, right) => right.score - left.score)
   .slice(0, MAX_CANDIDATES);
+const publicationPolicy = publicationAllowance({ store: 'MediaMarkt', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 
 let sent = 0;
 let attempts = 0;
 const attempted = new Set();
-for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
+for (const offer of (publicationPolicy.allowed ? candidates : []).slice(0, MAX_PUBLICATION_ATTEMPTS)) {
   attempts += 1;
   attempted.add(offer.id);
   const duplicate = filterDuplicateDeals([offer], existingWebOffers)[0];

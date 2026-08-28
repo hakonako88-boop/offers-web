@@ -25,6 +25,7 @@ import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mj
 import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
 import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
 import { extractProductMetadata } from './link-offer-extractor.mjs';
+import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'miravia-discovery-state.json');
@@ -383,6 +384,7 @@ const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, D
 const canPublishToday = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
   || !lastPublicationAt
   || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
+const publicationPolicy = publicationAllowance({ store: 'Miravia', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 
 const signalCutoff = Date.now() - COMMUNITY_SIGNAL_RETENTION_MS;
 const pendingMiraviaQueueIds = new Set(readJson(path.join(ROOT, 'data', 'telegram-source-queue.json'), { items: [] }).items
@@ -484,14 +486,15 @@ const mergedCandidates = Array.from(new Map(
   } : offer;
 });
 
-const candidates = (canPublishToday ? filterDuplicateDeals(mergedCandidates, existingWebOffers) : [])
+const eligibleCandidates = filterDuplicateDeals(mergedCandidates, existingWebOffers)
   .sort((left, right) => right.score - left.score);
+const candidates = canPublishToday && publicationPolicy.allowed ? eligibleCandidates : [];
 
 let sent = 0;
 let attempted = 0;
 const attemptedProductIds = new Set();
 for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
-  if (sent >= MAX_POSTS_PER_RUN) break;
+  if (sent >= Math.min(MAX_POSTS_PER_RUN, publicationPolicy.remaining)) break;
   attempted += 1;
   attemptedProductIds.add(offer.id);
   try {
@@ -521,7 +524,7 @@ for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
 writeJson(STATE_FILE, {
   nextFeed: Number(state.nextFeed || 0) + 1,
   feedVersions: { ...state.feedVersions, [feed.feed_id]: feedVersion },
-  queuedOffers: candidates
+  queuedOffers: eligibleCandidates
     .filter((offer) => !seenProductIds.has(offer.id) && !attemptedProductIds.has(offer.id))
     .slice(0, MAX_CANDIDATES),
   lastRunAt: new Date().toISOString(),

@@ -14,6 +14,7 @@ import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mj
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
+import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'aliexpress-discovery-state.json');
@@ -277,6 +278,7 @@ const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, D
 const canPublishNow = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
   || !lastPublicationAt
   || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
+const publicationPolicy = publicationAllowance({ store: 'AliExpress', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 // Community sites are discovery signals. Do not fill the channel with generic
 // catalogue searches when there is no fresh external signal to validate.
 const topics = [];
@@ -353,9 +355,9 @@ function publishableCandidates(sourceCandidates) {
   ).values()), existingWebOffers);
 }
 
-let uniqueCandidates = canPublishNow ? publishableCandidates(candidates) : [];
+let uniqueCandidates = canPublishNow && publicationPolicy.allowed ? publishableCandidates(candidates) : [];
 
-if (canPublishNow && !uniqueCandidates.length) {
+if (canPublishNow && publicationPolicy.allowed && !uniqueCandidates.length) {
   // Cuatro categorías rotatorias dan margen cuando las fuentes comunitarias
   // están vacías o no responden, pero se conserva el filtro de calidad.
   const fallbackTopics = topicsForAliExpressRun(Number(state.nextTopic || 0), 4);
@@ -377,7 +379,7 @@ if (canPublishNow && !uniqueCandidates.length) {
 let sent = 0;
 let attempted = 0;
 for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
-  if (sent >= MAX_POSTS_PER_RUN) break;
+  if (sent >= Math.min(MAX_POSTS_PER_RUN, publicationPolicy.remaining)) break;
   attempted += 1;
   try {
     const message = await publishOffer(config, offer);

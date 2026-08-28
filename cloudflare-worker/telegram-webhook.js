@@ -426,7 +426,7 @@ async function dispatchAutomaticScan(cron) {
   // Madrid changes between UTC+1 and UTC+2. Trigger both possible UTC
   // midnights; publish-daily-summary.mjs checks Europe/Madrid and only the
   // correct invocation publishes. Its state also prevents duplicates.
-  if (cron === '0 22,23 * * *') {
+  if (cron === '45 20,21 * * *') {
     await githubDispatch('daily_summary', {
       source: 'cloudflare-cron',
       cron,

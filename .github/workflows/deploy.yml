@@ -152,6 +152,7 @@ jobs:
       # Una novedad real en las fuentes y una prueba manual pueden ignorar el
       # intervalo editorial; los filtros de calidad y duplicados siguen activos.
       FORCE_AUTOMATIC_PUBLICATION: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || (github.event_name == 'workflow_dispatch' && inputs.run_automatic_source != 'none') }}
+      BYPASS_PUBLICATION_SCHEDULE: ${{ github.event_name == 'workflow_dispatch' && inputs.run_automatic_source != 'none' }}
       TELEGRAM_SOURCE_QUEUE_MODE: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed' }}
     steps:
       - name: Descargar web

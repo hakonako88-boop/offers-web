@@ -7,6 +7,7 @@ import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mj
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { isGzipFeed, parseFeedList } from './miravia-offers.mjs';
+import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
 import {
   AWIN_RETAILERS,
   AWIN_RETAIL_QUALITY_POLICY_VERSION,
@@ -194,10 +195,11 @@ const queued = (state.queuedOffers?.[retailerStateKey] || [])
 const discovered = state.feedVersions?.[feed.feed_id] !== feedVersion || queued.length < 5 ? await discover(feed.url, retailer, seenIds) : { candidates: [], scanned: 0 };
 const merged = [...new Map([...queued, ...discovered.candidates].map((offer) => [offer.id, offer])).values()];
 const candidates = filterDuplicateDeals(merged, existingWebOffers).sort((a, b) => b.score - a.score);
+const publicationPolicy = publicationAllowance({ store: retailer.store, offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 let sent = 0;
 let attempts = 0;
 const attempted = new Set();
-for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
+for (const offer of (publicationPolicy.allowed ? candidates : []).slice(0, MAX_PUBLICATION_ATTEMPTS)) {
   attempts += 1; attempted.add(offer.id);
   try {
     const preferredImage = await preferredOriginalImage(offer, retailer);

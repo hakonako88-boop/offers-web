@@ -26,9 +26,10 @@ function madridParts(date) {
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
+    minute: '2-digit',
     hourCycle: 'h23',
   }).formatToParts(date).reduce((result, part) => ({ ...result, [part.type]: part.value }), {});
-  return { date: `${parts.year}-${parts.month}-${parts.day}`, hour: Number(parts.hour) };
+  return { date: `${parts.year}-${parts.month}-${parts.day}`, hour: Number(parts.hour), minute: Number(parts.minute) };
 }
 
 function previousMadridDate(now) {
@@ -150,12 +151,12 @@ async function main() {
   const now = new Date();
   const force = String(process.env.DAILY_SUMMARY_FORCE || '').toLowerCase() === 'true';
   const current = madridParts(now);
-  if (!force && current.hour !== 0) {
-    console.log(`Resumen omitido: en Madrid son las ${String(current.hour).padStart(2, '0')}:00.`);
+  if (!force && (current.hour !== 22 || current.minute < 45)) {
+    console.log(`Resumen omitido: en Madrid son las ${String(current.hour).padStart(2, '0')}:${String(current.minute).padStart(2, '0')}.`);
     return;
   }
 
-  const targetDate = String(process.env.DAILY_SUMMARY_DATE || '').trim() || previousMadridDate(now);
+  const targetDate = String(process.env.DAILY_SUMMARY_DATE || '').trim() || current.date;
   const state = readJson(STATE_FILE, { publishedDates: [] });
   const posts = readJson(POSTS_FILE, []);
   if ((state.publishedDates || []).includes(targetDate) || posts.some((post) => post.id === `resumen-diario-${targetDate}`)) {

@@ -11,6 +11,7 @@ import { communityMatchForTitle, discoverCommunitySignals, nextCommunitySignalSt
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
+import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'amazon-discovery-state.json');
@@ -223,6 +224,7 @@ const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, D
 const canPublishNow = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
   || !lastPublicationAt
   || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
+const publicationPolicy = publicationAllowance({ store: 'Amazon', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 const communityDiscovery = await discoverCommunitySignals({ state: communityState, includeAmazon: true });
 const selectedSources = new Set();
 const amazonSignals = [];
@@ -272,14 +274,14 @@ if (accessToken) {
   }
 }
 
-const uniqueCandidates = (canPublishNow ? filterDuplicateDeals(Array.from(new Map(
+const uniqueCandidates = (canPublishNow && publicationPolicy.allowed ? filterDuplicateDeals(Array.from(new Map(
   candidates.sort((a, b) => b.score - a.score).map((offer) => [offer.asin, offer])
 ).values()), existingWebOffers) : []);
 
 let sent = 0;
 let attempted = 0;
 for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
-  if (sent >= MAX_POSTS_PER_RUN) break;
+  if (sent >= Math.min(MAX_POSTS_PER_RUN, publicationPolicy.remaining)) break;
   attempted += 1;
   try {
     const message = await publishOffer(config, offer);
