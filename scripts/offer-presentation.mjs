@@ -44,13 +44,12 @@ export function trackedPublicOfferUrl(offer = {}, siteUrl = 'https://chollosaldi
   return `${base}?${params.toString()}`;
 }
 
-export function offerReplyMarkup(offer = {}, purchaseLabel = '👉🏻 VER OFERTA') {
-  const rows = [];
-  if (offer.url) rows.push([{ text: purchaseLabel, url: offer.url }]);
+export function offerReplyMarkup(offer = {}, purchaseLabel = '🛒 COMPRAR') {
+  const actions = [];
+  if (offer.url) actions.push({ text: purchaseLabel, url: offer.url });
   const webUrl = trackedPublicOfferUrl(offer);
-  if (webUrl) rows.push([{ text: '🔎 VER FICHA Y ANÁLISIS', url: webUrl }]);
-  rows.push([{ text: '🔔 UNIRME A CHOLLOS AL DÍA', url: 'https://t.me/aldiachollos' }]);
-  return rows.length ? { inline_keyboard: rows } : undefined;
+  if (webUrl) actions.push({ text: '📋 DETALLES', url: webUrl });
+  return actions.length ? { inline_keyboard: [actions] } : undefined;
 }
 
 function trimAtWord(value, maximum = 108) {
@@ -77,9 +76,20 @@ function brandBefore(title, pattern) {
  * product does not match one of the common deal types.
  */
 export function improveOfferTitle(value = '') {
-  const original = compact(value)
+  let original = compact(value)
+    .replace(/^[🔥✨💥⚡🛍️\s]+/gu, '')
+    .replace(/^(?:(?:super\s+)?ofert(?:a|ón)|chollo|precio\s+incre[ií]ble)\s*[:!·|—-]*\s*/iu, '')
+    .replace(/\s*(?:\|\s*)?#(?:publicidad|publi|oferta(?:flash)?|chollos?)(?:\s+#[\p{L}\p{N}_]+)*\s*$/giu, '')
     .replace(/\b(\d+)\s*[xX×]\s*(\d+)\s*Cm\b/gu, '$1×$2 cm')
     .replace(/\bCm\b/gu, 'cm');
+  const letters = original.match(/\p{L}/gu) || [];
+  const uppercase = original.match(/\p{Lu}/gu) || [];
+  if (letters.length >= 12 && uppercase.length / letters.length > 0.82) {
+    original = `${original.charAt(0).toLocaleUpperCase('es')}${original.slice(1).toLocaleLowerCase('es')}`;
+    for (const acronym of ['SPARK', 'USB', 'DGT', 'LED', 'HDMI', 'SSD', 'RAM', 'OLED', 'QLED', 'JBL']) {
+      original = original.replace(new RegExp(`\\b${acronym}\\b`, 'giu'), acronym);
+    }
+  }
   const text = normalized(original);
   if (!original) return 'Oferta destacada';
 
@@ -130,7 +140,7 @@ export function improveOfferTitle(value = '') {
     return trimAtWord(`Auriculares${wireless}${brand ? ` ${brand}` : ''}`);
   }
 
-  return trimAtWord(original);
+  return trimAtWord(original, 94);
 }
 
 export function categoryHashtag(value = '') {
@@ -197,10 +207,10 @@ export function formatTelegramDealCard({
     : highlight
       ? `🔻 ${escapeHtml(highlight)}`
       : `🔻 ${savingsText}`;
-  const linkLine = '👇🏻 <b>Toca el botón VER OFERTA</b> para comprar';
+  const linkLine = '👇🏻 <b>Toca COMPRAR</b> para ir directamente a la tienda';
 
   return [
-    `<b>${escapeHtml(improveOfferTitle(title))}</b> #${storeTag}`,
+    `🔥 <b>${escapeHtml(improveOfferTitle(title))}</b> · #${storeTag}`,
     '',
     `✨ ${escapeHtml(offerDescription({ title, discount, description }))}`,
     '',
@@ -211,7 +221,6 @@ export function formatTelegramDealCard({
     linkLine,
     '',
     '🔔 <b>Sigue @aldiachollos</b> para recibir los próximos chollos · Compártelo si puede ayudar',
-    `🔥 TOP CHOLLOS ${escapeHtml(store).toUpperCase()}`,
   ].filter((line, index) => line || index === 1 || index === 3 || index === 7 || index === 9).join('\n').slice(0, 1000);
 }
 

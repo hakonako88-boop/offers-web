@@ -19,7 +19,7 @@ import {
   processingOfferReply,
   urlFromTelegramMessage,
 } from '../scripts/telegram-inbox-commands.mjs';
-import { formatTelegramDealCard, offerReplyMarkup, publicOfferUrl, trackedPublicOfferUrl } from '../scripts/offer-presentation.mjs';
+import { formatTelegramDealCard, improveOfferTitle, offerReplyMarkup, publicOfferUrl, trackedPublicOfferUrl } from '../scripts/offer-presentation.mjs';
 
 const controlCode = 'test-private-code';
 
@@ -27,15 +27,21 @@ test('keeps the affiliate purchase button and adds the exact public offer page',
   const offer = { id: 'aliexpress-ES/ventilador 10', store: 'AliExpress', url: 'https://s.click.aliexpress.com/e/example' };
   assert.equal(publicOfferUrl(offer.id), 'https://chollosaldia.com/oferta/aliexpress-ES-ventilador-10/');
   assert.deepEqual(offerReplyMarkup(offer), {
-    inline_keyboard: [
-      [{ text: '👉🏻 VER OFERTA', url: offer.url }],
-      [{ text: '🔎 VER FICHA Y ANÁLISIS', url: trackedPublicOfferUrl(offer) }],
-      [{ text: '🔔 UNIRME A CHOLLOS AL DÍA', url: 'https://t.me/aldiachollos' }],
-    ],
+    inline_keyboard: [[
+      { text: '🛒 COMPRAR', url: offer.url },
+      { text: '📋 DETALLES', url: trackedPublicOfferUrl(offer) },
+    ]],
   });
   assert.equal(
     trackedPublicOfferUrl(offer),
     'https://chollosaldia.com/oferta/aliexpress-ES-ventilador-10/?utm_source=telegram&utm_medium=social&utm_campaign=ofertas_aliexpress&utm_content=oferta',
+  );
+});
+
+test('turns a noisy repeated promotion into one concise factual headline', () => {
+  assert.equal(
+    improveOfferTitle('🔥 OFERTÓN: SPARK- VENTILADOR DE 10". POTENCIA 40W. 3 VELOCIDADES #Publicidad'),
+    'Ventilador SPARK de sobremesa · 10" · 40 W',
   );
 });
 

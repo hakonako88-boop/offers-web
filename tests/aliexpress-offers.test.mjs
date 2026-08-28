@@ -50,7 +50,7 @@ test('keeps only discounted AliExpress products with an affiliate link', () => {
   assert.match(formatAliExpressTelegramCaption(offer), /PRECIO OFERTA/);
   assert.match(formatAliExpressTelegramCaption(offer), /ESOFERTA10/);
   assert.match(formatAliExpressTelegramCaption(offer), /250\+ pedidos recientes/);
-  assert.match(formatAliExpressTelegramCaption(offer), /👇🏻 <b>Toca el botón VER OFERTA<\/b> para comprar/);
+  assert.match(formatAliExpressTelegramCaption(offer), /👇🏻 <b>Toca COMPRAR<\/b> para ir directamente a la tienda/);
   assert.doesNotMatch(formatAliExpressTelegramCaption(offer), /Categoría/);
 });
 

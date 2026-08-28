@@ -201,27 +201,39 @@ async function sendProductPhoto(settings, offer) {
   throw lastError || new Error('No se recibió una foto válida del producto.');
 }
 
-async function sendOfferPreview(settings, chatId, offer) {
-  const photos = [...new Set([offer.photoFileId, offer.imageUrl].filter(Boolean))];
+function previewReplyMarkup(offer, mode = 'main') {
   const isPost = offer.kind === 'post';
-  const replyMarkup = {
+  if (mode === 'edit') {
+    return {
+      inline_keyboard: [
+        [
+          { text: '✏️ TÍTULO', callback_data: 'offer:title' },
+          ...(isPost
+            ? [{ text: '📝 TEXTO', callback_data: 'offer:body' }]
+            : [{ text: '🎟️ CUPÓN', callback_data: 'offer:coupon' }]),
+        ],
+        [
+          { text: '🖼️ FOTO', callback_data: 'offer:photo' },
+          ...(isPost ? [{ text: '🔗 ENLACE', callback_data: 'offer:link' }] : []),
+        ],
+        [{ text: '↩️ VOLVER', callback_data: 'offer:edit-back' }],
+      ],
+    };
+  }
+  return {
     inline_keyboard: [
-      [{ text: '✅ CONFIRMAR PUBLICACIÓN', callback_data: 'offer:confirm' }],
+      [{ text: '✅ PUBLICAR', callback_data: 'offer:confirm' }],
       [
-        { text: '✏️ CAMBIAR TÍTULO', callback_data: 'offer:title' },
-        ...(isPost
-          ? [{ text: '📝 CAMBIAR TEXTO', callback_data: 'offer:body' }]
-          : [{ text: '🎟️ AÑADIR CUPÓN', callback_data: 'offer:coupon' }]),
-      ],
-      ...(isPost ? [[{ text: offer.url ? '🔗 CAMBIAR ENLACE' : '🔗 AÑADIR ENLACE', callback_data: 'offer:link' }]] : []),
-      [
-        { text: '🖼️ CAMBIAR FOTO', callback_data: 'offer:photo' },
-      ],
-      [
+        { text: '✏️ EDITAR', callback_data: 'offer:edit-menu' },
         { text: '❌ CANCELAR', callback_data: 'offer:cancel' },
       ],
     ],
   };
+}
+
+async function sendOfferPreview(settings, chatId, offer) {
+  const photos = [...new Set([offer.photoFileId, offer.imageUrl].filter(Boolean))];
+  const replyMarkup = previewReplyMarkup(offer);
   let lastError;
   for (const photo of photos) {
     const payload = {
@@ -266,6 +278,15 @@ async function removePreviewButtons(settings, chatId, messageId) {
     // keyboard or the preview is too old to edit.
     console.warn(`Preview buttons could not be removed: ${safeError(error, settings.token)}`);
   }
+}
+
+async function replacePreviewButtons(settings, chatId, messageId, replyMarkup) {
+  if (!chatId || !messageId) return;
+  await telegram(settings.token, 'editMessageReplyMarkup', {
+    chat_id: chatId,
+    message_id: messageId,
+    reply_markup: replyMarkup,
+  });
 }
 
 async function mirrorTelegramPhoto(token, fileId, reference) {
@@ -842,6 +863,21 @@ for (const update of updates || []) {
             '👀 Revisa la foto, el texto y la música; después pulsa Publicar en TikTok.',
             uploaded.publish_id ? `🔎 Referencia: ${uploaded.publish_id}` : '',
           ].filter(Boolean).join('\n'));
+        }
+      } else if (callback.data === 'offer:edit-menu' || callback.data === 'offer:edit-back') {
+        const pending = pendingConfirmations[callbackChatKey];
+        if (!pending) {
+          await removePreviewButtons(settings, callbackChatId, callback.message?.message_id);
+          await reply(settings.token, callbackChatId, '⌛ Esa vista previa ya no está pendiente. Envía la oferta otra vez.');
+        } else {
+          const mode = callback.data === 'offer:edit-menu' ? 'edit' : 'main';
+          await replacePreviewButtons(
+            settings,
+            callbackChatId,
+            pending.previewMessageId || callback.message?.message_id,
+            previewReplyMarkup(pending.offer, mode),
+          );
+          pending.updatedAt = Date.now();
         }
       } else if (callback.data === 'offer:title' || callback.data === 'offer:edit') {
         const pending = pendingConfirmations[callbackChatKey];

@@ -95,6 +95,13 @@ test('uses the same stable product id for Telegram buttons and website records',
   assert.match(buttonRepair, /offerReplyMarkup/u);
 });
 
+test('shows a compact preview and reveals editing controls only on demand', () => {
+  assert.match(inboxSync, /text: '✅ PUBLICAR'.*callback_data: 'offer:confirm'/u);
+  assert.match(inboxSync, /text: '✏️ EDITAR'.*callback_data: 'offer:edit-menu'/u);
+  assert.match(inboxSync, /callback\.data === 'offer:edit-menu'.*callback\.data === 'offer:edit-back'/su);
+  assert.doesNotMatch(inboxSync, /✅ CONFIRMAR PUBLICACIÓN'.*inline_keyboard/su);
+});
+
 test('publishes the channel welcome only once and pins it without notifying subscribers', () => {
   assert.match(workflow, /Publicar y fijar bienvenida del canal/u);
   assert.match(welcomePublisher, /pinChatMessage/u);
