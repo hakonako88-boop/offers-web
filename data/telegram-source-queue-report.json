@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-28T22:33:11.489Z",
+  "updatedAt": "2026-08-28T22:42:27.768Z",
   "summary": {
-    "blocked": 54,
-    "rejected": 408,
+    "rejected": 409,
+    "blocked": 53,
     "published": 341,
     "ignored": 32,
     "duplicate": 98,
@@ -11,13 +11,24 @@
   },
   "recent": [
     {
+      "id": "telegram-una-ganga:91985:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91985,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/91985",
+      "resultUrl": ""
+    },
+    {
       "id": "telegram-tiesometro:7141:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7141,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/tiesometro/7141",
       "resultUrl": ""
     },
@@ -70,9 +81,9 @@
       "source": "telegram-una-ganga",
       "messageId": 91982,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/91982",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "attempts": 0,
       "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/Ofertos/41020",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41019:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41019,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/41019",
       "resultUrl": ""
     }
   ]
