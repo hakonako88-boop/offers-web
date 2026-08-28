@@ -77,7 +77,7 @@ function brandBefore(title, pattern) {
  */
 export function improveOfferTitle(value = '') {
   let original = compact(value)
-    .replace(/^[🔥✨💥⚡🛍️\s]+/gu, '')
+    .replace(/^(?:🔥|✨|💥|⚡|🛍️|\s)+/gu, '')
     .replace(/^(?:(?:super\s+)?ofert(?:a|ón)|chollo|precio\s+incre[ií]ble)\s*[:!·|—-]*\s*/iu, '')
     .replace(/\s*(?:\|\s*)?#(?:publicidad|publi|oferta(?:flash)?|chollos?)(?:\s+#[\p{L}\p{N}_]+)*\s*$/giu, '')
     .replace(/\b(\d+)\s*[xX×]\s*(\d+)\s*Cm\b/gu, '$1×$2 cm')

@@ -32,12 +32,6 @@ function madridParts(date) {
   return { date: `${parts.year}-${parts.month}-${parts.day}`, hour: Number(parts.hour), minute: Number(parts.minute) };
 }
 
-function previousMadridDate(now) {
-  const cursor = new Date(now);
-  cursor.setUTCDate(cursor.getUTCDate() - 1);
-  return madridParts(cursor).date;
-}
-
 function numericPrice(value = '') {
   const raw = String(value).replace(/\u00a0|\s/gu, '').replace(/[^0-9,.-]/gu, '');
   if (!raw) return 0;

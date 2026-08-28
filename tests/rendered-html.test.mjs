@@ -98,24 +98,26 @@ test("renders an individual offer with price analysis, pros, cons and Product SE
   assert.match(html, new RegExp(`rel="canonical" href="https://chollosaldia\\.com/oferta/${id}/"`));
 });
 
-test("keeps a Telegram AliExpress offer on the website even without a previous price", async () => {
+test("keeps an expired Telegram AliExpress offer as an honest historical page", async () => {
   const response = await render("/oferta/4473");
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /Tronsmart altavoz bluetooth/i);
   assert.match(html, /38,94/);
-  assert.match(html, /s\.click\.aliexpress\.com/);
   assert.match(html, /manual-4473\.jpg/);
+  assert.match(html, /https:\/\/schema\.org\/OutOfStock/);
+  assert.doesNotMatch(html, /href="https:\/\/s\.click\.aliexpress\.com/);
 });
 
-test("keeps older Telegram offers beyond the homepage card limit", async () => {
+test("keeps older Telegram offers beyond the homepage card limit without a stale buy link", async () => {
   const response = await render("/oferta/4472");
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /Silla de Playa Plegable/i);
   assert.match(html, /11,27/);
-  assert.match(html, /s\.click\.aliexpress\.com/);
   assert.match(html, /manual-4472\.jpg/);
+  assert.match(html, /https:\/\/schema\.org\/OutOfStock/);
+  assert.doesNotMatch(html, /href="https:\/\/s\.click\.aliexpress\.com/);
 });
 
 test("shows a verified coupon on its stable product page", async () => {
