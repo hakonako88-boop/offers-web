@@ -1,23 +1,45 @@
 {
-  "updatedAt": "2026-08-28T22:02:15.927Z",
+  "updatedAt": "2026-08-28T22:12:45.732Z",
   "summary": {
-    "blocked": 57,
-    "rejected": 408,
+    "blocked": 55,
+    "rejected": 407,
     "published": 339,
     "ignored": 32,
     "duplicate": 98,
     "needs_review": 65,
-    "pending": 1
+    "pending": 4
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:91983:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 91983,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/91983",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-chollosdiario:45227:amazon:0",
+      "source": "telegram-chollosdiario",
+      "messageId": 45227,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/chollosdiario/45227",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7140:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7140,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/tiesometro/7140",
       "resultUrl": ""
     },
@@ -26,9 +48,9 @@
       "source": "telegram-una-ganga",
       "messageId": 91982,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/91982",
       "resultUrl": ""
     },
@@ -1086,28 +1108,6 @@
       "attempts": 0,
       "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/Ofertos/41017",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41016:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41016,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/41016",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41015:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41015,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/41015",
       "resultUrl": ""
     }
   ]
