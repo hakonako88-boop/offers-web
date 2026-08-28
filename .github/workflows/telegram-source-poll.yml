@@ -12,8 +12,10 @@ permissions:
   contents: write
 
 concurrency:
-  group: chollosaldia-source-watch
-  cancel-in-progress: true
+  # El vigilante y el publicador modifican la misma cola. Se ejecutan en serie
+  # para no sobrescribir reintentos ni publicaciones ya clasificadas.
+  group: chollosaldia-production
+  cancel-in-progress: false
 
 jobs:
   check-sources:

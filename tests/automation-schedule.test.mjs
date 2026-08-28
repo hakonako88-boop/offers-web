@@ -57,13 +57,15 @@ test('keeps automatic source runs fast and prevents state commits from redeployi
   assert.match(buttonStep, /inputs\.repair_telegram_captions/u);
 });
 
-test('serializes every Pages deployment and leaves the source queue to the lightweight watcher', () => {
+test('serializes every Pages deployment and persists reconciled source queue state', () => {
   assert.doesNotMatch(workflow, /chollosaldia-source-publication/u);
   assert.match(workflow, /'chollosaldia-telegram-inbox' \|\| 'chollosaldia-production'/u);
+  assert.match(sourcePollWorkflow, /group: chollosaldia-production/u);
+  assert.match(sourcePollWorkflow, /cancel-in-progress: false/u);
   const saveStep = workflow.match(/- name: Guardar ofertas nuevas[\s\S]*?(?=\n\s{6}- name:|$)/u)?.[0] || '';
-  assert.match(saveStep, /git restore -- data\/telegram-source-queue\.json/u);
+  assert.doesNotMatch(saveStep, /git restore -- data\/telegram-source-queue\.json/u);
   const stagedLine = saveStep.split('\n').find((line) => line.includes('git add data/offers.json')) || '';
-  assert.doesNotMatch(stagedLine, /data\/telegram-source-queue\.json/u);
+  assert.match(stagedLine, /data\/telegram-source-queue\.json/u);
   assert.match(stagedLine, /data\/telegram-source-queue-report\.json/u);
 });
 
