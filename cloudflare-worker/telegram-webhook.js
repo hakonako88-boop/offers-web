@@ -293,6 +293,11 @@ async function createTikTokPreview(request) {
         stitch_disabled: Boolean(creator.stitch_disabled),
       },
       publication: offer,
+      delivery: {
+        recommended_mode: tikTokMode() === 'sandbox' ? 'MEDIA_UPLOAD' : 'DIRECT_POST',
+        public_direct_post_available: tikTokMode() !== 'sandbox',
+        requires_tiktok_confirmation: tikTokMode() === 'sandbox',
+      },
     });
   } catch (error) {
     return json({ ok: false, error: publicError(error) }, 400);
@@ -307,6 +312,9 @@ async function publishTikTokPreview(request) {
     const previewKey = `tiktok:preview:${input.preview_id}`;
     const offer = await TIKTOK_AUTH.get(previewKey, { type: 'json' });
     if (!offer) throw new Error('Preview not found or expired');
+    if (tikTokMode() === 'sandbox') {
+      throw new Error('Public Direct Post is unavailable in TikTok Sandbox. Send the preview to drafts instead.');
+    }
     const token = await validTikTokToken();
     const data = await tiktokApi('/v2/post/publish/content/init/', token, {
       post_info: {
@@ -326,6 +334,43 @@ async function publishTikTokPreview(request) {
     });
     await TIKTOK_AUTH.delete(previewKey);
     return json({ ok: true, publish_id: data.publish_id || null });
+  } catch (error) {
+    return json({ ok: false, error: publicError(error) }, 400);
+  }
+}
+
+async function uploadTikTokDraft(request) {
+  if (!(await isTikTokAdmin(request))) return json({ ok: false, error: 'Unauthorized' }, 401);
+  try {
+    const input = await request.json();
+    if (input?.confirmed !== true || !input?.preview_id) throw new Error('A confirmed preview is required');
+    const previewKey = `tiktok:preview:${input.preview_id}`;
+    const offer = await TIKTOK_AUTH.get(previewKey, { type: 'json' });
+    if (!offer) throw new Error('Preview not found or expired');
+    const token = await validTikTokToken();
+    const grantedScopes = String(token.scope || '').split(',').map((scope) => scope.trim());
+    if (!grantedScopes.includes('video.upload')) throw new Error('TikTok draft upload permission is missing');
+    const data = await tiktokApi('/v2/post/publish/content/init/', token, {
+      post_info: {
+        title: offer.title,
+        description: offer.description,
+      },
+      source_info: {
+        source: 'PULL_FROM_URL',
+        photo_cover_index: 0,
+        photo_images: offer.photo_images,
+      },
+      post_mode: 'MEDIA_UPLOAD',
+      media_type: 'PHOTO',
+    });
+    await TIKTOK_AUTH.delete(previewKey);
+    return json({
+      ok: true,
+      publish_id: data.publish_id || null,
+      status: 'SENT_TO_TIKTOK_INBOX',
+      requires_user_action: true,
+      next_step: 'Open the TikTok inbox notification, review the draft and tap Publish.',
+    });
   } catch (error) {
     return json({ ok: false, error: publicError(error) }, 400);
   }
@@ -402,6 +447,7 @@ async function handleRequest(request) {
     if (request.method === 'GET' && url.pathname === '/tiktok/status') return tiktokStatus(request);
     if (request.method === 'POST' && url.pathname === '/tiktok/preview') return createTikTokPreview(request);
     if (request.method === 'POST' && url.pathname === '/tiktok/publish/photo') return publishTikTokPreview(request);
+    if (request.method === 'POST' && url.pathname === '/tiktok/upload/photo') return uploadTikTokDraft(request);
     if (request.method !== 'POST' || url.pathname !== '/telegram') {
       return json({ ok: false, error: 'Not found' }, 404);
     }
