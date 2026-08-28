@@ -214,7 +214,9 @@ jobs:
         run: node scripts/repair-pending-telegram-captions.mjs
 
       - name: Corregir botones Ver ficha de Telegram
-        if: ${{ github.event_name != 'repository_dispatch' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        # Historical maintenance only. Running this on every push made a
+        # normal offer wait while Telegram rechecked hundreds of old posts.
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.repair_telegram_captions && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         continue-on-error: true
         run: node scripts/repair-telegram-offer-buttons.mjs
 

@@ -30,7 +30,11 @@ async function editButtons(offer) {
     body: JSON.stringify({ chat_id: channelId, message_id: offer.message_id, reply_markup: replyMarkup }),
   });
   const data = await response.json().catch(() => ({}));
+  if (!response.ok && /message is not modified/iu.test(String(data.description || ''))) {
+    return { unchanged: true };
+  }
   if (!response.ok || !data.ok) throw new Error(data.description || `Telegram ${response.status}`);
+  return { unchanged: false };
 }
 
 if (!token || !channelId) {
@@ -47,10 +51,12 @@ const offers = readJson(OFFERS_FILE, [])
   .slice(0, MAX_PER_RUN);
 
 let updated = 0;
+let unchanged = 0;
 for (const offer of offers) {
   try {
-    await editButtons(offer);
-    updated += 1;
+    const result = await editButtons(offer);
+    if (result.unchanged) unchanged += 1;
+    else updated += 1;
   } catch (error) {
     // Deleted and very old messages cannot be edited. Marking them as checked
     // prevents one unavailable post from blocking every later repair run.
@@ -66,4 +72,4 @@ writeJson(STATE_FILE, {
   lastRunAt: new Date().toISOString(),
   lastUpdated: updated,
 });
-console.log(`Botones de Telegram reparados: ${updated}/${offers.length}.`);
+console.log(`Botones de Telegram reparados: ${updated}; ya correctos: ${unchanged}; revisados: ${offers.length}.`);

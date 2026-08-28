@@ -47,12 +47,14 @@ test('keeps automatic source runs fast and prevents state commits from redeployi
     'Publicar y fijar bienvenida del canal',
     'Retirar publicaciones con datos erróneos',
     'Limpiar pies de foto pendientes en Telegram',
-    'Corregir botones Ver ficha de Telegram',
   ]) {
     const escaped = stepName.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
     const step = workflow.match(new RegExp(`- name: ${escaped}[\\s\\S]*?(?=\\n\\s{6}- name:|$)`, 'u'))?.[0] || '';
     assert.match(step, /github\.event_name != 'repository_dispatch'/u);
   }
+  const buttonStep = workflow.match(/- name: Corregir botones Ver ficha de Telegram[\s\S]*?(?=\n\s{6}- name:|$)/u)?.[0] || '';
+  assert.match(buttonStep, /github\.event_name == 'workflow_dispatch'/u);
+  assert.match(buttonStep, /inputs\.repair_telegram_captions/u);
 });
 
 test('serializes every Pages deployment and leaves the source queue to the lightweight watcher', () => {
