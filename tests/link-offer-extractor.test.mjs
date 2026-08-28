@@ -149,6 +149,31 @@ test('keeps the direct Amazon URL when the product page blocks an amzn.to reader
   assert.equal(result.sourceUrl, shortUrl);
 });
 
+test('uses genuine Amazon metadata embedded in a 503 product shell', async () => {
+  const shortUrl = 'https://amzn.to/example503';
+  const productUrl = 'https://www.amazon.es/dp/B0DSLBN5FS?tag=chollos00a-21';
+  const html = `
+    <meta name="title" content="roborock Robot Aspirador QV 35A Set : Amazon.es: Hogar y cocina">
+    <meta name="description" content="Compra roborock Robot Aspirador QV 35A Set.">
+    <meta property="og:image" content="https://m.media-amazon.com/images/I/robot.jpg">
+    <div id="corePrice_feature_div"><span class="a-price apex-pricetopay-value"><span class="a-offscreen">299,98€</span></span></div>`;
+  const result = await extractProductMetadata(shortUrl, {
+    fetchImpl: async (url, options = {}) => {
+      if (url === shortUrl && options.redirect === 'manual') {
+        return new Response('', { status: 301, headers: { location: productUrl } });
+      }
+      if (url === productUrl) {
+        return new Response(html, { status: 503, headers: { 'content-type': 'text/html' } });
+      }
+      throw new Error(`Unexpected URL ${url}`);
+    },
+  });
+  assert.equal(result.title, 'roborock Robot Aspirador QV 35A Set');
+  assert.equal(result.price, 299.98);
+  assert.equal(result.imageUrl, 'https://m.media-amazon.com/images/I/robot.jpg');
+  assert.equal(result.finalUrl, productUrl);
+});
+
 test('never replaces a resolved Amazon product with a JavaScript placeholder link', async () => {
   const shortUrl = 'https://amzn.to/3SszZh4';
   const redirectUrl = 'https://www.amazon.es/dp/B0G2XCZCC4?tag=chollos00a-21';

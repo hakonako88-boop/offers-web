@@ -145,9 +145,23 @@ async function fetchPage(url, fetchImpl) {
       accept: 'text/html,application/xhtml+xml',
     },
   });
-  if (!response.ok) throw new Error(`La tienda respondió ${response.status}.`);
+  const html = (await response.text()).slice(0, 1_500_000);
+  // Amazon occasionally returns its anti-bot HTTP 503 shell while still
+  // embedding the genuine product metadata and price in the response. Those
+  // fields are tied to the ASIN in the requested /dp/ URL. Never apply this
+  // exception to another shop or to a generic Amazon error document.
+  let isAmazonProductShell = false;
+  try {
+    const parsed = new URL(response.url || url);
+    isAmazonProductShell = /(^|\.)amazon\.[a-z.]+$/iu.test(parsed.hostname)
+      && /\/(?:dp|gp\/product)\/[a-z0-9]{10}(?:[/?]|$)/iu.test(parsed.pathname)
+      && /(?:<meta\b[^>]*(?:name|property)=["'](?:title|og:title)["']|id=["']productTitle["'])/iu.test(html);
+  } catch {
+    isAmazonProductShell = false;
+  }
+  if (!response.ok && !isAmazonProductShell) throw new Error(`La tienda respondió ${response.status}.`);
   return {
-    html: (await response.text()).slice(0, 1_500_000),
+    html,
     finalUrl: response.url || url,
   };
 }
@@ -256,7 +270,14 @@ export function productMetadataFromHtml(html, pageUrl) {
   const product = jsonLdProducts(document)[0] || {};
   const offers = Array.isArray(product.offers) ? product.offers[0] : (product.offers || {});
   const image = Array.isArray(product.image) ? product.image[0] : product.image;
-  const title = sourceTitle(decode(product.name || htmlMeta(document, ['og:title', 'twitter:title']) || ''))
+  const amazonMetaTitle = htmlMeta(document, ['title']);
+  const amazonDomTitle = document.match(/id=["']productTitle["'][^>]*>([\s\S]*?)<\/span>/iu)?.[1]
+    ?.replace(/<[^>]+>/gu, '') || '';
+  const title = sourceTitle(decode(product.name
+    || htmlMeta(document, ['og:title', 'twitter:title'])
+    || amazonMetaTitle
+    || amazonDomTitle
+    || ''))
     .replace(/\s+-\s+AliExpress(?:\s+\d+)?\s*$/iu, '')
     .replace(/\s*:\s*Amazon\.es(?::.*)?\s*$/iu, '');
   const description = decode(product.description || htmlMeta(document, ['og:description', 'twitter:description', 'description']) || '');
@@ -267,7 +288,13 @@ export function productMetadataFromHtml(html, pageUrl) {
   const imageUrl = /(^|\.)aliexpress\./u.test(storeHost)
     ? highResolutionAliExpressImage(rawImage)
     : (/^miravia\.es$|\.miravia\.es$/u.test(storeHost) ? highResolutionMiraviaImage(rawImage) : rawImage);
-  const price = parsePrice(offers.price || offers.lowPrice || htmlMeta(document, ['product:price:amount', 'og:price:amount']));
+  const amazonPrice = document.match(/(?:apex-pricetopay-value|priceToPay)[\s\S]{0,500}?class=["']a-offscreen["'][^>]*>([^<]+)</iu)?.[1]
+    || document.match(/id=["']corePrice_feature_div["'][\s\S]{0,2500}?class=["']a-offscreen["'][^>]*>([^<]+)</iu)?.[1]
+    || '';
+  const price = parsePrice(offers.price
+    || offers.lowPrice
+    || htmlMeta(document, ['product:price:amount', 'og:price:amount'])
+    || amazonPrice);
   const previousPrice = parsePrice(offers.highPrice || htmlMeta(document, ['product:original_price:amount', 'product:price:standard_amount']));
   return { title, description, imageUrl, price, previousPrice };
 }
