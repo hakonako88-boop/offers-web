@@ -472,6 +472,17 @@ async function queueOfferPreview(settings, pendingConfirmations, chatId, offer, 
   return { duplicate: false, previewMessage };
 }
 
+/** Product links sent by the authorised owner are hands-off publications.
+ * Validation and deduplication still run before the channel and website are
+ * changed; incomplete products remain pending instead of being guessed. */
+async function publishOwnerProduct(settings, chatId, offer, inputMessage) {
+  const outcome = await publishIfNew(settings, offer, inputMessage);
+  await reply(settings.token, chatId, outcome.duplicate
+    ? '♻️ No la publico porque este mismo producto ya está en el canal.'
+    : '✅ Oferta publicada automáticamente en Telegram y en la web con tu enlace de afiliado.');
+  return outcome;
+}
+
 function updateAmazonReviewQueueItem(itemId, status, reason, extra = {}) {
   if (!itemId) return;
   const queue = readJson(TELEGRAM_SOURCE_QUEUE_FILE, { version: 1, items: [] });
@@ -799,15 +810,12 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
   }
   if (result.status !== 'ready') continue;
   try {
-    const outcome = await queueOfferPreview(settings, pendingConfirmations, chatKey, result.offer, {
+    await publishOwnerProduct(settings, chatKey, result.offer, {
       message_id: pending.messageId || `pending-${chatKey}`,
     });
-    await reply(settings.token, chatKey, outcome.duplicate
-      ? '♻️ Esa oferta pendiente ya estaba publicada. No la repito en el canal.'
-      : '👀 Esta es la vista previa. Revisa todos los datos; no se publicará hasta que pulses «✅ CONFIRMAR PUBLICACIÓN».');
     delete pendingByChat[chatKey];
   } catch (error) {
-    console.warn(`Pending Telegram preview for ${chatKey} could not be prepared: ${safeError(error, settings.token)}`);
+    console.warn(`Pending Telegram offer for ${chatKey} could not be published: ${safeError(error, settings.token)}`);
   }
 }
 for (const update of updates || []) {
@@ -1254,12 +1262,7 @@ for (const update of updates || []) {
       }
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
-        const outcome = await queueOfferPreview(settings, pendingConfirmations, message.chat.id, result.offer, message);
-        if (outcome.duplicate) {
-          await reply(settings.token, message.chat.id, '♻️ No la publico porque he identificado el mismo producto que ya existe en el canal.');
-        } else {
-          await reply(settings.token, message.chat.id, '👀 Esta es la vista previa. Comprueba todos los datos y pulsa «✅ CONFIRMAR PUBLICACIÓN» solo si está correcta.');
-        }
+        await publishOwnerProduct(settings, message.chat.id, result.offer, message);
         delete pendingByChat[chatKey];
       } else if (result.status === 'needs_details') {
         pendingByChat[chatKey] = {
@@ -1306,12 +1309,7 @@ for (const update of updates || []) {
           // Keep it so a previously incomplete forwarded offer can finish.
           const newestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
           if (newestPhoto) result.offer.photoFileId = newestPhoto;
-          const outcome = await queueOfferPreview(settings, pendingConfirmations, message.chat.id, result.offer, message);
-          if (outcome.duplicate) {
-            await reply(settings.token, message.chat.id, '♻️ No la publico porque he identificado el mismo producto que ya existe en el canal.');
-          } else {
-            await reply(settings.token, message.chat.id, '👀 Vista previa preparada. Revisa los datos y confirma con el botón; todavía no se ha publicado.');
-          }
+          await publishOwnerProduct(settings, message.chat.id, result.offer, message);
           delete pendingByChat[chatKey];
         } else {
           await reply(settings.token, message.chat.id, result.message
