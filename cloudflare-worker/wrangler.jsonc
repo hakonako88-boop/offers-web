@@ -2,7 +2,13 @@
   "$schema": "../node_modules/wrangler/config-schema.json",
   "name": "chollosaldia-telegram",
   "main": "telegram-webhook.js",
-  "compatibility_date": "2026-08-27",
+  "compatibility_date": "2026-08-28",
+  "kv_namespaces": [
+    {
+      "binding": "TIKTOK_AUTH",
+      "id": "09afa428b21445c7a7d72ce179bd9c61"
+    }
+  ],
   "triggers": {
     "crons": ["*/10 * * * *", "0 22,23 * * *"]
   }

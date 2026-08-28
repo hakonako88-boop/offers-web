@@ -55,6 +55,7 @@ async function writeRedirect(destination, target) {
 await render("/", "index.html");
 await render("/aviso-legal", "aviso-legal/index.html");
 await render("/privacidad", "privacidad/index.html");
+await render("/terminos", "terminos/index.html");
 await render("/afiliacion", "afiliacion/index.html");
 await render("/contacto", "contacto/index.html");
 await render("/como-verificamos-ofertas", "como-verificamos-ofertas/index.html");
