@@ -73,6 +73,15 @@ test('publishes one validated offer in each independently isolated slot', () => 
   assert.match(workflow, /Clasificar mensajes pendientes de los canales/u);
 });
 
+test('consumes the Amazon Telegram queue in source-only mode without enabling it for TikTok retries', () => {
+  const amazonQueueStep = workflow.match(/- name: Preparar vista previa automática de Amazon[\s\S]*?(?=\n\s{6}- name:|$)/u)?.[0] || '';
+  const tiktokRetryStep = workflow.match(/- name: Enviar automáticamente la oferta a borradores de TikTok[\s\S]*?(?=\n\s{6}- name:|$)/u)?.[0] || '';
+  assert.match(amazonQueueStep, /TELEGRAM_PENDING_ONLY:\s*"true"/u);
+  assert.match(amazonQueueStep, /TELEGRAM_PROCESS_AMAZON_QUEUE:\s*"true"/u);
+  assert.doesNotMatch(tiktokRetryStep, /TELEGRAM_PROCESS_AMAZON_QUEUE/u);
+  assert.match(inboxSync, /if \(!pendingOnly \|\| settings\.processAmazonQueue\)/u);
+});
+
 test('uses the same stable product id for Telegram buttons and website records', () => {
   assert.match(amazonSync, /presentationOffer = \{ \.\.\.offer, id: `amazon-\$\{offer\.asin\}`/u);
   assert.match(inboxSync, /websiteOfferId = offer\.sourceProductId \|\| offer\.id/u);

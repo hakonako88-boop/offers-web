@@ -273,6 +273,7 @@ jobs:
         if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' && env.TELEGRAM_ALLOWED_CHAT_ID != '' && env.AMAZON_PARTNER_TAG != '' }}
         env:
           TELEGRAM_PENDING_ONLY: "true"
+          TELEGRAM_PROCESS_AMAZON_QUEUE: "true"
         run: npm run sync:inbox
 
       - name: Guardar resultado de la prueba de Telegram

@@ -59,6 +59,7 @@ function config() {
     controlCode: process.env.TELEGRAM_CONTROL_CODE,
     allowedChatId: process.env.TELEGRAM_ALLOWED_CHAT_ID,
     amazonAutoPublish: String(process.env.AMAZON_AUTO_PUBLISH || '').toLowerCase() === 'true',
+    processAmazonQueue: String(process.env.TELEGRAM_PROCESS_AMAZON_QUEUE || '').toLowerCase() === 'true',
     amazonPartnerTag: process.env.AMAZON_PARTNER_TAG,
     aliexpressAppKey: process.env.ALIEXPRESS_APP_KEY,
     aliexpressAppSecret: process.env.ALIEXPRESS_APP_SECRET,
@@ -1336,7 +1337,13 @@ if (pendingOnly) {
 // Source monitoring and Telegram callbacks both end here. In automatic mode
 // it publishes at most three fully validated Amazon offers per execution; in
 // review mode it keeps one private preview ready for the owner.
-if (!pendingOnly) await queueNextAmazonReviewDraft(settings, pendingConfirmations);
+// `TELEGRAM_PENDING_ONLY` prevents polling or replaying ordinary private
+// messages. Source-monitor runs still need to consume the Amazon review queue,
+// so they opt in explicitly. TikTok-only retry runs do not set this flag and
+// therefore cannot publish unrelated Amazon products by accident.
+if (!pendingOnly || settings.processAmazonQueue) {
+  await queueNextAmazonReviewDraft(settings, pendingConfirmations);
+}
 
 writeJson(STATE_FILE, {
   processedUpdateIds: Array.from(processed).sort((left, right) => left - right).slice(-MAX_PROCESSED_UPDATES),
