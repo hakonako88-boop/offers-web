@@ -2,15 +2,47 @@
  * Telegram webhook bridge for Chollos al Dia.
  * It verifies Telegram, then starts the existing GitHub offer pipeline.
  */
-/* global GITHUB_OWNER, GITHUB_REPO, GITHUB_DISPATCH_TOKEN, TELEGRAM_WEBHOOK_SECRET, TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET, TIKTOK_ADMIN_SECRET, TIKTOK_AUTH */
+/* global GITHUB_OWNER, GITHUB_REPO, GITHUB_DISPATCH_TOKEN, TELEGRAM_WEBHOOK_SECRET, TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET, TIKTOK_SANDBOX_CLIENT_KEY, TIKTOK_SANDBOX_CLIENT_SECRET, TIKTOK_ACTIVE_MODE, TIKTOK_ADMIN_SECRET, TIKTOK_AUTH */
 const json = (value, status = 200) => new Response(JSON.stringify(value), {
   status,
   headers: { 'content-type': 'application/json; charset=utf-8' },
 });
 const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 const TIKTOK_REDIRECT_URI = 'https://chollosaldia-telegram.peitolerito.workers.dev/tiktok/oauth/callback';
-const TIKTOK_TOKEN_KEY = 'tiktok:authorized-user';
 const TIKTOK_SCOPES = 'user.info.basic,video.upload,video.publish';
+
+function tikTokMode() {
+  return typeof TIKTOK_ACTIVE_MODE !== 'undefined' && TIKTOK_ACTIVE_MODE === 'sandbox'
+    ? 'sandbox'
+    : 'production';
+}
+
+function tikTokCredentials() {
+  if (tikTokMode() === 'sandbox') {
+    if (typeof TIKTOK_SANDBOX_CLIENT_KEY === 'undefined'
+      || typeof TIKTOK_SANDBOX_CLIENT_SECRET === 'undefined'
+      || !TIKTOK_SANDBOX_CLIENT_KEY
+      || !TIKTOK_SANDBOX_CLIENT_SECRET) {
+      throw new Error('TikTok Sandbox credentials are not configured');
+    }
+    return {
+      clientKey: TIKTOK_SANDBOX_CLIENT_KEY,
+      clientSecret: TIKTOK_SANDBOX_CLIENT_SECRET,
+    };
+  }
+  return {
+    clientKey: TIKTOK_CLIENT_KEY,
+    clientSecret: TIKTOK_CLIENT_SECRET,
+  };
+}
+
+function tikTokTokenKey() {
+  return `tiktok:${tikTokMode()}:authorized-user`;
+}
+
+function tikTokOAuthStateKey(state) {
+  return `tiktok:${tikTokMode()}:oauth-state:${state}`;
+}
 
 const html = (value, status = 200) => new Response(value, {
   status,
@@ -45,12 +77,12 @@ function publicError(error, fallback = 'TikTok request failed') {
 }
 
 async function readTikTokToken() {
-  return TIKTOK_AUTH.get(TIKTOK_TOKEN_KEY, { type: 'json' });
+  return TIKTOK_AUTH.get(tikTokTokenKey(), { type: 'json' });
 }
 
 async function writeTikTokToken(token) {
   const now = Date.now();
-  await TIKTOK_AUTH.put(TIKTOK_TOKEN_KEY, JSON.stringify({
+  await TIKTOK_AUTH.put(tikTokTokenKey(), JSON.stringify({
     ...token,
     obtained_at: now,
     expires_at: now + Math.max(0, Number(token.expires_in || 0) - 120) * 1000,
@@ -59,9 +91,10 @@ async function writeTikTokToken(token) {
 }
 
 async function exchangeTikTokToken(parameters) {
+  const credentials = tikTokCredentials();
   const body = new URLSearchParams({
-    client_key: TIKTOK_CLIENT_KEY,
-    client_secret: TIKTOK_CLIENT_SECRET,
+    client_key: credentials.clientKey,
+    client_secret: credentials.clientSecret,
     ...parameters,
   });
   const response = await fetch('https://open.tiktokapis.com/v2/oauth/token/', {
@@ -109,11 +142,12 @@ async function tiktokApi(path, token, body) {
 
 async function startTikTokOAuth(request) {
   if (!(await isTikTokAdmin(request))) return json({ ok: false, error: 'Unauthorized' }, 401);
+  const credentials = tikTokCredentials();
   const state = randomToken();
-  await TIKTOK_AUTH.put(`tiktok:oauth-state:${state}`, '1', { expirationTtl: 600 });
+  await TIKTOK_AUTH.put(tikTokOAuthStateKey(state), '1', { expirationTtl: 600 });
   const authorize = new URL('https://www.tiktok.com/v2/auth/authorize/');
   authorize.search = new URLSearchParams({
-    client_key: TIKTOK_CLIENT_KEY,
+    client_key: credentials.clientKey,
     response_type: 'code',
     scope: TIKTOK_SCOPES,
     redirect_uri: TIKTOK_REDIRECT_URI,
@@ -128,10 +162,10 @@ async function finishTikTokOAuth(url) {
   if (error) return html(`<h1>No se autorizó TikTok</h1><p>${String(url.searchParams.get('error_description') || error).replace(/[<>]/g, '')}</p>`, 400);
   const code = url.searchParams.get('code') || '';
   const state = url.searchParams.get('state') || '';
-  if (!code || !state || !(await TIKTOK_AUTH.get(`tiktok:oauth-state:${state}`))) {
+  if (!code || !state || !(await TIKTOK_AUTH.get(tikTokOAuthStateKey(state)))) {
     return html('<h1>Enlace de autorización no válido o caducado</h1><p>Vuelve a iniciar la conexión desde Rocky.</p>', 400);
   }
-  await TIKTOK_AUTH.delete(`tiktok:oauth-state:${state}`);
+  await TIKTOK_AUTH.delete(tikTokOAuthStateKey(state));
   try {
     const token = await exchangeTikTokToken({
       code,
@@ -155,6 +189,7 @@ async function tiktokStatus(request) {
   const token = await readTikTokToken();
   return json({
     ok: true,
+    mode: tikTokMode(),
     connected: Boolean(token?.refresh_token),
     scopes: token?.scope ? String(token.scope).split(',') : [],
     access_expires_at: token?.expires_at || null,
