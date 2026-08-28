@@ -35,7 +35,9 @@ permissions:
   contents: write
 
 concurrency:
-  group: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_update' && 'chollosaldia-telegram-inbox' || github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed' && 'chollosaldia-source-publication' || 'chollosaldia-production' }}
+  # Todo trabajo que construya GitHub Pages comparte una única cola. El inbox
+  # inmediato de Telegram sigue aislado porque no despliega la web.
+  group: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_update' && 'chollosaldia-telegram-inbox' || 'chollosaldia-production' }}
   # Un reenvío de Telegram no puede perderse porque coincida con otra oferta
   # o con una ejecución programada. GitHub lo deja en cola y lo procesa.
   cancel-in-progress: false

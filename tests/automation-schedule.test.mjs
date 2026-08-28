@@ -55,8 +55,9 @@ test('keeps automatic source runs fast and prevents state commits from redeployi
   }
 });
 
-test('isolates source publication and leaves its queue to the lightweight watcher', () => {
-  assert.match(workflow, /telegram_sources_changed' && 'chollosaldia-source-publication'/u);
+test('serializes every Pages deployment and leaves the source queue to the lightweight watcher', () => {
+  assert.doesNotMatch(workflow, /chollosaldia-source-publication/u);
+  assert.match(workflow, /'chollosaldia-telegram-inbox' \|\| 'chollosaldia-production'/u);
   const saveStep = workflow.match(/- name: Guardar ofertas nuevas[\s\S]*?(?=\n\s{6}- name:|$)/u)?.[0] || '';
   assert.match(saveStep, /git restore -- data\/telegram-source-queue\.json/u);
   const stagedLine = saveStep.split('\n').find((line) => line.includes('git add data/offers.json')) || '';
