@@ -1,4 +1,21 @@
-import{r as e}from"./rolldown-runtime-C60lm6uB.js";import{i as t,r as n}from"./framework-BaE7mD_r.js";import r,{t as i}from"./AdSlot-DG6XFrSN.js";var a=e(n(),1),o=[{id:`resumen-diario-2026-08-27`,source_product_id:`daily-summary:2026-08-27`,date:1787868048,title:`Las mejores ofertas del 27 de agosto de 2026`,body:`Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.
+import{r as e}from"./rolldown-runtime-C60lm6uB.js";import{i as t,r as n}from"./framework-BaE7mD_r.js";import r,{t as i}from"./AdSlot-DG6XFrSN.js";var a=e(n(),1),o=[{id:`resumen-diario-2026-08-28`,source_product_id:`daily-summary:2026-08-28`,date:1787949965,title:`Las mejores ofertas del 28 de agosto de 2026`,body:`Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.
+
+1. GODOX - Luz de vídeo Godox SL150II.
+159,99\xA0€ en El Corte Inglés
+
+2. AMD Ryzen Threadripper PRO 5965WX 3.8GHz/4.5GHz
+1583,65\xA0€ en PcComponentes
+
+3. Aspiradora Inalámbrica Proscenic, Succión de 40kPa, 40 Minutos de Autonomía, Cepillo Antienredos, Filtración de 4 Capas, Luces LED Verdes
+96,22\xA0€ en AliExpress
+
+4. roborock Robot Aspirador QV 35A Set, Dos mopas giratorias elevables, Negro
+299,98\xA0€ en Amazon
+
+5. Horno - Infiniton DD13SA, Multifunción, 72l, 59.5cm, 10 funciones, 2.9kW, Display Dual Dial, Triple…
+199,00\xA0€ en MediaMarkt
+
+Los precios y el stock pueden cambiar. Comprueba siempre las condiciones en la tienda antes de comprar.`,image:`/tg/awin-13075-45071454889.jpg`,url:`https://chollosaldia.com/`,source:`daily-summary`,message_id:5615},{id:`resumen-diario-2026-08-27`,source_product_id:`daily-summary:2026-08-27`,date:1787868048,title:`Las mejores ofertas del 27 de agosto de 2026`,body:`Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.
 
 1. Báscula de baño - Beurer BF1000, 10 Memorias + Modo invitado, Hasta 200 kg, Apagado automático, 8…
 189,00\xA0€ en MediaMarkt
