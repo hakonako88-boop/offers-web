@@ -141,11 +141,15 @@ async function fetchPage(url, fetchImpl) {
   const response = await fetchImpl(url, {
     redirect: 'follow',
     headers: {
-      'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaBot/1.0; +https://chollosaldia.com)',
+      // Amazon removes the public price from the reduced crawler document.
+      // Request the ordinary desktop storefront that a Spanish visitor sees;
+      // no cookies, account data or private endpoint are used.
+      'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
       accept: 'text/html,application/xhtml+xml',
+      'accept-language': 'es-ES,es;q=0.9',
     },
   });
-  const html = (await response.text()).slice(0, 1_500_000);
+  const html = (await response.text()).slice(0, 4_000_000);
   // Amazon occasionally returns its anti-bot HTTP 503 shell while still
   // embedding the genuine product metadata and price in the response. Those
   // fields are tied to the ASIN in the requested /dp/ URL. Never apply this
