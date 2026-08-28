@@ -65,6 +65,8 @@ function config() {
     aliexpressTrackingId: process.env.ALIEXPRESS_TRACKING_ID,
     aliexpressInvitationCode: process.env.ALIEXPRESS_INVITATION_CODE,
     awinFeedListUrl: process.env.AWIN_FEED_LIST_URL,
+    tiktokWorkerUrl: String(process.env.TIKTOK_WORKER_URL || '').replace(/\/$/u, ''),
+    tiktokAdminSecret: process.env.TIKTOK_ADMIN_SECRET,
   };
 }
 
@@ -282,11 +284,67 @@ async function mirrorTelegramPhoto(token, fileId, reference) {
   return `/tg/${filename}`;
 }
 
-async function reply(token, chatId, text) {
+async function reply(token, chatId, text, replyMarkup) {
   return telegram(token, 'sendMessage', {
     chat_id: chatId,
     text,
     disable_web_page_preview: true,
+    ...(replyMarkup ? { reply_markup: replyMarkup } : {}),
+  });
+}
+
+function tikTokDraftDescription(offer) {
+  return [
+    offer.description || '',
+    offer.priceLabel ? `🔥 Precio oferta: ${offer.priceLabel}` : '',
+    offer.previousPriceLabel ? `❌ Antes: ${offer.previousPriceLabel}` : '',
+    offer.discount ? `📉 Descuento: ${offer.discount}%` : '',
+    offer.coupon ? `🎟️ Cupón: ${offer.coupon}` : '',
+    '',
+    '🛒 Más información y enlace de compra en ChollosAlDía.',
+    'El precio y la disponibilidad pueden cambiar.',
+    '',
+    `#ChollosAlDia #Ofertas #${String(offer.store || 'Chollos').replace(/[^\p{L}\p{N}]/gu, '')}`,
+  ].filter((line, index, values) => line || (index > 0 && values[index - 1])).join('\n').trim().slice(0, 2000);
+}
+
+async function tikTokWorkerRequest(settings, pathname, body) {
+  if (!settings.tiktokWorkerUrl || !settings.tiktokAdminSecret) {
+    throw new Error('La conexión interna de TikTok todavía no está configurada en GitHub.');
+  }
+  const response = await fetch(`${settings.tiktokWorkerUrl}${pathname}`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'X-Chollos-Admin-Secret': settings.tiktokAdminSecret,
+    },
+    body: JSON.stringify(body),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.ok) throw new Error(data.error || `TikTok respondió ${response.status}.`);
+  return data;
+}
+
+async function uploadPendingTikTokDraft(settings, pending) {
+  const imageUrl = String(pending?.imageUrl || '');
+  if (!/^https:\/\/chollosaldia\.com\/tg\//iu.test(imageUrl)) {
+    throw new Error('La fotografía todavía no está disponible en el dominio verificado de ChollosAlDía.');
+  }
+  const imageResponse = await fetch(imageUrl, { method: 'HEAD' });
+  if (!imageResponse.ok) {
+    throw new Error('La web todavía está actualizando la fotografía. Espera dos minutos y vuelve a pulsar el botón.');
+  }
+  const preview = await tikTokWorkerRequest(settings, '/tiktok/preview', {
+    title: String(pending.offer.title || '').trim().slice(0, 90),
+    description: tikTokDraftDescription(pending.offer),
+    photo_images: [imageUrl],
+    privacy_level: 'PUBLIC_TO_EVERYONE',
+    disable_comment: false,
+    auto_add_music: true,
+  });
+  return tikTokWorkerRequest(settings, '/tiktok/upload/photo', {
+    confirmed: true,
+    preview_id: preview.preview_id,
   });
 }
 
@@ -316,6 +374,7 @@ async function publishManualOffer(settings, offer, inputMessage) {
       source: 'telegram-inbox',
     };
     writeJson(POSTS_FILE, [record, ...existingPosts.filter((entry) => entry.source_product_id !== record.source_product_id)]);
+    channelMessage.websiteImage = image;
     return channelMessage;
   }
   const existingOffers = readJson(OFFERS_FILE, []);
@@ -340,6 +399,7 @@ async function publishManualOffer(settings, offer, inputMessage) {
   };
   const withoutPriorVersion = existingOffers.filter((entry) => entry.source_product_id !== record.source_product_id);
   writeJson(OFFERS_FILE, [record, ...withoutPriorVersion]);
+  channelMessage.websiteImage = image;
   return channelMessage;
 }
 
@@ -562,6 +622,9 @@ const pendingByChat = state.pendingByChat && typeof state.pendingByChat === 'obj
 const pendingConfirmations = state.pendingConfirmations && typeof state.pendingConfirmations === 'object'
   ? state.pendingConfirmations
   : {};
+const pendingTikTokByChat = state.pendingTikTokByChat && typeof state.pendingTikTokByChat === 'object'
+  ? state.pendingTikTokByChat
+  : {};
 let updates;
 let webhookUpdate = String(process.env.TELEGRAM_WEBHOOK_UPDATE || '').trim();
 // GitHub stores the repository_dispatch payload in GITHUB_EVENT_PATH. Reading
@@ -746,12 +809,38 @@ for (const update of updates || []) {
           await reply(settings.token, callbackChatId, outcome.duplicate
             ? '♻️ No la publico porque ese producto ya existe en el canal.'
             : publicationSuccessReply());
+          if (!outcome.duplicate && outcome.channelMessage?.websiteImage) {
+            pendingTikTokByChat[callbackChatKey] = {
+              offer: pending.offer,
+              imageUrl: `https://chollosaldia.com${outcome.channelMessage.websiteImage}`,
+              createdAt: Date.now(),
+            };
+            await reply(settings.token, callbackChatId,
+              '📱 La oferta ya está en Telegram y en la cola de la web. Cuando la foto termine de actualizarse, puedes enviarla a los borradores de TikTok.',
+              { inline_keyboard: [[{ text: '📱 ENVIAR A TIKTOK', callback_data: 'offer:tiktok' }]] });
+          }
           if (!outcome.duplicate) published += 1;
           await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
           if (callback.message?.message_id !== pending.previewMessageId) {
             await removePreviewButtons(settings, callbackChatId, callback.message?.message_id);
           }
           delete pendingConfirmations[callbackChatKey];
+        }
+      } else if (callback.data === 'offer:tiktok') {
+        const pendingTikTok = pendingTikTokByChat[callbackChatKey];
+        if (!pendingTikTok) {
+          await removePreviewButtons(settings, callbackChatId, callback.message?.message_id);
+          await reply(settings.token, callbackChatId, '⌛ Esa oferta ya se envió a TikTok o el botón ha caducado.');
+        } else {
+          const uploaded = await uploadPendingTikTokDraft(settings, pendingTikTok);
+          await removePreviewButtons(settings, callbackChatId, callback.message?.message_id);
+          delete pendingTikTokByChat[callbackChatKey];
+          await reply(settings.token, callbackChatId, [
+            '✅ Borrador enviado a TikTok.',
+            '📥 Abre ahora la bandeja de entrada de TikTok y toca la notificación de Rocky.',
+            '👀 Revisa la foto, el texto y la música; después pulsa Publicar en TikTok.',
+            uploaded.publish_id ? `🔎 Referencia: ${uploaded.publish_id}` : '',
+          ].filter(Boolean).join('\n'));
         }
       } else if (callback.data === 'offer:title' || callback.data === 'offer:edit') {
         const pending = pendingConfirmations[callbackChatKey];
@@ -1234,6 +1323,7 @@ writeJson(STATE_FILE, {
   authorizedChatIds: Array.from(authorizedChatIds).slice(-20),
   pendingByChat,
   pendingConfirmations,
+  pendingTikTokByChat,
   lastCheckedAt: new Date().toISOString(),
 });
 console.log(`Telegram private inbox handled ${handled} message(s) and published ${published} offer(s).`);
