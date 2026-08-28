@@ -273,9 +273,11 @@ export function offerFromProductMetadata({ url = '', metadata = {}, partnerTag =
       imageUrl,
       // Keep a store-provided identifier so the inbox can distinguish two
       // different products with similar wording without using title guesses.
-      sourceProductId: store === 'AliExpress' && /^\d{8,}$/u.test(String(metadata.productId || ''))
-        ? `aliexpress:${metadata.productId}`
-        : '',
+      sourceProductId: store === 'Amazon' && /^[A-Z0-9]{10}$/iu.test(String(metadata.productId || ''))
+        ? `amazon:${String(metadata.productId).toUpperCase()}`
+        : (store === 'AliExpress' && /^\d{8,}$/u.test(String(metadata.productId || ''))
+            ? `aliexpress:${metadata.productId}`
+            : ''),
       description: compact(metadata.description).slice(0, 220) || `${title.slice(0, 180)} · Oferta publicada en Chollos al Día.`,
     },
   };

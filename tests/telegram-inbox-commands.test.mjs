@@ -281,11 +281,13 @@ test('builds a ready Amazon offer from public product metadata and adds the tag'
       imageUrl: 'https://images.example/product.jpg',
       price: 19.99,
       previousPrice: 39.99,
+      productId: 'B0ABCDE123',
     },
   });
   assert.equal(result.status, 'ready');
   assert.match(result.offer.url, /tag=example-21/);
   assert.equal(result.offer.imageUrl, 'https://images.example/product.jpg');
+  assert.equal(result.offer.sourceProductId, 'amazon:B0ABCDE123');
 });
 
 test('does not publish an unresolved Amazon short link because its tag cannot be verified', () => {

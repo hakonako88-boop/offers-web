@@ -28,6 +28,7 @@ import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { buildAmazonReviewDraft } from './amazon-review-drafts.mjs';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
+import { lookupAmazonProduct } from './amazon-creators-lookup.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
@@ -61,6 +62,9 @@ function config() {
     amazonAutoPublish: String(process.env.AMAZON_AUTO_PUBLISH || '').toLowerCase() === 'true',
     processAmazonQueue: String(process.env.TELEGRAM_PROCESS_AMAZON_QUEUE || '').toLowerCase() === 'true',
     amazonPartnerTag: process.env.AMAZON_PARTNER_TAG,
+    amazonCreatorCredentialId: process.env.AMAZON_CREATOR_CREDENTIAL_ID,
+    amazonCreatorSecret: process.env.AMAZON_CREATOR_SECRET,
+    amazonCreatorVersion: process.env.AMAZON_CREATOR_VERSION,
     aliexpressAppKey: process.env.ALIEXPRESS_APP_KEY,
     aliexpressAppSecret: process.env.ALIEXPRESS_APP_SECRET,
     aliexpressTrackingId: process.env.ALIEXPRESS_TRACKING_ID,
@@ -619,6 +623,22 @@ function metadataWithOfficialAmazonImage(url, metadata = {}) {
   return imageUrl ? { ...metadata, imageUrl } : metadata;
 }
 
+async function metadataWithAmazonCreatorsApi(settings, url, metadata = {}) {
+  if (storeFromUrl(url) !== 'Amazon') return metadata;
+  try {
+    const official = await lookupAmazonProduct(url, {
+      credentialId: settings.amazonCreatorCredentialId,
+      credentialSecret: settings.amazonCreatorSecret,
+      version: settings.amazonCreatorVersion,
+      partnerTag: settings.amazonPartnerTag,
+    });
+    return metadataWithOfficialAmazonImage(url, mergeProductMetadata(official, metadata));
+  } catch (error) {
+    console.warn(`Amazon Creators API lookup failed: ${safeError(error, settings.token)}`);
+    return metadataWithOfficialAmazonImage(url, metadata);
+  }
+}
+
 async function extractMetadataWithRetry(url) {
   let latestError;
   for (let attempt = 0; attempt < 2; attempt += 1) {
@@ -695,7 +715,7 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
       const refreshed = await extractMetadataWithRetry(pendingUrl);
       metadata = mergeProductMetadata(refreshed, pending?.draft || metadata);
       pendingUrl = metadata.finalUrl || pendingUrl;
-      metadata = metadataWithOfficialAmazonImage(pendingUrl, metadata);
+      metadata = await metadataWithAmazonCreatorsApi(settings, pendingUrl, metadata);
       result = offerFromProductMetadata({
         url: pendingUrl,
         metadata,
@@ -1208,7 +1228,7 @@ for (const update of updates || []) {
       // In /oferta mode the owner is the authority for the commercial wording
       // and prices. Product identity and the catalogue photo stay official.
       metadata = mergeOwnerSuppliedMetadata(metadata, metadataFromForward);
-      metadata = metadataWithOfficialAmazonImage(metadata.finalUrl || url, metadata);
+      metadata = await metadataWithAmazonCreatorsApi(settings, metadata.finalUrl || url, metadata);
       // A shortened link copied from another publisher must never reach the
       // channel unchanged. AliExpress and Miravia leave this block only with
       // a link generated for this account; a direct URL otherwise triggers a
