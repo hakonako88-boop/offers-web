@@ -813,11 +813,11 @@ for (const update of updates || []) {
             pendingTikTokByChat[callbackChatKey] = {
               offer: pending.offer,
               imageUrl: `https://chollosaldia.com${outcome.channelMessage.websiteImage}`,
+              automatic: true,
               createdAt: Date.now(),
             };
             await reply(settings.token, callbackChatId,
-              '📱 La oferta ya está en Telegram y en la cola de la web. Cuando la foto termine de actualizarse, puedes enviarla a los borradores de TikTok.',
-              { inline_keyboard: [[{ text: '📱 ENVIAR A TIKTOK', callback_data: 'offer:tiktok' }]] });
+              '📱 La oferta ya está en Telegram y en la cola de la web. Cuando la fotografía esté disponible, Rocky la enviará automáticamente a los borradores de TikTok y te avisará.');
           }
           if (!outcome.duplicate) published += 1;
           await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
@@ -1313,10 +1313,30 @@ for (const update of updates || []) {
   processed.add(updateId);
 }
 
+let pendingTikTokRetryRequired = false;
+if (pendingOnly) {
+  for (const [chatKey, pendingTikTok] of Object.entries(pendingTikTokByChat)) {
+    if (!pendingTikTok?.automatic) continue;
+    try {
+      const uploaded = await uploadPendingTikTokDraft(settings, pendingTikTok);
+      delete pendingTikTokByChat[chatKey];
+      await reply(settings.token, chatKey, [
+        '✅ Rocky ha enviado automáticamente la oferta a los borradores de TikTok.',
+        '📥 Abre la bandeja de entrada de TikTok y toca la notificación.',
+        '👀 Revisa la foto, el texto y la música; después pulsa Publicar.',
+        uploaded.publish_id ? `🔎 Referencia: ${uploaded.publish_id}` : '',
+      ].filter(Boolean).join('\n'));
+    } catch (error) {
+      pendingTikTokRetryRequired = true;
+      console.warn(`Automatic TikTok draft is not ready for ${chatKey}: ${safeError(error, settings.token)}`);
+    }
+  }
+}
+
 // Source monitoring and Telegram callbacks both end here. In automatic mode
 // it publishes at most three fully validated Amazon offers per execution; in
 // review mode it keeps one private preview ready for the owner.
-await queueNextAmazonReviewDraft(settings, pendingConfirmations);
+if (!pendingOnly) await queueNextAmazonReviewDraft(settings, pendingConfirmations);
 
 writeJson(STATE_FILE, {
   processedUpdateIds: Array.from(processed).sort((left, right) => left - right).slice(-MAX_PROCESSED_UPDATES),
@@ -1327,3 +1347,4 @@ writeJson(STATE_FILE, {
   lastCheckedAt: new Date().toISOString(),
 });
 console.log(`Telegram private inbox handled ${handled} message(s) and published ${published} offer(s).`);
+if (pendingTikTokRetryRequired) process.exitCode = 75;

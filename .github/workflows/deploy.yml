@@ -89,6 +89,33 @@ jobs:
           git pull --rebase origin main
           git push
 
+      - name: Enviar automáticamente la oferta a borradores de TikTok
+        timeout-minutes: 10
+        run: |
+          sent=false
+          for attempt in $(seq 1 16); do
+            git pull --rebase origin main
+            if TELEGRAM_PENDING_ONLY=true npm run sync:inbox; then
+              sent=true
+              break
+            fi
+            echo "La fotografía todavía no está publicada; nuevo intento en 30 segundos."
+            sleep 30
+          done
+          if [ "$sent" != "true" ]; then
+            echo "El borrador queda pendiente para el próximo mensaje del propietario."
+            exit 1
+          fi
+
+      - name: Guardar el estado de TikTok del bot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/telegram-inbox-state.json
+          git diff --cached --quiet || git commit -m "Guardar borrador automático de TikTok [telegram-state]"
+          git pull --rebase origin main
+          git push
+
   build-and-deploy:
     if: ${{ !(github.event_name == 'repository_dispatch' && github.event.action == 'telegram_update') && !(github.event_name == 'push' && (contains(github.event.head_commit.message, '[telegram-state]') || contains(github.event.head_commit.message, '[source-watch]') || contains(github.event.head_commit.message, '[automation-state]'))) }}
     runs-on: ubuntu-latest
