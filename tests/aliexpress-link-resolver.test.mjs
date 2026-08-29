@@ -222,6 +222,40 @@ test('does not verify an official page whose embedded product id contradicts the
   assert.equal(metadata.identityVerified, false);
 });
 
+test('prefers a public snapshot matching the canonical item over a legacy shell id', async () => {
+  const shortUrl = 'https://s.click.aliexpress.com/e/_current';
+  const canonicalUrl = 'https://es.aliexpress.com/item/1005012857606674.html';
+  const readerUrl = `https://r.jina.ai/${shortUrl}`;
+  const metadata = await resolveAliExpressAffiliateProduct(shortUrl, {
+    appKey: 'test-key', appSecret: 'test-secret', trackingId: 'chollosaldia88id',
+  }, {
+    resolveShortUrl: async () => canonicalUrl,
+    fetchImpl: async (url) => {
+      if (url === canonicalUrl) return {
+        ok: true,
+        url: canonicalUrl,
+        text: async () => String.raw`\u003cmeta property=\"og:title\" content=\"DJI Osmo Pocket 3 - AliExpress 44\" /\u003e \u003cmeta property=\"og:image\" content=\"https://ae01.alicdn.com/kf/dji.jpg\" /\u003e \u003cmeta property=\"al:android:url\" content=\"aliexpress://product/detail?productId=3256800000000000\" /\u003e`,
+      };
+      if (url === readerUrl || String(url).startsWith(`${readerUrl}?`)) return {
+        ok: true,
+        text: async () => `Title: DJI Osmo Pocket 3 - AliExpress 44\n[Product](${canonicalUrl})\n![Image](https://ae01.alicdn.com/kf/dji.jpg)`,
+      };
+      const method = new URL(url).searchParams.get('method');
+      if (method === 'aliexpress.affiliate.productdetail.get') return {
+        ok: true,
+        json: async () => ({ aliexpress_affiliate_productdetail_get_response: { resp_result: { result: { products: { product: [] } } } } }),
+      };
+      return {
+        ok: true,
+        json: async () => ({ aliexpress_affiliate_link_generate_response: { resp_result: { result: { promotion_links: { promotion_link: [{ promotion_link: 'https://s.click.aliexpress.com/e/_owner' }] } } } } }),
+      };
+    },
+  });
+  assert.equal(metadata.productId, '1005012857606674');
+  assert.equal(metadata.identityVerified, true);
+  assert.equal(metadata.identityVerificationSource, 'official-page-and-affiliate-link');
+});
+
 test('reads AliExpress title and photo from its escaped social metadata', () => {
   const metadata = metadataFromAliExpressHtml(String.raw`\u003cmeta property=\"og:title\" content=\"Perfume unisex 100 ml - AliExpress 66\" /\u003e\u003cmeta property=\"og:image\" content=\"https://ae01.alicdn.com/kf/perfume.jpg\" /\u003e\u003cmeta property=\"al:android:url\" content=\"aliexpress://product/detail?productId=1005012721085216\u0026source=test\" /\u003e`);
   assert.equal(metadata.title, 'Perfume unisex 100 ml');

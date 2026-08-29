@@ -37,6 +37,10 @@ function canonicalAliExpressItemUrl(url = '') {
   return productId ? `https://es.aliexpress.com/item/${productId}.html` : String(url || '');
 }
 
+function isCurrentAliExpressProductId(value = '') {
+  return /^1005\d{12,}$/u.test(String(value));
+}
+
 export function metadataFromAliExpressProduct(product = {}) {
   const price = amount(product.target_sale_price);
   const previousPrice = amount(product.target_original_price);
@@ -248,6 +252,7 @@ export async function resolveAliExpressProductUrl(url, {
     try {
       const finalUrl = await resolveShortUrl(url);
       if (isAliExpressUrl(finalUrl)) {
+        if (isCurrentAliExpressProductId(aliexpressProductId(finalUrl))) return canonicalAliExpressItemUrl(finalUrl);
         try {
           return (await canonicalAliExpressDestination(finalUrl, fetchImpl)).finalUrl || String(finalUrl);
         } catch {
@@ -265,6 +270,7 @@ export async function resolveAliExpressProductUrl(url, {
     try {
       const finalUrl = await resolveWithCurl(url, execFileImpl);
       if (aliexpressProductId(finalUrl)) {
+        if (isCurrentAliExpressProductId(aliexpressProductId(finalUrl))) return canonicalAliExpressItemUrl(finalUrl);
         try {
           return (await canonicalAliExpressDestination(finalUrl, fetchImpl)).finalUrl || finalUrl;
         } catch {
@@ -351,7 +357,8 @@ export async function resolveAliExpressAffiliateProduct(url, config, options = {
   } catch {
     // The exact affiliate detail endpoint remains authoritative.
   }
-  if (!pageMetadata.title || !pageMetadata.imageUrl) {
+  if (!pageMetadata.title || !pageMetadata.imageUrl
+    || (pageMetadata.productId && String(pageMetadata.productId) !== productId)) {
     for (const readerUrl of [...new Set([url, canonicalUrl])]) {
       try {
         const reader = await inspectAliExpressReader(readerUrl, fetchImpl);
@@ -359,6 +366,13 @@ export async function resolveAliExpressAffiliateProduct(url, config, options = {
           ...reader.metadata,
           ...Object.fromEntries(Object.entries(pageMetadata).filter(([, value]) => value)),
         };
+        // The dynamic AliExpress shell can expose a legacy compatibility id
+        // even though the canonical redirect and the public snapshot point to
+        // the current item. Prefer the snapshot identity only when it exactly
+        // matches the canonical product we are converting.
+        if (String(reader.metadata?.productId || '') === productId) {
+          pageMetadata.productId = productId;
+        }
         if (pageMetadata.title && pageMetadata.imageUrl) break;
       } catch {
         // Try the other safe URL before relying on product detail alone.
