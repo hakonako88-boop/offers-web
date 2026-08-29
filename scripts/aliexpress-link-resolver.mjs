@@ -3,6 +3,14 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 
 const execFileAsync = promisify(execFile);
+const NETWORK_TIMEOUT_MS = 10_000;
+
+function boundedFetch(fetchImpl, url, options = {}) {
+  return fetchImpl(url, {
+    ...options,
+    signal: options.signal || AbortSignal.timeout(NETWORK_TIMEOUT_MS),
+  });
+}
 
 function timestamp() {
   return new Date().toISOString().replace(/[-:TZ.]/g, '').slice(0, 14);
@@ -137,7 +145,7 @@ async function inspectAliExpressReader(url, fetchImpl) {
   let lastMetadata = {};
   for (const readerUrl of readerUrls) {
     for (const bypassCache of [false, true]) {
-      const response = await fetchImpl(readerUrl, {
+      const response = await boundedFetch(fetchImpl, readerUrl, {
         headers: {
           accept: 'text/plain',
           'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)',
@@ -196,7 +204,7 @@ async function resolveWithCurl(url, execFileImpl) {
 
 async function inspectAliExpressDestination(url, fetchImpl) {
   if (!isAliExpressUrl(url)) return { finalUrl: '', metadata: {} };
-  const response = await fetchImpl(url, {
+  const response = await boundedFetch(fetchImpl, url, {
     redirect: 'follow',
     headers: {
       'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140.0 Safari/537.36',
@@ -329,7 +337,7 @@ async function callAliExpressApi(method, fields, config, fetchImpl) {
     v: '2.0',
   };
   const params = { ...unsigned, sign: createAliExpressSignature(unsigned, config.appSecret) };
-  const response = await fetchImpl(`${ALIEXPRESS_ENDPOINT}?${new URLSearchParams(params)}`);
+  const response = await boundedFetch(fetchImpl, `${ALIEXPRESS_ENDPOINT}?${new URLSearchParams(params)}`);
   const data = await response.json().catch(() => ({}));
   if (!response.ok && response.ok !== undefined) {
     throw new Error(`AliExpress API responded ${response.status || 'without status'}.`);

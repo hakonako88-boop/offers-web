@@ -25,7 +25,10 @@ const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.jso
 const MAX_POSTS_PER_RUN = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 3 : 1;
 const MAX_PUBLICATION_ATTEMPTS = 8;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
-const MAX_COMMUNITY_QUERIES_PER_RUN = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 18 : 8;
+// A repository-dispatch run has a strict job timeout. Six verified queue
+// candidates are enough to publish the three allowed deals without letting a
+// blocked shop page starve reconciliation, deployment and the next poll.
+const MAX_COMMUNITY_QUERIES_PER_RUN = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 6 : 8;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;

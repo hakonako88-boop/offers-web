@@ -244,6 +244,10 @@ jobs:
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[telegram-test]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: npm run send:test-telegram
 
+      - name: Reactivar enlaces pendientes tras actualizar los extractores
+        if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed' }}
+        run: node scripts/reconcile-telegram-source-queue.mjs
+
       - name: Buscar y publicar ofertas de Amazon
         # Si Amazon aún no ha aprobado la cuenta, el script registra el aviso
         # de elegibilidad y no publica datos incompletos.
