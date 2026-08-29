@@ -13,7 +13,7 @@ const PUBLICATION_FILES = [
 ];
 const MAX_ATTEMPTS = 3;
 const MIRAVIA_RETRY_POLICY = 'exact-official-page-v1';
-const ALIEXPRESS_RETRY_POLICY = 'public-http-snapshot-v7';
+const ALIEXPRESS_RETRY_POLICY = 'source-corroboration-v8';
 
 function readJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return fallback; }

@@ -316,8 +316,8 @@ const deferredSameSourceSignals = [];
 const orderedCommunitySignals = [...communityDiscovery.signals].sort((left, right) => {
   // A previously blocked offer that has been explicitly reopened for the
   // current resolver must not be starved forever by newer, unverified posts.
-  const leftRepaired = left.retryPolicyVersion === 'public-http-snapshot-v7' ? 1 : 0;
-  const rightRepaired = right.retryPolicyVersion === 'public-http-snapshot-v7' ? 1 : 0;
+  const leftRepaired = left.retryPolicyVersion === 'source-corroboration-v8' ? 1 : 0;
+  const rightRepaired = right.retryPolicyVersion === 'source-corroboration-v8' ? 1 : 0;
   return rightRepaired - leftRepaired || Date.parse(right.publishedAt || '') - Date.parse(left.publishedAt || '');
 });
 for (const signal of orderedCommunitySignals) {
