@@ -323,8 +323,15 @@ for (const signal of communitySignals) {
   if (signal.sourceStore === 'AliExpress' && signal.merchantUrl) {
     try {
       const verifiedSignalUrl = await resolvedAliExpressSignalUrl(signal);
-      const metadata = verifiedSignalUrl
-        ? await resolveAliExpressAffiliateProduct(verifiedSignalUrl, config)
+      // GitHub's fetch is frequently stopped before s.click/a.aliexpress
+      // reaches the product, while curl can still resolve the same official
+      // short link. Pass the submitted AliExpress URL to the full resolver
+      // instead of abandoning the item after the preliminary fetch fails.
+      const resolutionInput = verifiedSignalUrl || (/^https?:\/\/(?:s\.click|a)\.aliexpress\.com\//iu.test(String(signal.merchantUrl || ''))
+        ? signal.merchantUrl
+        : '');
+      const metadata = resolutionInput
+        ? await resolveAliExpressAffiliateProduct(resolutionInput, config)
         : {};
       const linkedOffer = linkedAliExpressOffer(metadata, signal);
       if (linkedOffer && !seenProductIds.has(linkedOffer.id)) {
