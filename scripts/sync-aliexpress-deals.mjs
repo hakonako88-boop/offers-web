@@ -293,17 +293,30 @@ const candidates = [];
 const communityDiscovery = await discoverCommunitySignals({ state: communityState });
 const communitySignals = [];
 const selectedSources = new Set();
+const deferredSameSourceSignals = [];
 for (const signal of communityDiscovery.signals) {
   // Take the strongest fresh post from every source before considering more
   // posts from the same channel. This prevents a large channel from hiding
   // all offers discovered by the other owner-approved channels.
   if (signal.sourceStore === 'Amazon'
     || (signal.queueItemId && signal.sourceStore !== 'AliExpress')
-    || signal.terms.length < 2
-    || (!signal.queueItemId && selectedSources.has(signal.source))) continue;
+    || signal.terms.length < 2) continue;
+  if (selectedSources.has(signal.source)) {
+    // Keep the remaining posts as overflow, but first give every approved
+    // channel one verification slot. Otherwise Ofertos (the highest-weight
+    // source) can occupy the whole run and starve fresh links from una_ganga,
+    // tiesometro and the other owner-approved channels indefinitely.
+    if (signal.queueItemId) deferredSameSourceSignals.push(signal);
+    continue;
+  }
   communitySignals.push(signal);
-  if (!signal.queueItemId) selectedSources.add(signal.source);
+  selectedSources.add(signal.source);
   if (communitySignals.length >= MAX_COMMUNITY_QUERIES_PER_RUN) break;
+}
+
+for (const signal of deferredSameSourceSignals) {
+  if (communitySignals.length >= MAX_COMMUNITY_QUERIES_PER_RUN) break;
+  communitySignals.push(signal);
 }
 
 for (const signal of communitySignals) {
