@@ -1,23 +1,34 @@
 {
-  "updatedAt": "2026-08-29T12:58:15.376Z",
+  "updatedAt": "2026-08-29T13:02:49.248Z",
   "summary": {
-    "blocked": 23,
-    "rejected": 421,
+    "rejected": 423,
+    "blocked": 22,
     "published": 355,
     "duplicate": 101,
     "ignored": 27,
     "needs_review": 70,
-    "pending": 3
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92028:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92028,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/92028",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7148:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7148,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/tiesometro/7148",
       "resultUrl": ""
     },
@@ -26,9 +37,9 @@
       "source": "telegram-una-ganga",
       "messageId": 92027,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92027",
       "resultUrl": ""
     },
@@ -49,8 +60,8 @@
       "messageId": 92025,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/92025",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/tiesometro/7140",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91982:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91982,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/91982",
       "resultUrl": ""
     }
   ]
