@@ -137,8 +137,14 @@ function linkedAliExpressOffer(metadata, signal) {
   // product-detail responses omit the old/PVP field; a queued Telegram post
   // may still provide a factual current price, so it can be published without
   // inventing a discount.
-  const price = Number(metadata.price) || Number(signal.price) || 0;
-  const previousPrice = Number(metadata.previousPrice) || Number(signal.previousPrice) || 0;
+  // Product detail often reports the cheapest accessory/variation instead of
+  // the exact price advertised by the source post. For a queued exact product
+  // keep the factual labelled prices from that post; identity, title, photo
+  // and destination still must come from the official product resolution.
+  const queuedPrice = signal.queueItemId ? Number(signal.price) || 0 : 0;
+  const queuedPreviousPrice = signal.queueItemId ? Number(signal.previousPrice) || 0 : 0;
+  const price = queuedPrice || Number(metadata.price) || 0;
+  const previousPrice = queuedPreviousPrice || Number(metadata.previousPrice) || 0;
   const discount = previousPrice > price ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
   const hasProvenDiscount = previousPrice > price && discount >= 30;
   const isExactQueuedOffer = Boolean(signal.queueItemId && price >= 5);
