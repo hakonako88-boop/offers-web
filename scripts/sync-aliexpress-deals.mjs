@@ -320,6 +320,17 @@ for (const signal of communityDiscovery.signals) {
   if (signal.sourceStore === 'Amazon'
     || (signal.queueItemId && signal.sourceStore !== 'AliExpress')
     || signal.terms.length < 2) continue;
+  // The owner explicitly chose Ofertos as the primary AliExpress feed. Let
+  // several distinct product posts from that channel fill the verification
+  // batch before applying cross-source diversity to the remaining channels.
+  if (process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true'
+    && signal.queueItemId
+    && signal.sourceStore === 'AliExpress'
+    && /ofertos/iu.test(String(signal.source || ''))) {
+    communitySignals.push(signal);
+    if (communitySignals.length >= MAX_COMMUNITY_QUERIES_PER_RUN) break;
+    continue;
+  }
   if (selectedSources.has(signal.source)) {
     // Keep the remaining posts as overflow, but first give every approved
     // channel one verification slot. Otherwise Ofertos (the highest-weight

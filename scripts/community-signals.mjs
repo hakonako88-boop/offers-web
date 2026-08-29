@@ -162,8 +162,18 @@ function queuedTelegramSignals() {
     const queueFile = new URL('../data/telegram-source-queue.json', import.meta.url);
     const queue = JSON.parse(readFileSync(queueFile, 'utf8'));
     const sources = new Map(telegramChannelSources().map((source) => [source.id, source]));
-    return (queue.items || [])
-      .filter((item) => item.status === 'pending' && /^(Amazon|AliExpress|Miravia)$/u.test(String(item.store || '')))
+    const pendingItems = (queue.items || [])
+      .filter((item) => item.status === 'pending' && /^(Amazon|AliExpress|Miravia)$/u.test(String(item.store || '')));
+    const pendingUrlCounts = new Map();
+    for (const item of pendingItems) {
+      const merchantUrl = String(item.merchantUrl || '').trim();
+      if (merchantUrl) pendingUrlCounts.set(merchantUrl, (pendingUrlCounts.get(merchantUrl) || 0) + 1);
+    }
+    return pendingItems
+      // A link repeated below many unrelated posts is a channel/campaign
+      // button, not the product itself. It must never consume verification
+      // slots or be published as though it were a new deal.
+      .filter((item) => (pendingUrlCounts.get(String(item.merchantUrl || '').trim()) || 0) < 3)
       .map((item) => {
         const source = sources.get(item.source) || {
           id: item.source,
