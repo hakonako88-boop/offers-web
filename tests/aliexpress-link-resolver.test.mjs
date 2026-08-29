@@ -150,7 +150,7 @@ test('prefers the real curl destination over a generic fetch redirect for an Ali
   assert.equal(canonical, 'https://es.aliexpress.com/item/1005012721085216.html');
 });
 
-test('ignores stale catalogue facts but still converts the exact canonical URL to this affiliate', async () => {
+test('verifies the exact official page when product detail is stale and converts it to this affiliate', async () => {
   const canonicalUrl = 'https://es.aliexpress.com/item/1005012721085216.html';
   const metadata = await resolveAliExpressAffiliateProduct('https://a.aliexpress.com/_perfume', {
     appKey: 'test-key',
@@ -193,6 +193,32 @@ test('ignores stale catalogue facts but still converts the exact canonical URL t
   assert.equal(metadata.imageUrl, 'https://ae01.alicdn.com/kf/perfume.jpg');
   assert.equal(metadata.price, undefined);
   assert.equal(metadata.affiliateUrl, 'https://s.click.aliexpress.com/e/_perfume-propio');
+  assert.equal(metadata.identityVerified, true);
+  assert.equal(metadata.identityVerificationSource, 'official-page-and-affiliate-link');
+});
+
+test('does not verify an official page whose embedded product id contradicts the canonical URL', async () => {
+  const canonicalUrl = 'https://es.aliexpress.com/item/1005012721085216.html';
+  const metadata = await resolveAliExpressAffiliateProduct(canonicalUrl, {
+    appKey: 'test-key', appSecret: 'test-secret', trackingId: 'chollosaldia88id',
+  }, {
+    fetchImpl: async (url) => {
+      if (url === canonicalUrl) return {
+        ok: true,
+        url: canonicalUrl,
+        text: async () => String.raw`\u003cmeta property=\"og:title\" content=\"Producto contradictorio - AliExpress 66\" /\u003e \u003cmeta property=\"og:image\" content=\"https://ae01.alicdn.com/kf/wrong.jpg\" /\u003e \u003cmeta property=\"al:android:url\" content=\"aliexpress://product/detail?productId=1005099999999999\" /\u003e`,
+      };
+      const method = new URL(url).searchParams.get('method');
+      if (method === 'aliexpress.affiliate.productdetail.get') return {
+        ok: true,
+        json: async () => ({ aliexpress_affiliate_productdetail_get_response: { resp_result: { result: { products: { product: [] } } } } }),
+      };
+      return {
+        ok: true,
+        json: async () => ({ aliexpress_affiliate_link_generate_response: { resp_result: { result: { promotion_links: { promotion_link: [{ promotion_link: 'https://s.click.aliexpress.com/e/_propio' }] } } } } }),
+      };
+    },
+  });
   assert.equal(metadata.identityVerified, false);
 });
 

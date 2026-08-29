@@ -391,12 +391,27 @@ export async function resolveAliExpressAffiliateProduct(url, config, options = {
       // promotion link remains the final safe fallback.
     }
   }
+  // AliExpress sometimes returns an empty productdetail response for a real
+  // item while its public product page and link-generation endpoint still
+  // work. In that case the identity remains verifiable without trusting the
+  // forwarded caption: the canonical redirect supplies the product id, the
+  // official page supplies title/photo, and this account's API supplies the
+  // new affiliate URL. Reject any contradictory product id from the page.
+  const pageIdentityMatches = !pageMetadata.productId
+    || String(pageMetadata.productId) === productId;
+  const verifiedByOfficialPage = Boolean(
+    pageIdentityMatches
+    && pageMetadata.title
+    && pageMetadata.imageUrl
+    && affiliateUrl,
+  );
   return {
     ...pageMetadata,
     ...Object.fromEntries(Object.entries(exactMetadata).filter(([, value]) => value)),
     productId,
     canonicalUrl,
     affiliateUrl,
-    identityVerified: Boolean(product),
+    identityVerified: Boolean(product) || verifiedByOfficialPage,
+    identityVerificationSource: product ? 'affiliate-product-detail' : (verifiedByOfficialPage ? 'official-page-and-affiliate-link' : ''),
   };
 }

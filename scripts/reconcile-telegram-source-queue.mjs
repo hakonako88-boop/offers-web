@@ -12,6 +12,7 @@ const PUBLICATION_FILES = [
 ];
 const MAX_ATTEMPTS = 3;
 const MIRAVIA_RETRY_POLICY = 'exact-official-page-v1';
+const ALIEXPRESS_RETRY_POLICY = 'official-page-affiliate-link-v2';
 
 function readJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return fallback; }
@@ -44,6 +45,17 @@ for (const item of queue.items || []) {
     item.attempts = 0;
     item.reason = 'Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio';
     item.retryPolicyVersion = MIRAVIA_RETRY_POLICY;
+    item.updatedAt = now;
+    reopenedIds.add(item.id);
+  }
+  if (item.store === 'AliExpress'
+    && item.status === 'rejected'
+    && item.retryPolicyVersion !== ALIEXPRESS_RETRY_POLICY
+    && (!Number.isFinite(publishedAt) || publishedAt >= retryCutoff)) {
+    item.status = 'pending';
+    item.attempts = 0;
+    item.reason = 'Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress';
+    item.retryPolicyVersion = ALIEXPRESS_RETRY_POLICY;
     item.updatedAt = now;
     reopenedIds.add(item.id);
   }
