@@ -32,6 +32,18 @@ function cumulativeLimit(minuteOfDay, weekend) {
   return minuteOfDay >= 1380 ? 0 : limit;
 }
 
+export function publicationWindow({ now = new Date() } = {}) {
+  const local = madridParts(now);
+  const weekend = ['Sat', 'Sun', 'sáb', 'dom'].includes(local.weekday);
+  const globalLimit = cumulativeLimit(local.minuteOfDay, weekend);
+  return {
+    allowed: globalLimit > 0,
+    reason: globalLimit > 0 ? 'publication-window-open' : 'quiet-hours',
+    local,
+    globalLimit,
+  };
+}
+
 function normalizedStore(value = '') {
   const store = String(value).trim().toLowerCase();
   if (store.includes('amazon')) return 'Amazon';
@@ -46,9 +58,7 @@ function normalizedStore(value = '') {
 
 export function publicationAllowance({ store, offers = [], now = new Date(), bypass = false }) {
   if (bypass) return { allowed: true, remaining: 3, reason: 'manual-bypass' };
-  const local = madridParts(now);
-  const weekend = ['Sat', 'Sun', 'sáb', 'dom'].includes(local.weekday);
-  const globalLimit = cumulativeLimit(local.minuteOfDay, weekend);
+  const { local, globalLimit } = publicationWindow({ now });
   if (!globalLimit) return { allowed: false, remaining: 0, reason: 'quiet-hours', local };
 
   const today = offers.filter((offer) => {

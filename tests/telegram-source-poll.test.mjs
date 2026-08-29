@@ -8,8 +8,33 @@ import {
   isPromotionalSourcePost,
   latestPublicMessageId,
   parseTelegramPublicMessages,
+  publisherDispatchDecision,
   retryableQueueCount,
 } from '../scripts/check-telegram-source-changes.mjs';
+
+test('keeps pending offers queued overnight and dispatches them at the first weekend slot', () => {
+  const overnight = publisherDispatchDecision({
+    pendingCount: 4,
+    now: new Date('2026-08-30T00:50:00+02:00'),
+  });
+  assert.equal(overnight.dispatch, false);
+  assert.equal(overnight.reason, 'quiet-hours');
+
+  const firstSundaySlot = publisherDispatchDecision({
+    pendingCount: 4,
+    now: new Date('2026-08-30T10:00:00+02:00'),
+  });
+  assert.equal(firstSundaySlot.dispatch, true);
+  assert.equal(firstSundaySlot.reason, 'publication-window-open');
+});
+
+test('does not wake the publisher when there is no queued work', () => {
+  const decision = publisherDispatchDecision({
+    now: new Date('2026-08-31T10:30:00+02:00'),
+  });
+  assert.equal(decision.dispatch, false);
+  assert.equal(decision.reason, 'empty-queue');
+});
 
 test('normalizes public Telegram channel URLs', () => {
   assert.equal(channelUsername('https://t.me/Ofertos'), 'Ofertos');

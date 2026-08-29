@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { publicationWindow } from './publication-policy.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCES_PATH = path.join(ROOT, 'data', 'telegram-source-channels.json');
@@ -15,6 +16,17 @@ export function retryableQueueCount(items = []) {
   return items.filter((item) => item.store === 'AliExpress'
     && item.status === 'rejected'
     && item.retryPolicyVersion !== ALIEXPRESS_RETRY_POLICY).length;
+}
+
+export function publisherDispatchDecision({ changedChannels = [], pendingCount = 0, retryableCount = 0, now = new Date() } = {}) {
+  const workAvailable = changedChannels.length > 0 || pendingCount > 0 || retryableCount > 0;
+  const window = publicationWindow({ now });
+  return {
+    dispatch: workAvailable && window.allowed,
+    workAvailable,
+    reason: !workAvailable ? 'empty-queue' : window.reason,
+    window,
+  };
 }
 
 export function channelUsername(url) {
@@ -150,7 +162,7 @@ async function writeOutput(name, value) {
   await fs.appendFile(process.env.GITHUB_OUTPUT, `${name}=${value}\n`, 'utf8');
 }
 
-export async function checkTelegramSources({ fetchImpl = fetch } = {}) {
+export async function checkTelegramSources({ fetchImpl = fetch, now = new Date() } = {}) {
   const sourceConfig = await readJson(SOURCES_PATH, { channels: [] });
   const oldState = await readJson(STATE_PATH, { version: 1, channels: {} });
   const oldQueue = await readJson(QUEUE_PATH, { version: 1, items: [] });
@@ -253,14 +265,18 @@ export async function checkTelegramSources({ fetchImpl = fetch } = {}) {
   if (queueChanged) await fs.writeFile(QUEUE_PATH, `${JSON.stringify(persistedQueue, null, 2)}\n`, 'utf8');
   const pendingCount = persistedQueue.items.filter((item) => item.status === 'pending').length;
   const retryableCount = retryableQueueCount(persistedQueue.items);
+  const dispatchDecision = publisherDispatchDecision({ changedChannels, pendingCount, retryableCount, now });
   // A repaired resolver must get a chance to reopen and process older failed
-  // links even when the source channel has not posted another message.
-  await writeOutput('changed', changedChannels.length || pendingCount || retryableCount ? 'true' : 'false');
+  // links even when the source channel has not posted another message. During
+  // quiet hours the queue keeps growing, but the publisher waits for the first
+  // permitted marketing slot instead of producing misleading zero-offer runs.
+  await writeOutput('changed', dispatchDecision.dispatch ? 'true' : 'false');
+  await writeOutput('dispatch_reason', dispatchDecision.reason);
   await writeOutput('channels', changedChannels.join(','));
   await writeOutput('errors', String(errors.length));
   await writeOutput('pending', String(pendingCount));
   await writeOutput('retryable', String(retryableCount));
-  return { ...persistedState, queue: persistedQueue, changedChannels, errors, stateChanged: stateChanged || queueChanged, pendingCount, retryableCount };
+  return { ...persistedState, queue: persistedQueue, changedChannels, errors, stateChanged: stateChanged || queueChanged, pendingCount, retryableCount, dispatchDecision };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
@@ -269,6 +285,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     ? `Novedades: ${result.changedChannels.join(', ')}`
     : 'Sin publicaciones nuevas en los canales vigilados.');
   console.log(`Cola pendiente: ${result.pendingCount}.`);
+  console.log(result.dispatchDecision.dispatch
+    ? 'Publicador activado: hay ofertas y el horario está abierto.'
+    : `Publicador en espera: ${result.dispatchDecision.reason}.`);
   if (result.retryableCount) console.log(`Reintentos por reparación: ${result.retryableCount}.`);
   if (result.errors.length) console.warn(`Avisos: ${result.errors.join(' | ')}`);
 }
