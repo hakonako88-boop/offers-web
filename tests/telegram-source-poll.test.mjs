@@ -8,6 +8,7 @@ import {
   isPromotionalSourcePost,
   latestPublicMessageId,
   parseTelegramPublicMessages,
+  retryableQueueCount,
 } from '../scripts/check-telegram-source-changes.mjs';
 
 test('normalizes public Telegram channel URLs', () => {
@@ -29,6 +30,14 @@ test('initializes a channel without publishing its existing backlog', () => {
   assert.deepEqual(compareCheckpoint(undefined, 105), { changed: false, nextId: 105 });
   assert.deepEqual(compareCheckpoint(105, 106), { changed: true, nextId: 106 });
   assert.deepEqual(compareCheckpoint(106, 105), { changed: false, nextId: 106 });
+});
+
+test('wakes the publisher when a repaired AliExpress resolver can retry old failures', () => {
+  assert.equal(retryableQueueCount([
+    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'short-link-curl-fallback-v6' },
+    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'public-http-snapshot-v7' },
+    { store: 'Amazon', status: 'rejected', retryPolicyVersion: 'old' },
+  ]), 1);
 });
 
 test('extracts every supported product link as an individual queue candidate', () => {

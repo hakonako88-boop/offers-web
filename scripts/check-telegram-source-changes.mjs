@@ -9,6 +9,13 @@ const STATE_PATH = path.join(ROOT, 'data', 'telegram-channel-checkpoints.json');
 const QUEUE_PATH = path.join(ROOT, 'data', 'telegram-source-queue.json');
 const MAX_HISTORY_PAGES = 8;
 const MAX_QUEUE_ITEMS = 1_000;
+const ALIEXPRESS_RETRY_POLICY = 'public-http-snapshot-v7';
+
+export function retryableQueueCount(items = []) {
+  return items.filter((item) => item.store === 'AliExpress'
+    && item.status === 'rejected'
+    && item.retryPolicyVersion !== ALIEXPRESS_RETRY_POLICY).length;
+}
 
 export function channelUsername(url) {
   const match = String(url || '').match(/^https?:\/\/(?:www\.)?t\.me\/(?:s\/)?([A-Za-z0-9_]+)/iu);
@@ -245,11 +252,15 @@ export async function checkTelegramSources({ fetchImpl = fetch } = {}) {
   }
   if (queueChanged) await fs.writeFile(QUEUE_PATH, `${JSON.stringify(persistedQueue, null, 2)}\n`, 'utf8');
   const pendingCount = persistedQueue.items.filter((item) => item.status === 'pending').length;
-  await writeOutput('changed', changedChannels.length || pendingCount ? 'true' : 'false');
+  const retryableCount = retryableQueueCount(persistedQueue.items);
+  // A repaired resolver must get a chance to reopen and process older failed
+  // links even when the source channel has not posted another message.
+  await writeOutput('changed', changedChannels.length || pendingCount || retryableCount ? 'true' : 'false');
   await writeOutput('channels', changedChannels.join(','));
   await writeOutput('errors', String(errors.length));
   await writeOutput('pending', String(pendingCount));
-  return { ...persistedState, queue: persistedQueue, changedChannels, errors, stateChanged: stateChanged || queueChanged, pendingCount };
+  await writeOutput('retryable', String(retryableCount));
+  return { ...persistedState, queue: persistedQueue, changedChannels, errors, stateChanged: stateChanged || queueChanged, pendingCount, retryableCount };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
@@ -258,5 +269,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     ? `Novedades: ${result.changedChannels.join(', ')}`
     : 'Sin publicaciones nuevas en los canales vigilados.');
   console.log(`Cola pendiente: ${result.pendingCount}.`);
+  if (result.retryableCount) console.log(`Reintentos por reparación: ${result.retryableCount}.`);
   if (result.errors.length) console.warn(`Avisos: ${result.errors.join(' | ')}`);
 }
