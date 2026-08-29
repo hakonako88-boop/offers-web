@@ -12,6 +12,7 @@ const inboxSync = fs.readFileSync(new URL('../scripts/process-telegram-inbox.mjs
 const buttonRepair = fs.readFileSync(new URL('../scripts/repair-telegram-offer-buttons.mjs', import.meta.url), 'utf8');
 const welcomePublisher = fs.readFileSync(new URL('../scripts/publish-telegram-welcome.mjs', import.meta.url), 'utf8');
 const cloudflareWorker = fs.readFileSync(new URL('../cloudflare-worker/telegram-webhook.js', import.meta.url), 'utf8');
+const queueReconciler = fs.readFileSync(new URL('../scripts/reconcile-telegram-source-queue.mjs', import.meta.url), 'utf8');
 
 test('uses a ten-minute Cloudflare clock with a staggered GitHub fallback', () => {
   assert.doesNotMatch(workflow, /^\s+schedule:/mu);
@@ -67,6 +68,8 @@ test('serializes every Pages deployment and persists reconciled source queue sta
   const stagedLine = saveStep.split('\n').find((line) => line.includes('git add data/offers.json')) || '';
   assert.match(stagedLine, /data\/telegram-source-queue\.json/u);
   assert.match(stagedLine, /data\/telegram-source-queue-report\.json/u);
+  assert.match(queueReconciler, /attemptedAliExpressIds\.has\(item\.id\)/u);
+  assert.match(queueReconciler, /Pendiente de turno para verificar el producto exacto/u);
 });
 
 test('publishes one validated offer in each independently isolated slot', () => {

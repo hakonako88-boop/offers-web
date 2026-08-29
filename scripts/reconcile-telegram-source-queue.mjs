@@ -5,6 +5,7 @@ const ROOT = process.cwd();
 const QUEUE_FILE = path.join(ROOT, 'data', 'telegram-source-queue.json');
 const REPORT_FILE = path.join(ROOT, 'data', 'telegram-source-queue-report.json');
 const AMAZON_STATE_FILE = path.join(ROOT, 'data', 'amazon-discovery-state.json');
+const ALIEXPRESS_COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.json');
 const PUBLICATION_FILES = [
   path.join(ROOT, 'data', 'aliexpress-publications.json'),
   path.join(ROOT, 'data', 'miravia-publications.json'),
@@ -12,7 +13,7 @@ const PUBLICATION_FILES = [
 ];
 const MAX_ATTEMPTS = 3;
 const MIRAVIA_RETRY_POLICY = 'exact-official-page-v1';
-const ALIEXPRESS_RETRY_POLICY = 'canonical-product-source-price-v4';
+const ALIEXPRESS_RETRY_POLICY = 'attempted-item-accounting-v5';
 
 function readJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return fallback; }
@@ -28,6 +29,11 @@ const publicationBySignal = new Map(publications
   .filter((entry) => entry.communitySignalId)
   .map((entry) => [entry.communitySignalId, entry]));
 const amazonError = String(readJson(AMAZON_STATE_FILE, {}).lastError || '');
+const aliExpressCommunityState = readJson(ALIEXPRESS_COMMUNITY_STATE_FILE, { seen: [] });
+const latestAliExpressCheck = String(aliExpressCommunityState.lastCheckedAt || '');
+const attemptedAliExpressIds = new Set((aliExpressCommunityState.seen || [])
+  .filter((entry) => latestAliExpressCheck && entry.seenAt === latestAliExpressCheck)
+  .map((entry) => entry.id));
 const now = new Date().toISOString();
 
 // The former Miravia reader could not expand tidd.ly and rejected otherwise
@@ -79,6 +85,14 @@ for (const item of queue.items || []) {
     // with an ASIN, a factual price and a product title can be prepared as a
     // private review draft. The owner confirms it before any publication.
     item.reason = 'Pendiente de vista previa automática con ASIN, imagen oficial y tag propio';
+    item.updatedAt = now;
+    continue;
+  }
+
+  if (item.store === 'AliExpress' && !attemptedAliExpressIds.has(item.id)) {
+    // A source run deliberately verifies only a bounded batch. Do not consume
+    // a retry for queued items that were merely waiting behind that batch.
+    item.reason = 'Pendiente de turno para verificar el producto exacto en AliExpress';
     item.updatedAt = now;
     continue;
   }
