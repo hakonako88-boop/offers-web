@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-08-29T16:28:14.074Z",
+  "updatedAt": "2026-08-29T16:38:10.516Z",
   "summary": {
-    "published": 351,
+    "published": 352,
     "duplicate": 101,
-    "rejected": 348,
+    "rejected": 335,
     "blocked": 17,
     "ignored": 28,
-    "needs_review": 71,
-    "pending": 84
+    "needs_review": 72,
+    "pending": 95
   },
   "recent": [
     {
@@ -15,20 +15,20 @@
       "source": "telegram-una-ganga",
       "messageId": 92042,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/una_ganga/92042",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B07P7S14HK?tag=chollos00a-21"
     },
     {
       "id": "telegram-chollosdiario:45234:amazon:0",
       "source": "telegram-chollosdiario",
       "messageId": 45234,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45234",
       "resultUrl": ""
     },
@@ -37,9 +37,9 @@
       "source": "telegram-una-ganga",
       "messageId": 92041,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92041",
       "resultUrl": ""
     },
@@ -49,8 +49,8 @@
       "messageId": 92040,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/92040",
       "resultUrl": ""
     },
@@ -72,7 +72,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/92038",
       "resultUrl": ""
     },
@@ -92,9 +92,9 @@
       "source": "telegram-una-ganga",
       "messageId": 92037,
       "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress",
       "sourceUrl": "https://t.me/una_ganga/92037",
       "resultUrl": ""
     },
@@ -104,8 +104,8 @@
       "messageId": 7149,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/tiesometro/7149",
       "resultUrl": ""
     },
@@ -160,7 +160,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/92033",
       "resultUrl": ""
     },
@@ -226,7 +226,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 0,
-      "reason": "Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/7148",
       "resultUrl": ""
     },
@@ -368,8 +368,8 @@
       "messageId": 41087,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/Ofertos/41087",
       "resultUrl": ""
     },
@@ -390,8 +390,8 @@
       "messageId": 41086,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/Ofertos/41086",
       "resultUrl": ""
     },
@@ -401,8 +401,8 @@
       "messageId": 41085,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/Ofertos/41085",
       "resultUrl": ""
     },
@@ -423,8 +423,8 @@
       "messageId": 41084,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/Ofertos/41084",
       "resultUrl": ""
     },
@@ -522,8 +522,8 @@
       "messageId": 41078,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/Ofertos/41078",
       "resultUrl": ""
     },
@@ -577,8 +577,8 @@
       "messageId": 41075,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/Ofertos/41075",
       "resultUrl": ""
     },
@@ -588,8 +588,8 @@
       "messageId": 41074,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/Ofertos/41074",
       "resultUrl": ""
     },
@@ -599,8 +599,8 @@
       "messageId": 41073,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/Ofertos/41073",
       "resultUrl": ""
     },
@@ -610,8 +610,8 @@
       "messageId": 41072,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/Ofertos/41072",
       "resultUrl": ""
     },
@@ -632,8 +632,8 @@
       "messageId": 41071,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/Ofertos/41071",
       "resultUrl": ""
     },
@@ -643,8 +643,8 @@
       "messageId": 41070,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/Ofertos/41070",
       "resultUrl": ""
     },
