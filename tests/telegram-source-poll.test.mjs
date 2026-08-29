@@ -37,8 +37,9 @@ test('wakes the publisher when a repaired AliExpress resolver can retry old fail
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'short-link-curl-fallback-v6' },
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'public-http-snapshot-v7' },
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'source-corroboration-v8' },
+    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'patient-reader-v9' },
     { store: 'Amazon', status: 'rejected', retryPolicyVersion: 'old' },
-  ]), 2);
+  ]), 3);
 });
 
 test('extracts every supported product link as an individual queue candidate', () => {

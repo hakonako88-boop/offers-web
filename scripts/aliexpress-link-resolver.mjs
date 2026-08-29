@@ -5,10 +5,10 @@ import { promisify } from 'node:util';
 const execFileAsync = promisify(execFile);
 const NETWORK_TIMEOUT_MS = 10_000;
 
-function boundedFetch(fetchImpl, url, options = {}) {
+function boundedFetch(fetchImpl, url, options = {}, timeoutMs = NETWORK_TIMEOUT_MS) {
   return fetchImpl(url, {
     ...options,
-    signal: options.signal || AbortSignal.timeout(NETWORK_TIMEOUT_MS),
+    signal: options.signal || AbortSignal.timeout(timeoutMs),
   });
 }
 
@@ -151,7 +151,7 @@ async function inspectAliExpressReader(url, fetchImpl) {
           'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)',
           ...(bypassCache ? { 'x-no-cache': 'true' } : {}),
         },
-      });
+      }, 25_000);
       if (!response?.ok && response?.ok !== undefined) continue;
       const text = typeof response?.text === 'function' ? await response.text() : '';
       const attemptMetadata = metadataFromAliExpressReader(text);
