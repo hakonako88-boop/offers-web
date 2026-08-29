@@ -1,23 +1,67 @@
 {
-  "updatedAt": "2026-08-29T09:12:55.167Z",
+  "updatedAt": "2026-08-29T09:23:26.967Z",
   "summary": {
-    "rejected": 414,
-    "blocked": 39,
+    "blocked": 38,
     "ignored": 31,
+    "rejected": 411,
     "published": 346,
     "duplicate": 99,
-    "needs_review": 68,
-    "pending": 3
+    "needs_review": 69,
+    "pending": 6
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92017:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92017,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/92017",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41071:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 41071,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/41071",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41070:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 41070,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/41070",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41069:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41069,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41069",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-paramanitas:4644:amazon:0",
       "source": "telegram-paramanitas",
       "messageId": 4644,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/paramanitas/4644",
       "resultUrl": ""
     },
@@ -27,8 +71,8 @@
       "messageId": 92016,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/92016",
       "resultUrl": ""
     },
@@ -104,8 +148,8 @@
       "messageId": 92015,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/una_ganga/92015",
       "resultUrl": ""
     },
@@ -1064,50 +1108,6 @@
       "attempts": 0,
       "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/Ofertos/41042",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91967:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91967,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/una_ganga/91967",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41041:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41041,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/41041",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41040:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41040,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/41040",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41039:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41039,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/41039",
       "resultUrl": ""
     }
   ]
