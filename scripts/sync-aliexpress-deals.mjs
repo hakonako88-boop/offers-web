@@ -147,7 +147,10 @@ function linkedAliExpressOffer(metadata, signal) {
   const queuedPrice = signal.queueItemId ? Number(signal.price) || 0 : 0;
   const queuedPreviousPrice = signal.queueItemId ? Number(signal.previousPrice) || 0 : 0;
   const price = queuedPrice || Number(metadata.price) || 0;
-  const previousPrice = queuedPreviousPrice || Number(metadata.previousPrice) || 0;
+  const reportedPreviousPrice = queuedPreviousPrice || Number(metadata.previousPrice) || 0;
+  // A missing PVP sometimes arrives as numeric zero. It is not a real old
+  // price and must never become "Antes: 0,00 €" in Telegram or on the web.
+  const previousPrice = reportedPreviousPrice > price ? reportedPreviousPrice : 0;
   const discount = previousPrice > price ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
   const hasProvenDiscount = previousPrice > price && discount >= 30;
   const isExactQueuedOffer = Boolean(signal.queueItemId && price >= 5);
@@ -179,7 +182,7 @@ function linkedAliExpressOffer(metadata, signal) {
     price,
     priceLabel: euro(price),
     previousPrice,
-    previousPriceLabel: euro(previousPrice),
+    previousPriceLabel: previousPrice ? euro(previousPrice) : '',
     discount,
     volume: 0,
     commission: 0,
