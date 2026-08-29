@@ -25,10 +25,10 @@ const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.jso
 const MAX_POSTS_PER_RUN = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 3 : 1;
 const MAX_PUBLICATION_ATTEMPTS = 8;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
-// A repository-dispatch run has a strict job timeout. Six verified queue
-// candidates are enough to publish the three allowed deals without letting a
+// A repository-dispatch run has a strict job timeout. Three verified queue
+// candidates are enough to fill the three allowed slots without letting a
 // blocked shop page starve reconciliation, deployment and the next poll.
-const MAX_COMMUNITY_QUERIES_PER_RUN = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 6 : 8;
+const MAX_COMMUNITY_QUERIES_PER_RUN = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 3 : 8;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -151,7 +151,23 @@ function linkedAliExpressOffer(metadata, signal) {
   const discount = previousPrice > price ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
   const hasProvenDiscount = previousPrice > price && discount >= 30;
   const isExactQueuedOffer = Boolean(signal.queueItemId && price >= 5);
-  if (!metadata.identityVerified || !id || !title || !image || !url || price < 5 || (!hasProvenDiscount && !isExactQueuedOffer)) return null;
+  // AliExpress occasionally serves GitHub a legacy compatibility shell whose
+  // embedded id differs from the canonical short-link destination. Accept the
+  // official title/photo only when the exact queued caption independently
+  // corroborates at least two meaningful product terms and this account's API
+  // has generated the affiliate URL for that canonical id.
+  const normalizedTitle = title.normalize('NFD').replace(/[\u0300-\u036f]/gu, '').toLowerCase();
+  const corroboratedTerms = [...new Set(signal.terms || [])]
+    .filter((term) => String(term).length >= 3)
+    .filter((term) => normalizedTitle.includes(String(term).normalize('NFD').replace(/[\u0300-\u036f]/gu, '').toLowerCase()));
+  const sourceCorroboratedIdentity = Boolean(
+    signal.queueItemId
+    && id
+    && metadata.canonicalUrl?.includes(id)
+    && url
+    && corroboratedTerms.length >= 2,
+  );
+  if ((!metadata.identityVerified && !sourceCorroboratedIdentity) || !id || !title || !image || !url || price < 5 || (!hasProvenDiscount && !isExactQueuedOffer)) return null;
   const euro = (amount) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(amount);
   return {
     id,
