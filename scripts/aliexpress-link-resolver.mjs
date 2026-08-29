@@ -14,7 +14,7 @@ function amount(value) {
 }
 
 export function aliexpressProductId(url = '') {
-  const match = String(url).match(/(?:\/item\/|productId=)(\d+)(?:\.html|\b)/iu);
+  const match = String(url).match(/(?:\/item\/(?:product\/)?|productId=)(\d+)(?:\.html|\b)/iu);
   return match?.[1] || '';
 }
 
@@ -130,30 +130,34 @@ export function metadataFromAliExpressReader(text = '') {
 async function inspectAliExpressReader(url, fetchImpl) {
   if (!isAliExpressUrl(url)) return { finalUrl: '', metadata: {} };
   const parsed = new URL(url);
-  parsed.protocol = 'https:';
-  const readerUrl = `https://r.jina.ai/https://${parsed.host}${parsed.pathname}${parsed.search}`;
+  const readerUrls = [
+    `https://r.jina.ai/https://${parsed.host}${parsed.pathname}${parsed.search}`,
+    `https://r.jina.ai/http://${parsed.host}${parsed.pathname}${parsed.search}`,
+  ];
   let lastMetadata = {};
-  for (const bypassCache of [false, true]) {
-    const response = await fetchImpl(readerUrl, {
-      headers: {
-        accept: 'text/plain',
-        'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)',
-        ...(bypassCache ? { 'x-no-cache': 'true' } : {}),
-      },
-    });
-    if (!response?.ok && response?.ok !== undefined) continue;
-    const text = typeof response?.text === 'function' ? await response.text() : '';
-    const attemptMetadata = metadataFromAliExpressReader(text);
-    lastMetadata = {
-      ...lastMetadata,
-      ...Object.fromEntries(Object.entries(attemptMetadata).filter(([, value]) => value)),
-    };
-    const productId = String(lastMetadata.productId || '');
-    if (productId && lastMetadata.title && lastMetadata.imageUrl) {
-      return {
-        finalUrl: `https://es.aliexpress.com/item/${productId}.html`,
-        metadata: lastMetadata,
+  for (const readerUrl of readerUrls) {
+    for (const bypassCache of [false, true]) {
+      const response = await fetchImpl(readerUrl, {
+        headers: {
+          accept: 'text/plain',
+          'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)',
+          ...(bypassCache ? { 'x-no-cache': 'true' } : {}),
+        },
+      });
+      if (!response?.ok && response?.ok !== undefined) continue;
+      const text = typeof response?.text === 'function' ? await response.text() : '';
+      const attemptMetadata = metadataFromAliExpressReader(text);
+      lastMetadata = {
+        ...lastMetadata,
+        ...Object.fromEntries(Object.entries(attemptMetadata).filter(([, value]) => value)),
       };
+      const productId = String(lastMetadata.productId || '');
+      if (productId && lastMetadata.title && lastMetadata.imageUrl) {
+        return {
+          finalUrl: `https://es.aliexpress.com/item/${productId}.html`,
+          metadata: lastMetadata,
+        };
+      }
     }
   }
   const productId = String(lastMetadata.productId || '');

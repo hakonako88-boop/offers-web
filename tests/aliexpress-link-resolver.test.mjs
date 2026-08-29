@@ -4,6 +4,7 @@ import { aliexpressProductId, isOwnedAliExpressAffiliateUrl, metadataFromAliExpr
 
 test('extracts an AliExpress product id from an attributed destination URL', () => {
   assert.equal(aliexpressProductId('https://www.aliexpress.com/item/1005011620902362.html?aff_fsk=example'), '1005011620902362');
+  assert.equal(aliexpressProductId('https://es.aliexpress.com/item/product/1005009171403555.html/_____tmd_____'), '1005009171403555');
 });
 
 test('recognizes only the owner invitation code in an AliExpress redirect', () => {
@@ -356,6 +357,25 @@ test('uses the public product snapshot when GitHub cannot expand an a.aliexpress
   assert.equal(canonical, 'https://es.aliexpress.com/item/1005012721085216.html');
 });
 
+test('falls back to the public HTTP snapshot when the HTTPS snapshot is intercepted', async () => {
+  const shortUrl = 'https://s.click.aliexpress.com/e/_c4WyPjl9';
+  const canonical = await resolveAliExpressProductUrl(shortUrl, {
+    execFileImpl: async () => ({ stdout: 'https://es.aliexpress.com/' }),
+    fetchImpl: async (url) => {
+      if (url === `https://r.jina.ai/http://s.click.aliexpress.com/e/_c4WyPjl9`) return {
+        ok: true,
+        text: async () => 'Title: Nivea Q10 crema reafirmante - AliExpress\n[Product](https://es.aliexpress.com/item/1005009171403555.html)\n![Image](https://ae-pic-a1.aliexpress-media.com/kf/nivea.jpg)',
+      };
+      if (String(url).startsWith('https://r.jina.ai/https://')) return {
+        ok: true,
+        text: async () => 'Title: Captcha Interception\n[Feedback](https://es.aliexpress.com/item/product/1005009171403555.html/_____tmd_____/page/feedback)',
+      };
+      return { ok: true, url: 'https://es.aliexpress.com/', text: async () => '' };
+    },
+  });
+  assert.equal(canonical, 'https://es.aliexpress.com/item/1005009171403555.html');
+});
+
 test('rejects an AliExpress maintenance page as a product title', () => {
   const metadata = metadataFromAliExpressReader('Title: AliExpress.com - Maintaining\n[Product](https://es.aliexpress.com/item/1005012721085216.html)');
   assert.equal(metadata.productId, '1005012721085216');
@@ -381,5 +401,5 @@ test('bypasses a cached maintenance page to recover the shared product id', asyn
     },
   });
   assert.equal(canonical, 'https://es.aliexpress.com/item/1005012721085216.html');
-  assert.equal(readerCalls, 2);
+  assert.equal(readerCalls, 4);
 });
