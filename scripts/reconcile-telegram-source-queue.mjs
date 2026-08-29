@@ -55,15 +55,16 @@ for (const item of queue.items || []) {
     reopenedIds.add(item.id);
   }
   if (item.store === 'AliExpress'
-    && item.status === 'rejected'
+    && (item.status === 'rejected' || item.status === 'pending')
     && item.retryPolicyVersion !== ALIEXPRESS_RETRY_POLICY
     && (!Number.isFinite(publishedAt) || publishedAt >= retryCutoff)) {
+    const wasRejected = item.status === 'rejected';
     item.status = 'pending';
     item.attempts = 0;
     item.reason = 'Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress';
     item.retryPolicyVersion = ALIEXPRESS_RETRY_POLICY;
     item.updatedAt = now;
-    reopenedIds.add(item.id);
+    if (wasRejected) reopenedIds.add(item.id);
   }
 }
 
