@@ -2,9 +2,10 @@ name: Publicar resumen diario de ofertas
 
 on:
   schedule:
-    # Las 22:45 de Madrid son las 20:45 UTC en verano y las 21:45 UTC en invierno.
-    # El script comprueba la hora local y evita la ejecución duplicada.
-    - cron: "45 20,21 * * *"
+    # Las 00:05 de Madrid son las 22:05 UTC en verano y las 23:05 UTC en
+    # invierno. El script acepta únicamente la invocación que realmente cae a
+    # medianoche en Madrid y resume el día que acaba de terminar.
+    - cron: "5 22,23 * * *"
   repository_dispatch:
     types: [daily_summary]
   workflow_dispatch:

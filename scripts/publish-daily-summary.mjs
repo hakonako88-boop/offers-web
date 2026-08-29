@@ -32,6 +32,13 @@ function madridParts(date) {
   return { date: `${parts.year}-${parts.month}-${parts.day}`, hour: Number(parts.hour), minute: Number(parts.minute) };
 }
 
+export function previousMadridDate(date) {
+  const currentDate = madridParts(date).date;
+  const middayUtc = new Date(`${currentDate}T12:00:00Z`);
+  middayUtc.setUTCDate(middayUtc.getUTCDate() - 1);
+  return middayUtc.toISOString().slice(0, 10);
+}
+
 function numericPrice(value = '') {
   const raw = String(value).replace(/\u00a0|\s/gu, '').replace(/[^0-9,.-]/gu, '');
   if (!raw) return 0;
@@ -145,12 +152,13 @@ async function main() {
   const now = new Date();
   const force = String(process.env.DAILY_SUMMARY_FORCE || '').toLowerCase() === 'true';
   const current = madridParts(now);
-  if (!force && (current.hour !== 22 || current.minute < 45)) {
+  if (!force && (current.hour !== 0 || current.minute < 5)) {
     console.log(`Resumen omitido: en Madrid son las ${String(current.hour).padStart(2, '0')}:${String(current.minute).padStart(2, '0')}.`);
     return;
   }
 
-  const targetDate = String(process.env.DAILY_SUMMARY_DATE || '').trim() || current.date;
+  const targetDate = String(process.env.DAILY_SUMMARY_DATE || '').trim()
+    || (force ? current.date : previousMadridDate(now));
   const state = readJson(STATE_FILE, { publishedDates: [] });
   const posts = readJson(POSTS_FILE, []);
   if ((state.publishedDates || []).includes(targetDate) || posts.some((post) => post.id === `resumen-diario-${targetDate}`)) {

@@ -20,7 +20,7 @@ test('uses a ten-minute Cloudflare clock with a staggered GitHub fallback', () =
   assert.match(sourcePollWorkflow, /telegram_sources_changed/u);
   assert.match(cloudflareWorker, /cron === '\*\/10 \* \* \* \*'/u);
   assert.match(cloudflareWorker, /githubDispatch\('source_poll'/u);
-  assert.match(cloudflareWorker, /cron === '45 20,21 \* \* \*'/u);
+  assert.match(cloudflareWorker, /cron === '5 22,23 \* \* \*'/u);
   assert.match(cloudflareWorker, /githubDispatch\('daily_summary'/u);
   assert.doesNotMatch(cloudflareWorker, /automatic_(?:amazon|aliexpress|miravia)/u);
 });
