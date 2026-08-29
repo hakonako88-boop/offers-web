@@ -1,4 +1,15 @@
-import{r as e}from"./rolldown-runtime-C60lm6uB.js";import{i as t,r as n}from"./framework-BaE7mD_r.js";import r,{t as i}from"./AdSlot-DG6XFrSN.js";var a=e(n(),1),o=[{id:`resumen-diario-2026-08-28`,source_product_id:`daily-summary:2026-08-28`,date:1787949965,title:`Las mejores ofertas del 28 de agosto de 2026`,body:`Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.
+import{r as e}from"./rolldown-runtime-C60lm6uB.js";import{i as t,r as n}from"./framework-BaE7mD_r.js";import r,{t as i}from"./AdSlot-DG6XFrSN.js";var a=e(n(),1),o=[{id:`resumen-diario-2026-08-29`,source_product_id:`daily-summary:2026-08-29`,date:1788041111,title:`Las mejores ofertas del 29 de agosto de 2026`,body:`Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.
+
+1. roborock Q10 S5+ Robot Aspirador y Fregasuelo 2 en 1 10000 Pa, Negro
+224,99\xA0€ en Amazon
+
+2. Ventilador
+28,16\xA0€ en AliExpress
+
+3. ghd Platinum+ - Plancha de Pelo Profesional Inteligente - Negra
+178,60\xA0€ en Amazon
+
+Los precios y el stock pueden cambiar. Comprueba siempre las condiciones en la tienda antes de comprar.`,image:`/tg/manual-5672.jpg`,url:`https://chollosaldia.com/`,source:`daily-summary`,message_id:5690},{id:`resumen-diario-2026-08-28`,source_product_id:`daily-summary:2026-08-28`,date:1787949965,title:`Las mejores ofertas del 28 de agosto de 2026`,body:`Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.
 
 1. GODOX - Luz de vídeo Godox SL150II.
 159,99\xA0€ en El Corte Inglés
