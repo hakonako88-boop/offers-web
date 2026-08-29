@@ -1,15 +1,37 @@
 {
-  "updatedAt": "2026-08-29T06:32:30.360Z",
+  "updatedAt": "2026-08-29T06:42:26.325Z",
   "summary": {
-    "blocked": 44,
     "published": 340,
-    "rejected": 419,
+    "rejected": 420,
+    "blocked": 42,
     "ignored": 32,
     "duplicate": 98,
     "needs_review": 66,
-    "pending": 1
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7142:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7142,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/tiesometro/7142",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:92009:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92009,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/92009",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92008:amazon:0",
       "source": "telegram-una-ganga",
@@ -48,9 +70,9 @@
       "source": "telegram-una-ganga",
       "messageId": 92006,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92006",
       "resultUrl": ""
     },
@@ -1086,28 +1108,6 @@
       "attempts": 0,
       "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45222",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-tiesometro:7137:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7137,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/tiesometro/7137",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:91952:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 91952,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/91952",
       "resultUrl": ""
     }
   ]
