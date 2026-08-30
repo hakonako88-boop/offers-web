@@ -146,10 +146,16 @@ async function sendProductPhoto(settings, offer) {
   // Amazon inbox offers now use the same professional 1200×1200 image card
   // as the other automatic shops. The clean ASIN image remains the source,
   // while Telegram and the website receive the branded card with prices.
-  if (offer.store === 'Amazon' && /^https?:\/\//iu.test(String(offer.imageUrl || ''))) {
-    try {
+  const amazonImageCandidates = [...new Set([
+    offer.imageUrl,
+    ...(Array.isArray(offer.imageCandidates) ? offer.imageCandidates : []),
+  ].filter((value) => /^https?:\/\//iu.test(String(value || ''))))];
+  if (offer.store === 'Amazon' && amazonImageCandidates.length) {
+    let cardError;
+    for (const imageUrl of amazonImageCandidates) {
+      try {
       const card = await createDealImageCard({
-        imageUrl: offer.imageUrl,
+        imageUrl,
         store: 'Amazon',
         price: offer.priceLabel,
         previousPrice: offer.previousPriceLabel,
@@ -161,10 +167,15 @@ async function sendProductPhoto(settings, offer) {
       form.set('parse_mode', 'HTML');
       if (replyMarkup) form.set('reply_markup', JSON.stringify(replyMarkup));
       form.set('photo', new Blob([card], { type: 'image/jpeg' }), dealImageCardFilename('amazon', offer.sourceProductId));
+      // The website mirrors the photograph Telegram accepted. Keeping the
+      // working source here also makes retries deterministic within this run.
+      offer.imageUrl = imageUrl;
       return await telegramForm(settings.token, 'sendPhoto', form);
-    } catch (error) {
-      console.warn(`Could not create the branded Amazon image: ${safeError(error, settings.token)}`);
+      } catch (error) {
+        cardError = error;
+      }
     }
+    console.warn(`Could not create the branded Amazon image from ${amazonImageCandidates.length} source(s): ${safeError(cardError, settings.token)}`);
   }
 
   // Never hand Amazon's unverified fallback URL straight to Telegram: an HTTP

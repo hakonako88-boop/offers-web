@@ -47,6 +47,36 @@ test('builds a complete reviewed draft from a factual Amazon source post', async
   assert.doesNotMatch(result.offer.title, /Oferta reenviada/iu);
 });
 
+test('keeps the Telegram product photo as a delivery fallback when Amazon image CDN fails', async () => {
+  const result = await buildAmazonReviewDraft({
+    partnerTag: 'chollos00a-21',
+    item: {
+      id: 'telegram-ofertos:41134:amazon:0',
+      store: 'Amazon',
+      merchantUrl: 'https://www.amazon.es/dp/B0FPQ3Z16S?tag=another-21',
+      sourceUrl: 'https://t.me/Ofertos/41134',
+      text: '🔥 medicube Jelly Cream with Hyaluronic Acid 🔥 | #Amazon #Publicidad 🔥 Precio: 18,99€ ❌ Precio recomendado: 32,99€',
+    },
+    fetchImpl: async (url) => {
+      if (String(url).startsWith('https://t.me/')) {
+        return {
+          ok: true,
+          text: async () => '<div style="background-image:url(\'https://cdn4.telesco.pe/file/amazon-source.jpg\')"></div>',
+        };
+      }
+      return {
+        ok: true,
+        text: async () => '<img id="landingImage" data-old-hires="https://m.media-amazon.com/images/I/official-main.jpg">',
+      };
+    },
+  });
+  assert.equal(result.status, 'ready');
+  assert.deepEqual(result.offer.imageCandidates.slice(0, 2), [
+    'https://m.media-amazon.com/images/I/official-main.jpg',
+    'https://cdn4.telesco.pe/file/amazon-source.jpg',
+  ]);
+});
+
 test('understands Amazon source posts that show a pair of prices after the money icon', async () => {
   const result = await buildAmazonReviewDraft({
     partnerTag: 'chollos00a-21',

@@ -137,12 +137,24 @@ export async function buildAmazonReviewDraft({ item = {}, partnerTag = '', fetch
     return { status: 'needs_details', missing: [!asin && 'ASIN', !partnerTag && 'tag de afiliado'].filter(Boolean) };
   }
 
-  const productPageImageUrl = await amazonPageImage(affiliateUrl, fetchImpl);
-  const sourceImageUrl = productPageImageUrl ? '' : await telegramPostImage(item.sourceUrl, fetchImpl);
+  const [productPageImageUrl, sourceImageUrl] = await Promise.all([
+    amazonPageImage(affiliateUrl, fetchImpl),
+    telegramPostImage(item.sourceUrl, fetchImpl),
+  ]);
+  // Keep several real photographs for delivery. Amazon's CDN occasionally
+  // answers 500 for one size variant even though the product and the source
+  // post are valid. The publisher will try these candidates in order instead
+  // of throwing the whole offer away because one image host had a transient
+  // failure.
+  const imageCandidates = [...new Set([
+    productPageImageUrl,
+    sourceImageUrl,
+    amazonProductImageFromUrl(affiliateUrl),
+  ].filter(Boolean))];
   const metadata = {
     ...amazonSourceMetadata(item.text),
     productId: asin,
-    imageUrl: productPageImageUrl || sourceImageUrl || amazonProductImageFromUrl(affiliateUrl),
+    imageUrl: imageCandidates[0] || '',
   };
   const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag });
   if (result.status !== 'ready') return result;
@@ -153,6 +165,7 @@ export async function buildAmazonReviewDraft({ item = {}, partnerTag = '', fetch
       sourceProductId: `amazon:${asin}`,
       reviewQueueItemId: item.id,
       sourceUrl: item.sourceUrl || '',
+      imageCandidates,
     },
   };
 }
