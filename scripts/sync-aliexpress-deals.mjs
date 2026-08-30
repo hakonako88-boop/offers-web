@@ -515,3 +515,6 @@ writeJson(STATE_FILE, {
 writeJson(COMMUNITY_STATE_FILE, nextCommunitySignalState(communityState, { ...communityDiscovery, signals: communitySignals }));
 writeJson(PUBLISHED_FILE, { published });
 console.log(`AliExpress discovery checked ${communitySignals.length} fresh community signal(s), found ${uniqueCandidates.length} publishable candidate(s), attempted ${attempted}, and published ${sent} validated offer(s).${canPublishNow ? '' : ' Publication interval is still active.'}`);
+if (!publicationPolicy.allowed) {
+  console.log(`AliExpress publication deferred: ${publicationPolicy.reason}; retailer ${publicationPolicy.storeCount || 0}/${publicationPolicy.storeLimit || 0}, editorial slots ${publicationPolicy.publishedToday || 0}/${publicationPolicy.globalLimit || 0}.`);
+}

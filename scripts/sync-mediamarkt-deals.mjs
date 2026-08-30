@@ -178,3 +178,6 @@ writeJson(STATE_FILE, {
 });
 writeJson(PUBLISHED_FILE, { published: published.slice(-1000) });
 console.log(`MediaMarkt feed ${TRADEDOUBLER_MEDIAMARKT.feedId}: ${payload.productHeader?.totalHits || 0} total products, ${candidates.length} qualified offers, ${attempts} attempted and ${sent} published.`);
+if (!publicationPolicy.allowed) {
+  console.log(`MediaMarkt publication deferred: ${publicationPolicy.reason}; retailer ${publicationPolicy.storeCount || 0}/${publicationPolicy.storeLimit || 0}, editorial slots ${publicationPolicy.publishedToday || 0}/${publicationPolicy.globalLimit || 0}.`);
+}

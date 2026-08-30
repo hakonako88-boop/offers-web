@@ -153,6 +153,23 @@ test('does not let overnight manual tests consume the first daytime slot', () =>
   assert.equal(allowance.storeCount, 1);
 });
 
+test('does not let an inbox burst from one shop starve the other retailers', () => {
+  const offers = Array.from({ length: 56 }, (_, index) => ({
+    store: 'Amazon',
+    source: 'telegram-inbox',
+    date: Math.floor(Date.parse(`2026-08-30T12:${String(index % 60).padStart(2, '0')}:00+02:00`) / 1000),
+  }));
+  const allowance = publicationAllowance({
+    store: 'MediaMarkt',
+    offers,
+    now: new Date('2026-08-30T22:00:00+02:00'),
+  });
+  assert.equal(allowance.allowed, true);
+  assert.equal(allowance.publishedToday, 6);
+  assert.equal(allowance.rawPublishedToday, 56);
+  assert.equal(allowance.remaining, 2);
+});
+
 test('checks eight AliExpress community candidates in automatic source mode', () => {
   assert.match(aliExpressSync, /const MAX_COMMUNITY_QUERIES_PER_RUN = 8;/u);
 });

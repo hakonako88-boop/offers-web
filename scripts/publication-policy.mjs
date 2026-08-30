@@ -82,14 +82,30 @@ export function publicationAllowance({ store, offers = [], now = new Date(), byp
   const storeName = normalizedStore(store);
   const storeCount = today.filter((offer) => normalizedStore(offer.store) === storeName).length;
   const storeLimit = STORE_DAILY_LIMITS[storeName] || 1;
-  const remaining = Math.max(0, Math.min(globalLimit - scheduledToday.length, storeLimit - storeCount));
+  // A direct/manual ingestion path can occasionally add many posts from one
+  // retailer before the scheduled discovery jobs run. Count at most each
+  // retailer's editorial quota towards the shared slot. This keeps a burst of
+  // Amazon inbox messages from starving MediaMarkt, AliExpress or Miravia for
+  // the rest of the day, while the retailer-specific cap below still prevents
+  // an automatic source from flooding the channel.
+  const scheduledByStore = new Map();
+  for (const offer of scheduledToday) {
+    const scheduledStore = normalizedStore(offer.store);
+    scheduledByStore.set(scheduledStore, (scheduledByStore.get(scheduledStore) || 0) + 1);
+  }
+  const editorialPublishedToday = [...scheduledByStore.entries()].reduce((total, [scheduledStore, count]) => {
+    const editorialCap = STORE_DAILY_LIMITS[scheduledStore] || 1;
+    return total + Math.min(count, editorialCap);
+  }, 0);
+  const remaining = Math.max(0, Math.min(globalLimit - editorialPublishedToday, storeLimit - storeCount));
   return {
     allowed: remaining > 0,
     remaining,
     reason: remaining > 0 ? 'slot-available' : (storeCount >= storeLimit ? 'store-daily-limit' : 'time-slot-full'),
     local,
     globalLimit,
-    publishedToday: scheduledToday.length,
+    publishedToday: editorialPublishedToday,
+    rawPublishedToday: scheduledToday.length,
     storeCount,
     storeLimit,
   };

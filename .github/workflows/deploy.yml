@@ -126,7 +126,7 @@ jobs:
           git push
 
   build-and-deploy:
-    if: ${{ !(github.event_name == 'repository_dispatch' && github.event.action == 'telegram_update') && !(github.event_name == 'push' && (contains(github.event.head_commit.message, '[telegram-state]') || contains(github.event.head_commit.message, '[source-watch]') || contains(github.event.head_commit.message, '[automation-state]'))) }}
+    if: ${{ !(github.event_name == 'repository_dispatch' && github.event.action == 'telegram_update') && !(github.event_name == 'push' && (contains(github.event.head_commit.message, '[telegram-state]') || contains(github.event.head_commit.message, '[source-watch]') || contains(github.event.head_commit.message, '[automation-state]') || contains(github.event.head_commit.message, '[instagram-state]'))) }}
     runs-on: ubuntu-latest
     env:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -151,6 +151,9 @@ jobs:
       AWIN_FEED_LIST_URL: ${{ secrets.AWIN_FEED_LIST_URL }}
       AWIN_FEED_LIST_URL_2021553: ${{ secrets.AWIN_FEED_LIST_URL_2021553 }}
       TRADEDOUBLER_PRODUCTS_TOKEN: ${{ secrets.TRADEDOUBLER_PRODUCTS_TOKEN }}
+      INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+      INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+      INSTAGRAM_GRAPH_VERSION: "v25.0"
       NEXT_PUBLIC_ADSENSE_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_ADSENSE_CLIENT_ID }}
       NEXT_PUBLIC_ADSENSE_HOME_SLOT: ${{ secrets.NEXT_PUBLIC_ADSENSE_HOME_SLOT }}
       NEXT_PUBLIC_ADSENSE_OFFER_SLOT: ${{ secrets.NEXT_PUBLIC_ADSENSE_OFFER_SLOT }}
@@ -332,3 +335,17 @@ jobs:
           publish_dir: ./out-github
           publish_branch: gh-pages
           cname: chollosaldia.com
+
+      - name: Publicar la mejor oferta reciente en Instagram
+        if: ${{ env.INSTAGRAM_USER_ID != '' && env.INSTAGRAM_ACCESS_TOKEN != '' }}
+        run: npm run publish:instagram
+
+      - name: Guardar el historial de Instagram
+        if: ${{ env.INSTAGRAM_USER_ID != '' && env.INSTAGRAM_ACCESS_TOKEN != '' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/instagram-publications.json
+          git diff --cached --quiet || git commit -m "Guardar publicación de Instagram [instagram-state]"
+          git pull --rebase origin main
+          git push
