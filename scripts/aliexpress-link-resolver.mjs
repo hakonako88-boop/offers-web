@@ -369,8 +369,10 @@ export async function resolveAliExpressAffiliateProduct(url, config, options = {
   } catch {
     // The exact affiliate detail endpoint remains authoritative.
   }
-  if (!pageMetadata.title || !pageMetadata.imageUrl
-    || (pageMetadata.productId && String(pageMetadata.productId) !== productId)) {
+  const completeCorroboratingSource = Boolean(sourceMetadata.title && sourceMetadata.imageUrl);
+  if ((!pageMetadata.title || !pageMetadata.imageUrl
+    || (pageMetadata.productId && String(pageMetadata.productId) !== productId))
+    && !completeCorroboratingSource) {
     for (const readerUrl of [...new Set([url, canonicalUrl])]) {
       try {
         const reader = await inspectAliExpressReader(readerUrl, fetchImpl);
@@ -439,7 +441,7 @@ export async function resolveAliExpressAffiliateProduct(url, config, options = {
     // link. `identityVerified` deliberately remains false unless AliExpress
     // itself verified the product; the caller must corroborate the title.
     ...Object.fromEntries(Object.entries(sourceMetadata).filter(([, value]) => value)),
-    ...pageMetadata,
+    ...Object.fromEntries(Object.entries(pageMetadata).filter(([, value]) => value)),
     ...Object.fromEntries(Object.entries(exactMetadata).filter(([, value]) => value)),
     productId,
     canonicalUrl,
