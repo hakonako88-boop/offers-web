@@ -2,7 +2,7 @@ const TIME_ZONE = 'Europe/Madrid';
 
 export const STORE_DAILY_LIMITS = Object.freeze({
   Amazon: 6,
-  AliExpress: 4,
+  AliExpress: 10,
   Miravia: 2,
   MediaMarkt: 2,
   PcComponentes: 2,

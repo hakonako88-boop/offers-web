@@ -170,6 +170,29 @@ test('does not let an inbox burst from one shop starve the other retailers', () 
   assert.equal(allowance.remaining, 2);
 });
 
+test('allows up to ten AliExpress offers per Madrid day', () => {
+  const offers = Array.from({ length: 9 }, (_, index) => ({
+    store: 'AliExpress',
+    date: Math.floor(Date.parse(`2026-08-31T${String(9 + index).padStart(2, '0')}:00:00+02:00`) / 1000),
+  }));
+  const tenth = publicationAllowance({
+    store: 'AliExpress',
+    offers,
+    now: new Date('2026-08-31T21:00:00+02:00'),
+  });
+  assert.equal(tenth.allowed, true);
+  assert.equal(tenth.storeLimit, 10);
+  assert.equal(tenth.remaining, 1);
+
+  const capped = publicationAllowance({
+    store: 'AliExpress',
+    offers: [...offers, { store: 'AliExpress', date: Math.floor(Date.parse('2026-08-31T20:30:00+02:00') / 1000) }],
+    now: new Date('2026-08-31T21:00:00+02:00'),
+  });
+  assert.equal(capped.allowed, false);
+  assert.equal(capped.reason, 'store-daily-limit');
+});
+
 test('checks eight AliExpress community candidates in automatic source mode', () => {
   assert.match(aliExpressSync, /const MAX_COMMUNITY_QUERIES_PER_RUN = 8;/u);
 });
