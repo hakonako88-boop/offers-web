@@ -1,4 +1,18 @@
-import{r as e}from"./rolldown-runtime-C60lm6uB.js";import{i as t,r as n}from"./framework-BaE7mD_r.js";import r,{t as i}from"./AdSlot-DG6XFrSN.js";var a=e(n(),1),o=[{id:`resumen-diario-2026-08-29`,source_product_id:`daily-summary:2026-08-29`,date:1788041111,title:`Las mejores ofertas del 29 de agosto de 2026`,body:`Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.
+import{r as e}from"./rolldown-runtime-C60lm6uB.js";import{i as t,r as n}from"./framework-BaE7mD_r.js";import r,{t as i}from"./AdSlot-DG6XFrSN.js";var a=e(n(),1),o=[{id:`resumen-diario-2026-08-30`,source_product_id:`daily-summary:2026-08-30`,date:1788127513,title:`Las mejores ofertas del 30 de agosto de 2026`,body:`Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.
+
+1. Freidora de aire 10 en 1, freidora de cristal transparente 10.0QT, ventana de cocción de 360°,…
+89,99\xA0€ en Amazon · Cupón: 7ZDZGVVG
+
+2. Café Marcilla Gran Aroma Mezcla Molido 250 Grs - Pack de 5 Unidades - Qumir
+23,87\xA0€ en AliExpress
+
+3. STECEi Smartwatch Hombre Mujer, Pantalla Curva HD de 1,95", Reloj Inteligente con…
+19,98\xA0€ en Amazon
+
+4. Ipsdi professional trimmer, 12 pcs dog and cat hair clipper kits, removable and washable ceramic blades, low noise pet hair clipper, rechargeable hair clipper…
+11,40\xA0€ en AliExpress
+
+Los precios y el stock pueden cambiar. Comprueba siempre las condiciones en la tienda antes de comprar.`,image:`/tg/manual-5711.jpg`,url:`https://chollosaldia.com/`,source:`daily-summary`,message_id:5751},{id:`resumen-diario-2026-08-29`,source_product_id:`daily-summary:2026-08-29`,date:1788041111,title:`Las mejores ofertas del 29 de agosto de 2026`,body:`Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.
 
 1. roborock Q10 S5+ Robot Aspirador y Fregasuelo 2 en 1 10000 Pa, Negro
 224,99\xA0€ en Amazon
