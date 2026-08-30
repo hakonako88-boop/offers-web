@@ -97,6 +97,8 @@ test('consumes the Amazon Telegram queue in source-only mode without enabling it
   assert.match(amazonQueueStep, /inputs\.run_automatic_source == 'amazon'/u);
   assert.doesNotMatch(tiktokRetryStep, /TELEGRAM_PROCESS_AMAZON_QUEUE/u);
   assert.match(inboxSync, /if \(!pendingOnly \|\| settings\.processAmazonQueue\)/u);
+  assert.match(inboxSync, /PENDING_PREVIEW_TTL_MS = 2 \* 60 \* 60 \* 1000/u);
+  assert.match(inboxSync, /Expired private preview released for Amazon queue/u);
 });
 
 test('uses the same stable product id for Telegram buttons and website records', () => {

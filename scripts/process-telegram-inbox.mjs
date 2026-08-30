@@ -38,6 +38,7 @@ const TELEGRAM_SOURCE_QUEUE_FILE = path.join(ROOT, 'data', 'telegram-source-queu
 const IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const MAX_PROCESSED_UPDATES = 400;
 const DUPLICATE_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
+const PENDING_PREVIEW_TTL_MS = 2 * 60 * 60 * 1000;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -503,6 +504,29 @@ async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
   let availableSlots = 3;
   let automaticallyPublished = 0;
   let duplicatesSkipped = 0;
+
+  // A forgotten manual preview used to block the Amazon source queue forever.
+  // Keep recent owner edits untouched, but retire buttons from previews that
+  // have been abandoned for more than two hours and free the single editing
+  // slot before processing the next validated Amazon product.
+  const existingPreview = pendingConfirmations[chatId];
+  const previewAge = Date.now() - Number(existingPreview?.updatedAt || existingPreview?.createdAt || 0);
+  if (existingPreview && Number.isFinite(previewAge) && previewAge >= PENDING_PREVIEW_TTL_MS) {
+    try {
+      await removePreviewButtons(settings, chatId, existingPreview.previewMessageId);
+    } catch (error) {
+      console.warn(`Expired preview buttons could not be removed: ${safeError(error, settings.token)}`);
+    }
+    if (existingPreview.offer?.reviewQueueItemId) {
+      updateAmazonReviewQueueItem(
+        existingPreview.offer.reviewQueueItemId,
+        'pending',
+        'Vista previa anterior caducada; pendiente de una nueva comprobación',
+      );
+    }
+    delete pendingConfirmations[chatId];
+    console.log(`Expired private preview released for Amazon queue: ${chatId}.`);
+  }
 
   // When automatic mode is enabled, complete a preview created by the former
   // review-only mode. It has already passed the exact same validation rules.
