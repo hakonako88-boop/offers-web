@@ -134,3 +134,23 @@ test('spreads publications through Madrid daytime and enforces retailer caps', (
   assert.equal(capped.reason, 'store-daily-limit');
   assert.equal(publicationAllowance({ store: 'Miravia', offers, now: new Date(), bypass: true }).allowed, true);
 });
+
+test('does not let overnight manual tests consume the first daytime slot', () => {
+  const overnightTests = [
+    { store: 'AliExpress', date: Math.floor(Date.parse('2026-08-30T01:03:00+02:00') / 1000) },
+    { store: 'Amazon', date: Math.floor(Date.parse('2026-08-30T01:05:00+02:00') / 1000) },
+  ];
+  const allowance = publicationAllowance({
+    store: 'AliExpress',
+    offers: overnightTests,
+    now: new Date('2026-08-30T10:01:00+02:00'),
+  });
+  assert.equal(allowance.allowed, true);
+  assert.equal(allowance.remaining, 2);
+  assert.equal(allowance.publishedToday, 0);
+  assert.equal(allowance.storeCount, 1);
+});
+
+test('checks eight AliExpress community candidates in automatic source mode', () => {
+  assert.match(aliExpressSync, /const MAX_COMMUNITY_QUERIES_PER_RUN = 8;/u);
+});

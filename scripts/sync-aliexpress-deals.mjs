@@ -28,7 +28,7 @@ const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
 // A repository-dispatch run has a strict job timeout. Three verified queue
 // candidates are enough to fill the three allowed slots without letting a
 // blocked shop page starve reconciliation, deployment and the next poll.
-const MAX_COMMUNITY_QUERIES_PER_RUN = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 3 : 8;
+const MAX_COMMUNITY_QUERIES_PER_RUN = 8;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;

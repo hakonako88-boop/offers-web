@@ -32,6 +32,10 @@ function cumulativeLimit(minuteOfDay, weekend) {
   return minuteOfDay >= 1380 ? 0 : limit;
 }
 
+function firstPublicationMinute(weekend) {
+  return weekend ? 600 : 480;
+}
+
 export function publicationWindow({ now = new Date() } = {}) {
   const local = madridParts(now);
   const weekend = ['Sat', 'Sun', 'sáb', 'dom'].includes(local.weekday);
@@ -60,22 +64,32 @@ export function publicationAllowance({ store, offers = [], now = new Date(), byp
   if (bypass) return { allowed: true, remaining: 3, reason: 'manual-bypass' };
   const { local, globalLimit } = publicationWindow({ now });
   if (!globalLimit) return { allowed: false, remaining: 0, reason: 'quiet-hours', local };
+  const weekend = ['Sat', 'Sun', 'sáb', 'dom'].includes(local.weekday);
 
   const today = offers.filter((offer) => {
     const stamp = Number(offer.date) > 10_000_000_000 ? Number(offer.date) : Number(offer.date) * 1000;
     return Number.isFinite(stamp) && madridParts(new Date(stamp)).date === local.date;
   });
+  // Manual verification runs may be explicitly published overnight. They are
+  // real posts and still count towards the retailer's daily cap, but they must
+  // not consume the first daytime marketing slot. Otherwise a midnight test
+  // can silently block the 08:00/10:00 automatic publication window.
+  const scheduledToday = today.filter((offer) => {
+    const stamp = Number(offer.date) > 10_000_000_000 ? Number(offer.date) : Number(offer.date) * 1000;
+    const offerLocal = madridParts(new Date(stamp));
+    return offerLocal.minuteOfDay >= firstPublicationMinute(weekend) && offerLocal.minuteOfDay < 1380;
+  });
   const storeName = normalizedStore(store);
   const storeCount = today.filter((offer) => normalizedStore(offer.store) === storeName).length;
   const storeLimit = STORE_DAILY_LIMITS[storeName] || 1;
-  const remaining = Math.max(0, Math.min(globalLimit - today.length, storeLimit - storeCount));
+  const remaining = Math.max(0, Math.min(globalLimit - scheduledToday.length, storeLimit - storeCount));
   return {
     allowed: remaining > 0,
     remaining,
     reason: remaining > 0 ? 'slot-available' : (storeCount >= storeLimit ? 'store-daily-limit' : 'time-slot-full'),
     local,
     globalLimit,
-    publishedToday: today.length,
+    publishedToday: scheduledToday.length,
     storeCount,
     storeLimit,
   };
