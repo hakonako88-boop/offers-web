@@ -185,6 +185,7 @@ function queuedTelegramSignals() {
         signal.id = item.id;
         signal.queueItemId = item.id;
         signal.merchantUrl = item.merchantUrl;
+        signal.sourceImageUrl = String(item.sourceImageUrl || '').trim();
         signal.retryPolicyVersion = String(item.retryPolicyVersion || '');
         signal.attempts = Number(item.attempts || 0);
         return signal;

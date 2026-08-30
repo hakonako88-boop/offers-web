@@ -13,7 +13,7 @@ const PUBLICATION_FILES = [
 ];
 const MAX_ATTEMPTS = 3;
 const MIRAVIA_RETRY_POLICY = 'exact-official-page-v1';
-const ALIEXPRESS_RETRY_POLICY = 'patient-reader-v9';
+const ALIEXPRESS_RETRY_POLICY = 'source-photo-corroboration-v10';
 
 function readJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return fallback; }
@@ -61,7 +61,7 @@ for (const item of queue.items || []) {
     const wasRejected = item.status === 'rejected';
     item.status = 'pending';
     item.attempts = 0;
-    item.reason = 'Reabierta para verificar el producto oficial y generar el enlace propio de AliExpress';
+    item.reason = 'Reabierta para convertir el enlace, recuperar la foto del producto y generar el enlace propio de AliExpress';
     item.retryPolicyVersion = ALIEXPRESS_RETRY_POLICY;
     item.updatedAt = now;
     if (wasRejected) reopenedIds.add(item.id);

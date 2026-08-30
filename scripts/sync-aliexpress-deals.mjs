@@ -195,6 +195,41 @@ function linkedAliExpressOffer(metadata, signal) {
   };
 }
 
+function queuedAliExpressTitle(value = '') {
+  return String(value)
+    .replace(/^\s*[🔥⚡🚨]+\s*/gu, '')
+    .split(/\s+(?:\|\s*)?#AliExpress\b|\s+📉\s*(?:DESCUENTO|Evoluci[oó]n)|\s+🔥\s*Precio\s*:/iu)[0]
+    .replace(/\s*[🔥⚡🚨]+\s*$/gu, '')
+    .trim()
+    .slice(0, 180);
+}
+
+function telegramPhotoFromHtml(html = '') {
+  return String(html).match(/tgme_widget_message_photo_wrap[^>]+background-image\s*:\s*url\(["']([^"']+)["']\)/iu)?.[1]
+    ?.replaceAll('&amp;', '&')
+    .trim() || '';
+}
+
+async function queuedAliExpressSourceMetadata(signal) {
+  const title = queuedAliExpressTitle(signal.title);
+  let imageUrl = String(signal.sourceImageUrl || '').trim();
+  if (!imageUrl && /^https:\/\/t\.me\/[A-Za-z0-9_]+\/\d+$/iu.test(String(signal.sourceUrl || ''))) {
+    try {
+      const response = await fetch(`${signal.sourceUrl}?embed=1&mode=tme`, {
+        headers: { 'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaBot/1.0; +https://chollosaldia.com)' },
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (response.ok) imageUrl = telegramPhotoFromHtml(await response.text());
+    } catch {
+      // The exact AliExpress resolver can still obtain the official image.
+    }
+  }
+  return {
+    ...(title ? { title, description: title } : {}),
+    ...(imageUrl ? { imageUrl } : {}),
+  };
+}
+
 async function resolvedAliExpressSignalUrl(signal) {
   const submitted = String(signal.merchantUrl || '');
   try {
@@ -319,8 +354,8 @@ const deferredSameSourceSignals = [];
 const orderedCommunitySignals = [...communityDiscovery.signals].sort((left, right) => {
   // A previously blocked offer that has been explicitly reopened for the
   // current resolver must not be starved forever by newer, unverified posts.
-  const leftRepaired = left.retryPolicyVersion === 'patient-reader-v9' ? 1 : 0;
-  const rightRepaired = right.retryPolicyVersion === 'patient-reader-v9' ? 1 : 0;
+  const leftRepaired = left.retryPolicyVersion === 'source-photo-corroboration-v10' ? 1 : 0;
+  const rightRepaired = right.retryPolicyVersion === 'source-photo-corroboration-v10' ? 1 : 0;
   return rightRepaired - leftRepaired || Date.parse(right.publishedAt || '') - Date.parse(left.publishedAt || '');
 });
 for (const signal of orderedCommunitySignals) {
@@ -370,8 +405,11 @@ for (const signal of communitySignals) {
       const resolutionInput = verifiedSignalUrl || (/^https?:\/\/(?:s\.click|a)\.aliexpress\.com\//iu.test(String(signal.merchantUrl || ''))
         ? signal.merchantUrl
         : '');
+      const sourceMetadata = signal.queueItemId
+        ? await queuedAliExpressSourceMetadata(signal)
+        : {};
       const metadata = resolutionInput
-        ? await resolveAliExpressAffiliateProduct(resolutionInput, config)
+        ? await resolveAliExpressAffiliateProduct(resolutionInput, config, { sourceMetadata })
         : {};
       const linkedOffer = linkedAliExpressOffer(metadata, signal);
       if (linkedOffer && !seenProductIds.has(linkedOffer.id)) {

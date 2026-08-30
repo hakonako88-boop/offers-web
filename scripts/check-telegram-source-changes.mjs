@@ -10,7 +10,7 @@ const STATE_PATH = path.join(ROOT, 'data', 'telegram-channel-checkpoints.json');
 const QUEUE_PATH = path.join(ROOT, 'data', 'telegram-source-queue.json');
 const MAX_HISTORY_PAGES = 8;
 const MAX_QUEUE_ITEMS = 1_000;
-const ALIEXPRESS_RETRY_POLICY = 'patient-reader-v9';
+const ALIEXPRESS_RETRY_POLICY = 'source-photo-corroboration-v10';
 
 export function retryableQueueCount(items = []) {
   return items.filter((item) => item.store === 'AliExpress'
@@ -114,6 +114,9 @@ export function parseTelegramPublicMessages(source, html) {
     const rawText = decodeHtml(textHtml);
     const text = cleanSourceProductText(source, rawText);
     const publishedAt = decodeHtml(block.match(/<time[^>]+datetime=["']([^"']+)["']/iu)?.[1] || '');
+    const sourceImageUrl = decodeHtml(
+      block.match(/tgme_widget_message_photo_wrap[^>]+background-image\s*:\s*url\(["']([^"']+)["']\)/iu)?.[1] || '',
+    );
     const links = [...block.matchAll(/\bhref=["']([^"']+)["']/giu)]
       .map((match) => decodeHtml(match[1]))
       .map((url) => ({ url, store: storeForUrl(url, text, source.store) }))
@@ -122,6 +125,7 @@ export function parseTelegramPublicMessages(source, html) {
       messageId,
       text,
       publishedAt,
+      sourceImageUrl,
       links: [...new Map(links.map((entry) => [entry.url, entry])).values()],
       blocked: isPromotionalSourcePost(source, rawText),
     });
@@ -219,6 +223,7 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
             if (!queueItems.has(id)) queueItems.set(id, {
               id, source: source.id, username, messageId: message.messageId, sourceUrl,
               publishedAt: message.publishedAt || new Date().toISOString(), text: message.text,
+              sourceImageUrl: message.sourceImageUrl || '',
               store: 'Otra', merchantUrl: '', status: 'ignored', reason: 'Sin enlace compatible de Amazon, AliExpress o Miravia',
               attempts: 0, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
             });
@@ -228,6 +233,7 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
             if (!queueItems.has(id)) queueItems.set(id, {
               id, source: source.id, username, messageId: message.messageId, sourceUrl,
               publishedAt: message.publishedAt || new Date().toISOString(), text: message.text,
+              sourceImageUrl: message.sourceImageUrl || '',
               store: link.store, merchantUrl: link.url, status: 'pending', reason: '',
               sourceWeight: Number(source.weight) || 20, priority: Boolean(source.priority),
               attempts: 0, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),

@@ -63,13 +63,15 @@ test('wakes the publisher when a repaired AliExpress resolver can retry old fail
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'public-http-snapshot-v7' },
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'source-corroboration-v8' },
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'patient-reader-v9' },
+    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'source-photo-corroboration-v10' },
     { store: 'Amazon', status: 'rejected', retryPolicyVersion: 'old' },
-  ]), 3);
+  ]), 4);
 });
 
 test('extracts every supported product link as an individual queue candidate', () => {
   const html = `
     <div class="tgme_widget_message_wrap"><div data-post="Ofertos/106">
+      <a class="tgme_widget_message_photo_wrap" style="background-image:url('https://cdn4.telesco.pe/file/robot.jpg')"></a>
       <div class="tgme_widget_message_text">Robot aspirador Xiaomi en AliExpress</div>
       <a href="https://s.click.aliexpress.com/e/_abc">Comprar</a>
       <time datetime="2026-08-16T08:00:00Z"></time>
@@ -83,6 +85,7 @@ test('extracts every supported product link as an individual queue candidate', (
   assert.deepEqual(messages.map((message) => message.messageId), [106, 107]);
   assert.deepEqual(messages.map((message) => message.links[0].store), ['AliExpress', 'Amazon']);
   assert.equal(messages[0].text, 'Robot aspirador Xiaomi en AliExpress');
+  assert.equal(messages[0].sourceImageUrl, 'https://cdn4.telesco.pe/file/robot.jpg');
 });
 
 test('recognizes the official and channel-specific shorteners used by the configured sources', () => {

@@ -359,7 +359,7 @@ async function generateAliExpressAffiliateLink(sourceUrl, config, fetchImpl) {
 /** Fetches product facts through the affiliate API, preserving the original
  * user-supplied tracking link for publication. */
 export async function resolveAliExpressAffiliateProduct(url, config, options = {}) {
-  const { fetchImpl = fetch } = options;
+  const { fetchImpl = fetch, sourceMetadata = {} } = options;
   const canonicalUrl = await resolveAliExpressProductUrl(url, options);
   const productId = aliexpressProductId(canonicalUrl);
   if (!productId || !config.appKey || !config.appSecret || !config.trackingId) return {};
@@ -432,6 +432,13 @@ export async function resolveAliExpressAffiliateProduct(url, config, options = {
     && affiliateUrl,
   );
   return {
+    // A public Telegram source can temporarily be the only reachable copy of
+    // the product's title/photo while AliExpress serves CAPTCHA or maintenance
+    // pages to GitHub. These fields are used only after the short URL yielded
+    // an exact product id and this account's API generated a fresh affiliate
+    // link. `identityVerified` deliberately remains false unless AliExpress
+    // itself verified the product; the caller must corroborate the title.
+    ...Object.fromEntries(Object.entries(sourceMetadata).filter(([, value]) => value)),
     ...pageMetadata,
     ...Object.fromEntries(Object.entries(exactMetadata).filter(([, value]) => value)),
     productId,

@@ -82,7 +82,7 @@ test('publishes one validated offer in each independently isolated slot', () => 
   assert.match(aliExpressSync, /deferredSameSourceSignals/u);
   assert.match(aliExpressSync, /selectedSources\.has\(signal\.source\)/u);
   assert.match(aliExpressSync, /const resolutionInput = verifiedSignalUrl \|\|/u);
-  assert.match(aliExpressSync, /resolveAliExpressAffiliateProduct\(resolutionInput, config\)/u);
+  assert.match(aliExpressSync, /resolveAliExpressAffiliateProduct\(resolutionInput, config, \{ sourceMetadata \}\)/u);
   assert.match(miraviaSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
   assert.match(workflow, /FORCE_AUTOMATIC_PUBLICATION:.*telegram_sources_changed/u);
   assert.match(workflow, /BYPASS_PUBLICATION_SCHEDULE:.*workflow_dispatch/u);

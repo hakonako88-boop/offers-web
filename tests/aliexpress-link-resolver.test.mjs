@@ -138,6 +138,40 @@ test('uses the redirect fallback when GitHub fetch cannot open a short AliExpres
   assert.equal(metadata.affiliateUrl, 'https://s.click.aliexpress.com/e/_propio');
 });
 
+test('keeps source title and photo when AliExpress verifies the item link but serves a CAPTCHA page', async () => {
+  const shortUrl = 'https://s.click.aliexpress.com/e/_source-photo';
+  const canonicalUrl = 'https://es.aliexpress.com/item/1005012940063374.html';
+  const metadata = await resolveAliExpressAffiliateProduct(shortUrl, {
+    appKey: 'test-key', appSecret: 'test-secret', trackingId: 'chollosaldia88id',
+  }, {
+    resolveShortUrl: async () => canonicalUrl,
+    sourceMetadata: {
+      title: 'Ventilador de techo con luz LED y mando',
+      description: 'Ventilador de techo con luz LED y mando',
+      imageUrl: 'https://cdn4.telesco.pe/file/ventilador.jpg',
+    },
+    fetchImpl: async (url) => {
+      if (url === canonicalUrl) return { ok: true, url: canonicalUrl, text: async () => '<title>CAPTCHA Verification</title>' };
+      if (String(url).startsWith('https://r.jina.ai/')) return { ok: true, text: async () => 'Title: CAPTCHA Verification' };
+      const method = new URL(url).searchParams.get('method');
+      if (method === 'aliexpress.affiliate.productdetail.get') return {
+        ok: true,
+        json: async () => ({ aliexpress_affiliate_productdetail_get_response: { resp_result: { result: { products: { product: [] } } } } }),
+      };
+      assert.equal(method, 'aliexpress.affiliate.link.generate');
+      return {
+        ok: true,
+        json: async () => ({ aliexpress_affiliate_link_generate_response: { resp_result: { result: { promotion_links: { promotion_link: [{ promotion_link: 'https://s.click.aliexpress.com/e/_owner-link' }] } } } } }),
+      };
+    },
+  });
+  assert.equal(metadata.productId, '1005012940063374');
+  assert.equal(metadata.title, 'Ventilador de techo con luz LED y mando');
+  assert.equal(metadata.imageUrl, 'https://cdn4.telesco.pe/file/ventilador.jpg');
+  assert.equal(metadata.affiliateUrl, 'https://s.click.aliexpress.com/e/_owner-link');
+  assert.equal(metadata.identityVerified, false);
+});
+
 test('prefers the real curl destination over a generic fetch redirect for an AliExpress short link', async () => {
   const canonical = await resolveAliExpressProductUrl('https://a.aliexpress.com/_perfume', {
     fetchImpl: async (url) => ({
