@@ -203,9 +203,10 @@ test("renders the GTA VI regional-price guide with transparent SEO and Wise affi
   const response = await render("/gta-vi-mas-barato-ps5");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /GTA VI \(GTA 6\) más barato en PS5/);
-  assert.match(html, /presentación ampliada de GTA VI el 27 de agosto/);
-  assert.match(html, /<title>GTA 6 barato en PS5: precio, reserva y fecha/);
+  assert.match(html, /GTA 6 barato en PS5: precio, reserva y ahorro/);
+  assert.match(html, /Ya puedes ver.*GTA VI: An Extended Look/s);
+  assert.match(html, /youtube-nocookie\.com\/embed\/tJbzMqJGH4k/);
+  assert.match(html, /<title>GTA 6 barato: precio PS5, reserva y ahorro/);
   assert.match(html, /comprar GTA 6 barato PS5/);
   assert.match(html, /precio GTA VI España/);
   assert.match(html, /Reservar GTA VI para PS5/);
@@ -215,6 +216,9 @@ test("renders the GTA VI regional-price guide with transparent SEO and Wise affi
   assert.match(html, /"@type":"Article"/);
   assert.match(html, /"@type":"BreadcrumbList"/);
   assert.match(html, /"@type":"FAQPage"/);
+  assert.match(html, /"@type":"VideoObject"/);
+  assert.match(html, /"dateModified":"2026-08-31T12:00:00\+02:00"/);
+  assert.match(html, /href="\/chollos\/videojuegos\/"/);
   assert.match(html, /wise\.com\/invite\/ahpc\/pedrojesush5/);
   assert.equal((html.match(/<a href="https:\/\/wise\.com\/invite\/ahpc\/pedrojesush5"/g) ?? []).length, 3);
   assert.match(html, /rel="sponsored noopener noreferrer"/);

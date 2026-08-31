@@ -179,7 +179,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
         </div>
         <aside className="featuredPanel gtaPinned" aria-label="Guía destacada de GTA VI">
           <a className="featuredImage" href="/gta-vi-mas-barato-ps5/"><img src="/images/gta-vi-official.jpg" alt="Arte promocional oficial de Grand Theft Auto VI" width={1200} height={630} /><span>GUÍA DESTACADA</span></a>
-          <div className="featuredBody"><p className="featuredMeta"><span className="liveDot" /> CONTENIDO FIJADO · GAMING</p><h2><a href="/gta-vi-mas-barato-ps5/">GTA VI: 79,99 € en España frente a unos 54 €</a></h2><p className="gtaPinnedLead">Comparamos precios regionales, cambio de moneda, compatibilidad de códigos y requisitos de la cuenta antes de reservar.</p><a href="/gta-vi-mas-barato-ps5/">Leer la guía completa <span aria-hidden="true">→</span></a><p className="featuredFoot">Imagen promocional oficial © Rockstar Games · Información revisada el 25 de agosto de 2026.</p></div>
+          <div className="featuredBody"><p className="featuredMeta"><span className="liveDot" /> CONTENIDO FIJADO · GAMING</p><h2><a href="/gta-vi-mas-barato-ps5/">GTA 6 barato: precio PS5, reserva y ahorro</a></h2><p className="gtaPinnedLead">Precio oficial en España, comparación regional, vídeo ampliado de Rockstar, ediciones y requisitos antes de reservar.</p><a href="/gta-vi-mas-barato-ps5/">Leer la guía actualizada <span aria-hidden="true">→</span></a><p className="featuredFoot">Imagen promocional oficial © Rockstar Games · Información revisada el 31 de agosto de 2026.</p></div>
         </aside>
       </section>
 
