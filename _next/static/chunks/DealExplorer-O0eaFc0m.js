@@ -1,4 +1,19 @@
-import{r as e}from"./rolldown-runtime-C60lm6uB.js";import{i as t,r as n}from"./framework-BaE7mD_r.js";import r,{t as i}from"./AdSlot-DG6XFrSN.js";var a=e(n(),1),o=[{id:`resumen-diario-2026-08-30`,source_product_id:`daily-summary:2026-08-30`,date:1788127513,title:`Las mejores ofertas del 30 de agosto de 2026`,body:`Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.
+import{r as e}from"./rolldown-runtime-C60lm6uB.js";import{i as t,r as n}from"./framework-BaE7mD_r.js";import r,{t as i}from"./AdSlot-DG6XFrSN.js";var a=e(n(),1),o=[{id:`choice-day-aliexpress-envio-local-septiembre-2026`,source_product_id:`campaign:choice-day-aliexpress-envio-local-septiembre-2026`,date:1788186790,title:`Choice Day AliExpress: Día de envío local`,body:`Del 1 de septiembre a las 00:00 al 7 de septiembre a las 23:59 (hora peninsular española).
+
+CÓDIGOS DE ENVÍO LOCAL
+ESFS02 · 2 € de descuento desde 18 €
+ESFS06 · 6 € de descuento desde 45 €
+ESFS12 · 12 € de descuento desde 99 €
+ESFS18 · 18 € de descuento desde 149 €
+ESFS30 · 30 € de descuento desde 239 €
+ESFS45 · 45 € de descuento desde 359 €
+ESFS60 · 60 € de descuento desde 479 €
+
+EXTRA PAGANDO CON PAYPAL
+8 € de descuento desde 100 €
+15 € de descuento desde 150 €
+
+Los cupones se aplican únicamente a productos participantes y pueden agotarse. Comprueba el descuento final antes de pagar.`,image:`/images/aliexpress-choice-day-septiembre-2026.png`,url:`https://s.click.aliexpress.com/e/_c4Xd8cAj`,source:`campaign`,message_id:5815},{id:`resumen-diario-2026-08-30`,source_product_id:`daily-summary:2026-08-30`,date:1788127513,title:`Las mejores ofertas del 30 de agosto de 2026`,body:`Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.
 
 1. Freidora de aire 10 en 1, freidora de cristal transparente 10.0QT, ventana de cocción de 360°,…
 89,99\xA0€ en Amazon · Cupón: 7ZDZGVVG
