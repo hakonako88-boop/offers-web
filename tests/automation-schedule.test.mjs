@@ -72,8 +72,8 @@ test('serializes every Pages deployment and persists reconciled source queue sta
   assert.match(queueReconciler, /Pendiente de turno para verificar el producto exacto/u);
 });
 
-test('publishes one validated offer in each independently isolated slot', () => {
-  assert.match(aliExpressSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
+test('publishes validated offers in independently isolated retailer batches', () => {
+  assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE \? 12 : 1/u);
   assert.match(miraviaSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
   assert.match(amazonSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
   assert.match(aliExpressSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
@@ -178,29 +178,23 @@ test('does not let an inbox burst from one shop starve the other retailers', () 
   assert.equal(allowance.remaining, 2);
 });
 
-test('allows up to ten AliExpress offers per Madrid day', () => {
-  const offers = Array.from({ length: 9 }, (_, index) => ({
+test('does not impose a ten-offer daily cap on verified AliExpress source posts', () => {
+  const offers = Array.from({ length: 10 }, (_, index) => ({
     store: 'AliExpress',
     date: Math.floor(Date.parse(`2026-08-31T${String(9 + index).padStart(2, '0')}:00:00+02:00`) / 1000),
   }));
-  const tenth = publicationAllowance({
+  const afterTen = publicationAllowance({
     store: 'AliExpress',
     offers,
     now: new Date('2026-08-31T21:00:00+02:00'),
   });
-  assert.equal(tenth.allowed, true);
-  assert.equal(tenth.storeLimit, 10);
-  assert.equal(tenth.remaining, 1);
-
-  const capped = publicationAllowance({
-    store: 'AliExpress',
-    offers: [...offers, { store: 'AliExpress', date: Math.floor(Date.parse('2026-08-31T20:30:00+02:00') / 1000) }],
-    now: new Date('2026-08-31T21:00:00+02:00'),
-  });
-  assert.equal(capped.allowed, false);
-  assert.equal(capped.reason, 'store-daily-limit');
+  assert.equal(afterTen.allowed, true);
+  assert.equal(afterTen.storeLimit, Number.POSITIVE_INFINITY);
+  assert.notEqual(afterTen.reason, 'store-daily-limit');
 });
 
-test('checks eight AliExpress community candidates in automatic source mode', () => {
-  assert.match(aliExpressSync, /const MAX_COMMUNITY_QUERIES_PER_RUN = 8;/u);
+test('drains Ofertos and ChollosDiario AliExpress posts in repeated source batches', () => {
+  assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE \? 12 : 1/u);
+  assert.match(aliExpressSync, /MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE \? 16 : 8/u);
+  assert.match(aliExpressSync, /\(\?:ofertos\|chollosdiario\)/u);
 });

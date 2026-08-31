@@ -2,7 +2,10 @@ const TIME_ZONE = 'Europe/Madrid';
 
 export const STORE_DAILY_LIMITS = Object.freeze({
   Amazon: 6,
-  AliExpress: 10,
+  // AliExpress offers arriving from the owner's approved Telegram sources
+  // are event-driven. Do not discard a verified product merely because ten
+  // other products from those channels were published earlier the same day.
+  AliExpress: Number.POSITIVE_INFINITY,
   Miravia: 2,
   MediaMarkt: 2,
   PcComponentes: 2,

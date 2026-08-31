@@ -22,13 +22,15 @@ const PUBLISHED_FILE = path.join(ROOT, 'data', 'aliexpress-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.json');
-const MAX_POSTS_PER_RUN = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 3 : 1;
-const MAX_PUBLICATION_ATTEMPTS = 8;
+const SOURCE_QUEUE_MODE = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true';
+// Source events keep running while queued posts remain. A bounded batch keeps
+// each GitHub job below its timeout without imposing a daily publication cap.
+const MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE ? 12 : 1;
+const MAX_PUBLICATION_ATTEMPTS = SOURCE_QUEUE_MODE ? 16 : 8;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
-// A repository-dispatch run has a strict job timeout. Three verified queue
-// candidates are enough to fill the three allowed slots without letting a
-// blocked shop page starve reconciliation, deployment and the next poll.
-const MAX_COMMUNITY_QUERIES_PER_RUN = 8;
+// Ofertos and ChollosDiario can publish several products close together. Read
+// a broad batch and let later ten-minute source runs drain any remainder.
+const MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE ? 16 : 8;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -341,7 +343,9 @@ const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, D
 const canPublishNow = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
   || !lastPublicationAt
   || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
-const publicationPolicy = publicationAllowance({ store: 'AliExpress', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
+const publicationPolicy = SOURCE_QUEUE_MODE
+  ? { allowed: true, remaining: MAX_POSTS_PER_RUN, reason: 'approved-telegram-source', storeLimit: Number.POSITIVE_INFINITY }
+  : publicationAllowance({ store: 'AliExpress', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 // Community sites are discovery signals. Do not fill the channel with generic
 // catalogue searches when there is no fresh external signal to validate.
 const topics = [];
@@ -351,6 +355,7 @@ const communityDiscovery = await discoverCommunitySignals({ state: communityStat
 const communitySignals = [];
 const selectedSources = new Set();
 const deferredSameSourceSignals = [];
+const prioritySourceCounts = new Map();
 const orderedCommunitySignals = [...communityDiscovery.signals].sort((left, right) => {
   // A previously blocked offer that has been explicitly reopened for the
   // current resolver must not be starved forever by newer, unverified posts.
@@ -364,15 +369,21 @@ for (const signal of orderedCommunitySignals) {
   // all offers discovered by the other owner-approved channels.
   if (signal.sourceStore === 'Amazon'
     || (signal.queueItemId && signal.sourceStore !== 'AliExpress')
-    || signal.terms.length < 2) continue;
-  // The owner explicitly chose Ofertos as the primary AliExpress feed. Let
-  // several distinct product posts from that channel fill the verification
-  // batch before applying cross-source diversity to the remaining channels.
-  if (process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true'
+    || (!signal.queueItemId && signal.terms.length < 2)) continue;
+  // The owner explicitly chose Ofertos and ChollosDiario as the primary
+  // AliExpress feeds. Keep every exact queued product from both sources in
+  // the verification batch instead of reducing them to one post per channel.
+  if (SOURCE_QUEUE_MODE
     && signal.queueItemId
     && signal.sourceStore === 'AliExpress'
-    && /ofertos/iu.test(String(signal.source || ''))) {
-    communitySignals.push(signal);
+    && /(?:ofertos|chollosdiario)/iu.test(String(signal.source || ''))) {
+    const sourceCount = prioritySourceCounts.get(signal.source) || 0;
+    if (sourceCount < Math.ceil(MAX_COMMUNITY_QUERIES_PER_RUN / 2)) {
+      communitySignals.push(signal);
+      prioritySourceCounts.set(signal.source, sourceCount + 1);
+    } else {
+      deferredSameSourceSignals.push(signal);
+    }
     if (communitySignals.length >= MAX_COMMUNITY_QUERIES_PER_RUN) break;
     continue;
   }

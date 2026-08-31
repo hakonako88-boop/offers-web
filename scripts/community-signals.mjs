@@ -186,11 +186,14 @@ function queuedTelegramSignals() {
         signal.queueItemId = item.id;
         signal.merchantUrl = item.merchantUrl;
         signal.sourceImageUrl = String(item.sourceImageUrl || '').trim();
+        signal.priority = Boolean(item.priority || source.priority);
         signal.retryPolicyVersion = String(item.retryPolicyVersion || '');
         signal.attempts = Number(item.attempts || 0);
         return signal;
       })
-      .filter((signal) => signal.title && signal.terms.length >= 2);
+      // An exact product URL from a priority channel can be verified by its
+      // catalogue identity even when the source caption has a one-word title.
+      .filter((signal) => signal.title && (signal.terms.length >= 2 || signal.priority));
   } catch {
     return [];
   }
