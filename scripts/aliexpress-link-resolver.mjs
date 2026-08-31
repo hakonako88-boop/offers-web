@@ -369,7 +369,7 @@ async function queryAliExpressProductById(productId, config, fetchImpl) {
     .find((entry) => String(entry?.product_id || '') === String(productId));
 }
 
-async function generateAliExpressAffiliateLink(sourceUrl, config, fetchImpl) {
+export async function generateAliExpressAffiliateLink(sourceUrl, config, fetchImpl = fetch) {
   const data = await callAliExpressApi('aliexpress.affiliate.link.generate', {
     promotion_link_type: '0',
     source_values: sourceUrl,
