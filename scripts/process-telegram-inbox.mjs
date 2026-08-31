@@ -488,14 +488,22 @@ async function queueOfferPreview(settings, pendingConfirmations, chatId, offer, 
   return { duplicate: false, previewMessage };
 }
 
-/** Product links sent by the authorised owner are hands-off publications.
- * Validation and deduplication still run before the channel and website are
- * changed; incomplete products remain pending instead of being guessed. */
-async function publishOwnerProduct(settings, chatId, offer, inputMessage) {
-  const outcome = await publishIfNew(settings, offer, inputMessage);
+/** A URL-only submission always becomes a private preview. This gives the
+ * owner one place to verify the official photo, cleaned title, coupon and
+ * affiliate destination before Telegram and the website are changed. */
+async function previewOwnerProduct(settings, pendingConfirmations, chatId, offer, inputMessage) {
+  const outcome = await queueOfferPreview(settings, pendingConfirmations, chatId, offer, inputMessage);
   await reply(settings.token, chatId, outcome.duplicate
-    ? '♻️ No la publico porque este mismo producto ya está en el canal.'
-    : '✅ Oferta publicada automáticamente en Telegram y en la web con tu enlace de afiliado.');
+    ? '♻️ No preparo otra publicación porque este mismo producto ya está en el canal.'
+    : [
+        '✅ He preparado la oferta desde el enlace.',
+        `🖼 Foto: ${offer.imageUrl || offer.photoFileId ? 'encontrada' : 'no encontrada'}`,
+        `📝 Título: ${offer.title ? 'encontrado y limpiado' : 'no encontrado'}`,
+        `🎟 Cupón: ${offer.coupon || 'no detectado'}`,
+        '🔗 Enlace: convertido a tu afiliación.',
+        '',
+        'Revisa la vista previa y pulsa «✅ PUBLICAR» o «✏️ EDITAR».',
+      ].join('\n'));
   return outcome;
 }
 
@@ -851,7 +859,7 @@ for (const [chatKey, pending] of Object.entries(pendingByChat)) {
   }
   if (result.status !== 'ready') continue;
   try {
-    await publishOwnerProduct(settings, chatKey, result.offer, {
+    await previewOwnerProduct(settings, pendingConfirmations, chatKey, result.offer, {
       message_id: pending.messageId || `pending-${chatKey}`,
     });
     delete pendingByChat[chatKey];
@@ -1363,7 +1371,7 @@ for (const update of updates || []) {
       }
       const result = offerFromProductMetadata({ url: affiliateUrl, metadata, partnerTag: settings.amazonPartnerTag });
       if (result.status === 'ready') {
-        await publishOwnerProduct(settings, message.chat.id, result.offer, message);
+        await previewOwnerProduct(settings, pendingConfirmations, message.chat.id, result.offer, message);
         delete pendingByChat[chatKey];
       } else if (result.status === 'needs_details') {
         pendingByChat[chatKey] = {
@@ -1412,7 +1420,7 @@ for (const update of updates || []) {
           // The requested price can arrive together with a replacement photo.
           // Keep it so a previously incomplete forwarded offer can finish.
           if (newestPhoto) result.offer.photoFileId = newestPhoto;
-          await publishOwnerProduct(settings, message.chat.id, result.offer, message);
+          await previewOwnerProduct(settings, pendingConfirmations, message.chat.id, result.offer, message);
           delete pendingByChat[chatKey];
         } else {
           pendingByChat[chatKey] = { ...pending, metadata: completedMetadata };

@@ -82,6 +82,23 @@ export function parsePrice(value = '') {
   return Number.isFinite(amount) && amount > 0 ? amount : 0;
 }
 
+/** Extracts only an explicitly labelled coupon code from public shop HTML.
+ * Store pages contain thousands of JavaScript identifiers, so accepting an
+ * arbitrary uppercase word would create fake coupons. */
+export function explicitCouponFromHtml(html = '') {
+  const text = decodeStorefrontMarkup(String(html || ''))
+    .replace(/<script\b[\s\S]*?<\/script>/giu, ' ')
+    .replace(/<style\b[\s\S]*?<\/style>/giu, ' ')
+    .replace(/<[^>]+>/gu, ' ')
+    .replace(/\s+/gu, ' ');
+  const blocked = new Set(['CUPON', 'CUPÓN', 'CODIGO', 'CÓDIGO', 'PROMOCIONAL', 'DESCUENTO', 'APLICAR', 'COPIAR']);
+  for (const match of text.matchAll(/(?:cup[oó]n|c[oó]digo(?:\s+promocional)?)\s*(?::|–|-)?\s*([A-Z0-9][A-Z0-9_-]{2,19})\b/giu)) {
+    const code = String(match[1] || '').toUpperCase();
+    if (!blocked.has(code) && /[A-Z]/u.test(code) && /\d/u.test(code)) return code;
+  }
+  return '';
+}
+
 function absoluteUrl(value, baseUrl) {
   if (!String(value || '').trim()) return '';
   try {
@@ -300,7 +317,8 @@ export function productMetadataFromHtml(html, pageUrl) {
     || htmlMeta(document, ['product:price:amount', 'og:price:amount'])
     || amazonPrice);
   const previousPrice = parsePrice(offers.highPrice || htmlMeta(document, ['product:original_price:amount', 'product:price:standard_amount']));
-  return { title, description, imageUrl, price, previousPrice };
+  const coupon = explicitCouponFromHtml(document);
+  return { title, description, imageUrl, price, previousPrice, ...(coupon ? { coupon } : {}) };
 }
 
 export async function extractProductMetadata(url, { fetchImpl = fetch } = {}) {

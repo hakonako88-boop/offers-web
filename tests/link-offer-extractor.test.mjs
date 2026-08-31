@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { decodeStorefrontMarkup, extractProductMetadata, merchantLinkFromHtml, outboundOfferLinkFromHtml, productMetadataFromHtml } from '../scripts/link-offer-extractor.mjs';
+import { decodeStorefrontMarkup, explicitCouponFromHtml, extractProductMetadata, merchantLinkFromHtml, outboundOfferLinkFromHtml, productMetadataFromHtml } from '../scripts/link-offer-extractor.mjs';
 
 test('extracts title, image and prices from public product metadata', () => {
   const result = productMetadataFromHtml(`
@@ -12,6 +12,13 @@ test('extracts title, image and prices from public product metadata', () => {
   assert.equal(result.imageUrl, 'https://tienda.example/producto.jpg');
   assert.equal(result.price, 19.99);
   assert.equal(result.previousPrice, 39.99);
+});
+
+test('extracts only an explicitly labelled coupon code from a shop page', () => {
+  const html = '<div>Cupón: AHORRA15</div><script>const RANDOM99 = true;</script>';
+  assert.equal(explicitCouponFromHtml(html), 'AHORRA15');
+  assert.equal(productMetadataFromHtml(html, 'https://tienda.example/producto').coupon, 'AHORRA15');
+  assert.equal(explicitCouponFromHtml('<div>Aplicar descuento en la cesta</div><script>const FAKE20 = true;</script>'), '');
 });
 
 test('decodes AliExpress escaped Open Graph title and product photo', () => {
