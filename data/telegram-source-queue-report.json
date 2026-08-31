@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-08-31T13:32:12.442Z",
+  "updatedAt": "2026-08-31T13:42:21.174Z",
   "summary": {
-    "ignored": 18,
     "rejected": 423,
+    "ignored": 17,
     "published": 311,
     "duplicate": 107,
-    "needs_review": 87,
-    "pending": 54
+    "needs_review": 89,
+    "pending": 53
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92180:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92180,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/92180",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-errores-de-precio:15482:amazon:0",
       "source": "telegram-errores-de-precio",
       "messageId": 15482,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta ASIN",
       "sourceUrl": "https://t.me/erroresde_precio/15482",
       "resultUrl": ""
     },
@@ -25,9 +36,9 @@
       "source": "telegram-errores-de-precio",
       "messageId": 15481,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/erroresde_precio/15481",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/una_ganga/92131",
       "resultUrl": "https://www.amazon.es/dp/B0FN6W7ZLP?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-una-ganga:92130:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92130,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/92130",
-      "resultUrl": ""
     }
   ]
 }
