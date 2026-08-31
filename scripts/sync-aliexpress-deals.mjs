@@ -22,6 +22,7 @@ const PUBLISHED_FILE = path.join(ROOT, 'data', 'aliexpress-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.json');
+const SOURCE_DIAGNOSTICS_FILE = path.join(ROOT, 'data', 'aliexpress-source-diagnostics.json');
 const SOURCE_QUEUE_MODE = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true';
 // Source events keep running while queued posts remain. A bounded batch keeps
 // each GitHub job below its timeout without imposing a daily publication cap.
@@ -335,6 +336,7 @@ if (missing.length) {
 const state = readJson(STATE_FILE, { nextTopic: 0 });
 const publicationState = readJson(PUBLISHED_FILE, { published: [] });
 const communityState = readJson(COMMUNITY_STATE_FILE, { seen: [] });
+const sourceDiagnostics = readJson(SOURCE_DIAGNOSTICS_FILE, { version: 1, items: {} });
 const existingWebOffers = readJson(WEB_OFFERS_FILE, []);
 const cutoff = Date.now() - 120 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
@@ -359,8 +361,8 @@ const prioritySourceCounts = new Map();
 const orderedCommunitySignals = [...communityDiscovery.signals].sort((left, right) => {
   // A previously blocked offer that has been explicitly reopened for the
   // current resolver must not be starved forever by newer, unverified posts.
-  const leftRepaired = left.retryPolicyVersion === 'source-photo-corroboration-v10' ? 1 : 0;
-  const rightRepaired = right.retryPolicyVersion === 'source-photo-corroboration-v10' ? 1 : 0;
+  const leftRepaired = left.retryPolicyVersion === 'exact-id-query-and-diagnostics-v11' ? 1 : 0;
+  const rightRepaired = right.retryPolicyVersion === 'exact-id-query-and-diagnostics-v11' ? 1 : 0;
   return rightRepaired - leftRepaired || Date.parse(right.publishedAt || '') - Date.parse(left.publishedAt || '');
 });
 for (const signal of orderedCommunitySignals) {
@@ -424,21 +426,37 @@ for (const signal of communitySignals) {
         : {};
       const linkedOffer = linkedAliExpressOffer(metadata, signal);
       if (linkedOffer && !seenProductIds.has(linkedOffer.id)) {
+        delete sourceDiagnostics.items[signal.id];
         candidates.push(linkedOffer);
         continue;
       }
       if (signal.queueItemId) {
-        const missing = [
+        const missingFields = [
           !metadata.identityVerified && 'identidad API',
           !metadata.productId && 'id',
           !metadata.title && 'título',
           !metadata.imageUrl && 'foto',
           !metadata.affiliateUrl && 'enlace afiliado',
           !(Number(metadata.price) || Number(signal.price)) && 'precio',
-        ].filter(Boolean).join(', ');
+        ].filter(Boolean);
+        const missing = missingFields.join(', ');
+        sourceDiagnostics.items[signal.id] = {
+          checkedAt: new Date().toISOString(),
+          productId: String(metadata.productId || ''),
+          canonicalUrl: String(metadata.canonicalUrl || ''),
+          missing: missingFields,
+          issues: (metadata.resolutionIssues || []).map((issue) => String(issue).slice(0, 220)).slice(0, 6),
+        };
         console.warn(`Exact AliExpress queue item ${signal.id} was not publishable${missing ? `; missing ${missing}` : '; it did not pass the verified deal rules'}.`);
       }
     } catch (error) {
+      if (signal.queueItemId) sourceDiagnostics.items[signal.id] = {
+        checkedAt: new Date().toISOString(),
+        productId: '',
+        canonicalUrl: '',
+        missing: ['resolución'],
+        issues: [String(error instanceof Error ? error.message : error).replace(/[\r\n]+/gu, ' ').slice(0, 220)],
+      };
       console.warn(`Could not resolve the exact Telegram AliExpress link from ${signal.source}: ${error.message}`);
     }
   }
@@ -459,6 +477,11 @@ for (const signal of communitySignals) {
     console.warn(`Could not validate community signal from ${signal.source}: ${error.message}`);
   }
 }
+
+sourceDiagnostics.items = Object.fromEntries(Object.entries(sourceDiagnostics.items || {})
+  .sort(([, left], [, right]) => Date.parse(right.checkedAt || '') - Date.parse(left.checkedAt || ''))
+  .slice(0, 250));
+writeJson(SOURCE_DIAGNOSTICS_FILE, sourceDiagnostics);
 
 // Las comunidades son una señal editorial muy valiosa, pero una caída de sus
 // páginas no debe dejar el canal vacío. Si no generan ningún candidato válido,

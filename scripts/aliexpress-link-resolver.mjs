@@ -342,7 +342,31 @@ async function callAliExpressApi(method, fields, config, fetchImpl) {
   if (!response.ok && response.ok !== undefined) {
     throw new Error(`AliExpress API responded ${response.status || 'without status'}.`);
   }
+  const apiError = data?.error_response || data?.error;
+  const responsePayload = Object.values(data || {}).find((value) => value?.resp_result)?.resp_result;
+  const responseCode = Number(responsePayload?.resp_code || 0);
+  if (apiError || (responseCode && responseCode !== 200)) {
+    const message = String(apiError?.msg || apiError?.message || responsePayload?.resp_msg || 'affiliate request rejected')
+      .replace(/[\r\n]+/gu, ' ')
+      .slice(0, 180);
+    throw new Error(`AliExpress ${method} failed: ${message}`);
+  }
   return data;
+}
+
+async function queryAliExpressProductById(productId, config, fetchImpl) {
+  const data = await callAliExpressApi('aliexpress.affiliate.product.query', {
+    country: 'ES',
+    keywords: productId,
+    page_no: '1',
+    page_size: '50',
+    target_currency: 'EUR',
+    target_language: 'ES',
+    tracking_id: config.trackingId,
+    fields: 'product_id,product_title,target_sale_price,target_original_price,product_main_image_url,promotion_link,promo_code,promo_code_info,coupon_code',
+  }, config, fetchImpl);
+  return apiProducts(data, 'aliexpress_affiliate_product_query_response')
+    .find((entry) => String(entry?.product_id || '') === String(productId));
 }
 
 async function generateAliExpressAffiliateLink(sourceUrl, config, fetchImpl) {
@@ -393,17 +417,23 @@ export async function resolveAliExpressAffiliateProduct(url, config, options = {
       }
     }
   }
-  const detailData = await callAliExpressApi('aliexpress.affiliate.productdetail.get', {
-    country: 'ES',
-    product_ids: productId,
-    target_currency: 'EUR',
-    target_language: 'ES',
-    tracking_id: config.trackingId,
-    fields: 'product_id,product_title,target_sale_price,target_original_price,product_main_image_url,promotion_link,promo_code,promo_code_info,coupon_code',
-  }, config, fetchImpl);
-  const product = apiProducts(detailData, 'aliexpress_affiliate_productdetail_get_response')
-    .find((entry) => String(entry?.product_id || '') === productId);
-  const exactMetadata = product ? metadataFromAliExpressProduct(product) : {};
+  const resolutionIssues = [];
+  let product;
+  try {
+    const detailData = await callAliExpressApi('aliexpress.affiliate.productdetail.get', {
+      country: 'ES',
+      product_ids: productId,
+      target_currency: 'EUR',
+      target_language: 'ES',
+      tracking_id: config.trackingId,
+      fields: 'product_id,product_title,target_sale_price,target_original_price,product_main_image_url,promotion_link,promo_code,promo_code_info,coupon_code',
+    }, config, fetchImpl);
+    product = apiProducts(detailData, 'aliexpress_affiliate_productdetail_get_response')
+      .find((entry) => String(entry?.product_id || '') === productId);
+  } catch (error) {
+    resolutionIssues.push(error instanceof Error ? error.message : 'AliExpress product detail failed');
+  }
+  let exactMetadata = product ? metadataFromAliExpressProduct(product) : {};
   let affiliateUrl = String(product?.promotion_link || product?.promotion_link_url || '').trim().replace(/^http:\/\//iu, 'https://');
   const linkCandidates = [...new Set([
     canonicalUrl,
@@ -414,9 +444,30 @@ export async function resolveAliExpressAffiliateProduct(url, config, options = {
     try {
       affiliateUrl = await generateAliExpressAffiliateLink(candidate, config, fetchImpl) || affiliateUrl;
       if (affiliateUrl) break;
-    } catch {
+    } catch (error) {
+      resolutionIssues.push(error instanceof Error ? error.message : 'AliExpress link generation failed');
       // Try the next exact URL representation. Product detail's verified
       // promotion link remains the final safe fallback.
+    }
+  }
+  // Some valid catalogue products disappear temporarily from productdetail
+  // and reject direct conversion while remaining available to this account in
+  // the normal affiliate query. Query the exact id as the final official
+  // fallback and accept only an exact id match; never substitute a similarly
+  // named product returned by AliExpress search.
+  if (!product && !affiliateUrl) {
+    try {
+      product = await queryAliExpressProductById(productId, config, fetchImpl);
+      if (product) {
+        exactMetadata = metadataFromAliExpressProduct(product);
+        affiliateUrl = String(product.promotion_link || product.promotion_link_url || '')
+          .trim()
+          .replace(/^http:\/\//iu, 'https://');
+      } else {
+        resolutionIssues.push('AliExpress product query did not return the exact product id');
+      }
+    } catch (error) {
+      resolutionIssues.push(error instanceof Error ? error.message : 'AliExpress product query failed');
     }
   }
   // AliExpress sometimes returns an empty productdetail response for a real
@@ -448,5 +499,6 @@ export async function resolveAliExpressAffiliateProduct(url, config, options = {
     affiliateUrl,
     identityVerified: Boolean(product) || verifiedByOfficialPage,
     identityVerificationSource: product ? 'affiliate-product-detail' : (verifiedByOfficialPage ? 'official-page-and-affiliate-link' : ''),
+    resolutionIssues: [...new Set(resolutionIssues)].slice(0, 6),
   };
 }

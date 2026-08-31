@@ -6,6 +6,7 @@ const QUEUE_FILE = path.join(ROOT, 'data', 'telegram-source-queue.json');
 const REPORT_FILE = path.join(ROOT, 'data', 'telegram-source-queue-report.json');
 const AMAZON_STATE_FILE = path.join(ROOT, 'data', 'amazon-discovery-state.json');
 const ALIEXPRESS_COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.json');
+const ALIEXPRESS_DIAGNOSTICS_FILE = path.join(ROOT, 'data', 'aliexpress-source-diagnostics.json');
 const PUBLICATION_FILES = [
   path.join(ROOT, 'data', 'aliexpress-publications.json'),
   path.join(ROOT, 'data', 'miravia-publications.json'),
@@ -13,7 +14,7 @@ const PUBLICATION_FILES = [
 ];
 const MAX_ATTEMPTS = 3;
 const MIRAVIA_RETRY_POLICY = 'exact-official-page-v1';
-const ALIEXPRESS_RETRY_POLICY = 'source-photo-corroboration-v10';
+const ALIEXPRESS_RETRY_POLICY = 'exact-id-query-and-diagnostics-v11';
 
 function readJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return fallback; }
@@ -30,6 +31,7 @@ const publicationBySignal = new Map(publications
   .map((entry) => [entry.communitySignalId, entry]));
 const amazonError = String(readJson(AMAZON_STATE_FILE, {}).lastError || '');
 const aliExpressCommunityState = readJson(ALIEXPRESS_COMMUNITY_STATE_FILE, { seen: [] });
+const aliExpressDiagnostics = readJson(ALIEXPRESS_DIAGNOSTICS_FILE, { items: {} });
 const latestAliExpressCheck = String(aliExpressCommunityState.lastCheckedAt || '');
 const attemptedAliExpressIds = new Set((aliExpressCommunityState.seen || [])
   .filter((entry) => latestAliExpressCheck && entry.seenAt === latestAliExpressCheck)
@@ -102,7 +104,12 @@ for (const item of queue.items || []) {
   item.updatedAt = now;
   if (item.attempts >= MAX_ATTEMPTS) {
     item.status = 'rejected';
-    item.reason = `No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de ${MAX_ATTEMPTS} intentos`;
+    const diagnostic = aliExpressDiagnostics.items?.[item.id];
+    const missing = Array.isArray(diagnostic?.missing) ? diagnostic.missing.filter(Boolean).join(', ') : '';
+    const issue = Array.isArray(diagnostic?.issues) ? String(diagnostic.issues[0] || '') : '';
+    item.reason = item.store === 'AliExpress' && (missing || issue)
+      ? `AliExpress no permitió completar ${missing || 'la conversión afiliada'}${issue ? `: ${issue}` : ''}`.slice(0, 300)
+      : `No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de ${MAX_ATTEMPTS} intentos`;
   } else {
     item.reason = `Pendiente de reintento (${item.attempts}/${MAX_ATTEMPTS})`;
   }

@@ -353,6 +353,49 @@ test('tries the www product URL when the ES affiliate link generator returns emp
   assert.equal(metadata.affiliateUrl, 'https://s.click.aliexpress.com/e/_propio-final');
 });
 
+test('recovers an exact affiliate product by id when detail and direct conversion are empty', async () => {
+  const shortUrl = 'https://s.click.aliexpress.com/e/_recover-by-id';
+  const canonicalUrl = 'https://es.aliexpress.com/item/1005007631339792.html';
+  const metadata = await resolveAliExpressAffiliateProduct(shortUrl, {
+    appKey: 'test-key', appSecret: 'test-secret', trackingId: 'chollosaldia88id',
+  }, {
+    resolveShortUrl: async () => canonicalUrl,
+    sourceMetadata: {
+      title: 'Cecotec Lavadora 9 kg 1400 rpm Motor Inverter',
+      imageUrl: 'https://cdn4.telesco.pe/file/lavadora.jpg',
+    },
+    fetchImpl: async (url) => {
+      if (url === canonicalUrl) return { ok: true, url: canonicalUrl, text: async () => '' };
+      const method = new URL(url).searchParams.get('method');
+      if (method === 'aliexpress.affiliate.productdetail.get') return {
+        ok: true,
+        json: async () => ({ aliexpress_affiliate_productdetail_get_response: { resp_result: { resp_code: 200, result: { products: { product: [] } } } } }),
+      };
+      if (method === 'aliexpress.affiliate.link.generate') return {
+        ok: true,
+        json: async () => ({ aliexpress_affiliate_link_generate_response: { resp_result: { resp_code: 200, result: { promotion_links: { promotion_link: [] } } } } }),
+      };
+      assert.equal(method, 'aliexpress.affiliate.product.query');
+      assert.equal(new URL(url).searchParams.get('keywords'), '1005007631339792');
+      return {
+        ok: true,
+        json: async () => ({ aliexpress_affiliate_product_query_response: { resp_result: { resp_code: 200, result: { products: { product: [{
+          product_id: '1005007631339792',
+          product_title: 'Cecotec Lavadora 9 kg 1400 rpm Motor Inverter',
+          product_main_image_url: 'https://ae01.alicdn.com/kf/lavadora.jpg',
+          target_sale_price: '374.90',
+          promotion_link: 'http://s.click.aliexpress.com/e/_enlace-propio-recuperado',
+        }] } } } } }),
+      };
+    },
+  });
+  assert.equal(metadata.productId, '1005007631339792');
+  assert.equal(metadata.price, 374.9);
+  assert.equal(metadata.imageUrl, 'https://ae01.alicdn.com/kf/lavadora.jpg');
+  assert.equal(metadata.affiliateUrl, 'https://s.click.aliexpress.com/e/_enlace-propio-recuperado');
+  assert.equal(metadata.identityVerified, true);
+});
+
 test('reads the exact shared product and original photo from a public AliExpress snapshot', () => {
   const metadata = metadataFromAliExpressReader(`
 Title: Maison Alhambra Jean Lowe Fantasme Eau de Parfum 100 ml - AliExpress 66
