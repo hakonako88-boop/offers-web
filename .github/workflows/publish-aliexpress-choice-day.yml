@@ -13,7 +13,9 @@ permissions:
   contents: write
 
 concurrency:
-  group: chollosaldia-production
+  # This one-off campaign has its own idempotency key and rebases its web
+  # record before pushing, so it must not be cancelled behind source scans.
+  group: chollosaldia-choice-day
   cancel-in-progress: false
 
 jobs:
