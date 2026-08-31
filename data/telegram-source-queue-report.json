@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-31T19:43:44.718Z",
+  "updatedAt": "2026-08-31T19:52:49.923Z",
   "summary": {
     "rejected": 389,
     "published": 341,
@@ -10,13 +10,24 @@
   },
   "recent": [
     {
+      "id": "telegram-paramanitas:4660:amazon:0",
+      "source": "telegram-paramanitas",
+      "messageId": 4660,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/paramanitas/4660",
+      "resultUrl": ""
+    },
+    {
       "id": "telegram-errores-de-precio:15487:aliexpress:0",
       "source": "telegram-errores-de-precio",
       "messageId": 15487,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/erroresde_precio/15487",
       "resultUrl": ""
     },
@@ -26,8 +37,8 @@
       "messageId": 92208,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/92208",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92168",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-tiesometro:7168:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7168,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
-      "sourceUrl": "https://t.me/tiesometro/7168",
       "resultUrl": ""
     }
   ]
