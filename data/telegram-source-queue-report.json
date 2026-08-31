@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-31T17:12:53.242Z",
+  "updatedAt": "2026-08-31T17:22:25.334Z",
   "summary": {
     "rejected": 383,
     "published": 338,
@@ -10,13 +10,46 @@
   },
   "recent": [
     {
-      "id": "telegram-tiesometro:7174:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7174,
+      "id": "telegram-una-ganga:92200:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92200,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/92200",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:92199:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92199,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/92199",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41213:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 41213,
       "store": "AliExpress",
       "status": "pending",
       "attempts": 1,
       "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/41213",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-tiesometro:7174:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7174,
+      "store": "AliExpress",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7174",
       "resultUrl": ""
     },
@@ -25,9 +58,9 @@
       "source": "telegram-una-ganga",
       "messageId": 92198,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92198",
       "resultUrl": ""
     },
@@ -47,9 +80,9 @@
       "source": "telegram-ofertos",
       "messageId": 41211,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/41211",
       "resultUrl": ""
     },
@@ -1075,39 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/chollosdiario/45248",
       "resultUrl": "https://www.amazon.es/dp/B0CL71XR7T?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:41179:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41179,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/41179",
-      "resultUrl": "https://www.amazon.es/dp/B0C8GRMMQ6?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:41178:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41178,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/41178",
-      "resultUrl": "https://www.amazon.es/dp/B0GTHPFVQQ?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-tiesometro:7165:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7165,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
-      "sourceUrl": "https://t.me/tiesometro/7165",
-      "resultUrl": ""
     }
   ]
 }
