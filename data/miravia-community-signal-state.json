@@ -1545,7 +1545,7 @@
       "queueItemId": "telegram-una-ganga:92165:miravia:0",
       "merchantUrl": "https://tidd.ly/3TX9zod",
       "sourceImageUrl": "https://cdn4.telesco.pe/file/JnhTpxfs775-K622rP1WSEsHkHSwY6b00LT4R8YLJUmsyOSI-dJZAFe78yGAdxAySPtNDI9swrPIw8zYx3OeC3V4drBilhbvpiJEYxjrFkmwec1eDSA861vw5ksD2ydLWU2Bcri-fuBp72yCe-q4nk4rDvqF_2wt9k0siv5KnWx7CWh9R9dIWl2IcDYKeML9rM8VDM2prR-2xxPkJ7x1ZSG8QBfA9jnrfG2HNyU3s5Hw1BetC58RrAHuqhODLv4dK5w0DxDZpACA6spJkZVzSpb9mcVHhWFwCAkskYmxpyvyc7v2lFtwHHEikNjqOXER-YGLgaO1Xm4le0kumPaiSw.jpg",
-      "retryPolicyVersion": "",
+      "retryPolicyVersion": "exact-official-page-v1",
       "attempts": 1
     },
     {
@@ -1768,9 +1768,14 @@
       "coupon": ""
     }
   ],
-  "lastCheckedAt": "2026-08-31T08:51:59.937Z",
+  "lastCheckedAt": "2026-08-31T09:02:18.329Z",
   "micholloLastCheckedAt": "2026-08-31T06:02:18.377Z",
   "sourceHealth": [
+    {
+      "source": "telegram-source-queue",
+      "status": "ok",
+      "found": 2
+    },
     {
       "source": "michollo",
       "status": "deferred"
