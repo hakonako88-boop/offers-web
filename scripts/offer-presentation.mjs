@@ -44,11 +44,21 @@ export function trackedPublicOfferUrl(offer = {}, siteUrl = 'https://chollosaldi
   return `${base}?${params.toString()}`;
 }
 
-export function offerReplyMarkup(offer = {}, purchaseLabel = '🛒 COMPRAR') {
+export function purchaseButtonLabel(store = '') {
+  const normalizedStore = normalized(store);
+  if (normalizedStore.includes('amazon')) return '🛒 VER EN AMAZON';
+  if (normalizedStore.includes('aliexpress')) return '🛒 VER EN ALIEXPRESS';
+  if (normalizedStore.includes('miravia')) return '🛒 VER EN MIRAVIA';
+  if (normalizedStore.includes('mediamarkt')) return '🛒 VER EN MEDIAMARKT';
+  if (normalizedStore.includes('pccomponentes')) return '🛒 VER EN PCCOMPONENTES';
+  return '🛒 VER OFERTA';
+}
+
+export function offerReplyMarkup(offer = {}, purchaseLabel = '') {
   const actions = [];
-  if (offer.url) actions.push({ text: purchaseLabel, url: offer.url });
+  if (offer.url) actions.push({ text: purchaseLabel || purchaseButtonLabel(offer.store), url: offer.url });
   const webUrl = trackedPublicOfferUrl(offer);
-  if (webUrl) actions.push({ text: '📋 DETALLES', url: webUrl });
+  if (webUrl) actions.push({ text: '📋 VER FICHA', url: webUrl });
   return actions.length ? { inline_keyboard: [actions] } : undefined;
 }
 
@@ -207,7 +217,7 @@ export function formatTelegramDealCard({
     : highlight
       ? `🔻 ${escapeHtml(highlight)}`
       : `🔻 ${savingsText}`;
-  const linkLine = '👇🏻 <b>Toca COMPRAR</b> para ir directamente a la tienda';
+  const linkLine = `👇🏻 <b>Toca VER EN ${escapeHtml(storeHashtag(store).toUpperCase())}</b> para ir directamente a la tienda`;
 
   return [
     `🔥 <b>${escapeHtml(improveOfferTitle(title))}</b> · #${storeTag}`,

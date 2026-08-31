@@ -160,7 +160,44 @@ export function controlHelp() {
     'Para crear una oferta tú mismo, envía /oferta en la primera línea y después Título:, Precio:, Antes: (opcional), Cupón: (opcional), Descripción: (opcional) y el enlace del producto. El bot buscará la foto oficial, convertirá el enlace a tu afiliación y te mostrará una vista previa antes de publicar.',
     '',
     'Para publicar una novedad o aviso sin precio, envía una foto con /post en la primera línea, el título en la segunda y el texto debajo. El enlace es opcional.',
+    '',
+    'Comandos útiles: /estado muestra si hay un borrador pendiente y /cancelar borra el borrador actual sin publicar nada.',
   ].join('\n');
+}
+
+/** Parses all owner corrections from one reply. This lets a blocked shop page
+ * be completed without making the owner answer several separate questions. */
+export function ownerOfferDetails(text = '') {
+  const lines = String(text).replace(/\r\n/gu, '\n').split('\n').map((line) => compact(line)).filter(Boolean);
+  const title = fieldValue(lines, ['titulo', 'título', 'title', 'producto']);
+  const description = fieldValue(lines, ['descripcion', 'descripción', 'detalle', 'texto']);
+  const coupon = fieldValue(lines, ['cupon', 'cupón', 'codigo', 'código']);
+  const price = parseAmount(fieldValue(lines, ['precio', 'precio final', 'precio oferta', 'ahora']));
+  const previousPrice = parseAmount(fieldValue(lines, ['antes', 'precio anterior', 'pvp']));
+  return {
+    ...(title ? { title } : {}),
+    ...(description ? { description } : {}),
+    ...(coupon ? { coupon } : {}),
+    ...(price > 0 ? { price } : {}),
+    ...(previousPrice > price ? { previousPrice } : {}),
+  };
+}
+
+export function missingOfferDetailsReply(missing = [], temporaryShopFailure = false) {
+  const fields = Array.isArray(missing) ? missing.filter(Boolean) : [];
+  const lines = [
+    `⚠️ Todavía no he publicado nada. Falta: ${fields.join(', ') || 'información de la ficha'}.`,
+    temporaryShopFailure ? 'La tienda ha bloqueado la lectura automática en este intento.' : '',
+    '',
+    'Puedes completar todo lo que falte en un único mensaje:',
+    fields.some((field) => /título/iu.test(field)) ? 'Título: nombre exacto del producto' : '',
+    fields.some((field) => /precio/iu.test(field)) ? 'Precio: 19,99 €' : '',
+    'Antes: 29,99 € (opcional)',
+    'Cupón: CODIGO (opcional)',
+    '',
+    'También puedes reenviar el enlace directo del producto para que vuelva a comprobarlo.',
+  ];
+  return lines.filter((line, index) => line || index === 2 || index === lines.length - 2).join('\n');
 }
 
 /** A quick acknowledgement prevents a forwarded offer from looking ignored

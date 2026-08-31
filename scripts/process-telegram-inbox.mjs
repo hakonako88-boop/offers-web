@@ -14,6 +14,8 @@ import {
   mergeOwnerSuppliedMetadata,
   mergeProductMetadata,
   metadataMatchesOfficialProduct,
+  missingOfferDetailsReply,
+  ownerOfferDetails,
   offerFromProductMetadata,
   processingOfferReply,
   storeFromUrl,
@@ -226,11 +228,13 @@ function previewReplyMarkup(offer, mode = 'main') {
           { text: '✏️ TÍTULO', callback_data: 'offer:title' },
           ...(isPost
             ? [{ text: '📝 TEXTO', callback_data: 'offer:body' }]
-            : [{ text: '🎟️ CUPÓN', callback_data: 'offer:coupon' }]),
+            : [{ text: '💶 PRECIO', callback_data: 'offer:price' }]),
         ],
         [
           { text: '🖼️ FOTO', callback_data: 'offer:photo' },
-          ...(isPost ? [{ text: '🔗 ENLACE', callback_data: 'offer:link' }] : []),
+          ...(isPost
+            ? [{ text: '🔗 ENLACE', callback_data: 'offer:link' }]
+            : [{ text: '🎟️ CUPÓN', callback_data: 'offer:coupon' }]),
         ],
         [{ text: '↩️ VOLVER', callback_data: 'offer:edit-back' }],
       ],
@@ -625,11 +629,13 @@ async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
       return false;
     }
   }
-  if (settings.amazonAutoPublish && (automaticallyPublished || duplicatesSkipped)) {
+  if (duplicatesSkipped) {
+    console.log(`Amazon automation omitted ${duplicatesSkipped} already-published product(s).`);
+  }
+  if (settings.amazonAutoPublish && automaticallyPublished > 0) {
     await reply(settings.token, chatId, [
-      `🤖 Automatización Amazon terminada: ${automaticallyPublished} oferta(s) publicada(s) en Telegram y la web.`,
-      duplicatesSkipped ? `♻️ ${duplicatesSkipped} producto(s) repetido(s) omitido(s).` : '',
-      `✅ Todos los enlaces publicados llevan tu tag ${settings.amazonPartnerTag}.`,
+      `✅ Amazon: ${automaticallyPublished} oferta(s) nueva(s) publicada(s) en Telegram y la web.`,
+      `🔗 Enlaces verificados con tu tag ${settings.amazonPartnerTag}.`,
     ].filter(Boolean).join('\n'));
   }
   return automaticallyPublished > 0;
@@ -949,6 +955,7 @@ for (const update of updates || []) {
         } else {
           pending.awaitingTitle = true;
           pending.awaitingCoupon = false;
+          pending.awaitingPrice = false;
           pending.awaitingBody = false;
           pending.awaitingLink = false;
           pending.awaitingPhoto = false;
@@ -963,12 +970,28 @@ for (const update of updates || []) {
         } else {
           pending.awaitingCoupon = true;
           pending.awaitingTitle = false;
+          pending.awaitingPrice = false;
           pending.awaitingBody = false;
           pending.awaitingLink = false;
           pending.awaitingPhoto = false;
           pending.updatedAt = Date.now();
           await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
           await reply(settings.token, callbackChatId, '🎟️ Escribe el código del cupón. Para eliminar uno existente, responde «SIN CUPÓN». Después te mostraré otra vista previa.');
+        }
+      } else if (callback.data === 'offer:price') {
+        const pending = pendingConfirmations[callbackChatKey];
+        if (!pending?.offer || pending.offer.kind === 'post') {
+          await reply(settings.token, callbackChatId, '⌛ Esa oferta ya no está pendiente. Envíala otra vez.');
+        } else {
+          pending.awaitingPrice = true;
+          pending.awaitingTitle = false;
+          pending.awaitingCoupon = false;
+          pending.awaitingBody = false;
+          pending.awaitingLink = false;
+          pending.awaitingPhoto = false;
+          pending.updatedAt = Date.now();
+          await removePreviewButtons(settings, callbackChatId, pending.previewMessageId);
+          await reply(settings.token, callbackChatId, '💶 Escribe «Precio: 19,99 €» y, si existe, «Antes: 29,99 €» en el mismo mensaje. Te mostraré otra vista previa.');
         }
       } else if (callback.data === 'offer:body') {
         const pending = pendingConfirmations[callbackChatKey];
@@ -978,6 +1001,7 @@ for (const update of updates || []) {
           pending.awaitingBody = true;
           pending.awaitingTitle = false;
           pending.awaitingCoupon = false;
+          pending.awaitingPrice = false;
           pending.awaitingLink = false;
           pending.awaitingPhoto = false;
           pending.updatedAt = Date.now();
@@ -992,6 +1016,7 @@ for (const update of updates || []) {
           pending.awaitingLink = true;
           pending.awaitingTitle = false;
           pending.awaitingCoupon = false;
+          pending.awaitingPrice = false;
           pending.awaitingBody = false;
           pending.awaitingPhoto = false;
           pending.updatedAt = Date.now();
@@ -1006,6 +1031,7 @@ for (const update of updates || []) {
           pending.awaitingPhoto = true;
           pending.awaitingTitle = false;
           pending.awaitingCoupon = false;
+          pending.awaitingPrice = false;
           pending.awaitingBody = false;
           pending.awaitingLink = false;
           pending.updatedAt = Date.now();
@@ -1064,6 +1090,24 @@ for (const update of updates || []) {
     } else if (/^\/(?:start|ayuda)(?:@\w+)?\b/i.test(String(text).trim())) {
       await reply(settings.token, message.chat.id, controlHelp());
       handled += 1;
+    } else if (isAuthorizedChat && /^\/estado(?:@\w+)?\b/iu.test(String(text).trim())) {
+      const hasPreview = Boolean(pendingConfirmations[chatKey]);
+      const hasIncomplete = Boolean(pendingByChat[chatKey]);
+      await reply(settings.token, message.chat.id, [
+        '🟢 Rocky está activo.',
+        hasPreview ? '👀 Tienes una vista previa pendiente de confirmar.' : (hasIncomplete ? '🧩 Tienes una oferta incompleta pendiente.' : '✅ No hay borradores pendientes.'),
+        '📡 Las ofertas nuevas se publican en Telegram y se guardan para la web.',
+        'ℹ️ Ya no recibirás avisos cuando una revisión automática no encuentre ofertas nuevas.',
+      ].join('\n'));
+      handled += 1;
+    } else if (isAuthorizedChat && /^\/cancelar(?:@\w+)?\b/iu.test(String(text).trim())) {
+      const preview = pendingConfirmations[chatKey];
+      await removePreviewButtons(settings, message.chat.id, preview?.previewMessageId);
+      delete pendingConfirmations[chatKey];
+      delete pendingByChat[chatKey];
+      delete pendingTikTokByChat[chatKey];
+      await reply(settings.token, message.chat.id, '🗑️ Borrador eliminado. No se ha publicado nada. Ya puedes enviar una oferta nueva.');
+      handled += 1;
     } else if (message.voice) {
       await reply(settings.token, message.chat.id, '🎙️ Esta versión gratuita no transcribe audios. Pega el enlace del producto por escrito.\n\n' + controlHelp());
       handled += 1;
@@ -1096,6 +1140,28 @@ for (const update of updates || []) {
         await reply(settings.token, message.chat.id, removeCoupon
           ? '✅ Cupón eliminado. Revisa la vista previa y confirma o sigue editando.'
           : '✅ Cupón añadido. Revisa la vista previa y confirma o sigue editando.');
+      }
+      handled += 1;
+    } else if (isAuthorizedChat && pendingConfirmations[chatKey]?.awaitingPrice) {
+      const pending = pendingConfirmations[chatKey];
+      const amounts = requestedPrice(text);
+      if (!(amounts.price > 0)) {
+        await reply(settings.token, message.chat.id, '💶 No he encontrado el precio. Escríbelo así: «Precio: 19,99 €» y opcionalmente «Antes: 29,99 €».');
+      } else {
+        const previousPrice = amounts.previousPrice > amounts.price ? amounts.previousPrice : 0;
+        pending.offer = {
+          ...pending.offer,
+          price: amounts.price,
+          priceLabel: new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(amounts.price),
+          previousPrice,
+          previousPriceLabel: previousPrice ? new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(previousPrice) : '',
+          discount: previousPrice ? Math.round(((previousPrice - amounts.price) / previousPrice) * 100) : 0,
+        };
+        pending.awaitingPrice = false;
+        pending.updatedAt = Date.now();
+        const previewMessage = await sendOfferPreview(settings, message.chat.id, pending.offer);
+        pending.previewMessageId = previewMessage.message_id;
+        await reply(settings.token, message.chat.id, '✅ Precio actualizado. Revisa la vista previa antes de publicar.');
       }
       handled += 1;
     } else if (isAuthorizedChat && pendingConfirmations[chatKey]?.awaitingBody) {
@@ -1313,7 +1379,7 @@ for (const update of updates || []) {
         if (resolvedStore === 'AliExpress' && !generatedAliExpressUrl) {
           await reply(settings.token, message.chat.id, `He encontrado el producto, pero falta ${missing} y la API oficial de AliExpress no ha podido generar tu enlace afiliado. No publico el enlace original. Prueba con otra ficha del producto o vuelve a enviarlo más tarde.`);
         } else {
-          await reply(settings.token, message.chat.id, `He encontrado el enlace, pero falta ${missing}.${retry} Si solo falta el precio, responde: “Precio: 19,99 €” y, si lo tienes, “Antes: 29,99 €”.`);
+          await reply(settings.token, message.chat.id, missingOfferDetailsReply(result.missing, Boolean(metadataError)));
         }
       } else {
         // A community/deals page occasionally hides its merchant button from
@@ -1330,26 +1396,32 @@ for (const update of updates || []) {
       handled += 1;
     } else if (isAuthorizedChat && pendingByChat[chatKey]) {
       const pending = pendingByChat[chatKey];
-      const amounts = requestedPrice(text);
-      if (!amounts.price) {
-        await reply(settings.token, message.chat.id, 'Necesito un precio válido, por ejemplo: Precio: 19,99 €');
+      const supplied = ownerOfferDetails(text);
+      const newestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
+      const completedMetadata = {
+        ...metadataWithOfficialAmazonImage(pending.url, pending.metadata),
+        ...supplied,
+        ...(newestPhoto ? { imageUrl: newestPhoto } : {}),
+      };
+      if (!Object.keys(supplied).length && !newestPhoto) {
+        await reply(settings.token, message.chat.id, missingOfferDetailsReply(['los datos solicitados'], false));
       } else {
         const result = offerFromProductMetadata({
           url: pending.url,
-          metadata: { ...metadataWithOfficialAmazonImage(pending.url, pending.metadata), ...amounts },
+          metadata: completedMetadata,
           partnerTag: settings.amazonPartnerTag,
         });
         if (result.status === 'ready') {
           // The requested price can arrive together with a replacement photo.
           // Keep it so a previously incomplete forwarded offer can finish.
-          const newestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
           if (newestPhoto) result.offer.photoFileId = newestPhoto;
           await publishOwnerProduct(settings, message.chat.id, result.offer, message);
           delete pendingByChat[chatKey];
         } else {
+          pendingByChat[chatKey] = { ...pending, metadata: completedMetadata };
           await reply(settings.token, message.chat.id, result.message
             ? `⚠️ ${result.message}`
-            : `⚠️ Aún falta ${result.missing?.join(', ') || 'información'} para publicar.`);
+            : missingOfferDetailsReply(result.missing, false));
         }
       }
       handled += 1;

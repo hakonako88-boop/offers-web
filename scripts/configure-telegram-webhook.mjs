@@ -31,6 +31,8 @@ const commandsResponse = await fetch(`https://api.telegram.org/bot${token}/setMy
     commands: [
       { command: 'oferta', description: 'Publicar una oferta completa con foto y datos' },
       { command: 'post', description: 'Publicar una foto y texto en Telegram y web' },
+      { command: 'estado', description: 'Comprobar el bot y los borradores pendientes' },
+      { command: 'cancelar', description: 'Borrar el borrador actual sin publicar' },
       { command: 'ayuda', description: 'Ver cómo enviar ofertas y publicaciones' },
       { command: 'start', description: 'Abrir la ayuda del bot' },
     ],

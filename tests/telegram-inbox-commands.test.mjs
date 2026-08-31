@@ -16,6 +16,8 @@ import {
   metadataForIncomingProductLink,
   mergeProductMetadata,
   offerFromProductMetadata,
+  missingOfferDetailsReply,
+  ownerOfferDetails,
   processingOfferReply,
   urlFromTelegramMessage,
 } from '../scripts/telegram-inbox-commands.mjs';
@@ -28,14 +30,32 @@ test('keeps the affiliate purchase button and adds the exact public offer page',
   assert.equal(publicOfferUrl(offer.id), 'https://chollosaldia.com/oferta/aliexpress-ES-ventilador-10/');
   assert.deepEqual(offerReplyMarkup(offer), {
     inline_keyboard: [[
-      { text: '🛒 COMPRAR', url: offer.url },
-      { text: '📋 DETALLES', url: trackedPublicOfferUrl(offer) },
+      { text: '🛒 VER EN ALIEXPRESS', url: offer.url },
+      { text: '📋 VER FICHA', url: trackedPublicOfferUrl(offer) },
     ]],
   });
   assert.equal(
     trackedPublicOfferUrl(offer),
     'https://chollosaldia.com/oferta/aliexpress-ES-ventilador-10/?utm_source=telegram&utm_medium=social&utm_campaign=ofertas_aliexpress&utm_content=oferta',
   );
+});
+
+test('reads all missing offer details from one owner reply', () => {
+  assert.deepEqual(ownerOfferDetails([
+    'Título: Robot aspirador con base de vaciado',
+    'Precio: 169,00 €',
+    'Antes: 299,00 €',
+    'Cupón: LIMPIA20',
+  ].join('\n')), {
+    title: 'Robot aspirador con base de vaciado',
+    coupon: 'LIMPIA20',
+    price: 169,
+    previousPrice: 299,
+  });
+  const reply = missingOfferDetailsReply(['título fiable', 'precio'], true);
+  assert.match(reply, /Todavía no he publicado nada/);
+  assert.match(reply, /Título:/);
+  assert.match(reply, /Precio:/);
 });
 
 test('turns a noisy repeated promotion into one concise factual headline', () => {

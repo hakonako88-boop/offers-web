@@ -113,8 +113,16 @@ test('uses the same stable product id for Telegram buttons and website records',
 test('shows a compact preview and reveals editing controls only on demand', () => {
   assert.match(inboxSync, /text: '✅ PUBLICAR'.*callback_data: 'offer:confirm'/u);
   assert.match(inboxSync, /text: '✏️ EDITAR'.*callback_data: 'offer:edit-menu'/u);
+  assert.match(inboxSync, /text: '💶 PRECIO'.*callback_data: 'offer:price'/u);
   assert.match(inboxSync, /callback\.data === 'offer:edit-menu'.*callback\.data === 'offer:edit-back'/su);
   assert.doesNotMatch(inboxSync, /✅ CONFIRMAR PUBLICACIÓN'.*inline_keyboard/su);
+});
+
+test('keeps duplicate checks silent and exposes bot status on demand', () => {
+  assert.match(inboxSync, /settings\.amazonAutoPublish && automaticallyPublished > 0/u);
+  assert.doesNotMatch(inboxSync, /settings\.amazonAutoPublish && \(automaticallyPublished \|\| duplicatesSkipped\)/u);
+  assert.match(inboxSync, /\^\\\/estado/u);
+  assert.match(inboxSync, /\^\\\/cancelar/u);
 });
 
 test('publishes the channel welcome only once and pins it without notifying subscribers', () => {
