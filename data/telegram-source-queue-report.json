@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-08-31T11:22:51.524Z",
+  "updatedAt": "2026-08-31T11:32:14.467Z",
   "summary": {
-    "published": 310,
     "needs_review": 89,
     "ignored": 20,
     "rejected": 422,
-    "duplicate": 106,
+    "published": 309,
+    "duplicate": 107,
     "pending": 53
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:41201:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41201,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41201",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92173:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 92173,
       "store": "Amazon",
-      "status": "pending",
+      "status": "duplicate",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/una_ganga/92173",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45244",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4654:amazon:0",
-      "source": "telegram-paramanitas",
-      "messageId": 4654,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta ASIN",
-      "sourceUrl": "https://t.me/paramanitas/4654",
       "resultUrl": ""
     }
   ]
