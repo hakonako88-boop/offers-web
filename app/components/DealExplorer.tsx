@@ -165,7 +165,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="heroCopy">
           <p className="eyebrow"><span aria-hidden="true" />CHOLLOS DIARIOS · OFERTAS NUEVAS DURANTE TODO EL DÍA</p>
-          <h1 id="hero-title">Chollos de hoy.<br /><em>Ofertas del día que merecen la pena.</em></h1>
+          <h1 id="hero-title">Chollos de hoy.<br /> <em>Ofertas del día que merecen la pena.</em></h1>
           <p className="heroLead">Consulta ofertas diarias seleccionadas de Amazon, AliExpress, Miravia, Xiaomi, PcComponentes, MediaMarkt y El Corte Inglés, con precio visible, descuento claro y enlace directo.</p>
           <div className="heroActions">
             <a className="primaryButton" href="#ofertas">Ver ofertas ahora <span aria-hidden="true">↓</span></a>
@@ -194,14 +194,6 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
       {adsenseHomeSlot && <div className="shell adSection">
         <AdSlot slot={adsenseHomeSlot} />
       </div>}
-
-      {posts.length > 0 && <section className="editorialPosts shell" id="novedades" aria-labelledby="posts-title">
-        <div className="sectionIntro"><div><p className="eyebrow"><span aria-hidden="true" />PUBLICADO DESDE TELEGRAM</p><h2 id="posts-title">Novedades y avisos</h2></div><p>Campañas, noticias y contenidos añadidos directamente por Chollos al Día.</p></div>
-        <div className="postGrid">{posts.map((post) => <article className="postCard" key={post.id}>
-          <a className="postCardImage" href={postHref(post.id)}><img src={post.imageUrl} alt={post.title} loading="lazy" decoding="async" width={720} height={480} /></a>
-          <div><time dateTime={post.publishedAt}>{post.publishedLabel}</time><h3><a href={postHref(post.id)}>{post.title}</a></h3><p>{shortTitle(post.body.replace(/\s+/gu, " "), 150)}</p><a className="postRead" href={postHref(post.id)}>Leer publicación <span aria-hidden="true">→</span></a></div>
-        </article>)}</div>
-      </section>}
 
       <section className="offersSection" id="ofertas" aria-labelledby="offers-title">
         <div className="shell">
@@ -262,6 +254,14 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           {!visibleDeals.length && <div className="empty"><b>No hemos encontrado ofertas con esa búsqueda.</b><span>Prueba con otra palabra o vuelve a “Todos”.</span></div>}
         </div>
       </section>
+
+      {posts.length > 0 && <section className="editorialPosts shell" id="novedades" aria-labelledby="posts-title">
+        <div className="sectionIntro"><div><p className="eyebrow"><span aria-hidden="true" />GUÍAS Y AVISOS</p><h2 id="posts-title">Novedades para ahorrar mejor</h2></div><p>Campañas, noticias y contenidos añadidos directamente por Chollos al Día.</p></div>
+        <div className="postGrid">{posts.map((post) => <article className="postCard" key={post.id}>
+          <a className="postCardImage" href={postHref(post.id)}><img src={post.imageUrl} alt={post.title} loading="lazy" decoding="async" width={720} height={480} /></a>
+          <div><time dateTime={post.publishedAt}>{post.publishedLabel}</time><h3><a href={postHref(post.id)}>{post.title}</a></h3><p>{shortTitle(post.body.replace(/\s+/gu, " "), 150)}</p><a className="postRead" href={postHref(post.id)}>Leer publicación <span aria-hidden="true">→</span></a></div>
+        </article>)}</div>
+      </section>}
 
       <section className="savingGuides shell" aria-labelledby="guides-title">
         <div className="guidesIntro">

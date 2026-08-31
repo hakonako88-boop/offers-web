@@ -40,6 +40,9 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.match(html, /href="\/site\.webmanifest"/);
   assert.match(html, /chollosaldia@gmail\.com/);
   assert.match(html, /"@type":"ContactPoint"/);
+  assert.match(html, /"@type":"SearchAction"/);
+  assert.match(html, /buscar\/\?q=\{search_term_string\}/);
+  assert.ok(html.indexOf("Últimos chollos") < html.indexOf("Novedades para ahorrar mejor"), "offers must appear before editorial posts");
   assert.doesNotMatch(html, /Precio 54,40/);
   assert.doesNotMatch(html, /AHORRA UN 34%/);
   assert.doesNotMatch(html, /https:\/\/amzn\.to\/4gryAR2/);

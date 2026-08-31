@@ -1373,9 +1373,6 @@ for (const update of updates || []) {
           messageId: pendingByChat[chatKey]?.messageId || message.message_id,
         };
         const missing = result.missing.join(', ');
-        const retry = metadataError
-          ? ' La tienda no ha dejado leer la ficha ahora mismo; pega el enlace directo del producto e inténtalo de nuevo en unos minutos.'
-          : '';
         if (resolvedStore === 'AliExpress' && !generatedAliExpressUrl) {
           await reply(settings.token, message.chat.id, `He encontrado el producto, pero falta ${missing} y la API oficial de AliExpress no ha podido generar tu enlace afiliado. No publico el enlace original. Prueba con otra ficha del producto o vuelve a enviarlo más tarde.`);
         } else {

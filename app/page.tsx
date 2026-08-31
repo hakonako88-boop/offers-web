@@ -29,6 +29,15 @@ const websiteSchema = {
       url: "https://chollosaldia.com/",
       inLanguage: "es-ES",
       description,
+      potentialAction: {
+        "@type": "SearchAction",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: "https://chollosaldia.com/buscar/?q={search_term_string}",
+        },
+        "query-input": "required name=search_term_string",
+      },
+      publisher: { "@id": "https://chollosaldia.com/#organization" },
     },
     {
       "@type": "Organization",
