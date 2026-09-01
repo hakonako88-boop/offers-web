@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: post.title,
     description,
     alternates: { canonical: postHref(post.id) },
-    openGraph: { title: post.title, description, url: postHref(post.id), type: "article", publishedTime: post.publishedAt, images: [{ url: post.imageUrl, alt: post.title }] },
+    openGraph: { title: post.title, description, url: postHref(post.id), type: "article", publishedTime: post.publishedAt, images: post.imageUrls.map((url, index) => ({ url, alt: `${post.title}${index ? ` · imagen ${index + 1}` : ""}` })) },
     twitter: { card: "summary_large_image", title: post.title, description, images: [post.imageUrl] },
   };
 }
@@ -32,7 +32,7 @@ export default async function PublicationPage({ params }: PageProps) {
     "@type": "Article",
     headline: post.title,
     description,
-    image: [new URL(post.imageUrl, siteUrl).toString()],
+    image: post.imageUrls.map((image) => new URL(image, siteUrl).toString()),
     datePublished: post.publishedAt,
     dateModified: post.publishedAt,
     mainEntityOfPage: `${siteUrl}${postHref(post.id)}`,
@@ -47,7 +47,7 @@ export default async function PublicationPage({ params }: PageProps) {
       <p className="eyebrow"><span aria-hidden="true" />NOVEDADES DE CHOLLOS AL DÍA</p>
       <h1>{post.title}</h1>
       <time dateTime={post.publishedAt}>Publicado el {post.publishedLabel}</time>
-      <img className="postHeroImage" src={post.imageUrl} alt={post.title} width={1200} height={800} />
+      {post.imageUrls.length > 1 ? <div className="postImageGallery" aria-label="Fotos de las ofertas del resumen">{post.imageUrls.map((image, index) => <img key={image} src={image} alt={`${post.title}: oferta ${index + 1}`} width={720} height={560} />)}</div> : <img className="postHeroImage" src={post.imageUrl} alt={post.title} width={1200} height={800} />}
       <div className="postBody">{post.body.split(/\n{2,}/gu).map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
       {post.linkUrl && <a className="primaryButton postExternal" href={post.linkUrl} target="_blank" rel="nofollow sponsored noreferrer">Abrir enlace <span aria-hidden="true">↗</span></a>}
       <div className="postBack"><Link href="/">← Ver todos los chollos</Link></div>

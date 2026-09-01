@@ -9,6 +9,7 @@ const STATE_FILE = path.join(ROOT, 'data', 'daily-summary-state.json');
 const TIME_ZONE = 'Europe/Madrid';
 const MAX_OFFERS = 5;
 const MAX_PER_STORE = 2;
+const SITE_URL = 'https://chollosaldia.com';
 
 function readJson(file, fallback) {
   try { return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : fallback; } catch { return fallback; }
@@ -118,6 +119,16 @@ export function buildDailySummary(offers, targetDate) {
   }).join('\n\n');
   return {
     telegram,
+    album: offers.map((offer, index) => {
+      const coupon = String(offer.coupon || '').trim() ? `\n🎟 <b>Cupón:</b> <code>${escapeHtml(offer.coupon)}</code>` : '';
+      const heading = index === 0 ? `🌙 <b>LAS MEJORES OFERTAS DEL DÍA</b>\nSelección del ${escapeHtml(displayDate)}\n\n` : '';
+      return {
+        type: 'photo',
+        media: String(offer.image || '').startsWith('/') ? `${SITE_URL}${offer.image}` : String(offer.image || ''),
+        parse_mode: 'HTML',
+        caption: `${heading}<b>${index + 1}. ${escapeHtml(cleanTitle(offer.title))}</b>\n💶 <b>${escapeHtml(offer.price)}</b> · ${escapeHtml(offer.store || 'Oferta')}${coupon}\n\n👉 <a href="${escapeHtml(offer.url)}">VER OFERTA</a>${index === offers.length - 1 ? '\n\n🪐 @aldiachollos · #Publi' : ''}`,
+      };
+    }),
     post: {
       id: `resumen-diario-${targetDate}`,
       source_product_id: `daily-summary:${targetDate}`,
@@ -125,27 +136,52 @@ export function buildDailySummary(offers, targetDate) {
       title: `Las mejores ofertas del ${displayDate}`,
       body: `Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.\n\n${body}\n\nLos precios y el stock pueden cambiar. Comprueba siempre las condiciones en la tienda antes de comprar.`,
       image: offers[0].image,
+      images: offers.map((offer) => offer.image).filter(Boolean),
       url: 'https://chollosaldia.com/',
       source: 'daily-summary',
     },
   };
 }
 
-async function sendTelegram(token, channelId, text) {
-  const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+async function telegramRequest(token, method, payload) {
+  const response = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: channelId,
-      text,
-      parse_mode: 'HTML',
-      disable_notification: true,
-      link_preview_options: { is_disabled: true },
-    }),
+    body: JSON.stringify(payload),
   });
   const data = await response.json().catch(() => ({}));
-  if (!response.ok || !data.ok) throw new Error(`Telegram sendMessage failed: ${data.description || response.status}`);
+  if (!response.ok || !data.ok) throw new Error(`Telegram ${method} failed: ${data.description || response.status}`);
   return data.result;
+}
+
+async function sendTelegramAlbum(token, channelId, media) {
+  try {
+    return await telegramRequest(token, 'sendMediaGroup', {
+      chat_id: channelId,
+      media,
+      disable_notification: true,
+    });
+  } catch (albumError) {
+    // Telegram rejects the complete album when a single remote image cannot
+    // be downloaded. Retry each card so one broken shop thumbnail does not
+    // suppress every other photo in the nightly summary.
+    const sent = [];
+    for (const item of media) {
+      try {
+        sent.push(await telegramRequest(token, 'sendPhoto', {
+          chat_id: channelId,
+          photo: item.media,
+          caption: item.caption,
+          parse_mode: item.parse_mode,
+          disable_notification: true,
+        }));
+      } catch (photoError) {
+        console.warn(photoError instanceof Error ? photoError.message : String(photoError));
+      }
+    }
+    if (!sent.length) throw albumError;
+    return sent;
+  }
 }
 
 async function main() {
@@ -176,13 +212,13 @@ async function main() {
   const channelId = String(process.env.TELEGRAM_CHANNEL_ID || '').trim();
   if (!token || !channelId) throw new Error('Faltan TELEGRAM_BOT_TOKEN o TELEGRAM_CHANNEL_ID.');
   const summary = buildDailySummary(selected, targetDate);
-  const message = await sendTelegram(token, channelId, summary.telegram);
-  summary.post.message_id = message.message_id;
+  const messages = await sendTelegramAlbum(token, channelId, summary.album);
+  summary.post.message_id = messages[0].message_id;
   writeJson(POSTS_FILE, [summary.post, ...posts]);
   writeJson(STATE_FILE, {
     publishedDates: [...new Set([...(state.publishedDates || []), targetDate])].slice(-90),
     lastPublishedAt: now.toISOString(),
-    lastMessageId: message.message_id,
+    lastMessageId: messages[0].message_id,
     lastOfferIds: selected.map((offer) => offer.source_product_id || offer.url),
   });
   console.log(`Resumen ${targetDate} publicado con ${selected.length} ofertas.`);

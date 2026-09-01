@@ -34,8 +34,14 @@ test('creates a compact Telegram summary with affiliate destinations and a web p
   assert.match(summary.telegram, /LAS MEJORES OFERTAS DEL DÍA/u);
   assert.match(summary.telegram, /https:\/\/example\.com\/one/u);
   assert.match(summary.telegram, /Cupón: AHORRA3/u);
+  assert.equal(summary.album.length, 2);
+  assert.equal(summary.album[0].media, 'https://chollosaldia.com/tg/one.jpg');
+  assert.match(summary.album[0].caption, /LAS MEJORES OFERTAS DEL DÍA/u);
+  assert.match(summary.album[0].caption, /Cupón:<\/b> <code>AHORRA3/u);
+  assert.match(summary.album[1].caption, /https:\/\/example\.com\/two/u);
   assert.equal(summary.post.id, 'resumen-diario-2026-08-25');
   assert.equal(summary.post.image, '/tg/one.jpg');
+  assert.deepEqual(summary.post.images, ['/tg/one.jpg', '/tg/two.jpg']);
 });
 
 test('schedules the 00:05 Madrid summary for the completed day and stores duplicate protection', () => {
@@ -46,6 +52,8 @@ test('schedules the 00:05 Madrid summary for the completed day and stores duplic
   assert.match(workflow, /TELEGRAM_BOT_TOKEN/u);
   assert.match(script, /Europe\/Madrid/u);
   assert.match(script, /publishedDates/u);
+  assert.match(script, /sendMediaGroup/u);
+  assert.match(script, /sendPhoto/u);
   assert.equal(previousMadridDate(new Date('2026-08-29T00:05:00+02:00')), '2026-08-28');
   assert.equal(previousMadridDate(new Date('2026-12-01T00:05:00+01:00')), '2026-11-30');
 });

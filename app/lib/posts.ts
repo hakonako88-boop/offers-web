@@ -5,6 +5,7 @@ export type PublishedPost = {
   title: string;
   body: string;
   imageUrl: string;
+  imageUrls: string[];
   linkUrl?: string;
   publishedAt: string;
   publishedLabel: string;
@@ -16,6 +17,7 @@ type StoredPost = {
   title?: string;
   body?: string;
   image?: string;
+  images?: string[];
   url?: string;
   date?: number;
 };
@@ -40,6 +42,7 @@ export const publishedPosts: PublishedPost[] = (rawPosts as StoredPost[])
     const title = clean(post.title, 180);
     const body = clean(post.body, 5000);
     const imageUrl = clean(post.image, 500);
+    const imageUrls = [...new Set([imageUrl, ...(Array.isArray(post.images) ? post.images.map((image) => clean(image, 500)) : [])].filter(Boolean))].slice(0, 5);
     const timestamp = Number(post.date) * 1000;
     if (!id || title.length < 5 || !body || !imageUrl || !Number.isFinite(timestamp)) return [];
     const date = new Date(timestamp);
@@ -48,6 +51,7 @@ export const publishedPosts: PublishedPost[] = (rawPosts as StoredPost[])
       title,
       body,
       imageUrl,
+      imageUrls,
       linkUrl: safeExternalUrl(post.url) || undefined,
       publishedAt: date.toISOString(),
       publishedLabel: date.toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" }),
