@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-01T17:32:56.086Z",
+  "updatedAt": "2026-09-01T17:42:52.083Z",
   "summary": {
-    "needs_review": 102,
-    "pending": 61,
-    "duplicate": 100,
-    "rejected": 358,
-    "published": 364,
+    "pending": 59,
+    "duplicate": 101,
+    "rejected": 359,
+    "published": 365,
+    "needs_review": 101,
     "ignored": 15
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92296:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92296,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/92296",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92295:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 92295,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/92295",
       "resultUrl": ""
     },
@@ -25,9 +36,9 @@
       "source": "telegram-ofertos",
       "messageId": 41320,
       "store": "Amazon",
-      "status": "pending",
+      "status": "duplicate",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/Ofertos/41320",
       "resultUrl": ""
     },
@@ -47,11 +58,11 @@
       "source": "telegram-ofertos",
       "messageId": 41318,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41318",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B08TM12YG9?tag=chollos00a-21"
     },
     {
       "id": "telegram-tiesometro:7186:aliexpress:0",
@@ -81,8 +92,8 @@
       "messageId": 92293,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/92293",
       "resultUrl": ""
     },
@@ -113,9 +124,9 @@
       "source": "telegram-una-ganga",
       "messageId": 92292,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92292",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/Ofertos/41284",
       "resultUrl": "https://s.click.aliexpress.com/e/_c4bEFJfZ"
-    },
-    {
-      "id": "telegram-ofertos:41283:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41283,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/41283",
-      "resultUrl": ""
     }
   ]
 }
