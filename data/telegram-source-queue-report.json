@@ -1,22 +1,44 @@
 {
-  "updatedAt": "2026-09-01T15:32:17.636Z",
+  "updatedAt": "2026-09-01T15:42:25.805Z",
   "summary": {
-    "duplicate": 102,
-    "rejected": 364,
+    "rejected": 363,
     "published": 359,
-    "needs_review": 104,
-    "pending": 57,
+    "needs_review": 105,
+    "duplicate": 101,
+    "pending": 58,
     "ignored": 14
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92280:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92280,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/92280",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:92279:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92279,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/92279",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-errores-de-precio:15497:amazon:0",
       "source": "telegram-errores-de-precio",
       "messageId": 15497,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/erroresde_precio/15497",
       "resultUrl": ""
     },
@@ -1085,28 +1107,6 @@
       "attempts": 0,
       "reason": "No se pudo preparar la vista previa: falta ASIN",
       "sourceUrl": "https://t.me/erroresde_precio/15495",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15495:amazon:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15495,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta ASIN",
-      "sourceUrl": "https://t.me/erroresde_precio/15495",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:92244:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92244,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/92244",
       "resultUrl": ""
     }
   ]
