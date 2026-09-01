@@ -2054,7 +2054,7 @@
       "merchantUrl": "https://tidd.ly/416Egr4",
       "sourceImageUrl": "https://cdn4.telesco.pe/file/dzHTdxMAZCFkmnP3JnbnjcPLjKUM2YKYLP0MrcbIi0kVTxPgrdFITCHFiB0EQZtH-iJud6nKTnxHwfWJuGT4aAXfvwQLRkvjfZpmv7hDitWI-jmcqGIF76WPrOVb6C4qiUCsBB_l1PTqUjbJTIZuuTys4y7rxTHPpYbcNg4EtWncgEio8_fvjVihd0R2RlSzcyKCwNmK0SBSuaQxGrU_wcbSFgO5XiHWAXiycO_W92gjDkeQ-9Iy-w_rJPJSyZGboDNTkHzmK4U0cfzpwdu-NAcwqsYcZEwMlILoNLhRXw13Kc36C-g1_qwfkJCQ6aS0NnkznhJAxX75J8o3GoH8FQ.jpg",
       "priority": false,
-      "retryPolicyVersion": "",
+      "retryPolicyVersion": "exact-official-page-v1",
       "attempts": 1
     },
     {
@@ -2219,9 +2219,14 @@
       "coupon": ""
     }
   ],
-  "lastCheckedAt": "2026-09-01T13:52:23.477Z",
+  "lastCheckedAt": "2026-09-01T14:02:02.147Z",
   "micholloLastCheckedAt": "2026-09-01T12:12:29.046Z",
   "sourceHealth": [
+    {
+      "source": "telegram-source-queue",
+      "status": "ok",
+      "found": 1
+    },
     {
       "source": "michollo",
       "status": "deferred"
@@ -2234,7 +2239,7 @@
     {
       "source": "chollometro-aliexpress",
       "status": "ok",
-      "found": 3
+      "found": 1
     }
   ]
 }
