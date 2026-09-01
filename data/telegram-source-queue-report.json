@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-09-01T14:42:51.438Z",
+  "updatedAt": "2026-09-01T14:52:20.728Z",
   "summary": {
-    "rejected": 364,
+    "rejected": 365,
     "duplicate": 103,
     "published": 357,
-    "needs_review": 103,
-    "pending": 59,
+    "needs_review": 104,
+    "pending": 57,
     "ignored": 14
   },
   "recent": [
@@ -14,9 +14,9 @@
       "source": "telegram-paramanitas",
       "messageId": 4665,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/paramanitas/4665",
       "resultUrl": ""
     },
@@ -25,9 +25,9 @@
       "source": "telegram-tiesometro",
       "messageId": 7184,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7184",
       "resultUrl": ""
     },
@@ -37,8 +37,8 @@
       "messageId": 92274,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/92274",
       "resultUrl": ""
     },
