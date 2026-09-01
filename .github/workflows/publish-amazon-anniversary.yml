@@ -1,0 +1,37 @@
+name: Publicar 15 aniversario Amazon
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/publish-amazon-anniversary.mjs"
+      - "public/images/amazon-15-aniversario-septiembre-2026.png"
+      - ".github/workflows/publish-amazon-anniversary.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: chollosaldia-amazon-anniversary
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+    steps:
+      - name: Descargar proyecto
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Preparar Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      - name: Publicar campaña verificada
+        run: node scripts/publish-amazon-anniversary.mjs
