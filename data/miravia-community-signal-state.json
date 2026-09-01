@@ -2058,7 +2058,7 @@
       "merchantUrl": "https://tidd.ly/4u9mHUA",
       "sourceImageUrl": "https://cdn4.telesco.pe/file/L7CeMtV2rsTsEhd8x2iVVhcsflYp_62iIn-PEd9HU-72VWeSkhsZwT3xExhQ4SVI3IgjAvSd5Ch0Uwq8kufn46_HtXT8EbXdZdZdInwP8zMKQvuIJQ_yFCpo6CVhl8FGlfLQOtp-LttQfSVuNrN-aPoXYH_QDT1zsY5OYYPUs_VBYvDl-93VLDdp89UleIdXlWfuD8L0BmKqlX4xLzYBSdYX47MkJk8iwysXVrBp_O9UPxMzjO0q2gSiGzkuZtowqCz43pkdLsttX__C5XHf4oepwDswkyGneILvnZD82Ha5hsGCoefbP_jTuzo8vJrrSSEzRdJ3XLJW6SR0LPRCIA.jpg",
       "priority": false,
-      "retryPolicyVersion": "",
+      "retryPolicyVersion": "exact-official-page-v1",
       "attempts": 1
     },
     {
@@ -2088,29 +2088,8 @@
       "merchantUrl": "https://tidd.ly/4gFQtdT",
       "sourceImageUrl": "https://cdn4.telesco.pe/file/IY7YSwPbqftfiv2tp0-IVV6wuXlEHc5BtOqnWLBS4I3hrdYzYsSWnXKoUn_q1ODYEHEUzuSzewnPro9t2YCfeqZxrLdMOoN1IhOqZ04CvbYNFUZuMRa1TlV_Ndj1UGlUuGY52wNuO1ZueK3e_Vdo87iu7f62Ph-edhH1M_YKD1DPUTAuvGjkyeCkIW5AYHgshsL2Sq9YPBETjA8g-oHFWrKk52UC3HBXWvrRgxj96j3f8Q6bTuT_MkbLvfujlBsY3vsA-juFJAMHae6SVtelDJs9kYfbSkpxeNh66VJE2PEZ1vQ4_XvMgKsYrq4WOYmn1kc-13Wsu1fC7qAuSaHRrA.jpg",
       "priority": false,
-      "retryPolicyVersion": "",
+      "retryPolicyVersion": "exact-official-page-v1",
       "attempts": 1
-    },
-    {
-      "id": "chollometro-aliexpress:https://www.chollometro.com/ofertas/ps5-1tb-standard-slim-1990817",
-      "source": "chollometro-aliexpress",
-      "sourceUrl": "https://www.chollometro.com/ofertas/ps5-1tb-standard-slim-1990817",
-      "title": "Ps5 1tb standard slim",
-      "publishedAt": "Sun, 30 Aug 2026 18:01:07 +0200",
-      "merchant": "AliExpress",
-      "sourceStore": "AliExpress",
-      "category": "Tecnología",
-      "terms": [
-        "ps5",
-        "1tb",
-        "standard",
-        "slim"
-      ],
-      "searchQuery": "Ps5 1tb standard slim",
-      "sourceWeight": 8,
-      "price": 0,
-      "previousPrice": 0,
-      "coupon": ""
     },
     {
       "id": "chollometro-aliexpress:https://www.chollometro.com/ofertas/mars-gaming-ms-h21-altavoces-gaming-rgb-21-1990870",
@@ -2230,9 +2209,14 @@
       "coupon": ""
     }
   ],
-  "lastCheckedAt": "2026-09-01T15:52:21.520Z",
+  "lastCheckedAt": "2026-09-01T16:02:15.727Z",
   "micholloLastCheckedAt": "2026-09-01T12:12:29.046Z",
   "sourceHealth": [
+    {
+      "source": "telegram-source-queue",
+      "status": "ok",
+      "found": 2
+    },
     {
       "source": "michollo",
       "status": "deferred"
