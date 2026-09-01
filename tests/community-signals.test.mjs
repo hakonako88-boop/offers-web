@@ -27,6 +27,10 @@ test('keeps explicitly labelled AliExpress coupon codes without copying surround
     'ESNS10 / KODIES10 / DSES10',
   );
   assert.equal(couponCodesFromText('Hay cupones disponibles, consulta condiciones'), '');
+  assert.equal(couponCodesFromText('🍀 Cupón: ESFS06 🔗 Enlace: https://example.com'), 'ESFS06');
+  assert.equal(couponCodesFromText('🎟 Cupón IFPIHKNC PAGA CON PAYPAL LATER'), 'IFPIHKNC');
+  assert.equal(couponCodesFromText('Código promocional AHORRA10'), 'AHORRA10');
+  assert.equal(couponCodesFromText('Precio 30€ · modelo QK101'), '');
 });
 
 test('parses public RSS entries as discovery signals', () => {

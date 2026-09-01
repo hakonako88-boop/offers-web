@@ -94,9 +94,21 @@ function sourceStore(value = '') {
  * signals without inventing a code or a saving. */
 export function couponCodesFromText(value = '') {
   const text = cleanText(value);
-  const labelled = text.match(/(?:cupones?|c[oó]digos?)\s*[:：]\s*([^\n]{3,100})/iu)?.[1] || '';
-  if (!labelled) return '';
-  const codes = labelled.match(/\b(?=[A-Z0-9_-]{4,20}\b)(?=[A-Z0-9_-]*[A-Z])(?=[A-Z0-9_-]*\d)[A-Z0-9_-]+\b/gu) || [];
+  const blocked = new Set(['APLICAR', 'CODIGO', 'CÓDIGO', 'CON', 'CUPON', 'CUPÓN', 'DESCUENTO', 'DISPONIBLE', 'ENVIO', 'ENVÍO', 'ESPAÑA', 'LATER', 'PAGA', 'PAYPAL', 'PROMOCIONAL']);
+  const codes = [];
+  // Each code must be immediately attached to an explicit coupon label. This
+  // accepts “Cupón: ESFS12”, “Cupón ESFS12” and “Código promocional AHORRA10”
+  // without interpreting model numbers, dates or prices as coupon codes.
+  for (const match of text.matchAll(/(cup[oó]n(?:es)?|c[oó]digo(?:s)?(?:\s+promocional(?:es)?)?)\s*(?::|：|–|-)?\s*([^\n]{4,100})/giu)) {
+    const plural = /(?:cupones|c[oó]digos)/iu.test(match[1]);
+    const candidates = String(match[2] || '').match(/\b[A-Z0-9][A-Z0-9_-]{3,19}\b/gu) || [];
+    for (const original of candidates) {
+      const code = original.toUpperCase();
+      if (blocked.has(code)) continue;
+      codes.push(code);
+      if (!plural) break;
+    }
+  }
   return [...new Set(codes)].slice(0, 4).join(' / ');
 }
 

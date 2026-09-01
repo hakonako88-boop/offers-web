@@ -75,6 +75,7 @@ for (const [index, offer] of editableOffers.entries()) {
     previousPrice,
     savings,
     discount,
+    coupon: offer.coupon || '',
     url: offer.url,
     description: offer.description,
   });

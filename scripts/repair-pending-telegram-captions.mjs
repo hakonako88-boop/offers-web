@@ -45,6 +45,7 @@ for (const messageId of [...new Set((queue.messageIds || []).map(Number).filter(
     previousPrice: oldPrice > price ? offer.previousPrice : '',
     savings,
     discount: oldPrice > price ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0,
+    coupon: offer.coupon || '',
     description: '',
   });
   try {
