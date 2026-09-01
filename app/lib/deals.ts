@@ -245,6 +245,19 @@ function affiliateIdentity(value: string) {
       const product = url.searchParams.get("p");
       if (product) return `awin-product:${product.toLowerCase()}`;
     }
+    if (host === "pdt.tradedoubler.com") {
+      // Product links share /click; the product(...) token is the stable
+      // identity. Comparing only origin + pathname collapsed the whole
+      // MediaMarkt catalogue into one apparent duplicate.
+      const product = url.href.match(/product\(([^)]+)\)/iu)?.[1];
+      if (product) return `tradedoubler-product:${product.toLowerCase()}`;
+      const destination = url.href.match(/url\(([^)]+)\)/iu)?.[1];
+      if (destination) return `tradedoubler-destination:${destination.toLowerCase()}`;
+    }
+    if (host === "clk.tradedoubler.com") {
+      const destination = url.searchParams.get("url") || url.searchParams.get("epi");
+      if (destination) return `tradedoubler-destination:${destination.toLowerCase()}`;
+    }
     return `${url.origin}${url.pathname}`.toLowerCase().replace(/\/$/, "");
   } catch {
     return value.replace(/\?.*$/, "").toLowerCase();
@@ -252,13 +265,18 @@ function affiliateIdentity(value: string) {
 }
 
 const seenAffiliateUrls = new Set<string>();
+const indexedPerStore = new Map<string, number>();
+const maximumIndexableDealsPerStore = 40;
 export const publishedDeals: PublishedDeal[] = candidates
   .sort((left, right) => Date.parse(right.verifiedDate || "") - Date.parse(left.verifiedDate || ""))
   .filter((deal) => {
     if (!deal.active) return false;
     const key = affiliateIdentity(deal.affiliateUrl);
     if (seenAffiliateUrls.has(key)) return false;
+    const storeCount = indexedPerStore.get(deal.store) || 0;
+    if (storeCount >= maximumIndexableDealsPerStore) return false;
     seenAffiliateUrls.add(key);
+    indexedPerStore.set(deal.store, storeCount + 1);
     return true;
   });
 
@@ -282,6 +300,10 @@ export function getDealById(id: string) {
   try { requestedId = decodeURIComponent(id); } catch { /* Keep malformed input harmless and unmatched. */ }
   const stableId = legacyMessageIds.get(requestedId) || publicDealId(requestedId);
   return allDeals.find((deal) => deal.id === stableId);
+}
+
+export function dealIsIndexable(id: string) {
+  return publishedDeals.some((deal) => deal.id === id);
 }
 
 export function dealPriceAssessment(deal: Pick<PublishedDeal, "price" | "oldPrice" | "coupon">) {

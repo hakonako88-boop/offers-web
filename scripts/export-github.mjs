@@ -32,6 +32,29 @@ async function render(route, destination) {
   await writeFile(target, await response.text(), "utf8");
 }
 
+/**
+ * Render a historical offer only when the application can still reconstruct
+ * its real product data. This keeps URLs already shared in Telegram alive
+ * after the offer expires without turning rejected/raw catalogue records into
+ * thin "not found" pages that Google would classify as soft 404s.
+ */
+async function renderHistoricalOffer(id) {
+  const encodedId = encodeURIComponent(id);
+  const route = `/oferta/${encodedId}`;
+  let response = await worker.fetch(new Request(`https://chollosaldia.com${route}`, { headers: { accept: "text/html" } }), { ASSETS: assets }, context);
+  if (response.status >= 300 && response.status < 400 && response.headers.get("location")) {
+    const redirectedUrl = new URL(response.headers.get("location"), `https://chollosaldia.com${route}`);
+    response = await worker.fetch(new Request(redirectedUrl, { headers: { accept: "text/html" } }), { ASSETS: assets }, context);
+  }
+  if (!response.ok) return false;
+  const html = await response.text();
+  if (html.includes("Esta oferta ya no está disponible") || html.includes("Oferta no encontrada")) return false;
+  const target = path.join(output, "oferta", encodedId, "index.html");
+  await mkdir(path.dirname(target), { recursive: true });
+  await writeFile(target, html, "utf8");
+  return true;
+}
+
 async function writeRedirect(destination, target) {
   const escapedTarget = target.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
   const html = `<!doctype html>
@@ -85,10 +108,27 @@ for (const id of offerIds) {
   const encodedId = encodeURIComponent(id);
   await render(`/oferta/${encodedId}`, `oferta/${encodedId}/index.html`);
 }
+
+// Keep every previously published, reconstructable offer URL available. The
+// page itself marks expired offers noindex and removes the purchase button;
+// only active offers above remain in the sitemap. Previously, deployments
+// deleted these files and generated hundreds of avoidable 404s in Search
+// Console whenever a deal crossed the 14-day freshness threshold.
+const storedOffers = JSON.parse(await readFile(path.join(root, "data", "offers.json"), "utf8"));
+const historicalIds = [...new Set(storedOffers
+  .filter((offer) => offer.source !== "removed")
+  .map((offer) => publicDealId(offer.chollometroId || offer.source_product_id || offer.message_id || ""))
+  .filter((id) => id && !offerIds.includes(id)))];
+let historicalOfferCount = 0;
+// Render in small parallel batches: this keeps GitHub Actions fast while
+// avoiding an unbounded burst of in-process requests and file writes.
+for (let offset = 0; offset < historicalIds.length; offset += 12) {
+  const results = await Promise.all(historicalIds.slice(offset, offset + 12).map(renderHistoricalOffer));
+  historicalOfferCount += results.filter(Boolean).length;
+}
 // Preserve links already shared by Telegram before product ids became the
 // canonical offer URL. Search engines and older channel buttons are redirected
 // to the same real product page instead of landing on a 404.
-const storedOffers = JSON.parse(await readFile(path.join(root, "data", "offers.json"), "utf8"));
 for (const offer of storedOffers) {
   const legacyId = String(offer.message_id || "").trim();
   const stableId = publicDealId(offer.chollometroId || offer.source_product_id || "");
@@ -126,3 +166,4 @@ await writeFile(path.join(output, "CNAME"), "chollosaldia.com\n", "utf8");
 await writeFile(path.join(output, ".nojekyll"), "", "utf8");
 
 console.log(`Web estática preparada en ${output}`);
+console.log(`${historicalOfferCount} fichas históricas válidas conservadas fuera del sitemap activo.`);

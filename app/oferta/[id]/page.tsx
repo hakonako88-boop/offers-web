@@ -10,6 +10,7 @@ import {
   dealPriceAssessment,
   dealSavings,
   dealSearchTitle,
+  dealIsIndexable,
   getDealById,
   publishedDeals,
   allDeals,
@@ -59,7 +60,7 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
       images: [{ url: absoluteImageUrl(deal.imageUrl), alt: productTitle }],
     },
     twitter: { card: "summary_large_image", title, description, images: [absoluteImageUrl(deal.imageUrl)] },
-    robots: deal.active ? { index: true, follow: true } : { index: false, follow: true },
+    robots: dealIsIndexable(deal.id) ? { index: true, follow: true } : { index: false, follow: true },
   };
 }
 
