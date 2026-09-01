@@ -51,6 +51,7 @@ for (const messageId of [...new Set((queue.messageIds || []).map(Number).filter(
   try {
     const response = await fetch(`https://api.telegram.org/bot${token}/editMessageCaption`, {
       method: 'POST', headers: { 'content-type': 'application/json' },
+      signal: AbortSignal.timeout(15_000),
       body: JSON.stringify({ chat_id: channelId, message_id: messageId, caption, parse_mode: 'HTML', reply_markup: { inline_keyboard: [[{ text: '👉🏻 VER OFERTA', url: offer.url }]] } }),
     });
     const result = await response.json().catch(() => ({}));
