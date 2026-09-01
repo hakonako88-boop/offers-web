@@ -2276,17 +2276,18 @@
       "attempts": 1
     }
   ],
-  "lastCheckedAt": "2026-09-01T18:02:24.972Z",
-  "micholloLastCheckedAt": "2026-09-01T12:12:29.046Z",
+  "lastCheckedAt": "2026-09-01T18:12:40.428Z",
+  "micholloLastCheckedAt": "2026-09-01T18:12:40.428Z",
   "sourceHealth": [
     {
       "source": "telegram-source-queue",
       "status": "ok",
-      "found": 3
+      "found": 4
     },
     {
       "source": "michollo",
-      "status": "deferred"
+      "status": "unavailable",
+      "detail": "incorrect header check"
     },
     {
       "source": "nolodejesescapar",

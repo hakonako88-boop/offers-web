@@ -1,22 +1,55 @@
 {
-  "updatedAt": "2026-09-01T18:02:58.860Z",
+  "updatedAt": "2026-09-01T18:12:49.265Z",
   "summary": {
-    "rejected": 362,
-    "duplicate": 100,
     "published": 365,
+    "duplicate": 99,
+    "rejected": 362,
     "needs_review": 101,
-    "pending": 57,
+    "pending": 58,
     "ignored": 15
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7187:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7187,
+      "store": "AliExpress",
+      "status": "published",
+      "attempts": 0,
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
+      "sourceUrl": "https://t.me/tiesometro/7187",
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3AWAP2n"
+    },
+    {
+      "id": "telegram-una-ganga:92300:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92300,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/92300",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:92299:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92299,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/92299",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92298:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 92298,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/92298",
       "resultUrl": ""
     },
@@ -26,8 +59,8 @@
       "messageId": 92297,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/92297",
       "resultUrl": ""
     },
@@ -47,9 +80,9 @@
       "source": "telegram-una-ganga",
       "messageId": 92296,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92296",
       "resultUrl": ""
     },
@@ -1074,39 +1107,6 @@
       "attempts": 0,
       "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
       "sourceUrl": "https://t.me/una_ganga/92255",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41287:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41287,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/41287",
-      "resultUrl": "https://www.amazon.es/dp/B0GL1G5BFW?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:41286:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41286,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/41286",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41285:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41285,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/41285",
       "resultUrl": ""
     }
   ]
