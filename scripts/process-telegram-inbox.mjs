@@ -22,7 +22,7 @@ import {
   forwardedOfferMetadata,
   urlFromTelegramMessage,
 } from './telegram-inbox-commands.mjs';
-import { extractProductMetadata, parsePrice } from './link-offer-extractor.mjs';
+import { extractProductMetadata, parsePrice, publicOfferSourceType } from './link-offer-extractor.mjs';
 import { isInboxDuplicate } from './offer-deduplication.mjs';
 import { aliexpressProductId, isOwnedAliExpressAffiliateUrl, resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
 import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
@@ -1085,7 +1085,11 @@ for (const update of updates || []) {
       text,
       photoFileId: largestPhoto,
       allowImplicit: isAuthorizedChat
-        && storeFromUrl(incomingUrl) === 'Tienda',
+        && storeFromUrl(incomingUrl) === 'Tienda'
+        // Deal pages such as Chollometro are product-resolution inputs, not
+        // editorial posts. Letting them enter the implicit-post branch first
+        // produced a generic ChollosAlDia card and skipped product extraction.
+        && !publicOfferSourceType(incomingUrl),
     });
     const activation = activateChatFromMessage({ text, controlCode: settings.controlCode });
     if (activation.status === 'authorized') {

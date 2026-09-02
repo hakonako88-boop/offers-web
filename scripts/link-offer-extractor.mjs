@@ -202,7 +202,7 @@ async function fetchResolvedDestination(url, fetchImpl) {
   };
 }
 
-function sourceType(url = '') {
+export function publicOfferSourceType(url = '') {
   try {
     const host = new URL(url).hostname.toLowerCase();
     if (host === 'michollo.com' || host.endsWith('.michollo.com')) return 'michollo';
@@ -276,7 +276,7 @@ export function chollometroDealFromHtml(html = '', dealId = '') {
 }
 
 async function publicSourceOffer(url, fetchImpl) {
-  const type = sourceType(url);
+  const type = publicOfferSourceType(url);
   if (type === 'chollometro') {
     const requestedId = new URL(url).pathname.match(/(?:share-deal(?:-from-app)?\/|[-/])(\d+)\/?$/u)?.[1] || '';
     if (!requestedId) return null;

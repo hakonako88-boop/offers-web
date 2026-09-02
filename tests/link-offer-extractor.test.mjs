@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { chollometroDealFromHtml, decodeStorefrontMarkup, explicitCouponFromHtml, extractProductMetadata, merchantLinkFromHtml, outboundOfferLinkFromHtml, productMetadataFromHtml } from '../scripts/link-offer-extractor.mjs';
+import { chollometroDealFromHtml, decodeStorefrontMarkup, explicitCouponFromHtml, extractProductMetadata, merchantLinkFromHtml, outboundOfferLinkFromHtml, productMetadataFromHtml, publicOfferSourceType } from '../scripts/link-offer-extractor.mjs';
 
 test('extracts title, image and prices from public product metadata', () => {
   const result = productMetadataFromHtml(`
@@ -117,6 +117,11 @@ test('resolves a Chollometro app-share deal and keeps its facts while following 
   assert.equal(result.coupon, 'ESFS02');
   assert.equal(result.affiliateUrl, aliExpressUrl);
   assert.equal(dealUrl.endsWith('1976867'), true);
+});
+
+test('marks a Chollometro shared deal as a product source instead of an implicit editorial post', () => {
+  assert.equal(publicOfferSourceType('https://www.chollometro.com/share-deal-from-app/1976867'), 'chollometro');
+  assert.equal(publicOfferSourceType('https://example.org/una-promocion'), '');
 });
 
 test('uses NoLoDejesEscapar public REST data but ignores an unrelated Awin affiliate', async () => {
