@@ -44,6 +44,17 @@ export function trackedPublicOfferUrl(offer = {}, siteUrl = 'https://chollosaldi
   return `${base}?${params.toString()}`;
 }
 
+export function shareOfferUrl(offer = {}, siteUrl = 'https://chollosaldia.com') {
+  const webUrl = trackedPublicOfferUrl(offer, siteUrl);
+  if (!webUrl) return '';
+  const title = trimAtWord(improveOfferTitle(offer.title || 'Mira este chollo'), 90);
+  const params = new URLSearchParams({
+    url: webUrl,
+    text: `🔥 ${title}\nEncontrado en @aldiachollos`,
+  });
+  return `https://t.me/share/url?${params.toString()}`;
+}
+
 export function purchaseButtonLabel(store = '') {
   const normalizedStore = normalized(store);
   if (normalizedStore.includes('amazon')) return '🛒 VER EN AMAZON';
@@ -55,11 +66,14 @@ export function purchaseButtonLabel(store = '') {
 }
 
 export function offerReplyMarkup(offer = {}, purchaseLabel = '') {
-  const actions = [];
-  if (offer.url) actions.push({ text: purchaseLabel || purchaseButtonLabel(offer.store), url: offer.url });
+  const rows = [];
+  if (offer.url) rows.push([{ text: purchaseLabel || purchaseButtonLabel(offer.store), url: offer.url }]);
   const webUrl = trackedPublicOfferUrl(offer);
-  if (webUrl) actions.push({ text: '📋 VER FICHA', url: webUrl });
-  return actions.length ? { inline_keyboard: [actions] } : undefined;
+  if (webUrl) rows.push([
+    { text: '📋 VER FICHA', url: webUrl },
+    { text: '📤 COMPARTIR', url: shareOfferUrl(offer) },
+  ]);
+  return rows.length ? { inline_keyboard: rows } : undefined;
 }
 
 function trimAtWord(value, maximum = 108) {

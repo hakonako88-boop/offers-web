@@ -27,7 +27,7 @@ import { isInboxDuplicate } from './offer-deduplication.mjs';
 import { aliexpressProductId, isOwnedAliExpressAffiliateUrl, resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
 import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
 import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
-import { offerReplyMarkup } from './offer-presentation.mjs';
+import { offerReplyMarkup, publicOfferUrl } from './offer-presentation.mjs';
 import { buildAmazonReviewDraft } from './amazon-review-drafts.mjs';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { lookupAmazonProduct } from './amazon-creators-lookup.mjs';
@@ -671,12 +671,18 @@ async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
   return automaticallyPublished > 0;
 }
 
-function publicationSuccessReply() {
+function publicationSuccessReply(offer = {}, channelMessage = {}) {
+  const channelUrl = channelMessage.message_id
+    ? `https://t.me/aldiachollos/${channelMessage.message_id}`
+    : '';
+  const webUrl = publicOfferUrl(offer.id || offer.sourceProductId);
   return [
     '✅ Publicada en el canal.',
     '🌐 También se ha guardado para Chollos al Día.',
+    channelUrl ? `📣 Mensaje: ${channelUrl}` : '',
+    webUrl ? `🔎 Ficha: ${webUrl}` : '',
     '⏳ La ficha aparecerá en la web en unos minutos, al terminar su actualización automática.',
-  ].join('\n');
+  ].filter(Boolean).join('\n');
 }
 
 function requestedPrice(text) {
@@ -929,7 +935,7 @@ for (const update of updates || []) {
           }
           await reply(settings.token, callbackChatId, outcome.duplicate
             ? '♻️ No la publico porque ese producto ya existe en el canal.'
-            : publicationSuccessReply());
+            : publicationSuccessReply(pending.offer, outcome.channelMessage));
           if (!outcome.duplicate && outcome.channelMessage?.websiteImage) {
             pendingTikTokByChat[callbackChatKey] = {
               offer: pending.offer,

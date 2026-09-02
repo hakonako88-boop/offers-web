@@ -21,7 +21,7 @@ import {
   processingOfferReply,
   urlFromTelegramMessage,
 } from '../scripts/telegram-inbox-commands.mjs';
-import { formatTelegramDealCard, improveOfferTitle, offerReplyMarkup, publicOfferUrl, trackedPublicOfferUrl } from '../scripts/offer-presentation.mjs';
+import { formatTelegramDealCard, improveOfferTitle, offerReplyMarkup, publicOfferUrl, shareOfferUrl, trackedPublicOfferUrl } from '../scripts/offer-presentation.mjs';
 
 const controlCode = 'test-private-code';
 
@@ -29,15 +29,20 @@ test('keeps the affiliate purchase button and adds the exact public offer page',
   const offer = { id: 'aliexpress-ES/ventilador 10', store: 'AliExpress', url: 'https://s.click.aliexpress.com/e/example' };
   assert.equal(publicOfferUrl(offer.id), 'https://chollosaldia.com/oferta/aliexpress-ES-ventilador-10/');
   assert.deepEqual(offerReplyMarkup(offer), {
-    inline_keyboard: [[
-      { text: '🛒 VER EN ALIEXPRESS', url: offer.url },
-      { text: '📋 VER FICHA', url: trackedPublicOfferUrl(offer) },
-    ]],
+    inline_keyboard: [
+      [{ text: '🛒 VER EN ALIEXPRESS', url: offer.url }],
+      [
+        { text: '📋 VER FICHA', url: trackedPublicOfferUrl(offer) },
+        { text: '📤 COMPARTIR', url: shareOfferUrl(offer) },
+      ],
+    ],
   });
   assert.equal(
     trackedPublicOfferUrl(offer),
     'https://chollosaldia.com/oferta/aliexpress-ES-ventilador-10/?utm_source=telegram&utm_medium=social&utm_campaign=ofertas_aliexpress&utm_content=oferta',
   );
+  assert.match(shareOfferUrl({ ...offer, title: 'Ventilador silencioso' }), /^https:\/\/t\.me\/share\/url\?/u);
+  assert.match(decodeURIComponent(shareOfferUrl({ ...offer, title: 'Ventilador silencioso' })), /@aldiachollos/u);
 });
 
 test('reads all missing offer details from one owner reply', () => {
