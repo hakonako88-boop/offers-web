@@ -1,22 +1,44 @@
 {
-  "updatedAt": "2026-09-02T19:02:21.098Z",
+  "updatedAt": "2026-09-02T19:12:17.925Z",
   "summary": {
-    "rejected": 363,
-    "pending": 28,
     "duplicate": 55,
-    "published": 421,
+    "rejected": 363,
+    "published": 422,
     "needs_review": 118,
+    "pending": 27,
     "ignored": 15
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7198:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7198,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/tiesometro/7198",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:92399:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92399,
+      "store": "AliExpress",
+      "status": "published",
+      "attempts": 0,
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
+      "sourceUrl": "https://t.me/una_ganga/92399",
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3PiB5Oz"
+    },
     {
       "id": "telegram-una-ganga:92398:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 92398,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92398",
       "resultUrl": ""
     },
@@ -1085,28 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92362",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41335:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41335,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/41335",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41334:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41334,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/41334",
       "resultUrl": ""
     }
   ]
