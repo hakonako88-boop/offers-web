@@ -1,14 +1,36 @@
 {
-  "updatedAt": "2026-09-02T10:32:20.712Z",
+  "updatedAt": "2026-09-02T10:42:46.572Z",
   "summary": {
-    "rejected": 364,
     "pending": 43,
     "duplicate": 77,
+    "rejected": 364,
     "needs_review": 115,
     "published": 386,
     "ignored": 15
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92370:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92370,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/92370",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41356:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41356,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41356",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-ofertos:41355:amazon:0",
       "source": "telegram-ofertos",
@@ -58,9 +80,9 @@
       "source": "telegram-una-ganga",
       "messageId": 92368,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92368",
       "resultUrl": ""
     },
@@ -1086,28 +1108,6 @@
       "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/paramanitas/4671",
       "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4671:amazon:0",
-      "source": "telegram-paramanitas",
-      "messageId": 4671,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4671",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:92330:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92330,
-      "store": "AliExpress",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/una_ganga/92330",
-      "resultUrl": "https://s.click.aliexpress.com/e/_c3ZyYTsb"
     }
   ]
 }
