@@ -16,6 +16,7 @@ test('builds a square branded JPEG from the clean product image', async () => {
     price: '169,00 €',
     previousPrice: '299,00 €',
     discount: 43,
+    coupon: 'ESFS02',
   });
   const metadata = await sharp(result).metadata();
   assert.equal(metadata.format, 'jpeg');

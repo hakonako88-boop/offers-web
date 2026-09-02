@@ -91,7 +91,7 @@ async function preferredOriginalImage(offer, retailer) {
 async function publish(config, offer, originalImage) {
   const payload = { chat_id: config.channel, caption: formatRetailTelegramCaption(offer), parse_mode: 'HTML', reply_markup: offerReplyMarkup(offer) };
   try {
-    const card = await createDealImageCard({ imageBuffer: originalImage, imageUrl: offer.image, store: offer.store, price: offer.priceLabel, previousPrice: offer.previousPriceLabel, discount: offer.discount });
+    const card = await createDealImageCard({ imageBuffer: originalImage, imageUrl: offer.image, store: offer.store, price: offer.priceLabel, previousPrice: offer.previousPriceLabel, discount: offer.discount, coupon: offer.coupon });
     return telegramPhoto(config.token, payload, card, dealImageCardFilename(offer.storeSlug, offer.sourceProductId));
   } catch (error) {
     console.warn(`Could not create branded image for ${offer.id}: ${error.message}`);

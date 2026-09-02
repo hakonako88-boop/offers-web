@@ -172,6 +172,7 @@ async function publishOffer(config, offer) {
       price: offer.priceLabel,
       previousPrice: offer.previousPriceLabel,
       discount: offer.discount,
+      coupon: offer.coupon,
     });
     return telegramPhoto(config.telegramToken, payload, card, dealImageCardFilename('miravia', offer.id));
   } catch (error) {

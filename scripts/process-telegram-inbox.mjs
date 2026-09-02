@@ -145,30 +145,30 @@ async function sendProductPhoto(settings, offer) {
     offer,
     offer.kind === 'campaign' ? '👉🏻 VER PROMOCIÓN' : offer.kind === 'post' ? '👉🏻 ABRIR ENLACE' : '👉🏻 VER OFERTA',
   );
-  // Amazon inbox offers now use the same professional 1200×1200 image card
-  // as the other automatic shops. The clean ASIN image remains the source,
-  // while Telegram and the website receive the branded card with prices.
-  const amazonImageCandidates = [...new Set([
+  // Every product submitted to Rocky uses the same professional 1200×1200
+  // branded card. Campaigns and editorial posts keep their supplied artwork.
+  const productImageCandidates = [...new Set([
     offer.imageUrl,
     ...(Array.isArray(offer.imageCandidates) ? offer.imageCandidates : []),
   ].filter((value) => /^https?:\/\//iu.test(String(value || ''))))];
-  if (offer.store === 'Amazon' && amazonImageCandidates.length) {
+  if (!['post', 'campaign'].includes(offer.kind) && productImageCandidates.length) {
     let cardError;
-    for (const imageUrl of amazonImageCandidates) {
+    for (const imageUrl of productImageCandidates) {
       try {
       const card = await createDealImageCard({
         imageUrl,
-        store: 'Amazon',
+        store: offer.store,
         price: offer.priceLabel,
         previousPrice: offer.previousPriceLabel,
         discount: offer.discount,
+        coupon: offer.coupon,
       });
       const form = new FormData();
       form.set('chat_id', String(settings.channelId));
       form.set('caption', formatManualTelegramCaption(offer));
       form.set('parse_mode', 'HTML');
       if (replyMarkup) form.set('reply_markup', JSON.stringify(replyMarkup));
-      form.set('photo', new Blob([card], { type: 'image/jpeg' }), dealImageCardFilename('amazon', offer.sourceProductId));
+      form.set('photo', new Blob([card], { type: 'image/jpeg' }), dealImageCardFilename(offer.store, offer.sourceProductId));
       // The website mirrors the photograph Telegram accepted. Keeping the
       // working source here also makes retries deterministic within this run.
       offer.imageUrl = imageUrl;
@@ -177,7 +177,7 @@ async function sendProductPhoto(settings, offer) {
         cardError = error;
       }
     }
-    console.warn(`Could not create the branded Amazon image from ${amazonImageCandidates.length} source(s): ${safeError(cardError, settings.token)}`);
+    console.warn(`Could not create the branded ${offer.store || 'offer'} image from ${productImageCandidates.length} source(s): ${safeError(cardError, settings.token)}`);
   }
 
   // Never hand Amazon's unverified fallback URL straight to Telegram: an HTTP
@@ -255,6 +255,28 @@ async function sendOfferPreview(settings, chatId, offer) {
   const photos = [...new Set([offer.photoFileId, offer.imageUrl].filter(Boolean))];
   const replyMarkup = previewReplyMarkup(offer);
   let lastError;
+  if (!['post', 'campaign'].includes(offer.kind) && /^https?:\/\//iu.test(String(offer.imageUrl || ''))) {
+    try {
+      const card = await createDealImageCard({
+        imageUrl: offer.imageUrl,
+        store: offer.store,
+        price: offer.priceLabel,
+        previousPrice: offer.previousPriceLabel,
+        discount: offer.discount,
+        coupon: offer.coupon,
+      });
+      const form = new FormData();
+      form.set('chat_id', String(chatId));
+      form.set('caption', formatManualTelegramCaption(offer));
+      form.set('parse_mode', 'HTML');
+      form.set('reply_markup', JSON.stringify(replyMarkup));
+      form.set('photo', new Blob([card], { type: 'image/jpeg' }), dealImageCardFilename(offer.store, `${offer.sourceProductId || 'preview'}-preview`));
+      return await telegramForm(settings.token, 'sendPhoto', form);
+    } catch (error) {
+      lastError = error;
+      console.warn(`Could not create branded preview: ${safeError(error, settings.token)}`);
+    }
+  }
   for (const photo of photos) {
     const payload = {
       chat_id: chatId,

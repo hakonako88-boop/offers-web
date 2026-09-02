@@ -47,7 +47,17 @@ function discountBadge(discount = 0, accent = '#ff5a4f') {
   ].join('');
 }
 
-function cardOverlay({ store, price, previousPrice = '', discount = 0 } = {}) {
+function couponBadge(coupon = '', accent = '#ff5a4f') {
+  const code = escapeXml(coupon).slice(0, 28);
+  if (!code) return '';
+  return [
+    `<rect x="650" y="1088" width="494" height="62" rx="18" fill="#ffffff" fill-opacity="0.12" stroke="${accent}" stroke-width="3" stroke-dasharray="9 7"/>`,
+    `<text x="677" y="1129" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#dbe5f5">CUPÓN</text>`,
+    `<text x="1114" y="1129" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="900" fill="#ffffff">${code}</text>`,
+  ].join('');
+}
+
+function cardOverlay({ store, price, previousPrice = '', discount = 0, coupon = '' } = {}) {
   const theme = storeTheme(store);
   const currentPrice = escapeXml(priceText(price));
   return Buffer.from(`
@@ -55,12 +65,17 @@ function cardOverlay({ store, price, previousPrice = '', discount = 0 } = {}) {
       <rect x="0" y="0" width="1200" height="1200" fill="none"/>
       <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="310" fill="#18213e"/>
       <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="13" fill="${theme.accent}"/>
-      <rect x="56" y="930" width="270" height="76" rx="25" fill="${theme.soft}"/>
-      <text x="191" y="981" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="35" font-weight="900" fill="${theme.accent}">${theme.label}</text>
+      <rect x="56" y="927" width="286" height="79" rx="25" fill="${theme.soft}"/>
+      <text x="199" y="980" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="35" font-weight="900" fill="${theme.accent}">${theme.label}</text>
       <text x="56" y="1094" font-family="Arial, Helvetica, sans-serif" font-size="91" font-weight="900" fill="#ffffff">${currentPrice}</text>
       ${previousPriceLine(previousPrice)}
       ${discountBadge(discount, theme.accent)}
-      <text x="1144" y="1161" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800" fill="#facc15">CHOLLOSALDIA.COM</text>
+      ${couponBadge(coupon, theme.accent)}
+      <rect x="56" y="1126" width="45" height="45" rx="12" fill="#6769f0"/>
+      <text x="78.5" y="1159" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="900" fill="#ffffff">€</text>
+      <text x="116" y="1159" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="900" fill="#ffffff">CHOLLOS</text>
+      <text x="256" y="1159" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="900" fill="#ff6b5f">AL</text>
+      <text x="296" y="1159" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="900" fill="#ffffff">DÍA</text>
     </svg>
   `);
 }
@@ -88,13 +103,16 @@ async function imageBytesFromUrl(imageUrl, fetchImpl = fetch) {
 export async function createDealImageCard({
   imageUrl = '',
   imageBytes,
+  imageBuffer,
   store,
   price,
   previousPrice = '',
   discount = 0,
+  coupon = '',
   fetchImpl = fetch,
 } = {}) {
-  const input = imageBytes ? Buffer.from(imageBytes) : await imageBytesFromUrl(imageUrl, fetchImpl);
+  const suppliedImage = imageBytes || imageBuffer;
+  const input = suppliedImage ? Buffer.from(suppliedImage) : await imageBytesFromUrl(imageUrl, fetchImpl);
   const product = await sharp(input, { failOn: 'none' })
     .rotate()
     .resize({
@@ -117,7 +135,7 @@ export async function createDealImageCard({
   })
     .composite([
       { input: product, left: 60, top: 50 },
-      { input: cardOverlay({ store, price, previousPrice, discount }), left: 0, top: 0 },
+      { input: cardOverlay({ store, price, previousPrice, discount, coupon }), left: 0, top: 0 },
     ])
     .jpeg({ quality: 91, chromaSubsampling: '4:4:4', mozjpeg: true })
     .toBuffer();

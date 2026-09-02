@@ -78,6 +78,7 @@ async function publish(config, offer, originalImage) {
     price: offer.priceLabel,
     previousPrice: offer.previousPriceLabel,
     discount: offer.discount,
+    coupon: offer.coupon,
   });
   return telegramPhoto(config.token, payload, card, dealImageCardFilename(offer.storeSlug, offer.sourceProductId));
 }
