@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-02T07:33:14.759Z",
+  "updatedAt": "2026-09-02T07:42:31.532Z",
   "summary": {
-    "duplicate": 83,
-    "published": 377,
-    "rejected": 360,
-    "pending": 47,
+    "published": 378,
+    "rejected": 361,
+    "pending": 46,
+    "duplicate": 82,
     "needs_review": 118,
     "ignored": 15
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92359:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92359,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/92359",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-errores-de-precio:15500:aliexpress:0",
       "source": "telegram-errores-de-precio",
@@ -25,9 +36,9 @@
       "source": "telegram-ofertos",
       "messageId": 41329,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "AliExpress no permitió completar identidad API: AliExpress aliexpress.affiliate.productdetail.get failed: Api access frequency exceeds the limit. this ban will last 1 seconds",
       "sourceUrl": "https://t.me/Ofertos/41329",
       "resultUrl": ""
     },
@@ -36,11 +47,11 @@
       "source": "telegram-ofertos",
       "messageId": 41328,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41328",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B0GV4XJ5WD?tag=chollos00a-21"
     },
     {
       "id": "telegram-errores-de-precio:15499:aliexpress:0",
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92304",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-tiesometro:7188:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7188,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
-      "sourceUrl": "https://t.me/tiesometro/7188",
       "resultUrl": ""
     }
   ]
