@@ -32,11 +32,13 @@ test('selects a complete automatic offer and ignores inbox, broken and duplicate
   assert.equal(selected?.source_product_id, 'winner');
 });
 
-test('limits automatic TikTok delivery to two offers per Madrid day', () => {
+test('limits automatic TikTok delivery to four offers per Madrid day', () => {
   const now = new Date('2026-09-02T18:00:00+02:00');
   const state = [
     { offerId: 'old-1', date: '2026-09-02', status: 'draft' },
     { offerId: 'old-2', date: '2026-09-02', status: 'published' },
+    { offerId: 'old-3', date: '2026-09-02', status: 'draft' },
+    { offerId: 'old-4', date: '2026-09-02', status: 'published' },
   ];
   assert.equal(selectAutomaticTikTokOffer([offer()], state, now), null);
 });

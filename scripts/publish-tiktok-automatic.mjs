@@ -7,7 +7,7 @@ const OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const STATE_FILE = path.join(ROOT, 'data', 'tiktok-publications.json');
 const SITE_URL = 'https://chollosaldia.com';
 const TIME_ZONE = 'Europe/Madrid';
-const MAX_PER_DAY = 2;
+const MAX_PER_DAY = 4;
 
 function readJson(file, fallback) {
   try { return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : fallback; } catch { return fallback; }
