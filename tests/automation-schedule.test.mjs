@@ -101,6 +101,10 @@ test('consumes the Amazon Telegram queue in source-only mode without enabling it
   assert.match(inboxSync, /Expired private preview released for Amazon queue/u);
 });
 
+test('does not let a pending TikTok retry block a bot or website deployment', () => {
+  assert.match(workflow, /name: Recuperar una oferta pendiente tras actualizar el bot[\s\S]*?continue-on-error: true[\s\S]*?TELEGRAM_PENDING_ONLY: "true"/u);
+});
+
 test('uses the same stable product id for Telegram buttons and website records', () => {
   assert.match(amazonSync, /presentationOffer = \{ \.\.\.offer, id: `amazon-\$\{offer\.asin\}`/u);
   assert.match(inboxSync, /websiteOfferId = offer\.sourceProductId \|\| offer\.id/u);

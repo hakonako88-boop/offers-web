@@ -248,6 +248,10 @@ jobs:
 
       - name: Recuperar una oferta pendiente tras actualizar el bot
         if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '[telegram-content]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        # TikTok puede mantener un borrador esperando revisión o tardar en
+        # aceptar la imagen pública. Ese reintento nunca debe impedir que una
+        # mejora del bot o de la web llegue a producción.
+        continue-on-error: true
         env:
           TELEGRAM_PENDING_ONLY: "true"
         run: npm run sync:inbox
