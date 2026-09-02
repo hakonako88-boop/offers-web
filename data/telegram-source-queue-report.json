@@ -1,14 +1,36 @@
 {
-  "updatedAt": "2026-09-02T06:32:24.127Z",
+  "updatedAt": "2026-09-02T06:42:47.350Z",
   "summary": {
-    "rejected": 365,
     "duplicate": 87,
-    "pending": 47,
+    "pending": 49,
+    "rejected": 363,
     "published": 377,
     "needs_review": 111,
     "ignored": 13
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7194:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7194,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/tiesometro/7194",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:92356:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92356,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/92356",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92355:amazon:0",
       "source": "telegram-una-ganga",
@@ -1086,28 +1108,6 @@
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92295",
       "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41320:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41320,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/41320",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41319:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41319,
-      "store": "AliExpress",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/Ofertos/41319",
-      "resultUrl": "https://s.click.aliexpress.com/e/_c3E0koOj"
     }
   ]
 }
