@@ -1001,12 +1001,18 @@
       "seenAt": "2026-09-02T11:41:39.958Z"
     }
   ],
-  "lastCheckedAt": "2026-09-02T12:01:45.632Z",
-  "micholloLastCheckedAt": "2026-09-02T06:01:48.147Z",
+  "lastCheckedAt": "2026-09-02T12:11:51.110Z",
+  "micholloLastCheckedAt": "2026-09-02T12:11:51.110Z",
   "sourceHealth": [
     {
+      "source": "telegram-source-queue",
+      "status": "ok",
+      "found": 2
+    },
+    {
       "source": "michollo",
-      "status": "deferred"
+      "status": "unavailable",
+      "detail": "incorrect header check"
     },
     {
       "source": "nolodejesescapar",
@@ -1016,7 +1022,7 @@
     {
       "source": "chollometro-aliexpress",
       "status": "ok",
-      "found": 2
+      "found": 1
     }
   ]
 }
