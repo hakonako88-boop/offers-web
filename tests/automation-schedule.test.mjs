@@ -109,6 +109,21 @@ test('does not let an unavailable Amazon preview block Telegram or the website',
   assert.match(workflow, /name: Preparar vista previa automática de Amazon[\s\S]*?continue-on-error: true[\s\S]*?TELEGRAM_PROCESS_AMAZON_QUEUE: "true"/u);
 });
 
+test('mirrors every automatic retailer and manual bot publication to the linked Telegram topic', () => {
+  const scripts = [
+    'process-telegram-inbox.mjs',
+    'sync-amazon-deals.mjs',
+    'sync-aliexpress-deals.mjs',
+    'sync-miravia-deals.mjs',
+    'sync-awin-retailers.mjs',
+    'sync-mediamarkt-deals.mjs',
+  ];
+  for (const script of scripts) {
+    const source = fs.readFileSync(new URL(`../scripts/${script}`, import.meta.url), 'utf8');
+    assert.match(source, /mirrorTelegramMessage\s*\(/u, `${script} must mirror its published offer`);
+  }
+});
+
 test('uses the same stable product id for Telegram buttons and website records', () => {
   assert.match(amazonSync, /presentationOffer = \{ \.\.\.offer, id: `amazon-\$\{offer\.asin\}`/u);
   assert.match(inboxSync, /websiteOfferId = offer\.sourceProductId \|\| offer\.id/u);

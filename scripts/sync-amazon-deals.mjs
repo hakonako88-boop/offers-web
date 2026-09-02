@@ -9,6 +9,7 @@ import {
 } from './amazon-offers.mjs';
 import { communityMatchForTitle, discoverCommunitySignals, nextCommunitySignalState } from './community-signals.mjs';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
+import { mirrorTelegramMessage } from './telegram-mirror.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
@@ -285,6 +286,12 @@ for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
   attempted += 1;
   try {
     const message = await publishOffer(config, offer);
+    await mirrorTelegramMessage({
+      token: config.telegramToken,
+      sourceChatId: config.telegramChannelId,
+      message,
+      replyMarkup: offerReplyMarkup({ ...offer, id: `amazon-${offer.asin}`, store: 'Amazon', storeSlug: 'amazon' }),
+    });
     await saveOfferForWeb(offer, message);
     published.push({
       asin: offer.asin,

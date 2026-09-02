@@ -22,6 +22,7 @@ import {
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { communityMatchForTitle, discoverCommunitySignals } from './community-signals.mjs';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
+import { mirrorTelegramMessage } from './telegram-mirror.mjs';
 import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliate-resolver.mjs';
 import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
 import { extractProductMetadata } from './link-offer-extractor.mjs';
@@ -501,6 +502,12 @@ for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
   try {
     offer.image = await preferredMiraviaImage(offer);
     const message = await publishOffer(config, offer);
+    await mirrorTelegramMessage({
+      token: config.telegramToken,
+      sourceChatId: config.telegramChannelId,
+      message,
+      replyMarkup: offerReplyMarkup(offer),
+    });
     await saveOfferForWeb(offer, message);
     published.push({
       productId: offer.id,

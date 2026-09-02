@@ -4,6 +4,7 @@ import { Readable } from 'node:stream';
 import { createGunzip } from 'node:zlib';
 import sharp from 'sharp';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
+import { mirrorTelegramMessage } from './telegram-mirror.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { isGzipFeed, parseFeedList } from './miravia-offers.mjs';
@@ -206,6 +207,12 @@ for (const offer of (publicationPolicy.allowed ? candidates : []).slice(0, MAX_P
     offer.image = preferredImage.url;
     const originalImage = preferredImage.buffer;
     const message = await publish(config, offer, originalImage);
+    await mirrorTelegramMessage({
+      token: config.token,
+      sourceChatId: config.channel,
+      message,
+      replyMarkup: offerReplyMarkup(offer),
+    });
     await saveForWeb(offer, message, originalImage);
     published.push({ productId: offer.id, publishedAt: new Date().toISOString(), telegramMessageId: message.message_id, price: offer.price, url: offer.url, title: offer.title, store: offer.store, source: `awin-${offer.storeSlug}-feed`, status: 'PUBLICADO' });
     seenIds.add(offer.id); sent = 1; break;

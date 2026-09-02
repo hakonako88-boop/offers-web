@@ -11,6 +11,7 @@ import {
 } from './aliexpress-offers.mjs';
 import { discoverCommunitySignals, nextCommunitySignalState } from './community-signals.mjs';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
+import { mirrorTelegramMessage } from './telegram-mirror.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
@@ -522,6 +523,12 @@ for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
   attempted += 1;
   try {
     const message = await publishOffer(config, offer);
+    await mirrorTelegramMessage({
+      token: config.telegramToken,
+      sourceChatId: config.telegramChannelId,
+      message,
+      replyMarkup: offerReplyMarkup(offer),
+    });
     await saveOfferForWeb(offer, message);
     published.push({
       productId: offer.id,

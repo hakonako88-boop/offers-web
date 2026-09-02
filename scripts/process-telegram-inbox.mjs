@@ -31,6 +31,7 @@ import { offerReplyMarkup, publicOfferUrl } from './offer-presentation.mjs';
 import { buildAmazonReviewDraft } from './amazon-review-drafts.mjs';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { lookupAmazonProduct } from './amazon-creators-lookup.mjs';
+import { mirrorTelegramMessage } from './telegram-mirror.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
@@ -348,12 +349,13 @@ async function mirrorTelegramPhoto(token, fileId, reference) {
   return `/tg/${filename}`;
 }
 
-async function reply(token, chatId, text, replyMarkup) {
+async function reply(token, chatId, text, replyMarkup, messageThreadId) {
   return telegram(token, 'sendMessage', {
     chat_id: chatId,
     text,
     disable_web_page_preview: true,
     ...(replyMarkup ? { reply_markup: replyMarkup } : {}),
+    ...(messageThreadId ? { message_thread_id: messageThreadId } : {}),
   });
 }
 
@@ -420,6 +422,12 @@ async function publishManualOffer(settings, offer, inputMessage) {
   const websiteOfferId = offer.sourceProductId || offer.id || `manual-${inputMessage.message_id}`;
   const publishedOffer = { ...offer, id: websiteOfferId };
   const channelMessage = await sendProductPhoto(settings, publishedOffer);
+  await mirrorTelegramMessage({
+    token: settings.token,
+    sourceChatId: settings.channelId,
+    message: channelMessage,
+    replyMarkup: offerReplyMarkup(publishedOffer),
+  });
 
   const postedPhotoId = channelMessage.photo?.at(-1)?.file_id || offer.photoFileId;
   if (!postedPhotoId) throw new Error('Telegram did not return a reusable product image.');
@@ -755,6 +763,9 @@ const pendingConfirmations = state.pendingConfirmations && typeof state.pendingC
 const pendingTikTokByChat = state.pendingTikTokByChat && typeof state.pendingTikTokByChat === 'object'
   ? state.pendingTikTokByChat
   : {};
+let mirrorDestination = state.mirrorDestination && typeof state.mirrorDestination === 'object'
+  ? state.mirrorDestination
+  : null;
 let updates;
 let webhookUpdate = String(process.env.TELEGRAM_WEBHOOK_UPDATE || '').trim();
 // GitHub stores the repository_dispatch payload in GITHUB_EVENT_PATH. Reading
@@ -1106,6 +1117,8 @@ for (const update of updates || []) {
     const text = message.caption || message.text || '';
     const chatKey = String(message.chat.id);
     const isAuthorizedChat = authorizedChatIds.has(chatKey) || (settings.allowedChatId && chatKey === String(settings.allowedChatId));
+    const isOwnerSender = Boolean(settings.allowedChatId)
+      && String(message.from?.id || '') === String(settings.allowedChatId);
     const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
     const incomingUrl = urlFromTelegramMessage(message, text);
     const campaign = campaignFromTelegramMessage({ text, photoFileId: largestPhoto, url: incomingUrl });
@@ -1120,7 +1133,21 @@ for (const update of updates || []) {
         && !publicOfferSourceType(incomingUrl),
     });
     const activation = activateChatFromMessage({ text, controlCode: settings.controlCode });
-    if (activation.status === 'authorized') {
+    if (/^\/vincular_ofertas(?:@\w+)?\b/iu.test(String(text).trim()) && isOwnerSender) {
+      const topicId = Number(message.message_thread_id || 0);
+      if (!['group', 'supergroup'].includes(String(message.chat?.type || '')) || !Number.isSafeInteger(topicId) || topicId <= 0) {
+        await reply(settings.token, message.chat.id, '⚠️ Ejecuta /vincular_ofertas dentro del tema «Ofertas» del grupo de destino.', undefined, message.message_thread_id);
+      } else {
+        mirrorDestination = {
+          chatId: String(message.chat.id),
+          topicId,
+          title: `${message.chat.title || 'Telegram'} · Ofertas`,
+          linkedAt: new Date().toISOString(),
+        };
+        await reply(settings.token, message.chat.id, '✅ Este tema queda vinculado. Las próximas ofertas de ChollosAlDía también se publicarán aquí con su foto, texto y botones.', undefined, topicId);
+      }
+      handled += 1;
+    } else if (activation.status === 'authorized') {
       authorizedChatIds.add(chatKey);
       await reply(settings.token, message.chat.id, '✅ Chat activado. Ahora solo tienes que pegar un enlace de oferta.');
       handled += 1;
@@ -1549,6 +1576,7 @@ writeJson(STATE_FILE, {
   pendingByChat,
   pendingConfirmations,
   pendingTikTokByChat,
+  mirrorDestination,
   lastCheckedAt: new Date().toISOString(),
 });
 console.log(`Telegram private inbox handled ${handled} message(s) and published ${published} offer(s).`);
