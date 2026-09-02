@@ -299,6 +299,9 @@ jobs:
 
       - name: Preparar vista previa automática de Amazon
         if: ${{ ((github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || (github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'amazon')) && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' && env.TELEGRAM_ALLOWED_CHAT_ID != '' && env.AMAZON_PARTNER_TAG != '' }}
+        # Una ficha temporalmente bloqueada por Amazon queda en la cola para
+        # otro intento, pero no debe impedir desplegar Telegram ni la web.
+        continue-on-error: true
         env:
           TELEGRAM_PENDING_ONLY: "true"
           TELEGRAM_PROCESS_AMAZON_QUEUE: "true"

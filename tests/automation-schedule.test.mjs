@@ -105,6 +105,10 @@ test('does not let a pending TikTok retry block a bot or website deployment', ()
   assert.match(workflow, /name: Recuperar una oferta pendiente tras actualizar el bot[\s\S]*?continue-on-error: true[\s\S]*?TELEGRAM_PENDING_ONLY: "true"/u);
 });
 
+test('does not let an unavailable Amazon preview block Telegram or the website', () => {
+  assert.match(workflow, /name: Preparar vista previa automática de Amazon[\s\S]*?continue-on-error: true[\s\S]*?TELEGRAM_PROCESS_AMAZON_QUEUE: "true"/u);
+});
+
 test('uses the same stable product id for Telegram buttons and website records', () => {
   assert.match(amazonSync, /presentationOffer = \{ \.\.\.offer, id: `amazon-\$\{offer\.asin\}`/u);
   assert.match(inboxSync, /websiteOfferId = offer\.sourceProductId \|\| offer\.id/u);
