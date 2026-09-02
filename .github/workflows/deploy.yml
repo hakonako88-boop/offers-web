@@ -95,8 +95,15 @@ jobs:
           fi
           git add data/offers.json data/posts.json data/telegram-inbox-state.json data/telegram-source-queue.json public/tg
           git diff --cached --quiet || git commit -m "$commit_message"
-          git pull --rebase origin main
-          git push
+          # La compilacion deja otros archivos modificados. Autostash evita que
+          # bloqueen el rebase, y los reintentos resuelven carreras con el bot.
+          git pull --rebase --autostash origin main
+          for intento in 1 2 3; do
+            git push && exit 0
+            echo "Otro proceso actualizo main; reintentando ($intento/3)."
+            git pull --rebase --autostash origin main
+          done
+          exit 1
 
       - name: Enviar automáticamente la oferta a borradores de TikTok
         timeout-minutes: 10
@@ -358,8 +365,15 @@ jobs:
             exit 0
           fi
           git commit -m "Guardar publicación automática de TikTok [tiktok-state]"
-          git pull --rebase origin main
-          git push
+          # La compilacion deja otros archivos modificados. Autostash evita que
+          # bloqueen el rebase, y los reintentos resuelven carreras con el bot.
+          git pull --rebase --autostash origin main
+          for intento in 1 2 3; do
+            git push && exit 0
+            echo "Otro proceso actualizo main; reintentando ($intento/3)."
+            git pull --rebase --autostash origin main
+          done
+          exit 1
 
       - name: Guardar el historial de Instagram
         if: ${{ env.INSTAGRAM_USER_ID != '' && env.INSTAGRAM_ACCESS_TOKEN != '' }}
