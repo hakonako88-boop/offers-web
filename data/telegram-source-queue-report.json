@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-02T10:22:50.806Z",
+  "updatedAt": "2026-09-02T10:32:20.712Z",
   "summary": {
-    "duplicate": 78,
     "rejected": 364,
-    "pending": 42,
+    "pending": 43,
+    "duplicate": 77,
     "needs_review": 115,
     "published": 386,
     "ignored": 15
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:41355:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41355,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41355",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92369:amazon:0",
       "source": "telegram-una-ganga",
@@ -48,8 +59,8 @@
       "messageId": 92368,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/92368",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/una_ganga/92330",
       "resultUrl": "https://s.click.aliexpress.com/e/_c3ZyYTsb"
-    },
-    {
-      "id": "telegram-paramanitas:4670:ignored",
-      "source": "telegram-paramanitas",
-      "messageId": 4670,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/paramanitas/4670",
-      "resultUrl": ""
     }
   ]
 }
