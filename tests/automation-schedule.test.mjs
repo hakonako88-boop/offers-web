@@ -124,6 +124,14 @@ test('mirrors every automatic retailer and manual bot publication to the linked 
   }
 });
 
+test('processes the owner topic-link command before ignoring other group traffic', () => {
+  const linkCommand = inboxSync.indexOf("/^\\/vincular_ofertas");
+  const groupGuard = inboxSync.indexOf("message.chat?.type !== 'private'", linkCommand);
+  assert.ok(linkCommand >= 0, 'the topic-link command must exist');
+  assert.ok(groupGuard > linkCommand, 'the group guard must run after the topic-link command');
+  assert.doesNotMatch(inboxSync, /if \(!message \|\| message\.chat\?\.type !== 'private'\)/u);
+});
+
 test('uses the same stable product id for Telegram buttons and website records', () => {
   assert.match(amazonSync, /presentationOffer = \{ \.\.\.offer, id: `amazon-\$\{offer\.asin\}`/u);
   assert.match(inboxSync, /websiteOfferId = offer\.sourceProductId \|\| offer\.id/u);

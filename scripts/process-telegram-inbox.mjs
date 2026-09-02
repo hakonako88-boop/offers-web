@@ -1108,7 +1108,7 @@ for (const update of updates || []) {
     continue;
   }
   const message = update.message;
-  if (!message || message.chat?.type !== 'private') {
+  if (!message) {
     processed.add(updateId);
     continue;
   }
@@ -1147,6 +1147,12 @@ for (const update of updates || []) {
         await reply(settings.token, message.chat.id, '✅ Este tema queda vinculado. Las próximas ofertas de ChollosAlDía también se publicarán aquí con su foto, texto y botones.', undefined, topicId);
       }
       handled += 1;
+    } else if (message.chat?.type !== 'private') {
+      // Group traffic is intentionally ignored except for the explicit owner
+      // command above. Keeping this guard after /vincular_ofertas is essential:
+      // placing it before the command makes topic linking unreachable.
+      processed.add(updateId);
+      continue;
     } else if (activation.status === 'authorized') {
       authorizedChatIds.add(chatKey);
       await reply(settings.token, message.chat.id, '✅ Chat activado. Ahora solo tienes que pegar un enlace de oferta.');
