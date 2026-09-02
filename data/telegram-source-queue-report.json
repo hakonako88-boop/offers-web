@@ -1,22 +1,66 @@
 {
-  "updatedAt": "2026-09-02T11:13:05.225Z",
+  "updatedAt": "2026-09-02T11:32:25.895Z",
   "summary": {
+    "pending": 36,
     "duplicate": 77,
-    "rejected": 364,
-    "pending": 37,
-    "needs_review": 115,
     "published": 392,
-    "ignored": 15
+    "rejected": 365,
+    "needs_review": 114,
+    "ignored": 16
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:41359:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41359,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41359",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-tiesometro:7196:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7196,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/tiesometro/7196",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:92372:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92372,
+      "store": "Amazon",
+      "status": "duplicate",
+      "attempts": 0,
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
+      "sourceUrl": "https://t.me/una_ganga/92372",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertas-supermercados-es:2103:ignored",
+      "source": "telegram-ofertas-supermercados-es",
+      "messageId": 2103,
+      "store": "Otra",
+      "status": "ignored",
+      "attempts": 0,
+      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
+      "sourceUrl": "https://t.me/OfertasSupermercadosES/2103",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92371:aliexpress:0",
       "source": "telegram-una-ganga",
       "messageId": 92371,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92371",
       "resultUrl": ""
     },
@@ -47,9 +91,9 @@
       "source": "telegram-una-ganga",
       "messageId": 92370,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92370",
       "resultUrl": ""
     },
@@ -1056,50 +1100,6 @@
     },
     {
       "id": "telegram-paramanitas:4671:amazon:8",
-      "source": "telegram-paramanitas",
-      "messageId": 4671,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4671",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4671:amazon:7",
-      "source": "telegram-paramanitas",
-      "messageId": 4671,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4671",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4671:amazon:6",
-      "source": "telegram-paramanitas",
-      "messageId": 4671,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4671",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4671:amazon:5",
-      "source": "telegram-paramanitas",
-      "messageId": 4671,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4671",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4671:amazon:4",
       "source": "telegram-paramanitas",
       "messageId": 4671,
       "store": "Amazon",
