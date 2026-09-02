@@ -41,6 +41,12 @@ test('limits automatic TikTok delivery to two offers per Madrid day', () => {
   assert.equal(selectAutomaticTikTokOffer([offer()], state, now), null);
 });
 
+test('retries an offer whose previous TikTok delivery ended in an error', () => {
+  const now = new Date('2026-09-02T18:00:00+02:00');
+  const selected = selectAutomaticTikTokOffer([offer()], [{ offerId: 'product-1', date: '2026-09-02', status: 'error' }], now);
+  assert.equal(selected?.source_product_id, 'product-1');
+});
+
 test('deploys TikTok after the public website and prevents state-only loops', () => {
   const workflow = fs.readFileSync(new URL('../.github/workflows/deploy.yml', import.meta.url), 'utf8');
   assert.ok(workflow.indexOf('Publicar en GitHub Pages') < workflow.indexOf('Enviar una oferta automática a TikTok'));

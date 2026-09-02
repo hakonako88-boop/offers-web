@@ -58,7 +58,7 @@ function qualityScore(offer) {
 
 export function selectAutomaticTikTokOffer(offers, publications, now = new Date()) {
   const today = madridDate(now);
-  const publishedIds = new Set(publications.map((item) => String(item.offerId || '')));
+  const publishedIds = new Set(publications.filter((item) => item.status !== 'error').map((item) => String(item.offerId || '')));
   const todayCount = publications.filter((item) => item.date === today && item.status !== 'error').length;
   if (todayCount >= MAX_PER_DAY) return null;
   const newestAllowed = now.getTime() + 60_000;
@@ -118,32 +118,38 @@ async function main() {
     return;
   }
   const imageUrl = `${SITE_URL}${offer.image}`;
-  const image = await fetch(imageUrl, { method: 'HEAD', headers: { 'cache-control': 'no-cache' } });
-  if (!image.ok) throw new Error(`La foto de TikTok todavía no está publicada (${image.status}).`);
-  const preview = await workerRequest(workerUrl, secret, '/tiktok/preview', {
-    title: cleanTitle(offer.title),
-    description: descriptionFor(offer),
-    photo_images: [imageUrl],
-    privacy_level: 'PUBLIC_TO_EVERYONE',
-    disable_comment: false,
-    auto_add_music: true,
-  });
-  const direct = Boolean(preview.delivery?.public_direct_post_available);
-  const result = await workerRequest(workerUrl, secret, direct ? '/tiktok/publish/photo' : '/tiktok/upload/photo', {
-    confirmed: true,
-    preview_id: preview.preview_id,
-  });
-  state.unshift({
-    offerId: identity(offer),
-    messageId: offer.message_id,
-    date: madridDate(),
-    publishedAt: new Date().toISOString(),
-    status: direct ? 'published' : 'draft',
-    publishId: result.publish_id || null,
-    image: offer.image,
-  });
-  writeJson(STATE_FILE, state.slice(0, 180));
-  console.log(direct ? 'Oferta publicada automáticamente en TikTok.' : 'Oferta enviada automáticamente a los borradores de TikTok.');
+  try {
+    const image = await fetch(imageUrl, { method: 'HEAD', headers: { 'cache-control': 'no-cache' } });
+    if (!image.ok) throw new Error(`La foto de TikTok todavía no está publicada (${image.status}).`);
+    const preview = await workerRequest(workerUrl, secret, '/tiktok/preview', {
+      title: cleanTitle(offer.title),
+      description: descriptionFor(offer),
+      photo_images: [imageUrl],
+      privacy_level: 'PUBLIC_TO_EVERYONE',
+      disable_comment: false,
+      auto_add_music: true,
+    });
+    const direct = Boolean(preview.delivery?.public_direct_post_available);
+    const result = await workerRequest(workerUrl, secret, direct ? '/tiktok/publish/photo' : '/tiktok/upload/photo', {
+      confirmed: true,
+      preview_id: preview.preview_id,
+    });
+    state.unshift({
+      offerId: identity(offer), messageId: offer.message_id, date: madridDate(),
+      publishedAt: new Date().toISOString(), status: direct ? 'published' : 'draft',
+      publishId: result.publish_id || null, image: offer.image,
+    });
+    writeJson(STATE_FILE, state.slice(0, 180));
+    console.log(direct ? 'Oferta publicada automáticamente en TikTok.' : 'Oferta enviada automáticamente a los borradores de TikTok.');
+  } catch (error) {
+    const message = (error instanceof Error ? error.message : String(error)).replace(/[A-Za-z0-9_-]{32,}/gu, '[dato protegido]').slice(0, 300);
+    state.unshift({
+      offerId: identity(offer), messageId: offer.message_id, date: madridDate(),
+      attemptedAt: new Date().toISOString(), status: 'error', error: message, image: offer.image,
+    });
+    writeJson(STATE_FILE, state.slice(0, 180));
+    throw new Error(`TikTok automático no completado: ${message}`);
+  }
 }
 
 const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);

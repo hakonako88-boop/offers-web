@@ -353,7 +353,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/tiktok-publications.json
-          git diff --cached --quiet || git commit -m "Guardar publicación automática de TikTok [tiktok-state]"
+          if git diff --cached --quiet; then
+            echo "TikTok no generó cambios de estado."
+            exit 0
+          fi
+          git commit -m "Guardar publicación automática de TikTok [tiktok-state]"
           git pull --rebase origin main
           git push
 
