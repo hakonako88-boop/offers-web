@@ -207,14 +207,92 @@ function sourceType(url = '') {
     const host = new URL(url).hostname.toLowerCase();
     if (host === 'michollo.com' || host.endsWith('.michollo.com')) return 'michollo';
     if (host === 'nolodejesescapar.com' || host.endsWith('.nolodejesescapar.com')) return 'nolodejesescapar';
+    if (host === 'chollometro.com' || host.endsWith('.chollometro.com')) return 'chollometro';
   } catch {
     return '';
   }
   return '';
 }
 
+function jsonObjectAfterMarker(document = '', marker = '') {
+  const markerIndex = String(document).indexOf(marker);
+  if (markerIndex < 0) return null;
+  const start = String(document).indexOf('{', markerIndex + marker.length);
+  if (start < 0) return null;
+  let depth = 0;
+  let quoted = false;
+  let escaped = false;
+  for (let index = start; index < document.length; index += 1) {
+    const character = document[index];
+    if (quoted) {
+      if (escaped) escaped = false;
+      else if (character === '\\') escaped = true;
+      else if (character === '"') quoted = false;
+      continue;
+    }
+    if (character === '"') quoted = true;
+    else if (character === '{') depth += 1;
+    else if (character === '}' && --depth === 0) {
+      try { return JSON.parse(document.slice(start, index + 1)); } catch { return null; }
+    }
+  }
+  return null;
+}
+
+function objectWithDealId(root, dealId) {
+  const pending = [root];
+  while (pending.length) {
+    const value = pending.pop();
+    if (!value || typeof value !== 'object') continue;
+    if (String(value.threadId || '') === String(dealId)
+      && String(value.type || '').toLowerCase() === 'deal'
+      && value.title) return value;
+    pending.push(...Object.values(value));
+  }
+  return null;
+}
+
+export function chollometroDealFromHtml(html = '', dealId = '') {
+  const state = jsonObjectAfterMarker(String(html), 'window.__INITIAL_STATE__');
+  const deal = objectWithDealId(state, dealId);
+  if (!deal) return null;
+  const image = deal.galleryImages?.[0] || deal.mainImage || {};
+  const imageUrl = image.path && image.name
+    ? `https://static.chollometro.com/${image.path}/${image.name}/re/1024x1024/qt/90/${image.name}.jpg`
+    : '';
+  const price = parsePrice(deal.price || deal.displayPrice);
+  const previousPrice = parsePrice(deal.nextBestPrice || deal.standardPrice);
+  const description = decode(String(deal.descriptionPurified || deal.metadata?.description || '')
+    .replace(/<[^>]+>/gu, ' '));
+  return {
+    title: sourceTitle(deal.title),
+    description,
+    imageUrl,
+    price,
+    previousPrice: previousPrice > price ? previousPrice : 0,
+    coupon: compact(deal.voucherCode || ''),
+    outboundUrl: absoluteUrl(deal.linkCloakedItemMainButton || `/visit/threadmain/${dealId}`, 'https://www.chollometro.com'),
+  };
+}
+
 async function publicSourceOffer(url, fetchImpl) {
   const type = sourceType(url);
+  if (type === 'chollometro') {
+    const requestedId = new URL(url).pathname.match(/(?:share-deal(?:-from-app)?\/|[-/])(\d+)\/?$/u)?.[1] || '';
+    if (!requestedId) return null;
+    const response = await fetchImpl(url, {
+      redirect: 'follow',
+      headers: {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126 Safari/537.36',
+        accept: 'text/html,application/xhtml+xml',
+        'accept-language': 'es-ES,es;q=0.9',
+      },
+    });
+    if (!response.ok) throw new Error(`Chollometro respondió ${response.status}.`);
+    const html = (await response.text()).slice(0, 4_000_000);
+    const deal = chollometroDealFromHtml(html, requestedId);
+    return deal ? { source: 'chollometro', ...deal } : null;
+  }
   if (type === 'michollo') {
     const dealId = new URL(url).pathname.match(/-(\d+)\/?$/u)?.[1];
     if (!dealId) return null;
@@ -347,6 +425,9 @@ export async function extractProductMetadata(url, { fetchImpl = fetch } = {}) {
           title: official.title || sourceOffer.title,
           description: official.description || sourceOffer.description,
           imageUrl: official.imageUrl || sourceOffer.imageUrl,
+          price: official.price || sourceOffer.price || 0,
+          previousPrice: official.previousPrice || sourceOffer.previousPrice || 0,
+          coupon: official.coupon || sourceOffer.coupon || '',
           productId: miraviaProductIdFromUrl(resolved.finalUrl) || miraviaProductIdFromHtml(resolved.html),
           finalUrl: resolved.finalUrl,
           sourceUrl: url,

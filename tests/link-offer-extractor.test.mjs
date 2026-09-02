@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { decodeStorefrontMarkup, explicitCouponFromHtml, extractProductMetadata, merchantLinkFromHtml, outboundOfferLinkFromHtml, productMetadataFromHtml } from '../scripts/link-offer-extractor.mjs';
+import { chollometroDealFromHtml, decodeStorefrontMarkup, explicitCouponFromHtml, extractProductMetadata, merchantLinkFromHtml, outboundOfferLinkFromHtml, productMetadataFromHtml } from '../scripts/link-offer-extractor.mjs';
 
 test('extracts title, image and prices from public product metadata', () => {
   const result = productMetadataFromHtml(`
@@ -81,6 +81,42 @@ test('uses MiChollo public API to resolve the real Miravia product', async () =>
   assert.equal(result.finalUrl, miraviaUrl);
   assert.equal(result.title, 'Xiaomi Robot Vacuum S20');
   assert.equal(result.price, 129.99);
+});
+
+test('resolves a Chollometro app-share deal and keeps its facts while following the shop button', async () => {
+  const sourceUrl = 'https://www.chollometro.com/share-deal-from-app/1976867';
+  const dealUrl = 'https://www.chollometro.com/ofertas/lampara-1976867';
+  const visitUrl = 'https://www.chollometro.com/visit/threadmain/1976867';
+  const aliExpressUrl = 'https://es.aliexpress.com/item/1005011850672894.html';
+  const state = {
+    threadDetail: {
+      threadId: '1976867', type: 'Deal',
+      title: 'Lámpara de techo con ventilador 30 W y luz 60 W',
+      price: 25.46, nextBestPrice: 39.99, voucherCode: 'ESFS02',
+      descriptionPurified: 'Control remoto, 6 velocidades y 3 temperaturas de color.',
+      galleryImages: [{ path: 'threads/raw/2QSoJ', name: '1976867_1' }],
+      linkCloakedItemMainButton: visitUrl,
+    },
+  };
+  const html = `<script>window.__INITIAL_STATE__ = ${JSON.stringify(state)}; window.other = true;</script>`;
+  const parsed = chollometroDealFromHtml(html, '1976867');
+  assert.equal(parsed?.coupon, 'ESFS02');
+  assert.match(parsed?.imageUrl || '', /1976867_1\/re\/1024x1024/u);
+  const result = await extractProductMetadata(sourceUrl, {
+    fetchImpl: async (url) => {
+      if (url === sourceUrl) return new Response(html, { status: 200, headers: { 'content-type': 'text/html' } });
+      if (url === visitUrl) return { ok: true, url: aliExpressUrl, text: async () => '' };
+      throw new Error(`unexpected URL ${url}`);
+    },
+  });
+  assert.equal(result.source, 'chollometro');
+  assert.equal(result.finalUrl, aliExpressUrl);
+  assert.equal(result.title, 'Lámpara de techo con ventilador 30 W y luz 60 W');
+  assert.equal(result.price, 25.46);
+  assert.equal(result.previousPrice, 39.99);
+  assert.equal(result.coupon, 'ESFS02');
+  assert.equal(result.affiliateUrl, aliExpressUrl);
+  assert.equal(dealUrl.endsWith('1976867'), true);
 });
 
 test('uses NoLoDejesEscapar public REST data but ignores an unrelated Awin affiliate', async () => {
