@@ -9965,7 +9965,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-03T20:42:24.255Z",
+      "updatedAt": "2026-09-03T20:52:27.543Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20184,13 +20184,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/jiHCqs6bXV2rtDWazcQyvI9NIZwDT96eDFgGEd599iKGhCwqfZLaJ0ZFLGz1z-loM3VttgfVN7X8uTKWuUYBvOevHFyZ07Ov7Ea9G___OgvfhKzjbH9Us9iuCOsxLhq5IG34CS1MvyAx7k4USSKd2e8bKA-8dz1ubuT1qCN2Vb3N0H5MXLGuNa8V1n9z-w0cRDFrZ1F2FTirzaSCvFJysNpHKwjF0Apc4g-8TLrwgcxJsxEGrR4h9yLcKugTzAlG-Ymy_tn13QsJTJSL63mlX0R30WYRaqJq3zMX8VELXAs0Cbsb_UfkjYQh-PJLAXqBj5HHyChnGeHKiqUPXxzLoA.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4mevOSj",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "createdAt": "2026-09-03T20:41:00.481Z",
-      "updatedAt": "2026-09-03T20:42:24.255Z",
+      "updatedAt": "2026-09-03T20:52:27.543Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20204,13 +20204,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/W2x-VG1UOyKA571JuNkbn-mVQR9eLtr5xJ70TLH59umJI3XbDbq7_Me5T94dGb6Wx0pHEyuXdl5kunPEzVrLuTSROmZjZBL91XAcW6VTO-RibnSCO7qHxzuWLSMVWjVWx3d9BGRCNO-o3pQue2N46QocHwkONb5zcL-Woozc8N_5TKc-o349B_cuG5J3vFe7dDTJPcvll3oDiIzGtTO5EvaWXqTZSPkBGxWpvh34k70YaDVtbS_ap1oE3uDo-AACzvDOWe4ysmuYyn9BKongWdPRodlewsYkxfzyCEOAf9_vKT7PWptNG7_F2pTS2EfLyvJ9cuuiBTjVMv1dImKbWg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0CP7R6KDQ?tag=chollodeldia-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-03T20:51:01.511Z",
-      "updatedAt": "2026-09-03T20:51:01.511Z"
+      "updatedAt": "2026-09-03T20:52:28.105Z"
     },
     {
       "id": "telegram-tiesometro:7211:aliexpress:0",
@@ -20224,12 +20224,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/q892l",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-03T20:51:02.773Z",
-      "updatedAt": "2026-09-03T20:51:02.773Z"
+      "updatedAt": "2026-09-03T20:52:27.543Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     }
   ]
 }
