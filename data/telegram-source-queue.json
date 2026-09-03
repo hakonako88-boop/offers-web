@@ -10244,7 +10244,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-03T19:02:28.141Z",
+      "updatedAt": "2026-09-03T19:12:17.106Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20128,13 +20128,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/FRxAhci5GSn3qjwP_GNOP03j02O0ZqHYpRPBhllF2MiDz7Zb_zXfvoUCdJGbgA-QYU2nvCklGRPXdy7uKtUtme8bBNqpEwcyuFdi0Ah_WXG7yM7YpV-LRKyQwAWjyQpzPwT-mXiX56FczBuuhG5Cza-ol5hbHmwj2CWxMC-o826zDesNFr-ogu7rFOYvLh5kaYD7dyLlz8-PlAPYTZc6sr9mp0EXcSBia4GI1fNGosYpC0nkKC5NhHgaNmWSGzHYugUmQOP-YrGuAPsY32jrvPVY0-2BgLoDm2IgRAV-6jaG25XOLayYBtzlTSugaCQ4CqH_XPjIt169vJU2XPjNHA.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4wjZ3F7",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-03T18:40:59.023Z",
-      "updatedAt": "2026-09-03T19:02:28.141Z",
+      "updatedAt": "2026-09-03T19:11:41.484Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20148,13 +20148,13 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/znjqo",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "createdAt": "2026-09-03T19:01:11.011Z",
-      "updatedAt": "2026-09-03T19:02:28.141Z",
+      "updatedAt": "2026-09-03T19:12:17.106Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20168,13 +20168,16 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/kqdQYCoHkLx0iuEz9lbTiuLTnp_FBPlhHtGuEDpFkHSx6MJMQ5y0s1Vn2B_9CXNkjROAr55HlUweXh26tObO3qZsTgIqD2Mvb9Nw2t2x1bLufetu3tuv41_D2UNuV7CjA1jczljAQhJCykdblrKJA0t97XK5dHzEK5DxRUu8SyLcCxzfskEdq6NWui3bW-tRivW353f3JV1fZMJaWIsBk5fCO2KBlSUeF-0xPBi1o8FT6TO7vwD8F1Uwy5oUYf0Mgh3cKps1O2u_4esL8-aplJmqLGDQ9jIPEg2pjh7DegQ3vsmz5mMJ9F-EbvTjucF3IZpRwoPypwQwYXMa6F4ZdQ.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3A33p3D",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-03T19:11:04.326Z",
-      "updatedAt": "2026-09-03T19:11:04.326Z"
+      "updatedAt": "2026-09-03T19:12:17.106Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11",
+      "telegramMessageId": 6177,
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3I2lURb"
     },
     {
       "id": "telegram-tiesometro:7208:aliexpress:0",
@@ -20188,12 +20191,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/4gvac",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-03T19:11:04.767Z",
-      "updatedAt": "2026-09-03T19:11:04.767Z"
+      "updatedAt": "2026-09-03T19:12:17.106Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
       "id": "telegram-paramanitas:4690:amazon:0",
@@ -20206,13 +20210,13 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B08C9KNB77?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-03T19:11:05.479Z",
-      "updatedAt": "2026-09-03T19:11:05.479Z"
+      "updatedAt": "2026-09-03T19:12:17.701Z"
     }
   ]
 }
