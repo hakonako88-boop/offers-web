@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-03T18:23:36.908Z",
+  "updatedAt": "2026-09-03T18:32:26.513Z",
   "summary": {
+    "published": 448,
     "rejected": 361,
-    "published": 447,
     "needs_review": 138,
     "ignored": 14,
     "duplicate": 37,
-    "pending": 3
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:41461:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41461,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41461",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7206:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7206,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7206",
       "resultUrl": ""
     },
@@ -25,11 +36,11 @@
       "source": "telegram-una-ganga",
       "messageId": 92470,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/una_ganga/92470",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B0CGH4PJ6L?tag=chollos00a-21"
     },
     {
       "id": "telegram-tiesometro:7205:aliexpress:0",
@@ -1097,17 +1108,6 @@
       "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/Ofertos/41409",
       "resultUrl": "https://s.click.aliexpress.com/e/_c4tjeBal"
-    },
-    {
-      "id": "telegram-ofertos:41408:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41408,
-      "store": "AliExpress",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/Ofertos/41408",
-      "resultUrl": "https://s.click.aliexpress.com/e/_c3IqfXAN"
     }
   ]
 }
