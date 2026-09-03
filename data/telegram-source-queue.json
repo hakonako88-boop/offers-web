@@ -10402,7 +10402,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-03T18:02:33.633Z",
+      "updatedAt": "2026-09-03T18:12:27.534Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20165,13 +20165,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/SEUr0KqnJjovGpdHC_tlgEYbo-w6-ZwGn9jQ2YCZ3aunWoiwNGtdH_DBUesr9JnYmDj3ijfvpMExG5I8Vp1f6mIvryWssdP7icR_2xnhUYtz92Zl7VWX2XmaOzQWWN0Tn9rtmM7mQc3R7WR1N4xU2fj7lT0Q8JwYrMc20NX51WDmIkLQ39VLnQ_gz3UGRBvfUd9m4cqCZZMcDJ9_iHZ5nUujW-0MxFP0xt46nA5ZbMpbQ9HLRiwtAJq3TXhA6NPtOays5WL75tpUxTwX6IdOfbdzAvZnGMX-l6ynD_9PV-CqCza2oLk2D3T0EIeLf7doveKSA4Sw-yP-EQ7RgzFyOQ.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0FLJ8CJVS?tag=chollodeldia-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-03T18:11:04.290Z",
-      "updatedAt": "2026-09-03T18:11:04.290Z"
+      "updatedAt": "2026-09-03T18:12:28.422Z"
     },
     {
       "id": "telegram-una-ganga:92469:aliexpress:0",
@@ -20185,12 +20185,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4StWQdh",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-03T18:11:05.330Z",
-      "updatedAt": "2026-09-03T18:11:05.330Z"
+      "updatedAt": "2026-09-03T18:12:27.534Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
       "id": "telegram-tiesometro:7205:aliexpress:0",
@@ -20204,12 +20205,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/mrjrd",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-03T18:11:05.678Z",
-      "updatedAt": "2026-09-03T18:11:05.678Z"
+      "updatedAt": "2026-09-03T18:12:27.534Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     }
   ]
 }
