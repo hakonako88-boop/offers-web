@@ -169,7 +169,7 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-08-29T14:51:07.695Z",
-      "updatedAt": "2026-09-03T14:12:54.886Z",
+      "updatedAt": "2026-09-03T14:22:17.342Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -188,7 +188,7 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-08-29T15:11:02.622Z",
-      "updatedAt": "2026-09-03T14:12:54.886Z",
+      "updatedAt": "2026-09-03T14:22:17.342Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -225,7 +225,7 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-08-29T15:21:04.337Z",
-      "updatedAt": "2026-09-03T14:12:54.886Z",
+      "updatedAt": "2026-09-03T14:22:17.342Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -754,7 +754,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-08-29T18:31:20.947Z",
-      "updatedAt": "2026-09-03T14:12:54.886Z",
+      "updatedAt": "2026-09-03T14:22:17.342Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -794,7 +794,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-08-29T18:31:20.947Z",
-      "updatedAt": "2026-09-03T14:12:54.886Z",
+      "updatedAt": "2026-09-03T14:22:17.342Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -11297,7 +11297,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-03T14:12:54.886Z",
+      "updatedAt": "2026-09-03T14:22:17.342Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -18588,7 +18588,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-03T08:11:03.309Z",
-      "updatedAt": "2026-09-03T14:12:54.886Z",
+      "updatedAt": "2026-09-03T14:22:17.342Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20134,12 +20134,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4A8N2FA",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 16,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-03T14:11:08.245Z",
-      "updatedAt": "2026-09-03T14:12:54.886Z"
+      "updatedAt": "2026-09-03T14:22:17.342Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:92457:amazon:0",
@@ -20152,13 +20153,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/ZCVZVakAsNYNhIkZaCiUb5JJiahuFANw6lzwzvoDN8YXI_2dBwnL3OSovODCyjbc8lXnhZZti5T1GBypZhledcFZNowYZZbfjppuTYTSyX77ya0-w23NHPwKb7DoLfNdy9eV2_A4TLPfWE7VbBnlb1W_J1N81kJD67JBPrNIOj5Vx4eTnWirCGsnRNWLbpkJZNYISk4oQLmebuda6smyt1x5KibonQpD20Qf1wBjrlc2_GpLqe1hbcr8FOUQJy8vK__zH3l4ndOHhQZ8oAfXb84sP85LCfQu3f1wJF1ycSEy3NzrGUMlalO7JSSdgqrwkzaKKiWWiZYJRopmXfm10w.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B07kov03Z",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-03T14:20:59.777Z",
-      "updatedAt": "2026-09-03T14:20:59.777Z"
+      "updatedAt": "2026-09-03T14:22:21.081Z",
+      "telegramMessageId": 6145,
+      "resultUrl": "https://www.amazon.es/dp/B09MFDG63D?tag=chollos00a-21"
     }
   ]
 }
