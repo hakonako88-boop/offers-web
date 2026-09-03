@@ -1,22 +1,44 @@
 {
-  "updatedAt": "2026-09-03T16:42:18.061Z",
+  "updatedAt": "2026-09-03T16:52:14.911Z",
   "summary": {
-    "published": 446,
-    "rejected": 358,
-    "duplicate": 38,
-    "pending": 8,
+    "published": 447,
+    "rejected": 357,
+    "duplicate": 39,
+    "pending": 7,
     "needs_review": 136,
     "ignored": 14
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:41449:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41449,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41449",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41448:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41448,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41448",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92465:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 92465,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/92465",
       "resultUrl": ""
     },
@@ -25,9 +47,9 @@
       "source": "telegram-ofertos",
       "messageId": 41447,
       "store": "Amazon",
-      "status": "pending",
+      "status": "duplicate",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/Ofertos/41447",
       "resultUrl": ""
     },
@@ -36,22 +58,22 @@
       "source": "telegram-ofertos",
       "messageId": 41446,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41446",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B0GK9R5JJQ?tag=chollos00a-21"
     },
     {
       "id": "telegram-chollosdiario:45283:amazon:0",
       "source": "telegram-chollosdiario",
       "messageId": 45283,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/chollosdiario/45283",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B0GYCKTB8J?tag=chollos00a-21"
     },
     {
       "id": "telegram-ofertos:41445:aliexpress:0",
@@ -1086,28 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41394",
       "resultUrl": "https://www.amazon.es/dp/B0GYRSNRBH?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:41393:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41393,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/41393",
-      "resultUrl": "https://www.amazon.es/dp/B0FGDDH5DZ?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-una-ganga:92438:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92438,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/92438",
-      "resultUrl": ""
     }
   ]
 }
