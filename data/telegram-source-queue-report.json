@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-03T19:32:13.507Z",
+  "updatedAt": "2026-09-03T19:42:17.206Z",
   "summary": {
-    "needs_review": 135,
+    "needs_review": 136,
     "ignored": 14,
     "rejected": 362,
     "published": 449,
     "duplicate": 37,
-    "pending": 3
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92474:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92474,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/92474",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-ofertos:41463:amazon:0",
       "source": "telegram-ofertos",
       "messageId": 41463,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta ASIN",
       "sourceUrl": "https://t.me/Ofertos/41463",
       "resultUrl": ""
     },
@@ -25,9 +36,9 @@
       "source": "telegram-ofertos",
       "messageId": 41462,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta ASIN",
       "sourceUrl": "https://t.me/Ofertos/41462",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/paramanitas/4685",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:92444:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92444,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "AliExpress no permitió completar identidad API: AliExpress aliexpress.affiliate.productdetail.get failed: Api access frequency exceeds the limit. this ban will last 1 seconds",
-      "sourceUrl": "https://t.me/una_ganga/92444",
       "resultUrl": ""
     }
   ]
