@@ -8902,7 +8902,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-04T09:09:01.318Z",
+      "updatedAt": "2026-09-04T09:12:29.067Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20235,13 +20235,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/P5IukvnYJDL7uc2MHm1nAYBoA7ODVC0IXhVaX6yz9lYDMO3kFMh3zCgfzWkJTQMUaRQyUSHz1DgaPgvZfvFEOPCpCrLsMuu2LXF9Q2g_TJmixC_2dp14rs1safPp6ncWRLe1d6rkG-oeX_sBrdg9nKQYE4qYBL0byF_zX8opyyVN3HeAcpDZDO0i-4_xBgnzui5Oevl_dyLcAkbOe9qlf8d8seU-2cGwvcubGf5SICo-fYAdqMNDRqX_-E6CxiBpVCcr9z3KatCj0A7SvGHJIYqeDvOWlAc-8s7c3zjHqJaC2Z3XnQorfGxzDaVIOHyFVa2jZlNeqBnArbjAbqK2zA.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4qPhAru",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-04T08:41:01.548Z",
-      "updatedAt": "2026-09-04T09:09:01.318Z",
+      "updatedAt": "2026-09-04T09:11:52.975Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20276,13 +20276,16 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/tJFaKS1XnCUOjZ2_cc0r0J0SG0b7B7PGj-cg435sE1HlONs7M4c8QMyI8nxdOv5QPx7OwFQKJRlwpfsc0vL6WVCq3uj0k8Qq6N7ELqvmDahxJK8YOywUAREUrBtcnicPRLPkuwkfVbjh-g1ImrsFiH5bUw5s_ina_oiRWozzcecUMms5doIlxBRUwKHaOIWjk2_LTFoqqGcoMRLaWMGy13YRsJ7u789ac84KG_pJacsktQ01EOSZZmAr5uYBFijHIdTb1o3LSv9yWITKr3E8fWXrYsNpyBMf0Rpp6th4TSUALgu_ppv0t6yNmCcM6pnWtoq7mrWMRfjR0tkw7MfXDA.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3v1ztOH",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-04T09:11:04.254Z",
-      "updatedAt": "2026-09-04T09:11:04.255Z"
+      "updatedAt": "2026-09-04T09:12:29.067Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11",
+      "telegramMessageId": 6216,
+      "resultUrl": "https://s.click.aliexpress.com/e/_c4sacpwH"
     }
   ]
 }
