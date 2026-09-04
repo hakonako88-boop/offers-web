@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-04T13:42:21.994Z",
+  "updatedAt": "2026-09-04T13:52:18.864Z",
   "summary": {
-    "published": 443,
+    "published": 442,
     "rejected": 364,
     "needs_review": 140,
     "duplicate": 36,
-    "ignored": 15,
+    "ignored": 16,
     "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-errores-de-precio:15503:ignored",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15503,
+      "store": "Otra",
+      "status": "ignored",
+      "attempts": 0,
+      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
+      "sourceUrl": "https://t.me/erroresde_precio/15503",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92528:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 92528,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/92528",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/paramanitas/4690",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-tiesometro:7208:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7208,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
-      "sourceUrl": "https://t.me/tiesometro/7208",
       "resultUrl": ""
     }
   ]
