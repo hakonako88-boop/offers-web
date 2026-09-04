@@ -2,7 +2,7 @@
  * Telegram webhook bridge for Chollos al Dia.
  * It verifies Telegram, then starts the existing GitHub offer pipeline.
  */
-/* global GITHUB_OWNER, GITHUB_REPO, GITHUB_DISPATCH_TOKEN, TELEGRAM_WEBHOOK_SECRET, TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET, TIKTOK_SANDBOX_CLIENT_KEY, TIKTOK_SANDBOX_CLIENT_SECRET, TIKTOK_ACTIVE_MODE, TIKTOK_ADMIN_SECRET, TIKTOK_CONNECT_TOKEN, TIKTOK_AUTH */
+/* global GITHUB_OWNER, GITHUB_REPO, GITHUB_DISPATCH_TOKEN, GITHUB_APP_ID, GITHUB_APP_PRIVATE_KEY, TELEGRAM_WEBHOOK_SECRET, TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET, TIKTOK_SANDBOX_CLIENT_KEY, TIKTOK_SANDBOX_CLIENT_SECRET, TIKTOK_ACTIVE_MODE, TIKTOK_ADMIN_SECRET, TIKTOK_CONNECT_TOKEN, TIKTOK_AUTH */
 const json = (value, status = 200) => new Response(JSON.stringify(value), {
   status,
   headers: { 'content-type': 'application/json; charset=utf-8' },
@@ -11,6 +11,103 @@ const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, mil
 const TIKTOK_REDIRECT_URI = 'https://chollosaldia-telegram.peitolerito.workers.dev/tiktok/oauth/callback';
 const TIKTOK_SCOPES = 'user.info.basic,video.upload,video.publish';
 const TIKTOK_CONNECT_COMPLETE_KEY = 'tiktok:connect-complete';
+// GitHub App installation tokens last one hour. This cache lives only in the
+// current Worker isolate; a new isolate simply requests a fresh token.
+let githubInstallationTokenCache = null;
+
+function base64UrlFromBytes(bytes) {
+  let binary = '';
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary).replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', '');
+}
+
+function base64UrlJson(value) {
+  return base64UrlFromBytes(new TextEncoder().encode(JSON.stringify(value)));
+}
+
+function pemToArrayBuffer(pem) {
+  const base64 = String(pem || '')
+    .replace(/-----BEGIN [^-]+-----/g, '')
+    .replace(/-----END [^-]+-----/g, '')
+    .replace(/\s/g, '');
+  if (!base64) throw new Error('GitHub App private key is empty');
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
+  return bytes.buffer;
+}
+
+function githubAppConfigured() {
+  return typeof GITHUB_APP_ID !== 'undefined'
+    && typeof GITHUB_APP_PRIVATE_KEY !== 'undefined'
+    && Boolean(GITHUB_APP_ID && GITHUB_APP_PRIVATE_KEY);
+}
+
+async function githubAppJwt() {
+  const now = Math.floor(Date.now() / 1000);
+  const signingInput = `${base64UrlJson({ alg: 'RS256', typ: 'JWT' })}.${base64UrlJson({
+    iat: now - 60,
+    exp: now + 540,
+    iss: String(GITHUB_APP_ID),
+  })}`;
+  const privateKey = await crypto.subtle.importKey(
+    'pkcs8',
+    pemToArrayBuffer(GITHUB_APP_PRIVATE_KEY),
+    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const signature = await crypto.subtle.sign(
+    { name: 'RSASSA-PKCS1-v1_5' },
+    privateKey,
+    new TextEncoder().encode(signingInput),
+  );
+  return `${signingInput}.${base64UrlFromBytes(new Uint8Array(signature))}`;
+}
+
+async function githubInstallationToken() {
+  if (githubInstallationTokenCache?.token && githubInstallationTokenCache.expiresAt > Date.now() + 120000) {
+    return githubInstallationTokenCache.token;
+  }
+  const appJwt = await githubAppJwt();
+  const appHeaders = {
+    authorization: `Bearer ${appJwt}`,
+    accept: 'application/vnd.github+json',
+    'user-agent': 'chollosaldia-telegram-webhook',
+    'x-github-api-version': '2022-11-28',
+  };
+  const installationResponse = await fetch(
+    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/installation`,
+    { headers: appHeaders },
+  );
+  if (!installationResponse.ok) {
+    throw new Error(`GitHub App installation lookup failed (${installationResponse.status})`);
+  }
+  const installation = await installationResponse.json();
+  const tokenResponse = await fetch(
+    `https://api.github.com/app/installations/${installation.id}/access_tokens`,
+    { method: 'POST', headers: appHeaders },
+  );
+  const tokenPayload = await tokenResponse.json();
+  if (!tokenResponse.ok || !tokenPayload?.token || !tokenPayload?.expires_at) {
+    throw new Error(`GitHub App token request failed (${tokenResponse.status})`);
+  }
+  githubInstallationTokenCache = {
+    token: tokenPayload.token,
+    expiresAt: Date.parse(tokenPayload.expires_at),
+  };
+  return githubInstallationTokenCache.token;
+}
+
+async function githubDispatchAuthorization() {
+  // Keep the existing secret as a short transition fallback. Once the new App
+  // secrets have been stored, every dispatch uses its renewable installation token.
+  if (githubAppConfigured()) return `Bearer ${await githubInstallationToken()}`;
+  if (typeof GITHUB_DISPATCH_TOKEN !== 'undefined' && GITHUB_DISPATCH_TOKEN) {
+    return `Bearer ${GITHUB_DISPATCH_TOKEN}`;
+  }
+  throw new Error('GitHub App credentials are not configured');
+}
 
 function tikTokMode() {
   return typeof TIKTOK_ACTIVE_MODE !== 'undefined' && TIKTOK_ACTIVE_MODE === 'sandbox'
@@ -383,10 +480,11 @@ async function githubDispatch(eventType, payload = {}) {
   let latestError;
   for (let attempt = 0; attempt < 3; attempt += 1) {
     try {
+      const authorization = await githubDispatchAuthorization();
       const dispatch = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/dispatches`, {
         method: 'POST',
         headers: {
-          authorization: `Bearer ${GITHUB_DISPATCH_TOKEN}`,
+          authorization,
           accept: 'application/vnd.github+json',
           'content-type': 'application/json',
           'user-agent': 'chollosaldia-telegram-webhook',
