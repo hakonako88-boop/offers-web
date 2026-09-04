@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-04T13:12:36.475Z",
+  "updatedAt": "2026-09-04T13:22:33.257Z",
   "summary": {
-    "published": 444,
-    "rejected": 362,
+    "published": 443,
+    "rejected": 364,
     "needs_review": 140,
     "duplicate": 36,
     "ignored": 15,
-    "pending": 3
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92527:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92527,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/92527",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7215:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7215,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7215",
       "resultUrl": ""
     },
@@ -25,9 +36,9 @@
       "source": "telegram-una-ganga",
       "messageId": 92526,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "AliExpress no permitió completar identidad API",
       "sourceUrl": "https://t.me/una_ganga/92526",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/una_ganga/92472",
       "resultUrl": "https://s.click.aliexpress.com/e/_c3I2lURb"
-    },
-    {
-      "id": "telegram-tiesometro:7207:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7207,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
-      "sourceUrl": "https://t.me/tiesometro/7207",
-      "resultUrl": ""
     }
   ]
 }
