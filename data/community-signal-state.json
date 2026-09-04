@@ -1001,13 +1001,17 @@
       "seenAt": "2026-09-04T12:11:43.633Z"
     }
   ],
-  "lastCheckedAt": "2026-09-04T12:11:43.633Z",
+  "lastCheckedAt": "2026-09-04T12:21:38.429Z",
   "micholloLastCheckedAt": "2026-09-04T12:11:43.633Z",
   "sourceHealth": [
     {
+      "source": "telegram-source-queue",
+      "status": "ok",
+      "found": 1
+    },
+    {
       "source": "michollo",
-      "status": "unavailable",
-      "detail": "incorrect header check"
+      "status": "deferred"
     },
     {
       "source": "nolodejesescapar",
@@ -1017,7 +1021,7 @@
     {
       "source": "chollometro-aliexpress",
       "status": "ok",
-      "found": 2
+      "found": 1
     }
   ]
 }
