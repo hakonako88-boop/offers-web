@@ -1681,7 +1681,7 @@
       "merchantUrl": "https://tidd.ly/3TRtrJr",
       "sourceImageUrl": "https://cdn4.telesco.pe/file/TDtsA3KBrNTw5v4GjViO4JDdY0XSn_ACukMPQacw4YSLv686VSOqb3su_7XxMKeqqjYC6apN7j8vH4FX66p4w8Ws068ihpSkz_rCXmH23e-kcRbiq1yWBRZUYfK2hBFQijCUrq_dY36JRCn038xLIP8mVNFbwXkTWz5g-TTCTVTh2UjV_hfR20xaPXhr7zPlDFs_dMPTo6XRlnvRbTq-FlgFZXXpu2wqIUPkOv38rI2h3jDJcJbd5ZQwdUKPhihUSkTHSjenEBUGOE0TxonJBi22mqb6AqID2_mMyJQ_bF3r3Ezl-Zb0MJKIZmTJhGJh2PQv-5hWAL7CZKTTySWxNQ.jpg",
       "priority": false,
-      "retryPolicyVersion": "",
+      "retryPolicyVersion": "exact-official-page-v1",
       "attempts": 1
     },
     {
@@ -1743,52 +1743,6 @@
       "priority": false,
       "retryPolicyVersion": "exact-official-page-v1",
       "attempts": 1
-    },
-    {
-      "id": "chollometro-aliexpress:https://www.chollometro.com/ofertas/impresora-3d-anycubic-kobra-x-combo-desde-europa-1994284",
-      "source": "chollometro-aliexpress",
-      "sourceUrl": "https://www.chollometro.com/ofertas/impresora-3d-anycubic-kobra-x-combo-desde-europa-1994284",
-      "title": "Impresora 3D ANYCUBIC Kobra X Combo (Desde Europa)",
-      "publishedAt": "Wed, 02 Sep 2026 17:00:28 +0200",
-      "merchant": "AliExpress",
-      "sourceStore": "AliExpress",
-      "category": "Moda",
-      "terms": [
-        "impresora",
-        "anycubic",
-        "kobra",
-        "combo",
-        "europa"
-      ],
-      "searchQuery": "Impresora 3D ANYCUBIC Kobra X Combo (Desde Europa)",
-      "sourceWeight": 8,
-      "price": 0,
-      "previousPrice": 0,
-      "coupon": ""
-    },
-    {
-      "id": "chollometro-aliexpress:https://www.chollometro.com/ofertas/dragon-ball-sparking-zero-edicion-estandar-ps5-pal-espana-1994278",
-      "source": "chollometro-aliexpress",
-      "sourceUrl": "https://www.chollometro.com/ofertas/dragon-ball-sparking-zero-edicion-estandar-ps5-pal-espana-1994278",
-      "title": "Dragon Ball Sparking! Zero (Edición Estándar) PS5 - PAL España",
-      "publishedAt": "Wed, 02 Sep 2026 16:58:56 +0200",
-      "merchant": "AliExpress",
-      "sourceStore": "AliExpress",
-      "category": "Tecnología",
-      "terms": [
-        "dragon",
-        "ball",
-        "sparking",
-        "zero",
-        "edicion",
-        "estandar",
-        "ps5"
-      ],
-      "searchQuery": "Dragon Ball Sparking! Zero (Edición Estándar) PS5 - PAL España",
-      "sourceWeight": 8,
-      "price": 0,
-      "previousPrice": 0,
-      "coupon": ""
     },
     {
       "id": "chollometro-aliexpress:https://www.chollometro.com/ofertas/superventas-bomba-de-aire-electrica-portatil-1994371",
@@ -2159,9 +2113,14 @@
       "coupon": ""
     }
   ],
-  "lastCheckedAt": "2026-09-04T14:51:55.971Z",
+  "lastCheckedAt": "2026-09-04T15:02:34.857Z",
   "micholloLastCheckedAt": "2026-09-04T12:12:13.813Z",
   "sourceHealth": [
+    {
+      "source": "telegram-source-queue",
+      "status": "ok",
+      "found": 3
+    },
     {
       "source": "michollo",
       "status": "deferred"
