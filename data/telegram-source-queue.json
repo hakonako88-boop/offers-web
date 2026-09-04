@@ -9303,7 +9303,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z",
+      "updatedAt": "2026-09-04T06:20:41.699Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -19581,13 +19581,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/I6xPJwHP8085BZTxBiuwJo4b6tea1yLFsmnO77BPZitmGD875u1sZKIrNoF3oifbVmqMqlGjv8y0S6QbVzyFuWLMHnT6D2NlT7D5ixoatOnjM6XVpZhah3EG1xmXwp1SpErvMVmxrdcHWkNUnhjBJ5qlx7hDO15oTqeVxeDhBCkLpfZ8lfTJXVBQJmgbhx9vyxpURDSK06OgiSqDkSu82FKL4tg4Oy8a3FImU5cxqnUGZKYX1tYS-H4AAfY9S8_uXW_w4JeZcInNIN-0WcYb85-DI6MRgBwsIMB-7YwJ_rsT14_tK6H7fvKlnoM8awC1laZrA0XU1SDSEnsVBw8A7A.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3bm7Iwv",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "createdAt": "2026-09-03T21:11:01.035Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z",
+      "updatedAt": "2026-09-04T06:20:41.699Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -19607,7 +19607,7 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-03T21:21:08.312Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z"
     },
     {
       "id": "telegram-paramanitas:4692:amazon:0",
@@ -19626,7 +19626,7 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-03T21:31:00.573Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z"
     },
     {
       "id": "telegram-una-ganga:92480:miravia:0",
@@ -19640,12 +19640,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4cl7J6Y",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-03T21:41:04.291Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-paramanitas:4693:ignored",
@@ -19746,7 +19747,7 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-03T22:20:56.171Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z"
     },
     {
       "id": "telegram-una-ganga:92483:miravia:0",
@@ -19760,12 +19761,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4gOYuNN",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-03T22:40:54.973Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-tiesometro:7213:aliexpress:0",
@@ -19778,13 +19780,13 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/fcd83",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "createdAt": "2026-09-03T22:51:06.640Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z",
+      "updatedAt": "2026-09-04T06:20:41.699Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -19826,7 +19828,7 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-03T23:20:57.390Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z"
     },
     {
       "id": "telegram-una-ganga:92486:miravia:0",
@@ -19840,12 +19842,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4cW6tY2",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-03T23:42:25.591Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:92487:aliexpress:0",
@@ -19886,7 +19889,7 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-04T00:20:58.612Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z"
     },
     {
       "id": "telegram-chollosdiario:45288:amazon:0",
@@ -19924,7 +19927,7 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-04T00:40:57.482Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z"
     },
     {
       "id": "telegram-una-ganga:92490:aliexpress:0",
@@ -19937,14 +19940,16 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/GhVB9AdXeQecf3od0jxbVkmSMrU-T0qSqE2dPvqoLf9fYToddP3uSCRSd05EFdCkVKFNM-q6u-ZUMfcyvQu9h5SgYT1t6p_sSDTsI7k5ZozxO69zSUYdDXV_B7M5tD0riT74W6TPCuCxX6rGIzAW9q2e_WPjEs_2lAq1sQypOXOiSPmjTKp5vn8PT-tyI3oQgVnMSwjZpHLKKG8H5HW8GJMWt9k7Vhuu5xqbiHn1H2GkJ8X5seDQOLXcHiTGMRsp6tdmkqRVaMDjA3UAf9BdCJ1xoE8yuruZZozWji6OFMXPf76LltG-iVqFmFmKuznWZh7Eviz1ceS-W1egmFnzzg.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3y5gNV7",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "published",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "createdAt": "2026-09-04T01:01:02.353Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z",
-      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
+      "updatedAt": "2026-09-04T06:20:41.699Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11",
+      "telegramMessageId": 6195,
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3RsiZhF"
     },
     {
       "id": "telegram-una-ganga:92491:amazon:0",
@@ -19957,13 +19962,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/dT-zRwuY6i7cOIPy-4P1Kxz9j15QrlPwg5eSeYN7nJESbxbaiDl6V431RfRFa7l9TB2WnSOUsF5t4QBkzDQxS9FYtUHn98hXImAuEoVgHyqImCCJGc9BKAsDRj6iFAz5BLEZsEJU8dzA3FRSY196CJScwiwQFSwHOfPSmv9YfTAnRr64QQNocbiyqM-EAihM0LgPUlduHxiP2iWo-f2TmxWfrHbuk6NtizhBGNmyQM_SdXSYUINj0hQjkVrlrOdzCxmAn7mco6LnvWpMAK8H_T95qPULpO09Pm7xCOSpjVzgtK6Ho5pGrCQFGsUv9msUCV91dgCt3WjVlXHCPsDS7w.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B07E1GnUZ",
-      "status": "pending",
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-04T01:20:57.437Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:50.043Z",
+      "telegramMessageId": 6198,
+      "resultUrl": "https://www.amazon.es/dp/B0FSFCLZZ5?tag=chollos00a-21"
     },
     {
       "id": "telegram-una-ganga:92492:miravia:0",
@@ -19977,12 +19984,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4ydwdat",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-04T01:40:59.670Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:92493:aliexpress:0",
@@ -20017,13 +20025,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/iB2gBzeT-kHrM92wXsqeths4EG8kNLloQdv7sVB1GVF_mNVbPp6xLdXCaWIErOLRuuNsX7HdsBgXMHUoFPXIVHiM7XKkXt0Ui136SWz-jnHRvGxTfe3Dsh7kMja0H9ZS-Df_0manIilh-Fg7A2t1lRSMZ2hzNfDIA3x4nFHkqmj4FETE_YGtTilRqR8JMoi6iM77k6_jSo1PC3ACmSx-yjHb9XKm59ohAZWmcBHFU4EkMMIhxfiXCBqiQ3kEJ7MN-dAMzNkCOQk4IDthwB7NkBYXn1Dj4bY2uIThzSJsggQZbbmOHLFWFtsD1XZHBLvNUEmupobcZTeCrHQzPkyQZA.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0bOiEURe",
-      "status": "pending",
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-04T02:21:00.508Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:47.607Z",
+      "telegramMessageId": 6197,
+      "resultUrl": "https://www.amazon.es/dp/B0CNQ8PKDZ?tag=chollos00a-21"
     },
     {
       "id": "telegram-una-ganga:92495:miravia:0",
@@ -20037,12 +20047,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3NkIacO",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-04T02:40:58.582Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:92496:aliexpress:0",
@@ -20077,13 +20088,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/MhHvHAMSVybU_-io4DdhHA5tIb9WMZehsujekyK6riVikz4BnS0TQcrMeuBD1eGlCjvUuhE_h6vdsGwf5WO8ruan_OeysRu3Dzk7XH_1vcnQBY7vj6wsVMCy2mhBv402c2_oECBsz6dk4rTUItxCLyl1pIqVoTRi9wr7xx6gMgWBEl5fccieUsz-s-oipKvsPeS05E9NyZ7pNHk-x4Jb-Sbj_QBatI6BrHp1C2X8I0pwckCoxZwyDtH7_uDEF1G-opbC53TIieY1mR_OeiCFn86S5WNdZrDhSrRhHKYDLoOjTtqbpcYFE18Y32YDDh7D5KZUMeq6-OLZfTBTqLNibA.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0bXjwysF",
-      "status": "pending",
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-04T03:20:57.858Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:45.428Z",
+      "telegramMessageId": 6196,
+      "resultUrl": "https://www.amazon.es/dp/B017DLLZQQ?tag=chollos00a-21"
     },
     {
       "id": "telegram-una-ganga:92498:miravia:0",
@@ -20097,12 +20110,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4uP2p2S",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-04T03:40:58.439Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:92499:aliexpress:0",
@@ -20159,12 +20173,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4vBEyEl",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-04T04:41:00.334Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:92502:aliexpress:0",
@@ -20221,12 +20236,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4tHEvEQ",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-04T05:41:03.204Z",
-      "updatedAt": "2026-09-04T06:10:42.032Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:92505:aliexpress:0",
@@ -20240,12 +20256,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3Uck4Xb",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-04T06:12:20.848Z",
-      "updatedAt": "2026-09-04T06:12:20.848Z"
+      "updatedAt": "2026-09-04T06:20:41.699Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     }
   ]
 }
