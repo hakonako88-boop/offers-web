@@ -1,24 +1,35 @@
 {
-  "updatedAt": "2026-09-05T16:22:25.614Z",
+  "updatedAt": "2026-09-05T16:32:07.187Z",
   "summary": {
-    "published": 456,
+    "published": 457,
     "rejected": 344,
     "needs_review": 139,
     "ignored": 23,
-    "duplicate": 34,
-    "pending": 4
+    "duplicate": 35,
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:41560:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41560,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41560",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92622:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 92622,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/una_ganga/92622",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B07HFDSP4P?tag=chollos00a-21"
     },
     {
       "id": "telegram-una-ganga:92621:aliexpress:0",
@@ -36,9 +47,9 @@
       "source": "telegram-una-ganga",
       "messageId": 92620,
       "store": "Amazon",
-      "status": "pending",
+      "status": "duplicate",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/una_ganga/92620",
       "resultUrl": ""
     },
@@ -47,11 +58,11 @@
       "source": "telegram-chollosdiario",
       "messageId": 45305,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/chollosdiario/45305",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B0CXKDT3YF?tag=chollos00a-21"
     },
     {
       "id": "telegram-una-ganga:92619:aliexpress:0",
@@ -1097,17 +1108,6 @@
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92580",
       "resultUrl": ""
-    },
-    {
-      "id": "telegram-chollosdiario:45300:amazon:0",
-      "source": "telegram-chollosdiario",
-      "messageId": 45300,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/chollosdiario/45300",
-      "resultUrl": "https://www.amazon.es/dp/B0DHVFRV9J?tag=chollos00a-21"
     }
   ]
 }
