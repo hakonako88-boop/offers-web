@@ -3528,7 +3528,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-05T19:12:15.050Z",
+      "updatedAt": "2026-09-05T19:22:29.939Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20287,13 +20287,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/vGYsK0bG9JjzXKW2NTIorh66M4qotFR2-23lcrzjPZ0Mb6WC2ahEFyhTuhbSgMjP65x99eCb4HFe14DA9YOp649vIDOHlbOMKiyWA9vS5ieHqHFKronepy_xXtqod731t3yqTWdmedtkjrAkmd_Z4jmP1kW3BLhGRXdQP2fEupdifLCC_uH-vRkU2nkU3r4TA4tT4XR_zOq6wzqdKjCANZL7UYUQbvO5awk_tcOCuFyJO492lKyTAiDzzOW8e2q9njAsfHLlM9JuTkkzw79IlUasYR3H2pS1ldIToEmNLdZwwRjpIuEKoaA0JcK3aIWtNOTTPiELQWM7Zp1YKErbbw.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c38bTNPX",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API: AliExpress aliexpress.affiliate.productdetail.get failed: Api access frequency exceeds the limit. this ban will last 1 seconds",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "createdAt": "2026-09-05T19:10:54.984Z",
-      "updatedAt": "2026-09-05T19:12:15.050Z",
+      "updatedAt": "2026-09-05T19:22:29.939Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20307,13 +20307,16 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/u-_PS20zAADlZHFI7TEuLZwPkiiVbOBT6EbRwvOPe2GZsO-63MdKBmuqWSTq9UP11wJTjQz632U_hGyv2S1p1ZZ3nqTDWOsryG4GALk7SE5DRkPwMW3fSUWhO3JTSsaFewdMXVN_YBEU31LoUr-ftXt4qtlWH7Fl_iYTYDlDVfRb-vhsU8XpFZKrLspdEgu1GjsBiQTcsQF7DrJr4oZ_Rwi6hcdi2dBLDfVCP-oeU8orscojMkM2mfND7hj0x6OdJjjCNp_ceFcuUIN2sjTDryyEcgy6xLdeEMXNXCQWITwk6yRouXT7n4kWic9qE0wseAtiQalUk14lFgamniV3BQ.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3RCkCFx",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-05T19:20:55.680Z",
-      "updatedAt": "2026-09-05T19:20:55.680Z"
+      "updatedAt": "2026-09-05T19:22:29.939Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11",
+      "telegramMessageId": 6365,
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3OdBTpb"
     },
     {
       "id": "telegram-una-ganga:92632:amazon:0",
@@ -20326,13 +20329,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/Iw_u4DbX8tbvjnSdBzuMfmv4bal1HX8jrcU4Tn31K4QLoFKTFa2Mej4to1_04o9n6bp5Jsy_l3QhZ_wxRzVz2DV73FfCRULy0ctaVep-dkH0YhJ1hVc-wqkXe_N-iT4k65B0T5gJgMtmU06btpHr8-TvrnGhSBXGLySYVDJTFeWpZy2fB1d9glQd6FwYLW0ZZkO7f6DZwbgUQk5MdBbmQiNNvbTEVhHtZ-82gsASuHdbOipjfEedRCJwiiTgBPHmBsBrXtwzgNauDjjT-49Tv7rrobZhb92CqStU8G-L3Xl7VNG5AmtnQouqWp37w04MwpFwQ2NTSpWbPJ9MY-1rsg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0fqaC6AI",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-05T19:20:56.164Z",
-      "updatedAt": "2026-09-05T19:20:56.164Z"
+      "updatedAt": "2026-09-05T19:22:35.395Z",
+      "telegramMessageId": 6366,
+      "resultUrl": "https://www.amazon.es/dp/B00004THXI?tag=chollos00a-21"
     },
     {
       "id": "telegram-paramanitas:4701:amazon:0",
@@ -20345,13 +20350,13 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0D9MM1KB4?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-05T19:20:56.960Z",
-      "updatedAt": "2026-09-05T19:20:56.960Z"
+      "updatedAt": "2026-09-05T19:22:35.595Z"
     }
   ]
 }
