@@ -3092,7 +3092,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-05T20:02:44.524Z",
+      "updatedAt": "2026-09-05T20:12:31.951Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20030,13 +20030,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/kUBmLoDg7Y8APUGjx2Zs8n3oikBKdP2f5bwEtCJf3J8A_i7HhMcIPWvX4KST5w_8b9MuRnOZqRHD6Dm57I3oR_6pMHu7XSPRjz8Ac3SvpvFtoOedq1sxX3F0dnxLy_S8Nm2Z76OSylUkYy0KDCCwRhk9I2xaaMOvdr85sOiHr95y0aoleWHagbpvK4LEMlPEezZ1aLV8hk1yeikveM6WadiIEJQ0k0bw2ms-bxQYg0s35byF2gNiKlVXUU1ye_tHV4f9Z3OeingOrZA4H-z7lgJE_5ppBdvs7EZqvUq-hzFsMJRxrGRm1EpRqIJdD2ZnBhXbsSpi6cEI_5Xt2EcbnA.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4BabiG9",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "createdAt": "2026-09-05T20:01:06.388Z",
-      "updatedAt": "2026-09-05T20:02:44.524Z",
+      "updatedAt": "2026-09-05T20:12:31.951Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20316,14 +20316,16 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c35W3l17",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "published",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceWeight": 16,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "createdAt": "2026-09-05T20:01:07.397Z",
-      "updatedAt": "2026-09-05T20:02:44.524Z",
-      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
+      "updatedAt": "2026-09-05T20:12:31.951Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11",
+      "telegramMessageId": 6368,
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3pXa7Hj"
     },
     {
       "id": "telegram-paramanitas:4704:ignored",
