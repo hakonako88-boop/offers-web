@@ -1,22 +1,44 @@
 {
-  "updatedAt": "2026-09-05T12:12:11.618Z",
+  "updatedAt": "2026-09-05T12:22:21.211Z",
   "summary": {
-    "rejected": 348,
     "ignored": 17,
+    "rejected": 347,
     "published": 460,
     "needs_review": 139,
     "duplicate": 34,
-    "pending": 2
+    "pending": 3
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92598:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92598,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/92598",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-chollosdiario:45303:amazon:0",
+      "source": "telegram-chollosdiario",
+      "messageId": 45303,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/chollosdiario/45303",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92597:aliexpress:0",
       "source": "telegram-una-ganga",
       "messageId": 92597,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "AliExpress no permitió completar identidad API: AliExpress aliexpress.affiliate.productdetail.get failed: Api access frequency exceeds the limit. this ban will last 1 seconds",
       "sourceUrl": "https://t.me/una_ganga/92597",
       "resultUrl": ""
     },
@@ -1086,28 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/una_ganga/92555",
       "resultUrl": "https://www.amazon.es/dp/B0DLGJTNPL?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-una-ganga:92554:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92554,
-      "store": "AliExpress",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/una_ganga/92554",
-      "resultUrl": "https://s.click.aliexpress.com/e/_c42b9hl7"
-    },
-    {
-      "id": "telegram-una-ganga:92553:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92553,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/92553",
-      "resultUrl": ""
     }
   ]
 }

@@ -4735,7 +4735,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-05T12:12:11.618Z",
+      "updatedAt": "2026-09-05T12:22:21.211Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20327,13 +20327,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/XoN57hVvj3-_hZ7zsSRCLAfhmMulcfqM3ELALZPHswXRyQRMtPh2YC8XHc6yI7H1fWEGpEtiPdifyJ4x6kOlt5F97cV85IYYWU91umY-HsLlkJrvuFFEKtRiQkXyg40QBAiHBtjQYos9dfu6IQfnEOViEL-8heS1ZYPL8edmDDPcJ1HvswbcoJ3niwHQZ38C0w0xeCSHDWsKDceWAV8QcrrHfKZ2Jt6ydIwrr2cgLoLwenZWW4hjf3-5CiERS5sOPp3M3wv_yTY5mjBahbh2IlCvuQb2AyRbuBeUdYUudu5rLcI9nKOt8JLmsZjB71Cp_yw8_xzfG1EYXyglJ1JWFw.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3l94Gat",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API: AliExpress aliexpress.affiliate.productdetail.get failed: Api access frequency exceeds the limit. this ban will last 1 seconds",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "createdAt": "2026-09-05T12:10:58.973Z",
-      "updatedAt": "2026-09-05T12:12:11.618Z",
+      "updatedAt": "2026-09-05T12:22:21.211Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20347,13 +20347,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/vRdUehhb3icfpN1lZocugFmY1JgUbJivL3NDFG91PPu7GLc4eJE8B_clj_L9EmWm5Jxem5Kh8NaDw1a-bgYeX0KB7CNlUkcaHC2yIfNTlzeOpRVCYyzy0cabKirTa6H44etjxyLkhiivDX7YfTYz8Q8UdHz1_PjeEgPZ16nwHijso5id3EaWibdq-fbZO9-ZUU9NU6bvvVCDyUXa6UAI6U3Qq_7wumFtqJ4AY5ZErWLPuZQ8FXqY9qScbCmNNgEa9zrAbxKZxGbNz4z3se4rU95tn3gRTNih1xR1okKNxA6HjE9UZHFWZ03AZt71A2B6xsYwuzSvX3-MH3ggy6QGUA.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0DPYZKBZJ?tag=chollodeldia-21",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-05T12:21:00.687Z",
-      "updatedAt": "2026-09-05T12:21:00.687Z"
+      "updatedAt": "2026-09-05T12:22:24.529Z",
+      "telegramMessageId": 6336,
+      "resultUrl": "https://www.amazon.es/dp/B0DPYZKBZJ?tag=chollos00a-21"
     },
     {
       "id": "telegram-una-ganga:92598:amazon:0",
@@ -20366,13 +20368,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/sdxun3IMUBvw7Jrkcql6Df19emLjd2ySzcsod1hFwPWUmREKvIkbt4C8RhswWjrxdToquN-xHQ9P7CIgRgRbNDGicIrhwmI-VQX1jPzPN2vyUQzjBm_CiP8eKJf6QucwEszEFpoPl1H7zW5Ssrowutc5hD_6-ydJwOJnafjdSgyF_u52pwaAZxKqlrVlTGCGijre3AwGiQkZp3mfs2tZvop3H4bHCxdyg97zHBRlEE70dQqVEksZz1Ta8_GHOh_wWQkx6wqCMSv4XE_a4wfpNafn4T_138WtLkDk7GD87dAEMX5LECH2MzRgUWF6iYLF6OBilHwCCYhcyS4EYUPCUA.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0aNQec0P",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-05T12:21:01.494Z",
-      "updatedAt": "2026-09-05T12:21:01.494Z"
+      "updatedAt": "2026-09-05T12:22:27.339Z",
+      "telegramMessageId": 6337,
+      "resultUrl": "https://www.amazon.es/dp/B08SJNWL1P?tag=chollos00a-21"
     }
   ]
 }
