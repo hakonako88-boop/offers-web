@@ -4916,7 +4916,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-05T11:02:29.500Z",
+      "updatedAt": "2026-09-05T11:12:33.001Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20298,13 +20298,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/vElWdqa8Rzig4z1fCptxNvZjdAhBDtNEgdIqauv7AIGtBFeZn4pgiSZa7eqrIUMAbr7MWzDia4o4JR5uZ1LFtGb-DNBdRXUUyCl_jdY8LCyGRA_yotWW9vS3hVk87VV9lUdDG_URgSkmAJnTGnv7BaBU6XHMGMyMxKQo59IWC3RVLA2QX3YBVsmfPapftu-qwFBBGn8-WjC3OUb4l9zby8VSxrJv5b0suH8trGwz0SuZQ4M8ZO4hvowXxKMqlwBT47T3RRydweFfXtE12iE8o37jCMhaqLBJd1kexHqb3lOuko9vUX22uqJDA5NXSO2c9uwlYJ6XCu0WZEPYuuVpGQ.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c459FOJ3",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 1,
+      "attempts": 3,
       "createdAt": "2026-09-05T11:01:02.987Z",
-      "updatedAt": "2026-09-05T11:02:29.500Z",
+      "updatedAt": "2026-09-05T11:12:33.001Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20318,13 +20318,16 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/Y58fpnPknIJWaXW8tM8fms0_nWd-p4R8m2JMSIBArZIuZBDtiGIiOnBw7EivwS6D5ziUtHWBAvtmkAXAbUAN2I01WK4MS5QAf4nd_UyUWrTciD4JbiEbLOxCXurz3q3365sFtsQJSdnfFkVmoFn8HVYQv6v825sTkkN4Ov_sWb1HDp4tor06vzZN1Mybq8lu9tkQomBxpk3WGAto5myCnGxnWXGPdinYAow3D7DSGJmJofnO9O9rpcU_6Y6TurXUWmjiEeP7A6th6PF3VzqaDTEOkJHQ0dFsuABT7hkEscDl_LxbKCht97vGTxwpRAQTkgyAvD6rcM2UEJNcDMzyGQ.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4BJIptT",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-05T11:11:01.190Z",
-      "updatedAt": "2026-09-05T11:11:01.190Z"
+      "updatedAt": "2026-09-05T11:12:33.001Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11",
+      "telegramMessageId": 6331,
+      "resultUrl": "https://s.click.aliexpress.com/e/_c4s1bVEz"
     },
     {
       "id": "telegram-ofertos:41555:aliexpress:0",
@@ -20337,13 +20340,16 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/SHCXiScB54VPS4mgPCedXudQy9pVZ-JyYyFrENYckEDrRXyB4nPPtFjQKOlObpxbpUvPkELYZPwoXsshZYxE8CsBC0JAit3QasbSQ1OqboJE-4C5bXv0YbDA2_uxXzP1P0GptjbqCD5P1cvlTfieFPwYFFEnA1bY84_5DwOxrrxFsHBAe10fnSpvjaKeYwSZ-Fh_8m4vnhIkNa7DeEHPI-JlNIa23p3ZILqO2MM4h0IX0MrXGDUJAgvltVFn95Vcj00SaWgrVpUA5oS3TLE7ZO3S9PLtCiQcJZpMrPWkGp6qMsPNwRysdvIC9tiHgZkZvEUsDRt4DsgzXj2PIY34QA.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c40sUGZr",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-05T11:11:01.190Z",
-      "updatedAt": "2026-09-05T11:11:01.190Z"
+      "updatedAt": "2026-09-05T11:12:33.001Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11",
+      "telegramMessageId": 6330,
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3PgL5gv"
     },
     {
       "id": "telegram-una-ganga:92593:aliexpress:0",
@@ -20357,12 +20363,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4EZcfmd",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-05T11:11:01.794Z",
-      "updatedAt": "2026-09-05T11:11:01.794Z"
+      "updatedAt": "2026-09-05T11:12:33.001Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     }
   ]
 }

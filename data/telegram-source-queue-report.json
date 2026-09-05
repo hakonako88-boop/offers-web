@@ -1,22 +1,55 @@
 {
-  "updatedAt": "2026-09-05T11:02:29.500Z",
+  "updatedAt": "2026-09-05T11:12:33.001Z",
   "summary": {
-    "rejected": 350,
-    "needs_review": 141,
-    "published": 455,
+    "published": 458,
+    "needs_review": 140,
+    "rejected": 349,
     "ignored": 17,
-    "duplicate": 33,
-    "pending": 4
+    "duplicate": 34,
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92593:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92593,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/92593",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41555:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 41555,
+      "store": "AliExpress",
+      "status": "published",
+      "attempts": 0,
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
+      "sourceUrl": "https://t.me/Ofertos/41555",
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3PgL5gv"
+    },
+    {
+      "id": "telegram-ofertos:41554:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 41554,
+      "store": "AliExpress",
+      "status": "published",
+      "attempts": 0,
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
+      "sourceUrl": "https://t.me/Ofertos/41554",
+      "resultUrl": "https://s.click.aliexpress.com/e/_c4s1bVEz"
+    },
     {
       "id": "telegram-ofertos:41553:aliexpress:0",
       "source": "telegram-ofertos",
       "messageId": 41553,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/41553",
       "resultUrl": ""
     },
@@ -25,9 +58,9 @@
       "source": "telegram-ofertos",
       "messageId": 41552,
       "store": "Amazon",
-      "status": "pending",
+      "status": "duplicate",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/Ofertos/41552",
       "resultUrl": ""
     },
@@ -36,11 +69,11 @@
       "source": "telegram-ofertos",
       "messageId": 41551,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41551",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B01LYC0II0?tag=chollos00a-21"
     },
     {
       "id": "telegram-ofertos:41550:amazon:0",
@@ -1075,39 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/una_ganga/92547",
       "resultUrl": "https://www.amazon.es/dp/B0F2B41ZFL?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-paramanitas:4697:ignored",
-      "source": "telegram-paramanitas",
-      "messageId": 4697,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/paramanitas/4697",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4696:amazon:14",
-      "source": "telegram-paramanitas",
-      "messageId": 4696,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4696",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4696:amazon:13",
-      "source": "telegram-paramanitas",
-      "messageId": 4696,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4696",
-      "resultUrl": ""
     }
   ]
 }
