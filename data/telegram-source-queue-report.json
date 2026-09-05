@@ -1,22 +1,66 @@
 {
-  "updatedAt": "2026-09-05T17:02:34.156Z",
+  "updatedAt": "2026-09-05T17:12:23.355Z",
   "summary": {
-    "rejected": 341,
-    "published": 460,
+    "rejected": 340,
+    "published": 458,
     "needs_review": 139,
     "ignored": 23,
-    "duplicate": 35,
-    "pending": 2
+    "duplicate": 36,
+    "pending": 4
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92624:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92624,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/92624",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41568:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 41568,
+      "store": "AliExpress",
+      "status": "published",
+      "attempts": 0,
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
+      "sourceUrl": "https://t.me/Ofertos/41568",
+      "resultUrl": "https://s.click.aliexpress.com/e/_c41zR833"
+    },
+    {
+      "id": "telegram-ofertos:41567:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41567,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41567",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41566:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41566,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41566",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-ofertos:41565:amazon:0",
       "source": "telegram-ofertos",
       "messageId": 41565,
       "store": "Amazon",
-      "status": "pending",
+      "status": "duplicate",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/Ofertos/41565",
       "resultUrl": ""
     },
@@ -1064,50 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41519",
       "resultUrl": "https://www.amazon.es/dp/B0H4QR19X4?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:41518:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41518,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/41518",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41517:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41517,
-      "store": "AliExpress",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/Ofertos/41517",
-      "resultUrl": "https://s.click.aliexpress.com/e/_c3J0vTMh"
-    },
-    {
-      "id": "telegram-ofertos:41516:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41516,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/41516",
-      "resultUrl": "https://www.amazon.es/dp/B0CP232CNG?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:41515:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41515,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/41515",
-      "resultUrl": ""
     }
   ]
 }
