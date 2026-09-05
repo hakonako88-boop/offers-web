@@ -5488,7 +5488,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-05T09:03:31.966Z",
+      "updatedAt": "2026-09-05T09:13:35.986Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20066,13 +20066,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/pu6Q3B_uo_ScJbjIpdqJlzl2xlp8IlCQr6K_sTknxnu8hQMBgkytpxZCxLDvwfpAUD_GgJKvrNeTn1XmCzK3fMFBzKGouCs_RG_19exJ8W5znkXbGLZx1MqE4AR7MrIMq0afBnkvmJQqMu9ZbNi3D8X7631nnGCuiQlA7qbhGs0GWwUfluzugaAJsxODeJrGad3GIZNQJ4Q4I9mi-bxQAmc_bfpF4woYUl3oW8es2kUKgCS3sfcHR6TTBFzkZPIpj_t2B6IHmvwkqO0-02DtogHWpoJVCg74DAcFt644ozCqSv0htSx_JFHwQ6N1stGi5-1OnvuIXtlw50JxQoS4Og.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4xJmKHF",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-05T08:40:59.304Z",
-      "updatedAt": "2026-09-05T09:03:31.966Z",
+      "updatedAt": "2026-09-05T09:12:43.056Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20272,12 +20272,12 @@
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0CCMGB828?linkCode=ogi&amp;th=1&amp;psc=1&amp;tag=ofertos03-21",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-05T09:10:57.386Z",
-      "updatedAt": "2026-09-05T09:10:57.386Z"
+      "updatedAt": "2026-09-05T09:13:35.986Z"
     },
     {
       "id": "telegram-ofertos:41533:amazon:0",
@@ -20290,13 +20290,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/kOJqVQjo_7vHvMKT--hhOaJ00rq4TfSF-z-6SeC7nZLVDleu51lnXoduwMYqIe5L_CkFPpXv-ITvyliiw9E-nAj43o67Iyy1lD5ZWMzMgcoX4Qx-TA1fUl7TyI2LywZVqwJC6vVYOo8EzriOYIRhk_EflRH1mjLkDy3nOShFiogekv0nneqfORJDKVaZGRGK502pebz7wjkoaHEf4Jqr35qWs1qzK7I2IG1S_aiA-jrucCyGZVspAKS3IU3y2PjVt91Wr_r-etkZI_RW3ooR6vPAyiUkA-VF8Gd8b1AODmnsaKdCp_1uXZYV2rXR-i_8teXhvB36uzBULR9E2oSMyg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0CGZL2GS8?_encoding=UTF8&amp;dd=uoneapJmoV19nsisH7fiV9NGzeC2M1AGI-JCm90QnS4%2C&amp;ddc_refnmnt=free&amp;pd_rd_i=B0CGZL2GS8&amp;pd_rd_w=jalbH&amp;content-id=amzn1.sym.4da95cc9-9636-4552-9400-4e18ff1028f6&amp;pf_rd_p=4da95cc9-9636-4552-9400-4e18ff1028f6&amp;pf_rd_r=Y3B49NJ4NZF9S5D84160&amp;pd_rd_wg=8HR3E&amp;pd_rd_r=6c83c576-134b-4a9b-8326-d4f080cd6913&amp;th=1&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-05T09:10:57.386Z",
-      "updatedAt": "2026-09-05T09:10:57.386Z"
+      "updatedAt": "2026-09-05T09:13:44.883Z",
+      "telegramMessageId": 6314,
+      "resultUrl": "https://www.amazon.es/dp/B0CGZL2GS8?tag=chollos00a-21"
     },
     {
       "id": "telegram-ofertos:41534:amazon:0",
@@ -20309,13 +20311,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/kDstax62AHSeKO_91eOQykEwcPSjda8CMgtwOpoXBginW_pjQSrby59GPp47eH8grELzv9UTNQQmp89xPe1CQ_6V6Dzhf1zYdAKp6YIFs-WOe_ZWMdLkFjlK_CVvHSLj-d-8om9bjyi1PD4WWbQQ4QToAhO5Ro7Mu_bRrSeCzJoLj5AmixWfyl-FqBdmSd7wT7VK9d0zCv7cFgTsDiHEscjEmys7ND0Lzk4FTNJxxBQu4LHjPv8c3z1GOnU_gVJhml1AcG4ubY_89RV-1ohnDBvmROsXYUPjpPSQPK6Et2LP94UVjgqyjL3K5Y7kYkUrgUy6UmGE48ucxLadxYc2wA.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B00LTT208Q?_encoding=UTF8&amp;dd=uoneapJmoV19nsisH7fiV9NGzeC2M1AGI-JCm90QnS4%2C&amp;ddc_refnmnt=free&amp;pd_rd_i=B00LTT208Q&amp;pd_rd_w=6Vnys&amp;content-id=amzn1.sym.55f1815a-9f0a-4327-9d2c-02276bc91b5d&amp;pf_rd_p=55f1815a-9f0a-4327-9d2c-02276bc91b5d&amp;pf_rd_r=Y3B49NJ4NZF9S5D84160&amp;pd_rd_wg=8HR3E&amp;pd_rd_r=6c83c576-134b-4a9b-8326-d4f080cd6913&amp;th=1&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-05T09:10:57.386Z",
-      "updatedAt": "2026-09-05T09:10:57.386Z"
+      "updatedAt": "2026-09-05T09:13:42.632Z",
+      "telegramMessageId": 6313,
+      "resultUrl": "https://www.amazon.es/dp/B00LTT208Q?tag=chollos00a-21"
     },
     {
       "id": "telegram-ofertos:41535:amazon:0",
@@ -20328,13 +20332,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/qdbUFW_oxz_kijZOOf6TSFgbTo4V56146tD-FOiL1eITDWC9elYUf3qzaeq2eMMaLIbGCUWk4aQWhcIxKykwjpU_v-a8UrAQie2xzfURM_qL5ioRS2KK0MbXHrWT5AWZcynVH65j5n1C5Oj3Ly9LNGzhuX9rrUM5FADtUIupzd7OR7svfJoRsjUB22ndK0R9PR9QEMvwUptMX2NjyAAcZFzNOJUKGUncwjV_Cyzss-T0MMcfHZ_kkoPbTM-2jx9a4F4Ei13Qt-ZzyjysHqVxnTWTNIVjJ_B2uov9iuDOB73fftCYWa_kxb3i_dEaDTHNFyQi30MwH5_3YtcMoFp5-w.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0F1D5KKQ4?linkCode=ogi&amp;th=1&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-05T09:10:57.386Z",
-      "updatedAt": "2026-09-05T09:10:57.386Z"
+      "updatedAt": "2026-09-05T09:13:40.320Z",
+      "telegramMessageId": 6312,
+      "resultUrl": "https://www.amazon.es/dp/B0F1D5KKQ4?tag=chollos00a-21"
     },
     {
       "id": "telegram-una-ganga:92587:aliexpress:0",
@@ -20348,12 +20354,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3HzA7vL",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-05T09:10:57.873Z",
-      "updatedAt": "2026-09-05T09:10:57.873Z"
+      "updatedAt": "2026-09-05T09:13:35.986Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     }
   ]
 }
