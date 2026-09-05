@@ -4040,7 +4040,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-05T16:52:18.278Z",
+      "updatedAt": "2026-09-05T17:02:34.156Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20303,13 +20303,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/kOm0OxO2xgxErwwK4BAFSxpygwS-sg07SuqkCOorJwTV4KsvYga9WmfB0YSTzGKHWuAzP2_PY28dQ-z7MrQhDFDwEoUdqICbDNIIwtynyYSnJ-6B84D1eC69SPqiDf8TC7WlYksByRibLgw5CcyFKtMHghUHOrgXjYf1SX4t83_TCU87yDfswH4lYeHSd5nhAOY4D_3IluIlp_64S3Lee9vEd855oTo5O0_-QoyBCXB0t6BD7e87NV9vaBnlOF17NY7lb9LTTLhMHH965AzHsOb4zYEO2g9ynITk9PQtjRsyZevHQhEEpp4X-NPemFDwGRuadw90lz_me-8jj47NGQ.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3UmOwvv",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-05T16:41:06.315Z",
-      "updatedAt": "2026-09-05T16:52:18.278Z",
+      "updatedAt": "2026-09-05T17:01:49.574Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20345,13 +20345,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/PmSqe-3KxkrdN5JVgYeuHdGbvR5C2E4iLbwVScdINmnYj7X3JNmbZtguUuh4QQYu-66fZgvJqwHsmTCW5wvDiWX6ctsN3WqeKEH4paXoj1FdkiiS87C5_NR_Ym2J5QRIYZ3liScrGysEZWE7t_uKQ0mMGg3JlUuPP9TlQFT22SWEzZ2cvwjwEoQTRIqdHebnFjW_fJfF8iH3Szuw9IPLdDq-TCzVfjFpzPh2JM-mMnrU0_l6qfIvVz-l-_viEkuLEP6SAfBVVn8OrQEWpJ-6TeYwrE5ziQwsR8CkjaNwxx9jEwiJCxE9bUHQks-LsMqcDrdne4dOa0ac5phrRXEfbg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0DP2Y1F74?ref=cm_sw_r_cso_tg_apan_dp_FYNP56XV5Z20V05CAADF&amp;ref_=cm_sw_r_cso_tg_apan_dp_FYNP56XV5Z20V05CAADF&amp;social_share=cm_sw_r_cso_tg_apan_dp_FYNP56XV5Z20V05CAADF&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "duplicate",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-05T17:01:04.615Z",
-      "updatedAt": "2026-09-05T17:01:04.615Z"
+      "updatedAt": "2026-09-05T17:02:34.945Z"
     }
   ]
 }
