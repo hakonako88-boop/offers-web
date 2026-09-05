@@ -4895,7 +4895,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-05T11:12:33.001Z",
+      "updatedAt": "2026-09-05T11:22:21.104Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20341,13 +20341,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/akuPmlEsDzwTelForwmHfNVNSA62C0b7uJ8p35Tslxf-2J1EUD20FgsRRzizq6ylKjlCP6_lPZi6N7g214ZJxQbjG6-ePQlU_IiEXhBMaB_gSuipg_ofp8mMGjvKB9LpiRs6vMqAB90lDA_J9zj4apAWShQzCgC2eJ62rli6nls_ECzUCcuD0HQ9E3yprvTapJd85rXnSgCJdisVYuxVinHhII-tyCpw14KhAeUjXQ2t1AxSKK4SaLvVyAzswrsbnxbrWkihC8kdGrrhqv82jcL_gJ63T7IOSyaOvfnLVwpPmvCyut4YmNapKiXnNoikdegpbehxyqO-vcmMtKNFAw.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4EZcfmd",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "createdAt": "2026-09-05T11:11:01.794Z",
-      "updatedAt": "2026-09-05T11:12:33.001Z",
+      "updatedAt": "2026-09-05T11:22:21.104Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20361,13 +20361,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/PHwnP-oRobobyq2icflZ0Ck1ZpBY_fx03_ijuAR2IaRdR3LYBu4fZdCfHs7pQPAJRRalBd0vMSmqvc2arh2ozMJQCcYf6mALE3Q_zNIQDOgWkLMkF26jOjL8n9xsPsIKGfZmtxPBXdNTeOioqAcswPf1L06m2VWNvjon3lNtGzRCLdNbY3f9-Kvyg1AiM3aWplTuiZwBiin_1vny41YS4xr2m16BkiOytUPmYv6Msf--VVprSookDBi33UXgxw8HlKJVXRPDKzArMg_oFyiDykpDRF2oXBP8y4xr1B4Po4fFOEHLjb6JwiDXB4aZZw77113qi68xT8EXRp_hO9fe1A.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B039dJIZL",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-05T11:21:05.830Z",
-      "updatedAt": "2026-09-05T11:21:05.830Z"
+      "updatedAt": "2026-09-05T11:22:25.104Z",
+      "telegramMessageId": 6332,
+      "resultUrl": "https://www.amazon.es/dp/B00XAFFABQ?tag=chollos00a-21"
     }
   ]
 }
