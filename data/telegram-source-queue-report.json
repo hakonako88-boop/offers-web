@@ -1,22 +1,44 @@
 {
-  "updatedAt": "2026-09-05T14:12:40.917Z",
+  "updatedAt": "2026-09-05T14:22:23.299Z",
   "summary": {
     "rejected": 343,
-    "published": 459,
+    "published": 458,
     "needs_review": 139,
     "ignored": 23,
     "duplicate": 34,
-    "pending": 2
+    "pending": 3
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92612:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92612,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/92612",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-chollosdiario:45304:amazon:0",
+      "source": "telegram-chollosdiario",
+      "messageId": 45304,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/chollosdiario/45304",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92611:aliexpress:0",
       "source": "telegram-una-ganga",
       "messageId": 92611,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92611",
       "resultUrl": ""
     },
@@ -1086,28 +1108,6 @@
       "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/una_ganga/92569",
       "resultUrl": "https://s.click.aliexpress.com/e/_c35FmGQZ"
-    },
-    {
-      "id": "telegram-una-ganga:92568:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92568,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/92568",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:92567:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92567,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/una_ganga/92567",
-      "resultUrl": "https://www.amazon.es/dp/B0FQJ2H9H3?tag=chollos00a-21"
     }
   ]
 }
