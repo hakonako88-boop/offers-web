@@ -13221,7 +13221,7 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-04T21:10:58.187Z",
-      "updatedAt": "2026-09-06T22:42:15.177Z",
+      "updatedAt": "2026-09-06T22:51:59.093Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue"
     },
     {
@@ -20310,12 +20310,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4gZM8m6",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-06T22:41:00.035Z",
-      "updatedAt": "2026-09-06T22:42:15.177Z"
+      "updatedAt": "2026-09-06T22:51:59.093Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     }
   ]
 }
