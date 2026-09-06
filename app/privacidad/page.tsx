@@ -25,6 +25,9 @@ export default function Page() {
         <p>La herramienta de publicación de Chollos al Día permite que el administrador autorice su cuenta de TikTok mediante el sistema oficial OAuth de TikTok. La integración recibe el identificador técnico de la cuenta autorizada y credenciales temporales necesarias para enviar las publicaciones que el administrador prepara o confirma.</p>
         <p>Estas credenciales se conservan de forma protegida mientras la conexión permanezca activa y no se muestran públicamente ni se venden a terceros. Se utilizan exclusivamente para preparar, enviar y consultar el estado de publicaciones de Chollos al Día mediante la API oficial de TikTok.</p>
         <p>La autorización puede revocarse desde la configuración de seguridad de TikTok. También puedes solicitar la desconexión y eliminación de los datos asociados escribiendo a <a href="mailto:chollosaldia@gmail.com">chollosaldia@gmail.com</a>.</p>
+        <h2>Conexión con Pinterest</h2>
+        <p>Si Pinterest aprueba la integración, Chollos al Día podrá publicar Pines de ofertas propias en el tablero de la cuenta administradora. Cada Pin utiliza una imagen pública de la oferta, título, descripción y enlace de compra; no se accede a los datos de otras cuentas ni se venden datos a terceros.</p>
+        <p>Las credenciales de la integración se guardan de forma protegida y se utilizan exclusivamente para crear, comprobar y evitar repetir Pines de Chollos al Día. Las publicaciones que incluyan enlaces de afiliación se identificarán conforme a las políticas de Pinterest, sin incrementar el precio para la persona compradora.</p>
         <h2>Tus derechos</h2>
         <p>Para solicitudes de acceso, rectificación o supresión puedes escribir a chollosaldia@gmail.com.</p>
         <p><Link href="/">← Volver a la portada</Link></p>

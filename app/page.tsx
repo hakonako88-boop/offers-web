@@ -50,7 +50,7 @@ const websiteSchema = {
         width: 512,
         height: 512,
       },
-      sameAs: ["https://t.me/aldiachollos", "https://www.tiktok.com/@chollosaldia.com"],
+      sameAs: ["https://t.me/aldiachollos", "https://www.tiktok.com/@chollosaldia.com", "https://www.pinterest.com/chollosaldia/"],
       email: "chollosaldia@gmail.com",
       contactPoint: [{ "@type": "ContactPoint", email: "chollosaldia@gmail.com", contactType: "customer support", availableLanguage: "Spanish" }],
     },
