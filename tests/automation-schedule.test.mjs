@@ -73,7 +73,7 @@ test('serializes every Pages deployment and persists reconciled source queue sta
 });
 
 test('publishes validated offers in independently isolated retailer batches', () => {
-  assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE \? 12 : 1/u);
+  assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE \? 20 : 1/u);
   assert.match(miraviaSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
   assert.match(amazonSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
   assert.match(aliExpressSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
@@ -225,7 +225,7 @@ test('does not impose a ten-offer daily cap on verified AliExpress source posts'
 });
 
 test('drains Ofertos and ChollosDiario AliExpress posts in repeated source batches', () => {
-  assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE \? 12 : 1/u);
-  assert.match(aliExpressSync, /MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE \? 16 : 8/u);
+  assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE \? 20 : 1/u);
+  assert.match(aliExpressSync, /MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE \? 24 : 8/u);
   assert.match(aliExpressSync, /\(\?:ofertos\|chollosdiario\)/u);
 });

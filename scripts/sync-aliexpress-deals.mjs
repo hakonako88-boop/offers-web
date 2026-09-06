@@ -25,14 +25,15 @@ const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.json');
 const SOURCE_DIAGNOSTICS_FILE = path.join(ROOT, 'data', 'aliexpress-source-diagnostics.json');
 const SOURCE_QUEUE_MODE = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true';
-// Source events keep running while queued posts remain. A bounded batch keeps
-// each GitHub job below its timeout without imposing a daily publication cap.
-const MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE ? 12 : 1;
-const MAX_PUBLICATION_ATTEMPTS = SOURCE_QUEUE_MODE ? 16 : 8;
+// Source events keep running while queued posts remain. Twenty verified posts
+// per source cycle clears active Telegram channels promptly without treating
+// a large backlog as a reason to publish unverified catalogue results.
+const MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE ? 20 : 1;
+const MAX_PUBLICATION_ATTEMPTS = SOURCE_QUEUE_MODE ? 24 : 8;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
 // Ofertos and ChollosDiario can publish several products close together. Read
 // a broad batch and let later ten-minute source runs drain any remainder.
-const MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE ? 16 : 8;
+const MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE ? 24 : 8;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
