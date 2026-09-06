@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-06T19:12:27.890Z",
+  "updatedAt": "2026-09-06T19:22:18.368Z",
   "summary": {
-    "needs_review": 144,
+    "needs_review": 143,
     "published": 463,
-    "rejected": 337,
+    "rejected": 338,
     "ignored": 22,
     "pending": 2,
     "duplicate": 32
   },
   "recent": [
     {
+      "id": "telegram-una-ganga:92706:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92706,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/92706",
+      "resultUrl": ""
+    },
+    {
       "id": "telegram-una-ganga:92705:aliexpress:0",
       "source": "telegram-una-ganga",
       "messageId": 92705,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92705",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/Ofertos/41582",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:92664:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92664,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/92664",
       "resultUrl": ""
     }
   ]
