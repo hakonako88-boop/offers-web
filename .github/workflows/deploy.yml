@@ -169,11 +169,15 @@ jobs:
       NEXT_PUBLIC_ADSENSE_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_ADSENSE_CLIENT_ID }}
       NEXT_PUBLIC_ADSENSE_HOME_SLOT: ${{ secrets.NEXT_PUBLIC_ADSENSE_HOME_SLOT }}
       NEXT_PUBLIC_ADSENSE_OFFER_SLOT: ${{ secrets.NEXT_PUBLIC_ADSENSE_OFFER_SLOT }}
+      # A resolver repair can explicitly request one immediate recheck. This
+      # avoids leaving recently rejected source offers idle until the next
+      # clock tick, while ordinary code pushes never trigger publications.
+      RECHECK_ALIEXPRESS_SOURCE: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[recheck-aliexpress]') }}
       # Una novedad real en las fuentes y una prueba manual pueden ignorar el
       # intervalo editorial; los filtros de calidad y duplicados siguen activos.
-      FORCE_AUTOMATIC_PUBLICATION: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || (github.event_name == 'workflow_dispatch' && inputs.run_automatic_source != 'none') }}
+      FORCE_AUTOMATIC_PUBLICATION: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || (github.event_name == 'workflow_dispatch' && inputs.run_automatic_source != 'none') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[recheck-aliexpress]')) }}
       BYPASS_PUBLICATION_SCHEDULE: ${{ github.event_name == 'workflow_dispatch' && inputs.run_automatic_source != 'none' }}
-      TELEGRAM_SOURCE_QUEUE_MODE: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed' }}
+      TELEGRAM_SOURCE_QUEUE_MODE: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[recheck-aliexpress]')) }}
     steps:
       - name: Descargar web
         uses: actions/checkout@v5
@@ -264,7 +268,7 @@ jobs:
         run: npm run send:test-telegram
 
       - name: Reactivar enlaces pendientes tras actualizar los extractores
-        if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed' }}
+        if: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || env.RECHECK_ALIEXPRESS_SOURCE == 'true' }}
         run: node scripts/reconcile-telegram-source-queue.mjs
 
       - name: Buscar y publicar ofertas de Amazon
@@ -275,7 +279,7 @@ jobs:
         run: npm run sync:amazon
 
       - name: Buscar y publicar ofertas de AliExpress
-        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'aliexpress') || (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed')) && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'aliexpress') || (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || env.RECHECK_ALIEXPRESS_SOURCE == 'true') && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         continue-on-error: true
         run: npm run sync:aliexpress
 
@@ -297,7 +301,7 @@ jobs:
         run: npm run sync:mediamarkt
 
       - name: Clasificar mensajes pendientes de los canales
-        if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed' }}
+        if: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || env.RECHECK_ALIEXPRESS_SOURCE == 'true' }}
         run: node scripts/reconcile-telegram-source-queue.mjs
 
       - name: Preparar vista previa automática de Amazon

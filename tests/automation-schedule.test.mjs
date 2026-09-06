@@ -85,6 +85,8 @@ test('publishes validated offers in independently isolated retailer batches', ()
   assert.match(aliExpressSync, /resolveAliExpressAffiliateProduct\(resolutionInput, config, \{ sourceMetadata \}\)/u);
   assert.match(miraviaSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
   assert.match(workflow, /FORCE_AUTOMATIC_PUBLICATION:.*telegram_sources_changed/u);
+  assert.match(workflow, /RECHECK_ALIEXPRESS_SOURCE:.*recheck-aliexpress/u);
+  assert.match(workflow, /Buscar y publicar ofertas de AliExpress[\s\S]*?RECHECK_ALIEXPRESS_SOURCE/u);
   assert.match(workflow, /BYPASS_PUBLICATION_SCHEDULE:.*workflow_dispatch/u);
   assert.match(workflow, /Clasificar mensajes pendientes de los canales/u);
 });
