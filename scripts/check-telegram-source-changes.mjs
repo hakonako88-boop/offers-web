@@ -2,7 +2,6 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
-import { publicationWindow } from './publication-policy.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCES_PATH = path.join(ROOT, 'data', 'telegram-source-channels.json');
@@ -10,9 +9,11 @@ const STATE_PATH = path.join(ROOT, 'data', 'telegram-channel-checkpoints.json');
 const QUEUE_PATH = path.join(ROOT, 'data', 'telegram-source-queue.json');
 const MAX_HISTORY_PAGES = 8;
 const MAX_QUEUE_ITEMS = 1_000;
-// v12 reopens recent products that were rejected before rate-aware retries
-// existed. They receive the same factual validation as fresh source posts.
-const ALIEXPRESS_RETRY_POLICY = 'exact-id-query-and-diagnostics-v12-rate-aware';
+// v13 keeps the rate-aware retry state in the queue that is written by the
+// channel monitor itself.  Previously a monitor pass could overwrite the
+// retry marker saved by the publisher, making the same short link look like a
+// fresh failed item on the following pass.
+const ALIEXPRESS_RETRY_POLICY = 'exact-id-query-and-diagnostics-v13-persistent-queue';
 
 export function retryableQueueCount(items = []) {
   return items.filter((item) => item.store === 'AliExpress'
@@ -22,12 +23,16 @@ export function retryableQueueCount(items = []) {
 
 export function publisherDispatchDecision({ changedChannels = [], pendingCount = 0, retryableCount = 0, now = new Date() } = {}) {
   const workAvailable = changedChannels.length > 0 || pendingCount > 0 || retryableCount > 0;
-  const window = publicationWindow({ now });
   return {
-    dispatch: workAvailable && window.allowed,
+    // A public source post is time-sensitive.  The user explicitly wants a
+    // verified offer to be processed when it appears, not held until an
+    // editorial time slot.  Per-run limits and duplicate checks still apply
+    // downstream, so this does not turn a burst into uncontrolled posting.
+    dispatch: workAvailable,
     workAvailable,
-    reason: !workAvailable ? 'empty-queue' : window.reason,
-    window,
+    reason: !workAvailable ? 'empty-queue' : 'new-or-pending-source-offer',
+    // Kept as diagnostic context for callers that used to inspect `window`.
+    window: { allowed: workAvailable, reason: workAvailable ? 'immediate-source-publication' : 'empty-queue', checkedAt: now.toISOString() },
   };
 }
 
@@ -238,7 +243,9 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
               sourceImageUrl: message.sourceImageUrl || '',
               store: link.store, merchantUrl: link.url, status: 'pending', reason: '',
               sourceWeight: Number(source.weight) || 20, priority: Boolean(source.priority),
-              attempts: 0, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
+              attempts: 0,
+              ...(link.store === 'AliExpress' ? { retryPolicyVersion: ALIEXPRESS_RETRY_POLICY } : {}),
+              createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
             });
           });
         }
@@ -275,9 +282,7 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
   const retryableCount = retryableQueueCount(persistedQueue.items);
   const dispatchDecision = publisherDispatchDecision({ changedChannels, pendingCount, retryableCount, now });
   // A repaired resolver must get a chance to reopen and process older failed
-  // links even when the source channel has not posted another message. During
-  // quiet hours the queue keeps growing, but the publisher waits for the first
-  // permitted marketing slot instead of producing misleading zero-offer runs.
+  // links even when the source channel has not posted another message.
   await writeOutput('changed', dispatchDecision.dispatch ? 'true' : 'false');
   await writeOutput('dispatch_reason', dispatchDecision.reason);
   await writeOutput('channels', changedChannels.join(','));
@@ -294,7 +299,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     : 'Sin publicaciones nuevas en los canales vigilados.');
   console.log(`Cola pendiente: ${result.pendingCount}.`);
   console.log(result.dispatchDecision.dispatch
-    ? 'Publicador activado: hay ofertas y el horario está abierto.'
+    ? 'Publicador activado: hay ofertas nuevas o pendientes.'
     : `Publicador en espera: ${result.dispatchDecision.reason}.`);
   if (result.retryableCount) console.log(`Reintentos por reparación: ${result.retryableCount}.`);
   if (result.errors.length) console.warn(`Avisos: ${result.errors.join(' | ')}`);

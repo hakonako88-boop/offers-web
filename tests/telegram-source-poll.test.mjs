@@ -12,20 +12,20 @@ import {
   retryableQueueCount,
 } from '../scripts/check-telegram-source-changes.mjs';
 
-test('keeps pending offers queued overnight and dispatches them at the first weekend slot', () => {
+test('dispatches pending source offers immediately, including outside old editorial slots', () => {
   const overnight = publisherDispatchDecision({
     pendingCount: 4,
     now: new Date('2026-08-30T00:50:00+02:00'),
   });
-  assert.equal(overnight.dispatch, false);
-  assert.equal(overnight.reason, 'quiet-hours');
+  assert.equal(overnight.dispatch, true);
+  assert.equal(overnight.reason, 'new-or-pending-source-offer');
 
   const firstSundaySlot = publisherDispatchDecision({
     pendingCount: 4,
     now: new Date('2026-08-30T10:00:00+02:00'),
   });
   assert.equal(firstSundaySlot.dispatch, true);
-  assert.equal(firstSundaySlot.reason, 'publication-window-open');
+  assert.equal(firstSundaySlot.reason, 'new-or-pending-source-offer');
 });
 
 test('does not wake the publisher when there is no queued work', () => {
@@ -64,7 +64,7 @@ test('wakes the publisher when a repaired AliExpress resolver can retry old fail
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'source-corroboration-v8' },
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'patient-reader-v9' },
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'source-photo-corroboration-v10' },
-    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'exact-id-query-and-diagnostics-v12-rate-aware' },
+    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'exact-id-query-and-diagnostics-v13-persistent-queue' },
     { store: 'Amazon', status: 'rejected', retryPolicyVersion: 'old' },
   ]), 5);
 });
