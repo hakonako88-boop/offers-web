@@ -38,6 +38,17 @@ const attemptedAliExpressIds = new Set((aliExpressCommunityState.seen || [])
   .map((entry) => entry.id));
 const now = new Date().toISOString();
 
+function hasTemporaryAliExpressApiLimit(item) {
+  if (item.store !== 'AliExpress') return false;
+  const diagnostic = aliExpressDiagnostics.items?.[item.id] || {};
+  const details = [
+    ...(Array.isArray(diagnostic.issues) ? diagnostic.issues : []),
+    diagnostic.error,
+    diagnostic.message,
+  ].filter(Boolean).join(' ');
+  return /(?:api access frequency exceeds|rate[ -]?limit|too many requests|throttl)/iu.test(details);
+}
+
 // The former Miravia reader could not expand tidd.ly and rejected otherwise
 // valid posts. Reopen recent affected items exactly once after installing the
 // official-page resolver; every offer still has to pass the normal validation.
@@ -96,6 +107,15 @@ for (const item of queue.items || []) {
     // A source run deliberately verifies only a bounded batch. Do not consume
     // a retry for queued items that were merely waiting behind that batch.
     item.reason = 'Pendiente de turno para verificar el producto exacto en AliExpress';
+    item.updatedAt = now;
+    continue;
+  }
+
+  if (hasTemporaryAliExpressApiLimit(item)) {
+    // The endpoint itself asks for a one-second pause. That is an operational
+    // condition, not evidence that the product is invalid, so never burn one
+    // of the three quality-verification attempts for it.
+    item.reason = 'AliExpress limitó temporalmente la consulta; se conservará para reintentarla automáticamente';
     item.updatedAt = now;
     continue;
   }

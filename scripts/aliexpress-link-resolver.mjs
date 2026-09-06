@@ -4,6 +4,26 @@ import { promisify } from 'node:util';
 
 const execFileAsync = promisify(execFile);
 const NETWORK_TIMEOUT_MS = 10_000;
+// The affiliate endpoint answers with a short ban when several signed calls are
+// made back-to-back. Keep all callers in this Node process on one modest pace.
+// This is deliberately only applied to the real network fetch: injected fetch
+// functions are used by unit tests and must stay fast and deterministic.
+const API_REQUEST_INTERVAL_MS = 1_250;
+const API_RATE_LIMIT_RETRIES = 2;
+let nextAliExpressApiRequestAt = 0;
+
+const pause = (durationMs) => new Promise((resolve) => setTimeout(resolve, durationMs));
+
+export function isTemporaryAliExpressApiLimit(value) {
+  return /(?:api access frequency exceeds|rate[ -]?limit|too many requests|throttl)/iu.test(String(value || ''));
+}
+
+export async function waitForAliExpressApiSlot(fetchImpl = fetch) {
+  if (fetchImpl !== fetch) return;
+  const waitMs = Math.max(0, nextAliExpressApiRequestAt - Date.now());
+  if (waitMs > 0) await pause(waitMs);
+  nextAliExpressApiRequestAt = Date.now() + API_REQUEST_INTERVAL_MS;
+}
 
 function boundedFetch(fetchImpl, url, options = {}, timeoutMs = NETWORK_TIMEOUT_MS) {
   return fetchImpl(url, {
@@ -327,31 +347,44 @@ function apiProducts(data = {}, responseKey = '') {
 }
 
 async function callAliExpressApi(method, fields, config, fetchImpl) {
-  const unsigned = {
-    app_key: config.appKey,
-    format: 'json',
-    method,
-    ...fields,
-    sign_method: 'sha256',
-    timestamp: timestamp(),
-    v: '2.0',
-  };
-  const params = { ...unsigned, sign: createAliExpressSignature(unsigned, config.appSecret) };
-  const response = await boundedFetch(fetchImpl, `${ALIEXPRESS_ENDPOINT}?${new URLSearchParams(params)}`);
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok && response.ok !== undefined) {
-    throw new Error(`AliExpress API responded ${response.status || 'without status'}.`);
+  let lastRateLimitError;
+  for (let attempt = 0; attempt <= API_RATE_LIMIT_RETRIES; attempt += 1) {
+    await waitForAliExpressApiSlot(fetchImpl);
+    try {
+      const unsigned = {
+        app_key: config.appKey,
+        format: 'json',
+        method,
+        ...fields,
+        sign_method: 'sha256',
+        timestamp: timestamp(),
+        v: '2.0',
+      };
+      const params = { ...unsigned, sign: createAliExpressSignature(unsigned, config.appSecret) };
+      const response = await boundedFetch(fetchImpl, `${ALIEXPRESS_ENDPOINT}?${new URLSearchParams(params)}`);
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok && response.ok !== undefined) {
+        throw new Error(`AliExpress API responded ${response.status || 'without status'}.`);
+      }
+      const apiError = data?.error_response || data?.error;
+      const responsePayload = Object.values(data || {}).find((value) => value?.resp_result)?.resp_result;
+      const responseCode = Number(responsePayload?.resp_code || 0);
+      if (apiError || (responseCode && responseCode !== 200)) {
+        const message = String(apiError?.msg || apiError?.message || responsePayload?.resp_msg || 'affiliate request rejected')
+          .replace(/[\r\n]+/gu, ' ')
+          .slice(0, 180);
+        throw new Error(`AliExpress ${method} failed: ${message}`);
+      }
+      return data;
+    } catch (error) {
+      if (attempt < API_RATE_LIMIT_RETRIES && isTemporaryAliExpressApiLimit(error?.message)) {
+        lastRateLimitError = error;
+        continue;
+      }
+      throw error;
+    }
   }
-  const apiError = data?.error_response || data?.error;
-  const responsePayload = Object.values(data || {}).find((value) => value?.resp_result)?.resp_result;
-  const responseCode = Number(responsePayload?.resp_code || 0);
-  if (apiError || (responseCode && responseCode !== 200)) {
-    const message = String(apiError?.msg || apiError?.message || responsePayload?.resp_msg || 'affiliate request rejected')
-      .replace(/[\r\n]+/gu, ' ')
-      .slice(0, 180);
-    throw new Error(`AliExpress ${method} failed: ${message}`);
-  }
-  return data;
+  throw lastRateLimitError || new Error(`AliExpress ${method} failed after retrying.`);
 }
 
 async function queryAliExpressProductById(productId, config, fetchImpl) {

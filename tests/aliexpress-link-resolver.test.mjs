@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { aliexpressProductId, isOwnedAliExpressAffiliateUrl, metadataFromAliExpressHtml, metadataFromAliExpressProduct, metadataFromAliExpressReader, resolveAliExpressAffiliateProduct, resolveAliExpressProductUrl } from '../scripts/aliexpress-link-resolver.mjs';
+import { aliexpressProductId, isOwnedAliExpressAffiliateUrl, isTemporaryAliExpressApiLimit, metadataFromAliExpressHtml, metadataFromAliExpressProduct, metadataFromAliExpressReader, resolveAliExpressAffiliateProduct, resolveAliExpressProductUrl } from '../scripts/aliexpress-link-resolver.mjs';
+
+test('recognizes a temporary AliExpress API limit without treating it as an invalid product', () => {
+  assert.equal(isTemporaryAliExpressApiLimit('Api access frequency exceeds the limit. this ban will last 1 seconds'), true);
+  assert.equal(isTemporaryAliExpressApiLimit('affiliate request rejected'), false);
+});
 
 test('extracts an AliExpress product id from an attributed destination URL', () => {
   assert.equal(aliexpressProductId('https://www.aliexpress.com/item/1005011620902362.html?aff_fsk=example'), '1005011620902362');

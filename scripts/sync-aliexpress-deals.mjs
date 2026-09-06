@@ -13,7 +13,7 @@ import { discoverCommunitySignals, nextCommunitySignalState } from './community-
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { mirrorTelegramMessage } from './telegram-mirror.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
-import { resolveAliExpressAffiliateProduct } from './aliexpress-link-resolver.mjs';
+import { resolveAliExpressAffiliateProduct, waitForAliExpressApiSlot } from './aliexpress-link-resolver.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
 
@@ -113,6 +113,10 @@ async function searchAliExpress(config, topic) {
       'coupon_code',
     ].join(','),
   });
+  // Product searches and product-detail/link calls share the same affiliate
+  // quota. Reserve a slot here too, so a search cannot trigger a one-second
+  // temporary ban for the conversion that immediately follows it.
+  await waitForAliExpressApiSlot();
   const response = await fetch(`${ALIEXPRESS_ENDPOINT}?${new URLSearchParams(params)}`);
   const data = await response.json().catch(() => ({}));
   const error = data?.error_response || data?.error;
