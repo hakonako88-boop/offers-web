@@ -690,7 +690,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-06T17:12:06.129Z",
+      "updatedAt": "2026-09-06T17:22:39.737Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20303,12 +20303,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3kpGzHF",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-06T17:21:03.438Z",
-      "updatedAt": "2026-09-06T17:21:03.438Z"
+      "updatedAt": "2026-09-06T17:22:39.737Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
       "id": "telegram-una-ganga:92700:amazon:0",
@@ -20321,13 +20322,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/uSenp1wyzkZ3C-1xNLIPk36bsMaxJtq20nrtkJCkErCDPymOYsuWCpYHI5fAqda-I6HEbujEaXEaHXZNiXMgvnDcrV-lrqZEnSTXim1K7z5y8dsfBsQJVfUh8FHEUOsXbtX05YaJg6X-lpRaRmA5wDIryjL-S8_n4DfPNsNj5Sb7grm4OBl2tS_nIrJf6BYkw1aPrqjQGqll7CxYeT0yhV78ZUayHvWsKrm5wFGlsVkeGhgxnPKFUTXHrUP7kO2wbKkyqS0yPRz-SFltHgjA-47Ss0-ClIPlzQ-XbVL0owb6qfH5GaHMCyWStrIcCQpKipX-z67ALcNsQPtkBhsXKQ.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/A0gB3sFDH",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-06T17:21:03.901Z",
-      "updatedAt": "2026-09-06T17:21:03.901Z"
+      "updatedAt": "2026-09-06T17:22:45.655Z",
+      "telegramMessageId": 6430,
+      "resultUrl": "https://www.amazon.es/dp/B0GH835YRQ?tag=chollos00a-21"
     },
     {
       "id": "telegram-paramanitas:4708:amazon:0",
@@ -20340,13 +20343,13 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B09T6MQ68D?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-06T17:21:04.852Z",
-      "updatedAt": "2026-09-06T17:21:04.852Z"
+      "updatedAt": "2026-09-06T17:22:40.586Z"
     }
   ]
 }
