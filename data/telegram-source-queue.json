@@ -13202,7 +13202,7 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-04T21:10:58.187Z",
-      "updatedAt": "2026-09-06T23:05:18.315Z",
+      "updatedAt": "2026-09-06T23:12:24.863Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue"
     },
     {
@@ -20310,14 +20310,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/Tc-ZaIZb4MSm4F9rc51nnsKCSl25JfSwo1GZR-ujZQONu7b_9XpaDBDNAIdTPCpT2xbUNxxaDraylLCjY-N7bs5-e7rMhdslHTwIx2RBuwGzPLd-xoroSkT5Sf-l0UZuNNixQr6n0LsOHY6NilnMIYD3nhb8Sk1DFppbWfxtYjBtYqqy1FsP1CsKqjarvPIvtQeCiEh4T0-rCfZhfquxFkzzo5WEkcAGRDqTJ6-UESEalV8PRXtJuTP00kvHIaJ09SXz6lCCpyNMk2O2cOTY5DN44JPa7JFr4-K4KPAdn9yXBgHghbwioEsYFedxliPFGG3FFuDpDxDu9Fc0BjaYIg.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4KHNzCp",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-06T23:03:59.466Z",
-      "updatedAt": "2026-09-06T23:05:18.315Z"
+      "updatedAt": "2026-09-06T23:12:24.863Z"
     }
   ]
 }
