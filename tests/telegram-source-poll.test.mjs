@@ -64,7 +64,7 @@ test('wakes the publisher when a repaired AliExpress resolver can retry old fail
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'source-corroboration-v8' },
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'patient-reader-v9' },
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'source-photo-corroboration-v10' },
-    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'exact-id-query-and-diagnostics-v11' },
+    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'exact-id-query-and-diagnostics-v12-rate-aware' },
     { store: 'Amazon', status: 'rejected', retryPolicyVersion: 'old' },
   ]), 5);
 });

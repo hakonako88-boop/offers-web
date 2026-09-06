@@ -368,8 +368,8 @@ const prioritySourceCounts = new Map();
 const orderedCommunitySignals = [...communityDiscovery.signals].sort((left, right) => {
   // A previously blocked offer that has been explicitly reopened for the
   // current resolver must not be starved forever by newer, unverified posts.
-  const leftRepaired = left.retryPolicyVersion === 'exact-id-query-and-diagnostics-v11' ? 1 : 0;
-  const rightRepaired = right.retryPolicyVersion === 'exact-id-query-and-diagnostics-v11' ? 1 : 0;
+  const leftRepaired = left.retryPolicyVersion === 'exact-id-query-and-diagnostics-v12-rate-aware' ? 1 : 0;
+  const rightRepaired = right.retryPolicyVersion === 'exact-id-query-and-diagnostics-v12-rate-aware' ? 1 : 0;
   return rightRepaired - leftRepaired || Date.parse(right.publishedAt || '') - Date.parse(left.publishedAt || '');
 });
 for (const signal of orderedCommunitySignals) {

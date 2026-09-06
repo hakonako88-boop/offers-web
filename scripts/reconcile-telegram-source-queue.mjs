@@ -14,7 +14,9 @@ const PUBLICATION_FILES = [
 ];
 const MAX_ATTEMPTS = 3;
 const MIRAVIA_RETRY_POLICY = 'exact-official-page-v1';
-const ALIEXPRESS_RETRY_POLICY = 'exact-id-query-and-diagnostics-v11';
+// v12 makes the rate-limit retry and preservation logic available to recent
+// offers that were rejected by the former, too-fast resolver.
+const ALIEXPRESS_RETRY_POLICY = 'exact-id-query-and-diagnostics-v12-rate-aware';
 
 function readJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return fallback; }

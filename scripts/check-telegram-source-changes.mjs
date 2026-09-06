@@ -10,7 +10,9 @@ const STATE_PATH = path.join(ROOT, 'data', 'telegram-channel-checkpoints.json');
 const QUEUE_PATH = path.join(ROOT, 'data', 'telegram-source-queue.json');
 const MAX_HISTORY_PAGES = 8;
 const MAX_QUEUE_ITEMS = 1_000;
-const ALIEXPRESS_RETRY_POLICY = 'exact-id-query-and-diagnostics-v11';
+// v12 reopens recent products that were rejected before rate-aware retries
+// existed. They receive the same factual validation as fresh source posts.
+const ALIEXPRESS_RETRY_POLICY = 'exact-id-query-and-diagnostics-v12-rate-aware';
 
 export function retryableQueueCount(items = []) {
   return items.filter((item) => item.store === 'AliExpress'
