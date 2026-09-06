@@ -813,7 +813,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-06T16:52:27.488Z",
+      "updatedAt": "2026-09-06T16:57:38.518Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20260,12 +20260,12 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/48gAmAt",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (2/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 2,
       "createdAt": "2026-09-06T16:41:01.957Z",
-      "updatedAt": "2026-09-06T16:52:27.488Z",
+      "updatedAt": "2026-09-06T16:57:38.518Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20341,13 +20341,16 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/k8CbgUTpmQbzqp2Lu4FoJWEE2Ke6VdCKGmYhz93HL2IgDm0EbZ1EbB-TdCoMuG6RNqOfg-4H0KDdrP_0x3a0lNqO_L8eAw7Njma1MwOMUL-AJX7oUDVxFn75AZbG1tKzg-6iP0JNbxQmB5_9rtuXMxOYMRfgBQSO5v9mH0kIYxVTLWKNiAoazFGCu7DcSMBHyXf1d12DVQwyo2kkFVEeG3bAE1ogspxWl6tiKkejR1mantCuIkjOY5_aWf5sXxfWKyXHvXR0H8JRb25jhOcPlgGEPF8yyjtjEnLERIY1pZaPDcOASWmRQBlv7SYik7-E9WhXGATpr8LwVuPT_4NrmA.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4C7PXyZ",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-06T16:56:16.660Z",
-      "updatedAt": "2026-09-06T16:56:16.660Z"
+      "updatedAt": "2026-09-06T16:57:38.518Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11",
+      "telegramMessageId": 6426,
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3Ms0RYt"
     }
   ]
 }
