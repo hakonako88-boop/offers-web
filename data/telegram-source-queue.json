@@ -611,7 +611,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-06T17:42:47.695Z",
+      "updatedAt": "2026-09-06T17:52:21.294Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20283,13 +20283,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/GAmyPK1H7vYQfoGQPjROgwyrvz44s4BpJAmXEKLAMjlzvaG-w7yRcFdL37dpLYMDLXJPcrQA_rXaXmQESu1pYP9dkEcDkDLfrDF7Z4F3L6ARyFeApSiWoxJFdscH3oSq52Gpp8w9egNYHVfhHO7ZAvZciMsDbkLBHsfZdtekmlfahDwu5NCeNFW_WjzMaUUri-PW67UXoeWcUd_4VsFsw0QaN5V_SJM4i33sI0xWzWeqrXJJ76ttpoZY4WCxTwG_hYPBM2Dufb6SROMr5YI5UKmcLn8kFbR58wLSesyhpAVVdDsUEGnxK4nKsqN5rl7aXzg36D60Bg10qCmZYES5FQ.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4L9olSV",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 1,
+      "attempts": 3,
       "createdAt": "2026-09-06T17:40:56.816Z",
-      "updatedAt": "2026-09-06T17:42:47.695Z",
+      "updatedAt": "2026-09-06T17:52:21.294Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20304,12 +20304,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4ayz0lc",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-06T17:40:57.283Z",
-      "updatedAt": "2026-09-06T17:42:47.695Z"
+      "updatedAt": "2026-09-06T17:52:21.294Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-ofertos:41620:aliexpress:0",
@@ -20323,12 +20324,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3XGD1lb",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-06T17:50:58.959Z",
-      "updatedAt": "2026-09-06T17:50:58.959Z"
+      "updatedAt": "2026-09-06T17:52:21.294Z",
+      "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
       "id": "telegram-ofertos:41621:amazon:0",
@@ -20341,13 +20343,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/L-FbynYcxEd2uEGbVV8Dh8LvVV-TOnIhF67bMgoMVlrrNWMsz3UxhkFn37pAKZ0bxflVcMAgVVZSzmasLy54sgZ6Cb_x05_yA6Ahk5HnCuzSTUcg48VPtXrCN9MLxLvjB1ymyPm1v5WXGqe14_Jgis52lg010Cf8aqV9rzh1KPJ-pcAlh3kKfMDJprZgkY5gl9UB9n_ZVerYALxK1X1X6BXIxxg-0UK5VSQbRTSwc28fDBdarXiuadaSAPFFyauzbwns7dUBwttfMImwF_hyJ-eigeIWGbnhgXIbdeZodwezEGA27ZAKnUb9xsdJcsctkceOofB_45ep4vyigu2WSQ.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0CP232CNG?th=1&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "duplicate",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-06T17:50:58.959Z",
-      "updatedAt": "2026-09-06T17:50:58.959Z"
+      "updatedAt": "2026-09-06T17:52:22.280Z"
     }
   ]
 }
