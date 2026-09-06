@@ -1436,7 +1436,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-06T12:43:10.831Z",
+      "updatedAt": "2026-09-06T12:52:07.348Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20314,12 +20314,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4avoImi",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-06T12:41:00.596Z",
-      "updatedAt": "2026-09-06T12:43:10.831Z"
+      "updatedAt": "2026-09-06T12:52:07.348Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-chollosdiario:45311:amazon:0",
@@ -20332,13 +20333,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/vD6qFIJ_vdWVPEaWKS-lmk-O-F1EWFkaE2AEz8O5Fj8O_ybUsR-laEYo8aW3O40sMow6nN6MSISp1dWbxlK4bo87qPpD43DOLKgiEYuewBoIt53SV_Rl9cj_W8FgWqaZ18ZJdBVz1KwzL17pQHnMWWYlG-ELOEm-HWIIOTK8oyJSdwC3dRNkR4BhN9fACscDYINd6Xmdrv44jmg7Dc-JggDGsfKYtDIEf0_wys2wx7FKzLMFoxjuCabJbpGt7-OuY62-EPyXhNZ-8u16eayKkmpWk8No03avSPr3IAi0pBFZBLahRo_WpgQtZWCMXup2MBVUvH2fn9uFtsjOkiSsYg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0F2477NLF?tag=chollodeldia-21",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-06T12:50:57.000Z",
-      "updatedAt": "2026-09-06T12:50:57.000Z"
+      "updatedAt": "2026-09-06T12:52:10.877Z",
+      "telegramMessageId": 6411,
+      "resultUrl": "https://www.amazon.es/dp/B0F2477NLF?tag=chollos00a-21"
     }
   ]
 }
