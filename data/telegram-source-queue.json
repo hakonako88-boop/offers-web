@@ -1735,7 +1735,7 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-01T11:41:06.210Z",
-      "updatedAt": "2026-09-06T10:52:36.651Z",
+      "updatedAt": "2026-09-06T11:02:07.341Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v11"
     },
     {
@@ -20308,13 +20308,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/quh1D2tUd9rxSjL1u8ofP3IIMtDVAZ5VZDSp3m5Azu1jkcbyb5Q8nfD4ZfnDIz-9RHHREaD-j13_cXDQwHVhe8fIxVWFbWyx1wmEMFi4_FiiM5rLat0gfQnsk43p95kzpJdvXR72kNkUCeq29BJQRsPLJd5JLO2Kcul3IYQg3V2Couf_-52oXICoTEr_FUar_SKXplf9soHaOgHLhz0LscBsN9tDrLznRQdOsYbdupzF0kh5cKg2emyNYjm9BlKe_CQgaFliE6qTjQ8n4u2kMRP8NFzmhiFKv2J7QGUzxRFYJgfbj8U8Xw45o2BVybwiG6QHrUqzpC-vJGzpAVIt5w.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4ieT80E",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-06T10:40:57.966Z",
-      "updatedAt": "2026-09-06T10:52:36.651Z",
+      "updatedAt": "2026-09-06T11:01:35.159Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20328,13 +20328,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/spk2yLImqRv8GdRoVO1_gBUQOtqnsyBFplTCwnnmaBkpiYX_CHOD6JdfGy4fySfN3mEzUGfy8nLUW1sTPQXZLNQqUD_bif-zywwgalMMGglOEIFceSXS9XPtWrj6O74Jb3O8SjZPuodAQ02duOnisOfXKS-RW0xoY3moBkYSyakrYi8egj9T55EQLeUgLJ6_yvDvuxrS5KjOIJzUsMp787bkDN_SfZdpBbKAqyacXEYTlW2yeE_Bkip78yXl_G9EKbEhgVRtJ_YsX4eiw9WCcqxpEaOBsdDuHJPvL0rBIUV_wWv0DodTWUw6jMo_tlGOui_ipnm-x--FJNgVSRWlMA.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B06XD87XJD?linkCode=ml1&amp;linkId=e04a0f2ce9b099937519be2a65a6da24&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-06T11:00:56.441Z",
-      "updatedAt": "2026-09-06T11:00:56.441Z"
+      "updatedAt": "2026-09-06T11:02:12.013Z",
+      "telegramMessageId": 6404,
+      "resultUrl": "https://www.amazon.es/dp/B06XD87XJD?tag=chollos00a-21"
     }
   ]
 }
