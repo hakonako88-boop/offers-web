@@ -15,6 +15,13 @@ test('fans and vacuum variants are prioritised above generic clothing', () => {
   assert.equal(interestFamily({title:'Aspiradora Xiaomi'}), 'limpieza');
 });
 
+test('food staples are useful automatic offers and have their own family', () => {
+  for (const title of ['Aceite de oliva virgen extra', 'Café en cápsulas', 'Jamón curado con queso', 'Pack de leche']) {
+    assert.equal(automaticInterest({ title }), 2, title);
+    assert.equal(interestFamily({ title }), 'alimentacion', title);
+  }
+});
+
 test('automatic batches give different useful product families a turn', () => {
   const input = [{title:'Aspiradora A',score:100}, {title:'Aspirador B',score:90}, {title:'Ventilador techo',score:50}, {title:'Camiseta',score:2000}];
   assert.deepEqual(selectInterestingOffers(input).map(x=>x.title), ['Aspiradora A','Ventilador techo','Aspirador B']);

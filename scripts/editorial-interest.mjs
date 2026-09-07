@@ -14,6 +14,7 @@ export function interestFamily(offer = {}) {
     ['electrodomesticos', /\b(lavadoras?|frigorificos?|televisor(?:es)?|lavavajillas)\b/u],
     ['bricolaje', /\b(taladros?|destornillador(?:es)?|herramientas?)\b/u],
     ['gaming', /\b(consolas?|videojuegos?)\b/u],
+    ['alimentacion', /\b(aceite|cafe|capsulas? de cafe|jamon|queso|leche|arroz|pasta|conservas?|atun|galletas?|chocolate|cereales?|frutos secos|bebidas?|refrescos?|cerveza|vino)\b/u],
     ['consumo', /\b(detergentes?|panales|papel higienico|lavavajillas)\b/u],
   ];
   return families.find(([, pattern]) => pattern.test(title))?.[0] || 'otros';
