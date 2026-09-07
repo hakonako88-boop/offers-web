@@ -62,6 +62,13 @@ function validHttpUrl(value = '') {
   try { return ['http:', 'https:'].includes(new URL(String(value)).protocol); } catch { return false; }
 }
 
+function titlePriceMatches(offer) {
+  const shown = [...String(offer.title || '').matchAll(/(\d{1,4}(?:[.,]\d{2}))\s*€/gu)]
+    .map((match) => numericPrice(match[1])).filter(Boolean);
+  const price = numericPrice(offer.price);
+  return !shown.length || shown.some((amount) => Math.abs(amount - price) <= Math.max(0.05, price * 0.02));
+}
+
 function offerScore(offer) {
   const price = numericPrice(offer.price);
   const previous = numericPrice(offer.previousPrice);
@@ -75,7 +82,7 @@ export function selectDailyOffers(offers, targetDate, maximum = MAX_OFFERS) {
   const eligible = selectInterestingOffers(offers
     .filter((offer) => madridParts(new Date(Number(offer.date) * 1000)).date === targetDate)
     .filter((offer) => cleanTitle(offer.title, 500).length >= 5 && numericPrice(offer.price) > 0
-      && String(offer.image || '').trim() && validHttpUrl(offer.url))
+      && String(offer.image || '').trim() && validHttpUrl(offer.url) && titlePriceMatches(offer))
     .filter((offer) => {
       const price = numericPrice(offer.price);
       const previous = numericPrice(offer.previousPrice);

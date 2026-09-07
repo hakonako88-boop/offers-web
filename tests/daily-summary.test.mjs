@@ -65,6 +65,7 @@ test('nightly top deals reject generic fashion and implausible marketplace refer
     { ...offer({ id: 'shoe', store: 'Amazon', price: '39,00 €', previousPrice: '100,00 €', date }), title: 'Zapatillas de moda' },
     { ...offer({ id: 'inflated', store: 'AliExpress', price: '90,00 €', previousPrice: '300,00 €', date }), title: 'Escritorio eléctrico' },
     { ...offer({ id: 'fan', store: 'Amazon', price: '25,00 €', previousPrice: '40,00 €', date }), title: 'Ventilador silencioso' },
+    { ...offer({ id: 'wrong', store: 'Amazon', price: '239,95 €', previousPrice: '300,00 €', date }), title: 'Cepillo eléctrico oferta 90,00€' },
   ], target);
   assert.deepEqual(selected.map((item) => item.source_product_id), ['fan']);
 });
