@@ -20172,13 +20172,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/nr0yn_DVSMmFzQC2KThPRVNsozgM-Cyp36D50_CJYF68QUUr8wlDSV1KmfVc8UfOWp4jmaeKFGb_RU8_2hBoqGsjVDAnf1AHXPodrrYnBRfnU5bK4ydW8F8PfAUpgatqvaR8c_MIYr181ICZQMetPffJ8ydm3lG2NeJPIz1_1QWmf03JMaQK08UnFDBa1JC3sfzBBxy9pi3N2gToRkvAWpqZ09iJv8fbUxidZ2uWjEZ1KqsUe1HazhLbxLCwEU23y-JIjL6IO6bnS-NF35s_1ihlzUQt5vrXMjTHNbOmy0_TUKoTs0eTvYkiQeCUz7mhoQ2WwV5CqaQLSpLbFD6lEQ.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4x5mF1k",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-07T11:40:58.339Z",
-      "updatedAt": "2026-09-07T12:02:51.564Z",
+      "updatedAt": "2026-09-07T12:11:39.327Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20296,14 +20296,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/BMmFvoOchA8i9XcOI9UouPvXpCNOMso8H9WQSvhPMXRq6Jv3JhUzm24Cd8pjSKOHIecjy2R9W07q1iJt6PKJGhgDIBinkkJ4DZ6casFY6_59gRzc8vuxirUx_SptuTdPN3_rInTe1te4VpFcUKJkOaexRw8LiNWQnCjHSBeSAC9ZeRkRWOWRrYvskRfyY3lwQezCgFYaJhj1URIz0idig1Ytcq7jcqJep4IzCqZFknt9lgS17JFYTtlXytUG7jjV4X-OdFxQOyo-tYPthNTpyIRxlMAtofmrPSv0pDud1pHPS_6sG1-6Iac-KvLMh1B2qbJ41e042Wgqu4L4t3VOcg.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3h3vTi9",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-07T12:00:58.888Z",
-      "updatedAt": "2026-09-07T12:02:51.564Z"
+      "updatedAt": "2026-09-07T12:12:30.643Z"
     },
     {
       "id": "telegram-paramanitas:4713:amazon:0",
@@ -20335,13 +20335,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/nfIbQot1Gf7J05LNpWoJ0LafnpucOYHEE2gxUinccBqbXTIoodLp2zUMLYVc8W4YG9pXdn4W740NAY-iRQ5936dhflEPGDuN7dprUQ4NKHG6MRWTba1YvkWYif237ak_87jyYt6FOuVUL_iNPcKBTOwVanSrqGK1jJ1806fnyTTsVFOsrO4fYFNyRfdukt0zAj1SMrkVEXGhhh3ivLu1ZsdDxx4cQItUqxWbAWZQmv_1bZsCGUGw-BXGea2pOQHf2hOdXLUVF6bUdV4OBf60XqkpglpAShiot6omx5Nqy_Ecp82L_cP7ChQjZvIr8EKmREy7761zR-vPa_oC1uOJEQ.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0FDH188WL?tag=chollodeldia-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-07T12:10:59.891Z",
-      "updatedAt": "2026-09-07T12:10:59.891Z"
+      "updatedAt": "2026-09-07T12:12:31.279Z"
     }
   ]
 }
