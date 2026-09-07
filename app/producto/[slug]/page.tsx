@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { dealHref } from "../../lib/deals";
-import { getProductBySlug, productHref, publishedProducts } from "../../lib/products";
+import { getProductBySlug, productHref, productIsIndexable, publishedProducts } from "../../lib/products";
 
 const siteUrl = "https://chollosaldia.com";
 const money = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = product.bestOffer
     ? `Compara el precio de ${product.name}. Mejor oferta activa: ${money.format(product.bestOffer.price)} en ${product.bestOffer.store}.`
     : `Consulta el último precio registrado y ofertas relacionadas de ${product.name}.`;
-  return { title: `${product.name}: precio y ofertas`, description, alternates: { canonical: productHref(product) }, robots: { index: Boolean(product.bestOffer), follow: true }, openGraph: { title: `${product.name}: precio y ofertas`, description, url: productHref(product), images: [{ url: product.imageUrl, alt: product.name }] } };
+  return { title: `${product.name}: precio y ofertas`, description, alternates: { canonical: productHref(product) }, robots: { index: productIsIndexable(product), follow: true }, openGraph: { title: `${product.name}: precio y ofertas`, description, url: productHref(product), images: [{ url: product.imageUrl, alt: product.name }] } };
 }
 
 export default async function ProductPage({ params }: Props) {

@@ -1,4 +1,4 @@
-import { allDeals, PublishedDeal } from "./deals";
+import { allDeals, publishedDeals, PublishedDeal } from "./deals";
 import recommendedProductIds from "../../data/editor-recommendations.json";
 
 export type ProductPricePoint = { price: number; checkedAt: string; store: string; availability: "available" | "expired" };
@@ -63,6 +63,25 @@ export const publishedProducts: PublishedProduct[] = [...groups.entries()].map((
     editorRecommended: recommendedProductIds.includes(id),
   };
 }).sort((a, b) => Number(Boolean(b.bestOffer)) - Number(Boolean(a.bestOffer)) || (a.bestOffer?.price || Infinity) - (b.bestOffer?.price || Infinity));
+
+/**
+ * A product URL must add something that the individual offer URL does not.
+ *
+ * The raw feed can contain many short-lived listings of the same quality as
+ * an offer card. Listing every one in the sitemap made Google spend crawl
+ * budget on more than a thousand near-identical product pages.  We keep all
+ * of them available for visitors, but offer search engines only pages with a
+ * real comparison, a verified price history, or an explicit editorial pick.
+ */
+const selectedDealIds = new Set(publishedDeals.map((deal) => deal.id));
+
+export function productIsIndexable(product: PublishedProduct) {
+  const selectedActiveOffers = product.activeOffers.filter((offer) => selectedDealIds.has(offer.id));
+  const comparedStores = new Set(selectedActiveOffers.map((offer) => offer.store));
+  return product.editorRecommended || product.historyReady || comparedStores.size >= 2;
+}
+
+export const indexableProducts = publishedProducts.filter(productIsIndexable);
 
 export function productHref(product: Pick<PublishedProduct, "slug">) { return `/producto/${product.slug}/`; }
 export function getProductBySlug(slug: string) { return publishedProducts.find((product) => product.slug === slug); }

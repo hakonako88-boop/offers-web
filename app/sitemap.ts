@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { categoryIsIndexable, categoryPages } from "./lib/categories";
 import { dealHref, publishedDeals } from "./lib/deals";
 import { postHref, publishedPosts } from "./lib/posts";
-import { productHref, publishedProducts } from "./lib/products";
+import { indexableProducts, productHref } from "./lib/products";
 
 const siteUrl = "https://chollosaldia.com";
 const latestPublication = Math.max(0, ...publishedDeals.map((deal) => Date.parse(deal.verifiedDate || "") || 0), ...publishedPosts.map((post) => Date.parse(post.publishedAt) || 0));
@@ -44,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.6,
     })),
-    ...publishedProducts.filter((product) => product.bestOffer).map((product) => ({
+    ...indexableProducts.map((product) => ({
       url: `${siteUrl}${productHref(product)}`,
       lastModified: product.bestOffer?.verifiedDate ? new Date(product.bestOffer.verifiedDate) : homepageLastModified,
       changeFrequency: "daily" as const,
