@@ -1667,7 +1667,7 @@
       "merchantUrl": "https://tidd.ly/49PC5O0",
       "sourceImageUrl": "https://cdn4.telesco.pe/file/bGuPjcEI48HQX3uJeI_VoO8jhJflG6pMm7f7exYEuoARWz5yN0DYE6-1oR8WA7ZPNSfHelGHODAx3GXYmQungNEP4liLLWRWFFDxauetdejGW6S7knL1DL5nT16qhOmC85x1tcdP65dxhZTsQz_6bCm4x7jmSnZK9zsXQNrafAamuAAogYgA67VfgA3nQx5NltNPTaijVDx_4Bs8JXGeUfHUmnh5saghKxh7Jgki3s8KUiBhJTiTGm1fZuJIGElq02rIi4YtWqvvhwj3glB6AaQs1supKhlG69DlC4dVSPmiU3DrYZurjxv9A5ZvLJE4a6hza7Ne2VmjrBqxg4ZTRw.jpg",
       "priority": false,
-      "retryPolicyVersion": "",
+      "retryPolicyVersion": "exact-official-page-v1",
       "attempts": 1
     },
     {
@@ -2031,9 +2031,14 @@
       "coupon": ""
     }
   ],
-  "lastCheckedAt": "2026-09-06T23:51:53.929Z",
+  "lastCheckedAt": "2026-09-07T00:02:07.235Z",
   "micholloLastCheckedAt": "2026-09-06T20:12:31.098Z",
   "sourceHealth": [
+    {
+      "source": "telegram-source-queue",
+      "status": "ok",
+      "found": 1
+    },
     {
       "source": "michollo",
       "status": "deferred"
