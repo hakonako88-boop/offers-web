@@ -20308,12 +20308,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4xLpDIA",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-07T20:40:59.797Z",
-      "updatedAt": "2026-09-07T20:42:48.615Z"
+      "updatedAt": "2026-09-07T20:52:19.460Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-chollosdiario:45327:amazon:0",
@@ -20326,13 +20327,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/WX59Fk8_LFhliQIyt9YayHZNgr5Ij56SFh9Jh19CpuMaCz9A0zT7dI8iDG7WWUWllrEks0mN7AzkssDt1pzL5oOSig7kWzR0fZ95ZckuEdxt645uUVI3bO5i7hCBLK761N3RsRBPI1_t3no9kOZZEwFNFc66ORjEqSd69zdyN4kJytkZuP0TiyAw_bjDbXQFHH58zSKhIqVYtdDZ79VrHvTWcfuwg5MOe2jjhaHG6glNoZt6GVlXr9CSXDhnVrkaHY7jd1s4WGH2kG2SihqhpuRXf7eyvnau6ObsGT9GkjYSz59GxWQteyKV2IkWLpRWG4VP27JtPElyFPmE4YvTDw.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B01KQ881M4?tag=chollodeldia-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-07T20:50:58.254Z",
-      "updatedAt": "2026-09-07T20:50:58.254Z"
+      "updatedAt": "2026-09-07T20:52:20.263Z"
     }
   ]
 }
