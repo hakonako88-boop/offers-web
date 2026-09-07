@@ -347,5 +347,7 @@ export function dealDescription(deal: PublishedDeal) {
   const savings = dealSavings(deal);
   const discount = dealDiscount(deal);
   const savingText = savings > 0 ? ` Ahorras ${money.format(savings)}${discount ? ` (${discount}% de descuento)` : ""}.` : "";
-  return `${dealSearchTitle(deal.title)} en oferta en ${deal.store} por ${money.format(deal.price)}.${savingText} Comprueba precio, stock y condiciones en la tienda.`;
+  const couponText = deal.coupon ? ` Cupón: ${deal.coupon}.` : "";
+  const priceText = deal.active ? `en ${deal.store} por ${money.format(deal.price)}` : `en ${deal.store}: oferta finalizada, último precio ${money.format(deal.price)}`;
+  return `${dealSearchTitle(deal.title)} ${priceText}.${couponText}${savingText} Comprueba las condiciones en la tienda.`;
 }

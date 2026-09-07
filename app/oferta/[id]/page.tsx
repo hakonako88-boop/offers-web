@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import CouponCopy from "../../components/CouponCopy";
 import AdSlot from "../../components/AdSlot";
 import { adsenseOfferSlot } from "../../lib/adsense";
@@ -42,10 +43,11 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
   const deal = getDealById(id);
   if (!deal) return { title: "Oferta no encontrada", robots: { index: false, follow: false } };
 
-  const discount = dealDiscount(deal);
   const productTitle = dealSearchTitle(deal.title);
   const compactTitle = productTitle.length > 68 ? `${productTitle.slice(0, 68).replace(/\s+\S*$/u, "")}…` : productTitle;
-  const title = `${compactTitle} en oferta por ${money.format(deal.price)}${discount ? ` · -${discount}%` : ""}`;
+  const title = deal.active
+    ? `${compactTitle} por ${money.format(deal.price)}${deal.coupon ? " con cupón" : ""}`
+    : `${compactTitle} · Oferta finalizada`;
   const description = dealDescription(deal);
   const path = dealHref(deal.id);
 
@@ -103,9 +105,7 @@ function breadcrumbSchemaFor(deal: NonNullable<ReturnType<typeof getDealById>>) 
 export default async function OfferPage({ params }: OfferPageProps) {
   const { id } = await params;
   const deal = getDealById(id);
-  if (!deal) {
-    return <main className="offerNotFound shell"><Link href="/">← Volver a las ofertas</Link><h1>Esta oferta ya no está disponible</h1><p>Puede haber caducado o haberse retirado de la selección.</p></main>;
-  }
+  if (!deal) notFound();
 
   const discount = dealDiscount(deal);
   const savings = dealSavings(deal);
@@ -154,7 +154,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
       <article className="offerArticle shell">
         <nav className="offerBreadcrumb" aria-label="Migas de pan"><Link href="/">Inicio</Link><span>/</span><Link href={categoryHref}>{deal.category}</Link><span>/</span><b>Oferta</b></nav>
         <div className="offerHero">
-          <div className="offerGallery"><div className="offerImageWrap"><img src={deal.imageUrl} alt={productTitle} width={960} height={760} /><span className="storeBadge">{deal.store}</span>{discount > 0 && <span className="offerDiscount">−{discount}%</span>}</div><p>Imagen facilitada por la tienda. La variante puede cambiar.</p></div>
+          <div className="offerGallery"><div className="offerImageWrap"><img src={deal.imageUrl} alt={productTitle} width={960} height={760} fetchPriority="high" decoding="async" /><span className="storeBadge">{deal.store}</span>{discount > 0 && <span className="offerDiscount">−{discount}%</span>}</div><p>Imagen del producto. Comprueba la variante elegida en la tienda.</p></div>
           <div className="offerSummary">
             <p className="offerKicker">{deal.category}{deal.subcategory ? ` · ${deal.subcategory}` : ""} · {deal.active ? "Oferta activa" : "Oferta finalizada"}</p>
             <h1>{productTitle}</h1>
@@ -175,14 +175,14 @@ export default async function OfferPage({ params }: OfferPageProps) {
         </div>
 
         <section className="offerContent" aria-labelledby="analysis-title">
-          <div className="offerIntro"><p className="eyebrow"><span aria-hidden="true" />ANÁLISIS RÁPIDO</p><h2 id="analysis-title">Lo importante de esta oferta</h2><p>{description} Te mostramos los datos que ayudan a decidir rápido, sin añadir características que la tienda no haya confirmado.</p></div>
+          <div className="offerIntro"><p className="eyebrow"><span aria-hidden="true" />ANÁLISIS RÁPIDO</p><h2 id="analysis-title">Lo importante de esta oferta</h2><p>{deal.coupon ? `Para esta oferta se indica el cupón ${deal.coupon}. Comprueba que se aplica a tu variante y que el total del carrito coincide con el precio publicado.` : `Antes de comprar en ${deal.store}, compara la variante elegida y el total del carrito, incluidos los gastos de envío.`}</p></div>
           <div className="prosCons">
             <section className="pros"><h3><span aria-hidden="true">✓</span> Puntos a favor</h3><ul>{pros.map((item) => <li key={item}>{item}</li>)}</ul></section>
             <section className="cons"><h3><span aria-hidden="true">!</span> A tener en cuenta</h3><ul>{cons.map((item) => <li key={item}>{item}</li>)}</ul></section>
           </div>
         </section>
 
-        <section className="offerDecision" aria-labelledby="decision-title"><div><p className="eyebrow"><span aria-hidden="true" />DECISIÓN CON DATOS</p><h2 id="decision-title">¿Merece la pena?</h2><span className="assessmentBadge">{assessment.label}</span><p>{assessment.explanation}</p></div><dl><div><dt>Precio actual o último registrado</dt><dd>{money.format(deal.price)}</dd></div><div><dt>Precio anterior publicado</dt><dd>{deal.oldPrice > deal.price ? money.format(deal.oldPrice) : "No disponible"}</dd></div><div><dt>Ahorro publicado</dt><dd>{savings > 0 ? `${money.format(savings)} · ${discount} %` : "No verificable"}</dd></div><div><dt>Cupón necesario</dt><dd>{deal.coupon ? `Sí · ${deal.coupon}` : "No indicado"}</dd></div><div><dt>Tienda</dt><dd>{deal.store}</dd></div><div><dt>Vendedor</dt><dd>No disponible</dd></div><div><dt>Gastos de envío</dt><dd>No disponibles · comprobar en tienda</dd></div><div><dt>Detección / última comprobación</dt><dd>{deal.verifiedAt}</dd></div><div><dt>Confianza de categoría</dt><dd>{Math.round(deal.categoryConfidence * 100)} %</dd></div></dl></section>
+<section className="offerDecision" aria-labelledby="decision-title"><div><p className="eyebrow"><span aria-hidden="true" />DECISIÓN CON DATOS</p><h2 id="decision-title">¿Merece la pena?</h2><span className="assessmentBadge">{assessment.label}</span><p>{assessment.explanation}</p></div><dl><div><dt>Precio actual o último registrado</dt><dd>{money.format(deal.price)}</dd></div><div><dt>Precio anterior publicado</dt><dd>{deal.oldPrice > deal.price ? money.format(deal.oldPrice) : "No disponible"}</dd></div><div><dt>Ahorro publicado</dt><dd>{savings > 0 ? `${money.format(savings)} · ${discount} %` : "No verificable"}</dd></div><div><dt>Cupón necesario</dt><dd>{deal.coupon ? `Sí · ${deal.coupon}` : "No indicado"}</dd></div><div><dt>Tienda</dt><dd>{deal.store}</dd></div><div><dt>Vendedor</dt><dd>No disponible</dd></div><div><dt>Gastos de envío</dt><dd>No disponibles · comprobar en tienda</dd></div><div><dt>Detección / última comprobación</dt><dd>{deal.verifiedAt}</dd></div></dl></section>
 
         <section className="priceHistoryEmpty" aria-labelledby="history-title"><p className="eyebrow"><span aria-hidden="true" />SEGUIMIENTO REAL</p><h2 id="history-title">Evolución del precio</h2><p>Estamos empezando a registrar el historial de este producto. Mostraremos los periodos de 30 días, 90 días y máximo disponible cuando existan suficientes comprobaciones reales.</p><div><span>Precio actual<strong>{money.format(deal.price)}</strong></span><span>Mínimo registrado<strong>Sin datos suficientes</strong></span><span>Precio medio<strong>Sin datos suficientes</strong></span><span>Máximo registrado<strong>Sin datos suficientes</strong></span></div></section>
 
