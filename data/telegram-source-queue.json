@@ -20311,14 +20311,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/SyPMHqlBZeFFdtUl6w7CZRajZ-2jM4tY4ZzGLXfPQ72-IU-pa9hOctt1vhSY6dMoIuKU46BtB8SP5E2yfjxyHVYDdPk_evKGIPB4C_ghFc7rFYMLzaQnaOAvClDsTfJ3Tv8X0fNohLNIIJoOaoHAHGFcptGjeq5h0F0W_0S_Vfob4UYSPeZIjO1NncX_5DgeN-T0sUVyUFtDWjOsqQ5AfaKbqq1tRD_IeoFOQKOEQ_i6jZym41eioaVT8vnxot9_yOEpAnjui19kU5eYefAJOng-davp-wtdUGT6C9D6-qBJp-cN2ba4z6QiIgZWq_fpSOsCwxtQH75eOMYhZOmMkQ.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4loJJ4v",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-07T17:40:59.381Z",
-      "updatedAt": "2026-09-07T17:42:37.209Z"
+      "updatedAt": "2026-09-07T17:52:50.725Z"
     },
     {
       "id": "telegram-ofertos:41700:amazon:0",
@@ -20353,12 +20353,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3ZqBzQr",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-07T17:40:59.820Z",
-      "updatedAt": "2026-09-07T17:42:37.209Z"
+      "updatedAt": "2026-09-07T17:52:50.725Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-ofertos:41701:amazon:0",
@@ -20371,13 +20372,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/DJNUWKQaC0sne1I8Lf69lYC__fhTXZ0higBjvE_Egb1aEEvG71s64B07jH7pvY8NeWA4VDqdlowNlxX5tRO1WRDuiMoTXF0-2zwFfzqq0vFpUHuujYz_FCeUMzTp1pzS3iC30HPYLwJyO8EFQgXmrtroTWUr9yLtTj7WFfdHBvNIDx-RTazZ_NO6nJkCEySuuaH8wPkuo1TgDRxSQfQc1-4GidqqPxx8pXyVOqQqT3iNb5TbwafhAYso_O9gO_ZklAcHXFAfy7kwnsj2jpMRmM04CpdHfyKeEvRNCgMT7tMWaTfmtH7orzWI58cwSUGwZxzNsEFBw9zD7csPE2X_3g.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B07XSJMCX9?linkCode=ml1&amp;linkId=172bcd2467f79916e014cb93eb7d67b1&amp;btn_type=ss&amp;btn_ref=srctok-05a306f24886070d&amp;fbclid=IwY2xjawUL2ChwZG9mBWV4dG4DYWVtAjEwAGJyaWQRMGdVd0hQajY1UTlpSE55ZWdzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEeuIdsnrfP7VOOxYJCHOXhKztaMYI_4R2CGh9Vwo3q5kdEa6dtty6bKYuBv_U_aem_JFTWyRfU1Ropzzxq6dwNCg&amp;th=1&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-07T17:51:07.984Z",
-      "updatedAt": "2026-09-07T17:51:07.984Z"
+      "updatedAt": "2026-09-07T17:52:55.168Z",
+      "telegramMessageId": 6523,
+      "resultUrl": "https://www.amazon.es/dp/B07XSJMCX9?tag=chollos00a-21"
     }
   ]
 }
