@@ -59,6 +59,18 @@ const retryCutoff = Date.now() - 48 * 60 * 60 * 1000;
 const reopenedIds = new Set();
 for (const item of queue.items || []) {
   const publishedAt = Date.parse(item.publishedAt || '');
+  // A price from a Telegram message older than two days is no longer a safe
+  // candidate for a deals site. Leaving it pending made the bot look stalled
+  // even though it correctly refused to publish an obsolete price.
+  if (item.store === 'AliExpress'
+    && item.status === 'pending'
+    && Number.isFinite(publishedAt)
+    && publishedAt < retryCutoff) {
+    item.status = 'ignored';
+    item.reason = 'Oferta de AliExpress caducada: se conserva como historial, pero no se publicará con un precio antiguo';
+    item.updatedAt = now;
+    continue;
+  }
   if (item.store === 'Miravia'
     && item.status === 'rejected'
     && item.retryPolicyVersion !== MIRAVIA_RETRY_POLICY
