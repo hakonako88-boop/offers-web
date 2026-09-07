@@ -1,3 +1,4 @@
+import { selectInterestingOffers } from './editorial-interest.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {
@@ -470,7 +471,7 @@ writeJson(SOURCE_DIAGNOSTICS_FILE, sourceDiagnostics);
 // estricto de descuento, ventas y artículos poco interesantes.
 function publishableCandidates(sourceCandidates) {
   return filterDuplicateDeals(Array.from(new Map(
-    sourceCandidates.sort((left, right) => right.score - left.score).map((offer) => [offer.id, offer]),
+    selectInterestingOffers(sourceCandidates).map((offer) => [offer.id, offer]),
   ).values()), existingWebOffers);
 }
 

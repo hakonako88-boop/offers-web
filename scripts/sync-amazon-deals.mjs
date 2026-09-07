@@ -1,3 +1,4 @@
+import { selectInterestingOffers } from './editorial-interest.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {
@@ -276,7 +277,7 @@ if (accessToken) {
 }
 
 const uniqueCandidates = (canPublishNow && publicationPolicy.allowed ? filterDuplicateDeals(Array.from(new Map(
-  candidates.sort((a, b) => b.score - a.score).map((offer) => [offer.asin, offer])
+  selectInterestingOffers(candidates).map((offer) => [offer.asin, offer])
 ).values()), existingWebOffers) : []);
 
 let sent = 0;

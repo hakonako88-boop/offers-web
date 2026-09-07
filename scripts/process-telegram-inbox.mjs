@@ -584,7 +584,7 @@ async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
   // When automatic mode is enabled, complete a preview created by the former
   // review-only mode. It has already passed the exact same validation rules.
   const previousPreview = pendingConfirmations[chatId];
-  if (settings.amazonAutoPublish && previousPreview?.offer?.reviewQueueItemId) {
+  if (settings.amazonAutoPublish && previousPreview?.offer?.reviewQueueItemId && automaticInterest(previousPreview.offer) >= 0) {
     try {
       const outcome = await publishIfNew(settings, previousPreview.offer, { message_id: previousPreview.inputMessageId });
       updateAmazonReviewQueueItem(
@@ -613,11 +613,15 @@ async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
     .sort((left, right) => {
       const leftPriority = left.priority || left.source === 'telegram-ofertos' ? 1 : 0;
       const rightPriority = right.priority || right.source === 'telegram-ofertos' ? 1 : 0;
-      return rightPriority - leftPriority
+      return automaticInterest(right) - automaticInterest(left) || rightPriority - leftPriority
         || Date.parse(right.publishedAt || right.createdAt || 0) - Date.parse(left.publishedAt || left.createdAt || 0);
     });
 
   for (const item of candidates.slice(0, 25)) {
+    if (settings.amazonAutoPublish && automaticInterest(item) < 0) {
+      updateAmazonReviewQueueItem(item.id, 'needs_review', 'Fuera de la selección automática: preferencia editorial del propietario');
+      continue;
+    }
     const result = await buildAmazonReviewDraft({ item, partnerTag: settings.amazonPartnerTag });
     if (result.status !== 'ready') {
       const missing = result.missing?.join(', ') || 'datos verificables';
@@ -626,6 +630,10 @@ async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
     }
     try {
       if (settings.amazonAutoPublish) {
+        if (automaticInterest(result.offer) < 0) {
+          updateAmazonReviewQueueItem(item.id, 'needs_review', 'Producto excluido por preferencia editorial');
+          continue;
+        }
         const outcome = await publishIfNew(settings, result.offer, {
           message_id: item.messageId || `amazon-auto-${item.id}`,
         });
@@ -1587,3 +1595,4 @@ writeJson(STATE_FILE, {
 });
 console.log(`Telegram private inbox handled ${handled} message(s) and published ${published} offer(s).`);
 if (pendingTikTokRetryRequired) process.exitCode = 75;
+import { automaticInterest } from './editorial-interest.mjs';

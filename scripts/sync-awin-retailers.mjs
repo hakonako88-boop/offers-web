@@ -1,3 +1,4 @@
+import { selectInterestingOffers } from './editorial-interest.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { Readable } from 'node:stream';
@@ -195,7 +196,7 @@ const queued = (state.queuedOffers?.[retailerStateKey] || [])
   .filter((offer) => offer.score > 0);
 const discovered = state.feedVersions?.[feed.feed_id] !== feedVersion || queued.length < 5 ? await discover(feed.url, retailer, seenIds) : { candidates: [], scanned: 0 };
 const merged = [...new Map([...queued, ...discovered.candidates].map((offer) => [offer.id, offer])).values()];
-const candidates = filterDuplicateDeals(merged, existingWebOffers).sort((a, b) => b.score - a.score);
+const candidates = selectInterestingOffers(filterDuplicateDeals(merged, existingWebOffers));
 const publicationPolicy = publicationAllowance({ store: retailer.store, offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 let sent = 0;
 let attempts = 0;
