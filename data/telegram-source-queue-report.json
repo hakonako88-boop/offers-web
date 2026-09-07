@@ -1,13 +1,25 @@
 {
-  "updatedAt": "2026-09-07T22:12:03.702Z",
+  "updatedAt": "2026-09-07T22:22:01.412Z",
   "summary": {
-    "rejected": 324,
     "ignored": 24,
     "duplicate": 30,
+    "rejected": 323,
     "published": 470,
-    "needs_review": 152
+    "needs_review": 152,
+    "pending": 1
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92799:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92799,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/92799",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92798:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -1095,17 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92766",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:92765:ignored",
-      "source": "telegram-una-ganga",
-      "messageId": 92765,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/una_ganga/92765",
       "resultUrl": ""
     }
   ]
