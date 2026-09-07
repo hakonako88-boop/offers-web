@@ -1,22 +1,44 @@
 {
-  "updatedAt": "2026-09-07T09:22:16.634Z",
+  "updatedAt": "2026-09-07T09:32:04.872Z",
   "summary": {
-    "published": 456,
     "rejected": 331,
     "duplicate": 33,
-    "needs_review": 157,
+    "published": 454,
+    "needs_review": 158,
     "ignored": 22,
-    "pending": 1
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:41649:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41649,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41649",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41648:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41648,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41648",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92748:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 92748,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/una_ganga/92748",
       "resultUrl": ""
     },
@@ -1086,28 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41623",
       "resultUrl": "https://www.amazon.es/dp/B0F79LRBFK?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:41622:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41622,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/41622",
-      "resultUrl": "https://www.amazon.es/dp/B0BPZT9BLL?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:41621:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41621,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/41621",
-      "resultUrl": ""
     }
   ]
 }
