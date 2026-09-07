@@ -21,7 +21,7 @@ export function interestFamily(offer = {}) {
 
 export function automaticInterest(offer = {}) {
   const title = text(offer.title);
-  if (/\b(mochilas?|backpacks?|rucksacks?|llaveros?|pegatinas?|fundas? de cojin)\b/u.test(title)) return -1;
+  if (/\b(mochilas?|backpacks?|rucksacks?|llaveros?|pegatinas?|fundas? de cojin|zapatillas?|zapatos?|shoes?|boots?|sneakers?|trainers?|sandalias?|tenis|camisetas?|vaqueros?|jeans|chaquetas?|tarjeteros?|bolsos?|vestidos?|sudaderas?)\b/u.test(title)) return -1;
   if (/\b(calzado estilo|moda casual informal|alfombrilla.*(?:anime|naruto|pikachu|dragon ball))\b/u.test(title)) return -1;
   if (interestFamily(offer) !== 'otros') return 2;
   return 1;

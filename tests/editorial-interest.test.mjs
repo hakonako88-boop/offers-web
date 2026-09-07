@@ -17,11 +17,12 @@ test('fans and vacuum variants are prioritised above generic clothing', () => {
 
 test('automatic batches give different useful product families a turn', () => {
   const input = [{title:'Aspiradora A',score:100}, {title:'Aspirador B',score:90}, {title:'Ventilador techo',score:50}, {title:'Camiseta',score:2000}];
-  assert.deepEqual(selectInterestingOffers(input).map(x=>x.title), ['Aspiradora A','Ventilador techo','Aspirador B','Camiseta']);
+  assert.deepEqual(selectInterestingOffers(input).map(x=>x.title), ['Aspiradora A','Ventilador techo','Aspirador B']);
   assert.equal(input[1].title, 'Aspirador B');
 });
-test('useful products outrank generic fashion without suppressing other legitimate offers', () => {
-  assert.deepEqual(selectInterestingOffers([{title:'Camiseta',score:2000},{title:'SSD 1TB',score:40}]).map(x=>x.title), ['SSD 1TB','Camiseta']);
+test('useful products outrank generic fashion and remove it from automatic selection', () => {
+  assert.deepEqual(selectInterestingOffers([{title:'Camiseta',score:2000},{title:'SSD 1TB',score:40}]).map(x=>x.title), ['SSD 1TB']);
   assert.ok(automaticInterest({title:'Auriculares inalámbricos'}) > 0);
   assert.equal(automaticInterest({title:'Backpack impermeable'}), -1);
+  assert.equal(automaticInterest({title:'Zapatillas Vans'}), -1);
 });

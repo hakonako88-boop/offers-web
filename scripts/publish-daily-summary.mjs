@@ -1,13 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { automaticInterest, interestFamily, selectInterestingOffers } from './editorial-interest.mjs';
 
 const ROOT = process.cwd();
 const OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const POSTS_FILE = path.join(ROOT, 'data', 'posts.json');
 const STATE_FILE = path.join(ROOT, 'data', 'daily-summary-state.json');
 const TIME_ZONE = 'Europe/Madrid';
-const MAX_OFFERS = 5;
+const MAX_OFFERS = 3;
 const MAX_PER_STORE = 2;
 const SITE_URL = 'https://chollosaldia.com';
 
@@ -67,28 +68,45 @@ function offerScore(offer) {
   const saving = previous > price ? previous - price : 0;
   const discount = saving > 0 ? (saving / previous) * 100 : 0;
   const couponBonus = String(offer.coupon || '').trim() ? 20 : 0;
-  return Math.round(discount * 2 + Math.min(saving, 250) + couponBonus);
+  return Math.round(discount * 2 + Math.min(saving, 250) + couponBonus + automaticInterest(offer) * 35);
 }
 
 export function selectDailyOffers(offers, targetDate, maximum = MAX_OFFERS) {
-  const eligible = offers
+  const eligible = selectInterestingOffers(offers
     .filter((offer) => madridParts(new Date(Number(offer.date) * 1000)).date === targetDate)
     .filter((offer) => cleanTitle(offer.title, 500).length >= 5 && numericPrice(offer.price) > 0
       && String(offer.image || '').trim() && validHttpUrl(offer.url))
-    .map((offer) => ({ ...offer, summaryScore: offerScore(offer) }))
+    .filter((offer) => {
+      const price = numericPrice(offer.price);
+      const previous = numericPrice(offer.previousPrice);
+      const discount = previous > price ? ((previous - price) / previous) * 100 : 0;
+      const coupon = String(offer.coupon || '').trim();
+      const store = String(offer.store || '').toLowerCase();
+      // Marketplace feeds sometimes report an inflated reference price. A
+      // dubious PVP must not win the nightly "best deals" ranking.
+      const credibleMarketplacePrice = !store.includes('aliexpress') || Boolean(coupon)
+        || (discount <= 50 && previous <= price * 2);
+      const meaningfulDeal = discount >= 20 || (coupon && automaticInterest(offer) >= 2 && discount >= 10);
+      return automaticInterest(offer) >= 0 && credibleMarketplacePrice && meaningfulDeal;
+    })
+    .map((offer) => ({ ...offer, summaryScore: offerScore(offer) })))
     .sort((left, right) => right.summaryScore - left.summaryScore || Number(right.date) - Number(left.date));
 
   const selected = [];
   const selectedIds = new Set();
   const storeCounts = new Map();
+  const familyCounts = new Map();
   const add = (offer) => {
     const identity = String(offer.source_product_id || offer.url);
     if (selectedIds.has(identity)) return false;
     const store = String(offer.store || 'Oferta');
     if ((storeCounts.get(store) || 0) >= MAX_PER_STORE) return false;
+    const family = interestFamily(offer);
+    if (family !== 'otros' && (familyCounts.get(family) || 0) >= 1) return false;
     selected.push(offer);
     selectedIds.add(identity);
     storeCounts.set(store, (storeCounts.get(store) || 0) + 1);
+    familyCounts.set(family, (familyCounts.get(family) || 0) + 1);
     return true;
   };
   // La primera vuelta da espacio a la mejor oferta de cada comercio. Después
@@ -109,10 +127,14 @@ export function buildDailySummary(offers, targetDate) {
     day: 'numeric', month: 'long', year: 'numeric', timeZone: TIME_ZONE,
   });
   const lines = offers.map((offer, index) => {
+    const price = numericPrice(offer.price);
+    const previous = numericPrice(offer.previousPrice);
+    const discount = previous > price ? Math.round(((previous - price) / previous) * 100) : 0;
     const coupon = String(offer.coupon || '').trim() ? `\n🎟 Cupón: ${escapeHtml(offer.coupon)}` : '';
-    return `<b>${index + 1}. ${escapeHtml(cleanTitle(offer.title))}</b>\n💶 ${escapeHtml(offer.price)} · ${escapeHtml(offer.store || 'Oferta')}${coupon}\n👉 <a href="${escapeHtml(offer.url)}">Ver oferta</a>`;
+    const before = previous > price ? ` · <s>${escapeHtml(offer.previousPrice)}</s>` : '';
+    return `<b>${index + 1}. ${escapeHtml(cleanTitle(offer.title, 76))}</b>\n🔥 <b>${escapeHtml(offer.price)}</b>${before}${discount ? ` · −${discount}%` : ''}${coupon}\n🛍 ${escapeHtml(offer.store || 'Oferta')} · <a href="${escapeHtml(offer.url)}">VER OFERTA</a>`;
   });
-  const telegram = `🌙 <b>LAS MEJORES OFERTAS DEL DÍA</b>\n\nSelección del ${escapeHtml(displayDate)}\n\n${lines.join('\n\n')}\n\n🪐 Más chollos en @aldiachollos\n⚠️ Precio y stock pueden cambiar. #Publi`;
+  const telegram = `🏆 <b>TOP 3 CHOLLOS DEL DÍA</b>\n${escapeHtml(displayDate)}\n\n${lines.join('\n\n')}\n\n🔔 Mañana, más ofertas en @aldiachollos\n⚠️ Precio y stock pueden cambiar. #Publi`;
   const body = offers.map((offer, index) => {
     const coupon = String(offer.coupon || '').trim() ? ` · Cupón: ${offer.coupon}` : '';
     return `${index + 1}. ${cleanTitle(offer.title, 160)}\n${offer.price} en ${offer.store || 'la tienda'}${coupon}`;
@@ -120,13 +142,17 @@ export function buildDailySummary(offers, targetDate) {
   return {
     telegram,
     album: offers.map((offer, index) => {
+      const price = numericPrice(offer.price);
+      const previous = numericPrice(offer.previousPrice);
+      const discount = previous > price ? Math.round(((previous - price) / previous) * 100) : 0;
       const coupon = String(offer.coupon || '').trim() ? `\n🎟 <b>Cupón:</b> <code>${escapeHtml(offer.coupon)}</code>` : '';
-      const heading = index === 0 ? `🌙 <b>LAS MEJORES OFERTAS DEL DÍA</b>\nSelección del ${escapeHtml(displayDate)}\n\n` : '';
+      const heading = index === 0 ? `🏆 <b>TOP 3 CHOLLOS DEL DÍA</b>\n${escapeHtml(displayDate)}\n\n` : '';
+      const before = previous > price ? `\n<s>${escapeHtml(offer.previousPrice)}</s>${discount ? ` · 🔻 ${discount}%` : ''}` : '';
       return {
         type: 'photo',
         media: String(offer.image || '').startsWith('/') ? `${SITE_URL}${offer.image}` : String(offer.image || ''),
         parse_mode: 'HTML',
-        caption: `${heading}<b>${index + 1}. ${escapeHtml(cleanTitle(offer.title))}</b>\n💶 <b>${escapeHtml(offer.price)}</b> · ${escapeHtml(offer.store || 'Oferta')}${coupon}\n\n👉 <a href="${escapeHtml(offer.url)}">VER OFERTA</a>${index === offers.length - 1 ? '\n\n🪐 @aldiachollos · #Publi' : ''}`,
+        caption: `${heading}<b>${index + 1}. ${escapeHtml(cleanTitle(offer.title, 76))}</b>\n\n🔥 <b>${escapeHtml(offer.price)}</b>${before}${coupon}\n🛍 ${escapeHtml(offer.store || 'Oferta')}\n\n👉 <a href="${escapeHtml(offer.url)}"><b>VER OFERTA</b></a>${index === offers.length - 1 ? '\n\n🔔 @aldiachollos · #Publi' : ''}`,
       };
     }),
     post: {

@@ -20,8 +20,8 @@ test('selects complete high-saving offers from the requested Madrid day and dive
     { ...offer({ id: 'broken', store: 'AliExpress', price: '1,00 €', previousPrice: '100,00 €', date: midday }), image: '' },
   ];
   const selected = selectDailyOffers(offers, target);
-  assert.deepEqual(selected.map((item) => item.source_product_id), ['a1', 'm1', 'p1', 'a2']);
-  assert.equal(selected.filter((item) => item.store === 'Amazon').length, 2);
+  assert.deepEqual(selected.map((item) => item.source_product_id), ['a1', 'm1', 'p1']);
+  assert.equal(selected.filter((item) => item.store === 'Amazon').length, 1);
 });
 
 test('creates a compact Telegram summary with affiliate destinations and a web post', () => {
@@ -31,12 +31,12 @@ test('creates a compact Telegram summary with affiliate destinations and a web p
     offer({ id: 'two', store: 'PcComponentes', price: '299,00 €', previousPrice: '399,00 €', date }),
   ];
   const summary = buildDailySummary(offers, '2026-08-25');
-  assert.match(summary.telegram, /LAS MEJORES OFERTAS DEL DÍA/u);
+  assert.match(summary.telegram, /TOP 3 CHOLLOS DEL DÍA/u);
   assert.match(summary.telegram, /https:\/\/example\.com\/one/u);
   assert.match(summary.telegram, /Cupón: AHORRA3/u);
   assert.equal(summary.album.length, 2);
   assert.equal(summary.album[0].media, 'https://chollosaldia.com/tg/one.jpg');
-  assert.match(summary.album[0].caption, /LAS MEJORES OFERTAS DEL DÍA/u);
+  assert.match(summary.album[0].caption, /TOP 3 CHOLLOS DEL DÍA/u);
   assert.match(summary.album[0].caption, /Cupón:<\/b> <code>AHORRA3/u);
   assert.match(summary.album[1].caption, /https:\/\/example\.com\/two/u);
   assert.equal(summary.post.id, 'resumen-diario-2026-08-25');
@@ -56,4 +56,15 @@ test('schedules the 00:05 Madrid summary for the completed day and stores duplic
   assert.match(script, /sendPhoto/u);
   assert.equal(previousMadridDate(new Date('2026-08-29T00:05:00+02:00')), '2026-08-28');
   assert.equal(previousMadridDate(new Date('2026-12-01T00:05:00+01:00')), '2026-11-30');
+});
+
+test('nightly top deals reject generic fashion and implausible marketplace reference prices', () => {
+  const target = '2026-08-25';
+  const date = Math.floor(Date.parse('2026-08-25T12:00:00+02:00') / 1000);
+  const selected = selectDailyOffers([
+    { ...offer({ id: 'shoe', store: 'Amazon', price: '39,00 €', previousPrice: '100,00 €', date }), title: 'Zapatillas de moda' },
+    { ...offer({ id: 'inflated', store: 'AliExpress', price: '90,00 €', previousPrice: '300,00 €', date }), title: 'Escritorio eléctrico' },
+    { ...offer({ id: 'fan', store: 'Amazon', price: '25,00 €', previousPrice: '40,00 €', date }), title: 'Ventilador silencioso' },
+  ], target);
+  assert.deepEqual(selected.map((item) => item.source_product_id), ['fan']);
 });
