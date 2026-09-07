@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-07T18:42:14.278Z",
+  "updatedAt": "2026-09-07T18:52:12.049Z",
   "summary": {
-    "duplicate": 33,
     "rejected": 329,
     "published": 481,
-    "needs_review": 133,
+    "duplicate": 32,
+    "needs_review": 134,
     "ignored": 22,
     "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-chollosdiario:45325:amazon:0",
+      "source": "telegram-chollosdiario",
+      "messageId": 45325,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/chollosdiario/45325",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92787:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 92787,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/92787",
       "resultUrl": ""
     },
@@ -25,9 +36,9 @@
       "source": "telegram-ofertos",
       "messageId": 41706,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Producto excluido por preferencia editorial",
       "sourceUrl": "https://t.me/Ofertos/41706",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/una_ganga/92751",
       "resultUrl": "https://www.amazon.es/dp/B0DQP7RDPQ?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:41659:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41659,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/41659",
-      "resultUrl": ""
     }
   ]
 }
