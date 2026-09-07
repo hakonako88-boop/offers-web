@@ -12854,7 +12854,7 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-04T21:10:58.187Z",
-      "updatedAt": "2026-09-07T04:12:17.188Z",
+      "updatedAt": "2026-09-07T04:22:13.023Z",
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue"
     },
     {
@@ -20292,14 +20292,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/WLBsRVk1VRQTCAXQYz8RfQukd_xJvRuLwObJJHnLEp_dossBfwKMooDq_2ydDy_qKN6o3AZfpmrFxpiiPi-F5cTXI0bt-BMqe2Jzj_XKkoSOjUDCAVbjWuk483s9kzcgxA837PH9D9GPU6aqbMlWVTMVhT6H0XSi8NMXLr1pXYmgUUUOOZ90FWJwZUcECnJ6f-OK5-b5ESO0RWwcB3UoBM1107Y9Xjq8bm5gZEb4n5et5LRlSYHG0qohDIz8CUZZF3mGBwVzBbutkFcJnxFBfiuGqkmWX1EyQz_1cH29m6LQMU5Y_VuUqOsYa172grzNz-05_hI9PkyGFm6tsVfBrQ.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3hWZGEZ",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-07T04:10:58.235Z",
-      "updatedAt": "2026-09-07T04:12:17.188Z"
+      "updatedAt": "2026-09-07T04:22:13.023Z"
     },
     {
       "id": "telegram-una-ganga:92733:amazon:0",
@@ -20312,13 +20312,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/E3UsRVLIvuqPHpPEPMKvKu-RjCZBzvfsx2QJgtGX0UuTfAAS6wiM3b31q_K_v-DFaQf1Rvi5Pa06-WbJLkgd7OlrHrfh1p7225inCamXpBE1U4TQDcU0--OTkznwt017dGNb5EVzygn3ZGRkEDVh3uZADaPqhMxNuYetuYrGJH9M72V6LMvigRx0yd6zyCIO6RTiPPUtScUVUN7RsEjlEBZGrAW0WfhnwyvUiBRDRBpeh0nP0p3KomWC6JoOgEhLmUqPIfT3ZaprkKMNsFXaU9ZYGkStS8W77MyzLapJSgJ1JjhcYcQ3Z5V2WteEL9Un0ih4qhUZcNn0_bU-kWyUjQ.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0aAHYn6r",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-07T04:21:01.792Z",
-      "updatedAt": "2026-09-07T04:21:01.792Z"
+      "updatedAt": "2026-09-07T04:22:17.023Z",
+      "telegramMessageId": 6452,
+      "resultUrl": "https://www.amazon.es/dp/B0D6V2LYJB?tag=chollos00a-21"
     }
   ]
 }
