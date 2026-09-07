@@ -68,6 +68,7 @@ test('serializes every Pages deployment and persists reconciled source queue sta
   const stagedLine = saveStep.split('\n').find((line) => line.includes('git add data/offers.json')) || '';
   assert.match(stagedLine, /data\/telegram-source-queue\.json/u);
   assert.match(stagedLine, /data\/telegram-source-queue-report\.json/u);
+  assert.match(stagedLine, /data\/aliexpress-source-diagnostics\.json/u);
   assert.match(queueReconciler, /attemptedAliExpressIds\.has\(item\.id\)/u);
   assert.match(queueReconciler, /Pendiente de turno para verificar el producto exacto/u);
 });
