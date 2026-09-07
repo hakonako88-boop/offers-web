@@ -166,7 +166,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
         <div className="heroCopy">
           <p className="eyebrow"><span aria-hidden="true" />CHOLLOS DIARIOS · OFERTAS NUEVAS DURANTE TODO EL DÍA</p>
           <h1 id="hero-title">Chollos de hoy.<br /> <em>Ofertas del día que merecen la pena.</em></h1>
-          <p className="heroLead">Consulta ofertas diarias seleccionadas de Amazon, AliExpress, Miravia, Xiaomi, PcComponentes, MediaMarkt y El Corte Inglés, con precio visible, descuento claro y enlace directo.</p>
+          <p className="heroLead">Descubre ofertas, chollos y rebajas para ahorrar en tus compras online. Compara precios y descuentos de Amazon, AliExpress, Miravia y más tiendas, con cupones cuando estén disponibles.</p>
           <div className="heroActions">
             <a className="primaryButton" href="#ofertas">Ver ofertas ahora <span aria-hidden="true">↓</span></a>
             <a className="quietLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis <span aria-hidden="true">↗</span></a>

@@ -4,7 +4,7 @@ import { dealDiscount, publishedDeals } from "./lib/deals";
 import { publishedPosts } from "./lib/posts";
 
 const title = "Chollos de hoy: ofertas, descuentos y cupones";
-const description = "Encuentra ofertas y chollos de hoy en Amazon, AliExpress, Miravia y más tiendas. Precios, descuentos y cupones claros para comprar mejor.";
+const description = "Encuentra ofertas y chollos de hoy en Amazon, AliExpress, Miravia y más tiendas. Descubre rebajas, descuentos y cupones para ahorrar en tus compras online.";
 
 export const metadata: Metadata = {
   title,

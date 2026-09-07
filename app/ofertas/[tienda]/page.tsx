@@ -13,7 +13,7 @@ const stores = {
     label: "Ofertas Amazon",
     eyebrow: "SELECCION AMAZON",
     title: "Ofertas de Amazon con ahorro visible.",
-    description: "Ofertas de Amazon seleccionadas por Chollos al Dia: precio actual, precio anterior cuando esta disponible y enlace directo a la tienda.",
+    description: "Ofertas y chollos de Amazon: productos rebajados con precio actual, descuento y precio anterior cuando está disponible. Compara antes de comprar.",
     guidance: "Compara siempre la variante, el envio y el precio final dentro de Amazon antes de completar la compra.",
   },
   aliexpress: {
@@ -21,7 +21,7 @@ const stores = {
     label: "Ofertas AliExpress",
     eyebrow: "SELECCION ALIEXPRESS",
     title: "Chollos de AliExpress con precio y cupon claros.",
-    description: "Chollos de AliExpress con descuento comprobable, precio publicado y cupon cuando figura en la oferta. Accede directamente a la tienda.",
+    description: "Ofertas y chollos de AliExpress con precio publicado, descuentos y cupones cuando figuran en la oferta. Revisa las condiciones para ahorrar en tu pedido.",
     guidance: "En AliExpress, revisa el cupon, la variante, el envio y la fecha estimada de entrega antes de pagar.",
   },
   miravia: {
@@ -29,7 +29,7 @@ const stores = {
     label: "Ofertas Miravia",
     eyebrow: "SELECCION MIRAVIA",
     title: "Ofertas de Miravia seleccionadas para ahorrar.",
-    description: "Ofertas de Miravia con precio registrado y ahorro visible. Solo incluimos productos con una ficha y un enlace de compra identificables.",
+    description: "Ofertas y descuentos de Miravia en productos de belleza, hogar y tecnología. Consulta el precio publicado y el cupón cuando esté disponible.",
     guidance: "Comprueba el vendedor, las condiciones de envio y los cupones activos de Miravia antes de finalizar el pedido.",
   },
   xiaomi: {
