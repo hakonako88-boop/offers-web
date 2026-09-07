@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-07T08:52:09.156Z",
+  "updatedAt": "2026-09-07T09:02:56.458Z",
   "summary": {
-    "rejected": 333,
-    "published": 452,
+    "rejected": 330,
+    "published": 455,
     "duplicate": 33,
     "needs_review": 157,
     "ignored": 22,
@@ -10,24 +10,68 @@
   },
   "recent": [
     {
-      "id": "telegram-ofertos:41642:amazon:0",
+      "id": "telegram-tiesometro:7229:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7229,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/tiesometro/7229",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41645:amazon:0",
       "source": "telegram-ofertos",
-      "messageId": 41642,
+      "messageId": 41645,
       "store": "Amazon",
       "status": "pending",
       "attempts": 0,
       "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
-      "sourceUrl": "https://t.me/Ofertos/41642",
+      "sourceUrl": "https://t.me/Ofertos/41645",
       "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41644:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 41644,
+      "store": "AliExpress",
+      "status": "published",
+      "attempts": 0,
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
+      "sourceUrl": "https://t.me/Ofertos/41644",
+      "resultUrl": "https://s.click.aliexpress.com/e/_c4CdDBMp"
+    },
+    {
+      "id": "telegram-ofertos:41643:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 41643,
+      "store": "AliExpress",
+      "status": "published",
+      "attempts": 0,
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
+      "sourceUrl": "https://t.me/Ofertos/41643",
+      "resultUrl": "https://s.click.aliexpress.com/e/_c4FpP2Lj"
+    },
+    {
+      "id": "telegram-ofertos:41642:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41642,
+      "store": "Amazon",
+      "status": "published",
+      "attempts": 0,
+      "reason": "Publicada automáticamente en Telegram y la web",
+      "sourceUrl": "https://t.me/Ofertos/41642",
+      "resultUrl": "https://www.amazon.es/dp/B0H4TY1SDT?tag=chollos00a-21"
     },
     {
       "id": "telegram-ofertos:41641:aliexpress:0",
       "source": "telegram-ofertos",
       "messageId": 41641,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/41641",
       "resultUrl": ""
     },
@@ -37,8 +81,8 @@
       "messageId": 92746,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/92746",
       "resultUrl": ""
     },
@@ -1064,50 +1108,6 @@
       "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/paramanitas/4708",
       "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:92700:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92700,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 1,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/una_ganga/92700",
-      "resultUrl": "https://www.amazon.es/dp/B0GH835YRQ?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:41618:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41618,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/41618",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41617:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41617,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 1,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/41617",
-      "resultUrl": "https://www.amazon.es/dp/B0H2S599JB?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:41616:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41616,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 1,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/41616",
-      "resultUrl": "https://www.amazon.es/dp/B087QGBVYR?tag=chollos00a-21"
     }
   ]
 }
