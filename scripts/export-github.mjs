@@ -135,8 +135,14 @@ for (const offer of storedOffers) {
   if (!legacyId || !stableId || legacyId === stableId || !offerIds.includes(stableId)) continue;
   await writeRedirect(`oferta/${encodeURIComponent(legacyId)}`, `/oferta/${encodeURIComponent(stableId)}/`);
 }
-const productSlugs = [...new Set([...sitemap.matchAll(/<loc>https:\/\/chollosaldia\.com\/producto\/([^<]+)<\/loc>/g)]
-  .map((match) => decodeURIComponent(match[1]).replace(/\/$/, ""))
+// Only high-value comparisons are submitted in sitemap.xml. Render the rest
+// with their existing noindex metadata so old shared or indexed URLs remain
+// useful historical pages instead of becoming fresh 404 errors.
+const productManifestResponse = await worker.fetch(new Request("https://chollosaldia.com/productos-manifest.json"), { ASSETS: assets }, context);
+if (!productManifestResponse.ok) throw new Error("No se pudo leer el manifiesto de productos para preservar enlaces históricos.");
+const productManifest = await productManifestResponse.json();
+const productSlugs = [...new Set((Array.isArray(productManifest.products) ? productManifest.products : [])
+  .map((slug) => String(slug || "").trim())
   .filter(Boolean))];
 for (const slug of productSlugs) {
   const encodedSlug = encodeURIComponent(slug);

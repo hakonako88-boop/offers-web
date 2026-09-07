@@ -3,8 +3,8 @@ import { DealExplorer, type Deal, type DealSummary } from "./components/DealExpl
 import { dealDiscount, publishedDeals } from "./lib/deals";
 import { publishedPosts } from "./lib/posts";
 
-const title = "Chollos de hoy y ofertas del día";
-const description = "Consulta chollos del día en Amazon, AliExpress, Miravia y más tiendas. Ofertas diarias seleccionadas con precio, descuento, cupón y enlace directo.";
+const title = "Chollos de hoy: ofertas, descuentos y cupones";
+const description = "Encuentra ofertas y chollos de hoy en Amazon, AliExpress, Miravia y más tiendas. Precios, descuentos y cupones claros para comprar mejor.";
 
 export const metadata: Metadata = {
   title,
@@ -81,6 +81,11 @@ const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   mainEntity: [
+    {
+      "@type": "Question",
+      name: "¿Dónde encontrar ofertas y chollos de hoy?",
+      acceptedAnswer: { "@type": "Answer", text: "En Chollos al Día reunimos ofertas activas con producto identificable, precio visible y enlace directo. Puedes filtrar por tienda, categoría, descuento o cupón y recibir alertas gratuitas en Telegram." },
+    },
     {
       "@type": "Question",
       name: "¿Cómo seleccionáis las ofertas?",

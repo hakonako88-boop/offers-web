@@ -66,8 +66,8 @@ export const guides = {
   },
   "chollos-electronica": {
     title: "Chollos de electrónica: cómo comparar una oferta",
-    seoTitle: "Chollos de electrónica: guía para comparar ofertas",
-    description: "Aprende a comparar chollos de electrónica, móviles e informática: modelo, capacidad, vendedor, garantía y precio final antes de comprar.",
+    seoTitle: "Chollos de electrónica hoy: ofertas y cómo compararlas",
+    description: "Chollos de electrónica hoy: aprende a comparar móviles, informática y tecnología por modelo, garantía, vendedor y precio final antes de comprar.",
     eyebrow: "GUÍA DE ELECTRÓNICA",
     intro: "Dos productos con un nombre parecido pueden tener distinta memoria, generación o garantía. Esta guía te ayuda a comparar exactamente el modelo ofertado y a saber si el precio final merece la pena.",
     sections: [

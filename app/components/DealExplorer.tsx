@@ -322,6 +322,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
       <section className="faq shell" aria-labelledby="faq-title">
         <p className="eyebrow"><span aria-hidden="true" />TRANSPARENCIA ANTE TODO</p>
         <h2 id="faq-title">Preguntas frecuentes</h2>
+        <details><summary>¿Dónde encontrar ofertas y chollos de hoy?<span aria-hidden="true">+</span></summary><p>Reunimos ofertas activas con producto identificable, precio visible y enlace directo. Puedes filtrar por tienda, categoría, descuento o cupón y recibir alertas gratuitas en Telegram.</p></details>
         <details><summary>¿Cómo seleccionáis las ofertas?<span aria-hidden="true">+</span></summary><p>Priorizamos descuentos visibles, precios comparados, productos con actividad y enlaces de compra que se puedan comprobar.</p></details>
         <details><summary>¿El precio final puede cambiar?<span aria-hidden="true">+</span></summary><p>Sí. Las tiendas pueden modificar el precio, el stock o las condiciones sin previo aviso. Mostramos el dato disponible cuando se publica la oferta.</p></details>
         <details><summary>¿Comprar desde estos enlaces cuesta más?<span aria-hidden="true">+</span></summary><p>No. Algunos enlaces son de afiliación y pueden generar una comisión para Chollos al Día, sin aumentar el precio para ti.</p></details>
