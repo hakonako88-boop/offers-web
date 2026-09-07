@@ -79,10 +79,12 @@ test('publishes validated offers in independently isolated retailer batches', ()
   assert.match(aliExpressSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
   assert.match(aliExpressSync, /const queuedPrice = signal\.queueItemId \? Number\(signal\.price\) \|\| 0 : 0;/u);
   assert.match(aliExpressSync, /const price = queuedPrice \|\| Number\(metadata\.price\) \|\| 0;/u);
-  assert.match(aliExpressSync, /deferredSameSourceSignals/u);
-  assert.match(aliExpressSync, /selectedSources\.has\(signal\.source\)/u);
+  assert.match(aliExpressSync, /Telegram is the user's editorial source of truth/u);
+  assert.match(aliExpressSync, /orderedCommunitySignals\.filter\(\(entry\) => entry\.queueItemId && entry\.sourceStore === 'AliExpress'\)/u);
   assert.match(aliExpressSync, /const resolutionInput = verifiedSignalUrl \|\|/u);
   assert.match(aliExpressSync, /resolveAliExpressAffiliateProduct\(resolutionInput, config, \{ sourceMetadata \}\)/u);
+  assert.match(aliExpressSync, /Drain exact queued Telegram links before generic discovery/u);
+  assert.match(aliExpressSync, /entry\.queueItemId && entry\.sourceStore === 'AliExpress'/u);
   assert.match(miraviaSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
   assert.match(workflow, /FORCE_AUTOMATIC_PUBLICATION:.*telegram_sources_changed/u);
   assert.match(workflow, /RECHECK_ALIEXPRESS_SOURCE:.*recheck-aliexpress/u);
@@ -226,8 +228,8 @@ test('does not impose a ten-offer daily cap on verified AliExpress source posts'
   assert.notEqual(afterTen.reason, 'store-daily-limit');
 });
 
-test('drains Ofertos and ChollosDiario AliExpress posts in repeated source batches', () => {
+test('drains exact AliExpress Telegram posts before generic community discovery', () => {
   assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE \? 20 : 1/u);
   assert.match(aliExpressSync, /MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE \? 24 : 8/u);
-  assert.match(aliExpressSync, /\(\?:ofertos\|chollosdiario\)/u);
+  assert.match(aliExpressSync, /Drain exact queued Telegram links before generic discovery/u);
 });

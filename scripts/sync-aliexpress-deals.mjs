@@ -362,55 +362,29 @@ const candidates = [];
 
 const communityDiscovery = await discoverCommunitySignals({ state: communityState });
 const communitySignals = [];
-const selectedSources = new Set();
-const deferredSameSourceSignals = [];
-const prioritySourceCounts = new Map();
 const orderedCommunitySignals = [...communityDiscovery.signals].sort((left, right) => {
-  // A previously blocked offer that has been explicitly reopened for the
-  // current resolver must not be starved forever by newer, unverified posts.
-  const leftRepaired = left.retryPolicyVersion === 'exact-id-query-and-diagnostics-v12-rate-aware' ? 1 : 0;
-  const rightRepaired = right.retryPolicyVersion === 'exact-id-query-and-diagnostics-v12-rate-aware' ? 1 : 0;
-  return rightRepaired - leftRepaired || Date.parse(right.publishedAt || '') - Date.parse(left.publishedAt || '');
+  // A direct product link taken from an owner-approved Telegram channel is
+  // more useful than a broad community-search signal.  Process those exact
+  // links first so that a real post cannot remain "pending its turn" while
+  // unrelated discovery pages consume the validation batch.
+  const leftQueuedAli = left.queueItemId && left.sourceStore === 'AliExpress' ? 1 : 0;
+  const rightQueuedAli = right.queueItemId && right.sourceStore === 'AliExpress' ? 1 : 0;
+  return rightQueuedAli - leftQueuedAli || Date.parse(right.publishedAt || '') - Date.parse(left.publishedAt || '');
 });
-for (const signal of orderedCommunitySignals) {
-  // Take the strongest fresh post from every source before considering more
-  // posts from the same channel. This prevents a large channel from hiding
-  // all offers discovered by the other owner-approved channels.
-  if (signal.sourceStore === 'Amazon'
-    || (signal.queueItemId && signal.sourceStore !== 'AliExpress')
-    || (!signal.queueItemId && signal.terms.length < 2)) continue;
-  // The owner explicitly chose Ofertos and ChollosDiario as the primary
-  // AliExpress feeds. Keep every exact queued product from both sources in
-  // the verification batch instead of reducing them to one post per channel.
-  if (SOURCE_QUEUE_MODE
-    && signal.queueItemId
-    && signal.sourceStore === 'AliExpress'
-    && /(?:ofertos|chollosdiario)/iu.test(String(signal.source || ''))) {
-    const sourceCount = prioritySourceCounts.get(signal.source) || 0;
-    if (sourceCount < Math.ceil(MAX_COMMUNITY_QUERIES_PER_RUN / 2)) {
-      communitySignals.push(signal);
-      prioritySourceCounts.set(signal.source, sourceCount + 1);
-    } else {
-      deferredSameSourceSignals.push(signal);
-    }
-    if (communitySignals.length >= MAX_COMMUNITY_QUERIES_PER_RUN) break;
-    continue;
-  }
-  if (selectedSources.has(signal.source)) {
-    // Keep the remaining posts as overflow, but first give every approved
-    // channel one verification slot. Otherwise Ofertos (the highest-weight
-    // source) can occupy the whole run and starve fresh links from una_ganga,
-    // tiesometro and the other owner-approved channels indefinitely.
-    if (signal.queueItemId) deferredSameSourceSignals.push(signal);
-    continue;
-  }
-  communitySignals.push(signal);
-  selectedSources.add(signal.source);
+// Drain exact queued Telegram links before generic discovery.  The per-run
+// cap and every factual/affiliate validation still apply.  This is deliberate:
+// Telegram is the user's editorial source of truth, whereas the community
+// pages are only a fallback when its channels are quiet.
+for (const signal of orderedCommunitySignals.filter((entry) => entry.queueItemId && entry.sourceStore === 'AliExpress')) {
   if (communitySignals.length >= MAX_COMMUNITY_QUERIES_PER_RUN) break;
+  communitySignals.push(signal);
 }
 
-for (const signal of deferredSameSourceSignals) {
+for (const signal of orderedCommunitySignals) {
   if (communitySignals.length >= MAX_COMMUNITY_QUERIES_PER_RUN) break;
+  if (signal.sourceStore === 'Amazon'
+    || signal.queueItemId
+    || (!signal.queueItemId && signal.terms.length < 2)) continue;
   communitySignals.push(signal);
 }
 
