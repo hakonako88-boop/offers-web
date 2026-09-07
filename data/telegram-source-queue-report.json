@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-07T01:12:14.895Z",
+  "updatedAt": "2026-09-07T01:22:19.115Z",
   "summary": {
-    "needs_review": 159,
-    "rejected": 335,
+    "rejected": 336,
     "published": 450,
+    "needs_review": 158,
     "ignored": 22,
     "duplicate": 32,
     "pending": 2
   },
   "recent": [
     {
+      "id": "telegram-una-ganga:92724:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92724,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/92724",
+      "resultUrl": ""
+    },
+    {
       "id": "telegram-una-ganga:92723:aliexpress:0",
       "source": "telegram-una-ganga",
       "messageId": 92723,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92723",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41601",
       "resultUrl": "https://www.amazon.es/dp/B0FFZQ3DRX?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-una-ganga:92682:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92682,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta ASIN",
-      "sourceUrl": "https://t.me/una_ganga/92682",
-      "resultUrl": ""
     }
   ]
 }
