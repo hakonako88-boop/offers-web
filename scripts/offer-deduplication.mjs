@@ -27,6 +27,10 @@ function similarity(left = '', right = '') {
   return shared / Math.min(a.length, b.length);
 }
 
+function numericSignature(value = '') {
+  return [...new Set(normalise(value).match(/\b\d+[a-z]*\b/gu) || [])].sort().join('|');
+}
+
 function productIdentity(deal = {}) {
   const explicit = deal.sourceProductId || deal.source_product_id || deal.productId;
   if (explicit) {
@@ -63,9 +67,19 @@ export function isInboxDuplicate(candidate = {}, published = {}) {
   // it while resolving tracking, and comparing it caused distinct products to
   // be rejected as duplicates. Only a proven catalogue identifier can stop a
   // manual publication. The normal feed still uses isEquivalentDeal below.
-  return isVerifiedCatalogueIdentity(candidateIdentity)
+  if (isVerifiedCatalogueIdentity(candidateIdentity)
     && isVerifiedCatalogueIdentity(publishedIdentity)
-    && candidateIdentity === publishedIdentity;
+    && candidateIdentity === publishedIdentity) return true;
+  // Amazon occasionally exposes the same commercial product through two
+  // ASINs. Treat it as a duplicate only when the wording is virtually
+  // identical and every size/capacity number also matches. This catches a
+  // repeated 10 000 mAh accessory without merging 55" and 75" televisions.
+  const bothAmazon = candidateIdentity.startsWith('amazon:') && publishedIdentity.startsWith('amazon:');
+  const numbers = numericSignature(candidate.title);
+  return bothAmazon
+    && numbers.length > 0
+    && numbers === numericSignature(published.title)
+    && similarity(candidate.title, published.title) >= 0.86;
 }
 
 function isVerifiedCatalogueIdentity(value = '') {

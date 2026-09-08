@@ -71,3 +71,14 @@ test('only rejects an inbox offer when the same verified catalogue product is pr
     { source_product_id: 'manual-3001', url: 'https://a.aliexpress.com/_anterior' },
   ), false);
 });
+
+test('blocks an Amazon relisting with another ASIN only when title and numeric variant match', () => {
+  assert.equal(isInboxDuplicate(
+    { title: 'Belkin Gaming Funda con Batería Externa 10000 mAh Nintendo Switch 2 Carbón', sourceProductId: 'amazon:B0F8WTXRXY' },
+    { title: 'Belkin Gaming Pro Funda con Batería Externa 10000 mAh para Switch 2 Carbón', source_product_id: 'amazon:B0GPQXVB1C' },
+  ), true);
+  assert.equal(isInboxDuplicate(
+    { title: 'Samsung TV Mini LED M80H 55 pulgadas 4K Smart TV', sourceProductId: 'amazon:B0AAAAA111' },
+    { title: 'Samsung TV Mini LED M80H 75 pulgadas 4K Smart TV', source_product_id: 'amazon:B0BBBBB222' },
+  ), false);
+});
