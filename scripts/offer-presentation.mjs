@@ -183,6 +183,21 @@ function storeHashtag(store = '') {
   return compact(store).replace(/[^\p{L}\p{N}]/gu, '') || 'Tienda';
 }
 
+export function offerEditorialHook({ title = '', price = 0, discount = 0 } = {}) {
+  const identity = normalized(title);
+  const variants = Number(discount) >= 50
+    ? ['SUPEROFERTA', 'CHOLLO IRRESISTIBLE']
+    : Number(discount) >= 30
+      ? ['CHOLLO DESTACADO', 'GRAN OFERTA']
+      : Number(price) > 0 && Number(price) <= 15
+        ? ['OFERTITA', 'PEQUEÑO CHOLLO']
+        : Number(discount) >= 15
+          ? ['BUENA OFERTA', 'CHOLLO DEL DÍA']
+          : ['OFERTA SELECCIONADA', 'PRECIO INTERESANTE'];
+  const score = Array.from(identity).reduce((total, character) => total + character.codePointAt(0), 0);
+  return variants[score % variants.length];
+}
+
 function offerDescription({ title, discount, description = '' } = {}) {
   const supplied = compact(description);
   const product = improveOfferTitle(title);
@@ -234,7 +249,8 @@ export function formatTelegramDealCard({
   const linkLine = `👇🏻 <b>Toca VER EN ${escapeHtml(storeHashtag(store).toUpperCase())}</b> para ir directamente a la tienda`;
 
   return [
-    `🔥 <b>${escapeHtml(improveOfferTitle(title))}</b> · #${storeTag}`,
+    `🔥 <b>${escapeHtml(offerEditorialHook({ title, price: Number(String(price).replace(/[^\d,.-]/gu, '').replace(',', '.')), discount }))}</b> · #${storeTag}`,
+    `<b>${escapeHtml(improveOfferTitle(title))}</b>`,
     '',
     `✨ ${escapeHtml(offerDescription({ title, discount, description }))}`,
     '',

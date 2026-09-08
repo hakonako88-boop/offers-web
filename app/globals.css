@@ -623,6 +623,15 @@ body { background: var(--paper); }
   border-radius: 11px;
   background: linear-gradient(135deg, #fff7f3, #fff);
 }
+.dealCard .categoryLabel b {
+  color: #b9381f;
+  font-weight: 950;
+}
+.dealCard .categoryLabel:not(:has(b))::before {
+  content: "Oferta seleccionada · ";
+  color: #b9381f;
+  font-weight: 950;
+}
 .dealCard .priceRow strong {
   padding: 0;
   background: transparent;
