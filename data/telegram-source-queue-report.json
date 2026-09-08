@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-08T13:52:29.068Z",
+  "updatedAt": "2026-09-08T14:02:21.395Z",
   "summary": {
-    "published": 465,
+    "published": 464,
     "rejected": 352,
     "needs_review": 130,
     "duplicate": 29,
-    "ignored": 23,
+    "ignored": 24,
     "pending": 1
   },
   "recent": [
+    {
+      "id": "telegram-ofertas-supermercados-es:2105:ignored",
+      "source": "telegram-ofertas-supermercados-es",
+      "messageId": 2105,
+      "store": "Otra",
+      "status": "ignored",
+      "attempts": 0,
+      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
+      "sourceUrl": "https://t.me/OfertasSupermercadosES/2105",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92847:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 92847,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/92847",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "AliExpress no permitió completar identidad API",
       "sourceUrl": "https://t.me/una_ganga/92816",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:92815:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92815,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/92815",
       "resultUrl": ""
     }
   ]
