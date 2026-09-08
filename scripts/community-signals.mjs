@@ -30,15 +30,16 @@ function telegramChannelSources() {
 }
 
 export const COMMUNITY_SOURCES = [
+  {
+    id: 'chollometro-subiendo',
+    kind: 'rss',
+    url: 'https://www.chollometro.com/rss/subiendo',
+    weight: 38,
+    minHeat: 150,
+    limit: 40,
+  },
   { id: 'michollo', kind: 'sitemap', url: 'https://michollo.com/assets/sitemap-chollos-0.xml.gz', weight: 30 },
   { id: 'nolodejesescapar', kind: 'rss', url: 'https://nolodejesescapar.com/feed/', weight: 25 },
-  {
-    id: 'chollometro-aliexpress',
-    kind: 'rss',
-    url: 'https://www.chollometro.com/rss/nuevos',
-    merchant: 'AliExpress',
-    weight: 8,
-  },
   ...telegramChannelSources(),
 ];
 
@@ -275,9 +276,20 @@ export function parseRssSignals(source, xml, limit = 10) {
   return [...String(xml).matchAll(/<item\b[\s\S]*?<\/item>/gi)]
     .map((match) => {
       const item = match[0];
-      const merchant = cleanText(item.match(/<pepper:merchant\b[^>]*\bname=["']([^"']+)["']/i)?.[1] || '');
+      const merchantTag = item.match(/<pepper:merchant\b([^>]*)>/i)?.[1] || '';
+      const merchant = cleanText(merchantTag.match(/\bname=["']([^"']+)["']/i)?.[1] || '');
       if (source.merchant && normalise(merchant) !== normalise(source.merchant)) return null;
-      return makeSignal(source, xmlField(item, 'link'), xmlField(item, 'title'), xmlField(item, 'pubDate'), merchant);
+      const rawTitle = xmlField(item, 'title');
+      const heat = Number(rawTitle.match(/^\s*(\d{1,4})°\s*[-–—]\s*/u)?.[1] || 0);
+      if (Number(source.minHeat || 0) > 0 && heat < Number(source.minHeat)) return null;
+      const title = rawTitle.replace(/^\s*\d{1,4}°\s*[-–—]\s*/u, '').trim();
+      const signal = makeSignal(source, xmlField(item, 'link'), title, xmlField(item, 'pubDate'), merchant);
+      const merchantPrice = Number.parseFloat(
+        String(merchantTag.match(/\bprice=["']([^"']+)["']/i)?.[1] || '').replace(/[^\d,.-]/gu, '').replace(',', '.'),
+      );
+      if (Number.isFinite(merchantPrice) && merchantPrice > 0) signal.price = merchantPrice;
+      signal.heat = heat;
+      return signal;
     })
     .filter((signal) => signal?.sourceUrl && signal.title && signal.terms.length >= 2)
     .slice(0, limit);
@@ -339,7 +351,7 @@ export async function discoverCommunitySignals({ state = {}, fetchImpl = fetch, 
     try {
       const response = await fetchSource(source.url, fetchImpl);
       const parsed = source.kind === 'rss'
-        ? parseRssSignals(source, await response.text())
+        ? parseRssSignals(source, await response.text(), Number(source.limit) || 10)
         : source.kind === 'telegram-public'
           ? parseTelegramPublicSignals(source, await response.text())
           : parseMicholloSitemap(source, await response.arrayBuffer());

@@ -11,8 +11,8 @@ import {
   searchTermsForSignal,
 } from '../scripts/community-signals.mjs';
 
-test('gives MiChollo and NoLoDejesEscapar the two highest discovery priorities', () => {
-  assert.deepEqual(COMMUNITY_SOURCES.slice(0, 2).map((source) => source.id), ['michollo', 'nolodejesescapar']);
+test('gives rising Chollometro deals and MiChollo the two highest discovery priorities', () => {
+  assert.deepEqual(COMMUNITY_SOURCES.slice(0, 2).map((source) => source.id), ['chollometro-subiendo', 'michollo']);
   assert.ok(COMMUNITY_SOURCES[0].weight > COMMUNITY_SOURCES[1].weight);
   assert.ok(COMMUNITY_SOURCES[1].weight > COMMUNITY_SOURCES[2].weight);
 });
@@ -43,18 +43,23 @@ test('parses public RSS entries as discovery signals', () => {
   assert.deepEqual(signals[0].terms, ['auriculares', 'bluetooth', '40h']);
 });
 
-test('uses only the AliExpress section from Chollometro RSS', () => {
-  const source = COMMUNITY_SOURCES.find((entry) => entry.id === 'chollometro-aliexpress');
+test('uses only popular, rising Chollometro deals and keeps their factual store price', () => {
+  const source = COMMUNITY_SOURCES.find((entry) => entry.id === 'chollometro-subiendo');
   const signals = parseRssSignals(source, `<?xml version="1.0"?><rss><channel>
-    <item><pepper:merchant name="Amazon" price="19,99€"/><title>Auriculares Bluetooth Amazon</title><link>https://source.example/amazon</link></item>
-    <item><pepper:merchant name="AliExpress" price="12,99€"/><title>Auriculares Bluetooth con cancelación de ruido</title><link>https://source.example/aliexpress</link></item>
+    <item><pepper:merchant name="Amazon" price="19,99€"/><title>90° - Auriculares Bluetooth Amazon</title><link>https://source.example/amazon</link></item>
+    <item><pepper:merchant name="AliExpress" price="12,99€"/><title>238° - Auriculares Bluetooth con cancelación de ruido</title><link>https://source.example/aliexpress</link></item>
+    <item><pepper:merchant name="Miravia" price="29,95€"/><title>180° - Freidora de aire Xiaomi 6 litros</title><link>https://source.example/miravia</link></item>
   </channel></rss>`);
 
-  assert.equal(signals.length, 1);
-  assert.equal(signals[0].source, 'chollometro-aliexpress');
+  assert.equal(signals.length, 2);
+  assert.equal(signals[0].source, 'chollometro-subiendo');
   assert.equal(signals[0].merchant, 'AliExpress');
   assert.equal(signals[0].sourceStore, 'AliExpress');
   assert.equal(signals[0].sourceUrl, 'https://source.example/aliexpress');
+  assert.equal(signals[0].title, 'Auriculares Bluetooth con cancelación de ruido');
+  assert.equal(signals[0].price, 12.99);
+  assert.equal(signals[0].heat, 238);
+  assert.equal(signals[1].sourceStore, 'Miravia');
 });
 
 test('extracts AliExpress and Miravia links from a public Telegram channel without copying its image', () => {

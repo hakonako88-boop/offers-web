@@ -175,7 +175,7 @@ jobs:
       RECHECK_ALIEXPRESS_SOURCE: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[recheck-aliexpress]') }}
       # Una novedad real en las fuentes y una prueba manual pueden ignorar el
       # intervalo editorial; los filtros de calidad y duplicados siguen activos.
-      FORCE_AUTOMATIC_PUBLICATION: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || (github.event_name == 'workflow_dispatch' && inputs.run_automatic_source != 'none') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[recheck-aliexpress]')) }}
+      FORCE_AUTOMATIC_PUBLICATION: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || (github.event_name == 'workflow_dispatch' && inputs.run_automatic_source != 'none') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[recheck-aliexpress]') || contains(github.event.head_commit.message, '[recheck-community]'))) }}
       BYPASS_PUBLICATION_SCHEDULE: ${{ github.event_name == 'workflow_dispatch' && inputs.run_automatic_source != 'none' }}
       TELEGRAM_SOURCE_QUEUE_MODE: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[recheck-aliexpress]')) }}
     steps:
@@ -274,12 +274,12 @@ jobs:
       - name: Buscar y publicar ofertas de Amazon
         # Si Amazon aún no ha aprobado la cuenta, el script registra el aviso
         # de elegibilidad y no publica datos incompletos.
-        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'amazon') || (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed')) && env.AMAZON_CREATOR_CREDENTIAL_ID != '' && env.AMAZON_CREATOR_SECRET != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'amazon') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[recheck-community]')) || (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed')) && env.AMAZON_CREATOR_CREDENTIAL_ID != '' && env.AMAZON_CREATOR_SECRET != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         continue-on-error: true
         run: npm run sync:amazon
 
       - name: Buscar y publicar ofertas de AliExpress
-        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'aliexpress') || (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || env.RECHECK_ALIEXPRESS_SOURCE == 'true') && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'aliexpress') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[recheck-community]')) || (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || env.RECHECK_ALIEXPRESS_SOURCE == 'true') && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         continue-on-error: true
         run: npm run sync:aliexpress
 
@@ -289,7 +289,7 @@ jobs:
         run: node scripts/check-aliexpress-api-health.mjs
 
       - name: Buscar y publicar ofertas de Miravia
-        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'miravia') || (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed')) && env.AWIN_FEED_LIST_URL != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'miravia') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[recheck-community]')) || (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed')) && env.AWIN_FEED_LIST_URL != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         continue-on-error: true
         run: npm run sync:miravia
 
