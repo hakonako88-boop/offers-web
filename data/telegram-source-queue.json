@@ -20157,13 +20157,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/KU9xvo79iXXPVY6KEQohjGa8JSs1MTPyDQQ7w8oyOS5cEGzWCAETKdjacHUMf1dLCKn-aQrOzwNhITWam6PrqjomNix1zmnZh5JOWuuhvbH_bwfeeJdQyzTkpVhIweCOtw9b4-tYWjil-em-I7_yvVaREKXnjXJEypeinjFHoFydIXGAnNDxdnGK7LMr1vLNZE4dQ6qmMSvECf0e615woH0psNaYZDgAJrCK7_SNF4VjqDdwe9W_4YyNMkvt8DEbMvXi2NqkWs_RwJ1N7GBvCqzkq6aKaIXrXkEGvE5YafkkTZB_-cCbD86OgBgyYVD84qttwVUTyT9dJVZFd_T_OA.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3SwGYpt",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-08T18:31:05.628Z",
-      "updatedAt": "2026-09-08T19:02:28.221Z",
+      "updatedAt": "2026-09-08T19:11:29.593Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20178,12 +20178,12 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4gSD2Ye",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (2/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 2,
       "createdAt": "2026-09-08T18:40:58.585Z",
-      "updatedAt": "2026-09-08T19:02:28.221Z",
+      "updatedAt": "2026-09-08T19:12:14.673Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20218,12 +20218,12 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3TmuDo1",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (2/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 2,
       "createdAt": "2026-09-08T18:50:58.900Z",
-      "updatedAt": "2026-09-08T19:02:28.221Z",
+      "updatedAt": "2026-09-08T19:12:14.673Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20238,12 +20238,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4yugDHY",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-08T19:00:59.982Z",
-      "updatedAt": "2026-09-08T19:02:28.221Z"
+      "updatedAt": "2026-09-08T19:12:14.673Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-tiesometro:7239:aliexpress:0",
@@ -20256,14 +20257,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/z4rl0",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-08T19:01:00.280Z",
-      "updatedAt": "2026-09-08T19:02:28.221Z"
+      "updatedAt": "2026-09-08T19:12:14.673Z"
     },
     {
       "id": "telegram-una-ganga:92880:aliexpress:0",
@@ -20277,13 +20278,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3Yz4z7f",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-08T19:10:56.553Z",
-      "updatedAt": "2026-09-08T19:10:56.553Z"
+      "updatedAt": "2026-09-08T19:12:14.673Z"
     },
     {
       "id": "telegram-una-ganga:92881:miravia:0",
@@ -20297,12 +20298,12 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4xLyiLc",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (2/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 2,
       "createdAt": "2026-09-08T19:10:56.553Z",
-      "updatedAt": "2026-09-08T19:10:56.553Z"
+      "updatedAt": "2026-09-08T19:12:14.673Z"
     }
   ]
 }

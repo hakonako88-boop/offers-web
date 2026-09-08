@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-08T19:02:28.221Z",
+  "updatedAt": "2026-09-08T19:12:14.673Z",
   "summary": {
-    "published": 443,
-    "rejected": 364,
+    "published": 441,
+    "rejected": 366,
     "duplicate": 27,
     "needs_review": 136,
     "ignored": 25,
@@ -10,13 +10,35 @@
   },
   "recent": [
     {
-      "id": "telegram-tiesometro:7239:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7239,
+      "id": "telegram-una-ganga:92881:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92881,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/92881",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:92880:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92880,
       "store": "AliExpress",
       "status": "pending",
       "attempts": 1,
       "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/92880",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-tiesometro:7239:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7239,
+      "store": "AliExpress",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7239",
       "resultUrl": ""
     },
@@ -26,8 +48,8 @@
       "messageId": 92879,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/92879",
       "resultUrl": ""
     },
@@ -37,8 +59,8 @@
       "messageId": 92878,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/92878",
       "resultUrl": ""
     },
@@ -59,8 +81,8 @@
       "messageId": 92877,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/92877",
       "resultUrl": ""
     },
@@ -69,9 +91,9 @@
       "source": "telegram-una-ganga",
       "messageId": 92876,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92876",
       "resultUrl": ""
     },
@@ -1086,28 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/una_ganga/92837",
       "resultUrl": "https://www.amazon.es/dp/B0GJ5M8SH8?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:41745:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41745,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/41745",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41744:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41744,
-      "store": "AliExpress",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/Ofertos/41744",
-      "resultUrl": "https://s.click.aliexpress.com/e/_c4TnH6h3"
     }
   ]
 }
