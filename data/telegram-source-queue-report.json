@@ -1,13 +1,36 @@
 {
-  "updatedAt": "2026-09-08T00:32:04.265Z",
+  "updatedAt": "2026-09-08T00:42:08.841Z",
   "summary": {
-    "published": 471,
+    "published": 469,
     "needs_review": 152,
     "rejected": 325,
     "duplicate": 29,
-    "ignored": 23
+    "ignored": 23,
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92806:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92806,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/92806",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-chollosdiario:45329:amazon:0",
+      "source": "telegram-chollosdiario",
+      "messageId": 45329,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/chollosdiario/45329",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92805:amazon:0",
       "source": "telegram-una-ganga",
@@ -1085,28 +1108,6 @@
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92771",
       "resultUrl": ""
-    },
-    {
-      "id": "telegram-chollosdiario:45323:amazon:0",
-      "source": "telegram-chollosdiario",
-      "messageId": 45323,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/chollosdiario/45323",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:92770:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92770,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/una_ganga/92770",
-      "resultUrl": "https://www.amazon.es/dp/B0BRYRGH7P?tag=chollos00a-21"
     }
   ]
 }
