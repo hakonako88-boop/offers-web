@@ -1001,12 +1001,18 @@
       "seenAt": "2026-09-08T02:21:30.242Z"
     }
   ],
-  "lastCheckedAt": "2026-09-08T02:31:31.380Z",
-  "micholloLastCheckedAt": "2026-09-07T20:41:36.596Z",
+  "lastCheckedAt": "2026-09-08T02:42:11.008Z",
+  "micholloLastCheckedAt": "2026-09-08T02:42:11.008Z",
   "sourceHealth": [
     {
+      "source": "telegram-source-queue",
+      "status": "ok",
+      "found": 1
+    },
+    {
       "source": "michollo",
-      "status": "deferred"
+      "status": "unavailable",
+      "detail": "incorrect header check"
     },
     {
       "source": "nolodejesescapar",
