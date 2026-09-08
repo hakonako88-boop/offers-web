@@ -1,7 +1,7 @@
 export const canonicalCategories = [
   "Tecnología", "Informática", "Telefonía", "Gaming", "Hogar", "Electrodomésticos",
   "Belleza y cuidado personal", "Moda", "Deporte", "Motor", "Juguetes", "Alimentación",
-  "Bebés", "Viajes", "Servicios", "Otros / Sin clasificar",
+  "Bebés", "Viajes", "Servicios", "Bricolaje", "Otros / Sin clasificar",
 ] as const;
 
 export type CanonicalCategory = (typeof canonicalCategories)[number];
@@ -23,19 +23,20 @@ const rules: Rule[] = [
   { category: "Informática", subcategory: "Componentes y periféricos", pattern: /\b(?:ssd|disco\s+duro|memoria\s+ram|tarjeta\s+gr[aá]fica|gpu|router|impresora|teclado|rat[oó]n|mouse|webcam)\b/iu, weight: .9 },
   { category: "Gaming", subcategory: "Consolas y juegos", pattern: /\b(?:gaming|videojuego|playstation|ps[345](?:\s|$)|xbox|nintendo|switch|steam\s*deck|consola|hotas|control\s+de\s+vuelo|mando\s+(?:pro|inal[aá]mbrico)|gran\s+turismo|battlefield)\b/iu, weight: 1 },
   { category: "Tecnología", subcategory: "Audio", pattern: /\b(?:auricular|headphone|earbud|altavoz|soundbar|barra\s+de\s+sonido|micr[oó]fono)\b/iu, weight: .9 },
-  { category: "Tecnología", subcategory: "Smart Home", pattern: /\b(?:dom[oó]tica|smart\s*home|bombilla\s+inteligente|c[aá]mara\s+(?:wifi|ip|de\s+seguridad)|videoportero)\b/iu, weight: .9 },
+  { category: "Tecnología", subcategory: "Smart Home", pattern: /\b(?:dom[oó]tica|smart\s*home|bombilla\s+inteligente|c[aá]mara\s+(?:wifi|ip|de\s+seguridad|de\s+vigilancia|vigilancia)|videoportero)\b/iu, weight: .9 },
   { category: "Tecnología", subcategory: "Wearables", pattern: /\b(?:smartwatch|reloj\s+inteligente|pulsera\s+de\s+actividad|wearable)\b/iu, weight: .95 },
   { category: "Electrodomésticos", subcategory: "Cocina", pattern: /\b(?:freidora\s+de\s+aire|air\s*fryer|cafetera|microondas|lavavajillas|frigor[ií]fico|batidora|tostadora|horno|placa\s+de\s+inducci[oó]n|hot\s+water\s+dispenser|dispensador\s+de\s+agua)\b/iu, weight: 1 },
   { category: "Electrodomésticos", subcategory: "Limpieza", pattern: /\b(?:robot\s+aspirador|aspirador|lavadora|secadora|limpiador\s+de\s+vapor)\b/iu, weight: .95 },
   { category: "Belleza y cuidado personal", subcategory: "Perfumería", pattern: /\b(?:perfume|parfum|eau\s+de|colonia)\b/iu, weight: 1 },
-  { category: "Belleza y cuidado personal", subcategory: "Cuidado personal", pattern: /\b(?:cosm[eé]tic|maquillaje|crema\s+(?:facial|corporal)|champ[uú]|afeitadora|cortapelo|depiladora|gillette|protector\s+solar|spf\s*\d+|anthelios|la\s+roche\s+posay)\b/iu, weight: 1 },
+  { category: "Belleza y cuidado personal", subcategory: "Cuidado personal", pattern: /\b(?:cosm[eé]tic|maquillaje|gel\s+de\s+cejas|brow\s+glue|pasta\s+de\s+dientes|cepillo\s+desenredante|term[oó]metro|crema\s+(?:facial|corporal)|champ[uú]|afeitadora|cortapelo|depiladora|gillette|protector\s+solar|spf\s*\d+|anthelios|la\s+roche\s+posay)\b/iu, weight: 1 },
   { category: "Bebés", pattern: /\b(?:beb[eé]|pa[nñ]al|cuna|carrito\s+de\s+beb[eé]|trona|biber[oó]n)\b/iu, weight: 1 },
   { category: "Juguetes", pattern: /\b(?:juguete|mu[nñ]ec[oa]|lego|playmobil|puzzle|juego\s+de\s+mesa|tamagotchi|figura\s+de\s+acci[oó]n)\b/iu, weight: .95 },
-  { category: "Alimentación", pattern: /\b(?:caf[eé]\s+(?:en\s+grano|molido)|chocolate|galleta|aceite\s+de\s+oliva|conserva|bebida|snack|alimentaci[oó]n)\b/iu, weight: .9 },
+  { category: "Alimentación", pattern: /\b(?:caf[eé]\s+(?:en\s+grano|molido)|chocolate|galleta|aceite\s+de\s+oliva|conserva|bebida|snack|alimentaci[oó]n|yatekomo|fideos?|arroz|pasta\s+(?:alimenticia|italiana)|salsa|caldo|cereales?|lomo\s+embuchado)\b/iu, weight: .9 },
   { category: "Motor", pattern: /\b(?:coche|moto|autom[oó]vil|neum[aá]tico|arrancador\s+de\s+bater[ií]a|obd|casco\s+de\s+moto)\b/iu, weight: .9 },
   { category: "Deporte", pattern: /\b(?:fitness|deporte|running|senderismo|bicicleta|p[aá]del|f[uú]tbol|mancuerna|gimnasio|caminadora|cinta\s+de\s+correr)\b/iu, weight: .9 },
-  { category: "Moda", pattern: /\b(?:camiseta|pantal[oó]n|vestido|chaqueta|zapatilla|zapato|sandalia|bolso|mochila|moda|ropa|calzado)\b/iu, weight: .85 },
-  { category: "Hogar", pattern: /\b(?:hogar|mueble|colch[oó]n|almohada|coj[ií]n|s[aá]bana|toalla|limpieza|jard[ií]n|piscina|l[aá]mpara|ventilador\s+de\s+techo)\b/iu, weight: .82 },
+  { category: "Moda", pattern: /\b(?:camiseta|pantal[oó]n|vestido|chaqueta|zapatilla|zapato|sandalia|bolso|mochila|moda|ropa|calzado|braguita|trunks?|ropa\s+[ií]ntima|gafas\s+de\s+sol|reloj(?!\s+inteligente)|maleta)\b/iu, weight: .85 },
+  { category: "Bricolaje", pattern: /\b(?:herramienta|taladro|sierra\s+(?:sable|circular)|atornillador|amoladora|lijadora|cortasetos|cortac[eé]sped|soplador\s+de\s+hojas|brocas?|bater[ií]a\s+\d{2}\s*v)\b/iu, weight: .93 },
+  { category: "Hogar", pattern: /\b(?:hogar|mueble|colch[oó]n|almohada|coj[ií]n|s[aá]bana|toalla|limpieza|jard[ií]n|bancal|piscina|l[aá]mpara|iluminaci[oó]n|cama\s+para\s+perro|mascota|ventilador\s+de\s+techo)\b/iu, weight: .82 },
   { category: "Viajes", pattern: /\b(?:hotel|vuelo|escapada|viaje|maleta|apartamento\s+tur[ií]stico)\b/iu, weight: .9 },
   { category: "Servicios", pattern: /\b(?:suscripci[oó]n|vpn|tarifa|fibra|software|curso\s+online|seguro)\b/iu, weight: .85 },
 ];
@@ -49,7 +50,7 @@ const directAliases: Record<string, CanonicalCategory> = {
   videojuegos: "Gaming", gaming: "Gaming", hogar: "Hogar", cocina: "Electrodomésticos", electrodomesticos: "Electrodomésticos",
   belleza: "Belleza y cuidado personal", "belleza y cuidado personal": "Belleza y cuidado personal", moda: "Moda",
   deporte: "Deporte", motor: "Motor", juguetes: "Juguetes", alimentacion: "Alimentación", bebes: "Bebés",
-  viajes: "Viajes", servicios: "Servicios",
+  viajes: "Viajes", servicios: "Servicios", bricolaje: "Bricolaje", herramientas: "Bricolaje",
 };
 
 export function classifyProduct(title: string, suppliedCategory = ""): CategoryClassification {

@@ -119,7 +119,7 @@ export function getCategoryPage(slug: string) {
 
 export function categoryDeals(slug: string, deals: PublishedDeal[]) {
   const category = getCategoryPage(slug);
-  const aliases: Partial<Record<CategorySlug, string[]>> = { videojuegos: ["Gaming"], cocina: ["Electrodomésticos"], bricolaje: ["Hogar"], belleza: ["Belleza y cuidado personal"] };
+  const aliases: Partial<Record<CategorySlug, string[]>> = { videojuegos: ["Gaming"], cocina: ["Electrodomésticos"], bricolaje: ["Bricolaje"], belleza: ["Belleza y cuidado personal"] };
   const accepted = category ? aliases[slug as CategorySlug] || [category.name] : [];
   return category ? deals.filter((deal) => accepted.includes(deal.category)) : [];
 }
