@@ -240,7 +240,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                     {discount > 0 && <p className="saving">Ahorras {money.format(deal.oldPrice - deal.price)}</p>}
                     {deal.coupon ? (
                       <button className="coupon" onClick={() => copyCoupon(deal.coupon!)} aria-label={`Copiar cupón ${deal.coupon}`}>
-                        <span>Cupón</span><b>{copied === deal.coupon ? "¡Copiado!" : deal.coupon}</b><i aria-hidden="true">□</i>
+                        <span>Cupón</span><b>{copied === deal.coupon ? "¡Copiado!" : deal.coupon}</b><i aria-hidden="true">COPIAR</i>
                       </button>
                     ) : <p className="noCoupon">Precio directo, sin cupón extra</p>}
                     <a className="dealButton" href={dealDetailsUrl(deal)}>Ver el chollo <span aria-hidden="true">→</span></a>

@@ -609,6 +609,92 @@ body { background: var(--paper); }
   .dealHome .imageWrap { min-height: 210px; border-right: 0; border-bottom: 1px solid #edf0f5; }
 }
 
+/* Professional offer hierarchy: product → price → saving → coupon → action. */
+.dealCard h3 {
+  color: #101828;
+  font-weight: 820;
+  letter-spacing: -.025em;
+}
+.dealCard .priceRow {
+  align-items: center;
+  gap: 9px;
+  padding: 10px 11px;
+  border: 1px solid #e4e8f0;
+  border-radius: 11px;
+  background: #f8fafc;
+}
+.dealCard .priceRow strong {
+  padding: 0;
+  background: transparent;
+  color: #16205d;
+  font-weight: 950;
+}
+.dealCard .priceRow span { color: #667085; }
+.dealCard .priceRow s { color: #7b8493; }
+.dealCard .saving {
+  margin-top: 7px;
+  color: #087f5b;
+  font-size: 12px;
+  font-weight: 850;
+}
+.dealCard .coupon,
+.couponCopy {
+  border: 1px dashed #e3a008;
+  background: linear-gradient(135deg, #fffdf4, #fff6cf);
+  color: #553a00;
+  box-shadow: 0 5px 13px rgb(151 105 0 / 7%);
+}
+.dealCard .coupon:hover,
+.couponCopy:hover { border-color: #bd7600; background: #fff1b8; }
+.dealCard .coupon span,
+.couponCopy > span { color: #795200; font-weight: 900; }
+.dealCard .coupon b,
+.couponCopy > b { color: #332300; font-weight: 950; }
+.dealCard .coupon i {
+  border-radius: 6px;
+  background: #172554;
+  padding: 6px 7px;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+.couponCopy > strong { background: #172554; }
+.offerSummary h1 { color: #101828; font-weight: 850; line-height: 1.08; }
+.offerPriceBox {
+  border: 1px solid #ffcabd;
+  border-left: 5px solid var(--coral);
+  background: linear-gradient(135deg, #fff8f5, #fff);
+  box-shadow: 0 10px 28px rgb(187 65 32 / 8%);
+}
+.offerPriceBox > span { color: #a33c27; }
+.offerPriceBox strong { color: #c63d20; }
+.offerPriceBox em { color: #087f5b; font-weight: 850; }
+
+@media (max-width: 520px) {
+  .dealHome .dealCard { display: flex; grid-template-columns: none; }
+  .dealHome .imageWrap {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1.35;
+    border-right: 0;
+    border-bottom: 1px solid #edf0f5;
+  }
+  .dealHome .imageWrap img,
+  .dealHome .imageWrap img[src*="/tg/miravia-"] { padding: 14px; }
+  .dealHome .dealBody { padding: 17px; }
+  .dealHome .dealCard h3 { margin-bottom: 12px; font-size: 16px; line-height: 1.38; }
+  .dealHome .priceRow { flex-direction: row; align-items: center; gap: 9px; }
+  .dealHome .priceRow strong { font-size: 29px; }
+  .dealHome .priceRow span { display: flex; }
+  .dealHome .coupon,
+  .dealHome .noCoupon { min-height: 40px; margin-top: 11px; padding-inline: 9px; text-align: left; }
+  .offerSummary h1 { font-size: 34px; }
+  .offerPriceBox { padding: 17px; }
+  .offerPriceBox strong { display: block; font-size: 47px; }
+  .offerPriceBox p { margin: 9px 0 0; }
+}
+
 /* Editorial posts sent from the private Telegram bot. They are intentionally
    distinct from price cards so an informational post never looks like a deal. */
 .editorialPosts { padding: 72px 0 30px; }

@@ -3,6 +3,7 @@ import { categoryIsIndexable, categoryPages } from "./lib/categories";
 import { dealHref, publishedDeals } from "./lib/deals";
 import { postHref, publishedPosts } from "./lib/posts";
 import { indexableProducts, productHref } from "./lib/products";
+import { guides } from "./lib/guides";
 
 const siteUrl = "https://chollosaldia.com";
 const latestPublication = Math.max(0, ...publishedDeals.map((deal) => Date.parse(deal.verifiedDate || "") || 0), ...publishedPosts.map((post) => Date.parse(post.publishedAt) || 0));
@@ -18,11 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}/ofertas/pccomponentes/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
     { url: `${siteUrl}/ofertas/el-corte-ingles/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
     { url: `${siteUrl}/ofertas/mediamarkt/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
-    { url: `${siteUrl}/guias/ofertas-amazon/`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${siteUrl}/guias/cupones-aliexpress/`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${siteUrl}/guias/detectar-chollos-reales/`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${siteUrl}/guias/chollos-electronica/`, lastModified: new Date("2026-08-25T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.72 },
-    { url: `${siteUrl}/guias/ofertas-cocina/`, lastModified: new Date("2026-08-25T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.72 },
+    ...Object.entries(guides).map(([slug, guide]) => ({ url: `${siteUrl}/guias/${slug}/`, lastModified: new Date(`${"updatedAt" in guide ? guide.updatedAt : "2026-08-25"}T00:00:00.000Z`), changeFrequency: "monthly" as const, priority: 0.72 })),
     { url: `${siteUrl}/blog/`, lastModified: homepageLastModified, changeFrequency: "weekly", priority: 0.74 },
     { url: `${siteUrl}/telegram/`, lastModified: new Date("2026-08-26T00:00:00.000Z"), changeFrequency: "weekly", priority: 0.82 },
     { url: `${siteUrl}/gta-vi-mas-barato-ps5/`, lastModified: new Date("2026-08-31T10:00:00.000Z"), changeFrequency: "daily", priority: 0.95 },
