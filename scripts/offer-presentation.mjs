@@ -128,6 +128,14 @@ export function improveOfferTitle(value = '') {
   if (/ezviz.*camara/.test(text)) return 'Cámara de vigilancia solar EZVIZ 6 MP con batería';
   if (/vexilar c9.*aspir/.test(text)) return 'Aspiradora con cable Vexilar C9 · 70 kPa';
   if (/ferplast.*cama para perro/.test(text)) return 'Cama cojín Ferplast para perros · tejido resistente';
+  if (/gipp.*paellera/.test(text)) return 'Paellera Gipp de aluminio de 36 cm con revestimiento cerámico';
+  if (/jack.*jones.*jpstbowie/.test(text)) return 'Pantalón corto JACK & JONES JPSTBOWIE';
+  if (/nelko p21.*etiquetadora/.test(text)) return 'Etiquetadora térmica adhesiva Nelko P21';
+  if (/relaxty.*suelo gimnasio/.test(text)) return 'Suelo protector de gimnasio RELAXTY · 18 piezas';
+  if (/braun series 6.*afeitadora/.test(text)) return 'Afeitadora eléctrica Braun Series 6';
+  if (/songmics.*silla de oficina/.test(text)) return 'Silla de oficina SONGMICS OBN043BH02';
+  if (/bascula de bano.*grasa corporal/.test(text)) return 'Báscula inteligente de baño con análisis corporal y app';
+  if (/nyx.*brow glue/.test(text)) return 'Gel fijador de cejas NYX The Brow Glue';
 
   if (/relleno\s+de\s+cojin/.test(text)) {
     const brandAfter = original.match(/relleno\s+de\s+coj[ií]n\s+([\p{L}\p{N}-]{2,})\b/iu)?.[1] || '';
@@ -198,14 +206,14 @@ function storeHashtag(store = '') {
 export function offerEditorialHook({ title = '', price = 0, discount = 0 } = {}) {
   const identity = normalized(title);
   const variants = Number(discount) >= 50
-    ? ['SUPEROFERTA', 'CHOLLO IRRESISTIBLE']
+    ? ['Superoferta', 'Chollo irresistible']
     : Number(discount) >= 30
-      ? ['CHOLLO DESTACADO', 'GRAN OFERTA']
+      ? ['Chollo destacado', 'Gran oferta']
       : Number(price) > 0 && Number(price) <= 15
-        ? ['OFERTITA', 'PEQUEÑO CHOLLO']
+        ? ['Ofertita', 'Pequeño chollo']
         : Number(discount) >= 15
-          ? ['BUENA OFERTA', 'CHOLLO DEL DÍA']
-          : ['OFERTA SELECCIONADA', 'PRECIO INTERESANTE'];
+          ? ['Buena oferta', 'Chollo del día']
+          : ['Oferta seleccionada', 'Precio interesante'];
   const score = Array.from(identity).reduce((total, character) => total + character.codePointAt(0), 0);
   return variants[score % variants.length];
 }
@@ -233,10 +241,10 @@ function offerDescription({ title, discount, description = '' } = {}) {
   if (/baliza\s+v16|luz\s+de\s+emergencia.*(?:dgt|coche)/.test(titleText)) {
     return 'Baliza de emergencia V16 con visibilidad 360°, conexión DGT 3.0 y base imantada para el coche.';
   }
-  const discountText = Number(discount) > 0
-    ? ` con un ${Math.round(Number(discount))}% de descuento`
-    : ' a un precio rebajado';
-  return trimAtWord(`Una buena oportunidad para conseguir ${product}${discountText}. Revisa el stock y las condiciones antes de finalizar la compra.`, 210);
+  if (Number(discount) > 0) {
+    return trimAtWord(`${product}: ahora con un ${Math.round(Number(discount))}% de descuento. Buena ocasión si lo tenías en tu lista.`, 210);
+  }
+  return trimAtWord(`${product} está ahora a precio rebajado. Comprueba la variante y el importe final antes de comprar.`, 210);
 }
 
 export function formatTelegramDealCard({
@@ -259,10 +267,7 @@ export function formatTelegramDealCard({
       ? `🔻 ${escapeHtml(highlight)}`
       : `🔻 ${savingsText}`;
   const linkLine = `👇🏻 <b>Toca VER EN ${escapeHtml(storeHashtag(store).toUpperCase())}</b> para ir directamente a la tienda`;
-  const headline = [
-    `🔥 <b>${escapeHtml(offerEditorialHook({ title, price: Number(String(price).replace(/[^\d,.-]/gu, '').replace(',', '.')), discount }))}</b> · #${storeTag}`,
-    `<b>${escapeHtml(improveOfferTitle(title))}</b>`,
-  ].join('\n');
+  const headline = `🔥 <b>${escapeHtml(offerEditorialHook({ title, price: Number(String(price).replace(/[^\d,.-]/gu, '').replace(',', '.')), discount }))} en ${escapeHtml(store)}: ${escapeHtml(improveOfferTitle(title))}</b>`;
   const priceBlock = [
     previousPrice ? `📛 <b>Antes:</b> <s>${escapeHtml(previousPrice)}</s>` : '',
     `💶 <b>PRECIO OFERTA:</b> <b>${escapeHtml(price)}</b> 💥`,
@@ -274,7 +279,7 @@ export function formatTelegramDealCard({
     `✨ ${escapeHtml(offerDescription({ title, discount, description }))}`,
     priceBlock,
     linkLine,
-    '🔔 <b>Sigue @aldiachollos</b> para recibir los próximos chollos · Compártelo si puede ayudar',
+    `🔔 <b>Sigue @aldiachollos</b> para recibir los próximos chollos\n#${storeTag} #Chollos`,
   ].join('\n\n').slice(0, 1000);
 }
 

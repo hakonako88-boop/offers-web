@@ -233,7 +233,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                     <span className="storeBadge">{deal.store}</span>
                   </a>
                   <div className="dealBody">
-                    <p className="categoryLabel"><b>{offerEditorialLabel({ id: deal.id, price: deal.price, discount })}</b><span aria-hidden="true"> · </span>{deal.category}</p>
+                    <p className="categoryLabel"><b>{offerEditorialLabel({ id: deal.id, price: deal.price, discount })}</b> en {deal.category}</p>
                     <h3 title={deal.title}><a href={dealDetailsUrl(deal)}>{offerDisplayTitle(deal.title)}</a></h3>
                     <div className="priceRow">
                       <strong>{money.format(deal.price)}</strong>

@@ -32,6 +32,14 @@ export function offerDisplayTitle(value: string) {
   if (/ezviz.*camara/.test(text)) return "Cámara de vigilancia solar EZVIZ 6 MP con batería";
   if (/vexilar c9.*aspir/.test(text)) return "Aspiradora con cable Vexilar C9 · 70 kPa";
   if (/ferplast.*cama para perro/.test(text)) return "Cama cojín Ferplast para perros · tejido resistente";
+  if (/gipp.*paellera/.test(text)) return "Paellera Gipp de aluminio de 36 cm con revestimiento cerámico";
+  if (/jack.*jones.*jpstbowie/.test(text)) return "Pantalón corto JACK & JONES JPSTBOWIE";
+  if (/nelko p21.*etiquetadora/.test(text)) return "Etiquetadora térmica adhesiva Nelko P21";
+  if (/relaxty.*suelo gimnasio/.test(text)) return "Suelo protector de gimnasio RELAXTY · 18 piezas";
+  if (/braun series 6.*afeitadora/.test(text)) return "Afeitadora eléctrica Braun Series 6";
+  if (/songmics.*silla de oficina/.test(text)) return "Silla de oficina SONGMICS OBN043BH02";
+  if (/bascula de bano.*grasa corporal/.test(text)) return "Báscula inteligente de baño con análisis corporal y app";
+  if (/nyx.*brow glue/.test(text)) return "Gel fijador de cejas NYX The Brow Glue";
 
-  return trimAtWord(original.replace(/\s*[|_]\s*/gu, " · "));
+  return trimAtWord(original.replace(/\s*[|_]\s*/gu, " · ").replace(/\s+-\s+/gu, " · "), 74);
 }
