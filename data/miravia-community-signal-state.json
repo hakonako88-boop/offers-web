@@ -2238,7 +2238,7 @@
       "merchantUrl": "https://tidd.ly/4iND1Hp",
       "sourceImageUrl": "https://cdn4.telesco.pe/file/lM1AeaLiGRLHtIiS28lTdOfMbKVTeQPip1SMZ0ykojNun1Wd4L6c-g83xWC0DV0EZGEoWC1yX89e1Om7ODk9TkH8RjYyDleReEAfzCB82NU2UGaVr5u3hYD2vDqk_NvS1S9efY_yO6WJkqDbZ7bdrt_C-t8yxRDdqCZbCRFklzXtiXQ-c0--Qll9y4NbYnSrtV-ZPFnkquRU7-i-OA4VXseETUku-T3Qb8C99t5YF2HWqABEqlYer2W38L-ooDVFRZoADZvm28--3ZEIODWjlr0Hb_lopeQ3idVt4n5qdLuXMwQ_RjgYz8VksYpvPRxzxTyE1R1M5yPVKMWMiTwaEA.jpg",
       "priority": false,
-      "retryPolicyVersion": "",
+      "retryPolicyVersion": "exact-official-page-v1",
       "attempts": 1
     },
     {
@@ -2290,9 +2290,14 @@
       "coupon": ""
     }
   ],
-  "lastCheckedAt": "2026-09-08T12:52:09.520Z",
+  "lastCheckedAt": "2026-09-08T13:02:12.830Z",
   "micholloLastCheckedAt": "2026-09-08T08:43:29.586Z",
   "sourceHealth": [
+    {
+      "source": "telegram-source-queue",
+      "status": "ok",
+      "found": 2
+    },
     {
       "source": "michollo",
       "status": "deferred"
@@ -2305,7 +2310,7 @@
     {
       "source": "chollometro-aliexpress",
       "status": "ok",
-      "found": 0
+      "found": 1
     }
   ]
 }
