@@ -20193,13 +20193,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/BGdnm2MLuvdHsPfVE5G_WDjai_e6HRcibaSSVdzrnJhLvxxB-zlMDIWkDD3VYM7GrCzu_E_rb1Ll5jloBphnfataJNKu2GOMhX51pdgFllJskMxiHq6AU50e5tM3ALTLBYLfeLuWqHz9bJKNZv-R8cY2uVHxM29LXrsu9Bz-ydr3B6zvsfJ3NiCLDAIWeH5Tq7Y7-HkO9xzy7bn3KMG7b-XktnGhdRjy3vkN4GQb4ju24SeNcwNL0z5n74UpdLX3W6vtXCv8XgJefHCLhH3QNLoXKWM5w6yfGEcyiSCzOm0fa6Zj8cfrc9_jolJq4-DykK1CaTT6PX6k_DxK_vEZJg.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4xLyiLc",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-08T19:10:56.553Z",
-      "updatedAt": "2026-09-08T19:32:15.619Z",
+      "updatedAt": "2026-09-08T19:41:33.777Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20214,12 +20214,12 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/46d1ApT",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (2/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 2,
       "createdAt": "2026-09-08T19:21:00.975Z",
-      "updatedAt": "2026-09-08T19:32:15.619Z",
+      "updatedAt": "2026-09-08T19:42:13.754Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20255,12 +20255,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4dqFpAm",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-08T19:31:00.048Z",
-      "updatedAt": "2026-09-08T19:32:15.619Z"
+      "updatedAt": "2026-09-08T19:42:13.754Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:92885:miravia:0",
@@ -20274,12 +20275,12 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4cxiCm9",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (2/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 2,
       "createdAt": "2026-09-08T19:40:59.511Z",
-      "updatedAt": "2026-09-08T19:40:59.511Z"
+      "updatedAt": "2026-09-08T19:42:13.754Z"
     },
     {
       "id": "telegram-errores-de-precio:15510:amazon:0",
@@ -20292,13 +20293,13 @@
       "sourceImageUrl": "https://cdn1.telesco.pe/file/Q9UF1iiiwzdzmX4AQXy_pndOBaPKIQ6bug3cAOuP6IUDeb3RDQwnMgO4oPV5yl_dlIVaCIVKXOKzAOHicmohOcDYtnEUYxtrTCQQ9xQSlWuvLbplbggjjDV77s0hBlDZlGDWIEykgiaViYxTRzVguXIYjLCAyzTeN4NGewMEVsp_0EHdS5YJWXqUKA_uzCTaq_xDOjojJPVGoztS8CRSLSDSQ1PSTKj4qzs9pAc9tvsOZDAunBDCGi1Rso_Pu2DRT-Qbmc8diC4iIPWTbvbqJGiq6bYVeclHOSKosuPwYZCke28ZBLqR7lpVtWJXDshZjBP8fmFDu3jdqXNOn-wRrQ.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B09f7L74j",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta ASIN",
       "sourceWeight": 25,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-08T19:41:00.028Z",
-      "updatedAt": "2026-09-08T19:41:00.028Z"
+      "updatedAt": "2026-09-08T19:42:14.797Z"
     }
   ]
 }
