@@ -259,21 +259,23 @@ export function formatTelegramDealCard({
       ? `🔻 ${escapeHtml(highlight)}`
       : `🔻 ${savingsText}`;
   const linkLine = `👇🏻 <b>Toca VER EN ${escapeHtml(storeHashtag(store).toUpperCase())}</b> para ir directamente a la tienda`;
-
-  return [
+  const headline = [
     `🔥 <b>${escapeHtml(offerEditorialHook({ title, price: Number(String(price).replace(/[^\d,.-]/gu, '').replace(',', '.')), discount }))}</b> · #${storeTag}`,
     `<b>${escapeHtml(improveOfferTitle(title))}</b>`,
-    '',
-    `✨ ${escapeHtml(offerDescription({ title, discount, description }))}`,
-    '',
-    previousPrice ? `📛 <b>PVP:</b> <s>${escapeHtml(previousPrice)}</s>` : '',
+  ].join('\n');
+  const priceBlock = [
+    previousPrice ? `📛 <b>Antes:</b> <s>${escapeHtml(previousPrice)}</s>` : '',
     `💶 <b>PRECIO OFERTA:</b> <b>${escapeHtml(price)}</b> 💥`,
     actionLine,
-    '',
+  ].filter(Boolean).join('\n');
+
+  return [
+    headline,
+    `✨ ${escapeHtml(offerDescription({ title, discount, description }))}`,
+    priceBlock,
     linkLine,
-    '',
     '🔔 <b>Sigue @aldiachollos</b> para recibir los próximos chollos · Compártelo si puede ayudar',
-  ].filter((line, index) => line || index === 1 || index === 3 || index === 7 || index === 9).join('\n').slice(0, 1000);
+  ].join('\n\n').slice(0, 1000);
 }
 
 export function formatWebsiteDealText({ title, store, price, previousPrice = '', savings = '', discount = 0, coupon = '' } = {}) {
