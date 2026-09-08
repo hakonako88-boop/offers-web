@@ -20328,14 +20328,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/hCMkRZs0yF9UFfZpGN0dAu8Ah8vmmWJ2DxbuZh5R2RYDoBRtPmJAvzacQlC75FaK06YwhYHZKtbOAxKVaH1-Z3XaPQbkk73vGQ0OQD5VI9CQXacfpXwHAnIir7fZekbem8byKdftglU15cumCO6wi6VlIqs2_jp34AbCyVdgn0gVLPBs2Ezk_GKrN1vJiArNehayUdz16kbZUE_3bdETfkUAUE6KmHlnIGWsyzHh5wT4V8Ub2BcPEpDz_Tfo9w7dOCQ-E4N8eB51edLuE0zu8KW6thlspJ3Cgsym-Wd_7gct1B1Uto1eRnX154oO70n6jduUUtMFC9JwQdfteI6qmA.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3dsgh5B",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-08T11:40:58.813Z",
-      "updatedAt": "2026-09-08T11:42:42.876Z"
+      "updatedAt": "2026-09-08T11:52:21.004Z"
     },
     {
       "id": "telegram-una-ganga:92841:miravia:0",
@@ -20349,12 +20349,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4xbGCmK",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-08T11:40:59.423Z",
-      "updatedAt": "2026-09-08T11:42:42.876Z"
+      "updatedAt": "2026-09-08T11:52:21.004Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     }
   ]
 }
