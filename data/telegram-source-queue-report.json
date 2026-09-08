@@ -1,22 +1,44 @@
 {
-  "updatedAt": "2026-09-08T06:12:38.235Z",
+  "updatedAt": "2026-09-08T06:22:31.141Z",
   "summary": {
-    "published": 469,
-    "rejected": 331,
+    "rejected": 332,
+    "published": 467,
     "duplicate": 29,
     "needs_review": 147,
     "ignored": 23,
-    "pending": 1
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7235:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7235,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/tiesometro/7235",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:92823:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92823,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/92823",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92822:aliexpress:0",
       "source": "telegram-una-ganga",
       "messageId": 92822,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92822",
       "resultUrl": ""
     },
@@ -1085,28 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92779",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41681:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41681,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/41681",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41680:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41680,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/41680",
       "resultUrl": ""
     }
   ]
