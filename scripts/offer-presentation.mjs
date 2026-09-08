@@ -117,6 +117,18 @@ export function improveOfferTitle(value = '') {
   const text = normalized(original);
   if (!original) return 'Oferta destacada';
 
+  if (/realme 16 pro plus/.test(text)) return 'realme 16 Pro+ 5G · AMOLED 144 Hz · cámara de 200 MP';
+  if (/aspirador de colchones/.test(text) && /taurus/.test(text)) return 'Aspirador de colchones Taurus Textile Care con luz UV-C';
+  if (/xiaomi compact hair dryer h101/.test(text)) return 'Secador plegable Xiaomi Compact Hair Dryer H101';
+  if (/timex.*orologio.*expedition/.test(text)) return 'Reloj Timex Expedition';
+  if (/tostadora/.test(text) && /2 ranuras/.test(text)) return 'Tostadora de 2 ranuras anchas con 9 niveles de dorado';
+  if (/unigardia.*bancal/.test(text)) return 'Bancal elevado modular UNIGARDIA 9 en 1 · 240×60×43 cm';
+  if (/colgate.*advanced white/.test(text)) return 'Pasta de dientes Colgate Advanced White · pack de 12';
+  if (/carpa de camping/.test(text)) return 'Carpa de camping impermeable para 3–4 personas';
+  if (/ezviz.*camara/.test(text)) return 'Cámara de vigilancia solar EZVIZ 6 MP con batería';
+  if (/vexilar c9.*aspir/.test(text)) return 'Aspiradora con cable Vexilar C9 · 70 kPa';
+  if (/ferplast.*cama para perro/.test(text)) return 'Cama cojín Ferplast para perros · tejido resistente';
+
   if (/relleno\s+de\s+cojin/.test(text)) {
     const brandAfter = original.match(/relleno\s+de\s+coj[ií]n\s+([\p{L}\p{N}-]{2,})\b/iu)?.[1] || '';
     const brand = brandBefore(original, /relleno\s+de\s+coj[ií]n/i) || brandAfter;
