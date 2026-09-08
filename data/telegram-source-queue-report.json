@@ -1,14 +1,47 @@
 {
-  "updatedAt": "2026-09-08T10:02:42.967Z",
+  "updatedAt": "2026-09-08T10:12:35.776Z",
   "summary": {
-    "needs_review": 141,
+    "needs_review": 138,
     "ignored": 24,
     "published": 458,
-    "rejected": 347,
+    "rejected": 348,
     "duplicate": 29,
-    "pending": 1
+    "pending": 3
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92836:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92836,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/92836",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41742:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41742,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41742",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41741:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 41741,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/41741",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-ofertas-supermercados-es:2104:ignored",
       "source": "telegram-ofertas-supermercados-es",
@@ -69,9 +102,9 @@
       "source": "telegram-una-ganga",
       "messageId": 92835,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92835",
       "resultUrl": ""
     },
@@ -1074,39 +1107,6 @@
       "attempts": 0,
       "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
       "sourceUrl": "https://t.me/paramanitas/4717",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4716:amazon:14",
-      "source": "telegram-paramanitas",
-      "messageId": 4716,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4716",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4716:amazon:13",
-      "source": "telegram-paramanitas",
-      "messageId": 4716,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4716",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4716:amazon:12",
-      "source": "telegram-paramanitas",
-      "messageId": 4716,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4716",
       "resultUrl": ""
     }
   ]
