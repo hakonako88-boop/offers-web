@@ -20306,13 +20306,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/imqnGcwSJpq6lx_QbvAU370k_3Zd9yYvgt8_fklqCGDPR1NXUjmeHzY33V1oIMiaDMWZWeyE33bcnZy8K_mP43YcQZAyiiwuO3akz4If0qfhjtnjN4jiSwhJQOtNgolSe1az81sN18K1xLrFi75XgIIcIHY0f6oVxgPt_3fVkfwvWcVIPxkB6lk_0Ra6yAX7Z_ANuTBYao7pe886c5RtZOjSUz9Pz8XciyyWoxbVVESgRout5rYfYXyWfQ5ZdoMSOa7YSKXACKMAbd9mCGNfDN2OK1Ugw65wShU5IzCxkDT6Wf2qYixdpu7PUCogMVvg7_S1ZYvivPp7D6lrG6aDag.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4xbGCmK",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-08T11:40:59.423Z",
-      "updatedAt": "2026-09-08T12:02:15.012Z",
+      "updatedAt": "2026-09-08T12:11:39.058Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20326,13 +20326,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/mVq9l9vlQdLmDWbiXbkmJlYmr0rtHdtLQZ6PksVuRwdUm0nmacW2xvyjNWBhXQ2quPAd08YWjCTfNCOcpdygIltkCIyP-NeOowDUEiaJCly8HH_qkvRPRAqEvM7s-r81Tk66BQV8euyEGWOI1Q8z_aDJ9tsRkhjz_gcOUJPDRpQIT-iJQkfiGF_5YNAiuKyWQRLK0Jr3NW6fBlpyZ2Wn_M47A6qzJcktyWbbuL6lGe_T2YeXWE9uRAOOc566Koy9I_Fftu-f04lplzIEzF1NgezcPK0h_UZl9SalgLGpf67z_5vrnk5zvi5anvuTYfcE6fOV4_Nn4NbjSjWde9mYEw.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0B6JGYM9J?tag=chollodeldia-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-08T12:11:00.813Z",
-      "updatedAt": "2026-09-08T12:11:00.813Z"
+      "updatedAt": "2026-09-08T12:12:20.843Z"
     },
     {
       "id": "telegram-una-ganga:92842:aliexpress:0",
@@ -20346,13 +20346,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3lic9wN",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-08T12:11:01.725Z",
-      "updatedAt": "2026-09-08T12:11:01.725Z"
+      "updatedAt": "2026-09-08T12:12:19.700Z"
     }
   ]
 }
