@@ -19874,13 +19874,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/Ug4Q6vfLXximhM5kwgmrHnlkvxi9zY0iFF-Pg_IEjsOW2TXdmbXwoDG6BqwBtEOPRtWjWthcYlMDlS4-J3o-PAP8Fpd0SejTS7jYbb0YwDUs2_Q4JXx6ZNBXfBKtL1bEfrSbSkw7FQSZI7hmJP5NPYDtXrY-HvhfBpzYUF809SRGzEnCJ6D1lNmkYbQS-I7ExNtWFPkfCB4FxD3KPv7gX_jOjYLQ2vIiMLiqMJF0pIK99nfXshKEum_StQCrynQoeEV97wVWgI8Z6PrCBvvzVANuRiDMpCsvIcymMcrR7tY5RYrCLlwceyNVQ8QRu2vS36GoGIWf4euiyZg-B_cnPw.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4ihxyZg",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-08T20:00:58.364Z",
-      "updatedAt": "2026-09-08T20:14:55.653Z",
+      "updatedAt": "2026-09-08T20:21:36.610Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20218,12 +20218,12 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4dqFpAm",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (2/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 2,
       "createdAt": "2026-09-08T20:10:09.299Z",
-      "updatedAt": "2026-09-08T20:14:55.653Z",
+      "updatedAt": "2026-09-08T20:22:11.849Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20238,12 +20238,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4r0sXgc",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-08T20:13:19.872Z",
-      "updatedAt": "2026-09-08T20:14:55.653Z"
+      "updatedAt": "2026-09-08T20:22:11.849Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:92891:amazon:0",
@@ -20256,13 +20257,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/A78F8Y-A0MZsIwRvzwC9iyrNOt0eZhYa0gxEDTJbRmu7Stlwzd03ie6wU3W5EoFyv2r_EryJAQv69JE0mcCG0H1W0UbBEhX0ldqmU_vW0IICGf2NYxbXEgrJfPYV44IYkZPTFXctr5jnABIgKolu7OXZGOllwGcHRMprgBodytXew_YDu173pAj94G2FYuzqBVuoN4FEXnY03lbYK1xJWbacWoZezN_SeBWDTfQEh07hpxM4ykTxtGWo35lAk4TPWAKdyKi92TfxbBNt0XbihcXiYoXpSfP_sWXH6F7Yshw8iTQ42WA15Osym8kNILRaXwKDbAqnVM6b7IonT6V8zg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B040dgNag",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-08T20:20:57.096Z",
-      "updatedAt": "2026-09-08T20:20:57.096Z"
+      "updatedAt": "2026-09-08T20:22:16.845Z",
+      "telegramMessageId": 6609,
+      "resultUrl": "https://www.amazon.es/dp/B0CBPSBW8T?tag=chollos00a-21"
     }
   ]
 }
