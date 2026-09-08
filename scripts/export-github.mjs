@@ -86,21 +86,26 @@ await render("/blog", "blog/index.html");
 await render("/buscar", "buscar/index.html");
 await render("/telegram", "telegram/index.html");
 await render("/gta-vi-mas-barato-ps5", "gta-vi-mas-barato-ps5/index.html");
+// Discover editorial and offer routes from the application's sitemap so a new
+// indexable guide cannot be published in the blog while missing from Pages.
+const sitemapResponse = await worker.fetch(new Request("https://chollosaldia.com/sitemap.xml"), { ASSETS: assets }, context);
+if (!sitemapResponse.ok) throw new Error("No se pudo leer el mapa del sitio para exportar las páginas públicas.");
+const sitemap = await sitemapResponse.text();
 for (const store of ["amazon", "aliexpress", "miravia", "xiaomi", "pccomponentes", "el-corte-ingles", "mediamarkt"]) {
   await render(`/ofertas/${store}`, `ofertas/${store}/index.html`);
 }
 for (const category of ["tecnologia", "videojuegos", "hogar", "cocina", "bricolaje", "juguetes", "moda", "deporte", "belleza"]) {
   await render(`/chollos/${category}`, `chollos/${category}/index.html`);
 }
-for (const guide of ["ofertas-amazon", "cupones-aliexpress", "detectar-chollos-reales", "chollos-electronica", "ofertas-cocina"]) {
+const guideIds = [...new Set([...sitemap.matchAll(/<loc>https:\/\/chollosaldia\.com\/guias\/([^<]+)<\/loc>/g)]
+  .map((match) => decodeURIComponent(match[1]).replace(/\/$/, ""))
+  .filter(Boolean))];
+for (const guide of guideIds) {
   await render(`/guias/${guide}`, `guias/${guide}/index.html`);
 }
 // The sitemap is built from the same reviewed list used by the application.
 // Exporting every raw inbox/history entry here used to create stale deal pages
 // that the homepage had intentionally hidden.
-const sitemapResponse = await worker.fetch(new Request("https://chollosaldia.com/sitemap.xml"), { ASSETS: assets }, context);
-if (!sitemapResponse.ok) throw new Error("No se pudo leer el mapa del sitio para exportar las ofertas activas.");
-const sitemap = await sitemapResponse.text();
 const offerIds = [...new Set([...sitemap.matchAll(/<loc>https:\/\/chollosaldia\.com\/oferta\/([^<]+)<\/loc>/g)]
   .map((match) => decodeURIComponent(match[1]).replace(/\/$/, ""))
   .filter(Boolean))];
