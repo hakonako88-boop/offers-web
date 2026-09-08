@@ -424,8 +424,8 @@ body { background: var(--paper); }
 .dealHome .loadMoreButton:hover { transform: translateY(-2px); background: #263452; }
 .dealHome .loadMoreWrap p { margin: 0; color: var(--home-muted); font-size: 11px; }
 .dealHome .dealGrid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
 }
 .dealHome .dealCard {
   border-color: var(--home-line);
@@ -530,7 +530,7 @@ body { background: var(--paper); }
 .analyticsConsentActions .analyticsAccept:hover { background: #e64220; }
 
 @media (max-width: 1050px) {
-  .dealHome .dealGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .dealHome .dealGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dealHome .storeRail { grid-template-columns: repeat(3, 1fr); }
   .dealHome .storeRailLead { grid-column: 1 / -1; min-height: 58px; }
 }
