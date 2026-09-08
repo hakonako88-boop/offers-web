@@ -228,7 +228,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                 <article className="dealCard" data-store={deal.store} key={deal.id}>
                   <a className="imageWrap dealPreviewLink" href={dealDetailsUrl(deal)} aria-label={`Ver análisis de ${deal.title}`}>
                     <img src={deal.imageUrl} alt={deal.title} loading="lazy" decoding="async" width={720} height={560} />
-                    {discount > 0 && <span className="discountBadge">−{discount}%</span>}
+                    {discount > 0 && <span className="discountBadge">AHORRA {discount}%</span>}
                     <span className="storeBadge">{deal.store}</span>
                   </a>
                   <div className="dealBody">
@@ -241,10 +241,10 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                     {discount > 0 && <p className="saving">Ahorras {money.format(deal.oldPrice - deal.price)}</p>}
                     {deal.coupon ? (
                       <button className="coupon" onClick={() => copyCoupon(deal.coupon!)} aria-label={`Copiar cupón ${deal.coupon}`}>
-                        <span>Cupón</span><b>{copied === deal.coupon ? "¡Copiado!" : deal.coupon}</b><i aria-hidden="true">COPIAR</i>
+                        <span>Cupón necesario</span><b>{copied === deal.coupon ? "¡Copiado!" : deal.coupon}</b><i aria-hidden="true">COPIAR</i>
                       </button>
-                    ) : <p className="noCoupon">Precio directo, sin cupón extra</p>}
-                    <a className="dealButton" href={dealDetailsUrl(deal)}>Ver el chollo <span aria-hidden="true">→</span></a>
+                    ) : <p className="noCoupon"><span aria-hidden="true">✓</span> Precio directo · sin código</p>}
+                    <a className="dealButton" href={dealDetailsUrl(deal)}>Ver detalles y comprar <span aria-hidden="true">→</span></a>
                     <p className="verified"><span aria-hidden="true" />Oferta activa · {deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt}</p>
                   </div>
                 </article>
