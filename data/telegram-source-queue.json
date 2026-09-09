@@ -20173,14 +20173,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/H6_Kn1DRxCrPxJD4tkhKp8OZpb6VPud0Wts0duue6ARBgvibR21jkN4yLDN_WUga2q_Xtgz37JRUIR-xwji3IxsbbhOEWhK7z7O814EqmYYXx_-RJCRgghjGSROb9SKJ7s-IZEuIprTNJSqPXDy8bRqUh4HVTanzl0j-k-CAxBEFc0pMt8bLtE-6oYnpSat8y7xjb6oSsd3IqZFsXARK7fCVXg92qYbDTQitcd1ye63Lc7rbTJtnQpFiOWitnDsYsUT2LPSq99_ClPK634qbxQOqp_rMJMLb-oJl0jrMDzd2BN7T1iBORhUPoK2rXsO6dlTXHBNmuFYsFm2aM0U5qw.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4Wu7rhR",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-09T21:10:58.183Z",
-      "updatedAt": "2026-09-09T21:12:36.747Z"
+      "updatedAt": "2026-09-09T21:22:29.145Z"
     },
     {
       "id": "telegram-tiesometro:7248:aliexpress:0",
@@ -20193,14 +20193,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/qv1ln",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-09T21:10:59.242Z",
-      "updatedAt": "2026-09-09T21:12:36.747Z"
+      "updatedAt": "2026-09-09T21:22:29.145Z"
     },
     {
       "id": "telegram-una-ganga:92976:amazon:0",
@@ -20213,13 +20213,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/Gz-sOPmZBzFc5jskrKDu5dtKo26RMb3mJJ4Mlh8g69DmxXOh-A2SdinsWlcaHx7Ggb8UoBN-hIXmDYGFQMwahVhqouPE9bvms7QiootygIlLN47wf5WO9ud4qLCteQ5yJOxyTe9XYeaCa-_oV7iUUiLxky-fZm2Sy46c64uXozhI1UUyJrZJMatBnegUXPUwivKG18vJMzI8vc13-8I8FojDtZ4h5-CDXwXGTy9KH9bCUMKsQE-KKdPJ3ZOopklKrBl0D091aS3QUA5m5PFhmk97_vQiEKzAaSe0AmBRRrrkHz9Cj9YEyKyoqyn51Uu_P5U8I-GUwb15NFaPCPCTlg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B02xQrgkg",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Producto excluido por preferencia editorial",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-09T21:21:01.273Z",
-      "updatedAt": "2026-09-09T21:21:01.274Z"
+      "updatedAt": "2026-09-09T21:22:30.203Z"
     }
   ]
 }
