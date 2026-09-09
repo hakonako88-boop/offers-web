@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-09T16:52:13.129Z",
+  "updatedAt": "2026-09-09T17:02:32.995Z",
   "summary": {
-    "rejected": 376,
     "published": 422,
     "needs_review": 146,
+    "rejected": 375,
     "ignored": 27,
-    "duplicate": 27,
+    "duplicate": 28,
     "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:41835:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41835,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41835",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-ofertos:41834:amazon:0",
       "source": "telegram-ofertos",
       "messageId": 41834,
       "store": "Amazon",
-      "status": "pending",
+      "status": "duplicate",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/Ofertos/41834",
       "resultUrl": ""
     },
@@ -26,8 +37,8 @@
       "messageId": 92962,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/92962",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/una_ganga/92925",
       "resultUrl": "https://s.click.aliexpress.com/e/_c3asrW4h"
-    },
-    {
-      "id": "telegram-una-ganga:92924:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92924,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/92924",
-      "resultUrl": ""
     }
   ]
 }
