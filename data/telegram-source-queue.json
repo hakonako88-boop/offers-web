@@ -20193,14 +20193,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/HRBbDKcSoYizt3dUckP0yYL22uDkSIDZa08YTtrC7EHnsieCPGtlR-hY7Q1U807sxCwppQCOHWPwqBQZ9sEZmAn8Q7gVhpw01mv2-vrNtmQu5RAD1rGuim16R_bEQ8W0qVsPKgxcw0ZFWpWyUCbM2cZmZJ3Pdv8Thsu-B-X0Rt_MWXBhEoElN9Hq1bMrjeoz1G4da5fsrWmD9YUnj0o3Z0HR7GTri14LK_b7uvwHfUOJwJ5oe1BUw8vSD7YGu-vsyUUr8R-uCdtp7teMaVlzoGqZcK2u8keYLX8nwBNvYy3L0cWjOOwCsqanv9rtqYrkukPM4qs1glwVyUtMVNc8vg.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c43fay2V",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-09T20:10:56.704Z",
-      "updatedAt": "2026-09-09T20:12:20.508Z"
+      "updatedAt": "2026-09-09T20:22:40.436Z"
     },
     {
       "id": "telegram-una-ganga:92973:amazon:0",
@@ -20213,13 +20213,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/v8Kh9sSfFeFoCvT5vSyJVrONWhvIc-fM5wHDjHr9XsC1_0N105rCif575yfQIevc5n9LYlwR0DHHnIXx4_sjhTx-I_igAzcf43n-gX10FAoEYyt7NFEVAvlzGqxCyO_Gq7-qCfsYyX2HI4JRlX7qjNgCd7LYJP6vvUDyCnStr7SalCxudD2pCKKdZIJfee6_6m5kaXm5v1IzVxB5YSaBSF1VlcEF7MLy_cVLEoVw4IocTQ1DUF2lNZshcld3K6-ZaN4YbhykGKIEOcRYYqiaRKpC39TFrYdE7L4p6PGdaC1x330ppwVZdzXUmqsHNBjS2qQZFMpKofJkk-EuULIJdg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0bdlyzpJ",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-09T20:20:58.028Z",
-      "updatedAt": "2026-09-09T20:20:58.028Z"
+      "updatedAt": "2026-09-09T20:22:45.986Z",
+      "telegramMessageId": 6709,
+      "resultUrl": "https://www.amazon.es/dp/B09HBW27GT?tag=chollos00a-21"
     }
   ]
 }
