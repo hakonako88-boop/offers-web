@@ -1957,9 +1957,14 @@
       "heat": 222
     }
   ],
-  "lastCheckedAt": "2026-09-09T02:52:09.387Z",
-  "micholloLastCheckedAt": "2026-09-08T21:02:01.274Z",
+  "lastCheckedAt": "2026-09-09T03:02:22.475Z",
+  "micholloLastCheckedAt": "2026-09-09T03:02:22.475Z",
   "sourceHealth": [
+    {
+      "source": "telegram-source-queue",
+      "status": "ok",
+      "found": 2
+    },
     {
       "source": "chollometro-subiendo",
       "status": "ok",
@@ -1967,7 +1972,8 @@
     },
     {
       "source": "michollo",
-      "status": "deferred"
+      "status": "unavailable",
+      "detail": "incorrect header check"
     },
     {
       "source": "nolodejesescapar",
