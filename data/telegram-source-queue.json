@@ -20171,13 +20171,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/pQaeRHrNWPYofUddm7jggD-T3Vpc5Vn_nCByHapBv3jigjsgAoOFMFWrOCezFTRj_37Ns2WuGWvNZp2y6e6PaEbLTDRISL4b_slbKotAG0FsFsT6c-8DbtqvnacDO_-0cfTg45vyBlaQx1QM7onperE4uadyEKHnZE-BBjZovFAn5QRR7XxZ6PJFf6uYFf_A2nvcDvyzSaqOgFYe9VNhvD8TNZ8PoCxhgsEBE_KwP6hVBEoRPvu0nj2DfkBvH9AqStKiV_tfhCmR5_PrvQRTl7oRyEjC28VVX6dlq6QFBAh59RGyfgxcWf_u4yEjK75Xk_7jpxsy5juYNl3JugkDjg.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4cuWNno",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-09T07:41:16.303Z",
-      "updatedAt": "2026-09-09T08:02:21.895Z",
+      "updatedAt": "2026-09-09T08:11:40.984Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20191,14 +20191,16 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/vDskEJfHPP5AKYTsHU4wy9YzawWKG5cNGldii1hFDYtQ5exqbzDguLOEyUwYcFI_i2ZvH-LrATA6sIHaBGlPtoCOIHwlizHTPuH9Tj2kLFJRa0-tncn2Ns0KKwzD1Vg0AdxYpKGWcLQ_JEz9y7J2DO4qlf3dgwJWs9yORTaJycJRJUlZSLIK78sjkvGsHVNnrG3DhWFlKt5NqWmMiHbomvc4qrRhiuDap697tXa9eHzYZSyGWjt9k2eAQ_mH7P9hyZGtJBHkkemqera7u1xMFsV1P90xW7k7R7XwMt-c2-8XjxLeejSE3LxH8GSTsFgDhBQc075FDYNC-skrTlUTcQ.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4KEISwH",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-09T08:11:00.873Z",
-      "updatedAt": "2026-09-09T08:11:00.873Z"
+      "updatedAt": "2026-09-09T08:12:59.133Z",
+      "telegramMessageId": 6643,
+      "resultUrl": "https://s.click.aliexpress.com/e/_c4oUjsEV"
     },
     {
       "id": "telegram-una-ganga:92934:aliexpress:0",
@@ -20212,13 +20214,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c44jjuc1",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-09T08:11:01.481Z",
-      "updatedAt": "2026-09-09T08:11:01.481Z"
+      "updatedAt": "2026-09-09T08:12:59.133Z"
     },
     {
       "id": "telegram-errores-de-precio:15511:ignored",
@@ -20249,13 +20251,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c41mwzqp",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 25,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-09T08:11:02.146Z",
-      "updatedAt": "2026-09-09T08:11:02.146Z"
+      "updatedAt": "2026-09-09T08:12:59.133Z"
     },
     {
       "id": "telegram-paramanitas:4723:amazon:0",
@@ -20268,13 +20270,13 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B01JIKHVF4?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-09T08:11:02.452Z",
-      "updatedAt": "2026-09-09T08:11:02.452Z"
+      "updatedAt": "2026-09-09T08:12:59.754Z"
     }
   ]
 }
