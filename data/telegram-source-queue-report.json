@@ -1,22 +1,55 @@
 {
-  "updatedAt": "2026-09-09T18:12:45.960Z",
+  "updatedAt": "2026-09-09T18:22:27.000Z",
   "summary": {
-    "rejected": 375,
     "needs_review": 146,
+    "rejected": 373,
     "published": 424,
     "ignored": 26,
     "duplicate": 28,
-    "pending": 1
+    "pending": 3
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92967:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92967,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/92967",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41843:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41843,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41843",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41842:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41842,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41842",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92966:aliexpress:0",
       "source": "telegram-una-ganga",
       "messageId": 92966,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92966",
       "resultUrl": ""
     },
@@ -1075,39 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41797",
       "resultUrl": "https://www.amazon.es/dp/B07TWNLM4D?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-una-ganga:92932:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92932,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/una_ganga/92932",
-      "resultUrl": "https://www.amazon.es/dp/B0FM7SSMBG?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:41795:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41795,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "AliExpress no permitió completar identidad API, precio",
-      "sourceUrl": "https://t.me/Ofertos/41795",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:92931:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92931,
-      "store": "AliExpress",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/una_ganga/92931",
-      "resultUrl": "https://s.click.aliexpress.com/e/_c3YXQAhj"
     }
   ]
 }
