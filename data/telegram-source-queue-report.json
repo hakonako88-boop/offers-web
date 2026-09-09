@@ -1,13 +1,36 @@
 {
-  "updatedAt": "2026-09-09T19:32:10.714Z",
+  "updatedAt": "2026-09-09T19:42:06.559Z",
   "summary": {
-    "published": 427,
-    "rejected": 374,
+    "published": 426,
+    "rejected": 373,
     "needs_review": 145,
-    "ignored": 26,
-    "duplicate": 28
+    "ignored": 27,
+    "duplicate": 28,
+    "pending": 1
   },
   "recent": [
+    {
+      "id": "telegram-errores-de-precio:15513:ignored",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15513,
+      "store": "Otra",
+      "status": "ignored",
+      "attempts": 0,
+      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
+      "sourceUrl": "https://t.me/erroresde_precio/15513",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:92971:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92971,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/92971",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92970:amazon:0",
       "source": "telegram-una-ganga",
@@ -1084,28 +1107,6 @@
       "attempts": 0,
       "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45339",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41802:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41802,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/41802",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41801:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41801,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "Producto excluido por preferencia editorial",
-      "sourceUrl": "https://t.me/Ofertos/41801",
       "resultUrl": ""
     }
   ]
