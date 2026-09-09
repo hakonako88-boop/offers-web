@@ -1,13 +1,36 @@
 {
-  "updatedAt": "2026-09-09T09:12:38.879Z",
+  "updatedAt": "2026-09-09T09:22:24.018Z",
   "summary": {
-    "published": 423,
+    "published": 421,
     "rejected": 384,
     "needs_review": 141,
     "ignored": 25,
-    "duplicate": 27
+    "duplicate": 27,
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:41804:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 41804,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/41804",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41803:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41803,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41803",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92937:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -1084,28 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92882",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:92881:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92881,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/92881",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:92880:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92880,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/92880",
       "resultUrl": ""
     }
   ]
