@@ -218,6 +218,18 @@ export function offerEditorialHook({ title = '', price = 0, discount = 0 } = {})
   return variants[score % variants.length];
 }
 
+export function editorialOfferHeadline({ title = '', store = '', price = '', discount = 0, coupon = '' } = {}) {
+  const product = improveOfferTitle(title);
+  const priceLabel = compact(price);
+  const percentage = Math.round(Number(discount) || 0);
+  if (coupon) return `¡Precio con cupón en ${store}! ${product}${priceLabel ? ` por ${priceLabel}` : ''}`;
+  if (percentage >= 50) return `¡Chollazo del ${percentage}%! ${product}${priceLabel ? ` por ${priceLabel}` : ''}`;
+  if (percentage >= 30) return `¡Gran rebaja del ${percentage}%! ${product}${priceLabel ? ` por ${priceLabel}` : ''}`;
+  const numericPrice = Number(String(price).replace(/[^\d,.-]/gu, '').replace(',', '.'));
+  if (numericPrice > 0 && numericPrice < 15) return `¡Por menos de 15 €! ${product} a ${priceLabel}`;
+  return `Oferta en ${store}: ${product}${priceLabel ? ` por ${priceLabel}` : ''}`;
+}
+
 function offerDescription({ title, discount, description = '' } = {}) {
   const supplied = compact(description);
   const product = improveOfferTitle(title);
@@ -267,7 +279,7 @@ export function formatTelegramDealCard({
       ? `🔻 ${escapeHtml(highlight)}`
       : `🔻 ${savingsText}`;
   const linkLine = `👇🏻 <b>Toca VER EN ${escapeHtml(storeHashtag(store).toUpperCase())}</b> para ir directamente a la tienda`;
-  const headline = `🔥 <b>${escapeHtml(offerEditorialHook({ title, price: Number(String(price).replace(/[^\d,.-]/gu, '').replace(',', '.')), discount }))} en ${escapeHtml(store)}: ${escapeHtml(improveOfferTitle(title))}</b>`;
+  const headline = `🔥 <b>${escapeHtml(editorialOfferHeadline({ title, store, price, discount, coupon }))}</b>`;
   const priceBlock = [
     previousPrice ? `📛 <b>Antes:</b> <s>${escapeHtml(previousPrice)}</s>` : '',
     `💶 <b>PRECIO OFERTA:</b> <b>${escapeHtml(price)}</b> 💥`,

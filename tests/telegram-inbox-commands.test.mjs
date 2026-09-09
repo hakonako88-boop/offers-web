@@ -21,7 +21,7 @@ import {
   processingOfferReply,
   urlFromTelegramMessage,
 } from '../scripts/telegram-inbox-commands.mjs';
-import { formatTelegramDealCard, improveOfferTitle, offerReplyMarkup, publicOfferUrl, shareOfferUrl, trackedPublicOfferUrl } from '../scripts/offer-presentation.mjs';
+import { editorialOfferHeadline, formatTelegramDealCard, improveOfferTitle, offerReplyMarkup, publicOfferUrl, shareOfferUrl, trackedPublicOfferUrl } from '../scripts/offer-presentation.mjs';
 
 const controlCode = 'test-private-code';
 
@@ -483,6 +483,11 @@ test('formats a forwarded fan offer without exposing its forwarded origin', () =
   assert.match(card, /Ventilador SPARK de sobremesa · 10" · 40 W/);
   assert.match(card, /3 velocidades, aspas de aluminio y funcionamiento silencioso/);
   assert.doesNotMatch(card, /oferta reenviada/i);
+});
+
+test('leads Telegram titles with the strongest factual reason to open the deal', () => {
+  assert.equal(editorialOfferHeadline({ title: 'Cafetera italiana Orbegozo', store: 'Amazon', price: '4,59 €', discount: 64 }), '¡Chollazo del 64%! Cafetera italiana Orbegozo por 4,59 €');
+  assert.equal(editorialOfferHeadline({ title: 'Cupón de 5 € para compras desde 15 €', store: 'Amazon', coupon: 'GET5OFF' }), '¡Precio con cupón en Amazon! Cupón de 5 € para compras desde 15 €');
 });
 
 test('formats a V16 safety light without catalogue separators', () => {

@@ -43,3 +43,19 @@ export function offerDisplayTitle(value: string) {
 
   return trimAtWord(original.replace(/\s*[|_]\s*/gu, " · ").replace(/\s+-\s+/gu, " · "), 74);
 }
+
+export function editorialCardTitle({ title, store, price, discount, coupon = "" }: {
+  title: string;
+  store: string;
+  price: number;
+  discount: number;
+  coupon?: string;
+}) {
+  const product = offerDisplayTitle(title);
+  const amount = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(price);
+  if (coupon) return `¡Precio con cupón! ${product} por ${amount}`;
+  if (discount >= 50) return `¡Chollazo del ${Math.round(discount)} %! ${product} por ${amount}`;
+  if (discount >= 30) return `¡Gran rebaja del ${Math.round(discount)} %! ${product} por ${amount}`;
+  if (price > 0 && price < 15) return `¡Por menos de 15 €! ${product} a ${amount}`;
+  return `Oferta en ${store}: ${product} por ${amount}`;
+}

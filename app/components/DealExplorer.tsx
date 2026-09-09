@@ -10,7 +10,7 @@ import { adsenseHomeSlot } from "../lib/adsense";
 import { postHref } from "../lib/posts";
 import type { PublishedPost } from "../lib/posts";
 import { offerEditorialLabel } from "../lib/offer-label";
-import { offerDisplayTitle } from "../lib/display-title";
+import { editorialCardTitle } from "../lib/display-title";
 
 export type Deal = {
   id: string;
@@ -234,7 +234,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                   </a>
                   <div className="dealBody">
                     <p className="categoryLabel"><b>{offerEditorialLabel({ id: deal.id, price: deal.price, discount })}</b> en {deal.category}</p>
-                    <h3 title={deal.title}><a href={dealDetailsUrl(deal)}>{offerDisplayTitle(deal.title)}</a></h3>
+                    <h3 title={deal.title}><a href={dealDetailsUrl(deal)}>{editorialCardTitle({ title: deal.title, store: deal.store, price: deal.price, discount, coupon: deal.coupon })}</a></h3>
                     <div className="priceRow">
                       <strong>{money.format(deal.price)}</strong>
                       {discount > 0 && <span>Antes <s>{money.format(deal.oldPrice)}</s></span>}

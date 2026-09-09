@@ -1,0 +1,25 @@
+name: Publicar cupón Amazon GET5OFF
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/publish-amazon-get5off.mjs"
+      - "public/images/cupon-amazon-get5off.svg"
+      - ".github/workflows/publish-amazon-get5off.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: node scripts/publish-amazon-get5off.mjs
