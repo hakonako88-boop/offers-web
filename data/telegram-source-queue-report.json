@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-09T09:52:23.395Z",
+  "updatedAt": "2026-09-09T10:02:05.562Z",
   "summary": {
-    "rejected": 384,
     "published": 421,
-    "needs_review": 141,
+    "needs_review": 142,
+    "rejected": 383,
     "ignored": 25,
     "duplicate": 27,
     "pending": 2
   },
   "recent": [
     {
-      "id": "telegram-ofertos:41806:amazon:0",
+      "id": "telegram-ofertos:41807:amazon:0",
       "source": "telegram-ofertos",
-      "messageId": 41806,
+      "messageId": 41807,
       "store": "Amazon",
       "status": "pending",
       "attempts": 0,
       "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41807",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41806:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41806,
+      "store": "Amazon",
+      "status": "needs_review",
+      "attempts": 0,
+      "reason": "Producto excluido por preferencia editorial",
       "sourceUrl": "https://t.me/Ofertos/41806",
       "resultUrl": ""
     },
@@ -26,8 +37,8 @@
       "messageId": 92939,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/92939",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92886",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41785:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41785,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/41785",
       "resultUrl": ""
     }
   ]
