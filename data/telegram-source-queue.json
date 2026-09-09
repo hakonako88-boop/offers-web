@@ -20217,12 +20217,12 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4qYG3uu",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (2/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 2,
       "createdAt": "2026-09-09T11:42:29.425Z",
-      "updatedAt": "2026-09-09T11:48:45.996Z",
+      "updatedAt": "2026-09-09T11:53:17.803Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20236,14 +20236,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/298y8",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-09T11:47:32.351Z",
-      "updatedAt": "2026-09-09T11:48:45.996Z"
+      "updatedAt": "2026-09-09T11:53:17.803Z"
     },
     {
       "id": "telegram-ofertos:41825:amazon:0",
@@ -20256,13 +20256,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/Rvbg_rhxQn_-2LV11Jz8-akeBv2W0O5Nk_dbI_umfnHQIP403MMNQ0vVUFF1bWipEo06NUYZDHc2VGw_2-cB2dZzT63-rTSaULpDMNHJcCQm_-vEQk-uEamYmVjK79t4gx6LVqQqglcdB3uj_rxvM4-6qiKfI8VpBEzbR0TXZhfZEamz6u1MMpafjUZLDBCB-BpA7JZHP-C8AFm-3OH2QrZmKre5SrrajXJWqWNRGhGyh8QN6EGKJi3-Delqs3y-zbSls6MZ_1alSrpLIr2bLayRSTgEBj-VI-ctsCIj0j-_ewczIT2os031g4DlECqWBPgpXmS1MD2l80ur0xDosQ.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B082BQGL8Y?ref=cm_sw_r_cso_tg_apan_dp_1T6F8B8TZJCF5M7PRSVZ&amp;ref_=cm_sw_r_cso_tg_apan_dp_1T6F8B8TZJCF5M7PRSVZ&amp;social_share=cm_sw_r_cso_tg_apan_dp_1T6F8B8TZJCF5M7PRSVZ&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-09T11:51:36.743Z",
-      "updatedAt": "2026-09-09T11:51:36.743Z"
+      "updatedAt": "2026-09-09T11:53:21.736Z",
+      "telegramMessageId": 6671,
+      "resultUrl": "https://www.amazon.es/dp/B082BQGL8Y?tag=chollos00a-21"
     }
   ]
 }
