@@ -20237,12 +20237,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4bFBH5l",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-09T06:40:57.291Z",
-      "updatedAt": "2026-09-09T06:42:11.835Z"
+      "updatedAt": "2026-09-09T06:52:37.707Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-tiesometro:7241:aliexpress:0",
@@ -20255,14 +20256,16 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/a9bmy",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "published",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-09T06:40:57.522Z",
-      "updatedAt": "2026-09-09T06:42:11.835Z"
+      "updatedAt": "2026-09-09T06:52:37.707Z",
+      "telegramMessageId": 6636,
+      "resultUrl": "https://s.click.aliexpress.com/e/_c2v2RPfb"
     }
   ]
 }
