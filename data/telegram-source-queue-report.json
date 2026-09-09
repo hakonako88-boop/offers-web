@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-09T10:12:16.836Z",
+  "updatedAt": "2026-09-09T10:22:03.964Z",
   "summary": {
     "published": 419,
     "rejected": 384,
-    "needs_review": 142,
+    "needs_review": 144,
     "ignored": 25,
     "duplicate": 27,
-    "pending": 3
+    "pending": 1
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92941:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92941,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/92941",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-paramanitas:4724:amazon:0",
       "source": "telegram-paramanitas",
       "messageId": 4724,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/paramanitas/4724",
       "resultUrl": ""
     },
@@ -36,20 +47,20 @@
       "source": "telegram-ofertos",
       "messageId": 41809,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41809",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B0H7FZYTM2?tag=chollos00a-21"
     },
     {
       "id": "telegram-ofertos:41808:amazon:0",
       "source": "telegram-ofertos",
       "messageId": 41808,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Producto excluido por preferencia editorial",
       "sourceUrl": "https://t.me/Ofertos/41808",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Producto excluido por preferencia editorial",
       "sourceUrl": "https://t.me/Ofertos/41787",
       "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41786:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 41786,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/41786",
-      "resultUrl": "https://www.amazon.es/dp/B0G44L425R?tag=chollos00a-21"
     }
   ]
 }
