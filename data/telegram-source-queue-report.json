@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-10T13:02:54.456Z",
+  "updatedAt": "2026-09-10T13:12:38.782Z",
   "summary": {
-    "published": 366,
     "needs_review": 190,
-    "rejected": 390,
+    "rejected": 391,
+    "published": 365,
     "duplicate": 25,
     "ignored": 28,
     "pending": 1
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93023:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93023,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/93023",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7253:aliexpress:0",
       "source": "telegram-tiesometro",
@@ -25,9 +36,9 @@
       "source": "telegram-una-ganga",
       "messageId": 93022,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/93022",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "AliExpress no permitió completar identidad API",
       "sourceUrl": "https://t.me/una_ganga/92987",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:92986:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 92986,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/92986",
       "resultUrl": ""
     }
   ]
