@@ -20059,13 +20059,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/CBD-TKRNWcMUGFCiQ9q6aEUT37oG4j5FbNJiCn9tADrZWFKC_2o8Ay-UUEDkErjP_um8sQ-gpEOuJDiy8FWIUrtMDy3Z4DIU9ePM_cmXCZZdAodAdyWoUk218tXUn31aXtGQW-NCE8mZ6J5s37hySOfN4dvyivHbIBbvdNT1XVg1w1-Xw1ICksvPQiT0lSsKNeNLe5gOeZslDLRbDC3I8Vqj3PPbh2sMwn2SHuUAgoea5D7jmLsYJxN15vM2n79u7pAUf2jnpQ58b_GAL-Bqq8SmwoORVvHig8mbFhYHv5arMGXvIyuO3QbXjRCbXYw2LmKBER00XaloVWk01dAoIA.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4boZyG3",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-10T13:40:56.849Z",
-      "updatedAt": "2026-09-10T14:02:31.215Z",
+      "updatedAt": "2026-09-10T14:11:35.263Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20080,13 +20080,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3PUt3Cl",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-10T14:11:00.155Z",
-      "updatedAt": "2026-09-10T14:11:00.155Z"
+      "updatedAt": "2026-09-10T14:12:30.976Z"
     },
     {
       "id": "telegram-tiesometro:7254:aliexpress:0",
@@ -20100,13 +20100,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/zta9p",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-10T14:11:00.427Z",
-      "updatedAt": "2026-09-10T14:11:00.427Z"
+      "updatedAt": "2026-09-10T14:12:30.976Z"
     },
     {
       "id": "telegram-errores-de-precio:15520:amazon:0",
@@ -20119,13 +20119,13 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://amzn.to/4xmuU8z",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Fuera de la selección automática: preferencia editorial del propietario",
       "sourceWeight": 25,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-10T14:11:00.734Z",
-      "updatedAt": "2026-09-10T14:11:00.734Z"
+      "updatedAt": "2026-09-10T14:12:31.229Z"
     }
   ]
 }
