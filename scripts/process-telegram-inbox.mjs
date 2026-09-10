@@ -584,7 +584,8 @@ async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
   // When automatic mode is enabled, complete a preview created by the former
   // review-only mode. It has already passed the exact same validation rules.
   const previousPreview = pendingConfirmations[chatId];
-  if (settings.amazonAutoPublish && previousPreview?.offer?.reviewQueueItemId && automaticInterest(previousPreview.offer) >= 0) {
+  if (settings.amazonAutoPublish && previousPreview?.offer?.reviewQueueItemId
+    && automaticInterest(previousPreview.offer, { requireDealEvidence: true }) >= 0) {
     try {
       const outcome = await publishIfNew(settings, previousPreview.offer, { message_id: previousPreview.inputMessageId });
       updateAmazonReviewQueueItem(
@@ -630,8 +631,8 @@ async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
     }
     try {
       if (settings.amazonAutoPublish) {
-        if (automaticInterest(result.offer) < 0) {
-          updateAmazonReviewQueueItem(item.id, 'needs_review', 'Producto excluido por preferencia editorial');
+        if (automaticInterest(result.offer, { requireDealEvidence: true }) < 0) {
+          updateAmazonReviewQueueItem(item.id, 'needs_review', 'Sin ahorro suficiente o fuera de la selección editorial automática');
           continue;
         }
         const outcome = await publishIfNew(settings, result.offer, {

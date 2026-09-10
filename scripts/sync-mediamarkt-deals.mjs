@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
+import { selectInterestingOffers } from './editorial-interest.mjs';
 import { mirrorTelegramMessage } from './telegram-mirror.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
@@ -145,9 +146,9 @@ const queued = (state.queuedOffers || [])
   }))
   .filter((offer) => offer.score > 0);
 const discovered = feedVersion === state.feedVersion ? [] : extractMediaMarktCandidates(payload, seenIds);
-const candidates = [...queued, ...discovered]
+const candidates = selectInterestingOffers([...queued, ...discovered]
   .filter((offer, index, list) => list.findIndex((entry) => entry.id === offer.id) === index)
-  .sort((left, right) => right.score - left.score)
+  .sort((left, right) => right.score - left.score))
   .slice(0, MAX_CANDIDATES);
 const publicationPolicy = publicationAllowance({ store: 'MediaMarkt', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 
