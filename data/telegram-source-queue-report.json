@@ -1,33 +1,44 @@
 {
-  "updatedAt": "2026-09-10T00:22:06.891Z",
+  "updatedAt": "2026-09-10T00:42:08.115Z",
   "summary": {
     "needs_review": 156,
     "ignored": 29,
-    "published": 410,
+    "published": 411,
     "rejected": 375,
     "duplicate": 28,
-    "pending": 2
+    "pending": 1
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:92986:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92986,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/92986",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:92985:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 92985,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/una_ganga/92985",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B0F79KNX2Q?tag=chollos00a-21"
     },
     {
       "id": "telegram-chollosdiario:45348:amazon:0",
       "source": "telegram-chollosdiario",
       "messageId": 45348,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Producto excluido por preferencia editorial",
       "sourceUrl": "https://t.me/chollosdiario/45348",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41825",
       "resultUrl": "https://www.amazon.es/dp/B082BQGL8Y?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-tiesometro:7245:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7245,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
-      "sourceUrl": "https://t.me/tiesometro/7245",
-      "resultUrl": ""
     }
   ]
 }
