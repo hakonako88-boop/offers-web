@@ -1,22 +1,44 @@
 {
-  "updatedAt": "2026-09-10T18:32:45.279Z",
+  "updatedAt": "2026-09-10T18:42:05.459Z",
   "summary": {
-    "published": 343,
     "rejected": 402,
+    "published": 341,
     "duplicate": 22,
-    "needs_review": 211,
+    "needs_review": 212,
     "ignored": 21,
-    "pending": 1
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93045:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93045,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/93045",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41912:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41912,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41912",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-chollosdiario:45355:amazon:0",
       "source": "telegram-chollosdiario",
       "messageId": 45355,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Fuera de la selección automática: preferencia editorial del propietario",
       "sourceUrl": "https://t.me/chollosdiario/45355",
       "resultUrl": ""
     },
@@ -1085,28 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/41875",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93013:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93013,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/93013",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41874:aliexpress:1",
-      "source": "telegram-ofertos",
-      "messageId": 41874,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/41874",
       "resultUrl": ""
     }
   ]
