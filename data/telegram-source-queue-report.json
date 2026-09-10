@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-10T04:12:13.208Z",
+  "updatedAt": "2026-09-10T04:22:27.915Z",
   "summary": {
-    "ignored": 29,
     "published": 414,
-    "rejected": 382,
+    "rejected": 383,
+    "ignored": 28,
     "needs_review": 146,
     "duplicate": 28,
     "pending": 1
   },
   "recent": [
     {
+      "id": "telegram-una-ganga:92997:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 92997,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/92997",
+      "resultUrl": ""
+    },
+    {
       "id": "telegram-una-ganga:92996:aliexpress:0",
       "source": "telegram-una-ganga",
       "messageId": 92996,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92996",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/92953",
       "resultUrl": ""
-    },
-    {
-      "id": "telegram-tiesometro:7246:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7246,
-      "store": "AliExpress",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/tiesometro/7246",
-      "resultUrl": "https://s.click.aliexpress.com/e/_c4E6FLTj"
     }
   ]
 }
