@@ -20104,12 +20104,12 @@
       "store": "Miravia",
       "merchantUrl": "https://www.awin1.com/cread.php?awinmid=37166&amp;awinaffid=965977&amp;ued=https%3A%2F%2Fs.miravia.es%2Fs.ZouSF",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (2/3)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 0,
+      "attempts": 2,
       "createdAt": "2026-09-10T09:30:59.796Z",
-      "updatedAt": "2026-09-10T09:42:58.709Z",
+      "updatedAt": "2026-09-10T09:52:56.326Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20124,12 +20124,12 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4qHeEgr",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (2/3)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 0,
+      "attempts": 2,
       "createdAt": "2026-09-10T09:30:59.796Z",
-      "updatedAt": "2026-09-10T09:42:58.709Z",
+      "updatedAt": "2026-09-10T09:52:56.326Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20143,14 +20143,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/qrvHd1TmZ4BKQQHNRAascauWFPzQgzzGddz1N6xOr-2WWBn1ukNfS8yBeiZY0r5xqs4XcXbxGSUDCwWBijC69VYmKbxXD0_TM00O16TZUbWImhu-sqCMl9ue7HFepvdHTs2zOiaVKvraF_gGzcVRLi18kVEpAqqWKC97B5Q1G6D2XJA221IhKWbvXe1RRzimFgbiku6jdrysoC83Mb3x_d8WGIeq5l9Oyp7h-Xe4OfD3Acwm3gQGn2Q28egXzyPyNKUnKGjzupWmKJgunpxlkA19YQtnU4ypQvyEHILDleuxjARXGRkWD3dk8YRSTIfZxfJEYMw4UBxGj1U3UsDETw.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4ag2weN",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-10T09:41:02.224Z",
-      "updatedAt": "2026-09-10T09:42:58.709Z"
+      "updatedAt": "2026-09-10T09:52:56.326Z"
     },
     {
       "id": "telegram-ofertos:41874:aliexpress:1",
@@ -20163,14 +20163,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/qrvHd1TmZ4BKQQHNRAascauWFPzQgzzGddz1N6xOr-2WWBn1ukNfS8yBeiZY0r5xqs4XcXbxGSUDCwWBijC69VYmKbxXD0_TM00O16TZUbWImhu-sqCMl9ue7HFepvdHTs2zOiaVKvraF_gGzcVRLi18kVEpAqqWKC97B5Q1G6D2XJA221IhKWbvXe1RRzimFgbiku6jdrysoC83Mb3x_d8WGIeq5l9Oyp7h-Xe4OfD3Acwm3gQGn2Q28egXzyPyNKUnKGjzupWmKJgunpxlkA19YQtnU4ypQvyEHILDleuxjARXGRkWD3dk8YRSTIfZxfJEYMw4UBxGj1U3UsDETw.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4Em6FM3",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-10T09:41:02.224Z",
-      "updatedAt": "2026-09-10T09:42:58.709Z"
+      "updatedAt": "2026-09-10T09:52:56.326Z"
     },
     {
       "id": "telegram-una-ganga:93013:miravia:0",
@@ -20184,12 +20184,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/46Pt4SC",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-10T09:41:02.927Z",
-      "updatedAt": "2026-09-10T09:42:58.709Z"
+      "updatedAt": "2026-09-10T09:52:56.326Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     }
   ]
 }
