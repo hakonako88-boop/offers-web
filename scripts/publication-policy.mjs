@@ -28,8 +28,8 @@ function madridParts(now) {
 
 function cumulativeLimit(minuteOfDay, weekend) {
   const slots = weekend
-    ? [[600, 2], [780, 4], [1080, 6], [1230, 9], [1350, 11]]
-    : [[480, 2], [630, 4], [810, 6], [990, 7], [1110, 10], [1230, 14], [1350, 16]];
+    ? [[600, 2], [720, 4], [840, 6], [960, 8], [1080, 10], [1200, 12], [1320, 14]]
+    : [[480, 2], [600, 4], [720, 6], [840, 8], [960, 10], [1080, 12], [1200, 14], [1320, 16]];
   let limit = 0;
   for (const [start, maximum] of slots) if (minuteOfDay >= start) limit = maximum;
   return minuteOfDay >= 1380 ? 0 : limit;

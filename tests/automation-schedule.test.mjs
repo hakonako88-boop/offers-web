@@ -91,6 +91,8 @@ test('publishes validated offers in independently isolated retailer batches', ()
   assert.match(workflow, /FORCE_AUTOMATIC_PUBLICATION:.*telegram_sources_changed/u);
   assert.match(workflow, /RECHECK_ALIEXPRESS_SOURCE:.*recheck-aliexpress/u);
   assert.match(workflow, /Buscar y publicar ofertas de AliExpress[\s\S]*?RECHECK_ALIEXPRESS_SOURCE/u);
+  assert.match(workflow, /Buscar y publicar ofertas de Xiaomi, PcComponentes y El Corte Inglés[\s\S]*?recheck-community/u);
+  assert.match(workflow, /Buscar y publicar ofertas de MediaMarkt España[\s\S]*?recheck-community/u);
   assert.match(workflow, /BYPASS_PUBLICATION_SCHEDULE:.*workflow_dispatch/u);
   assert.match(workflow, /Clasificar mensajes pendientes de los canales/u);
 });
@@ -180,6 +182,21 @@ test('spreads publications through Madrid daytime and enforces retailer caps', (
   const capped = publicationAllowance({ store: 'Miravia', offers, now: new Date('2026-08-28T21:00:00+02:00') });
   assert.equal(capped.reason, 'store-daily-limit');
   assert.equal(publicationAllowance({ store: 'Miravia', offers, now: new Date(), bypass: true }).allowed, true);
+});
+
+test('does not leave the afternoon blocked after the morning slots fill up', () => {
+  const sevenMorningOffers = Array.from({ length: 7 }, (_, index) => ({
+    store: index < 2 ? 'Miravia' : (index === 2 ? 'Xiaomi' : 'AliExpress'),
+    date: Math.floor(Date.parse(`2026-09-10T${String(8 + index).padStart(2, '0')}:05:00+02:00`) / 1000),
+  }));
+  const allowance = publicationAllowance({
+    store: 'MediaMarkt',
+    offers: sevenMorningOffers,
+    now: new Date('2026-09-10T16:45:00+02:00'),
+  });
+  assert.equal(allowance.allowed, true);
+  assert.equal(allowance.globalLimit, 10);
+  assert.equal(allowance.remaining, 2);
 });
 
 test('does not let overnight manual tests consume the first daytime slot', () => {
