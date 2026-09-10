@@ -1,22 +1,44 @@
 {
-  "updatedAt": "2026-09-10T15:22:16.216Z",
+  "updatedAt": "2026-09-10T15:42:15.445Z",
   "summary": {
-    "rejected": 393,
-    "published": 355,
+    "published": 354,
+    "rejected": 392,
     "ignored": 29,
-    "needs_review": 197,
+    "needs_review": 199,
     "duplicate": 24,
     "pending": 2
   },
   "recent": [
     {
+      "id": "telegram-tiesometro:7255:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7255,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/tiesometro/7255",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:93033:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93033,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/93033",
+      "resultUrl": ""
+    },
+    {
       "id": "telegram-una-ganga:93032:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 93032,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Fuera de la selección automática: preferencia editorial del propietario",
       "sourceUrl": "https://t.me/una_ganga/93032",
       "resultUrl": ""
     },
@@ -25,9 +47,9 @@
       "source": "telegram-una-ganga",
       "messageId": 93031,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Fuera de la selección automática: preferencia editorial del propietario",
       "sourceUrl": "https://t.me/una_ganga/93031",
       "resultUrl": ""
     },
@@ -1086,28 +1108,6 @@
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/93004",
       "resultUrl": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15514:amazon:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15514,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/erroresde_precio/15514",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93003:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93003,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/una_ganga/93003",
-      "resultUrl": "https://www.amazon.es/dp/B082QY3NWF?tag=chollos00a-21"
     }
   ]
 }
