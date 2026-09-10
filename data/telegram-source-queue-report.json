@@ -1,22 +1,55 @@
 {
-  "updatedAt": "2026-09-10T16:12:48.350Z",
+  "updatedAt": "2026-09-10T16:22:29.478Z",
   "summary": {
+    "ignored": 27,
+    "published": 353,
     "rejected": 393,
-    "ignored": 29,
-    "published": 352,
-    "needs_review": 199,
+    "needs_review": 201,
     "duplicate": 24,
-    "pending": 3
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93036:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93036,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/93036",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:93035:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93035,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/93035",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41893:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 41893,
+      "store": "AliExpress",
+      "status": "published",
+      "attempts": 0,
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
+      "sourceUrl": "https://t.me/Ofertos/41893",
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3NqUxs5"
+    },
     {
       "id": "telegram-una-ganga:93034:aliexpress:0",
       "source": "telegram-una-ganga",
       "messageId": 93034,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/93034",
       "resultUrl": ""
     },
@@ -25,9 +58,9 @@
       "source": "telegram-ofertos",
       "messageId": 41892,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Fuera de la selección automática: preferencia editorial del propietario",
       "sourceUrl": "https://t.me/Ofertos/41892",
       "resultUrl": ""
     },
@@ -36,9 +69,9 @@
       "source": "telegram-ofertos",
       "messageId": 41891,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Fuera de la selección automática: preferencia editorial del propietario",
       "sourceUrl": "https://t.me/Ofertos/41891",
       "resultUrl": ""
     },
@@ -1074,39 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/93008",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93007:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93007,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/93007",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41852:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41852,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "AliExpress no permitió completar identidad API, precio",
-      "sourceUrl": "https://t.me/Ofertos/41852",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93006:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93006,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "Fuera de la selección automática: preferencia editorial del propietario",
-      "sourceUrl": "https://t.me/una_ganga/93006",
       "resultUrl": ""
     }
   ]
