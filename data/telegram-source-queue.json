@@ -20027,12 +20027,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/48ECh1G",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-10T10:41:00.831Z",
-      "updatedAt": "2026-09-10T10:42:42.468Z"
+      "updatedAt": "2026-09-10T10:52:26.917Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-ofertos:41882:aliexpress:0",
@@ -20046,13 +20047,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4NTbJyV",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-10T10:51:01.243Z",
-      "updatedAt": "2026-09-10T10:51:01.243Z"
+      "updatedAt": "2026-09-10T10:52:26.917Z"
     },
     {
       "id": "telegram-ofertos:41883:aliexpress:0",
@@ -20066,13 +20067,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4rEj4RX",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-10T10:51:01.243Z",
-      "updatedAt": "2026-09-10T10:51:01.243Z"
+      "updatedAt": "2026-09-10T10:52:26.917Z"
     },
     {
       "id": "telegram-ofertos:41884:aliexpress:0",
@@ -20086,13 +20087,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3cst785",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-10T10:51:01.243Z",
-      "updatedAt": "2026-09-10T10:51:01.243Z"
+      "updatedAt": "2026-09-10T10:52:26.917Z"
     },
     {
       "id": "telegram-errores-de-precio:15516:amazon:0",
@@ -20105,13 +20106,13 @@
       "sourceImageUrl": "https://cdn1.telesco.pe/file/Bmt-XH0ysoLRb1qM15SxP6-i9NitOlIaxHyB_Y30RO9IrcZxPZk3NEbbyEuFJqBlTM7NHiPE5e5GDUZjASDR4Y_S-NPP_WazFWmLlgAP45vWF_ujqk4FMCokNY_OPBw5X2Edrqg_4UdFVh04lDcETUM6BLsyJEpB8WgsVpq6l6gNNZI4C0RJM_MkzM9od66bmy1tMzf14KM5johRKxBS5luTc1mRx1CKNbZUmLEbZ45ekExaiwj-LD2kvHRz-us1QAoPgjzNt0xuVy260MFCxWMwyUILxQ3Pe08kKSoDgI5mKjMtTU3J6MWkW4y5TqYbnmBmy6iuWxEgq71pyCT8cg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://amzn.to/4xsvn9m",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Fuera de la selección automática: preferencia editorial del propietario",
       "sourceWeight": 25,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-10T10:51:02.499Z",
-      "updatedAt": "2026-09-10T10:51:02.499Z"
+      "updatedAt": "2026-09-10T10:52:27.074Z"
     },
     {
       "id": "telegram-errores-de-precio:15516:amazon:1",
@@ -20124,13 +20125,13 @@
       "sourceImageUrl": "https://cdn1.telesco.pe/file/Bmt-XH0ysoLRb1qM15SxP6-i9NitOlIaxHyB_Y30RO9IrcZxPZk3NEbbyEuFJqBlTM7NHiPE5e5GDUZjASDR4Y_S-NPP_WazFWmLlgAP45vWF_ujqk4FMCokNY_OPBw5X2Edrqg_4UdFVh04lDcETUM6BLsyJEpB8WgsVpq6l6gNNZI4C0RJM_MkzM9od66bmy1tMzf14KM5johRKxBS5luTc1mRx1CKNbZUmLEbZ45ekExaiwj-LD2kvHRz-us1QAoPgjzNt0xuVy260MFCxWMwyUILxQ3Pe08kKSoDgI5mKjMtTU3J6MWkW4y5TqYbnmBmy6iuWxEgq71pyCT8cg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0fPw7DBq",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Fuera de la selección automática: preferencia editorial del propietario",
       "sourceWeight": 25,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-10T10:51:02.499Z",
-      "updatedAt": "2026-09-10T10:51:02.499Z"
+      "updatedAt": "2026-09-10T10:52:27.090Z"
     },
     {
       "id": "telegram-errores-de-precio:15516:amazon:2",
@@ -20143,13 +20144,13 @@
       "sourceImageUrl": "https://cdn1.telesco.pe/file/Bmt-XH0ysoLRb1qM15SxP6-i9NitOlIaxHyB_Y30RO9IrcZxPZk3NEbbyEuFJqBlTM7NHiPE5e5GDUZjASDR4Y_S-NPP_WazFWmLlgAP45vWF_ujqk4FMCokNY_OPBw5X2Edrqg_4UdFVh04lDcETUM6BLsyJEpB8WgsVpq6l6gNNZI4C0RJM_MkzM9od66bmy1tMzf14KM5johRKxBS5luTc1mRx1CKNbZUmLEbZ45ekExaiwj-LD2kvHRz-us1QAoPgjzNt0xuVy260MFCxWMwyUILxQ3Pe08kKSoDgI5mKjMtTU3J6MWkW4y5TqYbnmBmy6iuWxEgq71pyCT8cg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B09GCH6tl",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Fuera de la selección automática: preferencia editorial del propietario",
       "sourceWeight": 25,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-10T10:51:02.499Z",
-      "updatedAt": "2026-09-10T10:51:02.499Z"
+      "updatedAt": "2026-09-10T10:52:27.101Z"
     },
     {
       "id": "telegram-errores-de-precio:15516:amazon:3",
@@ -20162,13 +20163,13 @@
       "sourceImageUrl": "https://cdn1.telesco.pe/file/Bmt-XH0ysoLRb1qM15SxP6-i9NitOlIaxHyB_Y30RO9IrcZxPZk3NEbbyEuFJqBlTM7NHiPE5e5GDUZjASDR4Y_S-NPP_WazFWmLlgAP45vWF_ujqk4FMCokNY_OPBw5X2Edrqg_4UdFVh04lDcETUM6BLsyJEpB8WgsVpq6l6gNNZI4C0RJM_MkzM9od66bmy1tMzf14KM5johRKxBS5luTc1mRx1CKNbZUmLEbZ45ekExaiwj-LD2kvHRz-us1QAoPgjzNt0xuVy260MFCxWMwyUILxQ3Pe08kKSoDgI5mKjMtTU3J6MWkW4y5TqYbnmBmy6iuWxEgq71pyCT8cg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B09VofvjU",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Fuera de la selección automática: preferencia editorial del propietario",
       "sourceWeight": 25,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-10T10:51:02.499Z",
-      "updatedAt": "2026-09-10T10:51:02.499Z"
+      "updatedAt": "2026-09-10T10:52:27.111Z"
     }
   ]
 }
