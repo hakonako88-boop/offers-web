@@ -1,22 +1,44 @@
 {
-  "updatedAt": "2026-09-10T18:42:05.459Z",
+  "updatedAt": "2026-09-10T18:52:09.518Z",
   "summary": {
-    "rejected": 402,
-    "published": 341,
+    "rejected": 401,
+    "published": 340,
     "duplicate": 22,
-    "needs_review": 212,
+    "needs_review": 213,
     "ignored": 21,
-    "pending": 2
+    "pending": 3
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:41914:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41914,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41914",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41913:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41913,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41913",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93045:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 93045,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/93045",
       "resultUrl": ""
     },
@@ -25,9 +47,9 @@
       "source": "telegram-ofertos",
       "messageId": 41912,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Fuera de la selección automática: preferencia editorial del propietario",
       "sourceUrl": "https://t.me/Ofertos/41912",
       "resultUrl": ""
     },
@@ -1085,28 +1107,6 @@
       "attempts": 0,
       "reason": "Fuera de la selección automática: preferencia editorial del propietario",
       "sourceUrl": "https://t.me/Ofertos/41876",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41875:aliexpress:1",
-      "source": "telegram-ofertos",
-      "messageId": 41875,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/41875",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:41875:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 41875,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/41875",
       "resultUrl": ""
     }
   ]
