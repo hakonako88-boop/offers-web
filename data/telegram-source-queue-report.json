@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-10T22:21:58.580Z",
+  "updatedAt": "2026-09-10T22:42:16.183Z",
   "summary": {
-    "published": 343,
+    "published": 342,
     "rejected": 401,
     "duplicate": 22,
-    "needs_review": 211,
+    "needs_review": 213,
     "ignored": 21,
-    "pending": 2
+    "pending": 1
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93059:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93059,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/93059",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93058:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 93058,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/una_ganga/93058",
       "resultUrl": ""
     },
@@ -25,9 +36,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45358,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45358",
       "resultUrl": ""
     },
@@ -1089,17 +1100,6 @@
     },
     {
       "id": "telegram-errores-de-precio:15519:amazon:1",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15519,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/erroresde_precio/15519",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15519:amazon:0",
       "source": "telegram-errores-de-precio",
       "messageId": 15519,
       "store": "Amazon",
