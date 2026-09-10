@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-10T23:22:21.237Z",
+  "updatedAt": "2026-09-10T23:41:52.360Z",
   "summary": {
-    "published": 341,
     "rejected": 402,
+    "published": 340,
     "duplicate": 22,
-    "needs_review": 213,
+    "needs_review": 214,
     "ignored": 21,
     "pending": 1
   },
   "recent": [
     {
+      "id": "telegram-una-ganga:93062:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93062,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/93062",
+      "resultUrl": ""
+    },
+    {
       "id": "telegram-una-ganga:93061:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 93061,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/93061",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/93025",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15519:amazon:3",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15519,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/erroresde_precio/15519",
       "resultUrl": ""
     }
   ]
