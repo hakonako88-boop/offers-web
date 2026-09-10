@@ -11,6 +11,13 @@ test('rejects an ordinary catalogue price without demonstrated saving', () => {
   assert.equal(automaticInterest({ title: 'Samsung barra de sonido para TV', priceLabel: '280,30 €' }, { requireDealEvidence: true }), -1);
 });
 
+test('lets a raw Amazon link reach enrichment before judging its missing title', () => {
+  assert.equal(automaticInterest({ store: 'Amazon', url: 'https://www.amazon.es/dp/B012345678' }), 0);
+  assert.equal(automaticInterest({
+    store: 'Amazon', url: 'https://www.amazon.es/dp/B012345678', price: 29.99,
+  }, { requireDealEvidence: true }), -1);
+});
+
 test('keeps useful, food and coupon deals with credible savings', () => {
   assert.ok(automaticInterest({ title: 'Ventilador Cecotec de 45 W', price: 25, oldPrice: 39.99 }, { requireDealEvidence: true }) > 0);
   assert.ok(automaticInterest({ title: 'Puleva leche semidesnatada pack de 12', price: 10.94, oldPrice: 15.5 }, { requireDealEvidence: true }) > 0);

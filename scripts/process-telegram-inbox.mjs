@@ -609,7 +609,9 @@ async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
   const cutoff = Date.now() - 72 * 60 * 60 * 1000;
   const candidates = (queue.items || [])
     .filter((item) => item.store === 'Amazon'
-      && ['pending', 'blocked'].includes(item.status)
+      && (['pending', 'blocked'].includes(item.status)
+        || (item.status === 'needs_review'
+          && /fuera de la selecci[oó]n autom[aá]tica|preferencia editorial/iu.test(item.reason || '')))
       && Date.parse(item.publishedAt || item.createdAt || 0) >= cutoff)
     .sort((left, right) => {
       const leftPriority = left.priority || left.source === 'telegram-ofertos' ? 1 : 0;

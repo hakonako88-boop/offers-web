@@ -102,11 +102,13 @@ test('consumes the Amazon Telegram queue in source-only mode without enabling it
   const tiktokRetryStep = workflow.match(/- name: Enviar automáticamente la oferta a borradores de TikTok[\s\S]*?(?=\n\s{6}- name:|$)/u)?.[0] || '';
   assert.match(amazonQueueStep, /TELEGRAM_PENDING_ONLY:\s*"true"/u);
   assert.match(amazonQueueStep, /TELEGRAM_PROCESS_AMAZON_QUEUE:\s*"true"/u);
+  assert.match(amazonQueueStep, /recheck-community/u);
   assert.match(amazonQueueStep, /inputs\.run_automatic_source == 'amazon'/u);
   assert.doesNotMatch(tiktokRetryStep, /TELEGRAM_PROCESS_AMAZON_QUEUE/u);
   assert.match(inboxSync, /if \(!pendingOnly \|\| settings\.processAmazonQueue\)/u);
   assert.match(inboxSync, /PENDING_PREVIEW_TTL_MS = 2 \* 60 \* 60 \* 1000/u);
   assert.match(inboxSync, /Expired private preview released for Amazon queue/u);
+  assert.match(inboxSync, /fuera de la selecci\[oó\]n autom\[aá\]tica\|preferencia editorial/u);
 });
 
 test('does not let a pending TikTok retry block a bot or website deployment', () => {

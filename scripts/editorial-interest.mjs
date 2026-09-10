@@ -52,7 +52,12 @@ export function interestFamily(offer = {}) {
 
 export function automaticInterest(offer = {}, { requireDealEvidence = false } = {}) {
   const title = text(offer.title);
-  if (!title || LOW_INTEREST.test(title) || LOW_QUALITY_PHRASES.test(title)) return -1;
+  // Telegram source links enter the queue before Amazon metadata is fetched.
+  // An empty raw title is therefore unknown, not uninteresting. Let it reach
+  // the official product reader and apply the strict gate to the enriched
+  // offer afterwards.
+  if (!title) return requireDealEvidence ? -1 : 0;
+  if (LOW_INTEREST.test(title) || LOW_QUALITY_PHRASES.test(title)) return -1;
   const family = interestFamily(offer);
   const priorityFamily = family !== 'otros';
   if (!requireDealEvidence) return priorityFamily ? 3 : 1;
