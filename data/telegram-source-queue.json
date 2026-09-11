@@ -20004,13 +20004,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/YOhWnfeqlaXaIsWy2h8VHRrNfE3gvF5keczPHDVHT-M7OEOfnzDkkEd1T_V6PW_LBmTSxD7cuNYrw9oqtoyNxoRW6E9TEdeT-48Xq4Umq5PGRbMxVCxd-Jyw3KBSF48h0RSU-CYmQr0W8t14e8Yk6evXvpWfAH_AM1DaySyEX_EbV8cOsy7alYJUpCgYLiuv7BzA75YtFiFXDGBk9ldwfiUqE8bgxAqQ_d_JnryWbYicSXTpnn9eKS8g7jhhFBN2XdfGafdbhcIwcYCB9wXU5S7ppsCRjmwkru1XSi4tAfze4m1-4R_QSe96s80ZU9LEONdprsyWngYhMPAhpSWOTQ.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4x41lsJ",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-11T14:41:03.748Z",
-      "updatedAt": "2026-09-11T15:02:49.877Z",
+      "updatedAt": "2026-09-11T15:11:45.889Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20024,14 +20024,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/OU71BJVLbXUdS_T_o-MN3G9syPsOLY80KW6hOOtYaLbZABy1Cb4LdGxsAT6jZakmKZUuEo90JD8E0p4bdreKjdQpi1RGb0JZp1ahxGtJUDtn0cl87kqnJJ-bniBcLZg5dywrEkE6fNIJBxmHVqZDPoY16-WSzwtR7UIJqzvzfWAmxgLhh0CM304Z6YVnUdnuV16kZ9VRCdneTDmkw7FB5BuieqLM394JkCmoOlH9PhL5Tmk6Cmisuq5uJiYrLIg_NpLjhj_KaJ2fcRWOLf8oSBw9RDtxRV2YKWWmpI4-5EzUnDxbNwenImQvog02NDm_dQ1ScqnZ9Tdr5Ggjn5RmGA.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3Qmh1eh",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-11T15:01:19.934Z",
-      "updatedAt": "2026-09-11T15:02:49.877Z"
+      "updatedAt": "2026-09-11T15:12:51.033Z"
     }
   ]
 }
