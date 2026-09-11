@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-11T00:22:29.951Z",
+  "updatedAt": "2026-09-11T00:42:11.960Z",
   "summary": {
-    "rejected": 403,
+    "rejected": 402,
     "published": 338,
     "duplicate": 22,
-    "needs_review": 214,
+    "needs_review": 216,
     "ignored": 21,
-    "pending": 2
+    "pending": 1
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93065:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93065,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/93065",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93064:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 93064,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/93064",
       "resultUrl": ""
     },
@@ -25,9 +36,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45359,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/chollosdiario/45359",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45353",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15520:amazon:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15520,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/erroresde_precio/15520",
       "resultUrl": ""
     }
   ]
