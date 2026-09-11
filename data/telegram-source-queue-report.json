@@ -1,22 +1,77 @@
 {
-  "updatedAt": "2026-09-11T17:32:41.196Z",
+  "updatedAt": "2026-09-11T17:43:02.929Z",
   "summary": {
+    "rejected": 404,
     "published": 298,
-    "rejected": 405,
     "duplicate": 21,
-    "needs_review": 247,
+    "needs_review": 251,
     "ignored": 21,
-    "pending": 8
+    "pending": 5
   },
   "recent": [
+    {
+      "id": "telegram-errores-de-precio:15527:aliexpress:0",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15527,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/erroresde_precio/15527",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:93118:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93118,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/93118",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41991:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41991,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41991",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41990:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41990,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41990",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:41989:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 41989,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/41989",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7260:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7260,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7260",
       "resultUrl": ""
     },
@@ -25,9 +80,9 @@
       "source": "telegram-ofertos",
       "messageId": 41988,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/41988",
       "resultUrl": ""
     },
@@ -36,20 +91,20 @@
       "source": "telegram-ofertos",
       "messageId": 41987,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41987",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B06Y61BZ3X?tag=chollos00a-21"
     },
     {
       "id": "telegram-ofertos:41986:amazon:0",
       "source": "telegram-ofertos",
       "messageId": 41986,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/41986",
       "resultUrl": ""
     },
@@ -58,20 +113,20 @@
       "source": "telegram-ofertos",
       "messageId": 41985,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41985",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B07KQLLSMD?tag=chollos00a-21"
     },
     {
       "id": "telegram-ofertos:41984:aliexpress:0",
       "source": "telegram-ofertos",
       "messageId": 41984,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/41984",
       "resultUrl": ""
     },
@@ -80,9 +135,9 @@
       "source": "telegram-ofertos",
       "messageId": 41983,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/41983",
       "resultUrl": ""
     },
@@ -91,9 +146,9 @@
       "source": "telegram-ofertos",
       "messageId": 41982,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/41982",
       "resultUrl": ""
     },
@@ -1052,61 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/93093",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93092:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93092,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/93092",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15525:ignored",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15525,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/erroresde_precio/15525",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93091:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93091,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
-      "sourceUrl": "https://t.me/una_ganga/93091",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4737:amazon:0",
-      "source": "telegram-paramanitas",
-      "messageId": 4737,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4737",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93090:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93090,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/93090",
       "resultUrl": ""
     }
   ]
