@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-11T18:22:38.830Z",
+  "updatedAt": "2026-09-11T18:42:14.881Z",
   "summary": {
-    "published": 296,
     "rejected": 402,
+    "published": 297,
     "duplicate": 21,
-    "needs_review": 257,
+    "needs_review": 258,
     "ignored": 21,
-    "pending": 3
+    "pending": 1
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93121:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93121,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/93121",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93120:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 93120,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/93120",
       "resultUrl": ""
     },
@@ -25,22 +36,22 @@
       "source": "telegram-ofertos",
       "messageId": 41996,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/41996",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B0H11WL3N4?tag=chollos00a-21"
     },
     {
       "id": "telegram-chollosdiario:45366:amazon:0",
       "source": "telegram-chollosdiario",
       "messageId": 45366,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/chollosdiario/45366",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B0HH85Y38C?tag=chollos00a-21"
     },
     {
       "id": "telegram-una-ganga:93119:aliexpress:0",
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/Ofertos/41942",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-tiesometro:7258:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7258,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
-      "sourceUrl": "https://t.me/tiesometro/7258",
       "resultUrl": ""
     }
   ]
