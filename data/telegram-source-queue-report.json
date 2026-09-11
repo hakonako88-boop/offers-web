@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-11T09:12:18.182Z",
+  "updatedAt": "2026-09-11T09:22:16.125Z",
   "summary": {
-    "published": 314,
-    "rejected": 405,
-    "needs_review": 239,
+    "rejected": 406,
+    "published": 313,
+    "needs_review": 240,
     "ignored": 21,
     "duplicate": 19,
-    "pending": 2
+    "pending": 1
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93091:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93091,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/93091",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-paramanitas:4737:amazon:0",
       "source": "telegram-paramanitas",
       "messageId": 4737,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/paramanitas/4737",
       "resultUrl": ""
     },
@@ -25,9 +36,9 @@
       "source": "telegram-una-ganga",
       "messageId": 93090,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/93090",
       "resultUrl": ""
     },
@@ -1089,17 +1100,6 @@
     },
     {
       "id": "telegram-paramanitas:4735:amazon:13",
-      "source": "telegram-paramanitas",
-      "messageId": 4735,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4735",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4735:amazon:12",
       "source": "telegram-paramanitas",
       "messageId": 4735,
       "store": "Amazon",
