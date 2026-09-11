@@ -19930,14 +19930,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/Y79fIGtiwdTeSO5MieHL7ngksen_cIYogHIk0UiLidV2Cpoam4SsfP3b3zsHQUgnbx9SaYl8hmGc0WLkjDDwFtNha4WDAUIKd0_AJuvt-ZTSK_pdJqz02PtUPH2XKPRkoYLf-F8IGWFnh7gZVfWn8WXsFtSzbAyIYWgh_G1JypYne3t2VELWYlGxqysSqjfwI2qatZOAXmIpjrSySLX1rUSvvQrvq23eMFJSZLJgT670fNOn2CH_bI5gbfHmSTMXwmbcvBwSflfewTeijn9ZbVBJORG1Oo00nUiCzfy8PI3gtum7ci3eGMGJzIhYAl5AMGrBKEiS7ar8bLWPumwhEQ.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3qJKwqd",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-11T16:31:01.143Z",
-      "updatedAt": "2026-09-11T16:32:58.382Z"
+      "updatedAt": "2026-09-11T16:42:34.474Z"
     },
     {
       "id": "telegram-chollosdiario:45365:amazon:0",
@@ -19950,13 +19950,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/XIia3djuZWObv4CKBm2SPIOJeXGelguhlW3448TrAaDFCc40VeAVItz9l_MMtq9zOAR-gxDFNKYXa-Murm2NwuZ8vwm_mW0042YNTOx2U2Dz5DNyfexFk31AKXAQuPz9fNbwmc80KOdjNKWh4uJjBSPKM0oZNhyluuitFJm19heUXiiTe0d2tFeetQ4kW39c40FZC7wCsIxSqnjgaMf1aawjrwBX5jJH3il8VZ6PLJnZRayaumV0WRrieJcTao_hHF15AeWZjl3p5yEcT8mVXETo1uOMWL5q1wRvgCAWONrgNdCvoQRoR43w2OREuuEDNeAwoHcvlYdi6Ek7QO8P-A.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0775MG82Q?tag=chollodeldia-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-11T16:41:03.633Z",
-      "updatedAt": "2026-09-11T16:41:03.633Z"
+      "updatedAt": "2026-09-11T16:42:35.243Z"
     },
     {
       "id": "telegram-ofertos:41972:amazon:0",
@@ -19969,13 +19969,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/jcOPr6lkdFmrJJpIDxzR8g6EBNOEs39svvDzuvmIemt8MriqYOzHBV1IVp9ZOCANBkJbOTYUWCpeoJoCEATuQoUmVzDfKog43Xnfyz2qEeu0zp-Sco-dy1jTBCKn6gpZL1bFaUhn4QBKvy0NymRVZoy5xW4nvOoBD1so-Uox_VbhH6D-AnE5UU9ddLAOpo8UCGRF2VAU11fo15twATQaJZf1zo-r3XjXRBQkuA4BEBp2pXe7fgw3WMDYdgdmIe1LmOBdfbk5S-NH_JudRqDnrK_vEjBnjURdXhnfYNmXnImDILqTFSJFojPORXIGnK4TGfrXmY4jiV4wMvgOqaICFg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0GH25XMWP?th=1&amp;linkCode=sl2&amp;linkId=50b808f14d5920d7902e58ccb9a2c78e&amp;ref_=as_li_ss_tl&amp;btn_type=ss&amp;btn_ref=srctok-097bb56912f991ee&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-11T16:41:03.861Z",
-      "updatedAt": "2026-09-11T16:41:03.861Z"
+      "updatedAt": "2026-09-11T16:42:39.603Z",
+      "telegramMessageId": 6789,
+      "resultUrl": "https://www.amazon.es/dp/B0GH25XMWP?tag=chollos00a-21"
     },
     {
       "id": "telegram-ofertos:41973:miravia:0",
@@ -19989,12 +19991,12 @@
       "store": "Miravia",
       "merchantUrl": "https://www.awin1.com/cread.php?awinmid=37166&amp;awinaffid=965977&amp;ued=https%3A%2F%2Fs.miravia.es%2Fs.ZoFe4",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (2/3)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 0,
+      "attempts": 2,
       "createdAt": "2026-09-11T16:41:03.861Z",
-      "updatedAt": "2026-09-11T16:41:03.861Z"
+      "updatedAt": "2026-09-11T16:42:34.474Z"
     },
     {
       "id": "telegram-ofertos:41973:miravia:1",
@@ -20008,12 +20010,12 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4qHeEgr",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (2/3)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 0,
+      "attempts": 2,
       "createdAt": "2026-09-11T16:41:03.861Z",
-      "updatedAt": "2026-09-11T16:41:03.861Z"
+      "updatedAt": "2026-09-11T16:42:34.474Z"
     },
     {
       "id": "telegram-una-ganga:93115:miravia:0",
@@ -20027,12 +20029,12 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3K8c5TP",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (2/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 2,
       "createdAt": "2026-09-11T16:41:04.330Z",
-      "updatedAt": "2026-09-11T16:41:04.330Z"
+      "updatedAt": "2026-09-11T16:42:34.474Z"
     }
   ]
 }
