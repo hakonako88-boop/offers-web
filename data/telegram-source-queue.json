@@ -20011,13 +20011,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/drRyMXHq7u9kARiIEVyq4qzgOQ9LsmX-nvzCqCUAkRhIvZYRuOri1BGcw6XALDqwmimytlHenYlh77JJp38txJ7PIvSqxTKZFon-41PPFIUtaaF4GZK_QVatXPAXkmz9og-4Y_Y_Vw9qhkN-4Zd76TIh5AcRV2p00okggXh0f0i3Ik8cePycX38axbMIcIUAAiWBAGU2V8SSzbzAkpjfNo6c9Xp0qIEcd0lSm1vCgE6OxMGjLVhBFj0S3sfPRYAKvcCM5N9evLwII7ye1kPAtlFTsVHoUr2pAZT1XKLtKYC0FP5vJ2QFoVP-AaQlrBdT6xL6L9-_eoYZKlGPIu-gOA.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4rUEihw",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-11T08:41:01.190Z",
-      "updatedAt": "2026-09-11T09:02:25.824Z",
+      "updatedAt": "2026-09-11T09:11:35.615Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -20032,13 +20032,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4Su8jBT",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-11T09:11:03.090Z",
-      "updatedAt": "2026-09-11T09:11:03.090Z"
+      "updatedAt": "2026-09-11T09:12:18.182Z"
     },
     {
       "id": "telegram-paramanitas:4737:amazon:0",
@@ -20051,13 +20051,13 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0B6PPFFDR?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-11T09:11:03.957Z",
-      "updatedAt": "2026-09-11T09:11:03.957Z"
+      "updatedAt": "2026-09-11T09:12:18.830Z"
     }
   ]
 }
