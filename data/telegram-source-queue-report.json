@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-12T18:22:51.142Z",
+  "updatedAt": "2026-09-12T18:42:03.957Z",
   "summary": {
-    "rejected": 416,
+    "rejected": 415,
     "published": 236,
-    "needs_review": 310,
+    "needs_review": 313,
     "duplicate": 17,
     "ignored": 18,
-    "pending": 3
+    "pending": 1
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93197:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93197,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/93197",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93196:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 93196,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/93196",
       "resultUrl": ""
     },
@@ -25,9 +36,9 @@
       "source": "telegram-ofertos",
       "messageId": 42068,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/42068",
       "resultUrl": ""
     },
@@ -36,9 +47,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45377,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/chollosdiario/45377",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/42017",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:42016:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 42016,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/42016",
       "resultUrl": ""
     }
   ]
