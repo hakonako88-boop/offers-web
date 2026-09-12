@@ -1,22 +1,44 @@
 {
-  "updatedAt": "2026-09-12T00:12:11.737Z",
+  "updatedAt": "2026-09-12T00:22:28.100Z",
   "summary": {
     "rejected": 403,
-    "published": 275,
     "duplicate": 19,
+    "published": 274,
     "needs_review": 280,
     "ignored": 22,
-    "pending": 1
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93138:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93138,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/93138",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-chollosdiario:45370:amazon:0",
+      "source": "telegram-chollosdiario",
+      "messageId": 45370,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/chollosdiario/45370",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93137:aliexpress:0",
       "source": "telegram-una-ganga",
       "messageId": 93137,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/93137",
       "resultUrl": ""
     },
@@ -1085,28 +1107,6 @@
       "attempts": 0,
       "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/93104",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-tiesometro:7259:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7259,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
-      "sourceUrl": "https://t.me/tiesometro/7259",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93103:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93103,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
-      "sourceUrl": "https://t.me/una_ganga/93103",
       "resultUrl": ""
     }
   ]
