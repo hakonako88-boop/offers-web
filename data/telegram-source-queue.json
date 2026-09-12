@@ -19843,13 +19843,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/dili9vvLPxl6XEf4nGgG9DCUs4wNz2A8iNaGbcBclKReDZ5T_VLgLxVh00KHeT5OE3TOKFos7kEWgaIwQRE_oVBhWPAbNgJdw4Fk5bpcp0lX1YBDigNcEMj32kmw52Zb1Lm9baXU9A0gOnyujvXV6KsdZ3_7dycozYJ6axsDcGSqWi4Ch0UVd2_D5fNyCl_eWFuH7mG_tnic9Pn8mrV-o7FCRyYxKhJ44XK0zUbc0RDHoItF2TLLlW8Z-sfmInWYic-FX2-Sn7D67nhds_9MUts4xVp4w784JJ2z8DiwOInrVRN5EybC-07NQWn-RtUJG7TY9s99dKNND7thWkKSCg.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4xtQJ6t",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-12T15:41:01.204Z",
-      "updatedAt": "2026-09-12T16:02:35.623Z",
+      "updatedAt": "2026-09-12T16:11:40.341Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -19883,14 +19883,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/cj5yj",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-12T16:01:09.797Z",
-      "updatedAt": "2026-09-12T16:02:35.623Z"
+      "updatedAt": "2026-09-12T16:12:43.191Z"
     },
     {
       "id": "telegram-una-ganga:93187:aliexpress:0",
@@ -19904,13 +19904,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c37riTjL",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-12T16:11:07.230Z",
-      "updatedAt": "2026-09-12T16:11:07.230Z"
+      "updatedAt": "2026-09-12T16:12:43.191Z"
     }
   ]
 }
