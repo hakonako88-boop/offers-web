@@ -1,22 +1,55 @@
 {
-  "updatedAt": "2026-09-12T09:32:40.445Z",
+  "updatedAt": "2026-09-12T09:42:42.165Z",
   "summary": {
-    "published": 254,
-    "rejected": 403,
-    "needs_review": 297,
-    "duplicate": 19,
+    "rejected": 406,
+    "published": 252,
+    "needs_review": 299,
+    "duplicate": 20,
     "ignored": 20,
-    "pending": 7
+    "pending": 3
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93166:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93166,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/93166",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:42029:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 42029,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/42029",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:42028:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 42028,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/42028",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7266:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7266,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/tiesometro/7266",
       "resultUrl": ""
     },
@@ -25,9 +58,9 @@
       "source": "telegram-ofertos",
       "messageId": 42027,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/42027",
       "resultUrl": ""
     },
@@ -36,9 +69,9 @@
       "source": "telegram-ofertos",
       "messageId": 42026,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/42026",
       "resultUrl": ""
     },
@@ -47,9 +80,9 @@
       "source": "telegram-ofertos",
       "messageId": 42025,
       "store": "Amazon",
-      "status": "pending",
+      "status": "duplicate",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/Ofertos/42025",
       "resultUrl": ""
     },
@@ -58,11 +91,11 @@
       "source": "telegram-ofertos",
       "messageId": 42024,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/42024",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B0GXPK48RT?tag=chollos00a-21"
     },
     {
       "id": "telegram-una-ganga:93165:amazon:0",
@@ -201,9 +234,9 @@
       "source": "telegram-ofertos",
       "messageId": 42015,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/42015",
       "resultUrl": ""
     },
@@ -212,9 +245,9 @@
       "source": "telegram-ofertos",
       "messageId": 42015,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/42015",
       "resultUrl": ""
     },
@@ -1067,39 +1100,6 @@
     },
     {
       "id": "telegram-paramanitas:4740:amazon:6",
-      "source": "telegram-paramanitas",
-      "messageId": 4740,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4740",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4740:amazon:5",
-      "source": "telegram-paramanitas",
-      "messageId": 4740,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4740",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4740:amazon:4",
-      "source": "telegram-paramanitas",
-      "messageId": 4740,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4740",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4740:amazon:3",
       "source": "telegram-paramanitas",
       "messageId": 4740,
       "store": "Amazon",
