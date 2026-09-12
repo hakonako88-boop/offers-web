@@ -1,22 +1,44 @@
 {
-  "updatedAt": "2026-09-12T10:42:17.355Z",
+  "updatedAt": "2026-09-12T10:52:32.447Z",
   "summary": {
-    "published": 251,
-    "rejected": 404,
+    "published": 250,
+    "rejected": 403,
     "duplicate": 20,
     "needs_review": 304,
     "ignored": 20,
-    "pending": 1
+    "pending": 3
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:42042:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 42042,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/42042",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:42041:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 42041,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/42041",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93169:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 93169,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/93169",
       "resultUrl": ""
     },
@@ -1085,28 +1107,6 @@
       "attempts": 0,
       "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45368",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93127:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93127,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/93127",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93126:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93126,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
-      "sourceUrl": "https://t.me/una_ganga/93126",
       "resultUrl": ""
     }
   ]
