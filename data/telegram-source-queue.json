@@ -19878,12 +19878,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3VoLjvG",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-12T13:40:59.802Z",
-      "updatedAt": "2026-09-12T13:42:00.344Z"
+      "updatedAt": "2026-09-12T14:02:20.135Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-paramanitas:4744:amazon:0",
@@ -19896,13 +19897,13 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0FDWG2R1F?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-12T14:01:09.964Z",
-      "updatedAt": "2026-09-12T14:01:09.964Z"
+      "updatedAt": "2026-09-12T14:02:20.827Z"
     }
   ]
 }
