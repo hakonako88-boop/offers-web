@@ -19839,13 +19839,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/dO9JJM_d7bmWfTA7iQrzz09lPAx6mS7m_6NQgkZ2Hq1B21vJH4Ax1TI4eCd80IB8q2UA4jG6Xkbeo1MGg_buAqSvuJHwzsn2iPsveA0Mvg37xIO_bPSLbfrJI-jAxL7Rn3Pi8MbOIjo8maJnbThlRLZ-BbHahhil2RymNyNSt6qYHnshnOB28Ie-WZeEax5NQE8xoue7gE29B7R78KIbIhXgvT0lBOlKr52UT-E2kkritJHJHVrXh9bwypVBfLM6o3UjNeIOK5RBE3jR2Hr1MJ5LivcHzdBj8RTnkfsIqfGESl-EPESQ7fzRoUSjq01KsaWHKF0AlqfoxffcTRgEFg.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3VoLjvG",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-12T13:40:59.802Z",
-      "updatedAt": "2026-09-12T14:12:27.214Z",
+      "updatedAt": "2026-09-12T14:20:27.837Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -19878,14 +19878,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/MxCC-7NhoLS1VIipA9RkD_O0p489JEP4jG_w0Sth-u88_Sxt2qvRKm0aptZBoo9maH8zv_0J5vZi-ZTdqb_30oWUgUZAGmkcHB40_cQ9jK_QtytTyC4tu-d-VTwynC9j09WWSEFDIW-oZPiFGQms2ya_sl4b8Rn8twdWcLJT1Yn5t0GGI9LqaPOe0RXTIa18byvrYu05CnUxYiRs65rq5w3Q4Z0V7pI76viZJ59mA-6jmBjTo7ecwxTqsiD01A3CV10jhOaXYG1ZCQIqTkGyBgH4i6cVBspmZwfo-yb0VAr2gDQWBKTaAavq6-KgL74iss1ZUQa4FbR7YAVEAh7U9w.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c441xk9j",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-12T14:11:02.431Z",
-      "updatedAt": "2026-09-12T14:12:27.214Z"
+      "updatedAt": "2026-09-12T14:21:22.546Z"
     },
     {
       "id": "telegram-ofertos:42054:amazon:0",
@@ -19898,13 +19898,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/NmxrCtJmM85xglgRb3GIXseNW_Tk8D-1It17Dkx_9buC4FhzuDGfvMsRYufMnHzBgSzuEIpmSLGVq7DizqZ73BSfW_pRFKzH4UUKZ3TmS9FY_aclZgSwmlzMp4rjl6oA5D0WGPH5ZNr3ZgG2DnlP-EQmGX1ZvsnuDwje9XvA9M2_mRvGFZkwDJu3eXN8KruTBQFOwEE-4tbh4sj-87phO6fRDHn7iIViVgBU5PQmYa3fF6nSV52C_izgE7d_cvcyJDP2FhoJmiKCqFa-Ih2O25T5jcQRMX2W9z5l4CjibizDvPed4HdALePd5iXhIrco38cxWvAX2hQNC_Ng3jSHbg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0HJ91G9GH?&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-12T14:19:49.007Z",
-      "updatedAt": "2026-09-12T14:19:49.007Z"
+      "updatedAt": "2026-09-12T14:21:23.390Z"
     }
   ]
 }
