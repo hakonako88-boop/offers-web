@@ -19819,12 +19819,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4nmLboN",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 0,
       "createdAt": "2026-09-12T23:05:58.730Z",
-      "updatedAt": "2026-09-12T23:07:58.166Z"
+      "updatedAt": "2026-09-12T23:12:27.029Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:93210:aliexpress:0",
@@ -19837,14 +19838,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/Fmqy_vbHm8nXqmsAQZ65OoG2TKKKoCbBpMNu2IIYtU7uOvHJpbBwQRuzIS0hCwyzCt0j7_oscGtpXNax87BuMcvi2FPVXRe1Hx7sKBfodofMwa6rQK3udtQLQpYIaGpTt7QD9daURiErbtPKEskh_HkURTOcqmUqKvfWgqES6G2lG5NJK8teZSVTjDB3V0_6qOXFRP4FwLCGYmF-x3Uu7j1_OX88VVJ2OMwkhooZTRyGBKA3JIKU-CVRPPh8PxWDe2ouU9bW4hcGgd4-gzuYI_c9Z7Ncw4N2jON8gI6qsVEqyRKiZhz1yQOiY3sqOns75EENC6yXlNNJMz0NzFL35w.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3OGO4XR",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-12T23:05:58.730Z",
-      "updatedAt": "2026-09-12T23:07:58.166Z"
+      "updatedAt": "2026-09-12T23:12:27.029Z"
     },
     {
       "id": "telegram-tiesometro:7271:aliexpress:0",
@@ -19857,14 +19858,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/6yv5t",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-12T23:05:58.976Z",
-      "updatedAt": "2026-09-12T23:07:58.166Z"
+      "updatedAt": "2026-09-12T23:12:27.029Z"
     }
   ]
 }
