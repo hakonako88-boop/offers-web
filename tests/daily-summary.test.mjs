@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
-import { buildDailySummary, previousMadridDate, selectDailyOffers } from '../scripts/publish-daily-summary.mjs';
+import { buildDailySummary, createDailySummaryCard, previousMadridDate, selectDailyOffers } from '../scripts/publish-daily-summary.mjs';
 
 function offer({ id, store, price, previousPrice, date, coupon = '' }) {
   return { source_product_id: id, title: `Producto interesante ${id}`, store, price, previousPrice, date, coupon, image: `/tg/${id}.jpg`, url: `https://example.com/${id}` };
@@ -31,29 +31,49 @@ test('creates a compact Telegram summary with affiliate destinations and a web p
     offer({ id: 'two', store: 'PcComponentes', price: '299,00 €', previousPrice: '399,00 €', date }),
   ];
   const summary = buildDailySummary(offers, '2026-08-25');
-  assert.match(summary.telegram, /TOP 3 CHOLLOS DEL DÍA/u);
+  assert.match(summary.telegram, /TOP 2 CHOLLOS DEL DÍA/u);
   assert.match(summary.telegram, /https:\/\/example\.com\/one/u);
   assert.match(summary.telegram, /Cupón: AHORRA3/u);
   assert.equal(summary.album.length, 2);
   assert.equal(summary.album[0].media, 'https://chollosaldia.com/tg/one.jpg');
-  assert.match(summary.album[0].caption, /TOP 3 CHOLLOS DEL DÍA/u);
+  assert.match(summary.album[0].caption, /TOP 2 CHOLLOS DEL DÍA/u);
   assert.match(summary.album[0].caption, /Cupón:<\/b> <code>AHORRA3/u);
   assert.match(summary.album[1].caption, /https:\/\/example\.com\/two/u);
   assert.equal(summary.post.id, 'resumen-diario-2026-08-25');
   assert.equal(summary.post.image, '/tg/one.jpg');
   assert.deepEqual(summary.post.images, ['/tg/one.jpg', '/tg/two.jpg']);
+  assert.deepEqual(summary.keyboard.inline_keyboard.map((row) => row[0].url), [
+    'https://example.com/one', 'https://example.com/two',
+  ]);
 });
 
-test('schedules the 00:05 Madrid summary for the completed day and stores duplicate protection', () => {
+test('creates one professional ranking cover instead of relying only on an album', async () => {
+  const date = Math.floor(Date.parse('2026-08-25T12:00:00+02:00') / 1000);
+  const offers = [
+    { ...offer({ id: 'one', store: 'AliExpress', price: '12,99 €', previousPrice: '29,99 €', date }), image: 'https://img.test/one.svg' },
+    { ...offer({ id: 'two', store: 'Amazon', price: '19,99 €', previousPrice: '39,99 €', date }), image: 'https://img.test/two.svg' },
+  ];
+  const svg = Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><rect width="500" height="500" fill="white"/><circle cx="250" cy="250" r="180" fill="#ff5a36"/></svg>');
+  const card = await createDailySummaryCard(offers, '2026-08-25', {
+    fetchImpl: async () => new Response(svg, { status: 200, headers: { 'content-type': 'image/svg+xml' } }),
+  });
+  assert.ok(card.length > 10_000);
+  assert.equal(card[0], 0xff);
+  assert.equal(card[1], 0xd8);
+});
+
+test('schedules the professional summary for 21:45 Madrid and stores duplicate protection', () => {
   const workflow = fs.readFileSync(new URL('../.github/workflows/daily-summary.yml', import.meta.url), 'utf8');
   const script = fs.readFileSync(new URL('../scripts/publish-daily-summary.mjs', import.meta.url), 'utf8');
-  assert.match(workflow, /cron:\s*"5 22,23 \* \* \*"/u);
+  assert.match(workflow, /cron:\s*"45 19,20 \* \* \*"/u);
   assert.match(workflow, /types:\s*\[daily_summary\]/u);
   assert.match(workflow, /TELEGRAM_BOT_TOKEN/u);
   assert.match(script, /Europe\/Madrid/u);
   assert.match(script, /publishedDates/u);
   assert.match(script, /sendMediaGroup/u);
   assert.match(script, /sendPhoto/u);
+  assert.match(script, /current\.hour !== 21 \|\| current\.minute < 45/u);
+  assert.match(script, /sendProfessionalSummary/u);
   assert.equal(previousMadridDate(new Date('2026-08-29T00:05:00+02:00')), '2026-08-28');
   assert.equal(previousMadridDate(new Date('2026-12-01T00:05:00+01:00')), '2026-11-30');
 });

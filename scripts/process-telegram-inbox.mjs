@@ -960,7 +960,7 @@ for (const update of updates || []) {
       }
       if (!callbackChatId || !isAuthorizedCallback) {
         if (callbackChatId) await reply(settings.token, callbackChatId, '⛔ Este chat no está autorizado.');
-      } else if (/^dashboard:(?:home|refresh|queue|stores|today|errors)$/u.test(String(callback.data || ''))) {
+      } else if (/^dashboard:(?:home|refresh|queue|stores|today|errors|web)$/u.test(String(callback.data || ''))) {
         const requested = String(callback.data).split(':')[1];
         const section = requested === 'refresh' ? 'home' : requested;
         const snapshot = loadDashboardSnapshot(ROOT);

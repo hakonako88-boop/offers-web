@@ -522,9 +522,9 @@ async function dispatchAutomaticScan(cron) {
     return;
   }
   // Madrid changes between UTC+1 and UTC+2. Trigger both possible UTC times
-  // for 00:05; publish-daily-summary.mjs accepts only the invocation that is
-  // actually after midnight locally and summarizes the completed day.
-  if (cron === '5 22,23 * * *') {
+  // for 21:45; publish-daily-summary.mjs accepts only the invocation that
+  // matches Madrid local time and summarizes that same day.
+  if (cron === '45 19,20 * * *') {
     await githubDispatch('daily_summary', {
       source: 'cloudflare-cron',
       cron,

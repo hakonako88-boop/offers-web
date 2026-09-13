@@ -45,6 +45,14 @@ export function dashboardSnapshot({ offers = [], queue = { items: [] }, report =
     ready: ready.length, waiting: waiting.length, pending: pending.length,
     rejectedToday, duplicateToday,
     recentErrors: recentItems.filter((item) => item.status === 'rejected').slice(-5).reverse(),
+    analytics: {
+      connected: Boolean(states.analytics?.connected || states.analytics?.updatedAt),
+      activeUsers: Number(states.analytics?.activeUsers) || 0,
+      users7d: Number(states.analytics?.users7d) || 0,
+      sessions7d: Number(states.analytics?.sessions7d) || 0,
+      pageViews7d: Number(states.analytics?.pageViews7d) || 0,
+      updatedAt: String(states.analytics?.updatedAt || ''),
+    },
     storeHealth: {
       Amazon: /eligibility requirements/iu.test(String(states.amazon?.lastError || '')) ? 'pendiente de aprobación API' : 'operativa',
       AliExpress: states.aliexpress?.healthy === true ? 'operativa' : 'con incidencias',
@@ -69,6 +77,7 @@ export function loadDashboardSnapshot(root = process.cwd(), now = new Date()) {
       miravia: data('miravia-discovery-state.json', null),
       awin: data('awin-retailers-discovery-state.json', null),
       mediamarkt: data('tradedoubler-mediamarkt-discovery-state.json', null),
+      analytics: data('web-analytics.json', null),
     },
     now,
   });
@@ -100,7 +109,7 @@ export function dashboardKeyboard(snapshot = {}, section = 'home') {
       { text: '🏪 TIENDAS', callback_data: 'dashboard:stores' },
       { text: `⚠️ INCIDENCIAS · ${Number(snapshot.rejectedToday || 0)}`, callback_data: 'dashboard:errors' },
     ],
-    [{ text: '🔄 ACTUALIZAR PANEL', callback_data: 'dashboard:refresh' }],
+    [{ text: '🌐 USUARIOS WEB', callback_data: 'dashboard:web' }, { text: '🔄 ACTUALIZAR', callback_data: 'dashboard:refresh' }],
     ...(Number(snapshot.pending || 0) > 0
       ? [[{ text: '⚡ REVISAR PENDIENTES', callback_data: 'dashboard:retry' }]]
       : []),
@@ -129,6 +138,18 @@ export function formatDashboard(snapshot, section = 'home', now = new Date()) {
     '⚠️ ÚLTIMOS ERRORES DE FUENTES', '',
     ...(snapshot.recentErrors.length ? snapshot.recentErrors.map((item) =>
       `• ${item.store || 'Tienda'}: ${String(item.reason || 'No se pudo verificar').slice(0, 125)}`) : ['✅ No hay rechazos nuevos en las últimas 24 horas.']),
+  ].join('\n');
+  if (section === 'web') return snapshot.analytics.connected ? [
+    '🌐 AUDIENCIA DE LA WEB', '',
+    `🟢 Usuarios activos ahora: ${snapshot.analytics.activeUsers}`,
+    `👥 Usuarios últimos 7 días: ${snapshot.analytics.users7d}`,
+    `🔁 Sesiones últimos 7 días: ${snapshot.analytics.sessions7d}`,
+    `👁 Visitas a páginas últimos 7 días: ${snapshot.analytics.pageViews7d}`,
+    '', `Actualizado: ${relativeCheck(snapshot.analytics.updatedAt, now)}`,
+  ].join('\n') : [
+    '🌐 AUDIENCIA DE LA WEB', '',
+    '🟡 Google Analytics está instalado en la web, pero falta autorizar la lectura privada de sus informes.',
+    'No mostraré cifras inventadas. Cuando se conecte GA4, aquí aparecerán usuarios activos, usuarios, sesiones y visitas.',
   ].join('\n');
   return [
     '📊 PANEL DE CHOLLOSALDÍA', '',

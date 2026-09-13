@@ -24,7 +24,10 @@ test('builds the private dashboard from real queue and publication fields', () =
       { status: 'duplicate', updatedAt: '2026-09-13T17:00:00Z' },
     ] },
     report: { updatedAt: '2026-09-13T18:25:00Z' },
-    states: { aliexpress: { healthy: true }, amazon: { lastError: 'eligibility requirements' } },
+    states: {
+      aliexpress: { healthy: true }, amazon: { lastError: 'eligibility requirements' },
+      analytics: { connected: true, activeUsers: 3, users7d: 120, sessions7d: 180, pageViews7d: 440, updatedAt: '2026-09-13T18:25:00Z' },
+    },
   });
   assert.equal(snapshot.publishedToday, 2);
   assert.equal(snapshot.byStore.Amazon, 1);
@@ -36,10 +39,12 @@ test('builds the private dashboard from real queue and publication fields', () =
   assert.match(formatDashboard(snapshot, 'home', now), /Publicadas hoy: 2/u);
   assert.match(formatDashboard(snapshot, 'stores', now), /Amazon: pendiente de aprobación API/u);
   assert.match(formatDashboard(snapshot, 'errors', now), /Miravia: Falta foto/u);
+  assert.match(formatDashboard(snapshot, 'web', now), /Usuarios activos ahora: 3/u);
   const keyboard = dashboardKeyboard(snapshot);
   assert.equal(keyboard.inline_keyboard[0][0].text, '📥 COLA · 2');
   assert.equal(keyboard.inline_keyboard[0][1].text, '📊 HOY · 2');
-  assert.equal(keyboard.inline_keyboard[2][0].callback_data, 'dashboard:refresh');
+  assert.equal(keyboard.inline_keyboard[2][0].callback_data, 'dashboard:web');
+  assert.equal(keyboard.inline_keyboard[2][1].callback_data, 'dashboard:refresh');
   assert.equal(keyboard.inline_keyboard[3][0].callback_data, 'dashboard:retry');
   assert.deepEqual(dashboardKeyboard(snapshot, 'queue').inline_keyboard[0].map((button) => button.callback_data), [
     'dashboard:home', 'dashboard:queue',

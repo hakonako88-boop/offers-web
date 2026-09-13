@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import sharp from 'sharp';
 import { automaticInterest, interestFamily, selectInterestingOffers } from './editorial-interest.mjs';
 
 const ROOT = process.cwd();
@@ -56,6 +57,69 @@ function cleanTitle(value = '', maximum = 92) {
 
 function escapeHtml(value = '') {
   return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+}
+
+function escapeXml(value = '') {
+  return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
+}
+
+function titleLines(value = '', maximum = 38) {
+  const words = cleanTitle(value, 120).split(/\s+/u);
+  const lines = [];
+  for (const word of words) {
+    if (!lines.length) {
+      lines.push(word);
+      continue;
+    }
+    const candidate = `${lines.at(-1)} ${word}`.trim();
+    if (candidate.length <= maximum) lines[lines.length - 1] = candidate;
+    else if (lines.length < 2) lines.push(word);
+  }
+  if (words.join(' ').length > lines.join(' ').length && lines.length) lines[lines.length - 1] = `${lines.at(-1).slice(0, maximum - 1)}…`;
+  return lines.slice(0, 2);
+}
+
+async function summaryImageInput(value = '', fetchImpl = fetch) {
+  if (String(value).startsWith('/')) return fs.readFileSync(path.join(ROOT, 'public', String(value).replace(/^\/+/, '')));
+  const response = await fetchImpl(String(value), { signal: AbortSignal.timeout(15_000), headers: { 'user-agent': 'ChollosAlDiaBot/1.0' } });
+  if (!response.ok) throw new Error(`La foto del resumen respondió ${response.status}.`);
+  return Buffer.from(await response.arrayBuffer());
+}
+
+export async function createDailySummaryCard(offers, targetDate, { fetchImpl = fetch } = {}) {
+  const displayDate = new Date(`${targetDate}T12:00:00Z`).toLocaleDateString('es-ES', {
+    day: 'numeric', month: 'long', timeZone: TIME_ZONE,
+  }).toUpperCase();
+  const composites = [];
+  for (const [index, offer] of offers.slice(0, 3).entries()) {
+    try {
+      const image = await sharp(await summaryImageInput(offer.image, fetchImpl), { failOn: 'none' })
+        .rotate().resize({ width: 275, height: 245, fit: 'contain', background: '#ffffff' }).jpeg({ quality: 90 }).toBuffer();
+      composites.push({ input: image, left: 54, top: 205 + index * 310 });
+    } catch {
+      // The row remains readable even when one merchant CDN is unavailable.
+    }
+  }
+  const rows = offers.slice(0, 3).map((offer, index) => {
+    const y = 190 + index * 310;
+    const lines = titleLines(offer.title).map((line, lineIndex) =>
+      `<text x="390" y="${y + 70 + lineIndex * 46}" font-family="Arial,sans-serif" font-size="34" font-weight="800" fill="#18213e">${escapeXml(line)}</text>`).join('');
+    const previous = numericPrice(offer.previousPrice) > numericPrice(offer.price)
+      ? `<text x="365" y="${y + 221}" font-family="Arial,sans-serif" font-size="25" fill="#7b8495">Antes ${escapeXml(offer.previousPrice)}</text>` : '';
+    const coupon = offer.coupon ? `<rect x="760" y="${y + 195}" width="370" height="54" rx="16" fill="#fff2df"/><text x="945" y="${y + 232}" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="800" fill="#9a4d00">CUPÓN ${escapeXml(offer.coupon).slice(0, 22)}</text>` : '';
+    return `<rect x="35" y="${y}" width="1130" height="280" rx="30" fill="#ffffff" stroke="#e6e8ee" stroke-width="3"/>
+      <circle cx="350" cy="${y + 42}" r="30" fill="#ff5a36"/><text x="350" y="${y + 54}" text-anchor="middle" font-family="Arial,sans-serif" font-size="31" font-weight="900" fill="#fff">${index + 1}</text>
+      ${lines}<text x="365" y="${y + 184}" font-family="Arial,sans-serif" font-size="51" font-weight="900" fill="#ff5a36">${escapeXml(offer.price)}</text>${previous}${coupon}
+      <text x="1125" y="${y + 265}" text-anchor="end" font-family="Arial,sans-serif" font-size="23" font-weight="800" fill="#6769f0">${escapeXml(offer.store || 'OFERTA').toUpperCase()}</text>`;
+  }).join('');
+  const overlay = Buffer.from(`<svg width="1200" height="1200" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="1200" fill="#f6f7fb"/><rect width="1200" height="165" fill="#18213e"/>
+    <text x="55" y="72" font-family="Arial,sans-serif" font-size="53" font-weight="900" fill="#fff">🏆 MEJORES CHOLLOS DEL DÍA</text>
+    <text x="57" y="126" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#ffb59f">${escapeXml(displayDate)} · Selección ChollosAlDía</text>
+    ${rows}<rect x="35" y="1130" width="1130" height="50" rx="20" fill="#18213e"/><text x="600" y="1165" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="800" fill="#fff">CHOLLOSALDIA.COM · @ALDIACHOLLOS</text>
+  </svg>`);
+  return sharp({ create: { width: 1200, height: 1200, channels: 3, background: '#f6f7fb' } })
+    .composite([{ input: overlay, left: 0, top: 0 }, ...composites]).jpeg({ quality: 91, mozjpeg: true }).toBuffer();
 }
 
 function validHttpUrl(value = '') {
@@ -141,7 +205,7 @@ export function buildDailySummary(offers, targetDate) {
     const before = previous > price ? ` · <s>${escapeHtml(offer.previousPrice)}</s>` : '';
     return `<b>${index + 1}. ${escapeHtml(cleanTitle(offer.title, 76))}</b>\n🔥 <b>${escapeHtml(offer.price)}</b>${before}${discount ? ` · −${discount}%` : ''}${coupon}\n🛍 ${escapeHtml(offer.store || 'Oferta')} · <a href="${escapeHtml(offer.url)}">VER OFERTA</a>`;
   });
-  const telegram = `🏆 <b>TOP 3 CHOLLOS DEL DÍA</b>\n${escapeHtml(displayDate)}\n\n${lines.join('\n\n')}\n\n🔔 Mañana, más ofertas en @aldiachollos\n⚠️ Precio y stock pueden cambiar. #Publi`;
+  const telegram = `🏆 <b>TOP ${offers.length} CHOLLOS DEL DÍA</b>\n${escapeHtml(displayDate)}\nSelección por ahorro, descuento y utilidad.\n\n${lines.join('\n\n')}\n\n👇 Acceso directo a cada oferta en los botones.\n🔔 Mañana, más ofertas en @aldiachollos\n⚠️ Precio y stock pueden cambiar. #Publi`;
   const body = offers.map((offer, index) => {
     const coupon = String(offer.coupon || '').trim() ? ` · Cupón: ${offer.coupon}` : '';
     return `${index + 1}. ${cleanTitle(offer.title, 160)}\n${offer.price} en ${offer.store || 'la tienda'}${coupon}`;
@@ -153,7 +217,7 @@ export function buildDailySummary(offers, targetDate) {
       const previous = numericPrice(offer.previousPrice);
       const discount = previous > price ? Math.round(((previous - price) / previous) * 100) : 0;
       const coupon = String(offer.coupon || '').trim() ? `\n🎟 <b>Cupón:</b> <code>${escapeHtml(offer.coupon)}</code>` : '';
-      const heading = index === 0 ? `🏆 <b>TOP 3 CHOLLOS DEL DÍA</b>\n${escapeHtml(displayDate)}\n\n` : '';
+      const heading = index === 0 ? `🏆 <b>TOP ${offers.length} CHOLLOS DEL DÍA</b>\n${escapeHtml(displayDate)}\n\n` : '';
       const before = previous > price ? `\n<s>${escapeHtml(offer.previousPrice)}</s>${discount ? ` · 🔻 ${discount}%` : ''}` : '';
       return {
         type: 'photo',
@@ -162,6 +226,10 @@ export function buildDailySummary(offers, targetDate) {
         caption: `${heading}<b>${index + 1}. ${escapeHtml(cleanTitle(offer.title, 76))}</b>\n\n🔥 <b>${escapeHtml(offer.price)}</b>${before}${coupon}\n🛍 ${escapeHtml(offer.store || 'Oferta')}\n\n👉 <a href="${escapeHtml(offer.url)}"><b>VER OFERTA</b></a>${index === offers.length - 1 ? '\n\n🔔 @aldiachollos · #Publi' : ''}`,
       };
     }),
+    keyboard: { inline_keyboard: offers.map((offer, index) => [{
+      text: `${index + 1}. VER EN ${String(offer.store || 'TIENDA').toUpperCase()}`.slice(0, 60),
+      url: offer.url,
+    }]) },
     post: {
       id: `resumen-diario-${targetDate}`,
       source_product_id: `daily-summary:${targetDate}`,
@@ -217,17 +285,31 @@ async function sendTelegramAlbum(token, channelId, media) {
   }
 }
 
+async function sendProfessionalSummary(token, channelId, summary, card) {
+  const form = new FormData();
+  form.set('chat_id', String(channelId));
+  form.set('caption', summary.telegram);
+  form.set('parse_mode', 'HTML');
+  form.set('disable_notification', 'true');
+  form.set('reply_markup', JSON.stringify(summary.keyboard));
+  form.set('photo', new Blob([card], { type: 'image/jpeg' }), 'mejores-chollos-del-dia.jpg');
+  const response = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: form });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.ok) throw new Error(`Telegram sendPhoto failed: ${data.description || response.status}`);
+  return [data.result];
+}
+
 async function main() {
   const now = new Date();
   const force = String(process.env.DAILY_SUMMARY_FORCE || '').toLowerCase() === 'true';
   const current = madridParts(now);
-  if (!force && (current.hour !== 0 || current.minute < 5)) {
+  if (!force && (current.hour !== 21 || current.minute < 45)) {
     console.log(`Resumen omitido: en Madrid son las ${String(current.hour).padStart(2, '0')}:${String(current.minute).padStart(2, '0')}.`);
     return;
   }
 
   const targetDate = String(process.env.DAILY_SUMMARY_DATE || '').trim()
-    || (force ? current.date : previousMadridDate(now));
+    || current.date;
   const state = readJson(STATE_FILE, { publishedDates: [] });
   const posts = readJson(POSTS_FILE, []);
   if ((state.publishedDates || []).includes(targetDate) || posts.some((post) => post.id === `resumen-diario-${targetDate}`)) {
@@ -245,7 +327,13 @@ async function main() {
   const channelId = String(process.env.TELEGRAM_CHANNEL_ID || '').trim();
   if (!token || !channelId) throw new Error('Faltan TELEGRAM_BOT_TOKEN o TELEGRAM_CHANNEL_ID.');
   const summary = buildDailySummary(selected, targetDate);
-  const messages = await sendTelegramAlbum(token, channelId, summary.album);
+  let messages;
+  try {
+    messages = await sendProfessionalSummary(token, channelId, summary, await createDailySummaryCard(selected, targetDate));
+  } catch (error) {
+    console.warn(`No se pudo crear la portada única; se usa el álbum de respaldo: ${error.message}`);
+    messages = await sendTelegramAlbum(token, channelId, summary.album);
+  }
   summary.post.message_id = messages[0].message_id;
   writeJson(POSTS_FILE, [summary.post, ...posts]);
   writeJson(STATE_FILE, {
