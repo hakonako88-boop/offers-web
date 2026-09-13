@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { isRecentSourceItem, isSourceItemReady } from './source-retry-policy.mjs';
+import { offerQuality } from './offer-quality-score.mjs';
 
 const STORES = ['Amazon', 'AliExpress', 'Miravia', 'PcComponentes', 'MediaMarkt', 'El Corte Inglés'];
 
@@ -26,6 +27,7 @@ export function dashboardSnapshot({ offers = [], queue = { items: [] }, report =
   const items = Array.isArray(queue?.items) ? queue.items : [];
   const today = madridDay(now);
   const publishedToday = offers.filter((offer) => madridDay(offerDate(offer)) === today);
+  const quality = publishedToday.map((offer) => offerQuality(offer));
   const byStore = Object.fromEntries(STORES.map((store) => [store,
     publishedToday.filter((offer) => String(offer.store || '') === store).length]));
   const pending = items.filter((item) => item.status === 'pending');
@@ -45,6 +47,13 @@ export function dashboardSnapshot({ offers = [], queue = { items: [] }, report =
     ready: ready.length, waiting: waiting.length, pending: pending.length,
     rejectedToday, duplicateToday,
     recentErrors: recentItems.filter((item) => item.status === 'rejected').slice(-5).reverse(),
+    quality: {
+      excellent: quality.filter((item) => item.score >= 75).length,
+      good: quality.filter((item) => item.score >= 60 && item.score < 75).length,
+      review: quality.filter((item) => item.score >= 45 && item.score < 60).length,
+      weak: quality.filter((item) => item.score < 45).length,
+      average: quality.length ? Math.round(quality.reduce((total, item) => total + item.score, 0) / quality.length) : 0,
+    },
     analytics: {
       connected: Boolean(states.analytics?.connected || states.analytics?.updatedAt),
       activeUsers: Number(states.analytics?.activeUsers) || 0,
@@ -52,6 +61,8 @@ export function dashboardSnapshot({ offers = [], queue = { items: [] }, report =
       sessions7d: Number(states.analytics?.sessions7d) || 0,
       pageViews7d: Number(states.analytics?.pageViews7d) || 0,
       updatedAt: String(states.analytics?.updatedAt || ''),
+      topPages: Array.isArray(states.analytics?.topPages) ? states.analytics.topPages.slice(0, 3) : [],
+      trafficSources: Array.isArray(states.analytics?.trafficSources) ? states.analytics.trafficSources.slice(0, 3) : [],
     },
     storeHealth: {
       Amazon: /eligibility requirements/iu.test(String(states.amazon?.lastError || '')) ? 'pendiente de aprobación API' : 'operativa',
@@ -109,7 +120,8 @@ export function dashboardKeyboard(snapshot = {}, section = 'home') {
       { text: '🏪 TIENDAS', callback_data: 'dashboard:stores' },
       { text: `⚠️ INCIDENCIAS · ${Number(snapshot.rejectedToday || 0)}`, callback_data: 'dashboard:errors' },
     ],
-    [{ text: '🌐 USUARIOS WEB', callback_data: 'dashboard:web' }, { text: '🔄 ACTUALIZAR', callback_data: 'dashboard:refresh' }],
+    [{ text: '⭐ CALIDAD', callback_data: 'dashboard:quality' }, { text: '🌐 USUARIOS WEB', callback_data: 'dashboard:web' }],
+    [{ text: '🔄 ACTUALIZAR PANEL', callback_data: 'dashboard:refresh' }],
     ...(Number(snapshot.pending || 0) > 0
       ? [[{ text: '⚡ REVISAR PENDIENTES', callback_data: 'dashboard:retry' }]]
       : []),
@@ -139,12 +151,23 @@ export function formatDashboard(snapshot, section = 'home', now = new Date()) {
     ...(snapshot.recentErrors.length ? snapshot.recentErrors.map((item) =>
       `• ${item.store || 'Tienda'}: ${String(item.reason || 'No se pudo verificar').slice(0, 125)}`) : ['✅ No hay rechazos nuevos en las últimas 24 horas.']),
   ].join('\n');
+  if (section === 'quality') return [
+    '⭐ CALIDAD DE LAS OFERTAS DE HOY', '',
+    `🏆 Excelentes (75–100): ${snapshot.quality.excellent}`,
+    `✅ Buenas (60–74): ${snapshot.quality.good}`,
+    `🟡 Para revisar (45–59): ${snapshot.quality.review}`,
+    `🔴 Flojas (0–44): ${snapshot.quality.weak}`,
+    '', `Puntuación media: ${snapshot.quality.average}/100`,
+    'La puntuación valora ahorro, descuento, utilidad, cupón, datos completos y actualidad.',
+  ].join('\n');
   if (section === 'web') return snapshot.analytics.connected ? [
     '🌐 AUDIENCIA DE LA WEB', '',
     `🟢 Usuarios activos ahora: ${snapshot.analytics.activeUsers}`,
     `👥 Usuarios últimos 7 días: ${snapshot.analytics.users7d}`,
     `🔁 Sesiones últimos 7 días: ${snapshot.analytics.sessions7d}`,
     `👁 Visitas a páginas últimos 7 días: ${snapshot.analytics.pageViews7d}`,
+    ...(snapshot.analytics.topPages.length ? ['', '📈 Páginas más vistas:', ...snapshot.analytics.topPages.map((page) => `• ${String(page.title || page.path).slice(0, 55)}: ${Number(page.views) || 0}`)] : []),
+    ...(snapshot.analytics.trafficSources.length ? ['', '🧭 Origen de las sesiones:', ...snapshot.analytics.trafficSources.map((source) => `• ${String(source.source).slice(0, 35)}: ${Number(source.sessions) || 0}`)] : []),
     '', `Actualizado: ${relativeCheck(snapshot.analytics.updatedAt, now)}`,
   ].join('\n') : [
     '🌐 AUDIENCIA DE LA WEB', '',

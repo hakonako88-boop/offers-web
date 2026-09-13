@@ -40,12 +40,14 @@ test('builds the private dashboard from real queue and publication fields', () =
   assert.match(formatDashboard(snapshot, 'stores', now), /Amazon: pendiente de aprobación API/u);
   assert.match(formatDashboard(snapshot, 'errors', now), /Miravia: Falta foto/u);
   assert.match(formatDashboard(snapshot, 'web', now), /Usuarios activos ahora: 3/u);
+  assert.match(formatDashboard(snapshot, 'quality', now), /Puntuación media/u);
   const keyboard = dashboardKeyboard(snapshot);
   assert.equal(keyboard.inline_keyboard[0][0].text, '📥 COLA · 2');
   assert.equal(keyboard.inline_keyboard[0][1].text, '📊 HOY · 2');
-  assert.equal(keyboard.inline_keyboard[2][0].callback_data, 'dashboard:web');
-  assert.equal(keyboard.inline_keyboard[2][1].callback_data, 'dashboard:refresh');
-  assert.equal(keyboard.inline_keyboard[3][0].callback_data, 'dashboard:retry');
+  assert.equal(keyboard.inline_keyboard[2][0].callback_data, 'dashboard:quality');
+  assert.equal(keyboard.inline_keyboard[2][1].callback_data, 'dashboard:web');
+  assert.equal(keyboard.inline_keyboard[3][0].callback_data, 'dashboard:refresh');
+  assert.equal(keyboard.inline_keyboard[4][0].callback_data, 'dashboard:retry');
   assert.deepEqual(dashboardKeyboard(snapshot, 'queue').inline_keyboard[0].map((button) => button.callback_data), [
     'dashboard:home', 'dashboard:queue',
   ]);
