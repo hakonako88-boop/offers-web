@@ -92,3 +92,12 @@ test('nightly top deals reject generic fashion and implausible marketplace refer
   ], target);
   assert.deepEqual(selected.map((item) => item.source_product_id), ['fan']);
 });
+
+test('nightly top deals reject an inflated reference price on expensive catalogue products', () => {
+  const date = Math.floor(new Date('2026-08-25T14:00:00+02:00').getTime() / 1000);
+  const selected = selectDailyOffers([
+    { ...offer({ id: 'inflated-laptop', date, store: 'PcComponentes', price: '614,17 €', previousPrice: '1546,95 €' }), title: 'Portátil profesional 16 GB y SSD' },
+    { ...offer({ id: 'credible-robot', date, store: 'Amazon', price: '399,98 €', previousPrice: '549,99 €' }), title: 'Robot aspirador con estación automática' },
+  ], '2026-08-25');
+  assert.doesNotMatch(selected.map((offer) => offer.title).join(' '), /Portátil profesional/u);
+});

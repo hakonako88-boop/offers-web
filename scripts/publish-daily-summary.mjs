@@ -172,8 +172,13 @@ export function selectDailyOffers(offers, targetDate, maximum = MAX_OFFERS) {
       // dubious PVP must not win the nightly "best deals" ranking.
       const credibleMarketplacePrice = !store.includes('aliexpress') || Boolean(coupon)
         || (discount <= 50 && previous <= price * 2);
+      // High-priced catalogue products are especially prone to comparing the
+      // offer with a launch price, another capacity or a business bundle. Do
+      // not award the nightly top position when that reference exceeds twice
+      // the current price unless a concrete coupon supports the saving.
+      const credibleHighValueReference = price <= 250 || !previous || previous <= price * 2 || Boolean(coupon);
       const meaningfulDeal = discount >= 20 || (coupon && automaticInterest(offer) >= 2 && discount >= 10);
-      return automaticInterest(offer) >= 0 && credibleMarketplacePrice && meaningfulDeal;
+      return automaticInterest(offer) >= 0 && credibleMarketplacePrice && credibleHighValueReference && meaningfulDeal;
     })
     .map((offer) => ({ ...offer, summaryScore: offerScore(offer) })))
     .sort((left, right) => right.summaryScore - left.summaryScore || Number(right.date) - Number(left.date));
