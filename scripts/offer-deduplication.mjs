@@ -117,3 +117,14 @@ export function filterDuplicateDeals(candidates = [], existing = []) {
   }
   return accepted;
 }
+
+/** Finds a recently published offer directly in Telegram's public channel.
+ * This closes the small race where Telegram accepts a post but the workflow
+ * that should persist its state loses a concurrent Git push. */
+export function telegramMessageIdForProduct(html = '', productId = '') {
+  const wanted = String(productId || '').trim();
+  if (!wanted) return 0;
+  const escaped = wanted.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
+  const match = String(html).match(new RegExp(`data-post="[^"/]+/(\\d+)"[\\s\\S]{0,12000}?/oferta/${escaped}(?:/|%2F)`, 'iu'));
+  return Number(match?.[1] || 0);
+}

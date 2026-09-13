@@ -14,7 +14,7 @@ import {
 import { couponForPrice, discoverCommunitySignals, nextCommunitySignalState } from './community-signals.mjs';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { mirrorTelegramMessage } from './telegram-mirror.mjs';
-import { filterDuplicateDeals } from './offer-deduplication.mjs';
+import { filterDuplicateDeals, telegramMessageIdForProduct } from './offer-deduplication.mjs';
 import { resolveAliExpressAffiliateProduct, waitForAliExpressApiSlot } from './aliexpress-link-resolver.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
@@ -512,10 +512,38 @@ if (canPublishNow && publicationPolicy.allowed && !uniqueCandidates.length) {
 
 let sent = 0;
 let attempted = 0;
+let recentChannelHtml = '';
+try {
+  const response = await fetch('https://t.me/s/aldiachollos', { signal: AbortSignal.timeout(12_000) });
+  if (response.ok) recentChannelHtml = await response.text();
+} catch (error) {
+  console.warn(`Could not check the recent public Telegram channel for duplicates: ${error.message}`);
+}
 for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
   if (sent >= Math.min(MAX_POSTS_PER_RUN, publicationPolicy.remaining)) break;
   attempted += 1;
   try {
+    const existingTelegramMessageId = telegramMessageIdForProduct(recentChannelHtml, offer.id);
+    if (existingTelegramMessageId) {
+      await saveOfferForWeb(offer, { message_id: existingTelegramMessageId, date: Math.floor(Date.now() / 1000) });
+      published.push({
+        productId: offer.id,
+        publishedAt: new Date().toISOString(),
+        telegramMessageId: existingTelegramMessageId,
+        price: offer.price,
+        url: offer.url,
+        title: offer.title,
+        store: 'AliExpress',
+        source: offer.communitySource || 'aliexpress-official',
+        sourceUrl: offer.communitySourceUrl || '',
+        communitySignalId: offer.communitySignalId || '',
+        status: 'RECUPERADO_SIN_DUPLICAR',
+      });
+      seenProductIds.add(offer.id);
+      sent += 1;
+      console.log(`AliExpress product ${offer.id} is already visible as Telegram message ${existingTelegramMessageId}; recovered state without reposting.`);
+      continue;
+    }
     const message = await publishOffer(config, offer);
     await mirrorTelegramMessage({
       token: config.telegramToken,

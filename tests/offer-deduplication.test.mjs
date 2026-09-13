@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { filterDuplicateDeals, isEquivalentDeal, isInboxDuplicate } from '../scripts/offer-deduplication.mjs';
+import { filterDuplicateDeals, isEquivalentDeal, isInboxDuplicate, telegramMessageIdForProduct } from '../scripts/offer-deduplication.mjs';
 
 test('blocks catalogue variants of an offer already published', () => {
   assert.equal(isEquivalentDeal(
@@ -81,4 +81,10 @@ test('blocks an Amazon relisting with another ASIN only when title and numeric v
     { title: 'Samsung TV Mini LED M80H 55 pulgadas 4K Smart TV', sourceProductId: 'amazon:B0AAAAA111' },
     { title: 'Samsung TV Mini LED M80H 75 pulgadas 4K Smart TV', source_product_id: 'amazon:B0BBBBB222' },
   ), false);
+});
+
+test('recognises a product already visible in the recent public Telegram channel', () => {
+  const html = `<div class="tgme_widget_message" data-post="aldiachollos/6873"><a href="https://chollosaldia.com/oferta/1005012519652820/?utm_source=telegram">VER FICHA</a></div>`;
+  assert.equal(telegramMessageIdForProduct(html, '1005012519652820'), 6873);
+  assert.equal(telegramMessageIdForProduct(html, '1005019999999999'), 0);
 });
