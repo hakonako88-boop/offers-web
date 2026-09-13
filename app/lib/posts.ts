@@ -6,6 +6,7 @@ export type PublishedPost = {
   body: string;
   imageUrl: string;
   imageUrls: string[];
+  offerIds: string[];
   linkUrl?: string;
   publishedAt: string;
   publishedLabel: string;
@@ -18,6 +19,7 @@ type StoredPost = {
   body?: string;
   image?: string;
   images?: string[];
+  offer_ids?: string[];
   url?: string;
   date?: number;
 };
@@ -52,6 +54,7 @@ export const publishedPosts: PublishedPost[] = (rawPosts as StoredPost[])
       body,
       imageUrl,
       imageUrls,
+      offerIds: Array.isArray(post.offer_ids) ? post.offer_ids.map((id) => clean(id, 150)).filter(Boolean).slice(0, 8) : [],
       linkUrl: safeExternalUrl(post.url) || undefined,
       publishedAt: date.toISOString(),
       publishedLabel: date.toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" }),

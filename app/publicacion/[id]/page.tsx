@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPostById, postHref, postIsIndexable, publishedPosts } from "../../lib/posts";
+import { dealHref, publishedDeals } from "../../lib/deals";
 
 const siteUrl = "https://chollosaldia.com";
 
@@ -28,6 +29,7 @@ export default async function PublicationPage({ params }: PageProps) {
   const post = getPostById((await params).id);
   if (!post) return <main className="postNotFound shell"><Link href="/">← Volver al inicio</Link><h1>Esta publicación no está disponible</h1></main>;
   const description = post.body.replace(/\s+/gu, " ").slice(0, 220);
+  const selectedDeals = post.offerIds.map((id) => publishedDeals.find((deal) => deal.sourceProductId === id)).filter((deal) => Boolean(deal));
   const schema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -50,6 +52,7 @@ export default async function PublicationPage({ params }: PageProps) {
       <time dateTime={post.publishedAt}>Publicado el {post.publishedLabel}</time>
       {post.imageUrls.length > 1 ? <div className="postImageGallery" aria-label="Fotos de las ofertas del resumen">{post.imageUrls.map((image, index) => <img key={image} src={image} alt={`${post.title}: oferta ${index + 1}`} width={720} height={560} />)}</div> : <img className="postHeroImage" src={post.imageUrl} alt={post.title} width={1200} height={800} />}
       <div className="postBody">{post.body.split(/\n{2,}/gu).map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
+      {selectedDeals.length > 0 && <section className="postProductSelection" aria-labelledby="post-products-title"><p className="eyebrow"><span aria-hidden="true" />SELECCIÓN ACTUAL</p><h2 id="post-products-title">Consulta las fichas y el precio final</h2><div>{selectedDeals.map((deal, index) => deal && <article key={deal.id}><img src={deal.imageUrl} alt={deal.title} width={240} height={190} /><div><span>{index + 1} · {deal.store}</span><h3>{deal.title}</h3><strong>{deal.price.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</strong>{deal.coupon && <small>Cupón: {deal.coupon}</small>}</div><Link href={dealHref(deal.id)}>Ver ficha y oferta →</Link></article>)}</div></section>}
       {post.linkUrl && <a className="primaryButton postExternal" href={post.linkUrl} target="_blank" rel="nofollow sponsored noreferrer">Abrir enlace <span aria-hidden="true">↗</span></a>}
       <div className="postBack"><Link href="/">← Ver todos los chollos</Link></div>
     </article>
