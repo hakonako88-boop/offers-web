@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-13T21:03:11.996Z",
+  "updatedAt": "2026-09-13T21:12:31.613Z",
   "summary": {
-    "rejected": 339,
     "published": 203,
+    "rejected": 339,
     "duplicate": 15,
     "ignored": 28,
     "needs_review": 385,
     "pending": 30
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93282:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93282,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/una_ganga/93282",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7284:aliexpress:0",
       "source": "telegram-tiesometro",
@@ -26,8 +37,8 @@
       "messageId": 7283,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/6)",
       "sourceUrl": "https://t.me/tiesometro/7283",
       "resultUrl": ""
     },
@@ -192,7 +203,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/7280",
       "resultUrl": ""
     },
@@ -443,9 +454,9 @@
       "source": "telegram-una-ganga",
       "messageId": 93275,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/93275",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 6,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceUrl": "https://t.me/una_ganga/93251",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:42115:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 42115,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "AliExpress no permitió completar identidad API, precio",
-      "sourceUrl": "https://t.me/Ofertos/42115",
       "resultUrl": ""
     }
   ]
