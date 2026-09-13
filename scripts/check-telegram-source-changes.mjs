@@ -4,6 +4,7 @@ import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import {
   ALIEXPRESS_RETRY_POLICY,
+  isSourceItemReady,
   retryableAliExpressQueueCount,
 } from './source-retry-policy.mjs';
 
@@ -274,7 +275,8 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
     await fs.writeFile(STATE_PATH, `${JSON.stringify(persistedState, null, 2)}\n`, 'utf8');
   }
   if (queueChanged) await fs.writeFile(QUEUE_PATH, `${JSON.stringify(persistedQueue, null, 2)}\n`, 'utf8');
-  const pendingCount = persistedQueue.items.filter((item) => item.status === 'pending').length;
+  const totalPendingCount = persistedQueue.items.filter((item) => item.status === 'pending').length;
+  const pendingCount = persistedQueue.items.filter((item) => isSourceItemReady(item, now)).length;
   const retryableCount = retryableQueueCount(persistedQueue.items, now);
   const dispatchDecision = publisherDispatchDecision({ changedChannels, pendingCount, retryableCount, now });
   // A repaired resolver must get a chance to reopen and process older failed
@@ -284,8 +286,9 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
   await writeOutput('channels', changedChannels.join(','));
   await writeOutput('errors', String(errors.length));
   await writeOutput('pending', String(pendingCount));
+  await writeOutput('pending_total', String(totalPendingCount));
   await writeOutput('retryable', String(retryableCount));
-  return { ...persistedState, queue: persistedQueue, changedChannels, errors, stateChanged: stateChanged || queueChanged, pendingCount, retryableCount, dispatchDecision };
+  return { ...persistedState, queue: persistedQueue, changedChannels, errors, stateChanged: stateChanged || queueChanged, pendingCount, totalPendingCount, retryableCount, dispatchDecision };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
@@ -293,7 +296,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   console.log(result.changedChannels.length
     ? `Novedades: ${result.changedChannels.join(', ')}`
     : 'Sin publicaciones nuevas en los canales vigilados.');
-  console.log(`Cola pendiente: ${result.pendingCount}.`);
+  console.log(`Cola preparada: ${result.pendingCount}; total pendiente: ${result.totalPendingCount}.`);
   console.log(result.dispatchDecision.dispatch
     ? 'Publicador activado: hay ofertas nuevas o pendientes.'
     : `Publicador en espera: ${result.dispatchDecision.reason}.`);

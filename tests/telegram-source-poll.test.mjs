@@ -11,6 +11,23 @@ import {
   publisherDispatchDecision,
   retryableQueueCount,
 } from '../scripts/check-telegram-source-changes.mjs';
+import {
+  isSourceItemReady,
+  nextSourceRetryAt,
+  sourceRetryDelayMs,
+} from '../scripts/source-retry-policy.mjs';
+
+test('spaces failed source checks and only wakes work whose retry time has arrived', () => {
+  const now = new Date('2026-09-13T16:00:00Z');
+  assert.equal(sourceRetryDelayMs(1), 20 * 60 * 1000);
+  assert.equal(sourceRetryDelayMs(2), 40 * 60 * 1000);
+  assert.equal(sourceRetryDelayMs(5), 4 * 60 * 60 * 1000);
+  assert.equal(nextSourceRetryAt(2, now), '2026-09-13T16:40:00.000Z');
+  assert.equal(isSourceItemReady({ status: 'pending' }, now), true);
+  assert.equal(isSourceItemReady({ status: 'pending', nextAttemptAt: '2026-09-13T15:59:00Z' }, now), true);
+  assert.equal(isSourceItemReady({ status: 'pending', nextAttemptAt: '2026-09-13T16:40:00Z' }, now), false);
+  assert.equal(isSourceItemReady({ status: 'rejected' }, now), false);
+});
 
 test('dispatches pending source offers immediately, including outside old editorial slots', () => {
   const overnight = publisherDispatchDecision({

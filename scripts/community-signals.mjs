@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
+import { isSourceItemReady } from './source-retry-policy.mjs';
 
 const USER_AGENT = 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)';
 const MAX_SIGNAL_AGE_MS = 48 * 60 * 60 * 1000;
@@ -176,7 +177,8 @@ function queuedTelegramSignals() {
     const queue = JSON.parse(readFileSync(queueFile, 'utf8'));
     const sources = new Map(telegramChannelSources().map((source) => [source.id, source]));
     const pendingItems = (queue.items || [])
-      .filter((item) => item.status === 'pending' && /^(Amazon|AliExpress|Miravia)$/u.test(String(item.store || '')));
+      .filter((item) => isSourceItemReady(item)
+        && /^(Amazon|AliExpress|Miravia)$/u.test(String(item.store || '')));
     const pendingUrlCounts = new Map();
     for (const item of pendingItems) {
       const merchantUrl = String(item.merchantUrl || '').trim();

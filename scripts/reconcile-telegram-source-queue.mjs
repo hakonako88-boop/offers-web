@@ -2,6 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {
   ALIEXPRESS_RETRY_POLICY,
+  isSourceItemReady,
+  nextSourceRetryAt,
   SOURCE_RETRY_MAX_AGE_MS,
 } from './source-retry-policy.mjs';
 
@@ -89,6 +91,7 @@ for (const item of queue.items || []) {
     item.status = 'ignored';
     item.reason = 'Oferta de AliExpress caducada: se conserva como historial, pero no se publicará con un precio antiguo';
     item.updatedAt = now;
+    delete item.nextAttemptAt;
     continue;
   }
   if (item.store === 'Miravia'
@@ -100,6 +103,7 @@ for (const item of queue.items || []) {
     item.reason = 'Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio';
     item.retryPolicyVersion = MIRAVIA_RETRY_POLICY;
     item.updatedAt = now;
+    delete item.nextAttemptAt;
     reopenedIds.add(item.id);
   }
   if (item.store === 'AliExpress'
@@ -112,6 +116,7 @@ for (const item of queue.items || []) {
     item.reason = 'Reabierta para convertir el enlace, recuperar la foto del producto y generar el enlace propio de AliExpress';
     item.retryPolicyVersion = ALIEXPRESS_RETRY_POLICY;
     item.updatedAt = now;
+    delete item.nextAttemptAt;
     if (wasRejected) reopenedIds.add(item.id);
   }
 }
@@ -126,8 +131,11 @@ for (const item of queue.items || []) {
     item.telegramMessageId = publication.telegramMessageId || publication.message_id || null;
     item.resultUrl = publication.url || '';
     item.updatedAt = now;
+    delete item.nextAttemptAt;
     continue;
   }
+
+  if (!isSourceItemReady(item, new Date(now))) continue;
 
   if (item.store === 'Amazon' && /eligibility requirements/iu.test(amazonError)) {
     // The catalogue API may still be unavailable, but public source messages
@@ -135,6 +143,7 @@ for (const item of queue.items || []) {
     // private review draft. The owner confirms it before any publication.
     item.reason = 'Pendiente de vista previa automática con ASIN, imagen oficial y tag propio';
     item.updatedAt = now;
+    item.nextAttemptAt = nextSourceRetryAt(Math.max(2, Number(item.attempts || 0) + 1), new Date(now));
     continue;
   }
 
@@ -152,6 +161,7 @@ for (const item of queue.items || []) {
     // of the three quality-verification attempts for it.
     item.reason = 'AliExpress limitó temporalmente la consulta; se conservará para reintentarla automáticamente';
     item.updatedAt = now;
+    item.nextAttemptAt = nextSourceRetryAt(Math.max(2, Number(item.attempts || 0) + 1), new Date(now));
     continue;
   }
 
@@ -161,6 +171,7 @@ for (const item of queue.items || []) {
     // validation budget; the following scheduled run will try again.
     item.reason = 'AliExpress bloqueó temporalmente la ficha; se reintentará sin descartar la oferta';
     item.updatedAt = now;
+    item.nextAttemptAt = nextSourceRetryAt(Math.max(2, Number(item.attempts || 0) + 1), new Date(now));
     continue;
   }
 
@@ -169,6 +180,7 @@ for (const item of queue.items || []) {
   const maxAttempts = maxAttemptsFor(item);
   if (item.attempts >= maxAttempts) {
     item.status = 'rejected';
+    delete item.nextAttemptAt;
     const diagnostic = aliExpressDiagnostics.items?.[item.id];
     const missing = Array.isArray(diagnostic?.missing) ? diagnostic.missing.filter(Boolean).join(', ') : '';
     const issue = Array.isArray(diagnostic?.issues) ? String(diagnostic.issues[0] || '') : '';
@@ -177,6 +189,7 @@ for (const item of queue.items || []) {
       : `No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de ${maxAttempts} intentos`;
   } else {
     item.reason = `Pendiente de reintento (${item.attempts}/${maxAttempts})`;
+    item.nextAttemptAt = nextSourceRetryAt(item.attempts, new Date(now));
   }
 }
 
