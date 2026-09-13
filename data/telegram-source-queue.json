@@ -13880,7 +13880,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-12T08:50:58.408Z",
-      "updatedAt": "2026-09-13T18:23:28.674Z"
+      "updatedAt": "2026-09-13T18:32:42.432Z"
     },
     {
       "id": "telegram-ofertos:42008:amazon:0",
@@ -13941,7 +13941,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-12T08:50:58.408Z",
-      "updatedAt": "2026-09-13T18:23:28.674Z"
+      "updatedAt": "2026-09-13T18:32:42.432Z"
     },
     {
       "id": "telegram-ofertos:42010:amazon:0",
@@ -17907,7 +17907,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T09:32:32.322Z",
-      "updatedAt": "2026-09-13T18:23:28.674Z"
+      "updatedAt": "2026-09-13T18:32:42.432Z"
     },
     {
       "id": "telegram-errores-de-precio:15529:amazon:0",
@@ -19792,13 +19792,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3P9eQmf",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T18:31:05.980Z",
-      "updatedAt": "2026-09-13T18:31:05.980Z"
+      "updatedAt": "2026-09-13T18:32:42.432Z",
+      "nextAttemptAt": "2026-09-13T18:52:42.432Z"
     },
     {
       "id": "telegram-tiesometro:7279:aliexpress:0",
@@ -19812,13 +19813,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/ngqxo",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T18:31:06.695Z",
-      "updatedAt": "2026-09-13T18:31:06.695Z"
+      "updatedAt": "2026-09-13T18:32:42.432Z",
+      "nextAttemptAt": "2026-09-13T18:52:42.432Z"
     }
   ]
 }
