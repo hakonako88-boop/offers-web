@@ -610,6 +610,37 @@ body { background: var(--paper); }
 }
 
 /* Professional offer hierarchy: product → price → saving → coupon → action. */
+.resultsInsights {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 12px 0 20px;
+}
+.resultsInsights span {
+  display: flex;
+  min-height: 65px;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #e3e7ef;
+  border-radius: 12px;
+  padding: 11px 14px;
+  background: #fff;
+}
+.resultsInsights b { color: #b9381f; font-size: 19px; white-space: nowrap; }
+.resultsInsights small { color: #667085; font-size: 10px; font-weight: 750; line-height: 1.25; text-transform: uppercase; }
+.topDealBadge {
+  position: absolute;
+  right: 13px;
+  bottom: 13px;
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: #172554;
+  color: #fff;
+  box-shadow: 0 4px 12px rgb(15 23 42 / 22%);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
 .dealCard h3 {
   color: #101828;
   font-weight: 820;
@@ -684,6 +715,10 @@ body { background: var(--paper); }
 .offerPriceBox em { color: #087f5b; font-weight: 850; }
 
 @media (max-width: 520px) {
+  .resultsInsights { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .resultsInsights span { min-height: 72px; align-items: flex-start; justify-content: center; flex-direction: column; gap: 2px; padding: 9px; }
+  .resultsInsights b { font-size: 16px; }
+  .resultsInsights small { font-size: 8px; }
   .dealHome .dealCard { display: flex; grid-template-columns: none; }
   .dealHome .imageWrap {
     height: auto;

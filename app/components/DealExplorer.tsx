@@ -132,6 +132,15 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
   }), [deals]);
 
   const gridDeals = visibleDeals.slice(0, visibleLimit);
+  const visibleInsights = useMemo(() => {
+    const discounted = visibleDeals.filter((deal) => deal.oldPrice > deal.price);
+    const totalSaving = discounted.reduce((total, deal) => total + (deal.oldPrice - deal.price), 0);
+    return {
+      coupons: visibleDeals.filter((deal) => Boolean(deal.coupon)).length,
+      averageSaving: discounted.length ? totalSaving / discounted.length : 0,
+      bestDiscount: discounted.reduce((best, deal) => Math.max(best, Math.round((1 - deal.price / deal.oldPrice) * 100)), 0),
+    };
+  }, [visibleDeals]);
 
   function copyCoupon(code: string) {
     navigator.clipboard?.writeText(code);
@@ -222,8 +231,13 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           </div>
 
           <p className="resultsSummary" aria-live="polite"><b>{summary.total}</b> ofertas activas · <b>{visibleDeals.length}</b> {visibleDeals.length === 1 ? "coincide" : "coinciden"} con tus filtros · mostrando {Math.min(gridDeals.length, visibleDeals.length)}</p>
+          {visibleDeals.length > 0 && <div className="resultsInsights" aria-label="Resumen de las ofertas mostradas">
+            <span><b>{visibleInsights.bestDiscount}%</b><small>mayor descuento</small></span>
+            <span><b>{visibleInsights.averageSaving ? money.format(visibleInsights.averageSaving) : "—"}</b><small>ahorro medio</small></span>
+            <span><b>{visibleInsights.coupons}</b><small>{visibleInsights.coupons === 1 ? "oferta con cupón" : "ofertas con cupón"}</small></span>
+          </div>}
           <div className="dealGrid">
-            {gridDeals.map((deal) => {
+            {gridDeals.map((deal, index) => {
               const discount = Math.max(0, Math.round((1 - deal.price / deal.oldPrice) * 100));
               return (
                 <article className="dealCard" data-store={deal.store} key={deal.id}>
@@ -231,6 +245,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                     <img src={deal.imageUrl} alt={deal.title} loading="lazy" decoding="async" width={720} height={560} />
                     {discount > 0 && <span className="discountBadge">AHORRA {discount}%</span>}
                     <span className="storeBadge">{deal.store}</span>
+                    {index === 0 && !filtersActive && <span className="topDealBadge">⭐ DESTACADA</span>}
                   </a>
                   <div className="dealBody">
                     <p className="categoryLabel"><b>{offerEditorialLabel({ id: deal.id, price: deal.price, discount })}</b> en {deal.category}</p>
@@ -245,7 +260,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                         <span>Cupón necesario</span><b>{copied === deal.coupon ? "¡Copiado!" : deal.coupon}</b><i aria-hidden="true">COPIAR</i>
                       </button>
                     ) : <p className="noCoupon"><span aria-hidden="true">✓</span> Precio directo · sin código</p>}
-                    <a className="dealButton" href={dealDetailsUrl(deal)}>Ver detalles y comprar <span aria-hidden="true">→</span></a>
+                    <a className="dealButton" href={dealDetailsUrl(deal)} onClick={() => window.gtag?.("event", "offer_card_open", { offer_id: deal.id, store: deal.store, price: deal.price })}>{deal.coupon ? "Ver oferta y aplicar cupón" : "Ver oferta y comprar"} <span aria-hidden="true">→</span></a>
                     <p className="verified"><span aria-hidden="true" />Oferta activa · {deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt}</p>
                   </div>
                 </article>
