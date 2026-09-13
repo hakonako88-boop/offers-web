@@ -32,6 +32,12 @@ import { buildAmazonReviewDraft } from './amazon-review-drafts.mjs';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { lookupAmazonProduct } from './amazon-creators-lookup.mjs';
 import { mirrorTelegramMessage } from './telegram-mirror.mjs';
+import {
+  dashboardKeyboard,
+  formatDashboard,
+  loadDashboardSnapshot,
+  releaseRecentPendingOffers,
+} from './telegram-admin-dashboard.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'telegram-inbox-state.json');
@@ -937,6 +943,19 @@ for (const update of updates || []) {
       }
       if (!callbackChatId || !isAuthorizedCallback) {
         if (callbackChatId) await reply(settings.token, callbackChatId, '⛔ Este chat no está autorizado.');
+      } else if (/^dashboard:(?:home|queue|stores|today|errors)$/u.test(String(callback.data || ''))) {
+        const section = String(callback.data).split(':')[1];
+        const snapshot = loadDashboardSnapshot(ROOT);
+        await reply(settings.token, callbackChatId, formatDashboard(snapshot, section), dashboardKeyboard(section));
+      } else if (callback.data === 'dashboard:retry') {
+        const queue = readJson(TELEGRAM_SOURCE_QUEUE_FILE, { version: 1, items: [] });
+        const released = releaseRecentPendingOffers(queue);
+        if (released) writeJson(TELEGRAM_SOURCE_QUEUE_FILE, queue);
+        const snapshot = loadDashboardSnapshot(ROOT);
+        await reply(settings.token, callbackChatId, released
+          ? `🔄 He preparado ${released} ofertas recientes para una nueva comprobación. El ciclo automático las revisará en un máximo aproximado de 10 minutos; seguirá exigiendo precio, foto y afiliación válidos.`
+          : '✅ No hay ofertas recientes esperando que puedan adelantarse ahora mismo.', dashboardKeyboard('home'));
+        if (released) await reply(settings.token, callbackChatId, formatDashboard(snapshot, 'queue'), dashboardKeyboard('queue'));
       } else if (callback.data === 'offer:confirm') {
         const pending = pendingConfirmations[callbackChatKey];
         if (!pending) {
@@ -1177,12 +1196,13 @@ for (const update of updates || []) {
     } else if (isAuthorizedChat && /^\/estado(?:@\w+)?\b/iu.test(String(text).trim())) {
       const hasPreview = Boolean(pendingConfirmations[chatKey]);
       const hasIncomplete = Boolean(pendingByChat[chatKey]);
-      await reply(settings.token, message.chat.id, [
-        '🟢 Rocky está activo.',
-        hasPreview ? '👀 Tienes una vista previa pendiente de confirmar.' : (hasIncomplete ? '🧩 Tienes una oferta incompleta pendiente.' : '✅ No hay borradores pendientes.'),
-        '📡 Las ofertas nuevas se publican en Telegram y se guardan para la web.',
-        'ℹ️ Ya no recibirás avisos cuando una revisión automática no encuentre ofertas nuevas.',
-      ].join('\n'));
+      const snapshot = loadDashboardSnapshot(ROOT);
+      const draftStatus = hasPreview
+        ? '👀 Tienes una vista previa pendiente de confirmar.'
+        : hasIncomplete ? '🧩 Tienes una oferta incompleta pendiente.' : '✅ No hay borradores pendientes.';
+      await reply(settings.token, message.chat.id,
+        `${formatDashboard(snapshot, 'home')}\n\n${draftStatus}`,
+        dashboardKeyboard('home'));
       handled += 1;
     } else if (isAuthorizedChat && /^\/cancelar(?:@\w+)?\b/iu.test(String(text).trim())) {
       const preview = pendingConfirmations[chatKey];

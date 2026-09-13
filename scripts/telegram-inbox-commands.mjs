@@ -161,7 +161,7 @@ export function controlHelp() {
     '',
     'Para publicar una novedad o aviso sin precio, envía una foto con /post en la primera línea, el título en la segunda y el texto debajo. El enlace es opcional.',
     '',
-    'Comandos útiles: /estado muestra si hay un borrador pendiente y /cancelar borra el borrador actual sin publicar nada.',
+    'Comandos útiles: /estado abre el panel privado con la cola, tiendas, errores y publicaciones del día. /cancelar borra el borrador actual sin publicar nada.',
   ].join('\n');
 }
 
