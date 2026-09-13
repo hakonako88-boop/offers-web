@@ -170,6 +170,15 @@ test('keeps a manually supplied coupon in Telegram and in the website record', (
   assert.match(formatManualWebsiteText(result.offer), /Cupón: AHORRA10/);
 });
 
+test('explains that a coupon price must not be discounted a second time', () => {
+  const caption = formatTelegramDealCard({
+    title: 'Tablet de prueba', store: 'AliExpress', price: '83,00 €', previousPrice: '95,00 €',
+    coupon: 'FSES12', couponDiscount: 12, couponMinimumSpend: 89,
+  });
+  assert.match(caption, /descuenta 12,00\s€ desde 89,00\s€/u);
+  assert.match(caption, /precio mostrado ya incluye el cupón/u);
+});
+
 test('keeps an explicitly labelled coupon from a forwarded offer without inventing one', () => {
   const withCoupon = forwardedOfferMetadata('Auriculares Bluetooth\nPrecio: 19,99 €\nCupón: SONIDO8');
   assert.equal(withCoupon.coupon, 'SONIDO8');

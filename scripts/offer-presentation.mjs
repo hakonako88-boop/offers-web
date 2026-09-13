@@ -265,13 +265,18 @@ export function formatTelegramDealCard({
   discount = 0,
   highlight = '',
   coupon = '',
+  couponDiscount = 0,
+  couponMinimumSpend = 0,
   description = '',
 } = {}) {
   const storeTag = storeHashtag(store);
   const discountLabel = Number(discount) > 0 ? ` · <b>−${Math.round(Number(discount))}%</b>` : '';
   const savingsText = savings ? `Ahorras <b>${escapeHtml(savings)}</b>${discountLabel}` : (discountLabel ? `Descuento${discountLabel}` : 'Precio sujeto a stock');
+  const couponCondition = Number(couponDiscount) > 0 && Number(couponMinimumSpend) > 0
+    ? ` · descuenta ${escapeHtml(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(couponDiscount)))} desde ${escapeHtml(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(couponMinimumSpend)))}`
+    : '';
   const actionLine = coupon
-    ? `🎟️ <b>CUPÓN NECESARIO:</b> <code>${escapeHtml(coupon)}</code>${highlight ? `\n📈 ${escapeHtml(highlight)}` : ''}`
+    ? `🎟️ <b>CUPÓN NECESARIO:</b> <code>${escapeHtml(coupon)}</code>${couponCondition}\n✅ El precio mostrado ya incluye el cupón; aplícalo en la cesta.${highlight ? `\n📈 ${escapeHtml(highlight)}` : ''}`
     : highlight
       ? `🔻 ${escapeHtml(highlight)}`
       : `🔻 ${savingsText}`;

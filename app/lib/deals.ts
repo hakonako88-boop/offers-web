@@ -13,6 +13,8 @@ export type PublishedDeal = {
   price: number;
   oldPrice: number;
   coupon?: string;
+  couponDiscount?: number;
+  couponMinimumSpend?: number;
   imageUrl: string;
   affiliateUrl: string;
   verifiedAt: string;
@@ -30,6 +32,8 @@ type LegacyOffer = {
   price?: string;
   previousPrice?: string;
   coupon?: string;
+  couponDiscount?: number;
+  couponMinimumSpend?: number;
   store?: string;
   category?: string;
   date?: number;
@@ -224,6 +228,8 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
     price,
     oldPrice: previous > price ? previous : price,
     coupon,
+    couponDiscount: Number(offer.couponDiscount) || undefined,
+    couponMinimumSpend: Number(offer.couponMinimumSpend) || undefined,
     imageUrl: offer.image,
     affiliateUrl: offer.url,
     verifiedAt: date.label,

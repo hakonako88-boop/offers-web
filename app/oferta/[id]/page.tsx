@@ -165,7 +165,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
               {deal.oldPrice > deal.price && <p>Antes <s>{money.format(deal.oldPrice)}</s> <b>−{discount}%</b></p>}
               {savings > 0 && <em>Ahorras {money.format(savings)}</em>}
             </div>
-            {deal.coupon && <CouponCopy code={deal.coupon} />}
+            {deal.coupon && <CouponCopy code={deal.coupon} discount={deal.couponDiscount} minimumSpend={deal.couponMinimumSpend} />}
             {deal.active ? <a className="offerCta" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ir a la oferta en {deal.store} <span aria-hidden="true">→</span></a> : <div className="expiredNotice"><b>Oferta finalizada</b><p>Este fue el último precio registrado. La tienda puede haber cambiado el precio o retirado el producto.</p></div>}
             <div className="offerShare"><span>¿Conoces a alguien a quien le interese?</span><div><a href={whatsappShareUrl} target="_blank" rel="noreferrer">Compartir por WhatsApp</a><a href={telegramShareUrl} target="_blank" rel="noreferrer">Enviar por Telegram</a></div></div>
             <p className="offerMeta"><span aria-hidden="true" />{deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt} · Precio sujeto a cambios.</p>
@@ -175,7 +175,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
         </div>
 
         <section className="offerContent" aria-labelledby="analysis-title">
-          <div className="offerIntro"><p className="eyebrow"><span aria-hidden="true" />ANÁLISIS RÁPIDO</p><h2 id="analysis-title">Lo importante de esta oferta</h2><p>{deal.coupon ? `Para esta oferta se indica el cupón ${deal.coupon}. Comprueba que se aplica a tu variante y que el total del carrito coincide con el precio publicado.` : `Antes de comprar en ${deal.store}, compara la variante elegida y el total del carrito, incluidos los gastos de envío.`}</p></div>
+          <div className="offerIntro"><p className="eyebrow"><span aria-hidden="true" />ANÁLISIS RÁPIDO</p><h2 id="analysis-title">Lo importante de esta oferta</h2><p>{deal.coupon ? `Para esta oferta se indica el cupón ${deal.coupon}${deal.couponMinimumSpend ? `, válido desde ${money.format(deal.couponMinimumSpend)}` : ""}. El precio mostrado ya contempla el cupón: aplícalo en la cesta y comprueba que el total coincide antes de pagar.` : `Antes de comprar en ${deal.store}, compara la variante elegida y el total del carrito, incluidos los gastos de envío.`}</p></div>
           <div className="prosCons">
             <section className="pros"><h3><span aria-hidden="true">✓</span> Puntos a favor</h3><ul>{pros.map((item) => <li key={item}>{item}</li>)}</ul></section>
             <section className="cons"><h3><span aria-hidden="true">!</span> A tener en cuenta</h3><ul>{cons.map((item) => <li key={item}>{item}</li>)}</ul></section>

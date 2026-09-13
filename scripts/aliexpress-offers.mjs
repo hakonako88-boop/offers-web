@@ -153,6 +153,8 @@ export function formatAliExpressCaption(offer) {
     savings: offer.previousPrice > offer.price ? euro(offer.previousPrice - offer.price) : '',
     discount: offer.discount,
     coupon: offer.coupon,
+    couponDiscount: offer.couponDiscount,
+    couponMinimumSpend: offer.couponMinimumSpend,
   });
 }
 
@@ -168,6 +170,8 @@ export function formatAliExpressTelegramCaption(offer) {
     discount: offer.discount,
     highlight: popularity,
     coupon: offer.coupon,
+    couponDiscount: offer.couponDiscount,
+    couponMinimumSpend: offer.couponMinimumSpend,
     url: offer.url,
   });
 }

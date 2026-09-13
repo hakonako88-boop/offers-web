@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  couponForPrice,
+  couponOffersFromText,
   couponCodesFromText,
   COMMUNITY_SOURCES,
   communityMatchForTitle,
@@ -31,6 +33,22 @@ test('keeps explicitly labelled AliExpress coupon codes without copying surround
   assert.equal(couponCodesFromText('🎟 Cupón IFPIHKNC PAGA CON PAYPAL LATER'), 'IFPIHKNC');
   assert.equal(couponCodesFromText('Código promocional AHORRA10'), 'AHORRA10');
   assert.equal(couponCodesFromText('Precio 30€ · modelo QK101'), '');
+});
+
+test('does not turn coupon campaign headings into fake codes', () => {
+  const campaign = 'NUEVOS CUPONES DE SEPTIEMBRE A PRECIACOS PARA NINTENDO SWITCH 2. Listado de cupones: FSES02 — 2,00 € dto +18,00 €; FSES06 — 6,00 € dto +45,00 €; FSES12 — 12,00 € dto +89,00 €';
+  assert.equal(couponCodesFromText(campaign), '');
+  assert.deepEqual(couponOffersFromText(campaign), [
+    { code: 'FSES02', discount: 2, minimumSpend: 18 },
+    { code: 'FSES06', discount: 6, minimumSpend: 45 },
+    { code: 'FSES12', discount: 12, minimumSpend: 89 },
+  ]);
+});
+
+test('selects the strongest eligible coupon without discounting the final price twice', () => {
+  const campaign = 'FSES02 — 2 € descuento en compras mínimas de €18 FSES06: €6 descuento en compras mínimas de €45 FSES12 - 12€ dto +89€';
+  assert.deepEqual(couponForPrice(campaign, 39.99, 45), { code: 'FSES06', discount: 6, minimumSpend: 45 });
+  assert.deepEqual(couponForPrice(campaign, 17.99, 17.99), null);
 });
 
 test('parses public RSS entries as discovery signals', () => {

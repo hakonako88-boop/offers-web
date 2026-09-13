@@ -11,7 +11,7 @@ import {
   normalizeAliExpressProduct,
   topicsForAliExpressRun,
 } from './aliexpress-offers.mjs';
-import { discoverCommunitySignals, nextCommunitySignalState } from './community-signals.mjs';
+import { couponForPrice, discoverCommunitySignals, nextCommunitySignalState } from './community-signals.mjs';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { mirrorTelegramMessage } from './telegram-mirror.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
@@ -163,6 +163,7 @@ function linkedAliExpressOffer(metadata, signal) {
   // price and must never become "Antes: 0,00 €" in Telegram or on the web.
   const previousPrice = reportedPreviousPrice > price ? reportedPreviousPrice : 0;
   const discount = previousPrice > price ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
+  const sourceCoupon = couponForPrice(signal.title || '', price, previousPrice);
   const hasProvenDiscount = previousPrice > price && discount >= 30;
   const isExactQueuedOffer = Boolean(signal.queueItemId && price >= 5);
   // AliExpress occasionally serves GitHub a legacy compatibility shell whose
@@ -199,7 +200,9 @@ function linkedAliExpressOffer(metadata, signal) {
     commission: 0,
     score: 1_500 + Number(signal.sourceWeight || 0) + discount,
     matchedTitleTerms: signal.terms?.length || 0,
-    coupon: String(metadata.coupon || signal.coupon || '').trim(),
+    coupon: String(metadata.coupon || sourceCoupon?.code || signal.coupon || '').trim(),
+    couponDiscount: metadata.coupon ? 0 : Number(sourceCoupon?.discount || 0),
+    couponMinimumSpend: metadata.coupon ? 0 : Number(sourceCoupon?.minimumSpend || 0),
     communitySignalId: signal.id,
     communitySource: signal.source,
     communitySourceUrl: signal.sourceUrl,

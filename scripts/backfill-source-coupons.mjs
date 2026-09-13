@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { couponCodesFromText } from './community-signals.mjs';
+import { couponForPrice } from './community-signals.mjs';
 
 const ROOT = process.cwd();
 const OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
@@ -22,12 +22,21 @@ const repairedMessageIds = new Set((repairs.messageIds || []).map(Number).filter
 let updated = 0;
 
 for (const offer of offers) {
-  if (String(offer.store || '') !== 'AliExpress' || String(offer.coupon || '').trim()) continue;
+  if (String(offer.store || '') !== 'AliExpress') continue;
   const source = sourceByUrl.get(String(offer.source_url || ''));
   if (!source) continue;
-  const coupon = couponCodesFromText(source.text || '');
-  if (!coupon) continue;
-  offer.coupon = coupon;
+  const amount = (value) => Number.parseFloat(String(value || '').replace(/[^0-9,.-]/gu, '').replace(',', '.')) || 0;
+  const selected = couponForPrice(source.text || '', amount(offer.price), amount(offer.previousPrice));
+  const current = String(offer.coupon || '').trim();
+  const knownFalseCoupon = /(?:SEPTIEMBRE|PRECIACOS|NINTENDO|SWITCH|LISTADO|NUEVOS)/iu.test(current);
+  if (!selected && !knownFalseCoupon) continue;
+  offer.coupon = selected?.code || '';
+  if (selected?.discount) offer.couponDiscount = selected.discount;
+  if (selected?.minimumSpend) offer.couponMinimumSpend = selected.minimumSpend;
+  if (!selected) {
+    delete offer.couponDiscount;
+    delete offer.couponMinimumSpend;
+  }
   if (Number.isInteger(Number(offer.message_id))) repairedMessageIds.add(Number(offer.message_id));
   updated += 1;
 }

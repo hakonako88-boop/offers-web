@@ -96,13 +96,16 @@ function sourceStore(value = '') {
  * signals without inventing a code or a saving. */
 export function couponCodesFromText(value = '') {
   const text = cleanText(value);
-  const blocked = new Set(['APLICAR', 'CODIGO', 'CÓDIGO', 'CON', 'CUPON', 'CUPÓN', 'DESCUENTO', 'DISPONIBLE', 'ENVIO', 'ENVÍO', 'ESPAÑA', 'LATER', 'PAGA', 'PAYPAL', 'PROMOCIONAL']);
+  const blocked = new Set(['APLICAR', 'CODIGO', 'CÓDIGO', 'CON', 'CUPON', 'CUPÓN', 'CUPONES', 'DESCUENTO', 'DISPONIBLE', 'ENVIO', 'ENVÍO', 'ESPAÑA', 'LATER', 'PAGA', 'PAYPAL', 'PROMOCIONAL', 'SEPTIEMBRE', 'PRECIACOS', 'NINTENDO', 'SWITCH', 'LISTADO', 'NUEVOS']);
   const codes = [];
   // Each code must be immediately attached to an explicit coupon label. This
   // accepts “Cupón: ESFS12”, “Cupón ESFS12” and “Código promocional AHORRA10”
   // without interpreting model numbers, dates or prices as coupon codes.
   for (const match of text.matchAll(/(cup[oó]n(?:es)?|c[oó]digo(?:s)?(?:\s+promocional(?:es)?)?)\s*(?::|：|–|-)?\s*([^\n]{4,100})/giu)) {
     const plural = /(?:cupones|c[oó]digos)/iu.test(match[1]);
+    // A heading such as “NUEVOS CUPONES DE SEPTIEMBRE” is not a code.
+    // Coupon ladders are parsed separately below with their conditions.
+    if (plural && !/^(?::|：|–|-)/u.test(String(match[0]).slice(match[1].length).trim())) continue;
     const candidates = String(match[2] || '').match(/\b[A-Z0-9][A-Z0-9_-]{3,19}\b/gu) || [];
     for (const original of candidates) {
       const code = original.toUpperCase();
@@ -112,6 +115,33 @@ export function couponCodesFromText(value = '') {
     }
   }
   return [...new Set(codes)].slice(0, 4).join(' / ');
+}
+
+/** Parses factual coupon ladders such as “FSES12 — 12 € dto +89 €”. */
+export function couponOffersFromText(value = '') {
+  const text = cleanText(value);
+  const offers = [];
+  const pattern = /\b([A-Z][A-Z0-9_-]{3,19})\b\s*(?::|—|–|-)\s*(?:€\s*)?(\d+(?:[.,]\d{1,2})?)\s*€?\s*(?:de\s+)?(?:dto|descuento)\b[^\d]{0,60}?(?:\+|m[ií]nimas?\s+de|superior(?:es)?\s+a)\s*€?\s*(\d+(?:[.,]\d{1,2})?)\s*€?/giu;
+  for (const match of text.matchAll(pattern)) {
+    const code = String(match[1]).toUpperCase();
+    const discount = Number.parseFloat(String(match[2]).replace(',', '.'));
+    const minimumSpend = Number.parseFloat(String(match[3]).replace(',', '.'));
+    if (!Number.isFinite(discount) || !Number.isFinite(minimumSpend) || discount <= 0 || minimumSpend <= discount) continue;
+    offers.push({ code, discount, minimumSpend });
+  }
+  return [...new Map(offers.map((offer) => [offer.code, offer])).values()];
+}
+
+/** Chooses only a code whose minimum spend is met. The advertised price can
+ * already include that coupon, so this never subtracts the discount twice. */
+export function couponForPrice(value = '', currentPrice = 0, referencePrice = 0) {
+  const priceBeforeCoupon = Math.max(Number(currentPrice) || 0, Number(referencePrice) || 0);
+  const eligible = couponOffersFromText(value)
+    .filter((offer) => priceBeforeCoupon >= offer.minimumSpend)
+    .sort((left, right) => right.discount - left.discount || right.minimumSpend - left.minimumSpend);
+  if (eligible[0]) return eligible[0];
+  const direct = couponCodesFromText(value).split(' / ').filter(Boolean);
+  return direct.length === 1 ? { code: direct[0], discount: 0, minimumSpend: 0 } : null;
 }
 
 /** Returns the strongest recent community signal that describes the same
