@@ -1,22 +1,44 @@
 {
-  "updatedAt": "2026-09-13T07:22:11.261Z",
+  "updatedAt": "2026-09-13T07:42:03.474Z",
   "summary": {
-    "rejected": 410,
-    "published": 215,
+    "published": 214,
+    "rejected": 409,
     "ignored": 19,
-    "needs_review": 341,
+    "needs_review": 342,
     "duplicate": 14,
-    "pending": 1
+    "pending": 2
   },
   "recent": [
+    {
+      "id": "telegram-paramanitas:4750:amazon:0",
+      "source": "telegram-paramanitas",
+      "messageId": 4750,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/paramanitas/4750",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:93236:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93236,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
+      "sourceUrl": "https://t.me/una_ganga/93236",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93235:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 93235,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/93235",
       "resultUrl": ""
     },
@@ -1085,28 +1107,6 @@
       "attempts": 0,
       "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/93184",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93183:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93183,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/93183",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93182:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93182,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/93182",
       "resultUrl": ""
     }
   ]
