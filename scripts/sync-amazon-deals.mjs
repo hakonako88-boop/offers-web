@@ -14,6 +14,7 @@ import { mirrorTelegramMessage } from './telegram-mirror.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
+import { offerQuality } from './offer-quality-score.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'amazon-discovery-state.json');
@@ -278,7 +279,7 @@ if (accessToken) {
 
 const uniqueCandidates = (canPublishNow && publicationPolicy.allowed ? filterDuplicateDeals(Array.from(new Map(
   selectInterestingOffers(candidates).map((offer) => [offer.asin, offer])
-).values()), existingWebOffers) : []);
+).values()), existingWebOffers).filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable) : []);
 
 let sent = 0;
 let attempted = 0;

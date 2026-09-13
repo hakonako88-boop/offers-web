@@ -26,7 +26,7 @@ function dealFacts(offer = {}) {
   };
 }
 
-const LOW_INTEREST = /\b(mochilas?|backpacks?|rucksacks?|llaveros?|pegatinas?|stickers?|fundas? (?:decorativas? )?(?:de )?(?:cojin|almohada)|album(?:es)? de fotos?|huchas?|conos? de (?:trafico|seguridad)|reloj(?:es)? (?:digital(?:es)? )?(?:unisex|militar(?:es)?)|zapatillas?|zapatos?|shoes?|boots?|sneakers?|trainers?|sandalias?|tenis|camisetas?|vaqueros?|jeans|chaquetas?|tarjeteros?|bolsos?|vestidos?|sudaderas?|bisuteria|figuras? decorativas?|adornos?|peluches?)\b/u;
+const LOW_INTEREST = /\b(mochilas?|backpacks?|rucksacks?|llaveros?|pegatinas?|stickers?|fundas? (?:decorativas? )?(?:de )?(?:cojin|almohada)|album(?:es)? de fotos?|huchas?|conos? de (?:trafico|seguridad)|reloj(?:es)? (?:digital(?:es)? )?(?:unisex|militar(?:es)?)|zapatillas?|zapatos?|shoes?|boots?|sneakers?|trainers?|sandalias?|tenis|camisetas?|polos?|bragas?|ropa interior|vaqueros?|jeans|chaquetas?|tarjeteros?|bolsos?|vestidos?|sudaderas?|bisuteria|figuras? decorativas?|adornos?|peluches?)\b/u;
 const LOW_QUALITY_PHRASES = /\b(calzado estilo|moda casual informal|alfombrilla.*(?:anime|naruto|pikachu|dragon ball)|producto aleatorio|color aleatorio)\b/u;
 const TRUSTED_BRAND = /\b(amazon|apple|samsung|xiaomi|poco|redmi|google|motorola|sony|lg|philips|bosch|rowenta|cecotec|dyson|roborock|dreame|tapo|tp-link|logitech|lenovo|asus|acer|hp|dell|msi|intel|amd|nintendo|playstation|xbox|lego|intex|gillette|old spice|finish|fairy|wipp|puleva|central lechera asturiana|el almendro|cafe borbone|lotus)\b/u;
 

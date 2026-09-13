@@ -1,4 +1,5 @@
 import { selectInterestingOffers } from './editorial-interest.mjs';
+import { offerQuality } from './offer-quality-score.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {
@@ -472,7 +473,8 @@ writeJson(SOURCE_DIAGNOSTICS_FILE, sourceDiagnostics);
 function publishableCandidates(sourceCandidates) {
   return filterDuplicateDeals(Array.from(new Map(
     selectInterestingOffers(sourceCandidates).map((offer) => [offer.id, offer]),
-  ).values()), existingWebOffers);
+  ).values()), existingWebOffers)
+    .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable);
 }
 
 let uniqueCandidates = canPublishNow && publicationPolicy.allowed ? publishableCandidates(candidates) : [];

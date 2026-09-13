@@ -1,4 +1,5 @@
 import { selectInterestingOffers } from './editorial-interest.mjs';
+import { offerQuality } from './offer-quality-score.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { Readable } from 'node:stream';
@@ -489,7 +490,8 @@ const mergedCandidates = Array.from(new Map(
   } : offer;
 });
 
-const eligibleCandidates = selectInterestingOffers(filterDuplicateDeals(mergedCandidates, existingWebOffers));
+const eligibleCandidates = selectInterestingOffers(filterDuplicateDeals(mergedCandidates, existingWebOffers))
+  .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable);
 const candidates = canPublishToday && publicationPolicy.allowed ? eligibleCandidates : [];
 
 let sent = 0;

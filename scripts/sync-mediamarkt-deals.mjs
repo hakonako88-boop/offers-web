@@ -7,6 +7,7 @@ import { mirrorTelegramMessage } from './telegram-mirror.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
+import { offerQuality } from './offer-quality-score.mjs';
 import {
   TRADEDOUBLER_MEDIAMARKT,
   TRADEDOUBLER_QUALITY_POLICY_VERSION,
@@ -149,6 +150,7 @@ const discovered = feedVersion === state.feedVersion ? [] : extractMediaMarktCan
 const candidates = selectInterestingOffers([...queued, ...discovered]
   .filter((offer, index, list) => list.findIndex((entry) => entry.id === offer.id) === index)
   .sort((left, right) => right.score - left.score))
+  .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable)
   .slice(0, MAX_CANDIDATES);
 const publicationPolicy = publicationAllowance({ store: 'MediaMarkt', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 
