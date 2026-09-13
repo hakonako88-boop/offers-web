@@ -34,6 +34,8 @@ test('creates a compact Telegram summary with affiliate destinations and a web p
   assert.match(summary.telegram, /TOP 2 CHOLLOS DEL DÍA/u);
   assert.match(summary.telegram, /https:\/\/example\.com\/one/u);
   assert.match(summary.telegram, /Cupón: AHORRA3/u);
+  assert.match(summary.telegram, /MEJOR CHOLLO/u);
+  assert.match(summary.telegram, /Ahorras 17,00/u);
   assert.equal(summary.album.length, 2);
   assert.equal(summary.album[0].media, 'https://chollosaldia.com/tg/one.jpg');
   assert.match(summary.album[0].caption, /TOP 2 CHOLLOS DEL DÍA/u);
@@ -45,6 +47,7 @@ test('creates a compact Telegram summary with affiliate destinations and a web p
   assert.deepEqual(summary.keyboard.inline_keyboard.map((row) => row[0].url), [
     'https://example.com/one', 'https://example.com/two',
   ]);
+  assert.match(summary.keyboard.inline_keyboard[0][0].text, /12,99 € · VER EN ALIEXPRESS/u);
 });
 
 test('creates one professional ranking cover instead of relying only on an album', async () => {
