@@ -12,12 +12,15 @@ const PUBLICATION_FILES = [
   path.join(ROOT, 'data', 'miravia-publications.json'),
   path.join(ROOT, 'data', 'amazon-publications.json'),
 ];
-const MAX_ATTEMPTS = 3;
+const DEFAULT_MAX_ATTEMPTS = 3;
+const STORE_MAX_ATTEMPTS = {
+  AliExpress: 6,
+  Miravia: 4,
+};
 const MIRAVIA_RETRY_POLICY = 'exact-official-page-v1';
-// v13 persists the retry marker through the source monitor, so an old reject
-// is reopened once for the durable rate-aware resolver and cannot be lost on
-// the monitor's next state update.
-const ALIEXPRESS_RETRY_POLICY = 'exact-id-query-and-diagnostics-v13-persistent-queue';
+// The policy version persists through the source monitor. Bumping it reopens
+// recent rejects exactly once when the resolver gains a safer retry strategy.
+const ALIEXPRESS_RETRY_POLICY = 'exact-id-query-and-diagnostics-v14-resilient-retry';
 
 function readJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return fallback; }
@@ -50,6 +53,20 @@ function hasTemporaryAliExpressApiLimit(item) {
     diagnostic.message,
   ].filter(Boolean).join(' ');
   return /(?:api access frequency exceeds|rate[ -]?limit|too many requests|throttl)/iu.test(details);
+}
+
+function hasTemporaryExtractionFailure(item) {
+  const diagnostic = aliExpressDiagnostics.items?.[item.id] || {};
+  const details = [
+    ...(Array.isArray(diagnostic.issues) ? diagnostic.issues : []),
+    diagnostic.error,
+    diagnostic.message,
+  ].filter(Boolean).join(' ');
+  return /(?:timeout|timed out|temporar|network|fetch failed|socket|connection|econn|gateway|service unavailable|bad gateway|cloudflare|blocked|captcha)/iu.test(details);
+}
+
+function maxAttemptsFor(item) {
+  return STORE_MAX_ATTEMPTS[item.store] || DEFAULT_MAX_ATTEMPTS;
 }
 
 // The former Miravia reader could not expand tidd.ly and rejected otherwise
@@ -135,18 +152,28 @@ for (const item of queue.items || []) {
     continue;
   }
 
+  if (item.store === 'AliExpress' && hasTemporaryExtractionFailure(item)) {
+    // A network failure, CAPTCHA or temporary shop block says nothing about
+    // the quality of the offer. Keep it in the queue without exhausting the
+    // validation budget; the following scheduled run will try again.
+    item.reason = 'AliExpress bloqueó temporalmente la ficha; se reintentará sin descartar la oferta';
+    item.updatedAt = now;
+    continue;
+  }
+
   item.attempts = Number(item.attempts || 0) + 1;
   item.updatedAt = now;
-  if (item.attempts >= MAX_ATTEMPTS) {
+  const maxAttempts = maxAttemptsFor(item);
+  if (item.attempts >= maxAttempts) {
     item.status = 'rejected';
     const diagnostic = aliExpressDiagnostics.items?.[item.id];
     const missing = Array.isArray(diagnostic?.missing) ? diagnostic.missing.filter(Boolean).join(', ') : '';
     const issue = Array.isArray(diagnostic?.issues) ? String(diagnostic.issues[0] || '') : '';
     item.reason = item.store === 'AliExpress' && (missing || issue)
       ? `AliExpress no permitió completar ${missing || 'la conversión afiliada'}${issue ? `: ${issue}` : ''}`.slice(0, 300)
-      : `No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de ${MAX_ATTEMPTS} intentos`;
+      : `No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de ${maxAttempts} intentos`;
   } else {
-    item.reason = `Pendiente de reintento (${item.attempts}/${MAX_ATTEMPTS})`;
+    item.reason = `Pendiente de reintento (${item.attempts}/${maxAttempts})`;
   }
 }
 

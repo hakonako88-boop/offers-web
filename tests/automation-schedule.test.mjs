@@ -72,6 +72,10 @@ test('serializes every Pages deployment and persists reconciled source queue sta
   assert.match(workflow, /node scripts\/check-aliexpress-api-health\.mjs/u);
   assert.match(queueReconciler, /attemptedAliExpressIds\.has\(item\.id\)/u);
   assert.match(queueReconciler, /Pendiente de turno para verificar el producto exacto/u);
+  assert.match(queueReconciler, /AliExpress: 6/u);
+  assert.match(queueReconciler, /Miravia: 4/u);
+  assert.match(queueReconciler, /hasTemporaryExtractionFailure\(item\)/u);
+  assert.match(queueReconciler, /bloqueó temporalmente la ficha/u);
 });
 
 test('publishes validated offers in independently isolated retailer batches', () => {
