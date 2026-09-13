@@ -2,6 +2,10 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import {
+  ALIEXPRESS_RETRY_POLICY,
+  retryableAliExpressQueueCount,
+} from './source-retry-policy.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCES_PATH = path.join(ROOT, 'data', 'telegram-source-channels.json');
@@ -9,16 +13,8 @@ const STATE_PATH = path.join(ROOT, 'data', 'telegram-channel-checkpoints.json');
 const QUEUE_PATH = path.join(ROOT, 'data', 'telegram-source-queue.json');
 const MAX_HISTORY_PAGES = 8;
 const MAX_QUEUE_ITEMS = 1_000;
-// v13 keeps the rate-aware retry state in the queue that is written by the
-// channel monitor itself.  Previously a monitor pass could overwrite the
-// retry marker saved by the publisher, making the same short link look like a
-// fresh failed item on the following pass.
-const ALIEXPRESS_RETRY_POLICY = 'exact-id-query-and-diagnostics-v13-persistent-queue';
-
-export function retryableQueueCount(items = []) {
-  return items.filter((item) => item.store === 'AliExpress'
-    && item.status === 'rejected'
-    && item.retryPolicyVersion !== ALIEXPRESS_RETRY_POLICY).length;
+export function retryableQueueCount(items = [], now = new Date()) {
+  return retryableAliExpressQueueCount(items, now);
 }
 
 export function publisherDispatchDecision({ changedChannels = [], pendingCount = 0, retryableCount = 0, now = new Date() } = {}) {
@@ -279,7 +275,7 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
   }
   if (queueChanged) await fs.writeFile(QUEUE_PATH, `${JSON.stringify(persistedQueue, null, 2)}\n`, 'utf8');
   const pendingCount = persistedQueue.items.filter((item) => item.status === 'pending').length;
-  const retryableCount = retryableQueueCount(persistedQueue.items);
+  const retryableCount = retryableQueueCount(persistedQueue.items, now);
   const dispatchDecision = publisherDispatchDecision({ changedChannels, pendingCount, retryableCount, now });
   // A repaired resolver must get a chance to reopen and process older failed
   // links even when the source channel has not posted another message.

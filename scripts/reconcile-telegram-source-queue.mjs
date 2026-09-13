@@ -1,5 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {
+  ALIEXPRESS_RETRY_POLICY,
+  SOURCE_RETRY_MAX_AGE_MS,
+} from './source-retry-policy.mjs';
 
 const ROOT = process.cwd();
 const QUEUE_FILE = path.join(ROOT, 'data', 'telegram-source-queue.json');
@@ -20,7 +24,6 @@ const STORE_MAX_ATTEMPTS = {
 const MIRAVIA_RETRY_POLICY = 'exact-official-page-v1';
 // The policy version persists through the source monitor. Bumping it reopens
 // recent rejects exactly once when the resolver gains a safer retry strategy.
-const ALIEXPRESS_RETRY_POLICY = 'exact-id-query-and-diagnostics-v14-resilient-retry';
 
 function readJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return fallback; }
@@ -72,7 +75,7 @@ function maxAttemptsFor(item) {
 // The former Miravia reader could not expand tidd.ly and rejected otherwise
 // valid posts. Reopen recent affected items exactly once after installing the
 // official-page resolver; every offer still has to pass the normal validation.
-const retryCutoff = Date.now() - 48 * 60 * 60 * 1000;
+const retryCutoff = Date.now() - SOURCE_RETRY_MAX_AGE_MS;
 const reopenedIds = new Set();
 for (const item of queue.items || []) {
   const publishedAt = Date.parse(item.publishedAt || '');

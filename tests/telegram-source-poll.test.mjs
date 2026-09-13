@@ -58,15 +58,17 @@ test('initializes a channel without publishing its existing backlog', () => {
 });
 
 test('wakes the publisher when a repaired AliExpress resolver can retry old failures', () => {
+  const now = new Date('2026-08-30T10:00:00+02:00');
   assert.equal(retryableQueueCount([
-    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'short-link-curl-fallback-v6' },
-    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'public-http-snapshot-v7' },
-    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'source-corroboration-v8' },
-    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'patient-reader-v9' },
-    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'source-photo-corroboration-v10' },
-    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'exact-id-query-and-diagnostics-v13-persistent-queue' },
-    { store: 'Amazon', status: 'rejected', retryPolicyVersion: 'old' },
-  ]), 5);
+    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'short-link-curl-fallback-v6', publishedAt: '2026-08-30T08:00:00Z' },
+    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'public-http-snapshot-v7', publishedAt: '2026-08-30T08:01:00Z' },
+    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'source-corroboration-v8', publishedAt: '2026-08-30T08:02:00Z' },
+    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'patient-reader-v9', publishedAt: '2026-08-30T08:03:00Z' },
+    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'source-photo-corroboration-v10', publishedAt: '2026-08-30T08:04:00Z' },
+    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'exact-id-query-and-diagnostics-v14-resilient-retry', publishedAt: '2026-08-30T08:05:00Z' },
+    { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'old', publishedAt: '2026-08-20T08:00:00Z' },
+    { store: 'Amazon', status: 'rejected', retryPolicyVersion: 'old', publishedAt: '2026-08-30T08:06:00Z' },
+  ], now), 5);
 });
 
 test('extracts every supported product link as an individual queue candidate', () => {
