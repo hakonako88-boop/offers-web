@@ -158,6 +158,18 @@ test('keeps factual prices from a queued Telegram offer without inventing a prev
   assert.equal(signal.previousPrice, 0);
 });
 
+test('keeps a Telegram price labelled Ahora so an AliExpress coupon is not applied twice', () => {
+  const source = { id: 'telegram-test', kind: 'telegram-public', username: 'testchannel', url: 'https://t.me/s/testchannel', merchant: 'AliExpress', weight: 25 };
+  const html = `<div class="tgme_widget_message_wrap" data-post="testchannel/10">
+    <div class="tgme_widget_message_text">Consola PS5 Slim Chasis E Antes: 838,07€ Ahora: 549,00€ (-34%) Cupón: FSES60 <a href="https://s.click.aliexpress.com/e/_test">Ver oferta</a></div>
+    <time datetime="2026-09-13T22:04:24+00:00"></time>
+  </div>`;
+  const [signal] = parseTelegramPublicSignals(source, html, 1);
+  assert.equal(signal.price, 549);
+  assert.equal(signal.previousPrice, 838.07);
+  assert.equal(signal.coupon, 'FSES60');
+});
+
 test('skips Amazon community signals until an official attributed lookup is available', async () => {
   const now = Date.parse('2026-08-11T12:00:00.000Z');
   const response = `<?xml version="1.0"?><rss><channel><item><title>Oferta Amazon! Cafetera 900W a 29€</title><link>https://source.example/cafetera</link><pubDate>Tue, 11 Aug 2026 11:20:05 +0000</pubDate></item></channel></rss>`;
