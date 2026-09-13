@@ -45,9 +45,10 @@ test('does not turn coupon campaign headings into fake codes', () => {
   ]);
 });
 
-test('selects the strongest eligible coupon without discounting the final price twice', () => {
+test('selects the strongest eligible coupon from the current basket subtotal only', () => {
   const campaign = 'FSES02 — 2 € descuento en compras mínimas de €18 FSES06: €6 descuento en compras mínimas de €45 FSES12 - 12€ dto +89€';
-  assert.deepEqual(couponForPrice(campaign, 39.99, 45), { code: 'FSES06', discount: 6, minimumSpend: 45 });
+  assert.deepEqual(couponForPrice(campaign, 45), { code: 'FSES06', discount: 6, minimumSpend: 45 });
+  assert.deepEqual(couponForPrice(campaign, 44.99, 95), { code: 'FSES02', discount: 2, minimumSpend: 18 });
   assert.deepEqual(couponForPrice(campaign, 17.99, 17.99), null);
 });
 

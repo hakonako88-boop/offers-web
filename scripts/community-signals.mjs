@@ -134,8 +134,11 @@ export function couponOffersFromText(value = '') {
 
 /** Chooses only a code whose minimum spend is met. The advertised price can
  * already include that coupon, so this never subtracts the discount twice. */
-export function couponForPrice(value = '', currentPrice = 0, referencePrice = 0) {
-  const priceBeforeCoupon = Math.max(Number(currentPrice) || 0, Number(referencePrice) || 0);
+export function couponForPrice(value = '', currentPrice = 0) {
+  // Coupon minimums apply to the current basket subtotal, never to an old
+  // reference/PVP. Using the previous price could select a coupon that fails
+  // at checkout after the product itself has been reduced.
+  const priceBeforeCoupon = Number(currentPrice) || 0;
   const eligible = couponOffersFromText(value)
     .filter((offer) => priceBeforeCoupon >= offer.minimumSpend)
     .sort((left, right) => right.discount - left.discount || right.minimumSpend - left.minimumSpend);

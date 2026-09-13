@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { couponForPrice } from './community-signals.mjs';
+import { formatWebsiteDealText } from './offer-presentation.mjs';
 
 const ROOT = process.cwd();
 const OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
@@ -26,13 +27,33 @@ for (const offer of offers) {
   const source = sourceByUrl.get(String(offer.source_url || ''));
   if (!source) continue;
   const amount = (value) => Number.parseFloat(String(value || '').replace(/[^0-9,.-]/gu, '').replace(',', '.')) || 0;
-  const selected = couponForPrice(source.text || '', amount(offer.price), amount(offer.previousPrice));
+  const currentPrice = amount(offer.price);
+  const selected = couponForPrice(source.text || '', currentPrice);
   const current = String(offer.coupon || '').trim();
   const knownFalseCoupon = /(?:SEPTIEMBRE|PRECIACOS|NINTENDO|SWITCH|LISTADO|NUEVOS)/iu.test(current);
   if (!selected && !knownFalseCoupon) continue;
   offer.coupon = selected?.code || '';
   if (selected?.discount) offer.couponDiscount = selected.discount;
   if (selected?.minimumSpend) offer.couponMinimumSpend = selected.minimumSpend;
+  const isCouponCampaign = /listado\s+de\s+cupones/iu.test(String(source.text || ''))
+    && !/(?:🔥|💶)\s*precio\s*:/iu.test(String(source.text || ''));
+  if (selected?.discount && isCouponCampaign && !offer.couponApplied && currentPrice >= selected.minimumSpend) {
+    const finalPrice = Math.max(0.01, currentPrice - selected.discount);
+    const previousPrice = Math.max(amount(offer.previousPrice), currentPrice);
+    const euro = (value) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(value);
+    offer.price = euro(finalPrice);
+    offer.previousPrice = euro(previousPrice);
+    offer.couponApplied = true;
+    offer.text = formatWebsiteDealText({
+      title: offer.title,
+      store: offer.store,
+      price: offer.price,
+      previousPrice: offer.previousPrice,
+      savings: euro(previousPrice - finalPrice),
+      discount: Math.round(((previousPrice - finalPrice) / previousPrice) * 100),
+      coupon: offer.coupon,
+    });
+  }
   if (!selected) {
     delete offer.couponDiscount;
     delete offer.couponMinimumSpend;

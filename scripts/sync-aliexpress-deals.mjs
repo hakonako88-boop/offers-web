@@ -157,13 +157,21 @@ function linkedAliExpressOffer(metadata, signal) {
   // and destination still must come from the official product resolution.
   const queuedPrice = signal.queueItemId ? Number(signal.price) || 0 : 0;
   const queuedPreviousPrice = signal.queueItemId ? Number(signal.previousPrice) || 0 : 0;
-  const price = queuedPrice || Number(metadata.price) || 0;
+  const cataloguePrice = queuedPrice || Number(metadata.price) || 0;
   const reportedPreviousPrice = queuedPreviousPrice || Number(metadata.previousPrice) || 0;
+  const sourceCoupon = couponForPrice(signal.title || '', cataloguePrice);
+  // A normal source post labels its final “Precio” and must never be reduced
+  // again. A coupon-campaign post has no product price: in that case the API
+  // price is the basket subtotal and the eligible ladder discount is applied
+  // exactly once to calculate the advertised final price.
+  const couponAppliedByUs = !queuedPrice && Number(sourceCoupon?.discount) > 0;
+  const price = couponAppliedByUs
+    ? Math.max(0.01, cataloguePrice - Number(sourceCoupon.discount))
+    : cataloguePrice;
   // A missing PVP sometimes arrives as numeric zero. It is not a real old
   // price and must never become "Antes: 0,00 €" in Telegram or on the web.
   const previousPrice = reportedPreviousPrice > price ? reportedPreviousPrice : 0;
   const discount = previousPrice > price ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
-  const sourceCoupon = couponForPrice(signal.title || '', price, previousPrice);
   const hasProvenDiscount = previousPrice > price && discount >= 30;
   const isExactQueuedOffer = Boolean(signal.queueItemId && price >= 5);
   // AliExpress occasionally serves GitHub a legacy compatibility shell whose
@@ -203,6 +211,7 @@ function linkedAliExpressOffer(metadata, signal) {
     coupon: String(metadata.coupon || sourceCoupon?.code || signal.coupon || '').trim(),
     couponDiscount: metadata.coupon ? 0 : Number(sourceCoupon?.discount || 0),
     couponMinimumSpend: metadata.coupon ? 0 : Number(sourceCoupon?.minimumSpend || 0),
+    couponApplied: couponAppliedByUs,
     communitySignalId: signal.id,
     communitySource: signal.source,
     communitySourceUrl: signal.sourceUrl,
