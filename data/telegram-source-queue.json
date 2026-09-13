@@ -19740,14 +19740,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/LZ9tmBrg_SUF7JnDn0baCh9fyI86uKy-RJVMoVdJ-8zJXIGUZbCEWWucdmIJWqr4In6frufwrVqtoKLEHt9k4Vhnf7mIs2ZyldzaX_kMPKa9rzJyPNp6U4wuZnPCmKLOOvqK_OXvmhNqmRgnRq43dvGnJkbVijj-f6fCKeYyS36nw1OAdEKQc6lGgaDYiJqzYvo4dB8nvilZABM7odwNdDt6-tVqcIdjDV9G1yngN6YpT_Id-eCdW1BJQfsqqTrrJzR0hig1NvuJaQB51nralmzdhIKbVDktuiIhB0NdSd0qiEgq8prn-eblZ7qnrqiVroUVcdgJCuDOAFx0zBJIRg.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3CRDhtj",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-13T11:41:03.888Z",
-      "updatedAt": "2026-09-13T11:42:54.993Z"
+      "updatedAt": "2026-09-13T11:52:59.906Z"
     },
     {
       "id": "telegram-una-ganga:93250:amazon:0",
@@ -19779,14 +19779,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/yv7mf",
-      "status": "pending",
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 1,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-13T11:41:04.640Z",
-      "updatedAt": "2026-09-13T11:42:54.993Z"
+      "updatedAt": "2026-09-13T11:52:59.906Z"
     },
     {
       "id": "telegram-ofertos:42115:aliexpress:0",
@@ -19800,13 +19800,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3gSFNUv",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-13T11:51:04.967Z",
-      "updatedAt": "2026-09-13T11:51:04.967Z"
+      "updatedAt": "2026-09-13T11:52:59.906Z"
     }
   ]
 }

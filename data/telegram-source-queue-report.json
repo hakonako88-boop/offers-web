@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-13T11:42:54.993Z",
+  "updatedAt": "2026-09-13T11:52:59.906Z",
   "summary": {
-    "rejected": 393,
+    "rejected": 394,
     "ignored": 17,
     "published": 204,
-    "needs_review": 367,
+    "needs_review": 368,
     "duplicate": 16,
-    "pending": 3
+    "pending": 1
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:42115:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 42115,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/42115",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7275:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7275,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7275",
       "resultUrl": ""
     },
@@ -25,9 +36,9 @@
       "source": "telegram-una-ganga",
       "messageId": 93250,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/93250",
       "resultUrl": ""
     },
@@ -36,9 +47,9 @@
       "source": "telegram-ofertos",
       "messageId": 42114,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/42114",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/93207",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-tiesometro:7270:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7270,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
-      "sourceUrl": "https://t.me/tiesometro/7270",
       "resultUrl": ""
     }
   ]
