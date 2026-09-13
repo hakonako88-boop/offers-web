@@ -19704,13 +19704,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/ssRJ0Xee3jq2JueMWp9ELI0FK_7ynV9fteJ3HdRy1hRoxW5bEeVjjs0dKc1Nk02C2QELpobHGrgJpqL7bVfFtT7cxPvdfCW0UIuiIKWIboxy9nGpwdnh-9WTsarx3qGupbGGmLQlbDJ3-O9cc21ZuXxoEZK7kgXi0f2axi2n0D0-fWmaErNp9ZvvDRnvPpVdeu_wZcH3OHt4Onry_mWFabQNi2pTf_G_0dP40Yntpuj8CWnCfsjN95mHmgqu4jsYupdYGIKXqDZls3s5vdlGS1elALFY1BYgDZKwg_HwYRoQ05k0iLE3cocjwiUW9jn_Ha9lKesz5LDrbJhyScaxfw.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4h50IbZ",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-13T10:40:59.973Z",
-      "updatedAt": "2026-09-13T11:02:34.035Z",
+      "updatedAt": "2026-09-13T11:11:35.252Z",
       "retryPolicyVersion": "exact-official-page-v1"
     },
     {
@@ -19784,13 +19784,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/isQLf5nmUQhUKHgw4M3R9-z2RnTYQmmI0atw6Y68HtJ6U7JTJH35xOyDhj4HgP6j0NU_NK57pilQh6YOqGVON-8qzaSKDVtQ_KFOm0zdaHaq73co-KJ5tNu6covLr-6WLAlwsQw_bW84CNq6lagB10mGlS6jyzrX1str8nsMpldQpUT_mrKLkA6vlB87NMgGp3yBL291spq7U1WrOqir4s_CTcCAGTK4S3eDvSMIuMiGDqM_EQzKENHGIVsapDk3kZEFEBW4vtqCE483gyBagvEtCDWDVEyDHMkRlyLqJ1Vav7Tvg2KQqQ6z6QkXJzCtHdZb61pWJjGK0z6EqXaogg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B09QQT41TP?linkCode=ogi&amp;th=1&amp;psc=1&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-13T11:11:03.355Z",
-      "updatedAt": "2026-09-13T11:11:03.355Z"
+      "updatedAt": "2026-09-13T11:12:58.263Z",
+      "telegramMessageId": 6850,
+      "resultUrl": "https://www.amazon.es/dp/B09QQT41TP?tag=chollos00a-21"
     },
     {
       "id": "telegram-una-ganga:93246:aliexpress:0",
@@ -19804,13 +19806,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3Vvg4p3",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/3)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v13-persistent-queue",
       "createdAt": "2026-09-13T11:11:03.881Z",
-      "updatedAt": "2026-09-13T11:11:03.881Z"
+      "updatedAt": "2026-09-13T11:12:55.090Z"
     }
   ]
 }
