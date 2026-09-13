@@ -365,6 +365,23 @@ async function reply(token, chatId, text, replyMarkup, messageThreadId) {
   });
 }
 
+async function replaceDashboard(settings, chatId, messageId, text, replyMarkup) {
+  if (!chatId || !messageId) return reply(settings.token, chatId, text, replyMarkup);
+  try {
+    return await telegram(settings.token, 'editMessageText', {
+      chat_id: chatId,
+      message_id: messageId,
+      text,
+      disable_web_page_preview: true,
+      reply_markup: replyMarkup,
+    });
+  } catch (error) {
+    // Two quick refreshes can legitimately produce identical content.
+    if (/message is not modified/iu.test(String(error?.message || ''))) return null;
+    throw error;
+  }
+}
+
 function tikTokDraftDescription(offer) {
   return [
     offer.description || '',
@@ -943,19 +960,22 @@ for (const update of updates || []) {
       }
       if (!callbackChatId || !isAuthorizedCallback) {
         if (callbackChatId) await reply(settings.token, callbackChatId, '⛔ Este chat no está autorizado.');
-      } else if (/^dashboard:(?:home|queue|stores|today|errors)$/u.test(String(callback.data || ''))) {
-        const section = String(callback.data).split(':')[1];
+      } else if (/^dashboard:(?:home|refresh|queue|stores|today|errors)$/u.test(String(callback.data || ''))) {
+        const requested = String(callback.data).split(':')[1];
+        const section = requested === 'refresh' ? 'home' : requested;
         const snapshot = loadDashboardSnapshot(ROOT);
-        await reply(settings.token, callbackChatId, formatDashboard(snapshot, section), dashboardKeyboard(section));
+        await replaceDashboard(settings, callbackChatId, callback.message?.message_id,
+          formatDashboard(snapshot, section), dashboardKeyboard(snapshot, section));
       } else if (callback.data === 'dashboard:retry') {
         const queue = readJson(TELEGRAM_SOURCE_QUEUE_FILE, { version: 1, items: [] });
         const released = releaseRecentPendingOffers(queue);
         if (released) writeJson(TELEGRAM_SOURCE_QUEUE_FILE, queue);
         const snapshot = loadDashboardSnapshot(ROOT);
-        await reply(settings.token, callbackChatId, released
-          ? `🔄 He preparado ${released} ofertas recientes para una nueva comprobación. El ciclo automático las revisará en un máximo aproximado de 10 minutos; seguirá exigiendo precio, foto y afiliación válidos.`
-          : '✅ No hay ofertas recientes esperando que puedan adelantarse ahora mismo.', dashboardKeyboard('home'));
-        if (released) await reply(settings.token, callbackChatId, formatDashboard(snapshot, 'queue'), dashboardKeyboard('queue'));
+        const notice = released
+          ? `✅ ${released} ofertas preparadas para revisar en el próximo ciclo.\n\n`
+          : '✅ No hay ofertas recientes que puedan adelantarse ahora.\n\n';
+        await replaceDashboard(settings, callbackChatId, callback.message?.message_id,
+          `${notice}${formatDashboard(snapshot, 'queue')}`, dashboardKeyboard(snapshot, 'queue'));
       } else if (callback.data === 'offer:confirm') {
         const pending = pendingConfirmations[callbackChatKey];
         if (!pending) {
@@ -1202,7 +1222,7 @@ for (const update of updates || []) {
         : hasIncomplete ? '🧩 Tienes una oferta incompleta pendiente.' : '✅ No hay borradores pendientes.';
       await reply(settings.token, message.chat.id,
         `${formatDashboard(snapshot, 'home')}\n\n${draftStatus}`,
-        dashboardKeyboard('home'));
+        dashboardKeyboard(snapshot, 'home'));
       handled += 1;
     } else if (isAuthorizedChat && /^\/cancelar(?:@\w+)?\b/iu.test(String(text).trim())) {
       const preview = pendingConfirmations[chatKey];

@@ -81,12 +81,29 @@ function relativeCheck(value, now = new Date()) {
   return minutes < 1 ? 'ahora mismo' : minutes === 1 ? 'hace 1 minuto' : `hace ${minutes} minutos`;
 }
 
-export function dashboardKeyboard(section = 'home') {
-  if (section !== 'home') return { inline_keyboard: [[{ text: '↩️ PANEL PRINCIPAL', callback_data: 'dashboard:home' }]] };
+export function dashboardKeyboard(snapshot = {}, section = 'home') {
+  if (section !== 'home') return { inline_keyboard: [
+    [
+      { text: '↩️ INICIO', callback_data: 'dashboard:home' },
+      { text: '🔄 ACTUALIZAR', callback_data: `dashboard:${section}` },
+    ],
+    ...(section === 'queue' && Number(snapshot.pending || 0) > 0
+      ? [[{ text: '⚡ REVISAR PENDIENTES', callback_data: 'dashboard:retry' }]]
+      : []),
+  ] };
   return { inline_keyboard: [
-    [{ text: '⏳ COLA', callback_data: 'dashboard:queue' }, { text: '🏪 TIENDAS', callback_data: 'dashboard:stores' }],
-    [{ text: '📢 PUBLICADAS HOY', callback_data: 'dashboard:today' }, { text: '⚠️ ERRORES', callback_data: 'dashboard:errors' }],
-    [{ text: '🔄 REINTENTAR PENDIENTES', callback_data: 'dashboard:retry' }],
+    [
+      { text: `📥 COLA · ${Number(snapshot.pending || 0)}`, callback_data: 'dashboard:queue' },
+      { text: `📊 HOY · ${Number(snapshot.publishedToday || 0)}`, callback_data: 'dashboard:today' },
+    ],
+    [
+      { text: '🏪 TIENDAS', callback_data: 'dashboard:stores' },
+      { text: `⚠️ INCIDENCIAS · ${Number(snapshot.rejectedToday || 0)}`, callback_data: 'dashboard:errors' },
+    ],
+    [{ text: '🔄 ACTUALIZAR PANEL', callback_data: 'dashboard:refresh' }],
+    ...(Number(snapshot.pending || 0) > 0
+      ? [[{ text: '⚡ REVISAR PENDIENTES', callback_data: 'dashboard:retry' }]]
+      : []),
   ] };
 }
 
