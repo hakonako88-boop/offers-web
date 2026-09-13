@@ -17,6 +17,7 @@ function trimAtWord(value: string, maximum = 82) {
 export function offerDisplayTitle(value: string) {
   const original = compact(value)
     .replace(/^(?:🔥|✨|💥|⭐️?|⚡|🛍️|\s)+/gu, "")
+    .replace(/^(?:¡?(?:chollazo|gran\s+rebaja|superoferta|ofertita|oferta\s+seleccionada|oferta)(?:\s+del?\s+\d+\s*%)?!?|oferta\s+en\s+[\p{L}\p{N} .&'-]+)\s*[:·|—-]*\s*/iu, "")
     .replace(/\s*\|\s*(?:Amazon|AliExpress|Miravia)\s*$/iu, "")
     .replace(/^Oficial\s*\|\s*/iu, "");
   const text = normalized(original);
@@ -53,9 +54,7 @@ export function editorialCardTitle({ title, store, price, discount, coupon = "" 
 }) {
   const product = offerDisplayTitle(title);
   const amount = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(price);
-  if (coupon) return `¡Precio con cupón! ${product} por ${amount}`;
-  if (discount >= 50) return `¡Chollazo del ${Math.round(discount)} %! ${product} por ${amount}`;
-  if (discount >= 30) return `¡Gran rebaja del ${Math.round(discount)} %! ${product} por ${amount}`;
-  if (price > 0 && price < 15) return `¡Por menos de 15 €! ${product} a ${amount}`;
-  return `Oferta en ${store}: ${product} por ${amount}`;
+  if (coupon) return `${product} por ${amount} con cupón en ${store}`;
+  if (discount >= 15) return `${product} por ${amount} en ${store} · −${Math.round(discount)} %`;
+  return `${product} por ${amount} en ${store}`;
 }

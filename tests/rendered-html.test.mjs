@@ -72,6 +72,15 @@ test("publishes a feed with only the reviewed active offers", async () => {
   assert.doesNotMatch(xml, /Relleno de coj[ií]n|Mantel impermeable|Malla Ocultaci[oó]n/i);
 });
 
+test("keeps thin daily recaps out of the search sitemap", async () => {
+  const response = await render("/sitemap.xml");
+  assert.equal(response.status, 200);
+  const xml = await response.text();
+  assert.doesNotMatch(xml, /\/publicacion\/resumen-diario-/);
+  assert.doesNotMatch(xml, /\/publicacion\/post-\d+/);
+  assert.match(xml, /\/publicacion\/cupon-amazon-get5off\//);
+});
+
 test("renders an individual offer with price analysis, pros, cons and Product SEO", async () => {
   const home = await render();
   const homeHtml = await home.text();

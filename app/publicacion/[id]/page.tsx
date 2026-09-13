@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPostById, postHref, publishedPosts } from "../../lib/posts";
+import { getPostById, postHref, postIsIndexable, publishedPosts } from "../../lib/posts";
 
 const siteUrl = "https://chollosaldia.com";
 
@@ -18,6 +18,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: post.title,
     description,
     alternates: { canonical: postHref(post.id) },
+    robots: postIsIndexable(post) ? { index: true, follow: true } : { index: false, follow: true },
     openGraph: { title: post.title, description, url: postHref(post.id), type: "article", publishedTime: post.publishedAt, images: post.imageUrls.map((url, index) => ({ url, alt: `${post.title}${index ? ` · imagen ${index + 1}` : ""}` })) },
     twitter: { card: "summary_large_image", title: post.title, description, images: [post.imageUrl] },
   };

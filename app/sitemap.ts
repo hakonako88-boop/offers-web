@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { categoryIsIndexable, categoryPages } from "./lib/categories";
-import { dealHref, publishedDeals } from "./lib/deals";
-import { postHref, publishedPosts } from "./lib/posts";
+import { dealHref, dealIsIndexable, publishedDeals } from "./lib/deals";
+import { postHref, postIsIndexable, publishedPosts } from "./lib/posts";
 import { indexableProducts, productHref } from "./lib/products";
 import { guides } from "./lib/guides";
 
@@ -35,7 +35,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   return [
     ...staticPages,
-    ...publishedDeals.map((deal) => ({
+    ...publishedDeals.filter((deal) => dealIsIndexable(deal.id)).map((deal) => ({
       url: `${siteUrl}${dealHref(deal.id)}`,
       lastModified: deal.verifiedDate ? new Date(deal.verifiedDate) : homepageLastModified,
       changeFrequency: "weekly" as const,
@@ -47,7 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily" as const,
       priority: 0.72,
     })),
-    ...publishedPosts.map((post) => ({
+    ...publishedPosts.filter((post) => postIsIndexable(post)).map((post) => ({
       url: `${siteUrl}${postHref(post.id)}`,
       lastModified: new Date(post.publishedAt),
       changeFrequency: "monthly" as const,

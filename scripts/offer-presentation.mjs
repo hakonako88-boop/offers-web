@@ -222,12 +222,9 @@ export function editorialOfferHeadline({ title = '', store = '', price = '', dis
   const product = improveOfferTitle(title);
   const priceLabel = compact(price);
   const percentage = Math.round(Number(discount) || 0);
-  if (coupon) return `¡Precio con cupón en ${store}! ${product}${priceLabel ? ` por ${priceLabel}` : ''}`;
-  if (percentage >= 50) return `¡Chollazo del ${percentage}%! ${product}${priceLabel ? ` por ${priceLabel}` : ''}`;
-  if (percentage >= 30) return `¡Gran rebaja del ${percentage}%! ${product}${priceLabel ? ` por ${priceLabel}` : ''}`;
-  const numericPrice = Number(String(price).replace(/[^\d,.-]/gu, '').replace(',', '.'));
-  if (numericPrice > 0 && numericPrice < 15) return `¡Por menos de 15 €! ${product} a ${priceLabel}`;
-  return `Oferta en ${store}: ${product}${priceLabel ? ` por ${priceLabel}` : ''}`;
+  if (coupon) return `${product}${priceLabel ? ` por ${priceLabel}` : ''} con cupón en ${store}`;
+  if (percentage >= 15) return `${product}${priceLabel ? ` por ${priceLabel}` : ''} · −${percentage}% en ${store}`;
+  return `${product}${priceLabel ? ` por ${priceLabel}` : ''} en ${store}`;
 }
 
 function offerDescription({ title, discount, description = '' } = {}) {
@@ -237,8 +234,8 @@ function offerDescription({ title, discount, description = '' } = {}) {
     || normalized(supplied) === normalized(title);
   const usableDescription = supplied
     && !sameAsTitle
-    && !/oferta publicada en chollos al dia/i.test(supplied)
-    && !/oferta reenviada/i.test(supplied)
+    && !/oferta publicada en chollos al dia/i.test(normalized(supplied))
+    && !/oferta reenviada/i.test(normalized(supplied))
     ? supplied
     : '';
 
@@ -254,9 +251,9 @@ function offerDescription({ title, discount, description = '' } = {}) {
     return 'Baliza de emergencia V16 con visibilidad 360°, conexión DGT 3.0 y base imantada para el coche.';
   }
   if (Number(discount) > 0) {
-    return trimAtWord(`${product}: ahora con un ${Math.round(Number(discount))}% de descuento. Buena ocasión si lo tenías en tu lista.`, 210);
+    return '';
   }
-  return trimAtWord(`${product} está ahora a precio rebajado. Comprueba la variante y el importe final antes de comprar.`, 210);
+  return '';
 }
 
 export function formatTelegramDealCard({
@@ -278,7 +275,7 @@ export function formatTelegramDealCard({
     : highlight
       ? `🔻 ${escapeHtml(highlight)}`
       : `🔻 ${savingsText}`;
-  const linkLine = `👇🏻 <b>Toca VER EN ${escapeHtml(storeHashtag(store).toUpperCase())}</b> para ir directamente a la tienda`;
+  const linkLine = `👇🏻 <b>ABRIR OFERTA EN ${escapeHtml(storeHashtag(store).toUpperCase())}</b>`;
   const headline = `🔥 <b>${escapeHtml(editorialOfferHeadline({ title, store, price, discount, coupon }))}</b>`;
   const priceBlock = [
     previousPrice ? `📛 <b>Antes:</b> <s>${escapeHtml(previousPrice)}</s>` : '',
@@ -288,11 +285,11 @@ export function formatTelegramDealCard({
 
   return [
     headline,
-    `✨ ${escapeHtml(offerDescription({ title, discount, description }))}`,
+    offerDescription({ title, discount, description }) ? `✨ ${escapeHtml(offerDescription({ title, discount, description }))}` : '',
     priceBlock,
     linkLine,
-    `🔔 <b>Sigue @aldiachollos</b> para recibir los próximos chollos\n#${storeTag} #Chollos`,
-  ].join('\n\n').slice(0, 1000);
+    `🔔 Sigue @aldiachollos · #${storeTag} #Chollos`,
+  ].filter(Boolean).join('\n\n').slice(0, 850);
 }
 
 export function formatWebsiteDealText({ title, store, price, previousPrice = '', savings = '', discount = 0, coupon = '' } = {}) {

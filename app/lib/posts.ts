@@ -63,6 +63,13 @@ export function postHref(id: string) {
   return `/publicacion/${encodeURIComponent(id)}/`;
 }
 
+/** Daily machine-generated recaps and legacy numeric posts stay available to
+ * visitors, but are not separate search landing pages. Campaigns, coupons and
+ * manually named editorial posts remain indexable. */
+export function postIsIndexable(post: Pick<PublishedPost, "id">) {
+  return !/^resumen-diario-/iu.test(post.id) && !/^post-\d+$/iu.test(post.id);
+}
+
 export function getPostById(id: string) {
   return publishedPosts.find((post) => post.id === id);
 }

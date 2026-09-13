@@ -486,8 +486,22 @@ test('formats a forwarded fan offer without exposing its forwarded origin', () =
 });
 
 test('leads Telegram titles with the strongest factual reason to open the deal', () => {
-  assert.equal(editorialOfferHeadline({ title: 'Cafetera italiana Orbegozo', store: 'Amazon', price: '4,59 €', discount: 64 }), '¡Chollazo del 64%! Cafetera italiana Orbegozo por 4,59 €');
-  assert.equal(editorialOfferHeadline({ title: 'Cupón de 5 € para compras desde 15 €', store: 'Amazon', coupon: 'GET5OFF' }), '¡Precio con cupón en Amazon! Cupón de 5 € para compras desde 15 €');
+  assert.equal(editorialOfferHeadline({ title: 'Cafetera italiana Orbegozo', store: 'Amazon', price: '4,59 €', discount: 64 }), 'Cafetera italiana Orbegozo por 4,59 € · −64% en Amazon');
+  assert.equal(editorialOfferHeadline({ title: 'Cupón de 5 € para compras desde 15 €', store: 'Amazon', coupon: 'GET5OFF' }), 'Cupón de 5 € para compras desde 15 € con cupón en Amazon');
+});
+
+test('does not pad a factual Telegram card with generic promotional filler', () => {
+  const card = formatTelegramDealCard({
+    title: 'Maybelline New York paleta The Nudes de 12 colores',
+    store: 'Amazon',
+    price: '7,64 €',
+    previousPrice: '13,97 €',
+    savings: '6,33 €',
+    discount: 45,
+  });
+  assert.match(card, /Maybelline New York paleta The Nudes/);
+  assert.match(card, /−45% en Amazon/);
+  assert.doesNotMatch(card, /Buena ocasión si lo tenías en tu lista|ahora con un 45%/i);
 });
 
 test('formats a V16 safety light without catalogue separators', () => {

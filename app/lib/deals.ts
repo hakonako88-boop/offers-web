@@ -303,7 +303,13 @@ export function getDealById(id: string) {
 }
 
 export function dealIsIndexable(id: string) {
-  return publishedDeals.some((deal) => deal.id === id);
+  const deal = publishedDeals.find((candidate) => candidate.id === id);
+  if (!deal) return false;
+  const discount = dealDiscount(deal);
+  const savings = dealSavings(deal);
+  const hasUsefulClassification = deal.category !== "Otros / Sin clasificar" && (deal.categoryConfidence ?? 0) >= .6;
+  const hasStrongDealEvidence = discount >= 30 && savings >= 5;
+  return Boolean(deal.coupon) || hasUsefulClassification || hasStrongDealEvidence;
 }
 
 export function dealPriceAssessment(deal: Pick<PublishedDeal, "price" | "oldPrice" | "coupon">) {
