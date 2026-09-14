@@ -11982,7 +11982,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-12T08:50:58.408Z",
-      "updatedAt": "2026-09-14T07:02:40.425Z"
+      "updatedAt": "2026-09-14T07:12:07.871Z"
     },
     {
       "id": "telegram-ofertos:42008:amazon:0",
@@ -12043,7 +12043,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-12T08:50:58.408Z",
-      "updatedAt": "2026-09-14T07:02:40.425Z"
+      "updatedAt": "2026-09-14T07:12:07.871Z"
     },
     {
       "id": "telegram-ofertos:42010:amazon:0",
@@ -16009,7 +16009,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T09:32:32.322Z",
-      "updatedAt": "2026-09-14T07:02:40.425Z"
+      "updatedAt": "2026-09-14T07:12:07.871Z"
     },
     {
       "id": "telegram-errores-de-precio:15529:amazon:0",
@@ -17953,7 +17953,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T18:41:07.410Z",
-      "updatedAt": "2026-09-14T07:02:40.425Z"
+      "updatedAt": "2026-09-14T07:12:07.871Z"
     },
     {
       "id": "telegram-una-ganga:93275:miravia:0",
@@ -18809,15 +18809,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/rerua",
-      "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T21:31:09.729Z",
-      "updatedAt": "2026-09-14T07:02:40.425Z",
-      "nextAttemptAt": "2026-09-14T07:02:32.781Z"
+      "updatedAt": "2026-09-14T07:12:07.871Z"
     },
     {
       "id": "telegram-una-ganga:93284:miravia:0",
@@ -19622,13 +19621,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4xjG11N",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 0,
       "createdAt": "2026-09-14T04:41:11.143Z",
-      "updatedAt": "2026-09-14T05:42:42.917Z",
-      "nextAttemptAt": "2026-09-14T07:02:42.917Z"
+      "updatedAt": "2026-09-14T07:12:07.871Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:93306:aliexpress:0",
