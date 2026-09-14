@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-14T07:42:13.012Z",
+  "updatedAt": "2026-09-14T07:53:02.997Z",
   "summary": {
-    "published": 184,
+    "published": 183,
     "ignored": 28,
     "needs_review": 391,
-    "rejected": 349,
+    "rejected": 350,
     "duplicate": 13,
     "pending": 35
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7290:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7290,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/tiesometro/7290",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93315:miravia:0",
       "source": "telegram-una-ganga",
@@ -60,7 +71,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/7289",
       "resultUrl": ""
     },
@@ -114,8 +125,8 @@
       "messageId": 93311,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/93311",
       "resultUrl": ""
     },
@@ -181,7 +192,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/93306",
       "resultUrl": ""
     },
@@ -279,8 +290,8 @@
       "messageId": 93297,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 4,
-      "reason": "Pendiente de reintento (4/6)",
+      "attempts": 5,
+      "reason": "Pendiente de reintento (5/6)",
       "sourceUrl": "https://t.me/una_ganga/93297",
       "resultUrl": ""
     },
@@ -597,9 +608,9 @@
       "source": "telegram-tiesometro",
       "messageId": 7286,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7286",
       "resultUrl": ""
     },
@@ -1095,17 +1106,6 @@
       "status": "pending",
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/42134",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:42134:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 42134,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceUrl": "https://t.me/Ofertos/42134",
       "resultUrl": ""
     }
