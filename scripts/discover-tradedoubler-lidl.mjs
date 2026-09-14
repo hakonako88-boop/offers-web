@@ -22,9 +22,9 @@ export function spanishLidlFeeds(payload = {}) {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
-  const token = String(process.env.TRADEDOUBLER_PRODUCTS_TOKEN || '').trim();
+  const token = String(process.env.LIDL_PRODUCTS_TOKEN || process.env.TRADEDOUBLER_PRODUCTS_TOKEN || '').trim();
   if (!token) {
-    console.log('Lidl feed discovery skipped: missing TRADEDOUBLER_PRODUCTS_TOKEN.');
+    console.log('Lidl feed discovery skipped: missing LIDL_PRODUCTS_TOKEN.');
     process.exit(0);
   }
   const response = await fetch(`https://api.tradedoubler.com/1.0/productFeeds;programId=${LIDL_PROGRAM_ID}?token=${encodeURIComponent(token)}`, {
