@@ -12303,7 +12303,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-12T08:50:58.408Z",
-      "updatedAt": "2026-09-14T02:42:19.351Z"
+      "updatedAt": "2026-09-14T02:52:29.982Z"
     },
     {
       "id": "telegram-ofertos:42008:amazon:0",
@@ -12364,7 +12364,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-12T08:50:58.408Z",
-      "updatedAt": "2026-09-14T02:42:19.351Z"
+      "updatedAt": "2026-09-14T02:52:29.982Z"
     },
     {
       "id": "telegram-ofertos:42010:amazon:0",
@@ -16330,7 +16330,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T09:32:32.322Z",
-      "updatedAt": "2026-09-14T02:42:19.351Z"
+      "updatedAt": "2026-09-14T02:52:29.982Z"
     },
     {
       "id": "telegram-errores-de-precio:15529:amazon:0",
@@ -18284,7 +18284,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T18:41:07.410Z",
-      "updatedAt": "2026-09-14T02:42:19.351Z"
+      "updatedAt": "2026-09-14T02:52:29.982Z"
     },
     {
       "id": "telegram-una-ganga:93275:miravia:0",
@@ -19173,15 +19173,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/n9hQBInPPuWRPwlnscrj8cCyzhFnIxo7cL2vQE3hDPomZwoyInG-4UufuLnf2f68NOLx1_HgzKFF2_J5ucI3kRZZ_GmhgYF-dUDolitxq2hvycf3SJ4YHfWjodkXNZ13y363bB735JRelDo7vLrsBEky_AKte3OVFMIYa_dqOti-WrF3nOjg-AnheywRXcVOwn53c4Pj_lMTZm2OOp91ZPbALQu0MyIFygCNfd9qQm25WBHms_oMZSYS4ABVOU459zKsFFgcLwMGxUoBsg5atxL8RlmEkNi9htAMguA6hIVMlAwunIPrS6qFI--CVqtq6h5V7C7-nJTrlzuLy_yGgQ.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4u9mHUA",
-      "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "createdAt": "2026-09-13T21:40:59.694Z",
-      "updatedAt": "2026-09-14T01:22:35.052Z",
-      "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-09-14T02:42:35.052Z"
+      "updatedAt": "2026-09-14T02:51:48.969Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-tiesometro:7286:aliexpress:0",
