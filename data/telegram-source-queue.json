@@ -12226,7 +12226,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-12T08:50:58.408Z",
-      "updatedAt": "2026-09-14T04:04:31.092Z"
+      "updatedAt": "2026-09-14T04:13:01.597Z"
     },
     {
       "id": "telegram-ofertos:42008:amazon:0",
@@ -12287,7 +12287,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-12T08:50:58.408Z",
-      "updatedAt": "2026-09-14T04:04:31.092Z"
+      "updatedAt": "2026-09-14T04:13:01.597Z"
     },
     {
       "id": "telegram-ofertos:42010:amazon:0",
@@ -16253,7 +16253,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T09:32:32.322Z",
-      "updatedAt": "2026-09-14T04:04:31.092Z"
+      "updatedAt": "2026-09-14T04:13:01.597Z"
     },
     {
       "id": "telegram-errores-de-precio:15529:amazon:0",
@@ -18200,7 +18200,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T18:41:07.410Z",
-      "updatedAt": "2026-09-14T04:04:31.092Z"
+      "updatedAt": "2026-09-14T04:13:01.597Z"
     },
     {
       "id": "telegram-una-ganga:93275:miravia:0",
@@ -19364,14 +19364,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3LQmaiv",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (5/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 4,
+      "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T22:33:29.809Z",
-      "updatedAt": "2026-09-14T04:04:31.092Z",
-      "nextAttemptAt": "2026-09-14T04:02:35.052Z"
+      "updatedAt": "2026-09-14T04:13:01.597Z",
+      "nextAttemptAt": "2026-09-14T08:13:01.597Z"
     },
     {
       "id": "telegram-ofertos:42143:aliexpress:0",
@@ -19385,14 +19385,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4OyqSSD",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (5/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 4,
+      "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T22:33:29.809Z",
-      "updatedAt": "2026-09-14T04:04:31.092Z",
-      "nextAttemptAt": "2026-09-14T04:02:35.052Z"
+      "updatedAt": "2026-09-14T04:13:01.597Z",
+      "nextAttemptAt": "2026-09-14T08:13:01.597Z"
     },
     {
       "id": "telegram-errores-de-precio:15537:aliexpress:0",
@@ -19406,14 +19406,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c33Py9Qd",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (5/6)",
       "sourceWeight": 25,
       "priority": false,
-      "attempts": 4,
+      "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T22:33:30.843Z",
-      "updatedAt": "2026-09-14T04:04:31.092Z",
-      "nextAttemptAt": "2026-09-14T04:02:35.052Z"
+      "updatedAt": "2026-09-14T04:13:01.597Z",
+      "nextAttemptAt": "2026-09-14T08:13:01.597Z"
     },
     {
       "id": "telegram-errores-de-precio:15538:aliexpress:0",
@@ -19696,13 +19696,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/GPkeT993Bv9pEDXtWX7IXaQ1WOGXCdQM27qm7km15umNKC1L2t4vSPB060CpuBlo8S9nUatoLYCtd077gnJcuPxzKoyoGpoEb348eHGHmkNMt07uxhoeD83JNn7JIxGcRgptKUTPFPfmELTEUh9XXb8bEXjcg2EFlUb8AGNE_JgKWmd0Ia_XQ1QPJb4WCmw6wZXgLcd2wQbmyY3bw6KO7evfD6Ciysen4HGieDXsS3XmAC1EU_2myyYz9T9QM_LF0Wlw1W6Mu6sVLlPQL0TUTSj_T0GUb4NEdCvOzAuW9D18iYy2zxy9Av0j7NKwUSPcfzOz16nObIE90bJmKi3zsw.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4upOwaT",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-09-14T01:41:07.309Z",
-      "updatedAt": "2026-09-14T04:04:31.092Z"
+      "updatedAt": "2026-09-14T04:13:01.597Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-14T04:33:01.597Z"
     },
     {
       "id": "telegram-una-ganga:93297:aliexpress:0",
@@ -19838,13 +19840,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4LZzezJ",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-14T04:11:00.329Z",
-      "updatedAt": "2026-09-14T04:11:00.329Z"
+      "updatedAt": "2026-09-14T04:13:01.597Z",
+      "nextAttemptAt": "2026-09-14T04:33:01.597Z"
     }
   ]
 }
