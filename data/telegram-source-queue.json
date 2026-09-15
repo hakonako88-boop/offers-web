@@ -10697,7 +10697,7 @@
       "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T09:32:32.322Z",
-      "updatedAt": "2026-09-15T08:42:36.335Z",
+      "updatedAt": "2026-09-15T08:52:33.048Z",
       "nextAttemptAt": "2026-09-14T18:45:44.324Z"
     },
     {
@@ -12642,7 +12642,7 @@
       "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T18:41:07.410Z",
-      "updatedAt": "2026-09-15T08:42:36.335Z",
+      "updatedAt": "2026-09-15T08:52:33.048Z",
       "nextAttemptAt": "2026-09-14T18:45:44.324Z"
     },
     {
@@ -17439,7 +17439,7 @@
       "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-14T17:30:58.610Z",
-      "updatedAt": "2026-09-15T08:42:36.335Z",
+      "updatedAt": "2026-09-15T08:52:33.048Z",
       "nextAttemptAt": "2026-09-14T18:43:12.803Z"
     },
     {
@@ -19777,14 +19777,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4nJ7Y5r",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (2/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 1,
+      "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-15T08:20:57.714Z",
-      "updatedAt": "2026-09-15T08:42:36.335Z",
-      "nextAttemptAt": "2026-09-15T08:42:27.801Z"
+      "updatedAt": "2026-09-15T08:52:33.048Z",
+      "nextAttemptAt": "2026-09-15T09:32:33.048Z"
     },
     {
       "id": "telegram-una-ganga:93419:amazon:0",
@@ -19879,13 +19879,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c36OVFcZ",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-15T08:51:08.300Z",
-      "updatedAt": "2026-09-15T08:51:08.300Z"
+      "updatedAt": "2026-09-15T08:52:33.048Z",
+      "nextAttemptAt": "2026-09-15T09:12:33.048Z"
     }
   ]
 }
