@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-15T02:12:07.405Z",
+  "updatedAt": "2026-09-15T02:22:21.501Z",
   "summary": {
-    "needs_review": 405,
     "ignored": 26,
-    "rejected": 390,
+    "needs_review": 404,
+    "rejected": 391,
     "published": 134,
     "duplicate": 12,
     "pending": 33
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93401:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93401,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/93401",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93400:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -256,9 +267,9 @@
       "source": "telegram-una-ganga",
       "messageId": 93383,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/93383",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/42209",
       "resultUrl": "https://www.amazon.es/dp/B0CGXRX4RY?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:42207:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 42207,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
-      "sourceUrl": "https://t.me/Ofertos/42207",
-      "resultUrl": ""
     }
   ]
 }

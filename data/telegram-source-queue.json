@@ -11389,7 +11389,7 @@
       "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T09:32:32.322Z",
-      "updatedAt": "2026-09-15T02:12:07.405Z",
+      "updatedAt": "2026-09-15T02:22:21.501Z",
       "nextAttemptAt": "2026-09-14T18:45:44.324Z"
     },
     {
@@ -13334,7 +13334,7 @@
       "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T18:41:07.410Z",
-      "updatedAt": "2026-09-15T02:12:07.405Z",
+      "updatedAt": "2026-09-15T02:22:21.501Z",
       "nextAttemptAt": "2026-09-14T18:45:44.324Z"
     },
     {
@@ -18134,7 +18134,7 @@
       "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-14T17:30:58.610Z",
-      "updatedAt": "2026-09-15T02:12:07.405Z",
+      "updatedAt": "2026-09-15T02:22:21.501Z",
       "nextAttemptAt": "2026-09-14T18:43:12.803Z"
     },
     {
@@ -19400,15 +19400,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/GF3v4s2O7cL9RHIPFb0JW6DucmKyMM3g62XrcvLL8Fos8rZIDMgnJSZst19M8MNK6n0a0yM-FLi44CVxNfTsmV_V6ELUE7sPpCJNPAVf3QyHjlQHjgQTdlGpMNqHWSrKt470XEUOe4nxUXV50jPnR3Mh67wqpOt9KIxNhOVxlmqVRtgkf43HgRdHpbx2Q1SG7QgK1W_pSttlRZ5M8VUdXj8zMqyFzjbskUnALPoB1j52MHbMOa2Hzz7ueVjiZG82oY_ut-eakEUOMLvpCilmBOMTLGECDpp_8UpyMTQB3ZwSO-P_2VS9gV7fviu3we-0Ugm6Vp18JA9_A4HxiXotxQ.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4dbVtWE",
-      "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "createdAt": "2026-09-14T21:11:01.863Z",
-      "updatedAt": "2026-09-15T00:52:33.676Z",
-      "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-09-15T02:12:33.676Z"
+      "updatedAt": "2026-09-15T02:21:39.827Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:93384:miravia:0",
@@ -19874,13 +19873,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/UuWHdsuRg1A97a6M0TM9fskhEWEEcSnzU-WVw-QvK-CTYGK8biB8TSxqawoQL6RkdjMLRH0A5qWRpuRnMzJrPT1_f5L2OK9DpuA1k8Ak1g5GpQ_MAcSMdpfDjAYwTo-AkDzbaEXzU7lYCLT0unmilsKF_p93fVoEiz8oHuumGqNGSdSRsg-o5Q3SCP13FVfrREXITtZx5FOa_zNMDKMdiABWxnOn0pDPN8EjxHR_GRU-hN_z7NCp64j3aNYAaqUa-Ze2bCavOlrwTuYXsJVDtMly_Y3CzsAoiGW8IoWy4u5zOEG2cKm-zWcxqf9p1fsNOHWQOakQuLJHuOR_vSXAiA.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0hjwUEw4",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-15T02:21:07.423Z",
-      "updatedAt": "2026-09-15T02:21:07.423Z"
+      "updatedAt": "2026-09-15T02:22:23.135Z",
+      "nextAttemptAt": "2026-09-15T03:01:39.827Z"
     }
   ]
 }
