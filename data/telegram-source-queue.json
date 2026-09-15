@@ -10904,7 +10904,7 @@
       "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T09:32:32.322Z",
-      "updatedAt": "2026-09-15T07:42:42.185Z",
+      "updatedAt": "2026-09-15T07:52:31.717Z",
       "nextAttemptAt": "2026-09-14T18:45:44.324Z"
     },
     {
@@ -12849,7 +12849,7 @@
       "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T18:41:07.410Z",
-      "updatedAt": "2026-09-15T07:42:42.185Z",
+      "updatedAt": "2026-09-15T07:52:31.717Z",
       "nextAttemptAt": "2026-09-14T18:45:44.324Z"
     },
     {
@@ -17646,7 +17646,7 @@
       "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-14T17:30:58.610Z",
-      "updatedAt": "2026-09-15T07:42:42.185Z",
+      "updatedAt": "2026-09-15T07:52:31.717Z",
       "nextAttemptAt": "2026-09-14T18:43:12.803Z"
     },
     {
@@ -19041,15 +19041,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/l01ih",
-      "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-14T22:01:07.486Z",
-      "updatedAt": "2026-09-15T07:42:42.185Z",
-      "nextAttemptAt": "2026-09-15T07:42:35.665Z"
+      "updatedAt": "2026-09-15T07:52:31.717Z"
     },
     {
       "id": "telegram-una-ganga:93390:aliexpress:0",
@@ -19390,15 +19389,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/ArHWFRInZ_7LkJet4wF6w4udGYTFDCqd-PD_pOEKGbjFUZIEbz8r3tyQNUheodTsFhuQQoKCFVA5-t8ELL-meBbybSlAw1l4IZou0_VyWB21IBwTUN50Wd0N_HnLcBTPHrpTIXF_8dnyIB6_BLaJNbpJriCp3pAp26N38_A-dmBdykiOi_AziTwQJtGZv2C83DwrIlfmSY6v_Byyl0IOndQ6W8GMj6jsh4Cq3zwEAE81IDBF38Xvm1V1eXOXbddymISQQcTyovAx9DKrSdwBsClzPwa7DKzxJdueK38O35jidrzoLCIepozpsQyfMozn8xGQTs6OT1tvc-LGyU73mQ.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4yHQupb",
-      "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "createdAt": "2026-09-15T02:41:04.820Z",
-      "updatedAt": "2026-09-15T06:31:39.004Z",
-      "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-09-15T07:51:39.004Z"
+      "updatedAt": "2026-09-15T07:51:41.383Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:93403:aliexpress:0",
@@ -19537,13 +19535,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3SUXB69",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-15T05:11:03.014Z",
-      "updatedAt": "2026-09-15T06:32:30.783Z",
+      "updatedAt": "2026-09-15T07:52:31.717Z",
       "nextAttemptAt": "2026-09-15T07:52:30.783Z"
     },
     {
@@ -19762,14 +19760,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/gfej8",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/6)",
+      "reason": "Pendiente de reintento (3/6)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-15T06:36:59.422Z",
-      "updatedAt": "2026-09-15T07:03:16.715Z",
-      "nextAttemptAt": "2026-09-15T07:43:16.715Z"
+      "updatedAt": "2026-09-15T07:52:31.717Z",
+      "nextAttemptAt": "2026-09-15T09:12:31.717Z"
     },
     {
       "id": "telegram-una-ganga:93414:miravia:0",
