@@ -11198,7 +11198,7 @@
       "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T09:32:32.322Z",
-      "updatedAt": "2026-09-15T05:32:14.350Z",
+      "updatedAt": "2026-09-15T05:42:41.793Z",
       "nextAttemptAt": "2026-09-14T18:45:44.324Z"
     },
     {
@@ -13143,7 +13143,7 @@
       "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-13T18:41:07.410Z",
-      "updatedAt": "2026-09-15T05:32:14.350Z",
+      "updatedAt": "2026-09-15T05:42:41.793Z",
       "nextAttemptAt": "2026-09-14T18:45:44.324Z"
     },
     {
@@ -17940,7 +17940,7 @@
       "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-14T17:30:58.610Z",
-      "updatedAt": "2026-09-15T05:32:14.350Z",
+      "updatedAt": "2026-09-15T05:42:41.793Z",
       "nextAttemptAt": "2026-09-14T18:43:12.803Z"
     },
     {
@@ -18976,15 +18976,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/1aoi2",
-      "status": "pending",
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-14T20:01:16.039Z",
-      "updatedAt": "2026-09-15T01:32:39.349Z",
-      "nextAttemptAt": "2026-09-15T05:32:39.349Z"
+      "updatedAt": "2026-09-15T05:42:41.793Z"
     },
     {
       "id": "telegram-paramanitas:4760:ignored",
@@ -19690,14 +19689,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4yHQupb",
       "status": "pending",
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de reintento (2/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "createdAt": "2026-09-15T02:41:04.820Z",
-      "updatedAt": "2026-09-15T05:21:42.085Z",
+      "updatedAt": "2026-09-15T05:42:41.793Z",
       "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-09-15T05:41:42.085Z"
+      "nextAttemptAt": "2026-09-15T06:22:41.793Z"
     },
     {
       "id": "telegram-una-ganga:93403:aliexpress:0",
@@ -19814,13 +19813,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4cIQQ6n",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de reintento (3/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-15T04:40:58.185Z",
-      "updatedAt": "2026-09-15T05:01:46.897Z",
-      "nextAttemptAt": "2026-09-15T05:41:46.897Z"
+      "updatedAt": "2026-09-15T05:42:41.793Z",
+      "nextAttemptAt": "2026-09-15T07:02:41.793Z"
     },
     {
       "id": "telegram-una-ganga:93409:aliexpress:0",
@@ -19834,14 +19833,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3SUXB69",
       "status": "pending",
-      "reason": "Pendiente de reintento (1/6)",
+      "reason": "Pendiente de reintento (2/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-15T05:11:03.014Z",
-      "updatedAt": "2026-09-15T05:12:15.823Z",
-      "nextAttemptAt": "2026-09-15T05:32:15.823Z"
+      "updatedAt": "2026-09-15T05:42:41.793Z",
+      "nextAttemptAt": "2026-09-15T06:22:41.793Z"
     },
     {
       "id": "telegram-una-ganga:93410:amazon:0",
@@ -19875,12 +19874,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4hqx2au",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-15T05:41:00.156Z",
-      "updatedAt": "2026-09-15T05:41:00.156Z"
+      "updatedAt": "2026-09-15T05:41:38.248Z",
+      "nextAttemptAt": "2026-09-15T06:01:38.248Z"
     }
   ]
 }
