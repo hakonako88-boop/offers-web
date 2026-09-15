@@ -19555,13 +19555,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/vUa4GW4M2E4yozJiUfnwacGN5AKjOUCpTemgRMK8hl4aBg2R1pzFKLWyhi9Q_OwHxPqkiQUjk7SB6OTfzek0M7K8wM7YU5feL_rvXhyOj_xR5SO1wRN1hdMAeSNfPvJRFviMN66nHCgt0I0Kf58Ka61dh9RQlq0mdbaJeWKpID1dnBaeLQcabEElt0eDN3bxv0laPwpGihwgWcDoyC8SVa4VF8nXV3R_DU-_s0wnWNCXrXG7bzSaPbHKfmy9CrHOd0tXUpmHnjZm4goWTapTbYA8f2ZQf-ojYndPat9sRN21_rmyvINKvQpZlpEgtW27-u6PFeP_7W-YTuQ4l4bb6Q.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4iuv0qW",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-09-15T11:41:03.414Z",
-      "updatedAt": "2026-09-15T14:02:33.801Z"
+      "updatedAt": "2026-09-15T14:12:31.924Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-15T14:32:31.924Z"
     },
     {
       "id": "telegram-paramanitas:4761:amazon:0",
@@ -19939,13 +19941,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0CSFWSQMX?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-15T14:11:08.270Z",
-      "updatedAt": "2026-09-15T14:11:08.271Z"
+      "updatedAt": "2026-09-15T14:12:32.492Z",
+      "nextAttemptAt": "2026-09-15T14:51:41.753Z"
     }
   ]
 }
