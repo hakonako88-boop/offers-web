@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-16T07:02:35.426Z",
+  "updatedAt": "2026-09-16T07:12:16.565Z",
   "summary": {
-    "needs_review": 402,
+    "needs_review": 401,
     "published": 137,
-    "rejected": 415,
+    "rejected": 416,
     "duplicate": 8,
     "ignored": 25,
     "pending": 13
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93489:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93489,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/una_ganga/93489",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93488:miravia:0",
       "source": "telegram-una-ganga",
@@ -80,9 +91,9 @@
       "source": "telegram-una-ganga",
       "messageId": 93482,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/93482",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/42265",
       "resultUrl": "https://www.amazon.es/dp/B0FT1MBNN6?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-chollosdiario:45406:amazon:0",
-      "source": "telegram-chollosdiario",
-      "messageId": 45406,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/chollosdiario/45406",
-      "resultUrl": ""
     }
   ]
 }
