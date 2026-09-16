@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-16T10:52:55.167Z",
+  "updatedAt": "2026-09-16T11:03:27.729Z",
   "summary": {
-    "needs_review": 392,
     "ignored": 22,
+    "needs_review": 391,
     "published": 140,
-    "rejected": 403,
+    "rejected": 404,
     "duplicate": 7,
     "pending": 36
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:42332:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 42332,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/Ofertos/42332",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-ofertos:42331:aliexpress:0",
       "source": "telegram-ofertos",
@@ -37,8 +48,8 @@
       "messageId": 93500,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/93500",
       "resultUrl": ""
     },
@@ -170,7 +181,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/Ofertos/42321",
       "resultUrl": ""
     },
@@ -455,8 +466,8 @@
       "messageId": 93492,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 4,
+      "reason": "Pendiente de reintento (4/6)",
       "sourceUrl": "https://t.me/una_ganga/93492",
       "resultUrl": ""
     },
@@ -773,9 +784,9 @@
       "source": "telegram-una-ganga",
       "messageId": 93471,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceUrl": "https://t.me/una_ganga/93471",
       "resultUrl": ""
     },
@@ -1089,17 +1100,6 @@
     },
     {
       "id": "telegram-paramanitas:4764:amazon:7",
-      "source": "telegram-paramanitas",
-      "messageId": 4764,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4764",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4764:amazon:6",
       "source": "telegram-paramanitas",
       "messageId": 4764,
       "store": "Amazon",
