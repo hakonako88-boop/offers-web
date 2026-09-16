@@ -19616,14 +19616,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/nko7c",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (5/6)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 4,
+      "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-15T20:31:12.158Z",
-      "updatedAt": "2026-09-16T02:03:08.604Z",
-      "nextAttemptAt": "2026-09-16T02:02:06.939Z"
+      "updatedAt": "2026-09-16T02:12:25.655Z",
+      "nextAttemptAt": "2026-09-16T06:12:25.655Z"
     },
     {
       "id": "telegram-una-ganga:93458:miravia:0",
@@ -19844,14 +19844,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/oBpD-o7NlHAqcgCirPcjVVCG9rP2072D6huxoAgnlevt7MkVFzJpNd0tt02FJ2mj3BWwgFC8FknpfdG439HqKEyZ9eoEKMVnzfRFc5punRqhEbuy5TxOTOtwuOtZRtapZIACSjdUGQoFNb9Jys8FV2TNNCy_cB3-tgxShxwdPanSuBxVkXCn3rQdrX2T5QjqxlPrrSzLYdv1oybMY-TjuA4xq0v9N9sDEnT2xMjaBgI3hzpWdXllz7t5UqN5T2wHo6NJmTZav0Y-ooe82hs9mOm6aCG5uzDUbFKF3PkGXjQeBoP2hdggA58855_uwViplyA0ldZO7a9oj-WNcnpwTw.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4rliUTq",
-      "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "createdAt": "2026-09-15T23:40:55.012Z",
-      "updatedAt": "2026-09-16T00:51:38.956Z",
-      "nextAttemptAt": "2026-09-16T02:11:38.956Z"
+      "updatedAt": "2026-09-16T02:12:25.655Z"
     },
     {
       "id": "telegram-una-ganga:93468:aliexpress:0",
@@ -19988,13 +19987,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3bp84bL",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-16T02:11:03.378Z",
-      "updatedAt": "2026-09-16T02:11:03.379Z"
+      "updatedAt": "2026-09-16T02:12:25.655Z",
+      "nextAttemptAt": "2026-09-16T02:32:25.655Z"
     }
   ]
 }
