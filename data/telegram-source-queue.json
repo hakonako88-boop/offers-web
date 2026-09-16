@@ -19460,14 +19460,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/Yd-5msluBxwW_8bYFKYkPE_0W2-yxVnEjJnl1emBgVmogU-F-MlMAbsBhTaqnpJqeV-KKT2xb9oqr5ggCwxr9omrmo_HNCBvZ8dzJRHv93AVbuDN30-871wkTqIk4Yz6KDZUvI-5H46FVpRFEp0tJoqoXyDWw8t8du86mmyNmdfmwX4kd5EJCbf4EoOVLim9ceNfFZDd8NxsmwU8dAi6jsWAC7DtbmWIHiyTcxBPWWjTTAsKVL9DeskxrPgCDB9a6tks3muoNhDw-jlWUwihLIJ4V7E83tOG6-z6LKcwe3DhABsbMyJ1ztOfflUaAU0YPVUvqSy8JjC3DhxcNamc3w.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4brsNrK",
-      "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "createdAt": "2026-09-16T06:41:05.150Z",
-      "updatedAt": "2026-09-16T07:42:43.821Z",
-      "nextAttemptAt": "2026-09-16T09:02:43.821Z"
+      "updatedAt": "2026-09-16T09:02:54.409Z"
     },
     {
       "id": "telegram-una-ganga:93489:aliexpress:0",
@@ -19876,13 +19875,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4vBEyEl",
       "status": "pending",
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de reintento (2/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "createdAt": "2026-09-16T08:41:00.986Z",
-      "updatedAt": "2026-09-16T08:41:37.100Z",
-      "nextAttemptAt": "2026-09-16T09:01:37.100Z"
+      "updatedAt": "2026-09-16T09:01:50.391Z",
+      "nextAttemptAt": "2026-09-16T09:41:50.391Z"
     },
     {
       "id": "telegram-ofertos:42309:amazon:0",
@@ -20002,13 +20001,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c2RRdnez",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-16T09:01:16.682Z",
-      "updatedAt": "2026-09-16T09:01:16.682Z"
+      "updatedAt": "2026-09-16T09:02:54.409Z",
+      "nextAttemptAt": "2026-09-16T09:22:54.409Z"
     }
   ]
 }
