@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-09-17T00:42:09.339Z",
+  "updatedAt": "2026-09-17T00:52:23.108Z",
   "summary": {
-    "rejected": 414,
+    "rejected": 416,
     "published": 143,
-    "needs_review": 395,
+    "needs_review": 396,
     "ignored": 17,
     "duplicate": 10,
-    "pending": 21
+    "pending": 18
   },
   "recent": [
     {
@@ -25,9 +25,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45419,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45419",
       "resultUrl": ""
     },
@@ -59,8 +59,8 @@
       "messageId": 93549,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/93549",
       "resultUrl": ""
     },
@@ -366,9 +366,9 @@
       "source": "telegram-una-ganga",
       "messageId": 93534,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/93534",
       "resultUrl": ""
     },
@@ -872,9 +872,9 @@
       "source": "telegram-una-ganga",
       "messageId": 93513,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceUrl": "https://t.me/una_ganga/93513",
       "resultUrl": ""
     },
