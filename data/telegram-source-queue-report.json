@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-17T09:42:36.826Z",
+  "updatedAt": "2026-09-17T09:52:22.572Z",
   "summary": {
-    "rejected": 415,
     "published": 148,
-    "needs_review": 397,
+    "needs_review": 398,
+    "rejected": 414,
     "ignored": 14,
     "duplicate": 10,
     "pending": 16
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:42378:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 42378,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/42378",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93579:miravia:0",
       "source": "telegram-una-ganga",
@@ -25,9 +36,9 @@
       "source": "telegram-ofertos",
       "messageId": 42377,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/42377",
       "resultUrl": ""
     },
@@ -323,8 +334,8 @@
       "messageId": 93571,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 4,
+      "reason": "Pendiente de reintento (4/6)",
       "sourceUrl": "https://t.me/una_ganga/93571",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/42353",
       "resultUrl": "https://www.amazon.es/dp/B07NMGYQZ8?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:42352:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 42352,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
-      "sourceUrl": "https://t.me/Ofertos/42352",
-      "resultUrl": ""
     }
   ]
 }
