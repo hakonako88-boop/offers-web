@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-17T17:02:56.884Z",
+  "updatedAt": "2026-09-17T17:12:47.373Z",
   "summary": {
-    "needs_review": 392,
-    "rejected": 402,
+    "rejected": 401,
+    "needs_review": 391,
     "published": 148,
     "ignored": 14,
-    "duplicate": 10,
-    "pending": 34
+    "duplicate": 11,
+    "pending": 35
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93601:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93601,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/una_ganga/93601",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-ofertos:42405:amazon:0",
       "source": "telegram-ofertos",
       "messageId": 42405,
       "store": "Amazon",
-      "status": "pending",
+      "status": "duplicate",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/Ofertos/42405",
       "resultUrl": ""
     },
@@ -81,8 +92,8 @@
       "messageId": 42400,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/6)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/6)",
       "sourceUrl": "https://t.me/Ofertos/42400",
       "resultUrl": ""
     },
@@ -212,9 +223,9 @@
       "source": "telegram-una-ganga",
       "messageId": 93594,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/93594",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/una_ganga/93565",
       "resultUrl": "https://s.click.aliexpress.com/e/_c3c0Fkmh"
-    },
-    {
-      "id": "telegram-una-ganga:93564:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93564,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/93564",
-      "resultUrl": ""
     }
   ]
 }
