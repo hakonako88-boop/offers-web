@@ -1,14 +1,36 @@
 {
-  "updatedAt": "2026-09-18T16:02:35.163Z",
+  "updatedAt": "2026-09-18T16:12:32.493Z",
   "summary": {
-    "rejected": 412,
-    "needs_review": 385,
+    "needs_review": 384,
+    "rejected": 411,
     "published": 147,
-    "ignored": 15,
+    "ignored": 16,
     "duplicate": 13,
-    "pending": 28
+    "pending": 29
   },
   "recent": [
+    {
+      "id": "telegram-paramanitas:4786:ignored",
+      "source": "telegram-paramanitas",
+      "messageId": 4786,
+      "store": "Otra",
+      "status": "ignored",
+      "attempts": 0,
+      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
+      "sourceUrl": "https://t.me/paramanitas/4786",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:93673:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93673,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/una_ganga/93673",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-ofertos:42457:aliexpress:0",
       "source": "telegram-ofertos",
@@ -158,8 +180,8 @@
       "messageId": 93664,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/93664",
       "resultUrl": ""
     },
@@ -1085,28 +1107,6 @@
       "attempts": 4,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/93625",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-chollosdiario:45430:amazon:0",
-      "source": "telegram-chollosdiario",
-      "messageId": 45430,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/chollosdiario/45430",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93624:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93624,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
-      "sourceUrl": "https://t.me/una_ganga/93624",
       "resultUrl": ""
     }
   ]
