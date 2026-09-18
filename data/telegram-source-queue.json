@@ -19860,13 +19860,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4gAMOiu",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-18T14:40:58.148Z",
-      "updatedAt": "2026-09-18T17:03:23.520Z",
-      "retryPolicyVersion": "exact-official-page-v1"
+      "updatedAt": "2026-09-18T17:11:45.962Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-18T17:31:45.962Z"
     },
     {
       "id": "telegram-una-ganga:93669:aliexpress:0",
@@ -20165,14 +20166,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4b7EF6V",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (2/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 1,
+      "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-18T16:41:03.347Z",
-      "updatedAt": "2026-09-18T17:03:23.520Z",
-      "nextAttemptAt": "2026-09-18T17:02:44.194Z"
+      "updatedAt": "2026-09-18T17:12:35.614Z",
+      "nextAttemptAt": "2026-09-18T17:52:35.614Z"
     },
     {
       "id": "telegram-una-ganga:93676:miravia:0",
@@ -20246,13 +20247,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3B3GaM9",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-18T17:11:06.392Z",
-      "updatedAt": "2026-09-18T17:11:06.392Z"
+      "updatedAt": "2026-09-18T17:12:35.614Z",
+      "nextAttemptAt": "2026-09-18T17:32:35.614Z"
     }
   ]
 }
