@@ -18767,15 +18767,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/a9ugt",
-      "status": "pending",
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-18T09:01:51.282Z",
-      "updatedAt": "2026-09-18T14:43:30.389Z",
-      "nextAttemptAt": "2026-09-18T18:43:30.389Z"
+      "updatedAt": "2026-09-18T18:52:50.666Z"
     },
     {
       "id": "telegram-una-ganga:93650:aliexpress:0",
@@ -19764,13 +19763,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4K3zL5T",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-18T16:11:04.900Z",
-      "updatedAt": "2026-09-18T17:32:37.921Z",
+      "updatedAt": "2026-09-18T18:52:50.666Z",
       "nextAttemptAt": "2026-09-18T18:52:37.921Z"
     },
     {
@@ -20246,14 +20245,16 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/gyirm",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceWeight": 22,
       "priority": false,
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-18T18:51:05.885Z",
-      "updatedAt": "2026-09-18T18:51:05.885Z"
+      "updatedAt": "2026-09-18T18:52:50.666Z",
+      "telegramMessageId": 7032,
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3ad34U9"
     }
   ]
 }
