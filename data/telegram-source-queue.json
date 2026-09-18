@@ -20002,13 +20002,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/qjUZ4bGRL8BbjUdU2TthLeXwwm6zt447G2klgPJ6u1UcSVDcreK2MNsmmqjvKta_UXpnq10PUqyt1jEHjv_LWQLc_mpzaZba-68ZNAXD6Ee_4HUIY3IQRRjgXGlddNFuNL7pxGTunBfDTPzfo3gjFA-HRagV5YdRDSEbJv5Xn2NTWurhANBfNQaPVKPNoOjEWerMItDaFrKK177zhM3Pr_vCcF-Yp63-4Wg_yC-JlLSA7m5fX4qmcsPrQbATSdUVLaKnmFh8dNkppXWkWiXa6TZa7Ke-1lP6fVhkXm0cnJJEetB3kqHE7v5h5gNcpGgrzZGeF-FY6gdPkVCFHAGdeg.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3UQAUsz",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-09-18T03:40:56.601Z",
-      "updatedAt": "2026-09-18T06:02:59.051Z"
+      "updatedAt": "2026-09-18T06:12:46.488Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-18T06:32:46.488Z"
     },
     {
       "id": "telegram-una-ganga:93635:aliexpress:0",
@@ -20143,13 +20145,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/P14LkrKhKfzyGYP55y19nSHHDFLLvyEsz9kXFYfVSq5bAqOVmSoRJmnFFAIhLtO_ZiFY6kqRa16dC-xBz8BsYfN6sy8zRPyctyYbhxMr6jO2gOYI0aswoAwsLJMvOV0Eem3LsZou4jMT4iJ6f_MFpDhdQV31pHgRlBFfON42GJKOs4CpDXbN3q8MMo-fQtULFGCGI3CHoAKYl6efsJrRVRHZVaOogW66sw09daDUp2FwZAZ7RVqXVXhn0bOWrpMuUyGDya3SrIQj5-pL3tkH3H1_e3hZ1zLmoGV_Wm-pj7AxT4GNlJTMAqetk7-un_w3nlXts91nH9Wfl9_GVfmz3Q.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0H4H11ZNP?ref=cm_sw_r_cso_tg_apan_dp_FMZ3NEV7N7NY85FZT8HG&amp;ref_=cm_sw_r_cso_tg_apan_dp_FMZ3NEV7N7NY85FZT8HG&amp;social_share=cm_sw_r_cso_tg_apan_dp_FMZ3NEV7N7NY85FZT8HG&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-18T06:10:59.815Z",
-      "updatedAt": "2026-09-18T06:10:59.815Z"
+      "updatedAt": "2026-09-18T06:12:47.568Z",
+      "nextAttemptAt": "2026-09-18T06:51:42.604Z"
     },
     {
       "id": "telegram-ofertos:42423:amazon:0",
@@ -20162,13 +20165,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/HQWdze_NydT18VHIfUGLx7rCr7Bd5TnQ6qUEqFMgJmhn2HwjzVfvpJwAZj6dvSsR_H5mSQG3NrUmIIWsr32NmKtfRkbsoVbAHdvHsGZhH4A3M6XsdNWX29T1GwVZ5t4mev0a89O3wfjD6lJgwudu_PsMxx_2gqVzda7amJzZ4CkFQQdpStvmYhE-7Xn81YS8LCu3fOT4Et9Q25HMUB8dji1ExufIrwY1AXuR680Y72f_GHAmPUCbZhDYd8DNTElq5wSPAugwacpRVBoAXTdCOvNc3KLgd8Noj7omkvFDFAThjM8-g_gXtkCl7OD9CwMG5hU_HYxJ8kGjBgdf3jUrvw.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B07GS6ZB7T?ref=cm_sw_r_cso_tg_apan_dp_0NHTTQHZ796VP2WKJ52H&amp;ref_=cm_sw_r_cso_tg_apan_dp_0NHTTQHZ796VP2WKJ52H&amp;social_share=cm_sw_r_cso_tg_apan_dp_0NHTTQHZ796VP2WKJ52H&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "duplicate",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-18T06:10:59.815Z",
-      "updatedAt": "2026-09-18T06:10:59.815Z"
+      "updatedAt": "2026-09-18T06:12:47.258Z",
+      "nextAttemptAt": "2026-09-18T06:51:42.604Z"
     },
     {
       "id": "telegram-una-ganga:93641:aliexpress:0",
@@ -20182,13 +20186,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3lMaUJx",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-18T06:11:00.285Z",
-      "updatedAt": "2026-09-18T06:11:00.285Z"
+      "updatedAt": "2026-09-18T06:12:46.488Z",
+      "nextAttemptAt": "2026-09-18T06:32:46.488Z"
     }
   ]
 }
