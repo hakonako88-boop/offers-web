@@ -20028,13 +20028,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/48rSsQ9",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 0,
       "createdAt": "2026-09-18T12:41:04.506Z",
-      "updatedAt": "2026-09-18T13:42:46.853Z",
-      "nextAttemptAt": "2026-09-18T15:02:46.853Z"
+      "updatedAt": "2026-09-18T15:12:46.576Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:93662:aliexpress:0",
@@ -20232,13 +20232,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4P2Yvh7",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-18T15:10:59.593Z",
-      "updatedAt": "2026-09-18T15:10:59.593Z"
+      "updatedAt": "2026-09-18T15:12:46.576Z",
+      "nextAttemptAt": "2026-09-18T15:32:46.576Z"
     }
   ]
 }
