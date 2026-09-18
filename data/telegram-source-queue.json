@@ -18597,15 +18597,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/rLpoC1AhhkbfhEMhsgcW30H4SitBJ5uW6iZ6RYlpUxil3iF2laVs_CXczlH6nf5GoKjt18Y0sSejv-tttA5wsHtEU8Ix_ZU9TZ__P4uVe45n12qd9cFCEAwml9XUByGYzhMhLRFRF5N30UL8emZkFJaYcisJ5WLDWqjyVQgs33wBIHX9XKQUCYZJTrkepLz7jQK-mItEqmgaWXzj-70Di_o4EutjUM05EjBuxV8tgs0IEsExLf2rNehaz6OX7bVCbIdefJJbSM3f1-Qr7Lqrk0IBwpakk6hkRDUZ_N49A5UUAnqOpy1OTKxc3Mm62ANCgL-iTZh6XT534qNZUSPROg.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4qyr9SH",
-      "status": "pending",
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-18T07:30:58.105Z",
-      "updatedAt": "2026-09-18T13:12:35.813Z",
-      "nextAttemptAt": "2026-09-18T17:12:35.813Z"
+      "updatedAt": "2026-09-18T17:22:28.444Z"
     },
     {
       "id": "telegram-una-ganga:93646:miravia:0",
@@ -18659,13 +18658,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c2zdQ8eZ",
       "status": "pending",
-      "reason": "Pendiente de reintento (5/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-18T07:50:57.777Z",
-      "updatedAt": "2026-09-18T13:22:24.902Z",
+      "updatedAt": "2026-09-18T17:22:28.444Z",
       "nextAttemptAt": "2026-09-18T17:22:24.902Z"
     },
     {
@@ -19677,14 +19676,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3SmbF0j",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de reintento (3/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-18T13:40:59.510Z",
-      "updatedAt": "2026-09-18T16:41:46.893Z",
+      "updatedAt": "2026-09-18T17:22:28.444Z",
       "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-09-18T17:21:46.893Z"
+      "nextAttemptAt": "2026-09-18T18:42:28.444Z"
     },
     {
       "id": "telegram-una-ganga:93665:aliexpress:0",
@@ -20186,13 +20185,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/U1fmCSk902O6apXgzGr1x2mBUEpTCImlrkLGZJlAUxT-gy47lDtZdXSjEKg-VEswS85e-cc0Y6Wf7mxEfDb3hGgHkMOHNcgMhLZriiOliful-oM2DwMkw5XE8tGc0-kwI_M_bS3E-li8LK0YWEJV3oiNKCKfejZ94i35ehW9YqQxVkOI2zNleH1qpe1Fd6qpENHs0waoFR-mvY7ZQfq8aI6JWJzwNhI1zT6isNkgbAz9uuqcpImBN_V0mqLLE9fZhaOHQ11dm1MaqVgys9Nh7L9wMVQ3Cp2DGPDX55C2BN9fBX0qfgm_QtBIGTD8Uaaiz4iVvPGm5fNEU705x-yf8w.jpg",
       "store": "Amazon",
       "merchantUrl": "https://amzn.to/3SRxgOD",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta ASIN",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-18T17:20:57.005Z",
-      "updatedAt": "2026-09-18T17:20:57.005Z"
+      "updatedAt": "2026-09-18T17:22:28.998Z",
+      "nextAttemptAt": "2026-09-18T18:01:30.679Z"
     },
     {
       "id": "telegram-una-ganga:93678:amazon:0",
@@ -20205,13 +20205,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/RqTUWbSVhJADTImByU04ZjpCrae5r0_7Ev_SyxS-rmAIs1kIfCNpIWo-brWtQt1HlpS6w7f4tM1URY0P7bTF4q9M7-6wOakaaRVsbzGyGwUDQnqMax-oSBYXQlKZcLuX3zuovs422iXfHFzSejN6pAdr61XEzViZfBfdxuCVaNwnrvftdPgKjS1CrdOtW8EKDROcyk1NsXgZOVeSmXFiwgitc7HMscYqzGif3ErqZZ3VqFEDCFC69w8l0iym25n6Ezb5SqIVIlN6wEOXvsG-bUeCuDWRxhJj-mQruH41HOI6u_Aj2e4V5WErkVPBf4KZCi-qCckLzYJ24q6wwPNGVg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B05J7o2Fd",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-18T17:20:57.558Z",
-      "updatedAt": "2026-09-18T17:20:57.558Z"
+      "updatedAt": "2026-09-18T17:22:30.626Z",
+      "nextAttemptAt": "2026-09-18T18:01:30.679Z"
     },
     {
       "id": "telegram-una-ganga:93679:amazon:0",
@@ -20224,13 +20225,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/U_gOaJc4ybt6k8rR85NbJfGzmWlwVr8f7RAw9aRHWG3tfs73Srlu6EpZyEZyiq-Bh8ZEGLLxoyfGEp1cAUsMS1uDJvSIEPcQrW1cjOtwpNBPWj18Y0q-6aXp4_OtR3OCbmu7F_vODRJwNAsp0kbzZRBtrCZIltr2GteVn0Us-QPAihXqLZpadCT1DQmz13_rQZSsvrPAtL2r2h7cQPg649E-cgY7FRsnWaK0uFGE7d0jRZogqMlf0VGxntdVc1B5T6hSFs5W3dDmJpOfY5ZtZfe6pfGI1cl6a-CrJUiFxMQA7Rlw0vTAL-rAJ-05VyWCm7-l9VpO6Ebl1I08nWnhhA.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B00TRKBfN",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-18T17:20:57.558Z",
-      "updatedAt": "2026-09-18T17:20:57.558Z"
+      "updatedAt": "2026-09-18T17:22:30.037Z",
+      "nextAttemptAt": "2026-09-18T18:01:30.679Z"
     },
     {
       "id": "telegram-paramanitas:4787:amazon:0",
@@ -20243,13 +20245,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0BWY2V5G1?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-18T17:20:58.416Z",
-      "updatedAt": "2026-09-18T17:20:58.416Z"
+      "updatedAt": "2026-09-18T17:22:30.189Z",
+      "nextAttemptAt": "2026-09-18T18:01:30.679Z"
     }
   ]
 }
