@@ -18700,15 +18700,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/aNv7pJcV3ENxsG-P08kJyWzloSAKjZu81AoWEduliYSQ-cPBKcrcA2ErKAXoInQdhdLqjBeHBy29ufTbqRIBTDVJX9kdlpN6Yk4h2Fq9mjtFREdzEsMMn00xEpUJ1EmMrs12XP1R6CewMDicVq_u-WaiJF4X4BWsjbU_0CIO3zAJxEwOgltmzdzz05YvGcTVyE5NLBf3nqrGSd6ngVPN9mGIYPLzEnyerVQKTvr89LrYd2mp3vlWOOIKK4IoWuWs7yHG4pKohGaqv11iXd0G7l2-_UxM4ofXA059tWvLfbgRIos1tedLzG05rMy1lE2LK_o8MVmCXay0jdnIoaoqmA.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3xqyeYN",
-      "status": "pending",
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-17T16:11:14.951Z",
-      "updatedAt": "2026-09-17T21:52:25.737Z",
-      "nextAttemptAt": "2026-09-18T01:52:25.737Z"
+      "updatedAt": "2026-09-18T02:02:51.586Z"
     },
     {
       "id": "telegram-una-ganga:93599:amazon:0",
@@ -20046,13 +20045,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/45RLCRR",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 0,
       "createdAt": "2026-09-17T23:41:00.833Z",
-      "updatedAt": "2026-09-18T00:41:36.107Z",
-      "nextAttemptAt": "2026-09-18T02:01:36.107Z"
+      "updatedAt": "2026-09-18T02:02:51.586Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:93623:aliexpress:0",
@@ -20188,13 +20187,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4yISqOR",
       "status": "pending",
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de reintento (2/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "createdAt": "2026-09-18T01:41:02.635Z",
-      "updatedAt": "2026-09-18T01:41:36.868Z",
-      "nextAttemptAt": "2026-09-18T02:01:36.868Z"
+      "updatedAt": "2026-09-18T02:01:37.741Z",
+      "nextAttemptAt": "2026-09-18T02:41:37.741Z"
     }
   ]
 }
