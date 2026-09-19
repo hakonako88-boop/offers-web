@@ -19934,13 +19934,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4uWnTtT",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 0,
       "createdAt": "2026-09-19T12:41:00.713Z",
-      "updatedAt": "2026-09-19T13:43:37.614Z",
-      "nextAttemptAt": "2026-09-19T15:03:37.614Z"
+      "updatedAt": "2026-09-19T15:12:20.505Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-tiesometro:7347:aliexpress:0",
@@ -20221,14 +20221,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/gkxwk",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (2/6)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-19T14:40:58.062Z",
-      "updatedAt": "2026-09-19T15:02:31.246Z",
-      "nextAttemptAt": "2026-09-19T15:02:17.974Z"
+      "updatedAt": "2026-09-19T15:12:20.505Z",
+      "nextAttemptAt": "2026-09-19T15:52:20.505Z"
     },
     {
       "id": "telegram-una-ganga:93748:ignored",
@@ -20259,13 +20259,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3HvTrvx",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-19T15:10:54.842Z",
-      "updatedAt": "2026-09-19T15:10:54.842Z"
+      "updatedAt": "2026-09-19T15:12:20.505Z",
+      "nextAttemptAt": "2026-09-19T15:32:20.505Z"
     },
     {
       "id": "telegram-paramanitas:4794:amazon:0",
@@ -20278,13 +20279,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0D2QVN8QQ?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-19T15:10:55.586Z",
-      "updatedAt": "2026-09-19T15:10:55.586Z"
+      "updatedAt": "2026-09-19T15:12:21.068Z",
+      "nextAttemptAt": "2026-09-19T15:51:25.300Z"
     }
   ]
 }
