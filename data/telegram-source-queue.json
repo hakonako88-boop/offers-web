@@ -17621,15 +17621,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/gii3Aru_oi2pij68hK-9qh1zAXn0g521SGnaocCy_T_ZHGRaNHaM4-HeYGAYVOulMb7otSo4sfVDY2W1u0uD-XvEaUYk0Dv1cC9lR9bb9ias3ZZDVXcymMZW2fE_WwIdp8ZwNCKo2cbsXkDuZlLfoi5XiYD80PWL4lKrvnnVlWc8bRVi3gQF4lW8xHUpWCUQqSa8mq8tibTpD119dJVxt3SnDtmEV05-tQYrwSh9iY8w2DiOSWc5SwAxINaUp8Gpnx96k6prQqdqf1GR2tjhhG8vUBhhdpBDHfhY1s1Z1hEJlVAhoWFyb3Wsormk-mfbwtTpIpbrSVb2WzW_jJ1sSw.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3aYpYqN",
-      "status": "pending",
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-19T08:41:03.088Z",
-      "updatedAt": "2026-09-19T14:22:43.611Z",
-      "nextAttemptAt": "2026-09-19T18:22:43.611Z"
+      "updatedAt": "2026-09-19T18:32:14.651Z"
     },
     {
       "id": "telegram-una-ganga:93727:miravia:0",
@@ -20265,13 +20264,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/oSuz7H-QVG1_VQiFhnXADmrka8zjUQYH23Y88VF2S9DApYf1lunVnVh9TliFHZk7BQOjR9A5TNLd6EzSQBtkGAuvjaX2JUS_n39l8a8T_-Spfkw0sLTDqe4dnVv7Nis5e8UEpIx8tHYkALVllShSFIcm6kboIU-cOutCcfBMe_gK84qEqKNDWI259j07m75px4X9InnodOCmlr6ZjW0ik2BjYjMkGc_voeM-1ykhPghItFSKi9veKyngS3Q7tXCeZIP-sVRL-0ujSoNKB5uoFdtSk88lonGcLvQsEBrg2I3a0jFxpMss8REOJkLX48Ju_W9aoeKwK1O2y_bievlxXA.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0BV2TQYSW?tag=chollodeldia-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-19T18:30:57.520Z",
-      "updatedAt": "2026-09-19T18:30:57.520Z"
+      "updatedAt": "2026-09-19T18:32:15.170Z",
+      "nextAttemptAt": "2026-09-19T19:11:24.843Z"
     }
   ]
 }
