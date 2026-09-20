@@ -19597,13 +19597,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/op8tw-03xRrxW6epga7_2pkQ__rJguQRG3nDrTaSRMHr4twyIzCPuXaFzDUc7GCGJUPk21RPdMJYKciFUcANsGFFMy5uuthf_KU9KYUUITsOE7djOlw1u-FItLhBTcqyTGs7yo1lNjnSTOuRAMfsZoCnCje21CRgnntVyN97OLKD4Mius8cQoO4lfBgjEaaIebtYCfaSRgPlW4cY1FppDPRQgZa91rNv57xpKoga6tn7XE3NN4kXzRbV9x9cM37aEcD-9oQCmk34-9jb31KcYr9Q2QeWNlzAthtb9Q3ATDGuDsAvQiJ97fCJ0sdP3hGow1w5LeiFgvdCmv6WyFzE2A.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4y3zQA5",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-09-20T07:40:58.733Z",
-      "updatedAt": "2026-09-20T10:02:44.295Z"
+      "updatedAt": "2026-09-20T10:12:35.267Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-20T10:32:35.267Z"
     },
     {
       "id": "telegram-una-ganga:93808:aliexpress:0",
@@ -20131,14 +20133,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4Em6FM3",
       "status": "pending",
-      "reason": "Pendiente de reintento (1/6)",
+      "reason": "Pendiente de reintento (2/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 1,
+      "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-20T09:43:52.606Z",
-      "updatedAt": "2026-09-20T09:45:41.496Z",
-      "nextAttemptAt": "2026-09-20T10:05:41.496Z"
+      "updatedAt": "2026-09-20T10:12:35.267Z",
+      "nextAttemptAt": "2026-09-20T10:52:35.267Z"
     },
     {
       "id": "telegram-ofertos:42558:aliexpress:0",
@@ -20214,13 +20216,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/aXQa4qwuxz5VAGWAfFK4Weh1lPorlMHDyTpWmM1PJYChI9kY0hkg3kzJfsAGPKxcug_CVHwOsbndjHpQ_6yPwMHoUwUzP7B37GC-9h-Mn6P2m0zec66YuvRB2SOszfL7iIJjYrsp4oGKBC3SrshjTiAbnfDZPpe1l6H4M8nu-HBaot5VxH34R80p4cgO3chbmf1C5D67GxAjB8OhRaOxD09RU9e69yflhVGxa1rvSv7sh-8hh28dqNh9g0OLGAw-RKph5prPi29USGyqSc_ui1ljoPYbV-KILS6M4fBkk0hzAlE4aPp_XCrFmtXl-AgCyPbR8i1jI7oqERgXffVf2w.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0G5Q8ZZL9?tag=chollodeldia-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-20T10:10:56.807Z",
-      "updatedAt": "2026-09-20T10:10:56.807Z"
+      "updatedAt": "2026-09-20T10:12:35.926Z",
+      "nextAttemptAt": "2026-09-20T10:51:31.154Z"
     },
     {
       "id": "telegram-una-ganga:93814:aliexpress:0",
@@ -20234,13 +20237,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c2R4fgd7",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-20T10:10:58.087Z",
-      "updatedAt": "2026-09-20T10:10:58.087Z"
+      "updatedAt": "2026-09-20T10:12:35.267Z",
+      "nextAttemptAt": "2026-09-20T10:32:35.267Z"
     }
   ]
 }
