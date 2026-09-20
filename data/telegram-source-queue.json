@@ -19895,13 +19895,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/mtrlo",
       "status": "pending",
-      "reason": "Pendiente de reintento (4/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceWeight": 22,
       "priority": false,
       "attempts": 4,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-19T22:41:31.192Z",
-      "updatedAt": "2026-09-20T01:32:13.740Z",
+      "updatedAt": "2026-09-20T04:12:24.930Z",
       "nextAttemptAt": "2026-09-20T04:12:13.740Z"
     },
     {
@@ -20082,13 +20082,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/49u1Q6P",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 0,
       "createdAt": "2026-09-20T01:40:55.804Z",
-      "updatedAt": "2026-09-20T02:42:27.280Z",
-      "nextAttemptAt": "2026-09-20T04:02:27.280Z"
+      "updatedAt": "2026-09-20T04:12:24.930Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:93790:aliexpress:0",
@@ -20224,13 +20224,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c2ykN5Gd",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-20T04:10:55.919Z",
-      "updatedAt": "2026-09-20T04:10:55.919Z"
+      "updatedAt": "2026-09-20T04:12:24.930Z",
+      "nextAttemptAt": "2026-09-20T04:32:24.930Z"
     }
   ]
 }
