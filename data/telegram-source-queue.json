@@ -20037,13 +20037,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4xp4T8H",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 0,
       "createdAt": "2026-09-20T11:40:59.114Z",
-      "updatedAt": "2026-09-20T12:51:32.478Z",
-      "nextAttemptAt": "2026-09-20T14:11:32.478Z"
+      "updatedAt": "2026-09-20T14:12:24.003Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:93820:aliexpress:0",
@@ -20240,13 +20240,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/LPw2G9ZW07qPbD_g2SR1vSnwOtsVI5SBgSr4IqfOU5_ndCoImlqAH3T5R9l2E5iQTs1D62TRYyXr0yqIbzij3LQ7p9IGSKkrLcGkLfQPKaeXi5od9NE0ULofOudZ3izDc2DNHhVPcRVf7E2eyIeBNgttzOKGG_PjHXtW4uSf7_j1B7Bt6rlZq0CStVcGTzElAfSz5B8De8p-cceaMeMyX6UF-vWM_J46M82VpRyqJBe6y5czHszExo9H2hUWr8gavUoSAUn93zqE0u1lN93acwhS30EZM2r26imlWzk1AWx4Yko7-GaeYMSPX39j6D2_yClqtWULP5JS80q63t6xNQ.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0CL89T899?tag=chollodeldia-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-20T14:10:56.313Z",
-      "updatedAt": "2026-09-20T14:10:56.313Z"
+      "updatedAt": "2026-09-20T14:12:24.730Z",
+      "nextAttemptAt": "2026-09-20T14:51:40.956Z"
     }
   ]
 }
