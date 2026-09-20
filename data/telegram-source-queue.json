@@ -18372,15 +18372,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/dsqib",
-      "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-20T08:30:59.280Z",
-      "updatedAt": "2026-09-20T18:02:59.937Z",
-      "nextAttemptAt": "2026-09-20T18:02:18.451Z"
+      "updatedAt": "2026-09-20T18:12:41.064Z"
     },
     {
       "id": "telegram-chollosdiario:45451:amazon:0",
@@ -19692,13 +19691,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/rYQ6TCE9ImmM_3FTBpW79dXM416xQEhELFrDRIpqHWGfFq_SpM0w2sw6zYBVi5PmwZGn_x_fefRwnFnkjbKua-Cpy6P5Qt6cUqFGngF8a5TnMddlc5rpzEFnRrVVdmeqyy7VCMcnaAc636_fZRkK0x1H9ksS4ubS3O92WqpkGyeA186T6r1CImASQPl4h-8hRkI-8uJJ0pOghDKP3kFI4jVH_zVhWI_Fz3svxcIDJIQFPzmRm8kK5pkOufxwXdD9W6JRHMrR5PgEuOGuRiNSPqpNemOsN1wQ8n6K2ca-tcMpYLrR-CTJNsl_3bdQxjKIbyW-uklrwYSL9kU7L9T0yw.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4hgs92m",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-09-20T15:40:56.691Z",
-      "updatedAt": "2026-09-20T18:02:59.937Z"
+      "updatedAt": "2026-09-20T18:12:41.064Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-20T18:32:41.064Z"
     },
     {
       "id": "telegram-una-ganga:93834:aliexpress:0",
@@ -20249,13 +20250,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4lHCCbR",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-20T18:10:56.967Z",
-      "updatedAt": "2026-09-20T18:10:56.967Z"
+      "updatedAt": "2026-09-20T18:12:41.064Z",
+      "nextAttemptAt": "2026-09-20T18:32:41.064Z"
     }
   ]
 }
