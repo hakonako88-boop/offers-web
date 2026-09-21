@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-21T02:12:15.646Z",
+  "updatedAt": "2026-09-21T02:22:22.275Z",
   "summary": {
-    "rejected": 370,
     "published": 137,
-    "needs_review": 438,
+    "needs_review": 439,
+    "rejected": 368,
     "ignored": 17,
     "duplicate": 19,
-    "pending": 19
+    "pending": 20
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93866:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93866,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/93866",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93865:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 93865,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/93865",
       "resultUrl": ""
     },
@@ -102,9 +113,9 @@
       "source": "telegram-una-ganga",
       "messageId": 93858,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/93858",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/93821",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93820:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93820,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
-      "sourceUrl": "https://t.me/una_ganga/93820",
       "resultUrl": ""
     }
   ]
