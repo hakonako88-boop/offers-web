@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-21T05:12:22.840Z",
+  "updatedAt": "2026-09-21T05:22:33.600Z",
   "summary": {
-    "rejected": 371,
+    "rejected": 372,
     "published": 134,
     "needs_review": 441,
     "ignored": 17,
     "duplicate": 19,
-    "pending": 18
+    "pending": 17
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93875:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93875,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/93875",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93874:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -49,7 +60,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/93871",
       "resultUrl": ""
     },
@@ -92,8 +103,8 @@
       "messageId": 93867,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/93867",
       "resultUrl": ""
     },
@@ -125,8 +136,8 @@
       "messageId": 93864,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/93864",
       "resultUrl": ""
     },
@@ -192,7 +203,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 4,
-      "reason": "Pendiente de reintento (4/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/93859",
       "resultUrl": ""
     },
@@ -608,9 +619,9 @@
       "source": "telegram-errores-de-precio",
       "messageId": 15558,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceUrl": "https://t.me/erroresde_precio/15558",
       "resultUrl": ""
     },
@@ -630,9 +641,9 @@
       "source": "telegram-errores-de-precio",
       "messageId": 15557,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "AliExpress no permitió completar identidad API, precio",
       "sourceUrl": "https://t.me/erroresde_precio/15557",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 6,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceUrl": "https://t.me/una_ganga/93828",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-chollosdiario:45454:amazon:0",
-      "source": "telegram-chollosdiario",
-      "messageId": 45454,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/chollosdiario/45454",
       "resultUrl": ""
     }
   ]
