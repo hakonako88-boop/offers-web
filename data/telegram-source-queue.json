@@ -18368,15 +18368,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/vdIuuGLRmI99fGH4YaoYR90Vy4lIfMsYABPb_J1kB8zDYV_3V9somPjjyHU2NDZ8a1zL9o6HbMKFayKPs4xA2W64RJtmnQyWoDCgchKPGU4laQPpJwAEa5Ige5iCpNAzpa3dXwhxVoiFxDGlgPDGcRfrsC0IUJCsT3Rm-1yPKCzp02_C_i-5AVLOV0-mvh_D8snI4mNSRskvnwTCgQIYP5B61UDBVi5ZpfsiZgh3HWdQOGgfQlPG2Ch9jjljX6pwwr8c879siZFpZ-Kad8x4Rys2wKrGgXGQT_8pfAZOgFoexhcwHlCpVS9tMRTZuIevTioVi90frwZ163G9IiYuhw.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4V6aYPn",
-      "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-21T11:30:57.142Z",
-      "updatedAt": "2026-09-21T21:12:52.870Z",
-      "nextAttemptAt": "2026-09-21T21:12:26.803Z"
+      "updatedAt": "2026-09-21T21:22:37.930Z"
     },
     {
       "id": "telegram-ofertos:42636:aliexpress:0",
@@ -19335,14 +19334,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4e2nyiG",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de reintento (3/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-21T17:40:56.984Z",
-      "updatedAt": "2026-09-21T20:41:47.016Z",
+      "updatedAt": "2026-09-21T21:22:37.930Z",
       "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-09-21T21:21:47.016Z"
+      "nextAttemptAt": "2026-09-21T22:42:37.930Z"
     },
     {
       "id": "telegram-ofertos:42652:amazon:0",
@@ -19602,13 +19601,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4jjBNDY",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-21T18:40:58.189Z",
-      "updatedAt": "2026-09-21T21:12:52.870Z",
-      "retryPolicyVersion": "exact-official-page-v1"
+      "updatedAt": "2026-09-21T21:21:39.063Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-21T21:41:39.063Z"
     },
     {
       "id": "telegram-tiesometro:7376:aliexpress:0",
@@ -20225,13 +20225,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/kO4ph6U5CkK1_qQ2g0iKwfSwwIsRAtqCcDIPTq2MNHaV3kLjtx9j_8WjXD4trrOHcGul4u7_-9gziy3ZcW0oTsnsC2sewwJ_4xc7dnguF22foug8EISRsjayPtHWXdGWn3v32VnUVg1GX12JoUeM6UQgTL9V2ryT5LoY0eTfRzqhR2-gTmZ7fW1NyNX_xrJlkEOiq0RCgw-sgVMebvMqy-L2vg7AFYD6F807wo1cOO0MeOiIfsc1490OUFS2v5F6V7CZg9cnOq1qO2pSbegeUBBoJ3MwpL2nVOKoM8Qg0I7aTDZn4IWh0F749zSUn4hRly3ff0XAvmQ4CdgxtiNIqw.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B06Odvhc4",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-21T21:20:59.490Z",
-      "updatedAt": "2026-09-21T21:20:59.490Z"
+      "updatedAt": "2026-09-21T21:22:39.888Z",
+      "nextAttemptAt": "2026-09-21T22:01:39.063Z"
     }
   ]
 }
