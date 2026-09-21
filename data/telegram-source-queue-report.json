@@ -1,14 +1,47 @@
 {
-  "updatedAt": "2026-09-21T17:02:39.349Z",
+  "updatedAt": "2026-09-21T17:12:26.803Z",
   "summary": {
-    "published": 138,
-    "rejected": 356,
-    "needs_review": 428,
+    "rejected": 355,
+    "published": 136,
+    "needs_review": 429,
     "duplicate": 22,
     "ignored": 18,
-    "pending": 38
+    "pending": 40
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7374:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7374,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/tiesometro/7374",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:42648:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 42648,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/42648",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:42647:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 42647,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/42647",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93911:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -25,9 +58,9 @@
       "source": "telegram-ofertos",
       "messageId": 42646,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/42646",
       "resultUrl": ""
     },
@@ -257,8 +290,8 @@
       "messageId": 93904,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/93904",
       "resultUrl": ""
     },
@@ -444,8 +477,8 @@
       "messageId": 42635,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 4,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 5,
+      "reason": "Pendiente de reintento (5/6)",
       "sourceUrl": "https://t.me/Ofertos/42635",
       "resultUrl": ""
     },
@@ -1074,39 +1107,6 @@
       "attempts": 0,
       "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
       "sourceUrl": "https://t.me/OfertasSupermercadosES/2117",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15560:aliexpress:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15560,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
-      "sourceUrl": "https://t.me/erroresde_precio/15560",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15559:aliexpress:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15559,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
-      "sourceUrl": "https://t.me/erroresde_precio/15559",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:93879:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93879,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/93879",
       "resultUrl": ""
     }
   ]
