@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-09-21T12:52:19.979Z",
+  "updatedAt": "2026-09-21T13:02:38.106Z",
   "summary": {
-    "published": 136,
-    "needs_review": 425,
+    "needs_review": 426,
     "rejected": 364,
+    "published": 135,
     "ignored": 17,
     "duplicate": 22,
     "pending": 36
   },
   "recent": [
     {
+      "id": "telegram-tiesometro:7371:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7371,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/tiesometro/7371",
+      "resultUrl": ""
+    },
+    {
       "id": "telegram-chollosdiario:45464:amazon:0",
       "source": "telegram-chollosdiario",
       "messageId": 45464,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45464",
       "resultUrl": ""
     },
@@ -26,8 +37,8 @@
       "messageId": 93897,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/93897",
       "resultUrl": ""
     },
@@ -312,8 +323,8 @@
       "messageId": 93889,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/6)",
+      "attempts": 4,
+      "reason": "Pendiente de reintento (4/6)",
       "sourceUrl": "https://t.me/una_ganga/93889",
       "resultUrl": ""
     },
@@ -323,8 +334,8 @@
       "messageId": 42619,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/6)",
+      "attempts": 4,
+      "reason": "Pendiente de reintento (4/6)",
       "sourceUrl": "https://t.me/Ofertos/42619",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/una_ganga/93853",
       "resultUrl": "https://s.click.aliexpress.com/e/_c3LbctfT"
-    },
-    {
-      "id": "telegram-una-ganga:93852:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 93852,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/93852",
-      "resultUrl": ""
     }
   ]
 }
