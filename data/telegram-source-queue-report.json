@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-09-21T06:43:43.701Z",
+  "updatedAt": "2026-09-21T06:53:11.217Z",
   "summary": {
-    "rejected": 374,
-    "needs_review": 438,
+    "rejected": 375,
+    "needs_review": 439,
     "published": 134,
     "ignored": 17,
     "duplicate": 19,
-    "pending": 18
+    "pending": 16
   },
   "recent": [
     {
@@ -47,9 +47,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45461,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45461",
       "resultUrl": ""
     },
@@ -59,8 +59,8 @@
       "messageId": 7369,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/6)",
       "sourceUrl": "https://t.me/tiesometro/7369",
       "resultUrl": ""
     },
@@ -147,8 +147,8 @@
       "messageId": 93871,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/6)",
+      "attempts": 4,
+      "reason": "Pendiente de reintento (4/6)",
       "sourceUrl": "https://t.me/una_ganga/93871",
       "resultUrl": ""
     },
@@ -246,8 +246,8 @@
       "messageId": 93862,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 4,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 5,
+      "reason": "Pendiente de reintento (5/6)",
       "sourceUrl": "https://t.me/una_ganga/93862",
       "resultUrl": ""
     },
@@ -432,9 +432,9 @@
       "source": "telegram-una-ganga",
       "messageId": 93850,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceUrl": "https://t.me/una_ganga/93850",
       "resultUrl": ""
     },
