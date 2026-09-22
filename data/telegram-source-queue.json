@@ -19456,15 +19456,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/rapg4",
-      "status": "pending",
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-21T22:40:58.051Z",
-      "updatedAt": "2026-09-22T04:12:34.685Z",
-      "nextAttemptAt": "2026-09-22T08:12:34.685Z"
+      "updatedAt": "2026-09-22T08:22:27.848Z"
     },
     {
       "id": "telegram-una-ganga:93929:aliexpress:0",
@@ -19908,13 +19907,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4yaXYAN",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-22T05:41:39.575Z",
-      "updatedAt": "2026-09-22T08:12:17.865Z",
-      "retryPolicyVersion": "exact-official-page-v1"
+      "updatedAt": "2026-09-22T08:21:40.039Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-22T08:41:40.039Z"
     },
     {
       "id": "telegram-ofertos:42660:amazon:0",
@@ -20211,13 +20211,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/HHDLLrWd5lS46PSssZx8nGq8KRj960UbHCWNBgmmqvO0B7oCvJ37DUSwh017IHNgkrdNCd8MSjc-rN6WaRZhdyJpWKpT_KRQEkEYOmoeERus2rr41YXXl6OVSpupx1ikjHA_pLJYWOHFBBuLRj3ZrMB1zSiKD5WkuEiDc05Na7ex83Z4155WGkcoOKrDZG6TKQMT4BPWttRdq1ERKhpR7cSdVS-czlj4WXg1wZjUjd31QPwQqTMALNFvHdvzlWAlMZgKvlq5QqcJM-geYMqLFFzRc2ggDKm9w4txqvh96VvCnQ7PB5TH0WqnD3yEYMtxRN-GLQKgSaD5HMOVlgXA7A.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0euclczP",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-22T08:21:02.641Z",
-      "updatedAt": "2026-09-22T08:21:02.641Z"
+      "updatedAt": "2026-09-22T08:22:30.120Z",
+      "nextAttemptAt": "2026-09-22T09:01:40.039Z"
     }
   ]
 }
