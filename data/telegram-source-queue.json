@@ -20028,13 +20028,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4ycOBB0",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-21T22:40:57.738Z",
-      "updatedAt": "2026-09-22T01:12:51.144Z",
-      "retryPolicyVersion": "exact-official-page-v1"
+      "updatedAt": "2026-09-22T01:21:35.536Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-22T01:41:35.536Z"
     },
     {
       "id": "telegram-tiesometro:7380:aliexpress:0",
@@ -20048,14 +20049,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/rapg4",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (4/6)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-21T22:40:58.051Z",
-      "updatedAt": "2026-09-22T01:12:51.144Z",
-      "nextAttemptAt": "2026-09-22T01:12:37.305Z"
+      "updatedAt": "2026-09-22T01:22:28.432Z",
+      "nextAttemptAt": "2026-09-22T04:02:28.432Z"
     },
     {
       "id": "telegram-una-ganga:93929:aliexpress:0",
@@ -20130,14 +20131,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4ViDqSV",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (3/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-22T00:03:15.429Z",
-      "updatedAt": "2026-09-22T01:12:51.144Z",
-      "nextAttemptAt": "2026-09-22T01:12:15.559Z"
+      "updatedAt": "2026-09-22T01:22:28.432Z",
+      "nextAttemptAt": "2026-09-22T02:42:28.432Z"
     },
     {
       "id": "telegram-una-ganga:93933:amazon:0",
@@ -20231,13 +20232,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/adviahwJBNScP7SUtf_TB4lVDXI-BTUsAOOAvkBOYFm7H-cAMDl5Lpqmur1MvqkJsrg6EATpMxdpfhTrCNI8vNaAEf9RYvnGzAiFVKZg6ucMLKJerdCSqTL2qtq5OiGdcWM1S_Wr18uRQ2yZvS0RX7-7uiG5SHoiDj7drtCdjYFzdWRhsFwHK5U_NXGweUneLP9EWXRfymky4g9E3MV6FTbCQjnTNKzNO7ygtPPPDGlV7Pq23x7-cs11i2a2mAlbwMrxRdRToOcY0enCNhpQ8LJwOI1Klgdnj4pYJNdYU3Zl_tqN9mryTJ5azx8xAEtIH9nY_F40DOUVeZVovNecrg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0im8J2LP",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-22T01:20:59.707Z",
-      "updatedAt": "2026-09-22T01:20:59.707Z"
+      "updatedAt": "2026-09-22T01:22:29.764Z",
+      "nextAttemptAt": "2026-09-22T02:01:35.536Z"
     }
   ]
 }

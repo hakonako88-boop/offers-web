@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-22T01:12:51.144Z",
+  "updatedAt": "2026-09-22T01:22:28.432Z",
   "summary": {
-    "needs_review": 444,
     "published": 133,
     "rejected": 362,
+    "needs_review": 443,
     "duplicate": 21,
     "ignored": 16,
-    "pending": 24
+    "pending": 25
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:93936:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 93936,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/93936",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:93935:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -59,8 +70,8 @@
       "messageId": 93932,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/6)",
       "sourceUrl": "https://t.me/una_ganga/93932",
       "resultUrl": ""
     },
@@ -103,8 +114,8 @@
       "messageId": 7380,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 4,
+      "reason": "Pendiente de reintento (4/6)",
       "sourceUrl": "https://t.me/tiesometro/7380",
       "resultUrl": ""
     },
@@ -114,8 +125,8 @@
       "messageId": 93928,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/93928",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
       "sourceUrl": "https://t.me/OfertasSupermercadosES/2118",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-tiesometro:7371:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7371,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
-      "sourceUrl": "https://t.me/tiesometro/7371",
       "resultUrl": ""
     }
   ]
