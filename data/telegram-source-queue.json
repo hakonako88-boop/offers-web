@@ -19653,13 +19653,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3SxpTLx",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-22T15:40:58.631Z",
-      "updatedAt": "2026-09-22T18:13:07.566Z",
-      "retryPolicyVersion": "exact-official-page-v1"
+      "updatedAt": "2026-09-22T18:21:41.804Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-22T18:41:41.804Z"
     },
     {
       "id": "telegram-una-ganga:93982:aliexpress:0",
@@ -19880,14 +19881,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c2yLYIyD",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/6)",
+      "reason": "Pendiente de reintento (3/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 2,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-22T17:01:21.594Z",
-      "updatedAt": "2026-09-22T17:33:28.556Z",
-      "nextAttemptAt": "2026-09-22T18:13:28.556Z"
+      "updatedAt": "2026-09-22T18:22:27.897Z",
+      "nextAttemptAt": "2026-09-22T19:42:27.897Z"
     },
     {
       "id": "telegram-ofertos:42691:amazon:0",
@@ -20192,13 +20193,16 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/iNpnM0DOwQZ4d3QSwV3hVbLpYQYjihs9RnkqnpZ_7rRvRmDgejCc_gQ63ORY5X2CZZq4Zt3X5y73auZDx9qkurA01I6XbZh47UjLKP65dKzs6RILGquoSN6xlfpHEJmdga_W2s6zWXH5Eif1Aso1VIwYQAImNd_5R7pV9oHz0b3RJdo6R1WLfGeBdbTiT99oSTlxjudxorMV3jW1Vy5duMxzXPx3E681BOGv6-j9HFzDC1oNrXrlgOpI_SLpsqNaAkFFjRgZM9aGTFXunoLEBwkXv8k-NbI8f9hO9yLCMnQXeYI4fpuNaXcH2RRMPbiMn9ZvZO226I7wa95fCX6m_A.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B00DGVAL2W?th=1&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-22T18:20:55.653Z",
-      "updatedAt": "2026-09-22T18:20:55.653Z"
+      "updatedAt": "2026-09-22T18:22:32.691Z",
+      "nextAttemptAt": "2026-09-22T19:01:41.804Z",
+      "telegramMessageId": 7146,
+      "resultUrl": "https://www.amazon.es/dp/B00DGVAL2W?tag=chollos00a-21"
     },
     {
       "id": "telegram-una-ganga:93991:amazon:0",
@@ -20211,13 +20215,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/GOnJEus_0aubkJgp1t5eohuqWjdB-_BmmYH_Xld30TiK3I2US1zQjBE8yqCa2RV-ggaSdONVNnETYiF9H5_EF3KSf2PEFP1KLxSnsdMqaT0Dabr7H_ZsyoXfVMOWORHz7qLnScsMYyXCuJax7H2P_DbOEAo8qlulu7_vekK6j2OLCRjWFJu9I_MZ0JdkgQI_GF7GTUlHR2nYAZ3YuKIQOh4vTbofn0PTdGEZU_GjGkaAIIMG8iy4JVn4LiRRWMwE8FQjKGb1kAO7Zl4ZWPyoH9RFoFFHneyI7OXMDCYpprSWbBKPI12AoOA0FH_NlBS_8QlIDlsSFDwFZftsUlJjHg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0iCZVRaJ",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-22T18:20:56.135Z",
-      "updatedAt": "2026-09-22T18:20:56.135Z"
+      "updatedAt": "2026-09-22T18:22:34.825Z",
+      "nextAttemptAt": "2026-09-22T19:01:41.804Z"
     },
     {
       "id": "telegram-una-ganga:93992:amazon:0",
@@ -20230,13 +20235,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/YJHKgVGwGWBc8ydUW3Ke0tvRGobl1tAgUF3TMXivG6X-nhyZnFy9tjkaY-LJLrAotIDpM6pP3cVeZpWIi2JrgClwehT6jK-VywrEAXw3ZaGFdp7u-704aowrc7cf3QGSsWahd4vXfOkw-K_UJFe9rusOUUsYIBvdlg21193BY_4BQlPIfOCePVl8IyQfzcyePTIVYj0Gjn4R7r0sODJHV6ZNgsfsvNw3Pe_sVKKz0KcQJIgEp-b3iTnzUc6BqBAApQ7s3lNQHkGUVzJj0wT36iN_Yq8wXJXKRythXiNQ-J_rOLLu5RWq1fBqqyX71FwsztN2OpgFTK5zaEPI_tYKFA.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0dRFFJTA",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-22T18:20:56.135Z",
-      "updatedAt": "2026-09-22T18:20:56.135Z"
+      "updatedAt": "2026-09-22T18:22:34.227Z",
+      "nextAttemptAt": "2026-09-22T19:01:41.804Z"
     }
   ]
 }
