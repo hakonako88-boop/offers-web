@@ -19932,13 +19932,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4gaZTOh",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 0,
       "createdAt": "2026-09-22T04:41:25.991Z",
-      "updatedAt": "2026-09-22T05:43:07.769Z",
-      "nextAttemptAt": "2026-09-22T07:03:07.769Z"
+      "updatedAt": "2026-09-22T07:12:14.456Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:93947:aliexpress:0",
@@ -20178,13 +20178,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4AnKraT",
       "status": "pending",
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de reintento (2/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "createdAt": "2026-09-22T06:40:57.484Z",
-      "updatedAt": "2026-09-22T06:41:41.584Z",
-      "nextAttemptAt": "2026-09-22T07:01:41.584Z"
+      "updatedAt": "2026-09-22T07:11:33.018Z",
+      "nextAttemptAt": "2026-09-22T07:51:33.018Z"
     },
     {
       "id": "telegram-ofertas-supermercados-es:2120:ignored",
@@ -20215,13 +20215,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3IDR03P",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-22T07:11:00.033Z",
-      "updatedAt": "2026-09-22T07:11:00.033Z"
+      "updatedAt": "2026-09-22T07:12:14.456Z",
+      "nextAttemptAt": "2026-09-22T07:32:14.456Z"
     }
   ]
 }
