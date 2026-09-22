@@ -18559,13 +18559,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3G4mElF",
       "status": "pending",
-      "reason": "Pendiente de reintento (5/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-22T11:30:56.502Z",
-      "updatedAt": "2026-09-22T17:12:29.534Z",
+      "updatedAt": "2026-09-22T21:12:35.626Z",
       "nextAttemptAt": "2026-09-22T21:12:29.534Z"
     },
     {
@@ -19595,13 +19595,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/4h48a",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceWeight": 22,
       "priority": false,
       "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-22T18:31:06.424Z",
-      "updatedAt": "2026-09-22T19:52:23.154Z",
+      "updatedAt": "2026-09-22T21:12:35.626Z",
       "nextAttemptAt": "2026-09-22T21:12:23.154Z"
     },
     {
@@ -19616,13 +19616,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4rk4Byc",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 0,
       "createdAt": "2026-09-22T18:41:05.208Z",
-      "updatedAt": "2026-09-22T19:51:28.288Z",
-      "nextAttemptAt": "2026-09-22T21:11:28.288Z"
+      "updatedAt": "2026-09-22T21:12:35.626Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-tiesometro:7385:aliexpress:0",
@@ -20217,13 +20217,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3pd9mrB",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v14-resilient-retry",
       "createdAt": "2026-09-22T21:10:54.267Z",
-      "updatedAt": "2026-09-22T21:10:54.267Z"
+      "updatedAt": "2026-09-22T21:12:35.626Z",
+      "nextAttemptAt": "2026-09-22T21:32:35.626Z"
     }
   ]
 }
