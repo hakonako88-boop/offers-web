@@ -14591,7 +14591,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-22T11:01:03.739Z",
-      "updatedAt": "2026-09-23T23:02:08.477Z"
+      "updatedAt": "2026-09-23T23:12:22.000Z"
     },
     {
       "id": "telegram-ofertos:42680:amazon:0",
@@ -17911,7 +17911,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-23T23:02:08.477Z"
+      "updatedAt": "2026-09-23T23:12:22.000Z"
     },
     {
       "id": "telegram-ofertos:42732:amazon:0",
@@ -17971,7 +17971,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-23T23:02:08.477Z"
+      "updatedAt": "2026-09-23T23:12:22.000Z"
     },
     {
       "id": "telegram-tiesometro:7389:aliexpress:0",
@@ -20077,13 +20077,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4dtCpmQ",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 0,
       "createdAt": "2026-09-23T20:40:56.685Z",
-      "updatedAt": "2026-09-23T21:42:37.101Z",
-      "nextAttemptAt": "2026-09-23T23:02:37.101Z"
+      "updatedAt": "2026-09-23T23:12:22.000Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-tiesometro:7395:aliexpress:0",
@@ -20281,13 +20281,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3XMV0NT",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T23:10:57.423Z",
-      "updatedAt": "2026-09-23T23:10:57.423Z"
+      "updatedAt": "2026-09-23T23:12:22.000Z",
+      "nextAttemptAt": "2026-09-23T23:32:22.000Z"
     }
   ]
 }
