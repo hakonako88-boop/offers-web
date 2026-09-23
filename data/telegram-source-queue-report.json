@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-23T21:04:56.883Z",
+  "updatedAt": "2026-09-23T21:13:30.792Z",
   "summary": {
-    "rejected": 296,
     "needs_review": 445,
+    "rejected": 296,
     "published": 142,
     "ignored": 21,
     "duplicate": 26,
     "pending": 70
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:94077:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94077,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/una_ganga/94077",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7395:aliexpress:0",
       "source": "telegram-tiesometro",
@@ -366,9 +377,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94070,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/94070",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
       "sourceUrl": "https://t.me/erroresde_precio/15562",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15561:ignored",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15561,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/erroresde_precio/15561",
       "resultUrl": ""
     }
   ]
