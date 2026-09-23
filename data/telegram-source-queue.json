@@ -20013,13 +20013,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/QvfWMwYZrC0OEXFCwTIKG41LqADFnaBpltqe5qrmHSOuVsPYFOxKog2T2u3EYaL-c84-mXB2l694K1Na8__lBD-SNmTT8DsFq8U3V39_oplIsnl_Y7M-mUOF4gVnjfyYJSVMLf288O4zn6z7j7gc_VK5hiBL8PuXyupBy0MakaOosRLlXMsvDJhthDW7g_1FajmYxAaI9Xt-KyUD6_z6lSov9fmkaLqtUoKcG6k9SdW5iEujhKj-V_y_AKCfpsiku2JHUsbYl_3E05Gwe1B-8qkknsvzSwn9dU5SavMknmOmVeLJVr5GFI7-gSnWN0i6uh2aXaLC-OzfUmUV78AQ3g.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/48hzzxV",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-09-23T04:40:56.732Z",
-      "updatedAt": "2026-09-23T07:02:51.077Z"
+      "updatedAt": "2026-09-23T07:22:08.719Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-23T07:42:08.719Z"
     },
     {
       "id": "telegram-una-ganga:94025:aliexpress:0",
@@ -20196,13 +20198,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/aiDoIcK4t9dQoKULk0DyioAFfCgbEJOj7GYH8_o-wRM2yxgqU5Dj-YyV98lrTCUGP8XJV3Ajh1ljR96TZLXfJqvGpdZSfCVXF-hWtIOJSmS6k2ctzLMDfUyILBRMy04LcD8CvkImAGMGyQ7efw6kHvQinkgvJAzH6KQNvOiFktOxn5aQgpLbJXvyDdlcAjGsT8hnZFy-oPywr5J_jhzBdKQuonrX-CtWqsdWpaqk0U4IByNlFpHi7mXyeSX1hGTyr73Ed0j2iDdk-UIYdWe6lMxRH1gr1W65Fa4g0mnxr-YjLqZxu5xweZD5lsDpD6VOSxB_9LKES2vjZb66cT0lmA.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0drse17O",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-23T07:20:56.923Z",
-      "updatedAt": "2026-09-23T07:20:56.923Z"
+      "updatedAt": "2026-09-23T07:22:10.771Z",
+      "nextAttemptAt": "2026-09-23T08:01:31.483Z"
     }
   ]
 }
