@@ -84,7 +84,9 @@ test('publishes validated offers in independently isolated retailer batches', ()
   assert.match(amazonSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
   assert.match(aliExpressSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
   assert.match(aliExpressSync, /const queuedPrice = signal\.queueItemId \? Number\(signal\.price\) \|\| 0 : 0;/u);
-  assert.match(aliExpressSync, /const price = queuedPrice \|\| Number\(metadata\.price\) \|\| 0;/u);
+  assert.match(aliExpressSync, /const cataloguePrice = queuedPrice \|\| Number\(metadata\.price\) \|\| 0;/u);
+  assert.match(aliExpressSync, /const price = couponAppliedByUs/u);
+  assert.match(aliExpressSync, /REPUBLICATION_COOLDOWN_MS = 14 \* 24 \* 60 \* 60 \* 1000/u);
   assert.match(aliExpressSync, /Telegram is the user's editorial source of truth/u);
   assert.match(aliExpressSync, /orderedCommunitySignals\.filter\(\(entry\) => entry\.queueItemId && entry\.sourceStore === 'AliExpress'\)/u);
   assert.match(aliExpressSync, /const resolutionInput = verifiedSignalUrl \|\|/u);

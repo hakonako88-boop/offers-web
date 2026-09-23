@@ -175,6 +175,15 @@ for (const item of queue.items || []) {
     continue;
   }
 
+  const aliExpressDiagnostic = aliExpressDiagnostics.items?.[item.id] || {};
+  if (item.store === 'AliExpress' && aliExpressDiagnostic.duplicate === true) {
+    item.status = 'duplicate';
+    item.reason = 'El mismo producto ya se publicó durante los últimos 14 días; se evita repetirlo';
+    item.updatedAt = now;
+    delete item.nextAttemptAt;
+    continue;
+  }
+
   item.attempts = Number(item.attempts || 0) + 1;
   item.updatedAt = now;
   const maxAttempts = maxAttemptsFor(item);

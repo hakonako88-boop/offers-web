@@ -1,5 +1,5 @@
 export const SOURCE_RETRY_MAX_AGE_MS = 48 * 60 * 60 * 1000;
-export const ALIEXPRESS_RETRY_POLICY = 'exact-id-query-and-diagnostics-v14-resilient-retry';
+export const ALIEXPRESS_RETRY_POLICY = 'exact-id-query-and-diagnostics-v15-republication-cooldown';
 const BASE_RETRY_DELAY_MS = 20 * 60 * 1000;
 const MAX_RETRY_DELAY_MS = 4 * 60 * 60 * 1000;
 

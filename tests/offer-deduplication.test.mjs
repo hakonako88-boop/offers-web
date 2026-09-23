@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { filterDuplicateDeals, isEquivalentDeal, isInboxDuplicate, telegramMessageIdForProduct } from '../scripts/offer-deduplication.mjs';
+import { filterDuplicateDeals, isEquivalentDeal, isInboxDuplicate, recentDeals, telegramMessageIdForProduct } from '../scripts/offer-deduplication.mjs';
 
 test('blocks catalogue variants of an offer already published', () => {
   assert.equal(isEquivalentDeal(
@@ -87,4 +87,17 @@ test('recognises a product already visible in the recent public Telegram channel
   const html = `<div class="tgme_widget_message" data-post="aldiachollos/6873"><a href="https://chollosaldia.com/oferta/1005012519652820/?utm_source=telegram">VER FICHA</a></div>`;
   assert.equal(telegramMessageIdForProduct(html, '1005012519652820'), 6873);
   assert.equal(telegramMessageIdForProduct(html, '1005019999999999'), 0);
+});
+
+test('protects recent duplicates but permits a new deal after the cooldown', () => {
+  const now = Date.parse('2026-09-23T20:00:00Z');
+  const existing = [
+    { title: 'Oferta reciente', date: Math.floor(Date.parse('2026-09-20T10:00:00Z') / 1000) },
+    { title: 'Oferta antigua', date: Math.floor(Date.parse('2026-09-01T10:00:00Z') / 1000) },
+    { title: 'Sin fecha' },
+  ];
+  assert.deepEqual(
+    recentDeals(existing, { now, cooldownMs: 14 * 24 * 60 * 60 * 1000 }).map((deal) => deal.title),
+    ['Oferta reciente', 'Sin fecha'],
+  );
 });

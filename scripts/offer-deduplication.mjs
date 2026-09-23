@@ -118,6 +118,34 @@ export function filterDuplicateDeals(candidates = [], existing = []) {
   return accepted;
 }
 
+function dealTimestamp(deal = {}) {
+  const numericDate = Number(deal.date);
+  if (Number.isFinite(numericDate) && numericDate > 0) {
+    return numericDate < 10_000_000_000 ? numericDate * 1000 : numericDate;
+  }
+  for (const value of [deal.publishedAt, deal.createdAt, deal.updatedAt]) {
+    const parsed = Date.parse(value || '');
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return 0;
+}
+
+/** Keep duplicate protection focused on recent publications. A deals site may
+ * legitimately publish the same catalogue product again after its price or
+ * coupon changes; treating the whole historical archive as a permanent block
+ * made valid AliExpress offers disappear weeks later. Entries without a
+ * timestamp stay protected conservatively. */
+export function recentDeals(existing = [], {
+  now = Date.now(),
+  cooldownMs = 14 * 24 * 60 * 60 * 1000,
+} = {}) {
+  const cutoff = Number(now) - Number(cooldownMs);
+  return existing.filter((deal) => {
+    const timestamp = dealTimestamp(deal);
+    return !timestamp || timestamp >= cutoff;
+  });
+}
+
 /** Finds a recently published offer directly in Telegram's public channel.
  * This closes the small race where Telegram accepts a post but the workflow
  * that should persist its state loses a concurrent Git push. */

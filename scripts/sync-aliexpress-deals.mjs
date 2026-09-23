@@ -14,7 +14,7 @@ import {
 import { couponForPrice, discoverCommunitySignals, nextCommunitySignalState } from './community-signals.mjs';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { mirrorTelegramMessage } from './telegram-mirror.mjs';
-import { filterDuplicateDeals, telegramMessageIdForProduct } from './offer-deduplication.mjs';
+import { filterDuplicateDeals, recentDeals, telegramMessageIdForProduct } from './offer-deduplication.mjs';
 import { resolveAliExpressAffiliateProduct, waitForAliExpressApiSlot } from './aliexpress-link-resolver.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
@@ -33,6 +33,7 @@ const SOURCE_QUEUE_MODE = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true';
 const MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE ? 20 : 1;
 const MAX_PUBLICATION_ATTEMPTS = SOURCE_QUEUE_MODE ? 24 : 8;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
+const REPUBLICATION_COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000;
 // Ofertos and ChollosDiario can publish several products close together. Read
 // a broad batch and let later ten-minute source runs drain any remainder.
 const MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE ? 24 : 8;
@@ -361,7 +362,17 @@ const sourceDiagnostics = readJson(SOURCE_DIAGNOSTICS_FILE, { version: 1, items:
 const existingWebOffers = readJson(WEB_OFFERS_FILE, []);
 const cutoff = Date.now() - 120 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
-const seenProductIds = new Set(published.map((entry) => entry.productId));
+// Keep 120 days of audit history, but only suppress the same catalogue item
+// for two weeks. AliExpress campaigns and coupon prices change frequently;
+// blocking a product for the whole archive silently discarded fresh deals.
+const recentPublicationCutoff = Date.now() - REPUBLICATION_COOLDOWN_MS;
+const seenProductIds = new Set(published
+  .filter((entry) => Date.parse(entry.publishedAt || '') >= recentPublicationCutoff)
+  .map((entry) => entry.productId));
+const recentWebOffers = recentDeals(existingWebOffers, {
+  now: Date.now(),
+  cooldownMs: REPUBLICATION_COOLDOWN_MS,
+});
 const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, Date.parse(entry.publishedAt || '') || 0), 0);
 const canPublishNow = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
   || !lastPublicationAt
@@ -420,9 +431,20 @@ for (const signal of communitySignals) {
         ? await resolveAliExpressAffiliateProduct(resolutionInput, config, { sourceMetadata })
         : {};
       const linkedOffer = linkedAliExpressOffer(metadata, signal);
-      if (linkedOffer && !seenProductIds.has(linkedOffer.id)) {
-        delete sourceDiagnostics.items[signal.id];
-        candidates.push(linkedOffer);
+      if (linkedOffer) {
+        if (seenProductIds.has(linkedOffer.id)) {
+          sourceDiagnostics.items[signal.id] = {
+            checkedAt: new Date().toISOString(),
+            productId: linkedOffer.id,
+            canonicalUrl: String(metadata.canonicalUrl || ''),
+            missing: [],
+            issues: [],
+            duplicate: true,
+          };
+        } else {
+          delete sourceDiagnostics.items[signal.id];
+          candidates.push(linkedOffer);
+        }
         continue;
       }
       if (signal.queueItemId) {
@@ -485,7 +507,7 @@ writeJson(SOURCE_DIAGNOSTICS_FILE, sourceDiagnostics);
 function publishableCandidates(sourceCandidates) {
   return filterDuplicateDeals(Array.from(new Map(
     selectInterestingOffers(sourceCandidates).map((offer) => [offer.id, offer]),
-  ).values()), existingWebOffers)
+  ).values()), recentWebOffers)
     .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable);
 }
 
