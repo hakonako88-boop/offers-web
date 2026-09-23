@@ -19931,13 +19931,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3SZPOwd",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 0,
       "createdAt": "2026-09-23T05:40:58.443Z",
-      "updatedAt": "2026-09-23T06:42:28.417Z",
-      "nextAttemptAt": "2026-09-23T08:02:28.417Z"
+      "updatedAt": "2026-09-23T08:12:30.493Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:94028:aliexpress:0",
@@ -20176,13 +20176,16 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/EdtjyH4YoO5zeQ52P8orlBE-Cs_6Wi85VfuyT9hOTJffFVJgpR4dOvmdBXyGvvnAIzNmh1hEBMEdHgku9PO13m1nXvQVc_ar8360t878DJVPYzuvKd385IR94rltw9c--zoCOOcx70f6BrBrxanWRTnlIbsE9-pXMYhWNFJmG9_OeU6IvpzAQ0jvE3-xW0oFbztBwIet1uWB0Ur2uxbcHwgFsbkSp2eKO8Bvl2NnaHqEhYIGtbCSZaYRAlSO3xG6MrV_huvsNbIyc7jFAgRhqv8IBeaLDs-gn4dCpqAunnFH6wp8WyR96_5zXGDWzdadbc2LL_5jOYVQDUIrVyN94g.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0BWNSM382?ref=cm_sw_r_cso_tg_apan_dp_BPWYWBSX1C3MT19PM0B7&amp;ref_=cm_sw_r_cso_tg_apan_dp_BPWYWBSX1C3MT19PM0B7&amp;social_share=cm_sw_r_cso_tg_apan_dp_BPWYWBSX1C3MT19PM0B7&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-23T08:10:59.157Z",
-      "updatedAt": "2026-09-23T08:10:59.157Z"
+      "updatedAt": "2026-09-23T08:12:34.924Z",
+      "nextAttemptAt": "2026-09-23T08:51:37.425Z",
+      "telegramMessageId": 7156,
+      "resultUrl": "https://www.amazon.es/dp/B0BWNSM382?tag=chollos00a-21"
     },
     {
       "id": "telegram-ofertos:42708:amazon:0",
@@ -20195,13 +20198,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/lRP5YeQMistPeDArtxkadNpmfJk-ZNzoLBDCf9NnQ48i_qPIneppylqXME2IJr0Iq7uVt0IKRX_VHWppvYsCjySVLgfNf7XmXivWCUEQtCSnAJqKOf-BHh5OmqhmQIvdHV4ottBXUyRxDo3CwIE3klWdxvnC8s30BTKl--VzKHKcclrfaRIPXyWnceFhDl3cVt0RXhbj_VhFSnpt-YrvZJXkBGmI1POHQcy3YSEkTaYBRtR4L_IRydeoGbTXKnpgD3sJoct7VfJmrDFndg4NpCZ-YACMT6WoVQYX-OVhKDLgN3_7EN__xOU3NpzFeE2pbMXPk1hSmyTQCRvH5DCZsA.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0FXXN81XF?ref=cm_sw_r_cso_tg_apan_dp_E6E0H5JHCD1WTM28HNWF&amp;ref_=cm_sw_r_cso_tg_apan_dp_E6E0H5JHCD1WTM28HNWF&amp;social_share=cm_sw_r_cso_tg_apan_dp_E6E0H5JHCD1WTM28HNWF&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "duplicate",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-23T08:10:59.157Z",
-      "updatedAt": "2026-09-23T08:10:59.157Z"
+      "updatedAt": "2026-09-23T08:12:31.220Z",
+      "nextAttemptAt": "2026-09-23T08:51:37.425Z"
     }
   ]
 }
