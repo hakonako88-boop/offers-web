@@ -14236,7 +14236,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-24T19:42:32.030Z"
+      "updatedAt": "2026-09-24T19:52:26.382Z"
     },
     {
       "id": "telegram-ofertos:42732:amazon:0",
@@ -14296,7 +14296,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-24T19:42:32.030Z"
+      "updatedAt": "2026-09-24T19:52:26.382Z"
     },
     {
       "id": "telegram-tiesometro:7389:aliexpress:0",
@@ -17668,7 +17668,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-24T19:42:32.030Z"
+      "updatedAt": "2026-09-24T19:52:26.382Z"
     },
     {
       "id": "telegram-ofertos:42790:aliexpress:0",
@@ -17708,7 +17708,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-24T19:42:32.030Z"
+      "updatedAt": "2026-09-24T19:52:26.382Z"
     },
     {
       "id": "telegram-ofertos:42791:amazon:0",
@@ -17971,15 +17971,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/AhmvPrddH7DOgxfsKI-Yz_tVPnXPjEfhu81xv66iqShW7dxrQSeX3b0SR9CS37uttidveg3qDgUtVnD28YAh5-5R0UJ977mM6Z7BVtPyfGm-mB0qXHAMkb2_IVIKx7PALOm6eTerT7tBXsG9_XPIvzRQ6h7w-ldffSJSbCa24ZSIzBQvgyIvzwKDWUXMv_wOn3t_Q5gdYp3N0yx5bCxN8Paww0_zU_fQ_4oUpQe-Wil90RrC8RpvfifOTITZK68YTe9kdnmVdkbi6XXvjKDnImwZ0lg0iDyTsUjzrLAU0in7qQQGBar21iME0yHDX5VptodoFxS4RCoaZIqamODR0w.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3nUfXPb",
-      "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T10:01:08.086Z",
-      "updatedAt": "2026-09-24T19:42:32.030Z",
-      "nextAttemptAt": "2026-09-24T19:42:28.456Z"
+      "updatedAt": "2026-09-24T19:52:26.382Z"
     },
     {
       "id": "telegram-ofertos:42802:amazon:0",
@@ -18514,7 +18513,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T11:40:56.598Z",
-      "updatedAt": "2026-09-24T19:42:32.030Z"
+      "updatedAt": "2026-09-24T19:52:26.382Z"
     },
     {
       "id": "telegram-ofertos:42821:amazon:0",
@@ -19993,13 +19992,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0DQ8PCY2V?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:27.097Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:1",
@@ -20012,13 +20012,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B07HKRBK1S?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:27.361Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:2",
@@ -20031,13 +20032,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0DG2NL4SZ?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:27.619Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:3",
@@ -20050,13 +20052,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B083MDBGBV?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:27.838Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:4",
@@ -20069,13 +20072,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0BWNV5VT2?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:28.091Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:5",
@@ -20088,13 +20092,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0C249QC3M?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:28.339Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:6",
@@ -20107,13 +20112,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B00L0C9UY4?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:28.595Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:7",
@@ -20126,13 +20132,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B08T9QCX15?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:28.800Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:8",
@@ -20145,13 +20152,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B015FIV2BW?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:29.007Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:9",
@@ -20164,13 +20172,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0DF5QKYTG?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:29.219Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:10",
@@ -20183,13 +20192,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B07RT5FPSH?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:29.437Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:11",
@@ -20202,13 +20212,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B00XDQUSNC?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:29.652Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:12",
@@ -20221,13 +20232,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0BH5JT6R6?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:29.864Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:13",
@@ -20240,13 +20252,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0H3W4B63R?tag=cazagang05-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:30.073Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:14",
@@ -20259,13 +20272,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B00XAOJ496?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-24T19:50:56.540Z",
-      "updatedAt": "2026-09-24T19:50:56.540Z"
+      "updatedAt": "2026-09-24T19:52:30.304Z",
+      "nextAttemptAt": "2026-09-24T20:31:28.520Z"
     }
   ]
 }
