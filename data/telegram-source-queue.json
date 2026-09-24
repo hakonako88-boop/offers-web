@@ -15398,7 +15398,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-24T15:33:09.043Z"
+      "updatedAt": "2026-09-24T15:42:28.456Z"
     },
     {
       "id": "telegram-ofertos:42732:amazon:0",
@@ -15458,7 +15458,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-24T15:33:09.043Z"
+      "updatedAt": "2026-09-24T15:42:28.456Z"
     },
     {
       "id": "telegram-tiesometro:7389:aliexpress:0",
@@ -18835,7 +18835,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-24T15:33:09.043Z"
+      "updatedAt": "2026-09-24T15:42:28.456Z"
     },
     {
       "id": "telegram-ofertos:42790:aliexpress:0",
@@ -18876,7 +18876,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-24T15:33:09.043Z"
+      "updatedAt": "2026-09-24T15:42:28.456Z"
     },
     {
       "id": "telegram-ofertos:42791:amazon:0",
@@ -19141,14 +19141,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3nUfXPb",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (5/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 4,
+      "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T10:01:08.086Z",
-      "updatedAt": "2026-09-24T15:33:09.043Z",
-      "nextAttemptAt": "2026-09-24T15:32:59.056Z"
+      "updatedAt": "2026-09-24T15:42:28.456Z",
+      "nextAttemptAt": "2026-09-24T19:42:28.456Z"
     },
     {
       "id": "telegram-ofertos:42802:amazon:0",
@@ -19326,15 +19326,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/IT8h2ae6hlBoPoXeX2JVL2PTXm2FmlpOoijvCV11NNAJBmoTjiUp9aImJ5B7Ap5BFQH_xypFPRO_9lJ4Eal73VvdCq01SU2Z35f8eOnPpo703sW5rLc2f5pKajsaSS2yb0pJWD7ZhrBDziKBf0Py3buEFDBZ5UAzHjPBa-lvKlQich2QvWw9vMIjaa4BuF6-gCYRtmvoB8Pyn770t8JVU5TgiJRMmYv6ob61WonMPN4pZjGzV_6ePIi9UK16w4H3Y-t-TS8inka1nrE9Y1ITVM1qTwrIOgCu0SmZsGnU_NV9dQEGOzXRL368m7ApgXQ0EwS58gZZEqIrGOCD8rydDg.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3Q13C81",
-      "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "createdAt": "2026-09-24T10:41:00.737Z",
-      "updatedAt": "2026-09-24T14:21:40.154Z",
-      "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-09-24T15:41:40.154Z"
+      "updatedAt": "2026-09-24T15:42:28.456Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-ofertos:42807:amazon:0",
@@ -19684,7 +19683,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T11:40:56.598Z",
-      "updatedAt": "2026-09-24T15:33:09.043Z"
+      "updatedAt": "2026-09-24T15:42:28.456Z"
     },
     {
       "id": "telegram-ofertos:42821:amazon:0",
@@ -19865,14 +19864,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/44xkvuu",
       "status": "pending",
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de reintento (2/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "createdAt": "2026-09-24T12:41:00.776Z",
-      "updatedAt": "2026-09-24T15:13:10.052Z",
+      "updatedAt": "2026-09-24T15:41:39.949Z",
       "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-09-24T15:33:10.052Z"
+      "nextAttemptAt": "2026-09-24T16:21:39.949Z"
     },
     {
       "id": "telegram-tiesometro:7399:aliexpress:0",
@@ -20173,13 +20172,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4wJV9pH",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de reintento (3/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-24T14:40:57.213Z",
-      "updatedAt": "2026-09-24T15:02:17.089Z",
-      "nextAttemptAt": "2026-09-24T15:42:17.089Z"
+      "updatedAt": "2026-09-24T15:42:28.456Z",
+      "nextAttemptAt": "2026-09-24T17:02:28.456Z"
     },
     {
       "id": "telegram-una-ganga:94133:aliexpress:0",
@@ -20214,14 +20213,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/4g8ly",
       "status": "pending",
-      "reason": "Pendiente de reintento (1/6)",
+      "reason": "Pendiente de reintento (2/6)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T15:11:26.100Z",
-      "updatedAt": "2026-09-24T15:13:10.052Z",
-      "nextAttemptAt": "2026-09-24T15:33:10.052Z"
+      "updatedAt": "2026-09-24T15:42:28.456Z",
+      "nextAttemptAt": "2026-09-24T16:22:28.456Z"
     },
     {
       "id": "telegram-una-ganga:94134:amazon:0",
@@ -20275,12 +20274,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4hlbzyC",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-24T15:41:01.311Z",
-      "updatedAt": "2026-09-24T15:41:01.312Z"
+      "updatedAt": "2026-09-24T15:41:39.949Z",
+      "nextAttemptAt": "2026-09-24T16:01:39.949Z"
     }
   ]
 }
