@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-09-24T18:42:46.752Z",
+  "updatedAt": "2026-09-24T18:52:54.693Z",
   "summary": {
     "rejected": 307,
-    "published": 162,
-    "needs_review": 442,
+    "published": 163,
+    "needs_review": 443,
     "ignored": 28,
     "duplicate": 34,
-    "pending": 27
+    "pending": 25
   },
   "recent": [
     {
@@ -25,9 +25,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45497,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45497",
       "resultUrl": ""
     },
@@ -93,7 +93,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/Ofertos/42848",
       "resultUrl": ""
     },
@@ -113,11 +113,11 @@
       "source": "telegram-tiesometro",
       "messageId": 7402,
       "store": "AliExpress",
-      "status": "pending",
+      "status": "published",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/6)",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/tiesometro/7402",
-      "resultUrl": ""
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3TiSpeZ"
     },
     {
       "id": "telegram-ofertos:42846:amazon:0",
@@ -411,8 +411,8 @@
       "messageId": 94137,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 4,
+      "reason": "Pendiente de reintento (4/6)",
       "sourceUrl": "https://t.me/una_ganga/94137",
       "resultUrl": ""
     },
