@@ -15701,7 +15701,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-24T13:02:51.057Z"
+      "updatedAt": "2026-09-24T13:12:43.153Z"
     },
     {
       "id": "telegram-ofertos:42732:amazon:0",
@@ -15761,7 +15761,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-24T13:02:51.057Z"
+      "updatedAt": "2026-09-24T13:12:43.153Z"
     },
     {
       "id": "telegram-tiesometro:7389:aliexpress:0",
@@ -19141,7 +19141,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-24T13:02:51.057Z"
+      "updatedAt": "2026-09-24T13:12:43.153Z"
     },
     {
       "id": "telegram-ofertos:42790:aliexpress:0",
@@ -19182,7 +19182,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-24T13:02:51.057Z"
+      "updatedAt": "2026-09-24T13:12:43.153Z"
     },
     {
       "id": "telegram-ofertos:42791:amazon:0",
@@ -19633,13 +19633,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/IT8h2ae6hlBoPoXeX2JVL2PTXm2FmlpOoijvCV11NNAJBmoTjiUp9aImJ5B7Ap5BFQH_xypFPRO_9lJ4Eal73VvdCq01SU2Z35f8eOnPpo703sW5rLc2f5pKajsaSS2yb0pJWD7ZhrBDziKBf0Py3buEFDBZ5UAzHjPBa-lvKlQich2QvWw9vMIjaa4BuF6-gCYRtmvoB8Pyn770t8JVU5TgiJRMmYv6ob61WonMPN4pZjGzV_6ePIi9UK16w4H3Y-t-TS8inka1nrE9Y1ITVM1qTwrIOgCu0SmZsGnU_NV9dQEGOzXRL368m7ApgXQ0EwS58gZZEqIrGOCD8rydDg.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3Q13C81",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-09-24T10:41:00.737Z",
-      "updatedAt": "2026-09-24T13:02:51.057Z"
+      "updatedAt": "2026-09-24T13:12:43.153Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-24T13:32:43.153Z"
     },
     {
       "id": "telegram-ofertos:42807:amazon:0",
@@ -19989,7 +19991,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T11:40:56.598Z",
-      "updatedAt": "2026-09-24T13:02:51.057Z"
+      "updatedAt": "2026-09-24T13:12:43.153Z"
     },
     {
       "id": "telegram-ofertos:42821:amazon:0",
@@ -20188,15 +20190,16 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/60nwh",
-      "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "published",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceWeight": 22,
       "priority": false,
       "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T12:41:01.107Z",
-      "updatedAt": "2026-09-24T13:02:51.057Z",
-      "nextAttemptAt": "2026-09-24T13:02:29.733Z"
+      "updatedAt": "2026-09-24T13:12:43.153Z",
+      "telegramMessageId": 7240,
+      "resultUrl": "https://s.click.aliexpress.com/e/_c2zZttZf"
     },
     {
       "id": "telegram-paramanitas:4818:amazon:0",
@@ -20271,13 +20274,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c30LYOFn",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T13:11:03.239Z",
-      "updatedAt": "2026-09-24T13:11:03.240Z"
+      "updatedAt": "2026-09-24T13:12:43.153Z",
+      "nextAttemptAt": "2026-09-24T13:32:43.153Z"
     }
   ]
 }
