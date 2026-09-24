@@ -14528,7 +14528,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-22T11:01:03.739Z",
-      "updatedAt": "2026-09-24T00:02:38.016Z"
+      "updatedAt": "2026-09-24T00:11:56.795Z"
     },
     {
       "id": "telegram-ofertos:42680:amazon:0",
@@ -17848,7 +17848,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-24T00:02:38.016Z"
+      "updatedAt": "2026-09-24T00:11:56.795Z"
     },
     {
       "id": "telegram-ofertos:42732:amazon:0",
@@ -17908,7 +17908,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-24T00:02:38.016Z"
+      "updatedAt": "2026-09-24T00:11:56.795Z"
     },
     {
       "id": "telegram-tiesometro:7389:aliexpress:0",
@@ -20095,13 +20095,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/vhAG1ba7lmxwQ4Du_wEO0IjD-787a6OMyZlrWvaJWtEvsR9-jXokyYWuyqB4zsrlTmNUg6LCDpYfPxGw-r0xO5u5xo6RnN14QfxBIaOYZgYESmlwB4Z5WF6yh7CPzv_YqdvyIQtJ7cZtcQYxms9DfaUVXxYhTgoToWkHEs1dwZL7bOu4iJX_Cpv_hWyAp1ZPGGHnaOifL_7U32YTjWMi2h3IOK6zkziAsTJTdnRc3MJzhfHFIvhNMOGEICl7h-Sr_Z2_uoQUJz-lSQ62Mvn8Sj8tmlaqUihX9E4au3f7xh0LDRkeW1BpgLSF1mx4AbRNu9t1LXo6c4Vlk_rDob7pWw.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4rpklA6",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-09-23T21:40:56.227Z",
-      "updatedAt": "2026-09-24T00:02:38.016Z"
+      "updatedAt": "2026-09-24T00:11:56.795Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-24T00:31:56.795Z"
     },
     {
       "id": "telegram-una-ganga:94080:aliexpress:0",
