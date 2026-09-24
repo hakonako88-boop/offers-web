@@ -1,14 +1,36 @@
 {
-  "updatedAt": "2026-09-24T14:03:03.996Z",
+  "updatedAt": "2026-09-24T14:12:49.085Z",
   "summary": {
-    "duplicate": 35,
-    "rejected": 322,
     "published": 159,
+    "rejected": 320,
+    "duplicate": 35,
     "ignored": 28,
     "needs_review": 434,
-    "pending": 22
+    "pending": 24
   },
   "recent": [
+    {
+      "id": "telegram-paramanitas:4819:amazon:0",
+      "source": "telegram-paramanitas",
+      "messageId": 4819,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/paramanitas/4819",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:94129:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94129,
+      "store": "AliExpress",
+      "status": "duplicate",
+      "attempts": 0,
+      "reason": "El mismo producto ya se publicó durante los últimos 14 días; se evita repetirlo",
+      "sourceUrl": "https://t.me/una_ganga/94129",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94128:miravia:0",
       "source": "telegram-una-ganga",
@@ -179,9 +201,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94121,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/94121",
       "resultUrl": ""
     },
@@ -796,8 +818,8 @@
       "messageId": 7397,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 4,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 5,
+      "reason": "Pendiente de reintento (5/6)",
       "sourceUrl": "https://t.me/tiesometro/7397",
       "resultUrl": ""
     },
@@ -1085,28 +1107,6 @@
       "attempts": 0,
       "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/94096",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:94095:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 94095,
-      "store": "AliExpress",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo producto ya se publicó durante los últimos 14 días; se evita repetirlo",
-      "sourceUrl": "https://t.me/una_ganga/94095",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:94094:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 94094,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/94094",
       "resultUrl": ""
     }
   ]
