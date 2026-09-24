@@ -13797,7 +13797,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-24T22:02:08.519Z"
+      "updatedAt": "2026-09-24T22:12:36.539Z"
     },
     {
       "id": "telegram-ofertos:42732:amazon:0",
@@ -13857,7 +13857,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-24T22:02:08.519Z"
+      "updatedAt": "2026-09-24T22:12:36.539Z"
     },
     {
       "id": "telegram-tiesometro:7389:aliexpress:0",
@@ -17229,7 +17229,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-24T22:02:08.519Z"
+      "updatedAt": "2026-09-24T22:12:36.539Z"
     },
     {
       "id": "telegram-ofertos:42790:aliexpress:0",
@@ -17269,7 +17269,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-24T22:02:08.519Z"
+      "updatedAt": "2026-09-24T22:12:36.539Z"
     },
     {
       "id": "telegram-ofertos:42791:amazon:0",
@@ -18071,7 +18071,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T11:40:56.598Z",
-      "updatedAt": "2026-09-24T22:02:08.519Z"
+      "updatedAt": "2026-09-24T22:12:36.539Z"
     },
     {
       "id": "telegram-ofertos:42821:amazon:0",
@@ -19531,13 +19531,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4yOB9Tv",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 0,
       "createdAt": "2026-09-24T19:40:59.531Z",
-      "updatedAt": "2026-09-24T20:42:26.220Z",
-      "nextAttemptAt": "2026-09-24T22:02:26.220Z"
+      "updatedAt": "2026-09-24T22:12:36.539Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-paramanitas:4821:amazon:0",
@@ -20226,14 +20226,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/xtzly",
       "status": "pending",
-      "reason": "Pendiente de reintento (1/6)",
+      "reason": "Pendiente de reintento (2/6)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T21:40:57.631Z",
-      "updatedAt": "2026-09-24T21:42:57.927Z",
-      "nextAttemptAt": "2026-09-24T22:02:57.927Z"
+      "updatedAt": "2026-09-24T22:12:36.539Z",
+      "nextAttemptAt": "2026-09-24T22:52:36.539Z"
     },
     {
       "id": "telegram-una-ganga:94157:aliexpress:0",
@@ -20247,13 +20247,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3kMjmQH",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T22:10:57.200Z",
-      "updatedAt": "2026-09-24T22:10:57.200Z"
+      "updatedAt": "2026-09-24T22:12:36.539Z",
+      "nextAttemptAt": "2026-09-24T22:32:36.539Z"
     },
     {
       "id": "telegram-tiesometro:7407:aliexpress:0",
@@ -20267,13 +20268,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/plxl0",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T22:10:57.493Z",
-      "updatedAt": "2026-09-24T22:10:57.493Z"
+      "updatedAt": "2026-09-24T22:12:36.539Z",
+      "nextAttemptAt": "2026-09-24T22:32:36.539Z"
     }
   ]
 }
