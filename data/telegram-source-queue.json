@@ -14580,7 +14580,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-24T19:03:17.403Z"
+      "updatedAt": "2026-09-24T19:12:23.493Z"
     },
     {
       "id": "telegram-ofertos:42732:amazon:0",
@@ -14640,7 +14640,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-24T19:03:17.403Z"
+      "updatedAt": "2026-09-24T19:12:23.493Z"
     },
     {
       "id": "telegram-tiesometro:7389:aliexpress:0",
@@ -18013,7 +18013,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-24T19:03:17.403Z"
+      "updatedAt": "2026-09-24T19:12:23.493Z"
     },
     {
       "id": "telegram-ofertos:42790:aliexpress:0",
@@ -18054,7 +18054,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-24T19:03:17.403Z"
+      "updatedAt": "2026-09-24T19:12:23.493Z"
     },
     {
       "id": "telegram-ofertos:42791:amazon:0",
@@ -18861,7 +18861,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T11:40:56.598Z",
-      "updatedAt": "2026-09-24T19:03:17.403Z"
+      "updatedAt": "2026-09-24T19:12:23.493Z"
     },
     {
       "id": "telegram-ofertos:42821:amazon:0",
@@ -19660,13 +19660,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/V0xI_OCNJZio9L0So8A9m8EUAqyQKOvNm_M6KzJVDnAYhd8XJeIzxy91hyC4XBK94fA1vtx831kKh-KPGwgj7ScaHSxhoUhkpo55nUXFDcrJ0iRLIaE2s4AUNdDyC0zJRaLHoylsS1Q1RFRMA6h3NuasYTL4R6rRQ2vp4pa-HjnIwefbZ1puVUW8igk5vyoGz94BZ6PPI6OtLKgXcvfuFyaI7o_MG-AWJWzCnyEKdstqKU5JnPMl72MZoIvAFxslkC6lpXYA70BZb1nR3_dHElgsbhqQi1Z1p2AuK1wvA_3h-iijJdVgl14haV_woaXCXerPqnu3PhCBeMdwtUDXGg.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4hr3mcc",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-09-24T16:41:05.546Z",
-      "updatedAt": "2026-09-24T19:03:17.403Z"
+      "updatedAt": "2026-09-24T19:12:23.493Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-24T19:32:23.493Z"
     },
     {
       "id": "telegram-ofertos:42832:amazon:0",
@@ -20239,13 +20241,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/nHtHT6WLgvQao7awobKIPbSsQyO_Oy6cYUPKvC5cD1b4q6VUOZQ4mdnjODnfMCh-McNn47MCZMtMKOKXfFxP3T0214BZB4g5vKNNr_rWEAkdr_61-EzFoeHrjR7JEESXGWRcCQnZKXbdG4F6JUxeh9EeiTbcoGV8OR38M21IGrZIXvpyAS2csk5EEgkcYqMVC8iDI1V80wcaLKKnRururBsEKr3bDVT67Z23XUZzJLM_0IbQF1zJiNGKR0G8-e9xEUsVN7eqAQEXvVo38k8HG91qI7AaMcvAs13_jC62Ps6VvmFrq8-ep5SY4qbzR_1HBUzC7D1BejG20o94WESjOg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B09B12W1T4?&amp;linkCode=sl2&amp;linkId=6d4259482bb7fd7bb3e37eda7a5b9181&amp;ref_=as_li_ss_tl&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-24T19:10:59.204Z",
-      "updatedAt": "2026-09-24T19:10:59.204Z"
+      "updatedAt": "2026-09-24T19:12:24.345Z",
+      "nextAttemptAt": "2026-09-24T19:51:35.827Z"
     },
     {
       "id": "telegram-ofertos:42851:amazon:0",
@@ -20258,13 +20261,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/Vb4m2MMZAow2Rl5XI0c4UGkmqiVAh0NaXh0ECnvswRF31wX0Us0T8MaZOckHxmPQQpknHAysjP_7yLOi1-KuBa5gaXkE5P8N7ZALwv6jJXIqd4ubx0QKTZYmSX1ijPpNFpVtO9b8_MbXNCYCZPM-Stejhnzda0anixzspdycjZ0Plm6MvOGaaRnjUKw77zA9Y-VMc4k8v7Urm5eBLC4l3pf0LUuf-BMqX6y8Bq2Qi0kMbc9aYVWdZMchKV3Bz6aMo1nsCQWd6XUJuXclmlcrlaFZA7kttY_hK1mzLKoIRSk9El4kRx1tsui6B6pevmaVXWUlhIEOS1hpGVyivwtyZQ.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0DTJST4S9?th=1&amp;psc=1&amp;linkCode=sl2&amp;linkId=019cef8c2a02300e32ba243650fdcecf&amp;ref_=as_li_ss_tl&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-24T19:10:59.204Z",
-      "updatedAt": "2026-09-24T19:10:59.204Z"
+      "updatedAt": "2026-09-24T19:12:24.167Z",
+      "nextAttemptAt": "2026-09-24T19:51:35.827Z"
     },
     {
       "id": "telegram-una-ganga:94146:aliexpress:0",
@@ -20277,14 +20281,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/dszz7eikxtnoOHG3JcrE_hcDQdl9fwGG_WBq-ZTwI_QuMcMgc6O_jNX2QUpdW9d5a9aP6X7fW6ZL_bva4HYYg_2Lbw7cTsR0UL9g2mRfe6YWF8RnP_z2IQfinkoMDKv52zzFLhr1-FSsfEY6ud0GixJl9yIIET4XJ-NOA0KKChPNMG87qvGfvFVTzV7zQizCUixuyJpEimU6JGva1QkLlgnbScBKZz2cLh5Ivee9p3NJurXTSVEukKeQLHMZarLhw4FxcrkeorYVCIXKZqsIGCFKLHe9ZIJU4A0T0FoHEMK8pgzv4SX48jL0T_qFfFD2-9LbspBmKG6WM7okEECh_A.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c2QYMSuZ",
-      "status": "pending",
-      "reason": "",
+      "status": "duplicate",
+      "reason": "El mismo producto ya se publicó durante los últimos 14 días; se evita repetirlo",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T19:10:59.748Z",
-      "updatedAt": "2026-09-24T19:10:59.748Z"
+      "updatedAt": "2026-09-24T19:12:23.493Z"
     }
   ]
 }
