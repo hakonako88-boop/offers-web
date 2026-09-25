@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-25T08:01:35.631Z",
+  "updatedAt": "2026-09-25T08:11:47.003Z",
   "summary": {
-    "needs_review": 444,
+    "needs_review": 443,
     "ignored": 31,
-    "rejected": 307,
+    "rejected": 308,
     "published": 160,
     "duplicate": 35,
     "pending": 23
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:94187:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94187,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/una_ganga/94187",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94186:miravia:0",
       "source": "telegram-una-ganga",
@@ -268,8 +279,8 @@
       "messageId": 94180,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/94180",
       "resultUrl": ""
     },
@@ -279,8 +290,8 @@
       "messageId": 7410,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/6)",
+      "attempts": 4,
+      "reason": "Pendiente de reintento (4/6)",
       "sourceUrl": "https://t.me/tiesometro/7410",
       "resultUrl": ""
     },
@@ -522,7 +533,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/7409",
       "resultUrl": ""
     },
@@ -553,9 +564,9 @@
       "source": "telegram-tiesometro",
       "messageId": 7408,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7408",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
       "sourceUrl": "https://t.me/OfertasSupermercadosES/2122",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:94142:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 94142,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/94142",
       "resultUrl": ""
     }
   ]
