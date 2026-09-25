@@ -12866,7 +12866,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-25T07:01:36.659Z"
+      "updatedAt": "2026-09-25T07:12:06.441Z"
     },
     {
       "id": "telegram-ofertos:42732:amazon:0",
@@ -12926,7 +12926,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-25T07:01:36.659Z"
+      "updatedAt": "2026-09-25T07:12:06.441Z"
     },
     {
       "id": "telegram-tiesometro:7389:aliexpress:0",
@@ -16298,7 +16298,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-25T07:01:36.659Z"
+      "updatedAt": "2026-09-25T07:12:06.441Z"
     },
     {
       "id": "telegram-ofertos:42790:aliexpress:0",
@@ -16338,7 +16338,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-25T07:01:36.659Z"
+      "updatedAt": "2026-09-25T07:12:06.441Z"
     },
     {
       "id": "telegram-ofertos:42791:amazon:0",
@@ -17140,7 +17140,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T11:40:56.598Z",
-      "updatedAt": "2026-09-25T07:01:36.659Z"
+      "updatedAt": "2026-09-25T07:12:06.441Z"
     },
     {
       "id": "telegram-ofertos:42821:amazon:0",
@@ -19817,13 +19817,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/ljc_u6MIL_3zVTR-MBslmCz-hgePL20PhjSkThlSig0W6qOYMpwuucTJIVoEI-2KEdcQJTD7vvxcHhZukmP7bvmOproshlmJKPPZ8TCh_QMiaqrsNu18w6LkgS8QFv6_4_GCsjaqL8bY1AI7-8WvxKqBITykRWVhjiztnNRPcUyfBbtwY0mbMjoXyFEPmVRd5Pp5e2JebU8tacMUkUXcduz-U5vuh2CKCCAWdLVRUGp2ffo7xpzc6fa4V2UfB7P1mBaNvlH2W1E21tREnoRuLMH8eakYBY8nEKIRcaVMOEvq8k5xUnaDJUBn-IwKq4C2xkUk7Yh1xzX52j_gBC6Fpg.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4hqo4cf",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-09-25T04:40:13.834Z",
-      "updatedAt": "2026-09-25T07:01:36.659Z"
+      "updatedAt": "2026-09-25T07:12:06.441Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-25T07:32:06.441Z"
     },
     {
       "id": "telegram-una-ganga:94178:aliexpress:0",
@@ -20252,13 +20254,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/MVFhdluL3jM869S3SjWoxtuG_R_Kj97kNTyoFhRZ5IaOybSCvgu6po7ucOZcxFJB6x05oUexkWykoP0ccHNy2gmlEe2dbUsMdrOOHaSSoLexl9A9ujluWZRl2R5cTn1R1jLRCqztYRd3mK7_hChUAWnYJmnO75JJKq760ZyMjJEK5MeArQgJ5yzBqkjkPhjAjKmz78z68h6oQMyqUwZGcNF7yOQiDMtccEVPIQ_yYvmAGnog1pLIjgyPNzeFFWeURDlLYLkTP_v-AjmC-b12yWGydq-HbV5Q1CQiR0yWFrjOA1vXt76jxQIFnmmh8IV1WPmUrwkeMkYVJYJeEBpXSQ.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0G3CZ9XQM?psc=1&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-25T07:10:16.796Z",
-      "updatedAt": "2026-09-25T07:10:16.796Z"
+      "updatedAt": "2026-09-25T07:12:07.167Z",
+      "nextAttemptAt": "2026-09-25T07:50:54.395Z"
     },
     {
       "id": "telegram-una-ganga:94184:aliexpress:0",
@@ -20272,13 +20275,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4Eh19Kh",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-25T07:10:17.392Z",
-      "updatedAt": "2026-09-25T07:10:17.392Z"
+      "updatedAt": "2026-09-25T07:12:06.441Z",
+      "nextAttemptAt": "2026-09-25T07:32:06.441Z"
     }
   ]
 }
