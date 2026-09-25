@@ -15220,7 +15220,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-25T15:31:51.972Z"
+      "updatedAt": "2026-09-25T15:41:53.047Z"
     },
     {
       "id": "telegram-ofertos:42790:aliexpress:0",
@@ -15260,7 +15260,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-25T15:31:51.972Z"
+      "updatedAt": "2026-09-25T15:41:53.047Z"
     },
     {
       "id": "telegram-ofertos:42791:amazon:0",
@@ -16062,7 +16062,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T11:40:56.598Z",
-      "updatedAt": "2026-09-25T15:31:51.972Z"
+      "updatedAt": "2026-09-25T15:41:53.047Z"
     },
     {
       "id": "telegram-ofertos:42821:amazon:0",
@@ -19424,7 +19424,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-25T08:50:17.255Z",
-      "updatedAt": "2026-09-25T15:31:51.972Z"
+      "updatedAt": "2026-09-25T15:41:53.047Z"
     },
     {
       "id": "telegram-paramanitas:4824:amazon:0",
@@ -19646,7 +19646,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-25T10:20:12.919Z",
-      "updatedAt": "2026-09-25T15:31:51.972Z"
+      "updatedAt": "2026-09-25T15:41:53.047Z"
     },
     {
       "id": "telegram-una-ganga:94194:amazon:0",
@@ -19701,15 +19701,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/HACRxBJG3LoMmhlqeJQCjlvMbxjTaFbkfjOqNTbOV7UhPu5MF4N3Ch59T9tu9YGpzpa1s-QuSU-YCxuthWRfLzCIkd0CuDNJMkkHow2nJaIv-BBw9HJl_cPC29nuGsJEHbIuuIi_5ucaEGUXNGJo_J2-bFRzsPwfWbdqt4kwkMbt4ps3wEnIjh-lP2ns6Z4lV7zCH-ZvKu-Dn4cdbX-N0G1_IoS16rXFNmKn56TEuePKNaTgHoewurT_pLKBNUXLGEW3JOL3N7Peto8L3zIT2K1VTiU3E-e7nJwWgr0Iuy9Wy2o3QlG2xH-LL3INCY399GDsJTpw_RH8KipKPD3KTg.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4ogEfdn",
-      "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "createdAt": "2026-09-25T10:40:16.549Z",
-      "updatedAt": "2026-09-25T14:20:57.305Z",
-      "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-09-25T15:40:57.305Z"
+      "updatedAt": "2026-09-25T15:41:53.047Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-ofertos:42873:aliexpress:0",
@@ -20219,14 +20218,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c36zQC5b",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (2/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-25T15:10:16.292Z",
-      "updatedAt": "2026-09-25T15:31:51.972Z",
-      "nextAttemptAt": "2026-09-25T15:31:45.878Z"
+      "updatedAt": "2026-09-25T15:41:53.047Z",
+      "nextAttemptAt": "2026-09-25T16:21:53.047Z"
     },
     {
       "id": "telegram-una-ganga:94210:amazon:0",
@@ -20280,12 +20279,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3UrtThB",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-25T15:40:16.966Z",
-      "updatedAt": "2026-09-25T15:40:16.966Z"
+      "updatedAt": "2026-09-25T15:40:56.378Z",
+      "nextAttemptAt": "2026-09-25T16:00:56.378Z"
     }
   ]
 }
