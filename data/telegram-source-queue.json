@@ -13412,7 +13412,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-25T03:02:51.393Z"
+      "updatedAt": "2026-09-25T03:12:26.479Z"
     },
     {
       "id": "telegram-ofertos:42732:amazon:0",
@@ -13472,7 +13472,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-25T03:02:51.393Z"
+      "updatedAt": "2026-09-25T03:12:26.479Z"
     },
     {
       "id": "telegram-tiesometro:7389:aliexpress:0",
@@ -16844,7 +16844,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-25T03:02:51.393Z"
+      "updatedAt": "2026-09-25T03:12:26.479Z"
     },
     {
       "id": "telegram-ofertos:42790:aliexpress:0",
@@ -16884,7 +16884,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-25T03:02:51.393Z"
+      "updatedAt": "2026-09-25T03:12:26.479Z"
     },
     {
       "id": "telegram-ofertos:42791:amazon:0",
@@ -17686,7 +17686,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T11:40:56.598Z",
-      "updatedAt": "2026-09-25T03:02:51.393Z"
+      "updatedAt": "2026-09-25T03:12:26.479Z"
     },
     {
       "id": "telegram-ofertos:42821:amazon:0",
@@ -20124,13 +20124,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/gQcSSZVMWMV3oWEYwa_9EdSs-Deejfd4QaCFjn4raJwK2o0nIfkFZuxRTQ8xN3EZc0w89glWmwvwHdKy4fEayRvZOnpTKuJo_ra17MUG7oDrOmDWZzVki-iGVxPJWQaBcs8AJfdp27vGNMALbWF_y20sY1TGXxuFInhHgAvh8VU1dkPZzpZ5XhA3NRcogj2T90kwHzIjLeQQ1ajhGcmwGWxQ_LUI_-hoZ42mZEwzUnN1tgdy6tbaJtxMbSLosCoQgp4Ek0LVk6OpmZFBzTXTULElvRpzy5Ph2L1sxUGmYGZ0kS1gurlVmgvyKMwqUcfbW2tmL49dxduFGoDeWFvtEg.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4rzXamY",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-09-25T00:41:00.203Z",
-      "updatedAt": "2026-09-25T03:02:51.393Z"
+      "updatedAt": "2026-09-25T03:12:26.479Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-25T03:32:26.479Z"
     },
     {
       "id": "telegram-una-ganga:94166:aliexpress:0",
