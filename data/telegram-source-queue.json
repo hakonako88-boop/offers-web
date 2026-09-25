@@ -13720,7 +13720,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-25T21:01:54.766Z"
+      "updatedAt": "2026-09-25T21:11:54.278Z"
     },
     {
       "id": "telegram-ofertos:42790:aliexpress:0",
@@ -13760,7 +13760,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-25T21:01:54.766Z"
+      "updatedAt": "2026-09-25T21:11:54.278Z"
     },
     {
       "id": "telegram-ofertos:42791:amazon:0",
@@ -14562,7 +14562,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T11:40:56.598Z",
-      "updatedAt": "2026-09-25T21:01:54.766Z"
+      "updatedAt": "2026-09-25T21:11:54.278Z"
     },
     {
       "id": "telegram-ofertos:42821:amazon:0",
@@ -17920,7 +17920,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-25T08:50:17.255Z",
-      "updatedAt": "2026-09-25T21:01:54.766Z"
+      "updatedAt": "2026-09-25T21:11:54.278Z"
     },
     {
       "id": "telegram-paramanitas:4824:amazon:0",
@@ -18140,7 +18140,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-25T10:20:12.919Z",
-      "updatedAt": "2026-09-25T21:01:54.766Z"
+      "updatedAt": "2026-09-25T21:11:54.278Z"
     },
     {
       "id": "telegram-una-ganga:94194:amazon:0",
@@ -19560,14 +19560,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3c70YQv",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (4/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 3,
+      "attempts": 4,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-25T18:20:13.443Z",
-      "updatedAt": "2026-09-25T21:01:54.766Z",
-      "nextAttemptAt": "2026-09-25T21:01:28.847Z"
+      "updatedAt": "2026-09-25T21:11:54.278Z",
+      "nextAttemptAt": "2026-09-25T23:51:54.278Z"
     },
     {
       "id": "telegram-una-ganga:94221:amazon:0",
@@ -19663,13 +19663,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/uMbhbuu2iKUW913_TMCgZAql3QpBCkk2GjGL5k-uhPmHtwRDRE3kg9770CXiy6IQ3gslwyM2I_aNLAlhMWKwbYOUGAedPdlrWyU9zLibybAPKNZz_i9SpdTIqjCf9rH5O8QTF5T7REaNvDiCAtwr3c-W0Lbf52WGNd1N79hgOIWQ4MdM0hnkDBzqMuXfdZ52-e-U1oiwdlV0AyGLgZL2JiYRnUtEwV6i6DRhz5yp9A5gXyAylMg_Ud_gKFPP_98yzMonesTAMaNYULM8Do5ttj19NHUHLtWX-MHqxzOvgb9BfuV8BxQGcSE_RCqMbiHww1zyr7Jc_MnU_7tB2yNjpw.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4rliUTq",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-09-25T18:40:17.654Z",
-      "updatedAt": "2026-09-25T21:01:54.766Z"
+      "updatedAt": "2026-09-25T21:11:54.278Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-25T21:31:54.278Z"
     },
     {
       "id": "telegram-chollosdiario:45508:amazon:0",
@@ -20288,14 +20290,16 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/q3h6w_zeBSxdooUWU114hJCI_jD4J0H3vQZGwnsyKRJ7Rysa9Uic1itMHV6DWrSqX2jPPzacDFQYQ4XY-nl7u0mPYK-7r2Yr7W2VIRD6fnSArxBcbPd8O9t2tB0XJZrKQic_EiffL0X5lMvpnrz4XOhV2nZokZjKqX0FoGBSBcMI8n7kW47YGcc6iOb8AyiNSPBszHFvKU7_4Pqriaa4pfx1l8plz8ZOPd5510XIkQWTPTODc2VLtqwL5Q-qjkgWul_vpEg_evS52pNwmjHZ9JUkL4b3f-7Y7DUYQuS-6Ew74Z9t3WkV5wzO5wyxmiNGJlg9fs1hHqWFGvBAC21wMQ.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4XCNOI1",
-      "status": "pending",
-      "reason": "",
+      "status": "published",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-25T21:10:22.280Z",
-      "updatedAt": "2026-09-25T21:10:22.280Z"
+      "updatedAt": "2026-09-25T21:11:54.278Z",
+      "telegramMessageId": 7289,
+      "resultUrl": "https://s.click.aliexpress.com/e/_c3o7yd41"
     }
   ]
 }
