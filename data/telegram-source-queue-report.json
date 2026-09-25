@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-25T09:31:37.475Z",
+  "updatedAt": "2026-09-25T09:41:52.113Z",
   "summary": {
     "rejected": 309,
     "published": 159,
@@ -9,6 +9,17 @@
     "pending": 24
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:94192:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94192,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/94192",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94191:amazon:0",
       "source": "telegram-una-ganga",
@@ -26,8 +37,8 @@
       "messageId": 94190,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/6)",
       "sourceUrl": "https://t.me/una_ganga/94190",
       "resultUrl": ""
     },
@@ -125,8 +136,8 @@
       "messageId": 94189,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/94189",
       "resultUrl": ""
     },
@@ -454,9 +465,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94177,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/94177",
       "resultUrl": ""
     },
@@ -478,7 +489,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 4,
-      "reason": "Pendiente de reintento (4/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/94175",
       "resultUrl": ""
     },
@@ -1089,17 +1100,6 @@
     },
     {
       "id": "telegram-paramanitas:4821:amazon:2",
-      "source": "telegram-paramanitas",
-      "messageId": 4821,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4821",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4821:amazon:1",
       "source": "telegram-paramanitas",
       "messageId": 4821,
       "store": "Amazon",
