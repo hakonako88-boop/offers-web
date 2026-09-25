@@ -15457,7 +15457,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-25T12:42:31.249Z"
+      "updatedAt": "2026-09-25T12:51:55.505Z"
     },
     {
       "id": "telegram-ofertos:42790:aliexpress:0",
@@ -15497,7 +15497,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-25T12:42:31.249Z"
+      "updatedAt": "2026-09-25T12:51:55.505Z"
     },
     {
       "id": "telegram-ofertos:42791:amazon:0",
@@ -16299,7 +16299,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T11:40:56.598Z",
-      "updatedAt": "2026-09-25T12:42:31.249Z"
+      "updatedAt": "2026-09-25T12:51:55.505Z"
     },
     {
       "id": "telegram-ofertos:42821:amazon:0",
@@ -18864,15 +18864,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/H6sWZCAjmvc-V47JySibd2cK5m7mIFk4SzoZ9ZBtYh0JSqurVdIT5wYAjMjqiXElzJobhKERICEnuYcZYJEdLpSiDP_1_dFL5tZkV_ubn4UF3YCBBCX6AfHxrgXlrukv2AsPJp_t7dsk9IRoBpeMLuXUisoFogiCjuIKkskKhdtmJp-NhkrYAVnBM14z1cWet6Oh5IMilvbRBNdJWhReecsfGZtJq7ukKF5P14dBytGRiYnaTgfAveSqhXSTV_OdPJj_ec_Gek7gFwZM2Jr3vrrypAS_w5nuo8rYL1rQ5jJ56NP4q4zWztjVgQSA1NxDiBNw9fu8qXcly4Zl2i5W9A.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3IuV4p3",
-      "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-25T03:01:13.611Z",
-      "updatedAt": "2026-09-25T12:42:31.249Z",
-      "nextAttemptAt": "2026-09-25T12:42:30.328Z"
+      "updatedAt": "2026-09-25T12:51:55.505Z"
     },
     {
       "id": "telegram-una-ganga:94173:amazon:0",
@@ -19666,7 +19665,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-25T08:50:17.255Z",
-      "updatedAt": "2026-09-25T12:42:31.249Z"
+      "updatedAt": "2026-09-25T12:51:55.505Z"
     },
     {
       "id": "telegram-paramanitas:4824:amazon:0",
@@ -19700,14 +19699,14 @@
       "store": "Miravia",
       "merchantUrl": "https://www.awin1.com/cread.php?awinmid=77138&amp;awinaffid=965977&amp;ued=https%3A%2F%2Fwww.powerplanetonline.com%2Fes%2Fxiaomi-gaming-monitor-g25i-2026",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de reintento (3/4)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-25T09:10:16.127Z",
-      "updatedAt": "2026-09-25T12:11:36.101Z",
+      "updatedAt": "2026-09-25T12:51:55.505Z",
       "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-09-25T12:51:36.101Z"
+      "nextAttemptAt": "2026-09-25T14:11:55.505Z"
     },
     {
       "id": "telegram-ofertos:42869:amazon:0",
@@ -19890,7 +19889,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-25T10:20:12.919Z",
-      "updatedAt": "2026-09-25T12:42:31.249Z"
+      "updatedAt": "2026-09-25T12:51:55.505Z"
     },
     {
       "id": "telegram-una-ganga:94194:amazon:0",
@@ -20277,13 +20276,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B00R3Z4FR4?tag=vamoalcine-21",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 16,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-25T12:50:35.608Z",
-      "updatedAt": "2026-09-25T12:50:35.608Z"
+      "updatedAt": "2026-09-25T12:51:56.826Z",
+      "nextAttemptAt": "2026-09-25T13:31:09.404Z"
     }
   ]
 }
