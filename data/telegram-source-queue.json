@@ -13228,7 +13228,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-25T05:32:13.149Z"
+      "updatedAt": "2026-09-25T05:41:19.720Z"
     },
     {
       "id": "telegram-ofertos:42732:amazon:0",
@@ -13288,7 +13288,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-23T10:50:59.877Z",
-      "updatedAt": "2026-09-25T05:32:13.149Z"
+      "updatedAt": "2026-09-25T05:41:19.720Z"
     },
     {
       "id": "telegram-tiesometro:7389:aliexpress:0",
@@ -16660,7 +16660,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-25T05:32:13.149Z"
+      "updatedAt": "2026-09-25T05:41:19.720Z"
     },
     {
       "id": "telegram-ofertos:42790:aliexpress:0",
@@ -16700,7 +16700,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T09:31:40.656Z",
-      "updatedAt": "2026-09-25T05:32:13.149Z"
+      "updatedAt": "2026-09-25T05:41:19.720Z"
     },
     {
       "id": "telegram-ofertos:42791:amazon:0",
@@ -17502,7 +17502,7 @@
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T11:40:56.598Z",
-      "updatedAt": "2026-09-25T05:32:13.149Z"
+      "updatedAt": "2026-09-25T05:41:19.720Z"
     },
     {
       "id": "telegram-ofertos:42821:amazon:0",
@@ -19332,15 +19332,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/hsxou",
-      "status": "pending",
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-24T19:56:27.080Z",
-      "updatedAt": "2026-09-25T01:32:17.196Z",
-      "nextAttemptAt": "2026-09-25T05:32:17.196Z"
+      "updatedAt": "2026-09-25T05:41:19.720Z"
     },
     {
       "id": "telegram-paramanitas:4822:ignored",
@@ -20184,13 +20183,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4hqo4cf",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de reintento (3/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-25T04:40:13.834Z",
-      "updatedAt": "2026-09-25T05:00:49.501Z",
-      "nextAttemptAt": "2026-09-25T05:40:49.501Z"
+      "updatedAt": "2026-09-25T05:41:19.720Z",
+      "nextAttemptAt": "2026-09-25T07:01:19.720Z"
     },
     {
       "id": "telegram-una-ganga:94178:aliexpress:0",
@@ -20204,14 +20203,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c35Ztpo9",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (2/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-25T05:10:16.214Z",
-      "updatedAt": "2026-09-25T05:32:13.149Z",
-      "nextAttemptAt": "2026-09-25T05:31:47.393Z"
+      "updatedAt": "2026-09-25T05:41:19.720Z",
+      "nextAttemptAt": "2026-09-25T06:21:19.720Z"
     },
     {
       "id": "telegram-una-ganga:94179:amazon:0",
@@ -20266,12 +20265,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4xJKDP5",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-25T05:40:13.406Z",
-      "updatedAt": "2026-09-25T05:40:13.406Z"
+      "updatedAt": "2026-09-25T05:40:44.810Z",
+      "nextAttemptAt": "2026-09-25T06:00:44.810Z"
     }
   ]
 }
