@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-26T20:02:34.909Z",
+  "updatedAt": "2026-09-26T20:12:25.234Z",
   "summary": {
-    "needs_review": 432,
     "published": 173,
     "duplicate": 50,
-    "rejected": 280,
+    "rejected": 281,
+    "needs_review": 434,
     "ignored": 35,
-    "pending": 30
+    "pending": 27
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:94301:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94301,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/una_ganga/94301",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-paramanitas:4833:ignored",
       "source": "telegram-paramanitas",
@@ -25,9 +36,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45520,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45520",
       "resultUrl": ""
     },
@@ -36,9 +47,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45520,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45520",
       "resultUrl": ""
     },
@@ -47,9 +58,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45520,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45520",
       "resultUrl": ""
     },
@@ -433,8 +444,8 @@
       "messageId": 94294,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/94294",
       "resultUrl": ""
     },
@@ -1017,7 +1028,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/Ofertos/42949",
       "resultUrl": ""
     },
@@ -1039,7 +1050,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/Ofertos/42947",
       "resultUrl": ""
     },
@@ -1048,9 +1059,9 @@
       "source": "telegram-tiesometro",
       "messageId": 7423,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7423",
       "resultUrl": ""
     },
@@ -1097,17 +1108,6 @@
       "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/Ofertos/42944",
       "resultUrl": "https://s.click.aliexpress.com/e/_c4NYzr5x"
-    },
-    {
-      "id": "telegram-ofertos:42943:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 42943,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
-      "sourceUrl": "https://t.me/Ofertos/42943",
-      "resultUrl": ""
     }
   ]
 }
