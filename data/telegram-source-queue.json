@@ -19465,14 +19465,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4dV9Ork",
       "status": "pending",
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de reintento (2/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "createdAt": "2026-09-26T17:40:34.514Z",
-      "updatedAt": "2026-09-26T20:21:17.205Z",
+      "updatedAt": "2026-09-26T20:42:09.011Z",
       "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-09-26T20:41:17.205Z"
+      "nextAttemptAt": "2026-09-26T21:22:09.011Z"
     },
     {
       "id": "telegram-una-ganga:94295:aliexpress:0",
@@ -20260,14 +20260,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4eVkUtJ",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (2/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-26T20:10:37.003Z",
-      "updatedAt": "2026-09-26T20:32:56.141Z",
-      "nextAttemptAt": "2026-09-26T20:32:25.234Z"
+      "updatedAt": "2026-09-26T20:42:09.011Z",
+      "nextAttemptAt": "2026-09-26T21:22:09.011Z"
     },
     {
       "id": "telegram-una-ganga:94302:amazon:0",
@@ -20300,13 +20300,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/ImzBh7p6Qys5DrU5aR9zMtcaGexarJY9cHfI3jBQ8IwNQP_LoptYriWA_1AE9oXdpMDW8Q7hEwT6c2o0cfliBT_4vSEyv39dDiRTrkpd3nwHRLOq9_YH8mhG6ZLU9UcQk1vF0Mcc21pwk3iBJ-LxPPjnEedLharSHfH8HDPr7oNA_yNZIC1TQ4JfYeoEGW1v7KBIu36U9BATgeiruOROQERp61H0KKcwXSDPaF8hAyex4ZdvMVBWLwS7HUTqA_XLzotgSaeD-L-VtixavWC_TkWP_MvCzI5mONVhSRfNkRc7_HOdoSSRwoGCAizAGbBAxuQx0X3TWx-FHFxvqAtpzw.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B06TrvMzr",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-26T20:40:31.484Z",
-      "updatedAt": "2026-09-26T20:40:31.484Z"
+      "updatedAt": "2026-09-26T20:42:10.265Z",
+      "nextAttemptAt": "2026-09-26T21:21:09.781Z"
     }
   ]
 }
