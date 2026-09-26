@@ -18229,15 +18229,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/qd0fClhfJFaPSrlOQ3Zp4tZUoL0_g1g6TyoFZCUHVoi6fNUaIcmSKCPNP5RNpnLSubfkLbEhj4atNiK6irOPnygwWoAhc40YTXZiTCgrI1ByOctwTHEdSfJYb9Mgli_k8WO0kV2r7jpkflPMfo_moaieiQyPG9U7f-TKKpQsJzB5oYq-NTt3NiyueH0NyCfv5u5ntzSxP8lxmbCMsC2eu3UzrDY52vnFMMlebkjfH3zNPSKKs4xAaO985va2k4Q3cMxX_Fx0PbQGluY1TSMwG4wtIfh0ipi5CZAC44iaMZDxLhyF8Iv_neWO0VAG6eK_J-zPUxi_e3kCSCg0MwumBQ.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3oYgTQH",
-      "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-26T10:10:36.638Z",
-      "updatedAt": "2026-09-26T19:52:36.887Z",
-      "nextAttemptAt": "2026-09-26T19:52:06.912Z"
+      "updatedAt": "2026-09-26T20:02:34.909Z"
     },
     {
       "id": "telegram-chollosdiario:45515:amazon:0",
@@ -19450,14 +19449,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3L5Zsxj",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (4/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-26T17:10:32.317Z",
-      "updatedAt": "2026-09-26T19:52:36.887Z",
-      "nextAttemptAt": "2026-09-26T19:52:21.075Z"
+      "updatedAt": "2026-09-26T20:02:34.909Z",
+      "nextAttemptAt": "2026-09-26T22:42:34.909Z"
     },
     {
       "id": "telegram-ofertos:42971:miravia:0",
@@ -19865,14 +19864,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3FCtPFf",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (2/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 1,
+      "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-26T19:30:37.352Z",
-      "updatedAt": "2026-09-26T19:52:36.887Z",
-      "nextAttemptAt": "2026-09-26T19:52:32.217Z"
+      "updatedAt": "2026-09-26T20:02:34.909Z",
+      "nextAttemptAt": "2026-09-26T20:42:34.909Z"
     },
     {
       "id": "telegram-ofertos:42980:amazon:0",
@@ -19908,13 +19907,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4wH7qfj",
       "status": "pending",
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de reintento (2/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "createdAt": "2026-09-26T19:41:08.560Z",
-      "updatedAt": "2026-09-26T19:41:43.552Z",
-      "nextAttemptAt": "2026-09-26T20:01:43.552Z"
+      "updatedAt": "2026-09-26T20:02:34.909Z",
+      "nextAttemptAt": "2026-09-26T20:42:34.909Z"
     },
     {
       "id": "telegram-paramanitas:4831:amazon:0",
@@ -20248,13 +20247,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0C4V3T2JH?tag=chollodeldia-21&amp;linkCode=osi&amp;th=1&amp;psc=1",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-26T20:00:44.400Z",
-      "updatedAt": "2026-09-26T20:00:44.401Z"
+      "updatedAt": "2026-09-26T20:02:35.468Z",
+      "nextAttemptAt": "2026-09-26T20:41:15.689Z"
     },
     {
       "id": "telegram-chollosdiario:45520:amazon:1",
@@ -20267,13 +20267,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0F57PC564?tag=chollodeldia-21&amp;linkCode=osi&amp;th=1&amp;psc=1",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-26T20:00:44.401Z",
-      "updatedAt": "2026-09-26T20:00:44.401Z"
+      "updatedAt": "2026-09-26T20:02:35.653Z",
+      "nextAttemptAt": "2026-09-26T20:41:15.689Z"
     },
     {
       "id": "telegram-chollosdiario:45520:amazon:2",
@@ -20286,13 +20287,14 @@
       "sourceImageUrl": "",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0GY4SD2TV?tag=chollodeldia-21&amp;linkCode=osi&amp;th=1&amp;psc=1",
-      "status": "pending",
-      "reason": "",
+      "status": "needs_review",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-26T20:00:44.401Z",
-      "updatedAt": "2026-09-26T20:00:44.401Z"
+      "updatedAt": "2026-09-26T20:02:35.825Z",
+      "nextAttemptAt": "2026-09-26T20:41:15.689Z"
     },
     {
       "id": "telegram-paramanitas:4833:ignored",
