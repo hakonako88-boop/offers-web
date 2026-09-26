@@ -1,14 +1,47 @@
 {
-  "updatedAt": "2026-09-26T09:02:10.212Z",
+  "updatedAt": "2026-09-26T09:12:10.610Z",
   "summary": {
-    "needs_review": 431,
-    "published": 163,
-    "rejected": 310,
+    "rejected": 309,
+    "needs_review": 430,
     "ignored": 33,
+    "published": 164,
     "duplicate": 41,
-    "pending": 22
+    "pending": 23
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:94265:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94265,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/una_ganga/94265",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:42924:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 42924,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/42924",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:42923:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 42923,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/Ofertos/42923",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-ofertos:42922:aliexpress:0",
       "source": "telegram-ofertos",
@@ -25,22 +58,22 @@
       "source": "telegram-ofertos",
       "messageId": 42921,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/42921",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B0DYDKFCD2?tag=chollos00a-21"
     },
     {
       "id": "telegram-ofertos:42920:amazon:0",
       "source": "telegram-ofertos",
       "messageId": 42920,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/42920",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B0FPR5S2VR?tag=chollos00a-21"
     },
     {
       "id": "telegram-ofertos:42919:amazon:0",
@@ -235,8 +268,8 @@
       "messageId": 94258,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/94258",
       "resultUrl": ""
     },
@@ -1074,39 +1107,6 @@
       "attempts": 6,
       "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7415",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:42901:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 42901,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/42901",
-      "resultUrl": "https://www.amazon.es/dp/B0FX37PBLC?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:42900:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 42900,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/42900",
-      "resultUrl": "https://www.amazon.es/dp/B076CLLBHJ?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:42899:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 42899,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
-      "sourceUrl": "https://t.me/Ofertos/42899",
       "resultUrl": ""
     }
   ]
