@@ -32,7 +32,7 @@ export function offerQuality(offer = {}) {
   score = Math.max(0, Math.min(100, Math.round(score)));
   return {
     score, breakdown, discount, saving,
-    level: score >= 75 ? 'excelente' : score >= 60 ? 'buena' : score >= 45 ? 'revisar' : 'descartar',
-    publishable: score >= 60 && !suspiciousReference && interest >= 0,
+    level: score >= 80 ? 'excelente' : score >= 70 ? 'buena' : score >= 50 ? 'revisar' : 'descartar',
+    publishable: score >= 70 && !suspiciousReference && interest >= 0,
   };
 }

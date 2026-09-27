@@ -1,12 +1,9 @@
 const TIME_ZONE = 'Europe/Madrid';
 
 export const STORE_DAILY_LIMITS = Object.freeze({
-  Amazon: 6,
-  // AliExpress offers arriving from the owner's approved Telegram sources
-  // are event-driven. Do not discard a verified product merely because ten
-  // other products from those channels were published earlier the same day.
-  AliExpress: Number.POSITIVE_INFINITY,
-  Miravia: 2,
+  Amazon: 4,
+  AliExpress: 4,
+  Miravia: 1,
   MediaMarkt: 2,
   PcComponentes: 2,
   'El Corte Inglés': 2,
@@ -28,8 +25,8 @@ function madridParts(now) {
 
 function cumulativeLimit(minuteOfDay, weekend) {
   const slots = weekend
-    ? [[600, 2], [720, 4], [840, 6], [960, 8], [1080, 10], [1200, 12], [1320, 14]]
-    : [[480, 2], [600, 4], [720, 6], [840, 8], [960, 10], [1080, 12], [1200, 14], [1320, 16]];
+    ? [[600, 2], [720, 4], [840, 6], [960, 8], [1080, 10], [1200, 11]]
+    : [[480, 1], [600, 3], [720, 5], [840, 7], [960, 9], [1080, 11], [1200, 12]];
   let limit = 0;
   for (const [start, maximum] of slots) if (minuteOfDay >= start) limit = maximum;
   return minuteOfDay >= 1380 ? 0 : limit;
@@ -82,6 +79,24 @@ export function publicationAllowance({ store, offers = [], now = new Date(), byp
     const offerLocal = madridParts(new Date(stamp));
     return offerLocal.minuteOfDay >= firstPublicationMinute(weekend) && offerLocal.minuteOfDay < 1380;
   });
+  // Never send several automatic offers within seconds. Telegram users mute
+  // or leave channels that arrive in bursts, and every post then receives a
+  // smaller share of views. A manual review run may explicitly bypass this.
+  const latestScheduledAt = scheduledToday.reduce((latest, offer) => {
+    const raw = Number(offer.date);
+    const stamp = raw > 10_000_000_000 ? raw : raw * 1000;
+    return Number.isFinite(stamp) ? Math.max(latest, stamp) : latest;
+  }, 0);
+  const minimumGapMs = 8 * 60 * 1000;
+  if (latestScheduledAt && now.getTime() - latestScheduledAt < minimumGapMs) {
+    return {
+      allowed: false,
+      remaining: 0,
+      reason: 'global-cadence',
+      local,
+      retryAfterMs: minimumGapMs - (now.getTime() - latestScheduledAt),
+    };
+  }
   const storeName = normalizedStore(store);
   const storeCount = today.filter((offer) => normalizedStore(offer.store) === storeName).length;
   const storeLimit = STORE_DAILY_LIMITS[storeName] || 1;
@@ -100,7 +115,7 @@ export function publicationAllowance({ store, offers = [], now = new Date(), byp
     const editorialCap = STORE_DAILY_LIMITS[scheduledStore] || 1;
     return total + Math.min(count, editorialCap);
   }, 0);
-  const remaining = Math.max(0, Math.min(globalLimit - editorialPublishedToday, storeLimit - storeCount));
+  const remaining = Math.max(0, Math.min(1, globalLimit - editorialPublishedToday, storeLimit - storeCount));
   return {
     allowed: remaining > 0,
     remaining,

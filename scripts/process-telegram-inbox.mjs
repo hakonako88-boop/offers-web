@@ -32,6 +32,7 @@ import { buildAmazonReviewDraft } from './amazon-review-drafts.mjs';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { lookupAmazonProduct } from './amazon-creators-lookup.mjs';
 import { mirrorTelegramMessage } from './telegram-mirror.mjs';
+import { publicationAllowance } from './publication-policy.mjs';
 import {
   dashboardKeyboard,
   formatDashboard,
@@ -577,7 +578,7 @@ function updateAmazonReviewQueueItem(itemId, status, reason, extra = {}) {
 async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
   const chatId = String(settings.allowedChatId || '').trim();
   if (!chatId || !settings.amazonPartnerTag) return false;
-  let availableSlots = 3;
+  let availableSlots = 1;
   let automaticallyPublished = 0;
   let duplicatesSkipped = 0;
 
@@ -602,6 +603,22 @@ async function queueNextAmazonReviewDraft(settings, pendingConfirmations) {
     }
     delete pendingConfirmations[chatId];
     console.log(`Expired private preview released for Amazon queue: ${chatId}.`);
+  }
+
+  // This inbox route used to publish as many as three Amazon products in one
+  // execution, bypassing the shared retailer schedule. Apply the exact same
+  // channel-retention policy as every discovery job before touching the queue.
+  // Owner-confirmed manual previews are handled elsewhere and remain exempt.
+  if (settings.amazonAutoPublish) {
+    const allowance = publicationAllowance({
+      store: 'Amazon',
+      offers: readJson(OFFERS_FILE, []),
+    });
+    if (!allowance.allowed) {
+      console.log(`Amazon inbox automation paused by publication policy: ${allowance.reason}.`);
+      return false;
+    }
+    availableSlots = Math.min(1, allowance.remaining);
   }
 
   // When automatic mode is enabled, complete a preview created by the former

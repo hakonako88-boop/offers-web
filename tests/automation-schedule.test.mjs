@@ -79,9 +79,9 @@ test('serializes every Pages deployment and persists reconciled source queue sta
 });
 
 test('publishes validated offers in independently isolated retailer batches', () => {
-  assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE \? 20 : 1/u);
-  assert.match(miraviaSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
-  assert.match(amazonSync, /TELEGRAM_SOURCE_QUEUE_MODE === 'true' \? 3 : 1/u);
+  assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = 1/u);
+  assert.match(miraviaSync, /MAX_POSTS_PER_RUN = 1/u);
+  assert.match(amazonSync, /MAX_POSTS_PER_RUN = 1/u);
   assert.match(aliExpressSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
   assert.match(aliExpressSync, /const queuedPrice = signal\.queueItemId \? Number\(signal\.price\) \|\| 0 : 0;/u);
   assert.match(aliExpressSync, /const cataloguePrice = queuedPrice \|\| Number\(metadata\.price\) \|\| 0;/u);
@@ -115,6 +115,9 @@ test('consumes the Amazon Telegram queue in source-only mode without enabling it
   assert.match(inboxSync, /PENDING_PREVIEW_TTL_MS = 2 \* 60 \* 60 \* 1000/u);
   assert.match(inboxSync, /Expired private preview released for Amazon queue/u);
   assert.match(inboxSync, /fuera de la selecci\[oó\]n autom\[aá\]tica\|preferencia editorial/u);
+  assert.match(inboxSync, /let availableSlots = 1;/u);
+  assert.match(inboxSync, /publicationAllowance\(\{[\s\S]*?store: 'Amazon',[\s\S]*?offers: readJson\(OFFERS_FILE, \[\]\)/u);
+  assert.match(inboxSync, /Amazon inbox automation paused by publication policy/u);
 });
 
 test('does not let a pending TikTok retry block a bot or website deployment', () => {
@@ -203,8 +206,8 @@ test('does not leave the afternoon blocked after the morning slots fill up', () 
     now: new Date('2026-09-10T16:45:00+02:00'),
   });
   assert.equal(allowance.allowed, true);
-  assert.equal(allowance.globalLimit, 10);
-  assert.equal(allowance.remaining, 2);
+  assert.equal(allowance.globalLimit, 9);
+  assert.equal(allowance.remaining, 1);
 });
 
 test('does not let overnight manual tests consume the first daytime slot', () => {
@@ -218,7 +221,7 @@ test('does not let overnight manual tests consume the first daytime slot', () =>
     now: new Date('2026-08-30T10:01:00+02:00'),
   });
   assert.equal(allowance.allowed, true);
-  assert.equal(allowance.remaining, 2);
+  assert.equal(allowance.remaining, 1);
   assert.equal(allowance.publishedToday, 0);
   assert.equal(allowance.storeCount, 1);
 });
@@ -235,12 +238,26 @@ test('does not let an inbox burst from one shop starve the other retailers', () 
     now: new Date('2026-08-30T22:00:00+02:00'),
   });
   assert.equal(allowance.allowed, true);
-  assert.equal(allowance.publishedToday, 6);
+  assert.equal(allowance.publishedToday, 4);
   assert.equal(allowance.rawPublishedToday, 56);
-  assert.equal(allowance.remaining, 2);
+  assert.equal(allowance.remaining, 1);
 });
 
-test('does not impose a ten-offer daily cap on verified AliExpress source posts', () => {
+test('prevents automatic Telegram bursts across retailers', () => {
+  const allowance = publicationAllowance({
+    store: 'AliExpress',
+    offers: [{
+      store: 'Amazon',
+      date: Math.floor(Date.parse('2026-09-25T10:00:00+02:00') / 1000),
+    }],
+    now: new Date('2026-09-25T10:03:00+02:00'),
+  });
+  assert.equal(allowance.allowed, false);
+  assert.equal(allowance.reason, 'global-cadence');
+  assert.ok(allowance.retryAfterMs > 0);
+});
+
+test('caps AliExpress source posts to protect channel retention', () => {
   const offers = Array.from({ length: 10 }, (_, index) => ({
     store: 'AliExpress',
     date: Math.floor(Date.parse(`2026-08-31T${String(9 + index).padStart(2, '0')}:00:00+02:00`) / 1000),
@@ -250,13 +267,13 @@ test('does not impose a ten-offer daily cap on verified AliExpress source posts'
     offers,
     now: new Date('2026-08-31T21:00:00+02:00'),
   });
-  assert.equal(afterTen.allowed, true);
-  assert.equal(afterTen.storeLimit, Number.POSITIVE_INFINITY);
-  assert.notEqual(afterTen.reason, 'store-daily-limit');
+  assert.equal(afterTen.allowed, false);
+  assert.equal(afterTen.storeLimit, 4);
+  assert.equal(afterTen.reason, 'store-daily-limit');
 });
 
 test('drains exact AliExpress Telegram posts before generic community discovery', () => {
-  assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE \? 20 : 1/u);
+  assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = 1/u);
   assert.match(aliExpressSync, /MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE \? 24 : 8/u);
   assert.match(aliExpressSync, /Drain exact queued Telegram links before generic discovery/u);
 });

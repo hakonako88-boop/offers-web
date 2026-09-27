@@ -36,7 +36,7 @@ const PUBLISHED_FILE = path.join(ROOT, 'data', 'miravia-publications.json');
 const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'miravia-community-signal-state.json');
-const MAX_POSTS_PER_RUN = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 3 : 1;
+const MAX_POSTS_PER_RUN = 1;
 const MAX_PUBLICATION_ATTEMPTS = 12;
 const MAX_PRODUCTS_SCANNED = 40000;
 const MAX_CANDIDATES = 60;

@@ -27,10 +27,9 @@ const WEB_IMAGES_DIR = path.join(ROOT, 'public', 'tg');
 const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.json');
 const SOURCE_DIAGNOSTICS_FILE = path.join(ROOT, 'data', 'aliexpress-source-diagnostics.json');
 const SOURCE_QUEUE_MODE = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true';
-// Source events keep running while queued posts remain. Twenty verified posts
-// per source cycle clears active Telegram channels promptly without treating
-// a large backlog as a reason to publish unverified catalogue results.
-const MAX_POSTS_PER_RUN = SOURCE_QUEUE_MODE ? 20 : 1;
+// Verify a broad source batch, but publish only the strongest item. Flooding
+// twenty messages at once reduced views and caused channel churn.
+const MAX_POSTS_PER_RUN = 1;
 const MAX_PUBLICATION_ATTEMPTS = SOURCE_QUEUE_MODE ? 24 : 8;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
 const REPUBLICATION_COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000;
@@ -377,9 +376,7 @@ const lastPublicationAt = published.reduce((latest, entry) => Math.max(latest, D
 const canPublishNow = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
   || !lastPublicationAt
   || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
-const publicationPolicy = SOURCE_QUEUE_MODE
-  ? { allowed: true, remaining: MAX_POSTS_PER_RUN, reason: 'approved-telegram-source', storeLimit: Number.POSITIVE_INFINITY }
-  : publicationAllowance({ store: 'AliExpress', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
+const publicationPolicy = publicationAllowance({ store: 'AliExpress', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 // Community sites are discovery signals. Do not fill the channel with generic
 // catalogue searches when there is no fresh external signal to validate.
 const topics = [];

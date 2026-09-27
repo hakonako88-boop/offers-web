@@ -8,7 +8,7 @@ test('scores a complete useful discounted offer above catalogue filler', () => {
   const good = offerQuality({ title: 'Robot aspirador Cecotec con estación', price: '199 €', previousPrice: '299 €', image: '/tg/robot.jpg', url: 'https://example.com/robot', date: now, coupon: 'AHORRA20' });
   const filler = offerQuality({ title: 'Mochila casual unisex', price: '18 €', previousPrice: '90 €', image: '/tg/bag.jpg', url: 'https://example.com/bag', date: now });
   assert.equal(good.publishable, true);
-  assert.ok(good.score >= 60);
+  assert.ok(good.score >= 70);
   assert.equal(filler.publishable, false);
   assert.ok(filler.score < good.score);
 });
