@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-27T03:12:22.095Z",
+  "updatedAt": "2026-09-27T03:22:30.037Z",
   "summary": {
-    "ignored": 34,
-    "rejected": 290,
+    "rejected": 291,
     "needs_review": 435,
     "published": 173,
     "duplicate": 51,
+    "ignored": 33,
     "pending": 17
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:94323:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94323,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/94323",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94322:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -91,9 +102,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94315,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/94315",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "El mismo producto ya se publicó durante los últimos 14 días; se evita repetirlo",
       "sourceUrl": "https://t.me/una_ganga/94274",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:42961:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 42961,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/42961",
       "resultUrl": ""
     }
   ]
