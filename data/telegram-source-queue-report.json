@@ -1,14 +1,36 @@
 {
-  "updatedAt": "2026-09-27T18:46:09.929Z",
+  "updatedAt": "2026-09-27T18:52:16.144Z",
   "summary": {
-    "published": 167,
-    "rejected": 291,
+    "rejected": 292,
     "duplicate": 53,
     "needs_review": 390,
+    "published": 165,
     "ignored": 21,
-    "pending": 78
+    "pending": 79
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7433:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7433,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/tiesometro/7433",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:94376:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94376,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/una_ganga/94376",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94375:miravia:0",
       "source": "telegram-una-ganga",
@@ -553,9 +575,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94354,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/94354",
       "resultUrl": ""
     },
@@ -1083,30 +1105,8 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/94340",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:42997:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 42997,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/42997",
-      "resultUrl": "https://www.amazon.es/dp/B0B4WLLNJF?tag=chollos00a-21"
-    },
-    {
-      "id": "telegram-ofertos:42996:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 42996,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
-      "sourceUrl": "https://t.me/Ofertos/42996",
       "resultUrl": ""
     }
   ]
