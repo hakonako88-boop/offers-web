@@ -1,14 +1,36 @@
 {
-  "updatedAt": "2026-09-28T11:22:02.054Z",
+  "updatedAt": "2026-09-28T11:32:17.833Z",
   "summary": {
-    "rejected": 298,
-    "needs_review": 342,
+    "rejected": 297,
+    "needs_review": 341,
     "published": 151,
     "duplicate": 49,
     "ignored": 20,
-    "pending": 140
+    "pending": 142
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:43088:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 43088,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/43088",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:43087:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 43087,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/Ofertos/43087",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94426:amazon:0",
       "source": "telegram-una-ganga",
@@ -49,7 +71,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/94425",
       "resultUrl": ""
     },
@@ -477,8 +499,8 @@
       "messageId": 43056,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/Ofertos/43056",
       "resultUrl": ""
     },
@@ -510,8 +532,8 @@
       "messageId": 43054,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/6)",
+      "attempts": 4,
+      "reason": "Pendiente de reintento (4/6)",
       "sourceUrl": "https://t.me/Ofertos/43054",
       "resultUrl": ""
     },
@@ -1085,28 +1107,6 @@
       "attempts": 0,
       "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceUrl": "https://t.me/chollosdiario/45529",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:94380:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 94380,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
-      "sourceUrl": "https://t.me/una_ganga/94380",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4841:ignored",
-      "source": "telegram-paramanitas",
-      "messageId": 4841,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/paramanitas/4841",
       "resultUrl": ""
     }
   ]
