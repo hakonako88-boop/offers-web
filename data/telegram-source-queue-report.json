@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-28T01:01:53.318Z",
+  "updatedAt": "2026-09-28T01:12:01.259Z",
   "summary": {
-    "needs_review": 374,
-    "rejected": 298,
+    "needs_review": 373,
+    "rejected": 299,
     "published": 157,
     "duplicate": 50,
     "ignored": 21,
     "pending": 100
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:94395:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94395,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/una_ganga/94395",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94394:miravia:0",
       "source": "telegram-una-ganga",
@@ -92,8 +103,8 @@
       "messageId": 94388,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "attempts": 0,
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceUrl": "https://t.me/una_ganga/94388",
       "resultUrl": ""
     },
@@ -949,9 +960,9 @@
       "source": "telegram-tiesometro",
       "messageId": 7431,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7431",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 4,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/94351",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:43025:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 43025,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
-      "sourceUrl": "https://t.me/Ofertos/43025",
       "resultUrl": ""
     }
   ]
