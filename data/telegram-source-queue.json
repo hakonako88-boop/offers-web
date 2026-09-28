@@ -18520,15 +18520,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/bkk56",
-      "status": "pending",
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-27T14:40:45.278Z",
-      "updatedAt": "2026-09-27T20:22:08.788Z",
-      "nextAttemptAt": "2026-09-28T00:22:08.788Z"
+      "updatedAt": "2026-09-28T00:31:42.426Z"
     },
     {
       "id": "telegram-una-ganga:94358:aliexpress:0",
@@ -19495,15 +19494,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/qwM3Me23YbtLhRT29dqZVeAzWmJmWDsPiYz-dyHr3zjSN-Zan6sJRPJ7xgPdAgUL34_bWH48sTnrGY3cPwjebWE8TA6tuRQ1FdAGUGCFM37ExKczwsyR_ZgX8AdGsALvYqfENkOkB8QXbN1k_rgqtJ4R6zRTyTq9No_Q1Fw1IGFnQ91tyohi1z6qZFyQXtRaqfQcRe8sT8wBymTpnThhkcwOeCZo3QvLlh91GtDWt2WmIh_E_zwBUTsRpH4fNRtjQKz-0_5C8cgEwW5tDAF-yYoFAFyUiFN5A6JDw-q0Fk37LKvE9XcBkJzW7EmTEB8hgVDvedT5PYtwSW1d-jx84g.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4hnFs11",
-      "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "createdAt": "2026-09-27T19:40:32.024Z",
-      "updatedAt": "2026-09-27T23:11:29.273Z",
-      "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-09-28T00:31:29.273Z"
+      "updatedAt": "2026-09-28T00:31:42.426Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-paramanitas:4839:amazon:0",
@@ -19939,8 +19937,8 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-27T20:20:43.465Z",
-      "updatedAt": "2026-09-27T23:51:00.727Z",
-      "nextAttemptAt": "2026-09-28T00:31:00.727Z"
+      "updatedAt": "2026-09-28T00:31:09.660Z",
+      "nextAttemptAt": "2026-09-28T01:11:09.660Z"
     },
     {
       "id": "telegram-una-ganga:94381:amazon:0",
@@ -19959,8 +19957,8 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-27T20:20:44.360Z",
-      "updatedAt": "2026-09-27T23:51:00.727Z",
-      "nextAttemptAt": "2026-09-28T00:31:00.727Z"
+      "updatedAt": "2026-09-28T00:31:09.660Z",
+      "nextAttemptAt": "2026-09-28T01:11:09.660Z"
     },
     {
       "id": "telegram-una-ganga:94382:miravia:0",
@@ -20280,12 +20278,13 @@
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0FF9NDX8Y?tag=chollodeldia-21",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceWeight": 38,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-09-28T00:30:33.377Z",
-      "updatedAt": "2026-09-28T00:30:33.377Z"
+      "updatedAt": "2026-09-28T00:31:09.660Z",
+      "nextAttemptAt": "2026-09-28T01:11:09.660Z"
     }
   ]
 }
