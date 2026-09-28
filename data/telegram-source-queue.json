@@ -20080,13 +20080,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3PDm2f3",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-28T03:40:29.640Z",
-      "updatedAt": "2026-09-28T06:12:11.467Z",
-      "retryPolicyVersion": "exact-official-page-v1"
+      "updatedAt": "2026-09-28T06:21:20.338Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-28T06:41:20.338Z"
     },
     {
       "id": "telegram-una-ganga:94404:aliexpress:0",
@@ -20126,8 +20127,8 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-28T04:20:30.497Z",
-      "updatedAt": "2026-09-28T05:41:33.009Z",
-      "nextAttemptAt": "2026-09-28T06:21:33.009Z"
+      "updatedAt": "2026-09-28T06:22:32.291Z",
+      "nextAttemptAt": "2026-09-28T07:02:32.291Z"
     },
     {
       "id": "telegram-una-ganga:94406:miravia:0",
@@ -20161,14 +20162,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3qxZJfr",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (3/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-28T05:00:53.372Z",
-      "updatedAt": "2026-09-28T06:12:11.467Z",
-      "nextAttemptAt": "2026-09-28T06:11:55.425Z"
+      "updatedAt": "2026-09-28T06:22:32.291Z",
+      "nextAttemptAt": "2026-09-28T07:42:32.291Z"
     },
     {
       "id": "telegram-una-ganga:94408:amazon:0",
@@ -20243,12 +20244,13 @@
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B07nPJkxd",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-28T06:20:43.173Z",
-      "updatedAt": "2026-09-28T06:20:43.173Z"
+      "updatedAt": "2026-09-28T06:21:20.338Z",
+      "nextAttemptAt": "2026-09-28T07:01:20.338Z"
     },
     {
       "id": "telegram-tiesometro:7435:aliexpress:0",
@@ -20262,13 +20264,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/9dqih",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-28T06:20:43.510Z",
-      "updatedAt": "2026-09-28T06:20:43.510Z"
+      "updatedAt": "2026-09-28T06:22:32.291Z",
+      "nextAttemptAt": "2026-09-28T06:42:32.291Z"
     }
   ]
 }
