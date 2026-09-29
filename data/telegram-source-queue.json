@@ -20035,14 +20035,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/ZKc-34OnQbtAtuR2d-cPWh23qUERrQWQReJXe2hWbwMAiBumZEP27N4v1wipVBGnG0ptx5jgfpVlwGd9-0LYrkxRKtb8T8v5u_h5R5owE7IAX40vOiSTQ6MCS81eU9v05AIav08NqqfD8o3TRxgj66vEdSGq5evuFkQuHF7o9uMq_9kjWCuZarxPRyrANSYlA2eJwxGSOqSrBOPVoINrpBGO_Z2Mkz06MjJ1cnE-iSHBq_vft6jftGdO9x3CXPVWJulf-YKyeh6MyoR9MgsIckjImPCYa23T8OMihxH6f9CEpCUug3uk6_VrctyFXOOdWvW8Pd9FXEFtIJ6ikRmhSg.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3VTSdJz",
-      "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "createdAt": "2026-09-28T23:40:23.982Z",
-      "updatedAt": "2026-09-29T01:01:35.840Z",
-      "nextAttemptAt": "2026-09-29T02:21:35.840Z"
+      "updatedAt": "2026-09-29T02:21:58.751Z"
     },
     {
       "id": "telegram-una-ganga:94476:aliexpress:0",
@@ -20137,14 +20136,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4adCHEN",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/6)",
+      "reason": "Pendiente de reintento (3/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-29T01:10:35.953Z",
-      "updatedAt": "2026-09-29T01:32:48.688Z",
-      "nextAttemptAt": "2026-09-29T02:12:48.688Z"
+      "updatedAt": "2026-09-29T02:21:58.751Z",
+      "nextAttemptAt": "2026-09-29T03:41:58.751Z"
     },
     {
       "id": "telegram-una-ganga:94480:amazon:0",
@@ -20218,12 +20217,13 @@
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B04cZu4ld",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-29T02:20:38.006Z",
-      "updatedAt": "2026-09-29T02:20:38.006Z"
+      "updatedAt": "2026-09-29T02:21:14.652Z",
+      "nextAttemptAt": "2026-09-29T03:01:14.652Z"
     }
   ]
 }
