@@ -18481,15 +18481,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/f1iWu8UkWdVR6_h4ZVaLmG8sgXKL3oEP7IFqMD0mgcEE7oezU7ueimGxokv80WtdjpBuGrhOM3vo4KNvN532wdYGLD3Au_E483YFdWrJsaqAxcK8PloKrdh-5L4KnaEFuaigCzd9oKLzc3xkgcn4QDJEhE8mPmM_aTN-MZ0LsJbXOMGuBNe6OqNoolzVu8rI3vwlrG6M36EqtqD8UczjmCxur24vLQebTLmYoWHLt23muI9gZguvVgZv6IdRdEXwBb1rJRGk-6vr5f71M-UWmhlwsjACoKTwDxKBYPRs8Mz3rj1Y-tGSjdAf0jHYyp-n7ArzB1Ae2E8OSBYu7U2unQ.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3Almmmp",
-      "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-28T16:20:34.261Z",
-      "updatedAt": "2026-09-29T02:02:28.629Z",
-      "nextAttemptAt": "2026-09-29T02:02:07.037Z"
+      "updatedAt": "2026-09-29T02:12:24.686Z"
     },
     {
       "id": "telegram-una-ganga:94453:amazon:0",
@@ -19995,14 +19994,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4rjxD0R",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de reintento (3/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-09-28T22:40:28.924Z",
-      "updatedAt": "2026-09-29T01:31:55.718Z",
+      "updatedAt": "2026-09-29T02:12:24.686Z",
       "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-09-29T02:11:55.718Z"
+      "nextAttemptAt": "2026-09-29T03:32:24.686Z"
     },
     {
       "id": "telegram-una-ganga:94473:aliexpress:0",
@@ -20218,14 +20217,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/Sf0NZbk34tWzkCu5ZtVW0rzMsUfAhBS1Y9m-k-r8VYM7XQANAOl7EoqCxGkNMheV6VXYRZPfaBhWmb1mj_llugEqRI7By4nlzeer8gEntGBpANd-65ICFlBOC-tOgAwXlIta10IiJGKYboILHph9WQR31v6Nmdl3eo2jRMcEbVA1OKDn8T_r4OOg3HEU8FnHfCNGldNpKg5JiV55M1lVTBZHoe8aIrPWLJhNP9Tlb_dAj8P0GBdmch5dxAhwSDYYodC5ZGax9c2BYYgfwjVXOBXxLp8Ig1xARssfvF1t7GP5qHvRusNXQLgWdetEHUPyqV0lE8LJggi73O-1v8tYcA.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3yGJWev",
-      "status": "pending",
-      "reason": "",
+      "status": "duplicate",
+      "reason": "El mismo producto ya se publicó durante los últimos 14 días; se evita repetirlo",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-29T02:10:32.398Z",
-      "updatedAt": "2026-09-29T02:10:32.398Z"
+      "updatedAt": "2026-09-29T02:12:24.686Z"
     }
   ]
 }
