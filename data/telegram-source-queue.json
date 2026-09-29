@@ -19166,14 +19166,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3xprEat",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (5/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 4,
+      "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-29T10:30:37.014Z",
-      "updatedAt": "2026-09-29T16:02:32.355Z",
-      "nextAttemptAt": "2026-09-29T16:02:19.006Z"
+      "updatedAt": "2026-09-29T16:12:54.634Z",
+      "nextAttemptAt": "2026-09-29T20:12:54.634Z"
     },
     {
       "id": "telegram-errores-de-precio:15571:amazon:0",
@@ -19307,13 +19307,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3UXrNAd",
       "status": "pending",
-      "reason": "Pendiente de reintento (4/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 4,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-29T10:40:54.145Z",
-      "updatedAt": "2026-09-29T13:32:09.036Z",
+      "updatedAt": "2026-09-29T16:12:54.634Z",
       "nextAttemptAt": "2026-09-29T16:12:09.036Z"
     },
     {
@@ -19895,13 +19895,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/BEowsbt_AAsAyFpT2aaSQW-jv1U9kKD691e7Dl1-SlCwnISGXmHRkxOZYT6X2j86Ajb9BdDtuj9vtpBnBGZgbuX85mR1Ha5h79stTodnPjypsM4lFNKjZIWbCmONHJBEkMdG-A3QJq9yNu69hI6jDYFgxq8EkOl2ZqoK5Rx2cldhnLwZn_achfK4n5UkmhW5eO2GmtwSrS3KYSdUKqPh_DGEYZ99iPiy-wqS4trUigPHAW061LR-ZcK1Whv51t3NqIHybJG8l0kOlHECCWpNFbJpxAVgdd36k2hqk8Rr2FRxPMS_0TVj45w7D9wd-u6U4YQLcPwtd5vIUxrnTbwDjg.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4vM3Nnt",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-09-29T13:40:32.818Z",
-      "updatedAt": "2026-09-29T16:02:32.355Z"
+      "updatedAt": "2026-09-29T16:12:54.634Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-29T16:32:54.634Z"
     },
     {
       "id": "telegram-ofertos:43168:amazon:0",
@@ -20183,13 +20185,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3wej3QH",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-29T16:10:57.047Z",
-      "updatedAt": "2026-09-29T16:10:57.047Z"
+      "updatedAt": "2026-09-29T16:12:54.634Z",
+      "nextAttemptAt": "2026-09-29T16:32:54.634Z"
     }
   ]
 }
