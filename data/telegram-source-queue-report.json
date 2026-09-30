@@ -1,14 +1,47 @@
 {
-  "updatedAt": "2026-09-30T18:02:12.566Z",
+  "updatedAt": "2026-09-30T18:12:46.513Z",
   "summary": {
-    "needs_review": 157,
-    "duplicate": 48,
-    "rejected": 318,
+    "needs_review": 156,
     "published": 67,
+    "rejected": 318,
+    "duplicate": 47,
     "ignored": 10,
-    "pending": 400
+    "pending": 402
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7461:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7461,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/tiesometro/7461",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:94617:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94617,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/una_ganga/94617",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:43274:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 43274,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/43274",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-ofertos:43273:amazon:0",
       "source": "telegram-ofertos",
@@ -192,7 +225,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/Ofertos/43261",
       "resultUrl": ""
     },
@@ -224,8 +257,8 @@
       "messageId": 7460,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/6)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/6)",
       "sourceUrl": "https://t.me/tiesometro/7460",
       "resultUrl": ""
     },
@@ -235,8 +268,8 @@
       "messageId": 94613,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/6)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/6)",
       "sourceUrl": "https://t.me/una_ganga/94613",
       "resultUrl": ""
     },
@@ -399,9 +432,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94607,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/94607",
       "resultUrl": ""
     },
@@ -1074,39 +1107,6 @@
       "attempts": 0,
       "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceUrl": "https://t.me/una_ganga/94585",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:43221:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 43221,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
-      "sourceUrl": "https://t.me/Ofertos/43221",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:94584:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 94584,
-      "store": "AliExpress",
-      "status": "duplicate",
-      "attempts": 2,
-      "reason": "El mismo producto ya se publicó durante los últimos 14 días; se evita repetirlo",
-      "sourceUrl": "https://t.me/una_ganga/94584",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertas-supermercados-es:2125:ignored",
-      "source": "telegram-ofertas-supermercados-es",
-      "messageId": 2125,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/OfertasSupermercadosES/2125",
       "resultUrl": ""
     }
   ]
