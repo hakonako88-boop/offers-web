@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-30T07:51:53.696Z",
+  "updatedAt": "2026-09-30T08:02:08.423Z",
   "summary": {
-    "needs_review": 205,
     "published": 79,
-    "rejected": 348,
+    "needs_review": 204,
+    "rejected": 349,
     "ignored": 12,
     "duplicate": 50,
     "pending": 306
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7455:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7455,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/tiesometro/7455",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7454:aliexpress:0",
       "source": "telegram-tiesometro",
@@ -26,8 +37,8 @@
       "messageId": 94580,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/94580",
       "resultUrl": ""
     },
@@ -114,8 +125,8 @@
       "messageId": 94572,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 4,
+      "reason": "Pendiente de reintento (4/6)",
       "sourceUrl": "https://t.me/una_ganga/94572",
       "resultUrl": ""
     },
@@ -344,9 +355,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94551,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceUrl": "https://t.me/una_ganga/94551",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceUrl": "https://t.me/Ofertos/43178",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-tiesometro:7447:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7447,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
-      "sourceUrl": "https://t.me/tiesometro/7447",
       "resultUrl": ""
     }
   ]
