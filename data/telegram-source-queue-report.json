@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-09-30T12:41:58.389Z",
+  "updatedAt": "2026-09-30T12:52:03.708Z",
   "summary": {
-    "rejected": 324,
     "duplicate": 51,
     "needs_review": 176,
+    "rejected": 324,
     "published": 73,
     "ignored": 9,
     "pending": 367
   },
   "recent": [
+    {
+      "id": "telegram-paramanitas:4855:amazon:0",
+      "source": "telegram-paramanitas",
+      "messageId": 4855,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/paramanitas/4855",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94595:miravia:0",
       "source": "telegram-una-ganga",
@@ -70,8 +81,8 @@
       "messageId": 94592,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/94592",
       "resultUrl": ""
     },
@@ -916,9 +927,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94580,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/94580",
       "resultUrl": ""
     },
@@ -939,8 +950,8 @@
       "messageId": 94578,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 4,
-      "reason": "Pendiente de reintento (4/6)",
+      "attempts": 5,
+      "reason": "Pendiente de reintento (5/6)",
       "sourceUrl": "https://t.me/una_ganga/94578",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceUrl": "https://t.me/una_ganga/94564",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:94563:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 94563,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
-      "sourceUrl": "https://t.me/una_ganga/94563",
       "resultUrl": ""
     }
   ]
