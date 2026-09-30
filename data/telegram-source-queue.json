@@ -19763,14 +19763,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/42r9h",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (5/6)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 4,
+      "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-29T20:51:07.078Z",
-      "updatedAt": "2026-09-30T02:14:05.917Z",
-      "nextAttemptAt": "2026-09-30T02:12:28.524Z"
+      "updatedAt": "2026-09-30T02:21:50.547Z",
+      "nextAttemptAt": "2026-09-30T06:21:50.547Z"
     },
     {
       "id": "telegram-una-ganga:94548:aliexpress:0",
@@ -19970,13 +19970,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4AzgvZz",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-09-29T23:40:31.643Z",
-      "updatedAt": "2026-09-30T02:14:05.917Z",
-      "retryPolicyVersion": "exact-official-page-v1"
+      "updatedAt": "2026-09-30T02:21:05.059Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-09-30T02:41:05.059Z"
     },
     {
       "id": "telegram-una-ganga:94557:aliexpress:0",
@@ -20133,12 +20134,13 @@
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B0egmctqO",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-30T02:20:29.430Z",
-      "updatedAt": "2026-09-30T02:20:29.431Z"
+      "updatedAt": "2026-09-30T02:21:05.059Z",
+      "nextAttemptAt": "2026-09-30T03:01:05.059Z"
     }
   ]
 }
