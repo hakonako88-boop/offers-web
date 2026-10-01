@@ -17467,15 +17467,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/G4ni4CHgOfkfanM6KVLLHxIeWRVLM1f5Glrp0iH5w19lxGPYpi6RSmYgVFSGwDFFTbwxU4VXKO-0HojISzUUkx7Nr9D2Ya7JdI0axOeG9LPAkVbpWeYxqKikKHCnBPjiHbmv0EAIolSDU1eJiLj_q50FERufqchGEFzlBskxkHaG7RGWpkXifAV5PfcgWvAYsh8nuUpy1K8XXwdMnR4XT2TLEPAXkwZWRjPKPOEAxEAvR-EVY95nstjQYz1iIOKjRdG1uMqpHlsdA2Xu-W0LsuEqEeL3F29YsZnVAyNKrn5NAaabNCpPw_a-WYoOgzQ_WG0uG34zLCtDoX_g-_mNOQ.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c40GAUO5",
-      "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-01T08:30:43.196Z",
-      "updatedAt": "2026-10-01T18:13:43.159Z",
-      "nextAttemptAt": "2026-10-01T18:12:26.864Z"
+      "updatedAt": "2026-10-01T18:22:35.763Z"
     },
     {
       "id": "telegram-tiesometro:7474:aliexpress:0",
@@ -17488,15 +17487,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/8syd4",
-      "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-01T08:30:44.059Z",
-      "updatedAt": "2026-10-01T18:13:43.159Z",
-      "nextAttemptAt": "2026-10-01T18:12:26.864Z"
+      "updatedAt": "2026-10-01T18:22:35.763Z"
     },
     {
       "id": "telegram-una-ganga:94662:miravia:0",
@@ -18859,14 +18857,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/46EMRnT",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de reintento (3/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-10-01T14:40:28.288Z",
-      "updatedAt": "2026-10-01T17:41:55.076Z",
+      "updatedAt": "2026-10-01T18:22:35.763Z",
       "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-10-01T18:21:55.076Z"
+      "nextAttemptAt": "2026-10-01T19:42:35.763Z"
     },
     {
       "id": "telegram-tiesometro:7484:aliexpress:0",
@@ -19949,13 +19947,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4izrrOc",
       "status": "pending",
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de reintento (2/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 1,
+      "attempts": 2,
       "createdAt": "2026-10-01T18:00:48.702Z",
-      "updatedAt": "2026-10-01T18:01:31.623Z",
-      "nextAttemptAt": "2026-10-01T18:21:31.623Z"
+      "updatedAt": "2026-10-01T18:22:35.763Z",
+      "nextAttemptAt": "2026-10-01T19:02:35.763Z"
     },
     {
       "id": "telegram-tiesometro:7486:aliexpress:0",
@@ -20052,12 +20050,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4umJ34a",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-10-01T18:20:28.787Z",
-      "updatedAt": "2026-10-01T18:20:28.787Z"
+      "updatedAt": "2026-10-01T18:21:04.228Z",
+      "nextAttemptAt": "2026-10-01T18:41:04.228Z"
     },
     {
       "id": "telegram-una-ganga:94705:amazon:0",
@@ -20071,12 +20070,13 @@
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B03989lmr",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-10-01T18:20:28.787Z",
-      "updatedAt": "2026-10-01T18:20:28.787Z"
+      "updatedAt": "2026-10-01T18:21:04.228Z",
+      "nextAttemptAt": "2026-10-01T19:01:04.228Z"
     }
   ]
 }
