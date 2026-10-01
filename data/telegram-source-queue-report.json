@@ -1,14 +1,58 @@
 {
-  "updatedAt": "2026-10-01T09:12:16.590Z",
+  "updatedAt": "2026-10-01T09:25:04.581Z",
   "summary": {
-    "needs_review": 94,
+    "duplicate": 39,
+    "needs_review": 91,
     "rejected": 338,
-    "duplicate": 37,
     "published": 41,
     "ignored": 9,
-    "pending": 481
+    "pending": 482
   },
   "recent": [
+    {
+      "id": "telegram-errores-de-precio:15585:aliexpress:0",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15585,
+      "store": "AliExpress",
+      "status": "duplicate",
+      "attempts": 0,
+      "reason": "El mismo producto ya se publicó durante los últimos 14 días; se evita repetirlo",
+      "sourceUrl": "https://t.me/erroresde_precio/15585",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-una-ganga:94665:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94665,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/94665",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:43331:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 43331,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/Ofertos/43331",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:43330:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 43330,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/43330",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94664:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -71,7 +115,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/7476",
       "resultUrl": ""
     },
@@ -114,8 +158,8 @@
       "messageId": 43322,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/6)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/6)",
       "sourceUrl": "https://t.me/Ofertos/43322",
       "resultUrl": ""
     },
@@ -345,8 +389,8 @@
       "messageId": 43309,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/6)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/6)",
       "sourceUrl": "https://t.me/Ofertos/43309",
       "resultUrl": ""
     },
@@ -652,9 +696,9 @@
       "source": "telegram-errores-de-precio",
       "messageId": 15580,
       "store": "AliExpress",
-      "status": "pending",
+      "status": "duplicate",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/6)",
+      "reason": "El mismo producto ya se publicó durante los últimos 14 días; se evita repetirlo",
       "sourceUrl": "https://t.me/erroresde_precio/15580",
       "resultUrl": ""
     },
@@ -686,8 +730,8 @@
       "messageId": 94652,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/94652",
       "resultUrl": ""
     },
@@ -907,7 +951,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/7469",
       "resultUrl": ""
     },
@@ -927,9 +971,9 @@
       "source": "telegram-tiesometro",
       "messageId": 7468,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7468",
       "resultUrl": ""
     },
@@ -1063,50 +1107,6 @@
       "attempts": 0,
       "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceUrl": "https://t.me/una_ganga/94631",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:43286:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 43286,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
-      "sourceUrl": "https://t.me/Ofertos/43286",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15578:aliexpress:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15578,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
-      "sourceUrl": "https://t.me/erroresde_precio/15578",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-tiesometro:7465:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7465,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
-      "sourceUrl": "https://t.me/tiesometro/7465",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15577:aliexpress:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15577,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
-      "sourceUrl": "https://t.me/erroresde_precio/15577",
       "resultUrl": ""
     }
   ]
