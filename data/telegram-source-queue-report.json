@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-10-01T00:32:16.529Z",
+  "updatedAt": "2026-10-01T00:42:14.314Z",
   "summary": {
-    "rejected": 307,
     "needs_review": 120,
+    "rejected": 308,
     "duplicate": 45,
     "ignored": 10,
     "published": 56,
-    "pending": 462
+    "pending": 461
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:94637:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94637,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/94637",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94636:amazon:0",
       "source": "telegram-una-ganga",
@@ -37,8 +48,8 @@
       "messageId": 94635,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/6)",
       "sourceUrl": "https://t.me/una_ganga/94635",
       "resultUrl": ""
     },
@@ -92,8 +103,8 @@
       "messageId": 7467,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/6)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/6)",
       "sourceUrl": "https://t.me/tiesometro/7467",
       "resultUrl": ""
     },
@@ -740,9 +751,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94622,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/94622",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 5,
       "reason": "Pendiente de reintento (5/6)",
       "sourceUrl": "https://t.me/Ofertos/43261",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:43260:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 43260,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
-      "sourceUrl": "https://t.me/Ofertos/43260",
       "resultUrl": ""
     }
   ]
