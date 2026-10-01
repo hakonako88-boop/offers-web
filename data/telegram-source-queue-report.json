@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-10-01T05:01:59.747Z",
+  "updatedAt": "2026-10-01T05:12:13.673Z",
   "summary": {
-    "needs_review": 116,
-    "rejected": 319,
+    "rejected": 320,
     "ignored": 10,
     "published": 56,
+    "needs_review": 115,
     "duplicate": 44,
     "pending": 455
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:94650:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94650,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/una_ganga/94650",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94649:miravia:0",
       "source": "telegram-una-ganga",
@@ -80,9 +91,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94643,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/94643",
       "resultUrl": ""
     },
@@ -224,8 +235,8 @@
       "messageId": 7468,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 4,
-      "reason": "Pendiente de reintento (4/6)",
+      "attempts": 5,
+      "reason": "Pendiente de reintento (5/6)",
       "sourceUrl": "https://t.me/tiesometro/7468",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
       "sourceUrl": "https://t.me/erroresde_precio/15572",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:43270:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 43270,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
-      "sourceUrl": "https://t.me/Ofertos/43270",
       "resultUrl": ""
     }
   ]
