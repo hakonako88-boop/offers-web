@@ -166,12 +166,19 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           <nav aria-label="Navegación principal">
             <a href="#ofertas">Ofertas de hoy</a>
             <a href="/buscar/">Buscar</a>
+            <a href="/fiesta-ofertas-prime-2026/">Fiesta Prime</a>
             {posts.length > 0 && <a href="#novedades">Novedades</a>}
             <a href="#como-funciona">Cómo seleccionamos</a>
             <a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram <span aria-hidden="true">↗</span></a>
           </nav>
         </div>
       </header>
+
+      <section className="primeHomeBanner shell" aria-labelledby="prime-home-title">
+        <div className="primeHomeAccent" aria-hidden="true">€</div>
+        <div><p>6 Y 7 DE OCTUBRE · AMAZON ESPAÑA</p><h2 id="prime-home-title">Preparamos la Fiesta de Ofertas Prime</h2><span>Selección de ofertas, precios y cupones revisados para el evento.</span></div>
+        <a href="/fiesta-ofertas-prime-2026/">Ver portada Prime <b aria-hidden="true">→</b></a>
+      </section>
 
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="heroCopy">

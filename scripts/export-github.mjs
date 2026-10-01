@@ -86,6 +86,7 @@ await render("/blog", "blog/index.html");
 await render("/buscar", "buscar/index.html");
 await render("/telegram", "telegram/index.html");
 await render("/gta-vi-mas-barato-ps5", "gta-vi-mas-barato-ps5/index.html");
+await render("/fiesta-ofertas-prime-2026", "fiesta-ofertas-prime-2026/index.html");
 // Discover editorial and offer routes from the application's sitemap so a new
 // indexable guide cannot be published in the blog while missing from Pages.
 const sitemapResponse = await worker.fetch(new Request("https://chollosaldia.com/sitemap.xml"), { ASSETS: assets }, context);
