@@ -19866,8 +19866,8 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-09-30T23:20:23.594Z",
-      "updatedAt": "2026-10-01T01:24:05.869Z",
-      "nextAttemptAt": "2026-10-01T02:04:05.869Z"
+      "updatedAt": "2026-10-01T02:11:11.950Z",
+      "nextAttemptAt": "2026-10-01T02:51:11.950Z"
     },
     {
       "id": "telegram-tiesometro:7467:aliexpress:0",
@@ -19881,14 +19881,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/htka7",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (4/6)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-09-30T23:20:23.846Z",
-      "updatedAt": "2026-10-01T02:02:46.445Z",
-      "nextAttemptAt": "2026-10-01T02:02:14.314Z"
+      "updatedAt": "2026-10-01T02:11:55.516Z",
+      "nextAttemptAt": "2026-10-01T04:51:55.516Z"
     },
     {
       "id": "telegram-tiesometro:7468:aliexpress:0",
@@ -19922,14 +19922,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/qGw8IBN_AJdXDQRfippGbVyHiLremgwz5PFDfAo5YK35rWH92vdhJoM4F7ZFahFKIGt4dOw9gAjuTb3r6XUo22gFN-jF6u35tBG4dmz7w8NoULwM8Z_UBHJIpoYACAyDp_F4E7kZ8tTTmEem23hiN2Pu5TE1RxUiFiDjt3pQgiYg3FXOhVsaq1NUO_LcRbUWn-KIG3HvEY_DY4qsxRfckjpBqLHJntA_fVJGcydsH1BrthiF4tbtj0EzqzqHL0uySTbM_cPFhZuRXjvUd__ptHaeGwkJxhh-HFT6S143U6J7loQOuGDzZMxY23CdX3Pj1xqyiSn9ziM8mR_EYAfNxA.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3T93zIt",
-      "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "createdAt": "2026-09-30T23:40:26.927Z",
-      "updatedAt": "2026-10-01T00:51:26.508Z",
-      "nextAttemptAt": "2026-10-01T02:11:26.508Z"
+      "updatedAt": "2026-10-01T02:11:55.516Z"
     },
     {
       "id": "telegram-tiesometro:7469:aliexpress:0",
