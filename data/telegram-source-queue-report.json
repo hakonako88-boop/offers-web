@@ -1,14 +1,36 @@
 {
-  "updatedAt": "2026-10-02T08:21:54.830Z",
+  "updatedAt": "2026-10-02T08:32:03.486Z",
   "summary": {
-    "pending": 502,
-    "rejected": 400,
+    "pending": 501,
+    "rejected": 401,
     "duplicate": 35,
     "ignored": 13,
     "published": 20,
     "needs_review": 30
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:43405:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 43405,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/43405",
+      "resultUrl": ""
+    },
+    {
+      "id": "telegram-ofertos:43404:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 43404,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/43404",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94762:amazon:0",
       "source": "telegram-una-ganga",
@@ -92,8 +114,8 @@
       "messageId": 7491,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/6)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/6)",
       "sourceUrl": "https://t.me/tiesometro/7491",
       "resultUrl": ""
     },
@@ -114,8 +136,8 @@
       "messageId": 43399,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/6)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/6)",
       "sourceUrl": "https://t.me/Ofertos/43399",
       "resultUrl": ""
     },
@@ -553,9 +575,9 @@
       "source": "telegram-tiesometro",
       "messageId": 7490,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceUrl": "https://t.me/tiesometro/7490",
       "resultUrl": ""
     },
@@ -1085,28 +1107,6 @@
       "attempts": 4,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/94713",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:43385:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 43385,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
-      "sourceUrl": "https://t.me/Ofertos/43385",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:94712:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 94712,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
-      "sourceUrl": "https://t.me/una_ganga/94712",
       "resultUrl": ""
     }
   ]
