@@ -19414,14 +19414,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3Pn6eWd",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (5/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-01T20:10:39.703Z",
-      "updatedAt": "2026-10-02T01:42:26.174Z",
-      "nextAttemptAt": "2026-10-02T01:42:05.592Z"
+      "updatedAt": "2026-10-02T01:51:41.664Z",
+      "nextAttemptAt": "2026-10-02T05:51:41.664Z"
     },
     {
       "id": "telegram-chollosdiario:45570:amazon:0",
@@ -19514,15 +19514,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/NPe3HtW8PWhmXEclgcCrZkozZePr2nQo8hwE_GbvqsQfycZX8RVIMa-Ur3sM1cKifEYNqw7GxOpMm6B6eqt9m13dcM-Y457zmKmwvz6631S9UhYAoiYv7YdxMaa_768RFF_-EkYmKRwbqTecQaBHlXUn9Fb_sHLJ6jLLmSpXFaNWQBYl3w6BIZVLZhKvup5_ZWd4lPk86htxf1FLmGs7DpGWgTUGqiDioBBl0q_O1pGsoFh72_ZOmQ06iwjDCXI1DmauFdR7SYIaXxfSqSbStnhEuZk0M7V84SUzuTV4IXUxRt3rPqGj49rU0SpzZquiEZ0_RTT-X1VvXdxg9u4HKQ.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4rG3fhz",
-      "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "createdAt": "2026-10-01T20:40:54.770Z",
-      "updatedAt": "2026-10-02T00:31:21.299Z",
-      "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-10-02T01:51:21.299Z"
+      "updatedAt": "2026-10-02T01:51:41.664Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:94723:miravia:0",
