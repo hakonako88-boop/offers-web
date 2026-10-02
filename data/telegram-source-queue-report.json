@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-10-02T09:42:17.502Z",
+  "updatedAt": "2026-10-02T09:51:48.208Z",
   "summary": {
-    "rejected": 400,
-    "pending": 503,
+    "rejected": 401,
+    "pending": 502,
     "ignored": 13,
     "duplicate": 34,
     "published": 20,
@@ -301,8 +301,8 @@
       "messageId": 94758,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 4,
+      "reason": "Pendiente de reintento (4/6)",
       "sourceUrl": "https://t.me/una_ganga/94758",
       "resultUrl": ""
     },
@@ -608,9 +608,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94737,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceUrl": "https://t.me/una_ganga/94737",
       "resultUrl": ""
     },
