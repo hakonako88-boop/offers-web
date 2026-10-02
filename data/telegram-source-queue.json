@@ -19574,15 +19574,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/bTOBfnY5-kp-0YSkJWmnc3KPkEIKyl-zGbUEkmOPUnVXg5CO660SWMtO58BxXUrg5oX0BvZIHmTJBTha29HamtCL6xq8nFuYaeMQ-5LdDtcFUOxgEEFp20JS0qurXEGtRTiiDyJ5OUc8xGbv0wFcIuFGL7qf4CwN2uzK7bV2fm6mYd2LFKIYI9vAFS0oOmiv4Igo0e4cTGPn2qWVKusnlGPgkMk2oQBJEJl4EquCd7t35U-4Ll8ysvgP5jemXySXgNOjUYik-xc8iIICKeT1heZcKha4KkpNvLoY4Ss2R0FsP9fjqt0KlRhbFUm4_X1-Co6Dc5hgXMulYfA8u-R47w.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/3OvOwH0",
-      "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 4,
       "createdAt": "2026-10-01T21:10:34.484Z",
-      "updatedAt": "2026-10-02T00:51:32.730Z",
-      "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-10-02T02:11:32.730Z"
+      "updatedAt": "2026-10-02T02:11:49.451Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:94727:amazon:0",
@@ -19861,13 +19860,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/48f4Frr",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-10-01T23:40:33.966Z",
-      "updatedAt": "2026-10-02T02:02:27.074Z",
-      "retryPolicyVersion": "exact-official-page-v1"
+      "updatedAt": "2026-10-02T02:11:10.406Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-10-02T02:31:10.406Z"
     },
     {
       "id": "telegram-una-ganga:94737:aliexpress:0",
@@ -20023,13 +20023,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3shB0ch",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-02T02:10:35.254Z",
-      "updatedAt": "2026-10-02T02:10:35.254Z"
+      "updatedAt": "2026-10-02T02:11:49.451Z",
+      "nextAttemptAt": "2026-10-02T02:31:49.451Z"
     }
   ]
 }

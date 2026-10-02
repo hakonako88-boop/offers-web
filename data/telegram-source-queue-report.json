@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-10-02T02:02:27.074Z",
+  "updatedAt": "2026-10-02T02:11:49.451Z",
   "summary": {
-    "rejected": 387,
     "pending": 513,
+    "rejected": 387,
     "duplicate": 38,
     "ignored": 12,
     "published": 20,
     "needs_review": 30
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:94743:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94743,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/una_ganga/94743",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94742:miravia:0",
       "source": "telegram-una-ganga",
@@ -92,8 +103,8 @@
       "messageId": 94736,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/94736",
       "resultUrl": ""
     },
@@ -245,9 +256,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94726,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/94726",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceUrl": "https://t.me/Ofertos/43371",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:43370:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 43370,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
-      "sourceUrl": "https://t.me/Ofertos/43370",
       "resultUrl": ""
     }
   ]
