@@ -59,7 +59,7 @@ function offerCountLabel(total: number) {
 
 export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: Deal[]; posts: PublishedPost[]; summary: DealSummary }) {
   const [deals] = useState<Deal[]>(initialDeals);
-  const [visibleLimit, setVisibleLimit] = useState(36);
+  const [visibleLimit, setVisibleLimit] = useState(12);
   const [category, setCategory] = useState("Todos");
   const [store, setStore] = useState("Todas");
   const [minimumPrice, setMinimumPrice] = useState("");
@@ -171,6 +171,18 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             <a href="#como-funciona">Cómo seleccionamos</a>
             <a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram <span aria-hidden="true">↗</span></a>
           </nav>
+          <details className="mobileNav">
+            <summary aria-label="Abrir menú de navegación"><span aria-hidden="true">☰</span> Menú</summary>
+            <div className="mobileNavMenu">
+              <a href="#ofertas">🔥 Ofertas de hoy</a>
+              <a href="/buscar/">⌕ Buscar ofertas</a>
+              <a href="/fiesta-ofertas-prime-2026/">⭐ Fiesta de Ofertas Prime</a>
+              <a href="/chollos/tecnologia/">📱 Tecnología</a>
+              <a href="/chollos/hogar/">🏠 Hogar y cocina</a>
+              {posts.length > 0 && <a href="#novedades">📰 Guías y novedades</a>}
+              <a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">✈️ Canal de Telegram ↗</a>
+            </div>
+          </details>
         </div>
       </header>
 
@@ -185,6 +197,16 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           <p className="eyebrow"><span aria-hidden="true" />CHOLLOS DIARIOS · OFERTAS NUEVAS DURANTE TODO EL DÍA</p>
           <h1 id="hero-title">Chollos de hoy.<br /> <em>Ofertas del día que merecen la pena.</em></h1>
           <p className="heroLead">Descubre ofertas, chollos y rebajas para ahorrar en tus compras online. Compara precios y descuentos de Amazon, AliExpress, Miravia y más tiendas, con cupones cuando estén disponibles.</p>
+          <form className="heroSearch" role="search" onSubmit={(event) => { event.preventDefault(); document.getElementById("ofertas")?.scrollIntoView({ behavior: "smooth" }); }}>
+            <label htmlFor="home-offer-search">¿Qué estás buscando?</label>
+            <div className="heroSearchBox"><span aria-hidden="true">⌕</span><input id="home-offer-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Móvil, cafetera, cupón…" /><button type="submit">Buscar ofertas</button></div>
+            <div className="heroSearchShortcuts" aria-label="Búsquedas rápidas">
+              <span>Explora:</span>
+              <button type="button" onClick={() => { setCategory("Tecnología"); document.getElementById("ofertas")?.scrollIntoView({ behavior: "smooth" }); }}>Tecnología</button>
+              <button type="button" onClick={() => { setCategory("Hogar"); document.getElementById("ofertas")?.scrollIntoView({ behavior: "smooth" }); }}>Hogar</button>
+              <button type="button" onClick={() => { setCouponOnly(true); document.getElementById("ofertas")?.scrollIntoView({ behavior: "smooth" }); }}>Con cupón</button>
+            </div>
+          </form>
           <div className="heroActions">
             <a className="primaryButton" href="#ofertas">Ver ofertas ahora <span aria-hidden="true">↓</span></a>
             <a className="quietLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis <span aria-hidden="true">↗</span></a>
@@ -224,7 +246,6 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           </div>
 
           <div className="controls">
-            <label className="search"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar producto, marca, categoría o tienda" aria-label="Buscar ofertas" /></label>
             <details className="advancedFilters"><summary>Filtros <span>{filtersActive ? "activos" : ""}</span></summary><div className="filterGrid">
               <label>Categoría<select value={category} onChange={(event) => setCategory(event.target.value)}>{categories.map((item) => <option key={item}>{item}</option>)}</select></label>
               <label>Tienda<select value={store} onChange={(event) => setStore(event.target.value)}>{stores.map((item) => <option key={item}>{item}</option>)}</select></label>
@@ -274,7 +295,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
               );
             })}
           </div>
-          {gridDeals.length < visibleDeals.length && <div className="loadMoreWrap"><button className="loadMoreButton" onClick={() => setVisibleLimit((current) => current + 36)}>Ver 36 ofertas más</button><p>También puedes entrar en una tienda o categoría para encontrar antes lo que buscas.</p></div>}
+          {gridDeals.length < visibleDeals.length && <div className="loadMoreWrap"><button className="loadMoreButton" onClick={() => setVisibleLimit((current) => current + 12)}>Ver 12 ofertas más <span aria-hidden="true">↓</span></button><p>También puedes filtrar por tienda, categoría o cupón para dar con lo que buscas.</p></div>}
           {!visibleDeals.length && <div className="empty"><b>No hemos encontrado ofertas con esa búsqueda.</b><span>Prueba con otra palabra o vuelve a “Todos”.</span></div>}
         </div>
       </section>

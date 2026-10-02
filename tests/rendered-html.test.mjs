@@ -33,7 +33,7 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.match(html, /sectionCover storeAmazon/);
   assert.match(html, /sectionCover categoryGaming/);
   assert.match(html, /href="\/chollos\/cocina\/"/);
-  assert.match(html, /Ver 36 ofertas más/);
+  assert.match(html, /Ver 12 ofertas más/);
   assert.ok((html.match(/class="dealCard"/g) ?? []).length <= 43, "homepage should not render hundreds of offer cards at once");
   assert.match(html, /og-chollosaldia-v2\.png/);
   assert.match(html, /rel="icon" href="\/favicon\.ico" sizes="48x48"/);

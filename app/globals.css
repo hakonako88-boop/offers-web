@@ -899,3 +899,56 @@ body { background: var(--paper); }
 .offerTelegramJoin .eyebrow { margin: 0 0 8px; color: #d2ede5; }.offerTelegramJoin .eyebrow>span { background: #ffd447; }.offerTelegramJoin h2 { max-width: 660px; margin: 0 0 9px; font-size: clamp(27px,3.3vw,43px); letter-spacing: -.05em; line-height: 1.05; }.offerTelegramJoin p:last-child { max-width: 680px; margin: 0; color: #d2ede5; font-size: 13px; line-height: 1.6; }
 .offerTelegramJoin>a { display: flex; min-width: 220px; align-items: center; justify-content: space-between; gap: 18px; border-radius: 10px; background: #fff; padding: 17px 19px; color: #087f65; font-size: 13px; font-weight: 900; }.offerTelegramJoin>a:hover { background: #ffd447; color: #18213e; }
 @media(max-width:760px){.offerTelegramJoin{grid-template-columns:1fr;gap:18px;margin-bottom:55px;padding:27px 22px}.offerTelegramIcon{width:52px;height:52px;font-size:25px}.offerTelegramJoin>a{width:100%;min-width:0}}
+
+/* Clearer home discovery: visible search, compact mobile navigation and calmer browsing. */
+.dealHome .headerInner { position: relative; }
+.dealHome .mobileNav { display: none; }
+.dealHome .mobileNav summary { list-style: none; }
+.dealHome .mobileNav summary::-webkit-details-marker { display: none; }
+.dealHome .heroSearch { max-width: 610px; margin: 20px 0 20px; }
+.dealHome .heroSearch > label { display: block; margin: 0 0 8px; color: #e4e9f4; font-size: 11px; font-weight: 800; }
+.dealHome .heroSearchBox { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 10px; min-height: 56px; border: 1px solid rgb(255 255 255 / 20%); border-radius: 12px; background: #fff; padding: 5px; box-shadow: 0 10px 26px rgb(0 0 0 / 16%); }
+.dealHome .heroSearchBox > span { padding-left: 11px; color: #64748b; font-size: 27px; line-height: 1; }
+.dealHome .heroSearchBox input { min-width: 0; height: 43px; border: 0; outline: 0; background: transparent; color: #17213a; font-size: 13px; }
+.dealHome .heroSearchBox input::placeholder { color: #7b8799; }
+.dealHome .heroSearchBox button { min-height: 43px; border: 0; border-radius: 9px; background: #ff633f; padding: 0 15px; color: #fff; font-size: 11px; font-weight: 900; }
+.dealHome .heroSearchBox button:hover { background: #e95032; }
+.dealHome .heroSearchShortcuts { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: 10px; color: #cbd5e1; font-size: 10px; }
+.dealHome .heroSearchShortcuts button { min-height: 29px; border: 1px solid rgb(255 255 255 / 20%); border-radius: 999px; background: rgb(255 255 255 / 7%); padding: 0 10px; color: #f4f6fa; font-size: 10px; font-weight: 750; }
+.dealHome .heroSearchShortcuts button:hover { border-color: #ffd447; background: rgb(255 212 71 / 14%); color: #ffe18a; }
+.dealHome .controls { grid-template-columns: minmax(0,1fr); }
+.dealHome .primeHomeBanner { min-height: 126px; grid-template-columns: auto minmax(0,1fr) auto; gap: 22px; margin-top: 16px; margin-bottom: 21px; border-color: #454b82; border-radius: 21px; background: radial-gradient(circle at 10% 50%, rgb(255 205 106 / 19%), transparent 24%), radial-gradient(circle at 80% 20%, rgb(109 112 255 / 20%), transparent 28%), linear-gradient(105deg,#121a34,#292752); padding: 23px 26px; box-shadow: 0 12px 26px rgb(26 31 62 / 11%); }
+.dealHome .primeHomeAccent { width: 58px; height: 58px; border-radius: 17px; background: linear-gradient(145deg,#ffe18a,#ffad48); box-shadow: 0 8px 23px rgb(255 176 64 / 21%); color: #212744; font-size: 34px; }
+.dealHome .primeHomeBanner p { margin-bottom: 7px; color: #ffdc8d; font-size: 10px; }
+.dealHome .primeHomeBanner h2 { margin-bottom: 7px; font-size: clamp(20px,2.5vw,28px); }
+.dealHome .primeHomeBanner span { color: #e0e5f1; font-size: 12px; }
+.dealHome .primeHomeBanner > a { min-height: 48px; border-radius: 11px; padding-inline: 17px; font-size: 12px; box-shadow: 0 7px 18px rgb(0 0 0 / 12%); }
+.dealHome .storeRail { margin-bottom: 3px; }
+.dealHome .sectionIntro > p { max-width: 385px; }
+.dealHome .loadMoreButton { min-width: 210px; min-height: 48px; }
+
+@media (max-width: 760px) {
+  .dealHome .headerInner { gap: 10px; }
+  .dealHome .headerInner > nav { display: none; }
+  .dealHome .mobileNav { position: relative; display: block; margin-left: auto; }
+  .dealHome .mobileNav summary { display: inline-flex; min-height: 40px; align-items: center; gap: 7px; border: 1px solid #d8deea; border-radius: 10px; background: #fff; padding: 0 11px; color: #23304b; font-size: 11px; font-weight: 850; cursor: pointer; }
+  .dealHome .mobileNav[open] summary { border-color: #babef7; background: #f1f1ff; }
+  .dealHome .mobileNavMenu { position: absolute; z-index: 50; top: calc(100% + 10px); right: 0; display: grid; width: min(290px, calc(100vw - 28px)); gap: 4px; border: 1px solid #dfe4ed; border-radius: 16px; background: #fff; padding: 8px; box-shadow: 0 20px 45px rgb(16 24 40 / 20%); }
+  .dealHome .mobileNavMenu a { min-height: 43px; display: flex; align-items: center; border-radius: 10px; padding: 0 12px; color: #26334b; font-size: 12px; font-weight: 750; }
+  .dealHome .mobileNavMenu a:hover { background: #f1f3fb; color: #4142c5; }
+  .dealHome .heroSearch { margin-block: 17px 18px; }
+  .dealHome .heroSearchBox { grid-template-columns: auto minmax(0,1fr); padding: 5px 7px; }
+  .dealHome .heroSearchBox button { grid-column: 1 / -1; width: 100%; }
+  .dealHome .heroSearchBox input { font-size: 12px; }
+  .dealHome .primeHomeBanner { grid-template-columns: auto minmax(0,1fr); gap: 14px; margin-top: 10px; padding: 18px; }
+  .dealHome .primeHomeAccent { width: 48px; height: 48px; border-radius: 14px; font-size: 28px; }
+  .dealHome .primeHomeBanner h2 { font-size: 19px; }
+  .dealHome .primeHomeBanner span { font-size: 10px; line-height: 1.5; }
+  .dealHome .primeHomeBanner > a { grid-column: 1 / -1; width: 100%; }
+}
+
+@media (max-width: 420px) {
+  .dealHome .heroSearchShortcuts { gap: 5px; }
+  .dealHome .heroSearchShortcuts > span { width: 100%; }
+  .dealHome .heroSearchShortcuts button { min-height: 31px; }
+}

@@ -108,8 +108,8 @@ export default function Home() {
   // Keep the landing page fast: every active offer remains available through
   // its own indexable URL, sitemap, store and category pages.
   // The browser receives the complete active inventory so counts and filters
-  // describe the same set. DealExplorer still renders only 36 cards initially,
-  // so remote product images remain lazy and bounded.
+  // describe the same set. DealExplorer renders only 12 cards initially and
+  // progressively reveals more on request, keeping the first visit focused.
   const homepageDeals = publishedDeals.map((deal) => ({ ...deal, store: deal.store as Deal["store"] }));
   const discountedDeals = publishedDeals.filter((deal) => deal.oldPrice > deal.price);
   const summary: DealSummary = {
