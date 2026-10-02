@@ -1,0 +1,59 @@
+name: Campaña Fiesta de Ofertas Prime en Telegram
+
+on:
+  schedule:
+    # 09:00 hora peninsular del 6 de octubre de 2026 (07:00 UTC).
+    - cron: "0 7 6 10 *"
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: Fase del aviso
+        required: true
+        default: announcement
+        type: choice
+        options:
+          - announcement
+          - launch
+
+permissions:
+  contents: write
+
+concurrency:
+  group: chollosaldia-prime-day-telegram
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      PRIME_DAY_STAGE: ${{ github.event_name == 'schedule' && 'launch' || inputs.stage }}
+    steps:
+      - name: Descargar la web
+        uses: actions/checkout@v5
+
+      - name: Preparar Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Publicar aviso especial Prime Day
+        run: node scripts/publish-prime-day-telegram.mjs
+
+      - name: Guardar control antirrepetición
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/prime-day-telegram-publication.json
+          if git diff --cached --quiet; then
+            echo "El aviso ya estaba publicado; no hay cambios que guardar."
+            exit 0
+          fi
+          git commit -m "Guardar aviso Prime Day de Telegram [automation-state]"
+          git pull --rebase origin main
+          git push
