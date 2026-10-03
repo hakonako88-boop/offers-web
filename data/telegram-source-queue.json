@@ -17160,14 +17160,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3xY2fzj",
       "status": "pending",
-      "reason": "AliExpress limitó temporalmente la consulta; se conservará para reintentarla automáticamente",
+      "reason": "Pendiente de reintento (5/6)",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 4,
+      "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-03T07:30:26.889Z",
-      "updatedAt": "2026-10-03T18:13:22.590Z",
-      "nextAttemptAt": "2026-10-03T22:13:22.590Z"
+      "updatedAt": "2026-10-03T22:22:14.886Z",
+      "nextAttemptAt": "2026-10-04T02:22:14.886Z"
     },
     {
       "id": "telegram-ofertos:43445:aliexpress:0",
@@ -18511,13 +18511,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/lzpme",
       "status": "pending",
-      "reason": "Pendiente de reintento (5/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceWeight": 22,
       "priority": false,
       "attempts": 5,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-03T12:40:27.685Z",
-      "updatedAt": "2026-10-03T18:21:27.937Z",
+      "updatedAt": "2026-10-03T22:22:14.886Z",
       "nextAttemptAt": "2026-10-03T22:21:27.937Z"
     },
     {
@@ -19306,14 +19306,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4j1LN4Y",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de reintento (3/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-10-03T18:40:27.132Z",
-      "updatedAt": "2026-10-03T21:40:55.348Z",
+      "updatedAt": "2026-10-03T22:21:05.542Z",
       "retryPolicyVersion": "exact-official-page-v1",
-      "nextAttemptAt": "2026-10-03T22:20:55.348Z"
+      "nextAttemptAt": "2026-10-03T23:41:05.542Z"
     },
     {
       "id": "telegram-errores-de-precio:15591:aliexpress:0",
@@ -19410,13 +19410,14 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4hhmBom",
       "status": "pending",
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "createdAt": "2026-10-03T19:40:28.970Z",
-      "updatedAt": "2026-10-03T22:12:50.505Z",
-      "retryPolicyVersion": "exact-official-page-v1"
+      "updatedAt": "2026-10-03T22:21:05.542Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-10-03T22:41:05.542Z"
     },
     {
       "id": "telegram-paramanitas:4870:amazon:0",
@@ -19923,14 +19924,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/079z2",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (3/6)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-03T21:00:40.553Z",
-      "updatedAt": "2026-10-03T22:12:50.505Z",
-      "nextAttemptAt": "2026-10-03T22:12:49.422Z"
+      "updatedAt": "2026-10-03T22:22:14.886Z",
+      "nextAttemptAt": "2026-10-03T23:42:14.886Z"
     },
     {
       "id": "telegram-una-ganga:94880:aliexpress:0",
@@ -20026,12 +20027,13 @@
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B06s3sy3U",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-10-03T22:20:30.042Z",
-      "updatedAt": "2026-10-03T22:20:30.042Z"
+      "updatedAt": "2026-10-03T22:21:05.542Z",
+      "nextAttemptAt": "2026-10-03T23:01:05.542Z"
     }
   ]
 }
