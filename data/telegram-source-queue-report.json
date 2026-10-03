@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-10-03T17:12:16.603Z",
+  "updatedAt": "2026-10-03T17:21:57.633Z",
   "summary": {
-    "rejected": 396,
     "pending": 516,
+    "rejected": 396,
     "duplicate": 25,
     "ignored": 14,
     "published": 28,
     "needs_review": 21
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:94867:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94867,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/94867",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94866:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -180,8 +191,8 @@
       "messageId": 94862,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/6)",
       "sourceUrl": "https://t.me/una_ganga/94862",
       "resultUrl": ""
     },
@@ -246,8 +257,8 @@
       "messageId": 94857,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/94857",
       "resultUrl": ""
     },
@@ -1070,9 +1081,9 @@
       "source": "telegram-ofertos",
       "messageId": 43442,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceUrl": "https://t.me/Ofertos/43442",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 6,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceUrl": "https://t.me/una_ganga/94834",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:94833:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 94833,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
-      "sourceUrl": "https://t.me/una_ganga/94833",
       "resultUrl": ""
     }
   ]
