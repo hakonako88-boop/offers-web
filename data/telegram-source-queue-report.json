@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-10-03T09:22:21.419Z",
+  "updatedAt": "2026-10-03T09:32:13.441Z",
   "summary": {
-    "pending": 519,
     "rejected": 399,
+    "pending": 519,
     "duplicate": 26,
     "ignored": 15,
     "published": 23,
     "needs_review": 18
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:43469:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 43469,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/Ofertos/43469",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94841:amazon:0",
       "source": "telegram-una-ganga",
@@ -82,7 +93,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/94840",
       "resultUrl": ""
     },
@@ -114,8 +125,8 @@
       "messageId": 43461,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/6)",
       "sourceUrl": "https://t.me/Ofertos/43461",
       "resultUrl": ""
     },
@@ -279,8 +290,8 @@
       "messageId": 94837,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/6)",
       "sourceUrl": "https://t.me/una_ganga/94837",
       "resultUrl": ""
     },
@@ -1089,17 +1100,6 @@
     },
     {
       "id": "telegram-paramanitas:4866:amazon:7",
-      "source": "telegram-paramanitas",
-      "messageId": 4866,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
-      "sourceUrl": "https://t.me/paramanitas/4866",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4866:amazon:6",
       "source": "telegram-paramanitas",
       "messageId": 4866,
       "store": "Amazon",
