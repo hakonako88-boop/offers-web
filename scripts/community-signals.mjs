@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import { isSourceItemReady } from './source-retry-policy.mjs';
+import { outboundOfferLinkFromHtml } from './link-offer-extractor.mjs';
 
 const USER_AGENT = 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)';
 const MAX_SIGNAL_AGE_MS = 48 * 60 * 60 * 1000;
@@ -40,7 +41,7 @@ export const COMMUNITY_SOURCES = [
     limit: 40,
   },
   { id: 'michollo', kind: 'sitemap', url: 'https://michollo.com/assets/sitemap-chollos-0.xml.gz', weight: 30 },
-  { id: 'nolodejesescapar', kind: 'rss', url: 'https://nolodejesescapar.com/feed/', weight: 25 },
+  { id: 'nolodejesescapar', kind: 'wordpress', url: 'https://nolodejesescapar.com/wp-json/wp/v2/posts?per_page=100&orderby=date&order=desc&_embed=1', weight: 48, limit: 100 },
   ...telegramChannelSources(),
 ];
 
@@ -178,7 +179,7 @@ export function searchTermsForSignal(title) {
   return [...new Set(words.filter((word) => !STOP_WORDS.has(word)))].slice(0, 7);
 }
 
-function makeSignal(source, link, title, publishedAt, merchant = '') {
+function makeSignal(source, link, title, publishedAt, merchant = '', sourceText = title) {
   const terms = searchTermsForSignal(title);
   const currentPrice = cleanText(title).match(/\b(?:precio(?:\s+oferta)?|por|ahora)\s*:?\s*(\d{1,5}(?:[.,]\d{1,2})?)\s*€/iu)?.[1] || '';
   const previousPrice = cleanText(title).match(/\b(?:antes|pvp|precio\s+(?:anterior|recomendado))\s*:?\s*(\d{1,5}(?:[.,]\d{1,2})?)\s*€/iu)?.[1] || '';
@@ -200,8 +201,32 @@ function makeSignal(source, link, title, publishedAt, merchant = '') {
     sourceWeight: source.weight,
     price: amount(currentPrice),
     previousPrice: amount(previousPrice),
-    coupon: couponCodesFromText(title),
+    coupon: couponCodesFromText(sourceText),
+    sourceText: cleanText(sourceText).slice(0, 2_000),
   };
+}
+
+/** Parses the public WordPress feed used by Nolodejescapar. Unlike its RSS
+ * endpoint (10 entries), the REST API can return up to 100 recent posts. The
+ * post is only a discovery signal: product data and images are later checked
+ * against the merchant's own catalogue/feed before publication. */
+export function parseWordPressSignals(source, posts, limit = 100) {
+  if (!Array.isArray(posts)) return [];
+  return posts.slice(0, limit).flatMap((post) => {
+    const link = String(post?.link || '').trim();
+    const title = cleanText(post?.title?.rendered || '');
+    const content = String(post?.content?.rendered || '');
+    const excerpt = cleanText(post?.excerpt?.rendered || '');
+    if (!link || !title) return [];
+    const merchantUrl = outboundOfferLinkFromHtml(content, link);
+    const sourceText = `${title} ${excerpt} ${cleanText(content)}`.trim();
+    const merchant = sourceStore(`${title} ${merchantUrl}`);
+    const signal = makeSignal(source, link, title, post.date_gmt ? `${post.date_gmt}Z` : post.date || '', merchant, sourceText);
+    if (merchantUrl) signal.merchantUrl = merchantUrl;
+    signal.sourceImageUrl = String(post.yoast_head_json?.og_image?.[0]?.url
+      || post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '').trim();
+    return signal.terms.length >= 2 ? [signal] : [];
+  });
 }
 
 function queuedTelegramSignals() {
@@ -387,7 +412,9 @@ export async function discoverCommunitySignals({ state = {}, fetchImpl = fetch, 
       const response = await fetchSource(source.url, fetchImpl);
       const parsed = source.kind === 'rss'
         ? parseRssSignals(source, await response.text(), Number(source.limit) || 10)
-        : source.kind === 'telegram-public'
+        : source.kind === 'wordpress'
+          ? parseWordPressSignals(source, await response.json(), Number(source.limit) || 100)
+          : source.kind === 'telegram-public'
           ? parseTelegramPublicSignals(source, await response.text())
           : parseMicholloSitemap(source, await response.arrayBuffer());
       signals.push(...parsed.filter((signal) => isFresh(signal, now) && !known.has(signal.id)));

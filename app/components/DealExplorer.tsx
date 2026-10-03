@@ -187,9 +187,8 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
       </header>
 
       <section className="primeHomeBanner shell" aria-labelledby="prime-home-title">
-        <div className="primeHomeAccent" aria-hidden="true">€</div>
-        <div><p>6 Y 7 DE OCTUBRE · AMAZON ESPAÑA</p><h2 id="prime-home-title">Preparamos la Fiesta de Ofertas Prime</h2><span>Selección de ofertas, precios y cupones revisados para el evento.</span></div>
-        <a href="/fiesta-ofertas-prime-2026/">Ver portada Prime <b aria-hidden="true">→</b></a>
+        <div className="primeHomeCopy"><p>6 Y 7 DE OCTUBRE · AMAZON ESPAÑA</p><h2 id="prime-home-title">Fiesta de Ofertas Prime</h2><span>Preparamos una selección especial con precios y cupones comprobados.</span><a href="/fiesta-ofertas-prime-2026/">Ver ofertas Prime <b aria-hidden="true">→</b></a></div>
+        <a className="primeHomeArtwork" href="/fiesta-ofertas-prime-2026/" aria-label="Ver la guía de la Fiesta de Ofertas Prime del 6 y 7 de octubre"><img src="/images/fiesta-ofertas-prime-octubre-2026.svg" alt="Fiesta de Ofertas Prime: 6 y 7 de octubre, 48 horas de ofertas" width="960" height="520" fetchPriority="high" /></a>
       </section>
 
       <section className="hero shell" aria-labelledby="hero-title">
@@ -217,10 +216,6 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             <li>Alertas gratis</li>
           </ul>
         </div>
-        <aside className="featuredPanel gtaPinned" aria-label="Guía destacada de GTA VI">
-          <a className="featuredImage" href="/gta-vi-mas-barato-ps5/"><img src="/images/gta-vi-official.jpg" alt="Arte promocional oficial de Grand Theft Auto VI" width={1200} height={630} /><span>GUÍA DESTACADA</span></a>
-          <div className="featuredBody"><p className="featuredMeta"><span className="liveDot" /> CONTENIDO FIJADO · GAMING</p><h2><a href="/gta-vi-mas-barato-ps5/">GTA 6 barato: precio PS5, reserva y ahorro</a></h2><p className="gtaPinnedLead">Precio oficial en España, comparación regional, vídeo ampliado de Rockstar, ediciones y requisitos antes de reservar.</p><a href="/gta-vi-mas-barato-ps5/">Leer la guía actualizada <span aria-hidden="true">→</span></a><p className="featuredFoot">Imagen promocional oficial © Rockstar Games · Información revisada el 31 de agosto de 2026.</p></div>
-        </aside>
       </section>
 
       <section className="storeRail shell" aria-label="Explorar ofertas por tienda">
@@ -299,6 +294,12 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           {!visibleDeals.length && <div className="empty"><b>No hemos encontrado ofertas con esa búsqueda.</b><span>Prueba con otra palabra o vuelve a “Todos”.</span></div>}
         </div>
       </section>
+
+      <aside className="gtaGuideTeaser shell" aria-label="Guía destacada de GTA VI">
+        <a className="gtaGuideImage" href="/gta-vi-mas-barato-ps5/"><img src="/images/gta-vi-official.jpg" alt="Arte promocional oficial de Grand Theft Auto VI" width="1200" height="630" loading="lazy" /><span>GUÍA GAMING</span></a>
+        <div><p>GUÍA DESTACADA · ACTUALIZADA</p><h2><a href="/gta-vi-mas-barato-ps5/">GTA 6: precio, reserva y cómo ahorrar</a></h2><span>Consulta la información y las opciones para PS5 en una guía independiente.</span></div>
+        <a className="gtaGuideLink" href="/gta-vi-mas-barato-ps5/">Ver guía <b aria-hidden="true">→</b></a>
+      </aside>
 
       {posts.length > 0 && <section className="editorialPosts shell" id="novedades" aria-labelledby="posts-title">
         <div className="sectionIntro"><div><p className="eyebrow"><span aria-hidden="true" />GUÍAS Y AVISOS</p><h2 id="posts-title">Novedades para ahorrar mejor</h2></div><p>Campañas, noticias y contenidos añadidos directamente por Chollos al Día.</p></div>

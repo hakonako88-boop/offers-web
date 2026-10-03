@@ -156,6 +156,21 @@ export function compareCheckpoint(previousId, currentId) {
   return { changed: currentId > previousId, nextId: Math.max(previousId, currentId) };
 }
 
+export async function latestNoloPostId({ fetchImpl = fetch } = {}) {
+  const response = await fetchImpl('https://nolodejesescapar.com/wp-json/wp/v2/posts?per_page=1&orderby=date&order=desc', {
+    headers: {
+      'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaSourceMonitor/2.0; +https://chollosaldia.com)',
+      accept: 'application/json',
+    },
+    signal: AbortSignal.timeout(15_000),
+  });
+  if (!response.ok) throw new Error(`NoLoDejesEscapar respondió HTTP ${response.status}`);
+  const posts = await response.json();
+  const id = Number(Array.isArray(posts) ? posts[0]?.id : 0);
+  if (!Number.isSafeInteger(id) || id <= 0) throw new Error('No se encontró la última publicación de NoLoDejesEscapar');
+  return id;
+}
+
 async function readJson(file, fallback) {
   try {
     return JSON.parse(await fs.readFile(file, 'utf8'));
@@ -258,6 +273,23 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
     } catch (error) {
       errors.push(`${source.id}: ${error.message}`);
     }
+  }
+
+  // NoLoDejesEscapar is polled on the same clock as Telegram. A new public
+  // WordPress post wakes the existing retailer pipeline, which then reads
+  // its 100-post discovery feed and validates each product via the retailer.
+  try {
+    const sourceId = 'nolodejesescapar';
+    const previousId = Number(nextChannels[sourceId]?.lastPostId);
+    const currentId = await latestNoloPostId({ fetchImpl });
+    const comparison = compareCheckpoint(previousId, currentId);
+    if (comparison.changed) changedChannels.push(sourceId);
+    if (!Number.isSafeInteger(previousId) || comparison.nextId !== previousId) {
+      nextChannels[sourceId] = { lastPostId: comparison.nextId, advancedAt: new Date().toISOString() };
+      stateChanged = true;
+    }
+  } catch (error) {
+    errors.push(`nolodejesescapar: ${error.message}`);
   }
 
   const persistedState = {

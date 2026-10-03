@@ -2,6 +2,7 @@ import { selectInterestingOffers } from './editorial-interest.mjs';
 import { offerQuality } from './offer-quality-score.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
+import sharp from 'sharp';
 import {
   ALIEXPRESS_ENDPOINT,
   ALIEXPRESS_SEARCH_TOPICS,
@@ -309,13 +310,30 @@ async function publishOffer(config, offer) {
 async function mirrorImageForWeb(offer) {
   const filename = `aliexpress-${offer.id}.jpg`;
   const localImage = path.join(WEB_IMAGES_DIR, filename);
-  if (fs.existsSync(localImage)) return `/tg/${filename}`;
+  if (fs.existsSync(localImage)) {
+    try {
+      const existing = await sharp(localImage, { failOn: 'none' }).metadata();
+      if ((existing.width || 0) >= 720 && (existing.height || 0) >= 720) return `/tg/${filename}`;
+    } catch {
+      // Replace an unreadable or obsolete cached thumbnail with the current
+      // official catalogue image below.
+    }
+  }
 
   try {
-    const response = await fetch(offer.image);
+    const response = await fetch(offer.image, { signal: AbortSignal.timeout(20_000) });
     if (!response.ok) throw new Error(`image status ${response.status}`);
+    const input = Buffer.from(await response.arrayBuffer());
+    const metadata = await sharp(input, { failOn: 'none' }).metadata();
+    if ((metadata.width || 0) < 600 || (metadata.height || 0) < 600) {
+      throw new Error(`catalogue image is too small (${metadata.width || 0}x${metadata.height || 0})`);
+    }
     fs.mkdirSync(WEB_IMAGES_DIR, { recursive: true });
-    fs.writeFileSync(localImage, Buffer.from(await response.arrayBuffer()));
+    await sharp(input, { failOn: 'none' })
+      .rotate()
+      .resize(1200, 1200, { fit: 'inside', withoutEnlargement: true })
+      .jpeg({ quality: 90, mozjpeg: true })
+      .toFile(localImage);
     return `/tg/${filename}`;
   } catch (error) {
     console.warn(`Could not mirror AliExpress image ${offer.id}: ${error.message}`);

@@ -7,6 +7,7 @@ import {
   compareCheckpoint,
   isPromotionalSourcePost,
   latestPublicMessageId,
+  latestNoloPostId,
   parseTelegramPublicMessages,
   publisherDispatchDecision,
   retryableQueueCount,
@@ -74,6 +75,18 @@ test('initializes a channel without publishing its existing backlog', () => {
   assert.deepEqual(compareCheckpoint(106, 105), { changed: false, nextId: 106 });
 });
 
+test('reads the latest public NoLoDejesEscapar WordPress post for automatic change detection', async () => {
+  let requested = '';
+  const id = await latestNoloPostId({
+    fetchImpl: async (url) => {
+      requested = String(url);
+      return new Response(JSON.stringify([{ id: 901 }]), { status: 200 });
+    },
+  });
+  assert.equal(id, 901);
+  assert.match(requested, /nolodejesescapar\.com\/wp-json\/wp\/v2\/posts\?per_page=1/u);
+});
+
 test('wakes the publisher when a repaired AliExpress resolver can retry old failures', () => {
   const now = new Date('2026-08-30T10:00:00+02:00');
   assert.equal(retryableQueueCount([
@@ -85,7 +98,7 @@ test('wakes the publisher when a repaired AliExpress resolver can retry old fail
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'exact-id-query-and-diagnostics-v14-resilient-retry', publishedAt: '2026-08-30T08:05:00Z' },
     { store: 'AliExpress', status: 'rejected', retryPolicyVersion: 'old', publishedAt: '2026-08-20T08:00:00Z' },
     { store: 'Amazon', status: 'rejected', retryPolicyVersion: 'old', publishedAt: '2026-08-30T08:06:00Z' },
-  ], now), 5);
+  ], now), 6);
 });
 
 test('extracts every supported product link as an individual queue candidate', () => {

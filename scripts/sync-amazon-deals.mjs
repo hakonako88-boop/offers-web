@@ -229,12 +229,14 @@ const canPublishNow = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
   || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
 const publicationPolicy = publicationAllowance({ store: 'Amazon', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 const communityDiscovery = await discoverCommunitySignals({ state: communityState, includeAmazon: true });
-const selectedSources = new Set();
+const selectedSources = new Map();
 const amazonSignals = [];
 for (const signal of communityDiscovery.signals) {
-  if (signal.sourceStore !== 'Amazon' || signal.terms.length < 2 || (!signal.queueItemId && selectedSources.has(signal.source))) continue;
+  const sourceSelections = selectedSources.get(signal.source) || 0;
+  const sourceLimit = signal.source === 'nolodejesescapar' ? 4 : 1;
+  if (signal.sourceStore !== 'Amazon' || signal.terms.length < 2 || (!signal.queueItemId && sourceSelections >= sourceLimit)) continue;
   amazonSignals.push(signal);
-  if (!signal.queueItemId) selectedSources.add(signal.source);
+  if (!signal.queueItemId) selectedSources.set(signal.source, sourceSelections + 1);
   if (amazonSignals.length >= (process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' ? 18 : 8)) break;
 }
 const topics = amazonSignals.length

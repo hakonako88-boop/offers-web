@@ -8,15 +8,19 @@ import {
   communityMatchForTitle,
   discoverCommunitySignals,
   nextCommunitySignalState,
+  parseWordPressSignals,
   parseRssSignals,
   parseTelegramPublicSignals,
   searchTermsForSignal,
 } from '../scripts/community-signals.mjs';
 
-test('gives rising Chollometro deals and MiChollo the two highest discovery priorities', () => {
+test('prioritizes NoLoDejesEscapar while retaining Chollometro and MiChollo as discovery sources', () => {
   assert.deepEqual(COMMUNITY_SOURCES.slice(0, 2).map((source) => source.id), ['chollometro-subiendo', 'michollo']);
   assert.ok(COMMUNITY_SOURCES[0].weight > COMMUNITY_SOURCES[1].weight);
-  assert.ok(COMMUNITY_SOURCES[1].weight > COMMUNITY_SOURCES[2].weight);
+  const nolo = COMMUNITY_SOURCES.find((source) => source.id === 'nolodejesescapar');
+  assert.equal(nolo.kind, 'wordpress');
+  assert.equal(nolo.limit, 100);
+  assert.ok(nolo.weight > COMMUNITY_SOURCES[0].weight);
 });
 
 test('extracts compact product terms without copying promotional wording', () => {
@@ -60,6 +64,25 @@ test('parses public RSS entries as discovery signals', () => {
   assert.equal(signals[0].sourceStore, 'Otra');
   assert.equal(signals[0].category, 'Tecnología');
   assert.deepEqual(signals[0].terms, ['auriculares', 'bluetooth', '40h']);
+});
+
+test('parses the expanded NoLoDejesEscapar WordPress feed and extracts merchant links and coupon facts', () => {
+  const source = COMMUNITY_SOURCES.find((entry) => entry.id === 'nolodejesescapar');
+  const signals = parseWordPressSignals(source, [{
+    id: 901,
+    date_gmt: '2026-10-03T10:00:00',
+    link: 'https://nolodejesescapar.com/aspirador-robot-xiaomi/',
+    title: { rendered: 'Aspirador robot Xiaomi S40 Pro por 169,99 €' },
+    excerpt: { rendered: 'Un precio interesante para el modelo con fregado.' },
+    content: { rendered: '<p>Cupón: XIAOMI10</p><a href="https://s.click.aliexpress.com/e/_Example">Ver oferta en AliExpress</a>' },
+    _embedded: { 'wp:featuredmedia': [{ source_url: 'https://nolodejesescapar.com/media.jpg' }] },
+  }]);
+  assert.equal(signals.length, 1);
+  assert.equal(signals[0].sourceStore, 'AliExpress');
+  assert.equal(signals[0].merchantUrl, 'https://s.click.aliexpress.com/e/_Example');
+  assert.equal(signals[0].coupon, 'XIAOMI10');
+  assert.equal(signals[0].sourceImageUrl, 'https://nolodejesescapar.com/media.jpg');
+  assert.equal(signals[0].price, 169.99);
 });
 
 test('uses only popular, rising Chollometro deals and keeps their factual store price', () => {
