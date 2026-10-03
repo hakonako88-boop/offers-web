@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-10-03T19:26:05.419Z",
+  "updatedAt": "2026-10-03T19:43:00.531Z",
   "summary": {
-    "pending": 505,
-    "rejected": 407,
+    "rejected": 409,
+    "pending": 503,
     "duplicate": 23,
     "ignored": 15,
     "published": 29,
@@ -10,13 +10,24 @@
   },
   "recent": [
     {
+      "id": "telegram-una-ganga:94874:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94874,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/94874",
+      "resultUrl": ""
+    },
+    {
       "id": "telegram-tiesometro:7506:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7506,
       "store": "AliExpress",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/7506",
       "resultUrl": ""
     },
@@ -37,8 +48,8 @@
       "messageId": 94872,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/6)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/6)",
       "sourceUrl": "https://t.me/una_ganga/94872",
       "resultUrl": ""
     },
@@ -59,8 +70,8 @@
       "messageId": 94871,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/94871",
       "resultUrl": ""
     },
@@ -71,7 +82,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/Ofertos/43499",
       "resultUrl": ""
     },
@@ -224,8 +235,8 @@
       "messageId": 94865,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/94865",
       "resultUrl": ""
     },
@@ -445,7 +456,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 4,
-      "reason": "Pendiente de reintento (4/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/94855",
       "resultUrl": ""
     },
@@ -797,7 +808,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/94843",
       "resultUrl": ""
     },
@@ -817,9 +828,9 @@
       "source": "telegram-tiesometro",
       "messageId": 7500,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceUrl": "https://t.me/tiesometro/7500",
       "resultUrl": ""
     },
@@ -828,9 +839,9 @@
       "source": "telegram-ofertos",
       "messageId": 43471,
       "store": "AliExpress",
-      "status": "pending",
-      "attempts": 5,
-      "reason": "Pendiente de reintento (5/6)",
+      "status": "rejected",
+      "attempts": 6,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceUrl": "https://t.me/Ofertos/43471",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceUrl": "https://t.me/Ofertos/43454",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:43453:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 43453,
-      "store": "AliExpress",
-      "status": "rejected",
-      "attempts": 6,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
-      "sourceUrl": "https://t.me/Ofertos/43453",
       "resultUrl": ""
     }
   ]
