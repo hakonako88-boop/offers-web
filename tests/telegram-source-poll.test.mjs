@@ -8,6 +8,7 @@ import {
   isPromotionalSourcePost,
   latestPublicMessageId,
   latestNoloPostId,
+  noloHasInitialOrNewPost,
   parseTelegramPublicMessages,
   publisherDispatchDecision,
   retryableQueueCount,
@@ -85,6 +86,9 @@ test('reads the latest public NoLoDejesEscapar WordPress post for automatic chan
   });
   assert.equal(id, 901);
   assert.match(requested, /nolodejesescapar\.com\/wp-json\/wp\/v2\/posts\?per_page=1/u);
+  assert.equal(noloHasInitialOrNewPost(Number.NaN, id), true);
+  assert.equal(noloHasInitialOrNewPost(id, id), false);
+  assert.equal(noloHasInitialOrNewPost(id, id + 1), true);
 });
 
 test('wakes the publisher when a repaired AliExpress resolver can retry old failures', () => {

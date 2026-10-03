@@ -171,6 +171,10 @@ export async function latestNoloPostId({ fetchImpl = fetch } = {}) {
   return id;
 }
 
+export function noloHasInitialOrNewPost(previousId, currentId) {
+  return !Number.isSafeInteger(previousId) || (Number.isSafeInteger(currentId) && currentId > previousId);
+}
+
 async function readJson(file, fallback) {
   try {
     return JSON.parse(await fs.readFile(file, 'utf8'));
@@ -283,7 +287,9 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
     const previousId = Number(nextChannels[sourceId]?.lastPostId);
     const currentId = await latestNoloPostId({ fetchImpl });
     const comparison = compareCheckpoint(previousId, currentId);
-    if (comparison.changed) changedChannels.push(sourceId);
+    // On first installation, trigger one catch-up scan. Discovery itself
+    // limits NoLoDejesEscapar signals to the last 48 hours, not its backlog.
+    if (noloHasInitialOrNewPost(previousId, currentId)) changedChannels.push(sourceId);
     if (!Number.isSafeInteger(previousId) || comparison.nextId !== previousId) {
       nextChannels[sourceId] = { lastPostId: comparison.nextId, advancedAt: new Date().toISOString() };
       stateChanged = true;
