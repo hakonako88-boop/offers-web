@@ -19080,13 +19080,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c43lZ5TP",
       "status": "pending",
-      "reason": "Pendiente de reintento (4/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 4,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-03T17:40:28.275Z",
-      "updatedAt": "2026-10-03T20:31:46.414Z",
+      "updatedAt": "2026-10-03T23:12:00.611Z",
       "nextAttemptAt": "2026-10-03T23:11:46.414Z"
     },
     {
@@ -19148,8 +19148,8 @@
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-10-03T18:10:29.158Z",
-      "updatedAt": "2026-10-03T22:24:59.449Z",
-      "nextAttemptAt": "2026-10-03T23:04:59.449Z"
+      "updatedAt": "2026-10-03T23:11:10.813Z",
+      "nextAttemptAt": "2026-10-03T23:51:10.813Z"
     },
     {
       "id": "telegram-una-ganga:94869:aliexpress:0",
@@ -19227,8 +19227,8 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-10-03T18:20:26.862Z",
-      "updatedAt": "2026-10-03T22:24:59.449Z",
-      "nextAttemptAt": "2026-10-03T23:04:59.449Z"
+      "updatedAt": "2026-10-03T23:11:10.813Z",
+      "nextAttemptAt": "2026-10-03T23:51:10.813Z"
     },
     {
       "id": "telegram-ofertos:43499:aliexpress:0",
@@ -19812,8 +19812,8 @@
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-10-03T20:20:33.734Z",
-      "updatedAt": "2026-10-03T22:24:59.449Z",
-      "nextAttemptAt": "2026-10-03T23:04:59.449Z"
+      "updatedAt": "2026-10-03T23:11:10.813Z",
+      "nextAttemptAt": "2026-10-03T23:51:10.813Z"
     },
     {
       "id": "telegram-una-ganga:94877:ignored",
@@ -19844,13 +19844,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4nGizaf",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 0,
       "createdAt": "2026-10-03T20:40:26.375Z",
-      "updatedAt": "2026-10-03T21:42:40.723Z",
-      "nextAttemptAt": "2026-10-03T23:02:40.723Z"
+      "updatedAt": "2026-10-03T23:12:00.611Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-una-ganga:94879:ignored",
@@ -20024,13 +20024,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3IaSzMz",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-03T23:10:29.686Z",
-      "updatedAt": "2026-10-03T23:10:29.686Z"
+      "updatedAt": "2026-10-03T23:12:00.611Z",
+      "nextAttemptAt": "2026-10-03T23:32:00.611Z"
     }
   ]
 }
