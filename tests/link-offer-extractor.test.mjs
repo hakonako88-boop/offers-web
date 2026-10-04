@@ -124,7 +124,7 @@ test('marks a Chollometro shared deal as a product source instead of an implicit
   assert.equal(publicOfferSourceType('https://example.org/una-promocion'), '');
 });
 
-test('uses NoLoDejesEscapar public REST data but ignores an unrelated Awin affiliate', async () => {
+test('uses NoLoDejesEscapar public REST data and accepts only configured Awin retailers', async () => {
   const sourceUrl = 'https://nolodejesescapar.com/cargador-gan-65w/';
   const aliExpressUrl = 'https://www.aliexpress.com/item/1005001234567890.html';
   const fetchImpl = async (url) => {
@@ -143,12 +143,24 @@ test('uses NoLoDejesEscapar public REST data but ignores an unrelated Awin affil
     };
     throw new Error(`unexpected URL ${url}`);
   };
-  assert.equal(merchantLinkFromHtml('<a href="https://www.awin1.com/cread.php?awinmid=20982&awinaffid=540793">Comprar</a>'), '');
+  assert.equal(
+    merchantLinkFromHtml('<a href="https://www.awin1.com/pclick.php?p=44745222570&a=540793&m=20982">Comprar</a>'),
+    'https://www.awin1.com/pclick.php?p=44745222570&a=540793&m=20982',
+  );
+  assert.equal(merchantLinkFromHtml('<a href="https://www.awin1.com/pclick.php?p=123456&a=540793&m=99999">Comprar</a>'), '');
   const result = await extractProductMetadata(sourceUrl, { fetchImpl });
   assert.equal(result.source, 'nolodejesescapar');
   assert.equal(result.finalUrl, aliExpressUrl);
   assert.equal(result.title, 'Cargador GaN USB-C 65W');
   assert.equal(result.price, 18.49);
+});
+
+test('unwraps NoLoDejesEscapar TradeTracker links only to AliExpress product destinations', () => {
+  const ali = 'https://es.aliexpress.com/item/1005013214584097.html';
+  const wrapped = 'https://tc.tradetracker.net/?c=15716&m=12&a=256412&r=&u=' + encodeURIComponent(ali);
+  assert.equal(merchantLinkFromHtml('<a href="' + wrapped + '">Ver oferta</a>'), ali);
+  const unrelated = 'https://tc.tradetracker.net/?c=1&u=' + encodeURIComponent('https://example.com/item');
+  assert.equal(merchantLinkFromHtml('<a href="' + unrelated + '">Ver oferta</a>'), '');
 });
 
 test('decodes named HTML entities in Amazon product metadata', () => {

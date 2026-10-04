@@ -11,6 +11,7 @@ import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { isGzipFeed, parseFeedList } from './miravia-offers.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
+import { discoverCommunitySignals } from './community-signals.mjs';
 import {
   AWIN_RETAILERS,
   AWIN_RETAIL_QUALITY_POLICY_VERSION,
@@ -118,8 +119,8 @@ async function saveForWeb(offer, message, originalImage) {
     price: offer.priceLabel,
     previousPrice: offer.previousPriceLabel,
     store: offer.store,
-    source: `awin-${offer.storeSlug}-feed`,
-    source_url: '',
+    source: offer.communitySource || `awin-${offer.storeSlug}-feed`,
+    source_url: offer.communitySourceUrl || '',
     category: offer.category,
     description: offer.title,
   };
@@ -176,11 +177,35 @@ const cutoff = Date.now() - 365 * 24 * 60 * 60 * 1000;
 const published = (publicationState.published || []).filter((entry) => Date.parse(entry.publishedAt || '') > cutoff);
 const seenIds = new Set(published.map((entry) => entry.productId));
 const existingWebOffers = readJson(WEB_OFFERS_FILE, []);
+const noloSignalRetryAfter = Object.fromEntries(Object.entries(state.noloSignalRetryAfter || {})
+  .filter(([, retryAt]) => Date.parse(retryAt) > Date.now()));
+const communityDiscovery = await discoverCommunitySignals({ state: { seen: [] }, includeAmazon: false, includeTelegramQueue: false });
+const recentlyPublishedSignalIds = new Set(published.map((entry) => entry.communitySignalId).filter(Boolean));
+const pendingNoloSignals = communityDiscovery.signals
+  .filter((signal) => signal.source === 'nolodejesescapar'
+    && signal.merchantUrl
+    && !recentlyPublishedSignalIds.has(signal.id)
+    && Date.parse(noloSignalRetryAfter[signal.id] || '') <= Date.now())
+  .sort((left, right) => Date.parse(left.publishedAt || '') - Date.parse(right.publishedAt || ''));
+function awinSourceProductId(signal) {
+  try {
+    const url = new URL(signal.merchantUrl);
+    const host = url.hostname.toLowerCase();
+    if (host !== 'awin1.com' && host !== 'www.awin1.com') return '';
+    return String(url.searchParams.get('p') || '').trim();
+  } catch { return ''; }
+}
 const listResponse = await fetch(config.feedListUrl, { headers: { 'user-agent': 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)' } });
 if (!listResponse.ok) throw new Error(`Awin feed list returned ${listResponse.status}`);
 const feedList = parseFeedList(await listResponse.text());
 const requestedRetailer = String(process.env.AWIN_RETAILER_SLUG || '').trim().toLowerCase();
+const retailerForSignal = (signal) => AWIN_RETAILERS.find((entry) => entry.store === signal?.sourceStore);
+const noloSignal = pendingNoloSignals.find((signal) => {
+  const signalRetailer = retailerForSignal(signal);
+  return signalRetailer && (!requestedRetailer || signalRetailer.slug === requestedRetailer) && awinSourceProductId(signal);
+}) || null;
 const retailer = AWIN_RETAILERS.find((entry) => entry.slug === requestedRetailer)
+  || retailerForSignal(noloSignal)
   || AWIN_RETAILERS[Math.abs(Number(state.nextRetailer) || 0) % AWIN_RETAILERS.length];
 const entries = retailerFeedEntries(feedList, retailer);
 const feed = selectRetailerFeed(entries, state.feedCursors?.[retailer.merchantId] || 0);
@@ -196,7 +221,18 @@ const queued = (state.queuedOffers?.[retailerStateKey] || [])
   }))
   .filter((offer) => offer.score > 0);
 const discovered = state.feedVersions?.[feed.feed_id] !== feedVersion || queued.length < 5 ? await discover(feed.url, retailer, seenIds) : { candidates: [], scanned: 0 };
-const merged = [...new Map([...queued, ...discovered.candidates].map((offer) => [offer.id, offer])).values()];
+const feedCandidates = [...new Map([...queued, ...discovered.candidates].map((offer) => [offer.id, offer])).values()];
+const noloProductId = awinSourceProductId(noloSignal);
+const noloCandidates = noloSignal
+  ? feedCandidates.filter((offer) => String(offer.sourceProductId) === noloProductId).map((offer) => ({
+      ...offer,
+      score: offer.score + 1_000,
+      communitySignalId: noloSignal.id,
+      communitySource: noloSignal.source,
+      communitySourceUrl: noloSignal.sourceUrl,
+    }))
+  : [];
+const merged = noloSignal ? noloCandidates : feedCandidates;
 const candidates = selectInterestingOffers(filterDuplicateDeals(merged, existingWebOffers))
   .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable);
 const publicationPolicy = publicationAllowance({ store: retailer.store, offers: existingWebOffers, bypass: scheduleBypassEnabled() });
@@ -217,17 +253,24 @@ for (const offer of (publicationPolicy.allowed ? candidates : []).slice(0, MAX_P
       replyMarkup: offerReplyMarkup(offer),
     });
     await saveForWeb(offer, message, originalImage);
-    published.push({ productId: offer.id, publishedAt: new Date().toISOString(), telegramMessageId: message.message_id, price: offer.price, url: offer.url, title: offer.title, store: offer.store, source: `awin-${offer.storeSlug}-feed`, status: 'PUBLICADO' });
+    published.push({ productId: offer.id, publishedAt: new Date().toISOString(), telegramMessageId: message.message_id, price: offer.price, url: offer.url, title: offer.title, store: offer.store, source: offer.communitySource || `awin-${offer.storeSlug}-feed`, sourceUrl: offer.communitySourceUrl || '', communitySignalId: offer.communitySignalId || '', status: 'PUBLICADO' });
     seenIds.add(offer.id); sent = 1; break;
   } catch (error) { console.warn(`Could not publish ${offer.id}: ${error.message}`); }
 }
 
 const queues = { ...(state.queuedOffers || {}), [retailerStateKey]: candidates.filter((offer) => !seenIds.has(offer.id) && !attempted.has(offer.id)).slice(0, MAX_CANDIDATES) };
+const nextNoloSignalRetryAfter = { ...noloSignalRetryAfter };
+if (noloSignal) {
+  const wasPublished = published.some((entry) => entry.communitySignalId === noloSignal.id);
+  if (wasPublished) delete nextNoloSignalRetryAfter[noloSignal.id];
+  else nextNoloSignalRetryAfter[noloSignal.id] = new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString();
+}
 writeJson(STATE_FILE, {
   nextRetailer: Number(state.nextRetailer || 0) + 1,
   feedCursors: { ...(state.feedCursors || {}), [retailerStateKey]: Number(state.feedCursors?.[retailerStateKey] || 0) + 1 },
   feedVersions: { ...(state.feedVersions || {}), [feed.feed_id]: feedVersion },
   queuedOffers: queues,
+  noloSignalRetryAfter: Object.fromEntries(Object.entries(nextNoloSignalRetryAfter).slice(-500)),
   lastRunAt: new Date().toISOString(), lastStore: retailer.store, lastFeedId: feed.feed_id, lastProductsScanned: discovered.scanned,
 });
 writeJson(PUBLISHED_FILE, { published });

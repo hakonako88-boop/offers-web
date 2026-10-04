@@ -228,10 +228,19 @@ const canPublishNow = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
   || !lastPublicationAt
   || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
 const publicationPolicy = publicationAllowance({ store: 'Amazon', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
-const communityDiscovery = await discoverCommunitySignals({ state: communityState, includeAmazon: true });
+const canCheckCommunitySignals = canPublishNow && publicationPolicy.allowed;
+const publishedAmazonSignalIds = new Set(published.map((entry) => entry.communitySignalId).filter(Boolean));
+const communityStateForDiscovery = {
+  ...communityState,
+  // Previous syncs marked Nolo posts as consumed even when Amazon's API
+  // denied access. Reopen recent source signals without duplicating published
+  // products so they can resume automatically once the API is usable.
+  seen: (communityState.seen || []).filter((entry) => !entry.id.startsWith('nolodejesescapar:') || publishedAmazonSignalIds.has(entry.id)),
+};
+const communityDiscovery = await discoverCommunitySignals({ state: communityStateForDiscovery, includeAmazon: true });
 const selectedSources = new Map();
 const amazonSignals = [];
-for (const signal of communityDiscovery.signals) {
+for (const signal of (canCheckCommunitySignals ? communityDiscovery.signals : [])) {
   const sourceSelections = selectedSources.get(signal.source) || 0;
   const sourceLimit = signal.source === 'nolodejesescapar' ? 4 : 1;
   if (signal.sourceStore !== 'Amazon' || signal.terms.length < 2 || (!signal.queueItemId && sourceSelections >= sourceLimit)) continue;
@@ -241,9 +250,12 @@ for (const signal of communityDiscovery.signals) {
 }
 const topics = amazonSignals.length
   ? amazonSignals.map((signal) => ({ keywords: signal.searchQuery, searchIndex: 'All', category: signal.category, signal }))
-  : topicsForRun(Number(state.nextTopic || 0), 2);
+  : canCheckCommunitySignals ? topicsForRun(Number(state.nextTopic || 0), 2) : [];
 const candidates = [];
 const searchErrors = [];
+const consumedSignalIds = new Set();
+const duplicateSignalIds = new Set();
+const retrySignals = new Map(amazonSignals.map((signal) => [signal.id, signal]));
 
 let accessToken = '';
 try {
@@ -268,7 +280,11 @@ if (accessToken) {
             communitySourceUrl: topic.signal.sourceUrl,
           } : null;
         }
-        if (offer && !seenAsins.has(offer.asin)) candidates.push({ ...offer, checkedAt: new Date().toISOString() });
+        if (offer && seenAsins.has(offer.asin) && topic.signal) {
+          duplicateSignalIds.add(topic.signal.id);
+        } else if (offer && !seenAsins.has(offer.asin)) {
+          candidates.push({ ...offer, checkedAt: new Date().toISOString() });
+        }
       }
     } catch (error) {
       const detail = error instanceof Error ? error.message : 'Amazon search failed';
@@ -308,6 +324,10 @@ for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
       communitySignalId: offer.communitySignalId || '',
     });
     seenAsins.add(offer.asin);
+    if (offer.communitySignalId) {
+      consumedSignalIds.add(offer.communitySignalId);
+      retrySignals.delete(offer.communitySignalId);
+    }
     sent += 1;
   } catch (error) {
     console.warn(`Could not publish ${offer.asin}: ${error.message}`);
@@ -320,5 +340,30 @@ writeJson(STATE_FILE, {
   lastError: searchErrors[0] || '',
 });
 writeJson(PUBLISHED_FILE, { published });
-writeJson(COMMUNITY_STATE_FILE, nextCommunitySignalState(communityState, { ...communityDiscovery, signals: amazonSignals }));
+for (const offer of uniqueCandidates) {
+  if (offer.communitySignalId && !consumedSignalIds.has(offer.communitySignalId)) {
+    const sourceSignal = amazonSignals.find((signal) => signal.id === offer.communitySignalId);
+    if (sourceSignal) retrySignals.set(sourceSignal.id, sourceSignal);
+  }
+}
+for (const signal of amazonSignals) {
+  if (duplicateSignalIds.has(signal.id)) {
+    consumedSignalIds.add(signal.id);
+    retrySignals.delete(signal.id);
+  }
+}
+writeJson(COMMUNITY_STATE_FILE, nextCommunitySignalState(communityState, {
+  ...communityDiscovery,
+  signals: amazonSignals,
+  consumedSignalIds: [...consumedSignalIds],
+  signalDispositions: Object.fromEntries([...consumedSignalIds].map((id) => [
+    id,
+    duplicateSignalIds.has(id)
+      ? 'duplicate'
+      : published.some((entry) => entry.communitySignalId === id)
+        ? 'published'
+        : 'attempted',
+  ])),
+  retrySignals: [...retrySignals.values()],
+}));
 console.log(`Amazon discovery checked ${topics.map((topic) => topic.keywords).join(', ')}, found ${uniqueCandidates.length} publishable candidate(s), attempted ${attempted}, and published ${sent} offer(s).${searchErrors.length ? ` Source warning: ${searchErrors[0]}` : ''}`);

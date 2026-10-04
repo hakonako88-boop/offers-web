@@ -391,11 +391,13 @@ const canPublishToday = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
 const publicationPolicy = publicationAllowance({ store: 'Miravia', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 
 const signalCutoff = Date.now() - COMMUNITY_SIGNAL_RETENTION_MS;
+const priorSignalRetryAfter = Object.fromEntries(Object.entries(storedCommunityState.signalRetryAfter || {})
+  .filter(([, retryAt]) => Date.parse(retryAt) > Date.now()));
 const pendingMiraviaQueueIds = new Set(readJson(path.join(ROOT, 'data', 'telegram-source-queue.json'), { items: [] }).items
   .filter((item) => item.status === 'pending' && item.store === 'Miravia')
   .map((item) => item.id));
 let communitySignals = (storedCommunityState.recentSignals || [])
-  .filter((signal) => !signal.queueItemId || signal.sourceStore === 'Miravia')
+  .filter((signal) => signal.sourceStore === 'Miravia')
   .filter((signal) => !Number.isFinite(Date.parse(signal.publishedAt || '')) || Date.parse(signal.publishedAt) > signalCutoff);
 const lastCommunityCheck = Date.parse(storedCommunityState.lastCheckedAt || '');
 let communityHealth = storedCommunityState.sourceHealth || [];
@@ -403,9 +405,10 @@ let micholloLastCheckedAt = storedCommunityState.micholloLastCheckedAt;
 if (process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' || !Number.isFinite(lastCommunityCheck) || Date.now() - lastCommunityCheck >= COMMUNITY_REFRESH_MS) {
   const discovery = await discoverCommunitySignals({ state: { ...storedCommunityState, seen: [] } });
   const mergedSignals = new Map(communitySignals.map((signal) => [signal.id, signal]));
-  for (const signal of discovery.signals.filter((entry) => !entry.queueItemId || entry.sourceStore === 'Miravia')) mergedSignals.set(signal.id, signal);
+  for (const signal of discovery.signals.filter((entry) => entry.sourceStore === 'Miravia')) mergedSignals.set(signal.id, signal);
   communitySignals = [...mergedSignals.values()]
     .filter((signal) => !Number.isFinite(Date.parse(signal.publishedAt || '')) || Date.parse(signal.publishedAt) > signalCutoff)
+    .filter((signal) => signal.queueItemId || Date.parse(priorSignalRetryAfter[signal.id] || '') <= Date.now())
     .sort((left, right) => Number(right.sourceWeight || 0) - Number(left.sourceWeight || 0))
     .slice(0, 80);
   communityHealth = discovery.sourceHealth;
@@ -414,6 +417,7 @@ if (process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' || !Number.isFinite(lastCo
   }
   writeJson(COMMUNITY_STATE_FILE, {
     recentSignals: communitySignals,
+    signalRetryAfter: priorSignalRetryAfter,
     lastCheckedAt: discovery.checkedAt,
     micholloLastCheckedAt,
     sourceHealth: communityHealth,
@@ -497,6 +501,7 @@ const candidates = canPublishToday && publicationPolicy.allowed ? eligibleCandid
 let sent = 0;
 let attempted = 0;
 const attemptedProductIds = new Set();
+const consumedCommunitySignalIds = new Set();
 for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
   if (sent >= Math.min(MAX_POSTS_PER_RUN, publicationPolicy.remaining)) break;
   attempted += 1;
@@ -525,6 +530,7 @@ for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
       status: 'PUBLICADO',
     });
     seenProductIds.add(offer.id);
+    if (offer.communitySignalId) consumedCommunitySignalIds.add(offer.communitySignalId);
     sent += 1;
   } catch (error) {
     console.warn(`Could not publish Miravia product ${offer.sourceProductId}: ${error.message}`);
@@ -541,6 +547,21 @@ writeJson(STATE_FILE, {
   lastFeedId: feed.feed_id,
   lastFeedName: feed.feed_name,
   lastProductsScanned: discovered.productsScanned,
+});
+const signalRetryAfter = { ...priorSignalRetryAfter };
+const nextSignalAttemptAt = new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString();
+for (const signal of communitySignals) {
+  if (signal.queueItemId) continue;
+  if (consumedCommunitySignalIds.has(signal.id)) delete signalRetryAfter[signal.id];
+  else signalRetryAfter[signal.id] = nextSignalAttemptAt;
+}
+for (const signalId of consumedCommunitySignalIds) delete signalRetryAfter[signalId];
+writeJson(COMMUNITY_STATE_FILE, {
+  recentSignals: communitySignals,
+  signalRetryAfter: Object.fromEntries(Object.entries(signalRetryAfter).slice(-500)),
+  lastCheckedAt: new Date().toISOString(),
+  micholloLastCheckedAt,
+  sourceHealth: communityHealth,
 });
 writeJson(PUBLISHED_FILE, { published });
 console.log(`Miravia checked feed ${feed.feed_id} (${feed.feed_name}), scanned ${discovered.productsScanned} products, retained ${communitySignals.length} priority source signal(s), found ${candidates.length} publishable candidate(s), attempted ${attempted}, and published ${sent} curated offer(s).${canPublishToday ? '' : ' Publication interval is still active.'}`);

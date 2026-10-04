@@ -112,8 +112,26 @@ function merchantUrl(value = '', baseUrl = '') {
   const url = absoluteUrl(decode(value), baseUrl);
   if (!url) return '';
   try {
-    const host = new URL(url).hostname.toLowerCase();
-    if (/(^|\.)awin1?\.com$/iu.test(host)) return isMiraviaAwinUrl(url) ? url : '';
+    const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase();
+    // NoloDejesEscapar uses Awin pclick links for these advertisers. Keep the
+    // network link as a discovery reference so the publisher can match the
+    // product ID in its own Spanish feed and create its own affiliate URL.
+    if (host === 'awin1.com' || host === 'www.awin1.com') {
+      const merchantId = parsed.searchParams.get('awinmid') || parsed.searchParams.get('m') || '';
+      const hasProductId = /^\d{5,}$/u.test(parsed.searchParams.get('p') || '');
+      if (isMiraviaAwinUrl(url) || (hasProductId && ['20982', '13075', '23677'].includes(merchantId))) return url;
+      return '';
+    }
+    // NoloDejesEscapar wraps some AliExpress links with TradeTracker. Unwrap
+    // only its explicit u destination and only if that destination is an
+    // AliExpress URL; never publish the source network URL as ours.
+    if (host === 'tc.tradetracker.net' || host === 'tradetracker.net') {
+      const destination = absoluteUrl(parsed.searchParams.get('u') || '');
+      if (!destination) return '';
+      const destinationHost = new URL(destination).hostname.toLowerCase();
+      return destinationHost === 'aliexpress.com' || destinationHost.endsWith('.aliexpress.com') ? destination : '';
+    }
     return /(^|\.)(?:amazon\.[a-z.]+|amzn\.to|aliexpress\.com|miravia\.es)$/iu.test(host) ? url : '';
   } catch {
     return '';

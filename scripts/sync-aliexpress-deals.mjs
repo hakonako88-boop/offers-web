@@ -401,7 +401,15 @@ const canCheckCommunitySignals = canPublishNow && publicationPolicy.allowed;
 const topics = [];
 const candidates = [];
 
-const communityDiscovery = await discoverCommunitySignals({ state: communityState });
+const publishedAliSignalIds = new Set(published.map((entry) => entry.communitySignalId).filter(Boolean));
+const communityStateForDiscovery = {
+  ...communityState,
+  // Older releases marked every inspected Nolo post as done, even when it
+  // never produced a real affiliate publication. Reopen those recent posts
+  // once, while preserving Chollometro, Telegram and confirmed publications.
+  seen: (communityState.seen || []).filter((entry) => !entry.id.startsWith('nolodejesescapar:') || publishedAliSignalIds.has(entry.id)),
+};
+const communityDiscovery = await discoverCommunitySignals({ state: communityStateForDiscovery });
 const communitySignals = [];
 const orderedCommunitySignals = [...(canCheckCommunitySignals ? communityDiscovery.signals : [])].sort((left, right) => {
   // A direct product link taken from an owner-approved Telegram channel is
@@ -423,7 +431,7 @@ for (const signal of orderedCommunitySignals.filter((entry) => entry.queueItemId
 
 for (const signal of orderedCommunitySignals) {
   if (communitySignals.length >= MAX_COMMUNITY_QUERIES_PER_RUN) break;
-  if (signal.sourceStore === 'Amazon'
+  if (signal.sourceStore !== 'AliExpress'
     || signal.queueItemId
     || (!signal.queueItemId && signal.terms.length < 2)) continue;
   communitySignals.push(signal);
@@ -667,6 +675,14 @@ writeJson(COMMUNITY_STATE_FILE, nextCommunitySignalState(communityState, {
   ...communityDiscovery,
   signals: communitySignals,
   consumedSignalIds: [...consumedSignalIds],
+  signalDispositions: Object.fromEntries([...consumedSignalIds].map((id) => [
+    id,
+    duplicateSignalIds.has(id) || sourceDiagnostics.items[id]?.duplicate === true
+      ? 'duplicate'
+    : published.some((entry) => entry.communitySignalId === id)
+        ? 'published'
+        : 'attempted',
+  ])),
   retrySignals: [...retrySignals.values()],
 }));
 writeJson(PUBLISHED_FILE, { published });

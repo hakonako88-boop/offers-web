@@ -5,6 +5,7 @@ import { publicationAllowance } from '../scripts/publication-policy.mjs';
 
 const workflow = fs.readFileSync(new URL('../.github/workflows/deploy.yml', import.meta.url), 'utf8');
 const sourcePollWorkflow = fs.readFileSync(new URL('../.github/workflows/telegram-source-poll.yml', import.meta.url), 'utf8');
+const sourcePollScript = fs.readFileSync(new URL('../scripts/check-telegram-source-changes.mjs', import.meta.url), 'utf8');
 const aliExpressSync = fs.readFileSync(new URL('../scripts/sync-aliexpress-deals.mjs', import.meta.url), 'utf8');
 const miraviaSync = fs.readFileSync(new URL('../scripts/sync-miravia-deals.mjs', import.meta.url), 'utf8');
 const amazonSync = fs.readFileSync(new URL('../scripts/sync-amazon-deals.mjs', import.meta.url), 'utf8');
@@ -277,6 +278,12 @@ test('drains exact AliExpress Telegram posts before generic community discovery'
   assert.match(aliExpressSync, /MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE \? 24 : 8/u);
   assert.match(aliExpressSync, /Drain exact queued Telegram links before generic discovery/u);
   assert.match(aliExpressSync, /const canCheckCommunitySignals = canPublishNow && publicationPolicy\.allowed;/u);
+  assert.match(aliExpressSync, /signal\.sourceStore !== 'AliExpress'/u);
   assert.match(aliExpressSync, /consumedSignalIds: \[\.\.\.consumedSignalIds\]/u);
   assert.match(aliExpressSync, /retrySignals: \[\.\.\.retrySignals\.values\(\)\]/u);
+  assert.match(sourcePollScript, /noloHasPublishableBacklog/u);
+  assert.match(sourcePollScript, /recentNoloPosts\(\{ fetchImpl \}\)/u);
+  assert.match(sourcePollScript, /miraviaState\.signalRetryAfter/u);
+  assert.match(miraviaSync, /signal\.sourceStore === 'Miravia'/u);
+  assert.match(amazonSync, /signalDispositions:/u);
 });

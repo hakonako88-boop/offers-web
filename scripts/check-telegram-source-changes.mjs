@@ -7,11 +7,26 @@ import {
   isSourceItemReady,
   retryableAliExpressQueueCount,
 } from './source-retry-policy.mjs';
+import { COMMUNITY_SOURCES, parseWordPressSignals } from './community-signals.mjs';
+import { publicationAllowance } from './publication-policy.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCES_PATH = path.join(ROOT, 'data', 'telegram-source-channels.json');
 const STATE_PATH = path.join(ROOT, 'data', 'telegram-channel-checkpoints.json');
 const QUEUE_PATH = path.join(ROOT, 'data', 'telegram-source-queue.json');
+const COMMUNITY_STATE_PATH = path.join(ROOT, 'data', 'community-signal-state.json');
+const AMAZON_COMMUNITY_STATE_PATH = path.join(ROOT, 'data', 'amazon-community-signal-state.json');
+const MIRAVIA_STATE_PATH = path.join(ROOT, 'data', 'miravia-discovery-state.json');
+const AWIN_STATE_PATH = path.join(ROOT, 'data', 'awin-retailers-discovery-state.json');
+const ALIEXPRESS_PUBLICATIONS_PATH = path.join(ROOT, 'data', 'aliexpress-publications.json');
+const AMAZON_PUBLICATIONS_PATH = path.join(ROOT, 'data', 'amazon-publications.json');
+const MIRAVIA_PUBLICATIONS_PATH = path.join(ROOT, 'data', 'miravia-publications.json');
+const AWIN_PUBLICATIONS_PATH = path.join(ROOT, 'data', 'awin-retailers-publications.json');
+const WEB_OFFERS_PATH = path.join(ROOT, 'data', 'offers.json');
+// Leave enough time to drain the complete 100-post WordPress page even when
+// the daily publishing cap or a retailer API is temporarily unavailable.
+// Each candidate is rechecked against the current retailer feed before send.
+const NOLO_SIGNAL_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 const MAX_HISTORY_PAGES = 8;
 const MAX_QUEUE_ITEMS = 1_000;
 export function retryableQueueCount(items = [], now = new Date()) {
@@ -171,6 +186,57 @@ export async function latestNoloPostId({ fetchImpl = fetch } = {}) {
   return id;
 }
 
+export async function recentNoloPosts({ fetchImpl = fetch } = {}) {
+  const url = 'https://nolodejesescapar.com/wp-json/wp/v2/posts?per_page=100&orderby=date&order=desc&_fields=id,link,date_gmt,date,title,content,excerpt';
+  const response = await fetchImpl(url, {
+    headers: {
+      'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaSourceMonitor/2.0; +https://chollosaldia.com)',
+      accept: 'application/json',
+    },
+    signal: AbortSignal.timeout(20_000),
+  });
+  if (!response.ok) throw new Error(`NoLoDejesEscapar respondió HTTP ${response.status}`);
+  const posts = await response.json();
+  return Array.isArray(posts) ? posts : [];
+}
+
+export function noloHasPublishableBacklog({
+  posts = [],
+  communityState = {},
+  amazonCommunityState = {},
+  miraviaState = {},
+  awinState = {},
+  publications = [],
+  offers = [],
+  now = new Date(),
+} = {}) {
+  const source = COMMUNITY_SOURCES.find((entry) => entry.id === 'nolodejesescapar');
+  const signals = parseWordPressSignals(source, posts, 100);
+  const publishedSignals = new Set(publications.map((entry) => entry.communitySignalId).filter(Boolean));
+  const terminalSeenSignals = [communityState, amazonCommunityState]
+    .flatMap((state) => state.seen || [])
+    .filter((entry) => ['published', 'duplicate'].includes(entry.disposition))
+    .map((entry) => entry.id);
+  const resolvedSignals = new Set([...publishedSignals, ...terminalSeenSignals]);
+  const retryAfter = {
+    ...(communityState.retryAfter || {}),
+    ...(amazonCommunityState.retryAfter || {}),
+    ...(miraviaState.signalRetryAfter || {}),
+    ...(awinState.noloSignalRetryAfter || {}),
+  };
+  const supportedStores = new Set(['AliExpress', 'Amazon', 'Miravia', 'PcComponentes', 'El Corte Inglés', 'Xiaomi']);
+
+  return signals.some((signal) => {
+    const publishedAt = Date.parse(signal.publishedAt || '');
+    if (!supportedStores.has(signal.sourceStore)
+      || !Number.isFinite(publishedAt)
+      || publishedAt < now.getTime() - NOLO_SIGNAL_MAX_AGE_MS
+      || resolvedSignals.has(signal.id)
+      || Date.parse(retryAfter[signal.id] || '') > now.getTime()) return false;
+    return publicationAllowance({ store: signal.sourceStore, offers, now }).allowed;
+  });
+}
+
 export function noloHasInitialOrNewPost(previousId, currentId) {
   return !Number.isSafeInteger(previousId) || (Number.isSafeInteger(currentId) && currentId > previousId);
 }
@@ -193,6 +259,15 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
   const sourceConfig = await readJson(SOURCES_PATH, { channels: [] });
   const oldState = await readJson(STATE_PATH, { version: 1, channels: {} });
   const oldQueue = await readJson(QUEUE_PATH, { version: 1, items: [] });
+  const communityState = await readJson(COMMUNITY_STATE_PATH, { seen: [], retryAfter: {} });
+  const amazonCommunityState = await readJson(AMAZON_COMMUNITY_STATE_PATH, { seen: [], retryAfter: {} });
+  const miraviaState = await readJson(MIRAVIA_STATE_PATH, { signalRetryAfter: {} });
+  const awinState = await readJson(AWIN_STATE_PATH, { noloSignalRetryAfter: {} });
+  const aliPublications = await readJson(ALIEXPRESS_PUBLICATIONS_PATH, { published: [] });
+  const amazonPublications = await readJson(AMAZON_PUBLICATIONS_PATH, { published: [] });
+  const miraviaPublications = await readJson(MIRAVIA_PUBLICATIONS_PATH, { published: [] });
+  const awinPublications = await readJson(AWIN_PUBLICATIONS_PATH, { published: [] });
+  const offers = await readJson(WEB_OFFERS_PATH, []);
   const nextChannels = { ...(oldState.channels || {}) };
   const queueItems = new Map((oldQueue.items || []).map((item) => [item.id, item]));
   const changedChannels = [];
@@ -285,11 +360,29 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
   try {
     const sourceId = 'nolodejesescapar';
     const previousId = Number(nextChannels[sourceId]?.lastPostId);
-    const currentId = await latestNoloPostId({ fetchImpl });
+    const noloPosts = await recentNoloPosts({ fetchImpl });
+    const currentId = Number(noloPosts[0]?.id);
+    if (!Number.isSafeInteger(currentId) || currentId <= 0) throw new Error('No se encontró la última publicación de NoLoDejesEscapar');
     const comparison = compareCheckpoint(previousId, currentId);
     // On first installation, trigger one catch-up scan. Discovery itself
-    // limits NoLoDejesEscapar signals to the last 48 hours, not its backlog.
+    // limits NoLoDejesEscapar signals to the rolling seven-day window, not an
+    // unbounded historical backlog. Prices are revalidated by the shop feed.
     if (noloHasInitialOrNewPost(previousId, currentId)) changedChannels.push(sourceId);
+    if (noloHasPublishableBacklog({
+      posts: noloPosts,
+      communityState,
+      amazonCommunityState,
+      miraviaState,
+      awinState,
+      publications: [
+        ...(aliPublications.published || []),
+        ...(amazonPublications.published || []),
+        ...(miraviaPublications.published || []),
+        ...(awinPublications.published || []),
+      ],
+      offers,
+      now,
+    })) changedChannels.push(`${sourceId}-backlog`);
     if (!Number.isSafeInteger(previousId) || comparison.nextId !== previousId) {
       nextChannels[sourceId] = { lastPostId: comparison.nextId, advancedAt: new Date().toISOString() };
       stateChanged = true;

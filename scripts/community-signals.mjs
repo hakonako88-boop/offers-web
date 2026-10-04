@@ -5,6 +5,7 @@ import { outboundOfferLinkFromHtml } from './link-offer-extractor.mjs';
 
 const USER_AGENT = 'ChollosAlDiaBot/1.0 (+https://chollosaldia.com/aviso-legal)';
 const MAX_SIGNAL_AGE_MS = 48 * 60 * 60 * 1000;
+const MAX_NOLO_SIGNAL_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 const MICHOLLO_REFRESH_MS = 6 * 60 * 60 * 1000;
 
 function telegramChannelSources() {
@@ -86,9 +87,29 @@ function categoryFor(value = '') {
 
 function sourceStore(value = '') {
   const text = normalise(value);
+  // Prefer the actual destination/network advertiser over product-brand
+  // words in the title (e.g. a Xiaomi laptop sold by PcComponentes).
+  try {
+    const url = new URL(String(value).match(/https?:\/\/[^\s"'<>]+/iu)?.[0] || '');
+    const host = url.hostname.toLowerCase();
+    if (host === 'amazon.es' || host.endsWith('.amazon.es') || host === 'amzn.to' || host === 'link.amazon') return 'Amazon';
+    if (host === 'aliexpress.com' || host.endsWith('.aliexpress.com')) return 'AliExpress';
+    if (host === 'miravia.es' || host.endsWith('.miravia.es')) return 'Miravia';
+    // The pclick URL is the source site's tracking link; publication must
+    // rebuild it using this publisher's own catalogue/feed.
+    const merchantId = url.searchParams.get('awinmid') || url.searchParams.get('m');
+    if (merchantId === '20982') return 'PcComponentes';
+    if (merchantId === '13075') return 'El Corte Inglés';
+    if (merchantId === '23677') return 'Xiaomi';
+  } catch {
+    // Not every community source uses a URL.
+  }
   if (/amazon/.test(text)) return 'Amazon';
   if (/aliexpress/.test(text)) return 'AliExpress';
   if (/miravia/.test(text)) return 'Miravia';
+  if (/pc\s*componentes/.test(text)) return 'PcComponentes';
+  if (/el corte ingles/.test(text)) return 'El Corte Inglés';
+  if (/xiaomi/.test(text)) return 'Xiaomi';
   return 'Otra';
 }
 
@@ -374,7 +395,8 @@ export function parseMicholloSitemap(source, compressedXml, limit = 10) {
 
 function isFresh(signal, now) {
   const publishedAt = Date.parse(signal.publishedAt || '');
-  return !Number.isFinite(publishedAt) || now - publishedAt <= MAX_SIGNAL_AGE_MS;
+  const maxAge = signal.source === 'nolodejesescapar' ? MAX_NOLO_SIGNAL_AGE_MS : MAX_SIGNAL_AGE_MS;
+  return !Number.isFinite(publishedAt) || now - publishedAt <= maxAge;
 }
 
 function shouldRefreshMichollo(state, now) {
@@ -442,7 +464,9 @@ export function nextCommunitySignalState(previous = {}, discovery = {}) {
   const seenAt = discovery.checkedAt || new Date().toISOString();
   const consumedIds = new Set(discovery.consumedSignalIds || (discovery.retrySignals ? [] : (discovery.signals || []).map((signal) => signal.id)));
   for (const id of consumedIds) {
-    seen.set(id, { id, seenAt });
+    const entry = { id, seenAt };
+    if (discovery.signalDispositions?.[id]) entry.disposition = discovery.signalDispositions[id];
+    seen.set(id, entry);
   }
   const retryAfter = Object.fromEntries(Object.entries(previous.retryAfter || {})
     .filter(([, retryAt]) => Date.parse(retryAt) > Date.now()));

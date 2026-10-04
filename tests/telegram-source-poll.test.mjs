@@ -9,8 +9,10 @@ import {
   latestPublicMessageId,
   latestNoloPostId,
   noloHasInitialOrNewPost,
+  noloHasPublishableBacklog,
   parseTelegramPublicMessages,
   publisherDispatchDecision,
+  recentNoloPosts,
   retryableQueueCount,
 } from '../scripts/check-telegram-source-changes.mjs';
 import {
@@ -89,6 +91,48 @@ test('reads the latest public NoLoDejesEscapar WordPress post for automatic chan
   assert.equal(noloHasInitialOrNewPost(Number.NaN, id), true);
   assert.equal(noloHasInitialOrNewPost(id, id), false);
   assert.equal(noloHasInitialOrNewPost(id, id + 1), true);
+});
+
+test('scans the recent NoLoDejesEscapar feed and wakes the publisher for eligible unprocessed offers', async () => {
+  let requested = '';
+  const posts = [{
+    id: 902,
+    date_gmt: '2026-10-05T10:00:00',
+    link: 'https://nolodejesescapar.com/camara-insta360-x3/',
+    title: { rendered: 'Cámara Insta360 X3 en AliExpress a 200 €' },
+    excerpt: { rendered: 'Oferta con enlace de compra.' },
+    content: { rendered: '<a href="https://s.click.aliexpress.com/e/_camera">Ver en AliExpress</a>' },
+  }];
+  const loaded = await recentNoloPosts({
+    fetchImpl: async (url) => {
+      requested = String(url);
+      return new Response(JSON.stringify(posts), { status: 200 });
+    },
+  });
+  assert.equal(loaded.length, 1);
+  assert.match(requested, /per_page=100/u);
+  const options = { posts, now: new Date('2026-10-05T10:30:00Z'), offers: [] };
+  assert.equal(noloHasPublishableBacklog(options), true);
+  assert.equal(noloHasPublishableBacklog({
+    ...options,
+    communityState: { seen: [{ id: 'nolodejesescapar:https://nolodejesescapar.com/camara-insta360-x3/', seenAt: '2026-10-05T10:05:00.000Z' }] },
+  }), true);
+  assert.equal(noloHasPublishableBacklog({
+    ...options,
+    publications: [{ communitySignalId: 'nolodejesescapar:https://nolodejesescapar.com/camara-insta360-x3/' }],
+  }), false);
+  assert.equal(noloHasPublishableBacklog({
+    ...options,
+    communityState: { retryAfter: { 'nolodejesescapar:https://nolodejesescapar.com/camara-insta360-x3/': '2026-10-05T11:00:00.000Z' } },
+  }), false);
+  assert.equal(noloHasPublishableBacklog({
+    ...options,
+    posts: [{ ...posts[0], date_gmt: '2026-09-30T10:00:00' }],
+  }), true, 'a temporarily unavailable retailer API must not lose a still-current source lead');
+  assert.equal(noloHasPublishableBacklog({
+    ...options,
+    posts: [{ ...posts[0], date_gmt: '2026-09-20T10:00:00' }],
+  }), false, 'very old source posts should not be revived as current deals');
 });
 
 test('wakes the publisher when a repaired AliExpress resolver can retry old failures', () => {

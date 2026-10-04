@@ -23,6 +23,26 @@ test('prioritizes NoLoDejesEscapar while retaining Chollometro and MiChollo as d
   assert.ok(nolo.weight > COMMUNITY_SOURCES[0].weight);
 });
 
+test('classifies NoLoDejesEscapar Awin products and TradeTracker AliExpress links by their real merchant', () => {
+  const nolo = COMMUNITY_SOURCES.find((source) => source.id === 'nolodejesescapar');
+  const awin = parseWordPressSignals(nolo, [{
+    link: 'https://nolodejesescapar.com/portatil-hp/',
+    title: { rendered: 'Portátil HP OmniBook 3' },
+    content: { rendered: '<a href="https://www.awin1.com/pclick.php?p=44745222570&amp;a=540793&amp;m=20982">Ver oferta</a>' },
+    date_gmt: '2026-10-04T10:00:00',
+  }]);
+  const trackedAli = parseWordPressSignals(nolo, [{
+    link: 'https://nolodejesescapar.com/xiaomi-redmi-note/',
+    title: { rendered: 'Xiaomi Redmi Note 5G' },
+    content: { rendered: '<a href="https://tc.tradetracker.net/?c=15716&amp;m=12&amp;a=256412&amp;u=https%3A%2F%2Fes.aliexpress.com%2Fitem%2F1005013214584097.html">Ver oferta</a>' },
+    date_gmt: '2026-10-04T10:00:00',
+  }]);
+  assert.equal(awin[0]?.sourceStore, 'PcComponentes');
+  assert.equal(awin[0]?.merchantUrl, 'https://www.awin1.com/pclick.php?p=44745222570&a=540793&m=20982');
+  assert.equal(trackedAli[0]?.sourceStore, 'AliExpress');
+  assert.equal(trackedAli[0]?.merchantUrl, 'https://es.aliexpress.com/item/1005013214584097.html');
+});
+
 test('extracts compact product terms without copying promotional wording', () => {
   assert.deepEqual(searchTermsForSignal('Ofertón Amazon! Cargador USB-C de 40W con 4 puertos a 6,83€'), ['cargador', 'usb', '40w', 'puertos']);
 });
@@ -83,6 +103,36 @@ test('parses the expanded NoLoDejesEscapar WordPress feed and extracts merchant 
   assert.equal(signals[0].coupon, 'XIAOMI10');
   assert.equal(signals[0].sourceImageUrl, 'https://nolodejesescapar.com/media.jpg');
   assert.equal(signals[0].price, 169.99);
+});
+
+test('keeps NoLoDejesEscapar leads retryable for a week but excludes older stale posts', async () => {
+  const now = Date.parse('2026-10-05T12:00:00.000Z');
+  const makePost = (date) => [{
+    link: 'https://nolodejesescapar.com/robot-aspirador/',
+    title: { rendered: 'Rebaja robot aspirador inteligente' },
+    content: { rendered: '<a href="https://es.aliexpress.com/item/1005013214584097.html">Ver oferta</a>' },
+    date_gmt: date,
+  }];
+  const fetchImpl = async (url) => String(url).includes('nolodejesescapar.com')
+    ? new Response(JSON.stringify(makePost('2026-09-30T12:00:00')), { status: 200 })
+    : new Response('', { status: 200 });
+  const recent = await discoverCommunitySignals({
+    now,
+    state: { seen: [], micholloLastCheckedAt: new Date(now).toISOString() },
+    includeTelegramQueue: false,
+    fetchImpl,
+  });
+  assert.ok(recent.signals.some((signal) => signal.source === 'nolodejesescapar'));
+
+  const stale = await discoverCommunitySignals({
+    now,
+    state: { seen: [], micholloLastCheckedAt: new Date(now).toISOString() },
+    includeTelegramQueue: false,
+    fetchImpl: async (url) => String(url).includes('nolodejesescapar.com')
+      ? new Response(JSON.stringify(makePost('2026-09-20T12:00:00')), { status: 200 })
+      : new Response('', { status: 200 }),
+  });
+  assert.equal(stale.signals.some((signal) => signal.source === 'nolodejesescapar'), false);
 });
 
 test('uses only popular, rising Chollometro deals and keeps their factual store price', () => {

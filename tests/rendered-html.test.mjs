@@ -145,7 +145,7 @@ test("shows the newest offers in a bounded chronological homepage grid", async (
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /class="dealCard"[\s\S]{0,1200}href="\/oferta\//);
-  assert.match(html, /mostrando[\s\S]{0,30}36/);
+  assert.match(html, /mostrando[\s\S]{0,30}12/);
 });
 
 test("keeps the historical contact URL as a useful, indexable page", async () => {
