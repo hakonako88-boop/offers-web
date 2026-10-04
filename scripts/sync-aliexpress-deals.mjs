@@ -395,6 +395,7 @@ const canPublishNow = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
   || !lastPublicationAt
   || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
 const publicationPolicy = publicationAllowance({ store: 'AliExpress', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
+const canCheckCommunitySignals = canPublishNow && publicationPolicy.allowed;
 // Community sites are discovery signals. Do not fill the channel with generic
 // catalogue searches when there is no fresh external signal to validate.
 const topics = [];
@@ -402,7 +403,7 @@ const candidates = [];
 
 const communityDiscovery = await discoverCommunitySignals({ state: communityState });
 const communitySignals = [];
-const orderedCommunitySignals = [...communityDiscovery.signals].sort((left, right) => {
+const orderedCommunitySignals = [...(canCheckCommunitySignals ? communityDiscovery.signals : [])].sort((left, right) => {
   // A direct product link taken from an owner-approved Telegram channel is
   // more useful than a broad community-search signal.  Process those exact
   // links first so that a real post cannot remain "pending its turn" while
@@ -428,7 +429,12 @@ for (const signal of orderedCommunitySignals) {
   communitySignals.push(signal);
 }
 
+const attemptedSignalIds = new Set();
+const consumedSignalIds = new Set();
+const duplicateSignalIds = new Set();
+const retrySignals = new Map(communitySignals.map((signal) => [signal.id, signal]));
 for (const signal of communitySignals) {
+  if (signal.queueItemId) attemptedSignalIds.add(signal.id);
   if (signal.sourceStore === 'AliExpress' && signal.merchantUrl) {
     try {
       const verifiedSignalUrl = await resolvedAliExpressSignalUrl(signal);
@@ -497,7 +503,20 @@ for (const signal of communitySignals) {
     const minimumTitleMatches = Math.min(3, Math.max(2, signal.terms.length));
     for (const product of products) {
       const offer = normalizeAliExpressProduct(product, signal.category, signal.terms, minimumTitleMatches);
-      if (offer && !seenProductIds.has(offer.id)) candidates.push({
+      if (!offer) continue;
+      if (seenProductIds.has(offer.id)) {
+        duplicateSignalIds.add(signal.id);
+        sourceDiagnostics.items[signal.id] = {
+          checkedAt: new Date().toISOString(),
+          productId: offer.id,
+          canonicalUrl: offer.url || '',
+          missing: [],
+          issues: [],
+          duplicate: true,
+        };
+        continue;
+      }
+      candidates.push({
         ...offer,
         score: offer.score + 1_000 + signal.sourceWeight,
         communitySignalId: signal.id,
@@ -577,6 +596,10 @@ for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
         status: 'RECUPERADO_SIN_DUPLICAR',
       });
       seenProductIds.add(offer.id);
+      if (offer.communitySignalId) {
+        consumedSignalIds.add(offer.communitySignalId);
+        retrySignals.delete(offer.communitySignalId);
+      }
       sent += 1;
       console.log(`AliExpress product ${offer.id} is already visible as Telegram message ${existingTelegramMessageId}; recovered state without reposting.`);
       continue;
@@ -603,6 +626,10 @@ for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
       status: 'PUBLICADO',
     });
     seenProductIds.add(offer.id);
+    if (offer.communitySignalId) {
+      consumedSignalIds.add(offer.communitySignalId);
+      retrySignals.delete(offer.communitySignalId);
+    }
     sent += 1;
   } catch (error) {
     console.warn(`Could not publish AliExpress product ${offer.id}: ${error.message}`);
@@ -613,7 +640,35 @@ writeJson(STATE_FILE, {
   nextTopic: (Number(state.nextTopic || 0) + topics.length) % ALIEXPRESS_SEARCH_TOPICS.length,
   lastRunAt: new Date().toISOString(),
 });
-writeJson(COMMUNITY_STATE_FILE, nextCommunitySignalState(communityState, { ...communityDiscovery, signals: communitySignals }));
+// Keep signals that did not produce the one permitted post (including API
+// failures and candidates left behind by the daily cap) in a timed retry,
+// rather than incorrectly declaring the whole 24-item batch processed.
+for (const offer of uniqueCandidates) {
+  if (offer.communitySignalId && !consumedSignalIds.has(offer.communitySignalId)) {
+    const sourceSignal = communitySignals.find((signal) => signal.id === offer.communitySignalId);
+    if (sourceSignal) retrySignals.set(sourceSignal.id, sourceSignal);
+  }
+}
+// Let the Telegram queue reconciler count actual attempts and apply its
+// bounded retry policy; items that merely waited outside this run's batch
+// are intentionally absent from this set.
+for (const signal of communitySignals) {
+  if (signal.queueItemId && attemptedSignalIds.has(signal.id)) consumedSignalIds.add(signal.id);
+}
+// A verified duplicate is terminal for this source item; do not keep retrying
+// it every cycle. The item remains suppressed by the existing 14-day policy.
+for (const signal of communitySignals) {
+  if (duplicateSignalIds.has(signal.id) || sourceDiagnostics.items[signal.id]?.duplicate === true) {
+    consumedSignalIds.add(signal.id);
+    retrySignals.delete(signal.id);
+  }
+}
+writeJson(COMMUNITY_STATE_FILE, nextCommunitySignalState(communityState, {
+  ...communityDiscovery,
+  signals: communitySignals,
+  consumedSignalIds: [...consumedSignalIds],
+  retrySignals: [...retrySignals.values()],
+}));
 writeJson(PUBLISHED_FILE, { published });
 console.log(`AliExpress discovery checked ${communitySignals.length} fresh community signal(s), found ${uniqueCandidates.length} publishable candidate(s), attempted ${attempted}, and published ${sent} validated offer(s).${canPublishNow ? '' : ' Publication interval is still active.'}`);
 if (!publicationPolicy.allowed) {

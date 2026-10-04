@@ -215,6 +215,23 @@ test('keeps discovery state bounded and records newly processed signals', () => 
   assert.equal(state.micholloLastCheckedAt, '2026-08-11T12:00:00.000Z');
 });
 
+test('keeps unconsumed discovery signals retryable and only retires confirmed signals', () => {
+  const now = Date.now();
+  const first = { id: 'nolodejesescapar:deal-1' };
+  const second = { id: 'nolodejesescapar:deal-2' };
+  const retryAt = new Date(now + 60 * 60 * 1000).toISOString();
+  const state = nextCommunitySignalState({ seen: [] }, {
+    checkedAt: new Date(now).toISOString(),
+    signals: [first, second],
+    consumedSignalIds: [first.id],
+    retrySignals: [second],
+    retryAt,
+  });
+
+  assert.deepEqual(state.seen.map((entry) => entry.id), [first.id]);
+  assert.equal(state.retryAfter[second.id], retryAt);
+});
+
 test('matches a catalogue product only when a priority signal shares concrete terms', () => {
   const signals = [{
     id: 'michollo:robot',

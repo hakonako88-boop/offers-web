@@ -395,6 +395,8 @@ async function fetchSource(url, fetchImpl) {
 
 export async function discoverCommunitySignals({ state = {}, fetchImpl = fetch, now = Date.now(), includeAmazon = false, includeTelegramQueue = true } = {}) {
   const known = new Set((state.seen || []).map((entry) => entry.id));
+  const retryAfter = state.retryAfter || {};
+  const retryDeferred = (signal) => Date.parse(retryAfter[signal.id] || '') > now;
   const sourceHealth = [];
   const signals = includeTelegramQueue ? queuedTelegramSignals().filter((signal) => isFresh(signal, now)) : [];
   if (signals.length) sourceHealth.push({ source: 'telegram-source-queue', status: 'ok', found: signals.length });
@@ -426,7 +428,7 @@ export async function discoverCommunitySignals({ state = {}, fetchImpl = fetch, 
 
   return {
     signals: signals
-      .filter((signal) => includeAmazon || signal.sourceStore !== 'Amazon')
+      .filter((signal) => (includeAmazon || signal.sourceStore !== 'Amazon') && !retryDeferred(signal))
       .sort((left, right) => right.sourceWeight - left.sourceWeight || Date.parse(right.publishedAt) - Date.parse(left.publishedAt)),
     sourceHealth,
     checkedAt: new Date(now).toISOString(),
@@ -437,9 +439,21 @@ export function nextCommunitySignalState(previous = {}, discovery = {}) {
   const cutoff = Date.now() - 7 * 24 * 60 * 60 * 1000;
   const retained = (previous.seen || []).filter((entry) => Date.parse(entry.seenAt || '') > cutoff);
   const seen = new Map(retained.map((entry) => [entry.id, entry]));
-  for (const signal of discovery.signals || []) seen.set(signal.id, { id: signal.id, seenAt: discovery.checkedAt || new Date().toISOString() });
+  const seenAt = discovery.checkedAt || new Date().toISOString();
+  const consumedIds = new Set(discovery.consumedSignalIds || (discovery.retrySignals ? [] : (discovery.signals || []).map((signal) => signal.id)));
+  for (const id of consumedIds) {
+    seen.set(id, { id, seenAt });
+  }
+  const retryAfter = Object.fromEntries(Object.entries(previous.retryAfter || {})
+    .filter(([, retryAt]) => Date.parse(retryAt) > Date.now()));
+  const retryAt = discovery.retryAt || new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString();
+  for (const signal of discovery.retrySignals || []) {
+    if (!consumedIds.has(signal.id)) retryAfter[signal.id] = retryAt;
+  }
+  for (const id of consumedIds) delete retryAfter[id];
   return {
     seen: [...seen.values()].slice(-250),
+    retryAfter: Object.fromEntries(Object.entries(retryAfter).slice(-500)),
     lastCheckedAt: discovery.checkedAt || new Date().toISOString(),
     micholloLastCheckedAt: discovery.sourceHealth?.some((entry) => entry.source === 'michollo' && entry.status !== 'deferred')
       ? discovery.checkedAt || new Date().toISOString()

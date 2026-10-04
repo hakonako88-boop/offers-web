@@ -276,4 +276,7 @@ test('drains exact AliExpress Telegram posts before generic community discovery'
   assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = 1/u);
   assert.match(aliExpressSync, /MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE \? 24 : 8/u);
   assert.match(aliExpressSync, /Drain exact queued Telegram links before generic discovery/u);
+  assert.match(aliExpressSync, /const canCheckCommunitySignals = canPublishNow && publicationPolicy\.allowed;/u);
+  assert.match(aliExpressSync, /consumedSignalIds: \[\.\.\.consumedSignalIds\]/u);
+  assert.match(aliExpressSync, /retrySignals: \[\.\.\.retrySignals\.values\(\)\]/u);
 });
