@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-10-04T10:31:58.068Z",
+  "updatedAt": "2026-10-04T10:41:54.807Z",
   "summary": {
-    "rejected": 419,
     "pending": 502,
+    "rejected": 419,
     "duplicate": 20,
     "ignored": 17,
     "published": 27,
     "needs_review": 15
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:94921:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 94921,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/94921",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:94920:amazon:0",
       "source": "telegram-una-ganga",
@@ -368,7 +379,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/Ofertos/43506",
       "resultUrl": ""
     },
@@ -586,9 +597,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94906,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/94906",
       "resultUrl": ""
     },
@@ -1089,17 +1100,6 @@
     },
     {
       "id": "telegram-paramanitas:4870:amazon:6",
-      "source": "telegram-paramanitas",
-      "messageId": 4870,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
-      "sourceUrl": "https://t.me/paramanitas/4870",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4870:amazon:5",
       "source": "telegram-paramanitas",
       "messageId": 4870,
       "store": "Amazon",
