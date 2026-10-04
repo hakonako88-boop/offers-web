@@ -126,13 +126,13 @@
     }
   ],
   "signalRetryAfter": {},
-  "lastCheckedAt": "2026-10-04T14:22:03.777Z",
-  "micholloLastCheckedAt": "2026-10-04T08:23:14.595Z",
+  "lastCheckedAt": "2026-10-04T14:32:42.038Z",
+  "micholloLastCheckedAt": "2026-10-04T14:32:23.320Z",
   "sourceHealth": [
     {
       "source": "telegram-source-queue",
       "status": "ok",
-      "found": 1
+      "found": 2
     },
     {
       "source": "chollometro-subiendo",
@@ -141,7 +141,8 @@
     },
     {
       "source": "michollo",
-      "status": "deferred"
+      "status": "unavailable",
+      "detail": "incorrect header check"
     },
     {
       "source": "nolodejesescapar",
