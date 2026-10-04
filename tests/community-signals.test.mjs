@@ -7,6 +7,7 @@ import {
   COMMUNITY_SOURCES,
   communityMatchForTitle,
   discoverCommunitySignals,
+  fetchRecentWordPressPosts,
   nextCommunitySignalState,
   parseWordPressSignals,
   parseRssSignals,
@@ -19,8 +20,33 @@ test('prioritizes NoLoDejesEscapar while retaining Chollometro and MiChollo as d
   assert.ok(COMMUNITY_SOURCES[0].weight > COMMUNITY_SOURCES[1].weight);
   const nolo = COMMUNITY_SOURCES.find((source) => source.id === 'nolodejesescapar');
   assert.equal(nolo.kind, 'wordpress');
-  assert.equal(nolo.limit, 100);
+  assert.equal(nolo.limit, 500);
   assert.ok(nolo.weight > COMMUNITY_SOURCES[0].weight);
+});
+
+test('paginates recent NoLo WordPress offers until the seven-day boundary', async () => {
+  const now = Date.parse('2026-10-07T12:00:00Z');
+  const requests = [];
+  const makeBatch = (page) => Array.from({ length: 100 }, (_, index) => {
+    const day = page === 1 ? -1 : page === 2 ? -3 : page === 3 ? -8 : -10;
+    return {
+      id: (page - 1) * 100 + index + 1,
+      date_gmt: new Date(now + day * 24 * 60 * 60 * 1000).toISOString().replace(/Z$/u, ''),
+      link: `https://nolodejesescapar.com/deal-${page}-${index}/`,
+      title: { rendered: 'Ventilador potente de sobremesa' },
+      content: { rendered: '<a href="https://www.amazon.es/dp/B012345678">Ver producto</a>' },
+    };
+  });
+  const posts = await fetchRecentWordPressPosts({
+    now,
+    fetchImpl: async (url) => {
+      const page = Number(new URL(String(url)).searchParams.get('page'));
+      requests.push(page);
+      return new Response(JSON.stringify(makeBatch(page)), { status: 200 });
+    },
+  });
+  assert.deepEqual(requests, [1, 2, 3]);
+  assert.equal(posts.length, 300);
 });
 
 test('classifies NoLoDejesEscapar Awin products and TradeTracker AliExpress links by their real merchant', () => {

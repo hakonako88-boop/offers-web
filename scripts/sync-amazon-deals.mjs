@@ -23,7 +23,7 @@ const WEB_OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
 const COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'amazon-community-signal-state.json');
 const MAX_POSTS_PER_RUN = 1;
 const MAX_PUBLICATION_ATTEMPTS = 8;
-const MINIMUM_PUBLICATION_INTERVAL_MS = 4 * 60 * 60 * 1000;
+const MINIMUM_PUBLICATION_INTERVAL_MS = 8 * 60 * 1000;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -240,7 +240,11 @@ const communityStateForDiscovery = {
 const communityDiscovery = await discoverCommunitySignals({ state: communityStateForDiscovery, includeAmazon: true });
 const selectedSources = new Map();
 const amazonSignals = [];
-for (const signal of (canCheckCommunitySignals ? communityDiscovery.signals : [])) {
+for (const signal of communityDiscovery.signals) {
+  const signalAllowance = signal.source === 'nolodejesescapar'
+    ? publicationAllowance({ store: signal.sourceStore, offers: existingWebOffers, source: signal.source })
+    : publicationPolicy;
+  if (!signalAllowance.allowed) continue;
   const sourceSelections = selectedSources.get(signal.source) || 0;
   const sourceLimit = signal.source === 'nolodejesescapar' ? 4 : 1;
   if (signal.sourceStore !== 'Amazon' || signal.terms.length < 2 || (!signal.queueItemId && sourceSelections >= sourceLimit)) continue;
@@ -295,14 +299,18 @@ if (accessToken) {
   }
 }
 
-const uniqueCandidates = (canPublishNow && publicationPolicy.allowed ? filterDuplicateDeals(Array.from(new Map(
+const hasPublishableNoloSignal = candidates.some((offer) => offer.communitySource === 'nolodejesescapar');
+const uniqueCandidates = (canPublishNow && (publicationPolicy.allowed || hasPublishableNoloSignal) ? filterDuplicateDeals(Array.from(new Map(
   selectInterestingOffers(candidates).map((offer) => [offer.asin, offer])
 ).values()), existingWebOffers).filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable) : []);
 
 let sent = 0;
 let attempted = 0;
 for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
-  if (sent >= Math.min(MAX_POSTS_PER_RUN, publicationPolicy.remaining)) break;
+  const offerAllowance = offer.communitySource === 'nolodejesescapar'
+    ? publicationAllowance({ store: 'Amazon', offers: existingWebOffers, source: offer.communitySource })
+    : publicationPolicy;
+  if (!offerAllowance.allowed || sent >= Math.min(MAX_POSTS_PER_RUN, offerAllowance.remaining)) break;
   attempted += 1;
   try {
     const message = await publishOffer(config, offer);

@@ -60,10 +60,11 @@ function normalizedStore(value = '') {
   return String(value).trim() || 'Otra';
 }
 
-export function publicationAllowance({ store, offers = [], now = new Date(), bypass = false }) {
+export function publicationAllowance({ store, offers = [], now = new Date(), bypass = false, source = '' }) {
   if (bypass) return { allowed: true, remaining: 3, reason: 'manual-bypass' };
   const { local, globalLimit } = publicationWindow({ now });
   if (!globalLimit) return { allowed: false, remaining: 0, reason: 'quiet-hours', local };
+  const isNoloSource = source === 'nolodejesescapar';
   const weekend = ['Sat', 'Sun', 'sáb', 'dom'].includes(local.weekday);
 
   const today = offers.filter((offer) => {
@@ -82,7 +83,10 @@ export function publicationAllowance({ store, offers = [], now = new Date(), byp
   // Never send several automatic offers within seconds. Telegram users mute
   // or leave channels that arrive in bursts, and every post then receives a
   // smaller share of views. A manual review run may explicitly bypass this.
-  const latestScheduledAt = scheduledToday.reduce((latest, offer) => {
+  const cadenceOffers = isNoloSource
+    ? scheduledToday.filter((offer) => offer.communitySource === 'nolodejesescapar' || offer.source === 'nolodejesescapar')
+    : scheduledToday;
+  const latestScheduledAt = cadenceOffers.reduce((latest, offer) => {
     const raw = Number(offer.date);
     const stamp = raw > 10_000_000_000 ? raw : raw * 1000;
     return Number.isFinite(stamp) ? Math.max(latest, stamp) : latest;
@@ -92,12 +96,60 @@ export function publicationAllowance({ store, offers = [], now = new Date(), byp
     return {
       allowed: false,
       remaining: 0,
-      reason: 'global-cadence',
+      reason: isNoloSource ? 'nolo-cadence' : 'global-cadence',
       local,
       retryAfterMs: minimumGapMs - (now.getTime() - latestScheduledAt),
     };
   }
   const storeName = normalizedStore(store);
+  const sourceToday = today.filter((offer) => offer.communitySource === 'nolodejesescapar'
+    || offer.source === 'nolodejesescapar');
+  const noloDailyLimit = 60;
+  const noloStoreLimit = 40;
+  const sourceGapMs = 8 * 60 * 1000;
+  if (isNoloSource) {
+    const noloScheduled = scheduledToday.filter((offer) => offer.communitySource === 'nolodejesescapar'
+      || offer.source === 'nolodejesescapar');
+    const latestNoloAt = noloScheduled.reduce((latest, offer) => {
+      const raw = Number(offer.date);
+      const stamp = raw > 10_000_000_000 ? raw : raw * 1000;
+      return Number.isFinite(stamp) ? Math.max(latest, stamp) : latest;
+    }, 0);
+    const noloStoreCount = sourceToday.filter((offer) => normalizedStore(offer.store) === storeName).length;
+    if (sourceToday.length >= noloDailyLimit || noloStoreCount >= noloStoreLimit) {
+      return {
+        allowed: false,
+        remaining: 0,
+        reason: sourceToday.length >= noloDailyLimit ? 'nolo-daily-limit' : 'nolo-store-daily-limit',
+        local,
+        sourceCount: sourceToday.length,
+        sourceLimit: noloDailyLimit,
+        storeCount: noloStoreCount,
+        storeLimit: noloStoreLimit,
+      };
+    }
+    if (latestNoloAt && now.getTime() - latestNoloAt < sourceGapMs) {
+      return {
+        allowed: false,
+        remaining: 0,
+        reason: 'nolo-cadence',
+        local,
+        retryAfterMs: sourceGapMs - (now.getTime() - latestNoloAt),
+        sourceCount: sourceToday.length,
+        sourceLimit: noloDailyLimit,
+      };
+    }
+    return {
+      allowed: true,
+      remaining: 1,
+      reason: 'nolo-slot-available',
+      local,
+      sourceCount: sourceToday.length,
+      sourceLimit: noloDailyLimit,
+      storeCount: noloStoreCount,
+      storeLimit: noloStoreLimit,
+    };
+  }
   const storeCount = today.filter((offer) => normalizedStore(offer.store) === storeName).length;
   const storeLimit = STORE_DAILY_LIMITS[storeName] || 1;
   // A direct/manual ingestion path can occasionally add many posts from one

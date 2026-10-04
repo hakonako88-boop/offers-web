@@ -83,7 +83,7 @@ test('publishes validated offers in independently isolated retailer batches', ()
   assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = 1/u);
   assert.match(miraviaSync, /MAX_POSTS_PER_RUN = 1/u);
   assert.match(amazonSync, /MAX_POSTS_PER_RUN = 1/u);
-  assert.match(aliExpressSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
+  assert.match(aliExpressSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 8 \* 60 \* 1000;/u);
   assert.match(aliExpressSync, /const queuedPrice = signal\.queueItemId \? Number\(signal\.price\) \|\| 0 : 0;/u);
   assert.match(aliExpressSync, /const cataloguePrice = queuedPrice \|\| Number\(metadata\.price\) \|\| 0;/u);
   assert.match(aliExpressSync, /const price = couponAppliedByUs/u);
@@ -94,7 +94,7 @@ test('publishes validated offers in independently isolated retailer batches', ()
   assert.match(aliExpressSync, /resolveAliExpressAffiliateProduct\(resolutionInput, config, \{ sourceMetadata \}\)/u);
   assert.match(aliExpressSync, /Drain exact queued Telegram links before generic discovery/u);
   assert.match(aliExpressSync, /entry\.queueItemId && entry\.sourceStore === 'AliExpress'/u);
-  assert.match(miraviaSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 3 \* 60 \* 60 \* 1000;/u);
+  assert.match(miraviaSync, /const MINIMUM_PUBLICATION_INTERVAL_MS = 8 \* 60 \* 1000;/u);
   assert.match(workflow, /FORCE_AUTOMATIC_PUBLICATION:.*telegram_sources_changed/u);
   assert.match(workflow, /RECHECK_ALIEXPRESS_SOURCE:.*recheck-aliexpress/u);
   assert.match(workflow, /Buscar y publicar ofertas de AliExpress[\s\S]*?RECHECK_ALIEXPRESS_SOURCE/u);
@@ -271,6 +271,31 @@ test('caps AliExpress source posts to protect channel retention', () => {
   assert.equal(afterTen.allowed, false);
   assert.equal(afterTen.storeLimit, 4);
   assert.equal(afterTen.reason, 'store-daily-limit');
+});
+
+test('allows verified NoLo source deals beyond the normal store caps while preserving quiet hours and cadence', () => {
+  const today = '2026-10-04';
+  const ordinaryOffers = [
+    { store: 'Amazon', date: Math.floor(Date.parse(`${today}T11:00:00+02:00`) / 1000) },
+    { store: 'AliExpress', date: Math.floor(Date.parse(`${today}T11:10:00+02:00`) / 1000) },
+    { store: 'Miravia', date: Math.floor(Date.parse(`${today}T11:20:00+02:00`) / 1000) },
+  ];
+  const allowed = publicationAllowance({
+    store: 'Amazon', offers: ordinaryOffers, source: 'nolodejesescapar',
+    now: new Date(`${today}T12:00:00+02:00`),
+  });
+  assert.equal(allowed.allowed, true);
+  assert.equal(allowed.remaining, 1);
+  assert.equal(allowed.sourceCount, 0);
+  const recentNolo = publicationAllowance({
+    store: 'AliExpress',
+    offers: [{ store: 'Amazon', communitySource: 'nolodejesescapar', date: Math.floor(Date.parse(`${today}T12:00:00+02:00`) / 1000) }],
+    source: 'nolodejesescapar', now: new Date(`${today}T12:04:00+02:00`),
+  });
+  assert.equal(recentNolo.allowed, false);
+  assert.equal(recentNolo.reason, 'nolo-cadence');
+  const nightly = publicationAllowance({ store: 'Amazon', source: 'nolodejesescapar', now: new Date(`${today}T02:00:00+02:00`) });
+  assert.equal(nightly.reason, 'quiet-hours');
 });
 
 test('drains exact AliExpress Telegram posts before generic community discovery', () => {

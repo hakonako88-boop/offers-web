@@ -40,7 +40,7 @@ const MAX_POSTS_PER_RUN = 1;
 const MAX_PUBLICATION_ATTEMPTS = 12;
 const MAX_PRODUCTS_SCANNED = 40000;
 const MAX_CANDIDATES = 60;
-const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
+const MINIMUM_PUBLICATION_INTERVAL_MS = 8 * 60 * 1000;
 const COMMUNITY_REFRESH_MS = 2 * 60 * 60 * 1000;
 const COMMUNITY_SIGNAL_RETENTION_MS = 48 * 60 * 60 * 1000;
 
@@ -496,14 +496,18 @@ const mergedCandidates = Array.from(new Map(
 
 const eligibleCandidates = selectInterestingOffers(filterDuplicateDeals(mergedCandidates, existingWebOffers))
   .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable);
-const candidates = canPublishToday && publicationPolicy.allowed ? eligibleCandidates : [];
+const hasNoloCandidate = eligibleCandidates.some((offer) => offer.communitySource === 'nolodejesescapar');
+const candidates = canPublishToday && (publicationPolicy.allowed || hasNoloCandidate) ? eligibleCandidates : [];
 
 let sent = 0;
 let attempted = 0;
 const attemptedProductIds = new Set();
 const consumedCommunitySignalIds = new Set();
 for (const offer of candidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
-  if (sent >= Math.min(MAX_POSTS_PER_RUN, publicationPolicy.remaining)) break;
+  const offerAllowance = offer.communitySource === 'nolodejesescapar'
+    ? publicationAllowance({ store: 'Miravia', offers: existingWebOffers, source: offer.communitySource })
+    : publicationPolicy;
+  if (!offerAllowance.allowed || sent >= Math.min(MAX_POSTS_PER_RUN, offerAllowance.remaining)) break;
   attempted += 1;
   attemptedProductIds.add(offer.id);
   try {

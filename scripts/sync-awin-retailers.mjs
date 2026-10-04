@@ -236,10 +236,13 @@ const merged = noloSignal ? noloCandidates : feedCandidates;
 const candidates = selectInterestingOffers(filterDuplicateDeals(merged, existingWebOffers))
   .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable);
 const publicationPolicy = publicationAllowance({ store: retailer.store, offers: existingWebOffers, bypass: scheduleBypassEnabled() });
+const noloPublicationPolicy = noloSignal
+  ? publicationAllowance({ store: retailer.store, offers: existingWebOffers, source: 'nolodejesescapar' })
+  : publicationPolicy;
 let sent = 0;
 let attempts = 0;
 const attempted = new Set();
-for (const offer of (publicationPolicy.allowed ? candidates : []).slice(0, MAX_PUBLICATION_ATTEMPTS)) {
+for (const offer of ((noloSignal ? noloPublicationPolicy : publicationPolicy).allowed ? candidates : []).slice(0, MAX_PUBLICATION_ATTEMPTS)) {
   attempts += 1; attempted.add(offer.id);
   try {
     const preferredImage = await preferredOriginalImage(offer, retailer);

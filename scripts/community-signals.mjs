@@ -42,7 +42,7 @@ export const COMMUNITY_SOURCES = [
     limit: 40,
   },
   { id: 'michollo', kind: 'sitemap', url: 'https://michollo.com/assets/sitemap-chollos-0.xml.gz', weight: 30 },
-  { id: 'nolodejesescapar', kind: 'wordpress', url: 'https://nolodejesescapar.com/wp-json/wp/v2/posts?per_page=100&orderby=date&order=desc&_embed=1', weight: 48, limit: 100 },
+  { id: 'nolodejesescapar', kind: 'wordpress', url: 'https://nolodejesescapar.com/wp-json/wp/v2/posts?per_page=100&orderby=date&order=desc&_embed=1', weight: 48, limit: 500 },
   ...telegramChannelSources(),
 ];
 
@@ -415,6 +415,31 @@ async function fetchSource(url, fetchImpl) {
   return response;
 }
 
+/** Read up to five recent WordPress pages so an active week cannot overflow
+ * the first 100 posts. Stop as soon as the oldest page is outside the 7-day
+ * source window; this keeps normal polls to one or two requests. */
+export async function fetchRecentWordPressPosts({ fetchImpl = fetch, now = Date.now(), maxPages = 5 } = {}) {
+  const posts = [];
+  const cutoff = now - MAX_NOLO_SIGNAL_AGE_MS;
+  for (let page = 1; page <= Math.min(5, Math.max(1, Number(maxPages) || 1)); page += 1) {
+    const url = new URL('https://nolodejesescapar.com/wp-json/wp/v2/posts');
+    url.search = new URLSearchParams({
+      per_page: '100', orderby: 'date', order: 'desc', page: String(page),
+      _embed: '1', _fields: 'id,link,date_gmt,date,title,content,excerpt,yoast_head_json,_embedded',
+    }).toString();
+    const response = await fetchSource(url, fetchImpl);
+    const batch = await response.json();
+    if (!Array.isArray(batch) || !batch.length) break;
+    posts.push(...batch);
+    const oldest = batch.reduce((value, post) => {
+      const date = Date.parse(post?.date_gmt ? `${post.date_gmt}Z` : post?.date || '');
+      return Number.isFinite(date) ? Math.min(value, date) : value;
+    }, Number.POSITIVE_INFINITY);
+    if (oldest < cutoff || batch.length < 100) break;
+  }
+  return posts;
+}
+
 export async function discoverCommunitySignals({ state = {}, fetchImpl = fetch, now = Date.now(), includeAmazon = false, includeTelegramQueue = true } = {}) {
   const known = new Set((state.seen || []).map((entry) => entry.id));
   const retryAfter = state.retryAfter || {};
@@ -433,14 +458,13 @@ export async function discoverCommunitySignals({ state = {}, fetchImpl = fetch, 
       continue;
     }
     try {
-      const response = await fetchSource(source.url, fetchImpl);
-      const parsed = source.kind === 'rss'
-        ? parseRssSignals(source, await response.text(), Number(source.limit) || 10)
-        : source.kind === 'wordpress'
-          ? parseWordPressSignals(source, await response.json(), Number(source.limit) || 100)
+      const parsed = source.kind === 'wordpress'
+        ? parseWordPressSignals(source, await fetchRecentWordPressPosts({ fetchImpl, now }), Number(source.limit) || 500)
+        : source.kind === 'rss'
+          ? parseRssSignals(source, await (await fetchSource(source.url, fetchImpl)).text(), Number(source.limit) || 10)
           : source.kind === 'telegram-public'
-          ? parseTelegramPublicSignals(source, await response.text())
-          : parseMicholloSitemap(source, await response.arrayBuffer());
+            ? parseTelegramPublicSignals(source, await (await fetchSource(source.url, fetchImpl)).text())
+            : parseMicholloSitemap(source, await (await fetchSource(source.url, fetchImpl)).arrayBuffer());
       signals.push(...parsed.filter((signal) => isFresh(signal, now) && !known.has(signal.id)));
       sourceHealth.push({ source: source.id, status: 'ok', found: parsed.length });
     } catch (error) {

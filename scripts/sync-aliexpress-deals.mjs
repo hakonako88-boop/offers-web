@@ -32,7 +32,7 @@ const SOURCE_QUEUE_MODE = process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true';
 // twenty messages at once reduced views and caused channel churn.
 const MAX_POSTS_PER_RUN = 1;
 const MAX_PUBLICATION_ATTEMPTS = SOURCE_QUEUE_MODE ? 24 : 8;
-const MINIMUM_PUBLICATION_INTERVAL_MS = 3 * 60 * 60 * 1000;
+const MINIMUM_PUBLICATION_INTERVAL_MS = 8 * 60 * 1000;
 const REPUBLICATION_COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000;
 // Ofertos and ChollosDiario can publish several products close together. Read
 // a broad batch and let later ten-minute source runs drain any remainder.
@@ -411,7 +411,9 @@ const communityStateForDiscovery = {
 };
 const communityDiscovery = await discoverCommunitySignals({ state: communityStateForDiscovery });
 const communitySignals = [];
-const orderedCommunitySignals = [...(canCheckCommunitySignals ? communityDiscovery.signals : [])].sort((left, right) => {
+const orderedCommunitySignals = [...communityDiscovery.signals].filter((signal) => signal.source === 'nolodejesescapar'
+  ? publicationAllowance({ store: signal.sourceStore, offers: existingWebOffers, source: signal.source }).allowed
+  : canCheckCommunitySignals).sort((left, right) => {
   // A direct product link taken from an owner-approved Telegram channel is
   // more useful than a broad community-search signal.  Process those exact
   // links first so that a real post cannot remain "pending its turn" while
@@ -553,7 +555,8 @@ function publishableCandidates(sourceCandidates) {
     .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable);
 }
 
-let uniqueCandidates = canPublishNow && publicationPolicy.allowed ? publishableCandidates(candidates) : [];
+const hasPublishableNoloSignal = candidates.some((offer) => offer.communitySource === 'nolodejesescapar');
+let uniqueCandidates = canPublishNow && (publicationPolicy.allowed || hasPublishableNoloSignal) ? publishableCandidates(candidates) : [];
 
 if (canPublishNow && publicationPolicy.allowed && !uniqueCandidates.length) {
   // Cuatro categorías rotatorias dan margen cuando las fuentes comunitarias
@@ -584,7 +587,10 @@ try {
   console.warn(`Could not check the recent public Telegram channel for duplicates: ${error.message}`);
 }
 for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
-  if (sent >= Math.min(MAX_POSTS_PER_RUN, publicationPolicy.remaining)) break;
+  const offerAllowance = offer.communitySource === 'nolodejesescapar'
+    ? publicationAllowance({ store: 'AliExpress', offers: existingWebOffers, source: offer.communitySource })
+    : publicationPolicy;
+  if (!offerAllowance.allowed || sent >= Math.min(MAX_POSTS_PER_RUN, offerAllowance.remaining)) break;
   attempted += 1;
   try {
     const existingTelegramMessageId = telegramMessageIdForProduct(recentChannelHtml, offer.id);

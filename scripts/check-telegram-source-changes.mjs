@@ -7,7 +7,7 @@ import {
   isSourceItemReady,
   retryableAliExpressQueueCount,
 } from './source-retry-policy.mjs';
-import { COMMUNITY_SOURCES, parseWordPressSignals } from './community-signals.mjs';
+import { COMMUNITY_SOURCES, fetchRecentWordPressPosts, parseWordPressSignals } from './community-signals.mjs';
 import { publicationAllowance } from './publication-policy.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -187,17 +187,7 @@ export async function latestNoloPostId({ fetchImpl = fetch } = {}) {
 }
 
 export async function recentNoloPosts({ fetchImpl = fetch } = {}) {
-  const url = 'https://nolodejesescapar.com/wp-json/wp/v2/posts?per_page=100&orderby=date&order=desc&_fields=id,link,date_gmt,date,title,content,excerpt';
-  const response = await fetchImpl(url, {
-    headers: {
-      'user-agent': 'Mozilla/5.0 (compatible; ChollosAlDiaSourceMonitor/2.0; +https://chollosaldia.com)',
-      accept: 'application/json',
-    },
-    signal: AbortSignal.timeout(20_000),
-  });
-  if (!response.ok) throw new Error(`NoLoDejesEscapar respondió HTTP ${response.status}`);
-  const posts = await response.json();
-  return Array.isArray(posts) ? posts : [];
+  return fetchRecentWordPressPosts({ fetchImpl });
 }
 
 export function noloHasPublishableBacklog({
@@ -211,7 +201,7 @@ export function noloHasPublishableBacklog({
   now = new Date(),
 } = {}) {
   const source = COMMUNITY_SOURCES.find((entry) => entry.id === 'nolodejesescapar');
-  const signals = parseWordPressSignals(source, posts, 100);
+  const signals = parseWordPressSignals(source, posts, 500);
   const publishedSignals = new Set(publications.map((entry) => entry.communitySignalId).filter(Boolean));
   const terminalSeenSignals = [communityState, amazonCommunityState]
     .flatMap((state) => state.seen || [])
@@ -233,7 +223,7 @@ export function noloHasPublishableBacklog({
       || publishedAt < now.getTime() - NOLO_SIGNAL_MAX_AGE_MS
       || resolvedSignals.has(signal.id)
       || Date.parse(retryAfter[signal.id] || '') > now.getTime()) return false;
-    return publicationAllowance({ store: signal.sourceStore, offers, now }).allowed;
+    return publicationAllowance({ store: signal.sourceStore, offers, now, source: signal.source }).allowed;
   });
 }
 
@@ -355,8 +345,8 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
   }
 
   // NoLoDejesEscapar is polled on the same clock as Telegram. A new public
-  // WordPress post wakes the existing retailer pipeline, which then reads
-  // its 100-post discovery feed and validates each product via the retailer.
+  // WordPress post wakes the existing retailer pipeline, which scans the
+  // rolling seven-day feed and validates each product via the retailer.
   try {
     const sourceId = 'nolodejesescapar';
     const previousId = Number(nextChannels[sourceId]?.lastPostId);
