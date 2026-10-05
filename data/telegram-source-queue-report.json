@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-05T16:44:20.462Z",
+  "updatedAt": "2026-10-05T16:55:03.527Z",
   "summary": {
     "rejected": 788,
     "ignored": 17,
@@ -9,6 +9,17 @@
     "pending": 128
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:43611:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 43611,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/Ofertos/43611",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7520:aliexpress:0",
       "source": "telegram-tiesometro",
@@ -257,8 +268,8 @@
       "messageId": 95008,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/95008",
       "resultUrl": ""
     },
@@ -421,9 +432,9 @@
       "source": "telegram-una-ganga",
       "messageId": 94998,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/94998",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/94982",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:43571:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 43571,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/43571",
       "resultUrl": ""
     }
   ]
