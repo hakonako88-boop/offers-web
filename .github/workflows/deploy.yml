@@ -343,7 +343,7 @@ jobs:
       - name: Publicar el aviso especial de la Fiesta Prime
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[prime-day-campaign]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         env:
-          PRIME_DAY_STAGE: announcement
+          PRIME_DAY_STAGE: visual-refresh
         run: node scripts/publish-prime-day-telegram.mjs
 
       - name: Guardar ofertas nuevas

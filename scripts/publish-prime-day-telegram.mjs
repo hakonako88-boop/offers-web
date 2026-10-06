@@ -7,9 +7,10 @@ const stateFile = path.join(root, 'data', 'prime-day-telegram-publication.json')
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const channelId = process.env.TELEGRAM_CHANNEL_ID;
 const stage = process.env.PRIME_DAY_STAGE || 'announcement';
-const allowedStages = new Set(['announcement', 'launch']);
+const allowedStages = new Set(['announcement', 'launch', 'visual-refresh']);
 const landingUrl = 'https://chollosaldia.com/fiesta-ofertas-prime-2026/';
 const amazonUrl = 'https://www.amazon.es/fiestaprime?tag=chollos00a-21';
+const refreshedArtwork = path.join(root, 'public', 'images', 'fiesta-ofertas-prime-octubre-2026-v2.png');
 
 if (!allowedStages.has(stage)) throw new Error(`Fase Prime Day no reconocida: ${stage}`);
 if (!token || !channelId) throw new Error('Faltan TELEGRAM_BOT_TOKEN o TELEGRAM_CHANNEL_ID.');
@@ -48,6 +49,20 @@ function campaignCard(isLaunch) {
 }
 
 function caption(isLaunch) {
+  if (stage === 'visual-refresh') return [
+    '💙 <b>FIESTA DE OFERTAS PRIME · EN DIRECTO</b>',
+    '',
+    'Durante el <b>6 y 7 de octubre</b> estamos reuniendo las ofertas de Amazon que merecen la pena, con precios, cupones y condiciones revisados.',
+    '',
+    '🔥 <b>Consulta la selección actualizada:</b>',
+    `<a href="${landingUrl}">${landingUrl}</a>`,
+    '',
+    '🛒 También puedes entrar directamente al evento con nuestro enlace:',
+    `<a href="${amazonUrl}">Abrir la Fiesta Prime en Amazon</a>`,
+    '',
+    '⚠️ El precio, el stock y los cupones pueden cambiar. Comprueba el importe final antes de pagar.',
+    '#publi #Amazon #PrimeDay #Chollos',
+  ].join('\n');
   const heading = isLaunch
     ? '🎉 <b>YA ESTÁ EN MARCHA LA FIESTA DE OFERTAS PRIME</b>'
     : '⚡ <b>SE ACERCA LA FIESTA DE OFERTAS PRIME</b>';
@@ -74,15 +89,20 @@ if (state.published?.[stage]?.messageId) {
 }
 
 const isLaunch = stage === 'launch';
-const photo = await sharp(campaignCard(isLaunch)).jpeg({ quality: 92, mozjpeg: true }).toBuffer();
+const usesRefreshedArtwork = stage === 'visual-refresh';
+const photo = usesRefreshedArtwork
+  ? fs.readFileSync(refreshedArtwork)
+  : await sharp(campaignCard(isLaunch)).jpeg({ quality: 92, mozjpeg: true }).toBuffer();
+const photoType = usesRefreshedArtwork ? 'image/png' : 'image/jpeg';
+const photoExtension = usesRefreshedArtwork ? 'png' : 'jpg';
 const form = new FormData();
 form.set('chat_id', String(channelId));
 form.set('caption', caption(isLaunch));
 form.set('parse_mode', 'HTML');
-form.set('photo', new Blob([photo], { type: 'image/jpeg' }), `prime-day-2026-${stage}.jpg`);
+form.set('photo', new Blob([photo], { type: photoType }), `prime-day-2026-${stage}.${photoExtension}`);
 form.set('reply_markup', JSON.stringify({ inline_keyboard: [[
-  { text: '⭐ VER LA SELECCIÓN', url: landingUrl },
-  { text: '🛒 EVENTO AMAZON', url: amazonUrl },
+  { text: '🔥 VER MEJORES OFERTAS', url: landingUrl },
+  { text: '🛒 ABRIR AMAZON', url: amazonUrl },
 ]] }));
 
 const response = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: form });
