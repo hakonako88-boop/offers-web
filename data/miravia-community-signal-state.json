@@ -1423,8 +1423,8 @@
       "merchantUrl": "https://tidd.ly/4zhynXo",
       "sourceImageUrl": "https://cdn4.telesco.pe/file/HL2sjpms8rCtvEDVI_DCiTmsnRsQLmIDOMFkA3QetJzbSgv5SejnWtF1ud5KGwRfgUpeBiS0WGTXSwY-VLEWvCmsW6yRkILclDAsTzAkuxO9Bt6Twc1b6fXvJUvWP5lq20-Kl87foU7ytT1lkWjFhoDrCcii7cX7OFUaUwe4vCvgxUmUM6jt4a5rsja8LkGdsrqo5ax_9_5Bjy2fb_vIKiNIvvX89cQd-30W6Sawjb5HQwAfe5NAI7zRvpiEuxKNoQtI5XDD3iXi56l20UMsfOKy2vp_fVv5tHS2tN2xgdtVSjGroTbFdssnHjqb-lH94dqNu1Ltr8-hmpuETL-Y5w.jpg",
       "priority": false,
-      "retryPolicyVersion": "",
-      "attempts": 3
+      "retryPolicyVersion": "exact-official-page-v1",
+      "attempts": 0
     },
     {
       "id": "telegram-una-ganga:95128:miravia:0",
@@ -1487,16 +1487,47 @@
       "priority": false,
       "retryPolicyVersion": "",
       "attempts": 2
+    },
+    {
+      "id": "telegram-una-ganga:95139:miravia:0",
+      "source": "telegram-una-ganga",
+      "sourceUrl": "https://t.me/una_ganga/95139",
+      "title": "Acana Pienso Homestead Harvest para Gatos de Pollo (Gatos , Comida , Pienso) - 4.5 KG en Miravia Precio: 33,86€ Reseña: \"El grano perfecto de tamaño y a mi gato le encanto, amor a primera vista, repetiremos si duda......",
+      "publishedAt": "2026-10-06T14:40:08+00:00",
+      "merchant": "Miravia",
+      "sourceStore": "Miravia",
+      "category": "Tecnología",
+      "terms": [
+        "acana",
+        "pienso",
+        "homestead",
+        "harvest",
+        "gatos",
+        "pollo",
+        "comida"
+      ],
+      "searchQuery": "Acana Pienso Homestead Harvest para Gatos de Pollo (Gatos , Comida , Pienso) - 4.5 KG en Miravia Precio:  Reseña: \"",
+      "sourceWeight": 24,
+      "price": 33.86,
+      "previousPrice": 0,
+      "coupon": "",
+      "sourceText": "Acana Pienso Homestead Harvest para Gatos de Pollo (Gatos , Comida , Pienso) - 4.5 KG en Miravia Precio: 33,86€ Reseña: \"El grano perfecto de tamaño y a mi gato le encanto, amor a primera vista, repetiremos si duda............\" 🔰 Enlace: https://tidd.ly/4dldn9A",
+      "queueItemId": "telegram-una-ganga:95139:miravia:0",
+      "merchantUrl": "https://tidd.ly/4dldn9A",
+      "sourceImageUrl": "https://cdn4.telesco.pe/file/vNs6J7cqOQbgZscG9qkx8RV6gSinzlk5Ab-T9ZOTBynusFhzXtPWWAcl_iljI-TeG1RkadnmddNGpMcuzLeMKghp2o3g691EfIzhWncN_YxXS_6lqblHkqjVq3fpV2fCD8_ih26VBhKFT_MsJxpNgNJVx2MGXv79raYKTQXMoayWhUZuai4XRtTPZ4Tb4-SEbLV8WW7FtU6mOMNQHMKNCd55YLL0BUl50yymItdxcpBag9YbhZ36ISShprlNyzF68X3PxloqZX_E9yGBPcr2jkMBYxl6JCxC9LotHk_5V47Zvm3mvnO7uzTAur_l15g6VxsmuA7qZVwjfSW5pfY-sQ.jpg",
+      "priority": false,
+      "retryPolicyVersion": "",
+      "attempts": 1
     }
   ],
   "signalRetryAfter": {},
-  "lastCheckedAt": "2026-10-06T14:57:27.856Z",
-  "micholloLastCheckedAt": "2026-10-06T09:04:21.232Z",
+  "lastCheckedAt": "2026-10-06T15:10:29.411Z",
+  "micholloLastCheckedAt": "2026-10-06T15:09:46.059Z",
   "sourceHealth": [
     {
       "source": "telegram-source-queue",
       "status": "ok",
-      "found": 99
+      "found": 100
     },
     {
       "source": "chollometro-subiendo",
@@ -1505,7 +1536,8 @@
     },
     {
       "source": "michollo",
-      "status": "deferred"
+      "status": "unavailable",
+      "detail": "incorrect header check"
     },
     {
       "source": "nolodejesescapar",
