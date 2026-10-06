@@ -298,6 +298,25 @@ test('allows verified NoLo source deals beyond the normal store caps while prese
   assert.equal(nightly.reason, 'quiet-hours');
 });
 
+test('does not impose a daily or retailer quantity cap on verified NoLo deals', () => {
+  const offers = Array.from({ length: 250 }, (_, index) => ({
+    store: index % 2 ? 'Amazon' : 'AliExpress',
+    source: 'nolodejesescapar',
+    date: Math.floor(Date.parse('2026-10-06T08:00:00+02:00') / 1000) + index,
+  }));
+  const allowance = publicationAllowance({
+    store: 'Amazon',
+    offers,
+    source: 'nolodejesescapar',
+    now: new Date('2026-10-06T12:00:00+02:00'),
+  });
+  assert.equal(allowance.allowed, true);
+  assert.equal(allowance.reason, 'nolo-slot-available');
+  assert.equal(allowance.sourceCount, 250);
+  assert.equal(allowance.sourceLimit, null);
+  assert.equal(allowance.storeLimit, null);
+});
+
 test('drains exact AliExpress Telegram posts before generic community discovery', () => {
   assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = 1/u);
   assert.match(aliExpressSync, /MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE \? 24 : 8/u);
