@@ -1022,6 +1022,56 @@ body { background: var(--paper); }
   background: #fff;
   box-shadow: 0 8px 25px rgb(23 32 55 / 6%);
 }
+
+/* Prime campaign refresh: campaign artwork leads the event while product
+   photography stays uncropped and the CTAs remain readable on small screens. */
+.primeHero {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(380px, 1.08fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 58px);
+  min-height: 0;
+  padding: clamp(28px, 4vw, 54px);
+  background: radial-gradient(circle at 14% 15%, rgb(0 174 239 / 20%), transparent 33%), linear-gradient(125deg, #08162f 0%, #102d5f 53%, #064d89 100%);
+}
+.primeHeroCopy { min-width: 0; }
+.primeHero h1 { max-width: 660px; font-size: clamp(42px, 5.7vw, 72px); }
+.primeHeroVisual {
+  position: relative;
+  z-index: 1;
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 25%);
+  border-radius: 22px;
+  background: #071a39;
+  box-shadow: 0 24px 55px rgb(0 0 0 / 34%), 0 0 0 7px rgb(255 255 255 / 4%);
+}
+.primeHeroVisual img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+.primeDealCard { border-color: #dce4f0; border-radius: 18px; box-shadow: 0 12px 32px rgb(15 40 80 / 8%); }
+.primeDealImage { aspect-ratio: 1 / 1; background: linear-gradient(145deg, #fff, #f1f5fa); }
+.primeDealImage img { object-fit: contain; padding: 20px; transition: transform .25s ease; }
+.primeDealCard:hover .primeDealImage img { transform: scale(1.025); }
+.primeDealPrice strong { color: #087f65; font-size: 24px; }
+.primeDealCoupon { border-color: #e5c75c; background: #fff8d8; color: #714f00; }
+.dealHome .primeHomeArtwork img { aspect-ratio: 16 / 9; }
+
+@media (max-width: 900px) {
+  .primeHero { grid-template-columns: 1fr; }
+  .primeHeroVisual { order: -1; }
+}
+
+@media (max-width: 640px) {
+  .primeHero { gap: 25px; margin-inline: -14px; padding: 18px 14px 34px; }
+  .primeHeroVisual { border-radius: 16px; }
+  .primeHeroCopy { padding-inline: 7px; }
+  .primeHero h1 { font-size: clamp(38px, 11vw, 52px); }
+  .primeHeroActions { gap: 9px; }
+  .primeDealGrid { grid-template-columns: 1fr; gap: 14px; }
+  .primeDealBody { min-height: 0; padding: 16px; }
+  .primeDealBody h3 { font-size: 15px; }
+  .primeDealPrice strong { font-size: 25px; }
+  .primeDealButton { min-height: 44px; font-size: 11px; }
+}
 .gtaGuideImage { position: relative; display: block; height: 112px; overflow: hidden; background: #171529; }
 .gtaGuideImage img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
 .gtaGuideImage:hover img { transform: scale(1.04); }

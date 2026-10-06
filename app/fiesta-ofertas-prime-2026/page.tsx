@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import { dealDiscount, dealHref, dealSavings, publishedDeals } from "../lib/deals";
 
 const pageTitle = "Prime Day octubre 2026: Fiesta de Ofertas Prime Amazon";
@@ -15,9 +17,9 @@ export const metadata: Metadata = {
     title: `${pageTitle} | Chollos al Día`,
     description: pageDescription,
     url: eventUrl,
-    images: [{ url: "/og-chollosaldia-v2.png", width: 1731, height: 909, alt: "Chollos al Día: seguimiento de la Fiesta de Ofertas Prime" }],
+    images: [{ url: "/images/fiesta-ofertas-prime-octubre-2026-v2.png", width: 1672, height: 941, alt: "Fiesta de Ofertas Prime: 6 y 7 de octubre" }],
   },
-  twitter: { card: "summary_large_image", title: pageTitle, description: pageDescription, images: ["/og-chollosaldia-v2.png"] },
+  twitter: { card: "summary_large_image", title: pageTitle, description: pageDescription, images: ["/images/fiesta-ofertas-prime-octubre-2026-v2.png"] },
 };
 
 const amazonOffers = publishedDeals
@@ -58,28 +60,32 @@ export default function FiestaOfertasPrime2026Page() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(campaignSchema) }} />
       <div className="announcement" role="status">
         <div className="shell announcementInner">
-          <a href="/" aria-label="Volver a Chollos al Día">← Chollos al Día</a>
+          <Link href="/" aria-label="Volver a Chollos al Día">← Chollos al Día</Link>
           <a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Avisos de ofertas en Telegram <span aria-hidden="true">↗</span></a>
         </div>
       </div>
       <article className="shell primeArticle">
         <nav className="primeBreadcrumb" aria-label="Migas de pan">
-          <a href="/">Inicio</a><span aria-hidden="true">/</span><a href="/ofertas/amazon/">Ofertas Amazon</a><span aria-hidden="true">/</span><b>Fiesta de Ofertas Prime 2026</b>
+          <Link href="/">Inicio</Link><span aria-hidden="true">/</span><Link href="/ofertas/amazon/">Ofertas Amazon</Link><span aria-hidden="true">/</span><b>Fiesta de Ofertas Prime 2026</b>
         </nav>
 
         <header className="primeHero">
           <div className="primeHeroGlow" aria-hidden="true" />
-          <p className="primeEyebrow"><span aria-hidden="true" />AMAZON ESPAÑA · FECHAS OFICIALES</p>
-          <h1>Fiesta de Ofertas Prime <em>2026</em></h1>
-          <p className="primeDates">6 y 7 de octubre · 48 horas</p>
-          <p className="primeHeroLead">Estamos preparando una selección de Amazon con precios, cupones y condiciones claros. Consulta las ofertas recientes aquí y vuelve durante el evento: añadiremos oportunidades cuando sus datos estén comprobados.</p>
-          <div className="primeHeroActions">
-            <a className="primePrimary" href="#ofertas-prime">Ver ofertas Amazon <span aria-hidden="true">↓</span></a>
-            <a className="primeSecondary" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir avisos en Telegram <span aria-hidden="true">↗</span></a>
-            <a className="primeSecondary" href="https://www.amazon.es/fiestaprime?tag=chollos00a-21" target="_blank" rel="sponsored nofollow noreferrer">Explorar el evento en Amazon <span aria-hidden="true">↗</span></a>
+          <div className="primeHeroCopy">
+            <p className="primeEyebrow"><span aria-hidden="true" />AMAZON ESPAÑA · EVENTO EN DIRECTO</p>
+            <h1>Fiesta de Ofertas Prime <em>2026</em></h1>
+            <p className="primeDates">6 y 7 de octubre · 48 horas</p>
+            <p className="primeHeroLead">Encuentra en un solo lugar las ofertas de Amazon que vamos comprobando: precio, descuento, cupón y condiciones antes de enviarte a la tienda.</p>
+            <div className="primeHeroActions">
+              <a className="primePrimary" href="#ofertas-prime">Ver mejores ofertas <span aria-hidden="true">↓</span></a>
+              <a className="primeSecondary" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Avisos en Telegram <span aria-hidden="true">↗</span></a>
+              <a className="primeSecondary" href="https://www.amazon.es/fiestaprime?tag=chollos00a-21" target="_blank" rel="sponsored nofollow noreferrer">Ir a Amazon <span aria-hidden="true">↗</span></a>
+            </div>
+            <p className="primeMemberNote">Algunas ofertas requieren Prime. Confirma siempre el precio final, el cupón y el vendedor en Amazon.</p>
           </div>
-          <p className="primeMemberNote">Las ofertas exclusivas del evento requieren Prime. Comprobaremos las condiciones de cada producto antes de destacarlo.</p>
-          <span className="primeOrb primeOrbOne" aria-hidden="true">€</span><span className="primeOrb primeOrbTwo" aria-hidden="true">✦</span>
+          <picture className="primeHeroVisual">
+            <Image src="/images/fiesta-ofertas-prime-octubre-2026-v2.png" alt="Fiesta de Ofertas Prime, 6 y 7 de octubre" width={1672} height={941} priority sizes="(max-width: 900px) 100vw, 52vw" />
+          </picture>
         </header>
 
         <section className="primeFacts" aria-label="Datos del evento">
@@ -136,7 +142,7 @@ export default function FiestaOfertasPrime2026Page() {
           <a href="https://www.aboutamazon.es/noticias/noticias-de-la-compania/fiesta-ofertas-prime-6-7-octubre-ofertas-exclusivas" target="_blank" rel="noreferrer">Consultar el anuncio oficial <span aria-hidden="true">↗</span></a>
         </aside>
       </article>
-      <footer className="primeFooter"><div className="shell"><a href="/">Chollos al Día</a><span>Algunos enlaces pueden ser de afiliación y generar una comisión sin coste adicional para ti.</span></div></footer>
+      <footer className="primeFooter"><div className="shell"><Link href="/">Chollos al Día</Link><span>Algunos enlaces pueden ser de afiliación y generar una comisión sin coste adicional para ti.</span></div></footer>
     </main>
   );
 }

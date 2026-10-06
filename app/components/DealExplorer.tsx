@@ -188,7 +188,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
 
       <section className="primeHomeBanner shell" aria-labelledby="prime-home-title">
         <div className="primeHomeCopy"><p>6 Y 7 DE OCTUBRE · AMAZON ESPAÑA</p><h2 id="prime-home-title">Fiesta de Ofertas Prime</h2><span>Preparamos una selección especial con precios y cupones comprobados.</span><a href="/fiesta-ofertas-prime-2026/">Ver ofertas Prime <b aria-hidden="true">→</b></a></div>
-        <a className="primeHomeArtwork" href="/fiesta-ofertas-prime-2026/" aria-label="Ver la guía de la Fiesta de Ofertas Prime del 6 y 7 de octubre"><img src="/images/fiesta-ofertas-prime-octubre-2026.svg" alt="Fiesta de Ofertas Prime: 6 y 7 de octubre, 48 horas de ofertas" width="960" height="520" fetchPriority="high" /></a>
+        <a className="primeHomeArtwork" href="/fiesta-ofertas-prime-2026/" aria-label="Ver la guía de la Fiesta de Ofertas Prime del 6 y 7 de octubre"><img src="/images/fiesta-ofertas-prime-octubre-2026-v2.png" alt="Fiesta de Ofertas Prime: 6 y 7 de octubre, 48 horas de ofertas" width="1672" height="941" fetchPriority="high" /></a>
       </section>
 
       <section className="hero shell" aria-labelledby="hero-title">
