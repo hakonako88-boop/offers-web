@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-07T03:13:16.494Z",
+  "updatedAt": "2026-10-07T03:22:49.769Z",
   "summary": {
     "rejected": 760,
     "duplicate": 5,
@@ -9,6 +9,17 @@
     "pending": 122
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:95216:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 95216,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/95216",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:95215:amazon:0",
       "source": "telegram-una-ganga",
@@ -69,9 +80,9 @@
       "source": "telegram-una-ganga",
       "messageId": 95210,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/95210",
       "resultUrl": ""
     },
@@ -433,8 +444,8 @@
       "messageId": 95194,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/95194",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/43762",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:43761:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 43761,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/43761",
       "resultUrl": ""
     }
   ]
