@@ -209,6 +209,7 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
   // publications often do not expose a trustworthy previous price, so accept
   // their verified current price just as we do for the owner's inbox.
   const isVerifiedTelegramOffer = /^telegram-/i.test(String(offer.source || ""))
+    || String(offer.source || "") === "nolodejesescapar"
     || /^(?:manual-|aliexpress:)/i.test(String(offer.source_product_id || ""));
   const title = conciseTitle(cleanTitle(offer.title), isVerifiedTelegramOffer ? 18 : 22);
   const hasPublishablePrice = hasDemonstrableSaving || isVerifiedTelegramOffer;
