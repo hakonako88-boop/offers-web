@@ -281,6 +281,13 @@ jobs:
         continue-on-error: true
         run: npm run sync:amazon
 
+      - name: Publicar todas las ofertas de producto de hoy de NoLoDejesEscapar
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[nolo-today-batch]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' && env.AMAZON_PARTNER_TAG != '' }}
+        timeout-minutes: 20
+        env:
+          NOLO_BATCH_GAP_MS: "8000"
+        run: npm run publish:nolo-today
+
       - name: Buscar y publicar ofertas de AliExpress
         if: ${{ ((github.event_name == 'workflow_dispatch' && inputs.run_automatic_source == 'aliexpress') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[recheck-community]')) || (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || env.RECHECK_ALIEXPRESS_SOURCE == 'true') && env.ALIEXPRESS_APP_KEY != '' && env.ALIEXPRESS_APP_SECRET != '' && env.ALIEXPRESS_TRACKING_ID != '' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         continue-on-error: true

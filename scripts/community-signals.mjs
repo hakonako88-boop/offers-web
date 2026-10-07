@@ -202,7 +202,7 @@ export function searchTermsForSignal(title) {
 
 function makeSignal(source, link, title, publishedAt, merchant = '', sourceText = title) {
   const terms = searchTermsForSignal(title);
-  const currentPrice = cleanText(title).match(/\b(?:precio(?:\s+oferta)?|por|ahora)\s*:?\s*(\d{1,5}(?:[.,]\d{1,2})?)\s*€/iu)?.[1] || '';
+  const currentPrice = cleanText(title).match(/\b(?:precio(?:\s+oferta)?|por|ahora|a|desde)\s*:?\s*(\d{1,5}(?:[.,]\d{1,2})?)\s*€/iu)?.[1] || '';
   const previousPrice = cleanText(title).match(/\b(?:antes|pvp|precio\s+(?:anterior|recomendado))\s*:?\s*(\d{1,5}(?:[.,]\d{1,2})?)\s*€/iu)?.[1] || '';
   const amount = (value) => Number.parseFloat(String(value || '').replace(',', '.')) || 0;
   return {
