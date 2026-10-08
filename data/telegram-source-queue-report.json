@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-10-08T03:32:36.770Z",
+  "updatedAt": "2026-10-08T03:42:52.335Z",
   "summary": {
+    "rejected": 764,
     "ignored": 107,
-    "rejected": 763,
     "published": 18,
     "needs_review": 7,
     "duplicate": 5,
-    "pending": 100
+    "pending": 99
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:95347:ignored",
+      "source": "telegram-una-ganga",
+      "messageId": 95347,
+      "store": "Otra",
+      "status": "ignored",
+      "attempts": 0,
+      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
+      "sourceUrl": "https://t.me/una_ganga/95347",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:95346:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 95346,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/95346",
       "resultUrl": ""
     },
@@ -212,9 +223,9 @@
       "source": "telegram-una-ganga",
       "messageId": 95330,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/95330",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/43847",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:43846:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 43846,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/43846",
       "resultUrl": ""
     }
   ]
