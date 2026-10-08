@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-10-08T14:17:08.392Z",
+  "updatedAt": "2026-10-08T14:24:20.389Z",
   "summary": {
-    "published": 20,
-    "rejected": 726,
+    "rejected": 731,
     "ignored": 114,
-    "needs_review": 9,
+    "published": 20,
+    "needs_review": 10,
     "duplicate": 5,
-    "pending": 126
+    "pending": 120
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:95380:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 95380,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/95380",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-chollosdiario:45637:amazon:0",
       "source": "telegram-chollosdiario",
       "messageId": 45637,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45637",
       "resultUrl": ""
     },
@@ -245,11 +256,11 @@
       "source": "telegram-ofertos",
       "messageId": 43886,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/43886",
-      "resultUrl": ""
+      "resultUrl": "https://www.amazon.es/dp/B09B2R276Z?tag=chollos00a-21"
     },
     {
       "id": "telegram-ofertos:43885:amazon:0",
@@ -366,9 +377,9 @@
       "source": "telegram-ofertos",
       "messageId": 43879,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/43879",
       "resultUrl": ""
     },
@@ -377,9 +388,9 @@
       "source": "telegram-ofertos",
       "messageId": 43878,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/43878",
       "resultUrl": ""
     },
@@ -586,9 +597,9 @@
       "source": "telegram-una-ganga",
       "messageId": 95361,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/95361",
       "resultUrl": ""
     },
@@ -597,9 +608,9 @@
       "source": "telegram-ofertos",
       "messageId": 43865,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/43865",
       "resultUrl": ""
     },
@@ -608,9 +619,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45634,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/chollosdiario/45634",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 0,
       "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
       "sourceUrl": "https://t.me/paramanitas/4908",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4907:amazon:14",
-      "source": "telegram-paramanitas",
-      "messageId": 4907,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/paramanitas/4907",
       "resultUrl": ""
     }
   ]
