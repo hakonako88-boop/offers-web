@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-10-08T00:14:07.047Z",
+  "updatedAt": "2026-10-08T00:23:34.258Z",
   "summary": {
-    "ignored": 107,
+    "ignored": 106,
     "needs_review": 10,
-    "rejected": 757,
+    "rejected": 758,
     "published": 18,
     "duplicate": 5,
     "pending": 103
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:95337:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 95337,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/95337",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:95336:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -36,9 +47,9 @@
       "source": "telegram-una-ganga",
       "messageId": 95334,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/95334",
       "resultUrl": ""
     },
@@ -356,8 +367,8 @@
       "messageId": 95322,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/95322",
       "resultUrl": ""
     },
@@ -433,8 +444,8 @@
       "messageId": 95316,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/95316",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/95297",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:43837:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 43837,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/43837",
       "resultUrl": ""
     }
   ]
