@@ -16705,15 +16705,14 @@
       "sourceImageUrl": "",
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/eawcf",
-      "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "reason": "AliExpress no permitió completar identidad API, id, título, foto, enlace afiliado",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-08T19:41:25.877Z",
-      "updatedAt": "2026-10-09T16:25:35.386Z",
-      "nextAttemptAt": "2026-10-09T16:24:15.668Z"
+      "updatedAt": "2026-10-09T16:33:37.613Z"
     },
     {
       "id": "telegram-paramanitas:4912:amazon:0",
@@ -17104,15 +17103,14 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/eqNQ0hd5QMDdG6Gq6sCMvmaZLePi2HvYpc7kH7mH-jP-2Ni9IP9fBn3IWXIESjGxmnmjWVNnOc1T_9fYx4idCuYZpNGQXNyx7EkEqFxDDx9oY3LHRXMInvHOngt8sWmmHlhG_xIoDyyNcDe6toJkDDtomMkwbV7l_U3i5TT8HhwCbGilW7QSYo57rCttlabZq5UAsv707_9vo5C7_KGDXbDDgYtqbKpKqhsQTQ-64jnm3ECwLvrQvcb1YkzAMGxsMBzoV_yMxJk03VlTYtoVjxWmW0kDgcKK6HyFwQWh5BM013E9CtWCJJvzms_PP95Z6M3_m6067-l_Ijs4GgE5XA.jpg",
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3C3McYH",
-      "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 6 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 5,
+      "attempts": 6,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-08T20:11:22.878Z",
-      "updatedAt": "2026-10-09T16:25:35.386Z",
-      "nextAttemptAt": "2026-10-09T16:24:15.668Z"
+      "updatedAt": "2026-10-09T16:33:37.613Z"
     },
     {
       "id": "telegram-una-ganga:95403:amazon:0",
@@ -19109,14 +19107,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3C6n5Nr",
       "status": "pending",
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Pendiente de reintento (3/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-09T15:11:19.549Z",
-      "updatedAt": "2026-10-09T16:25:35.386Z",
-      "nextAttemptAt": "2026-10-09T16:24:30.749Z"
+      "updatedAt": "2026-10-09T16:33:37.613Z",
+      "nextAttemptAt": "2026-10-09T17:53:37.613Z"
     },
     {
       "id": "telegram-una-ganga:95463:amazon:0",
@@ -19293,12 +19291,13 @@
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0CB1VXPG8?th=1&amp;psc=1&amp;tag=ofertos03-21",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-10-09T16:31:21.036Z",
-      "updatedAt": "2026-10-09T16:31:21.036Z"
+      "updatedAt": "2026-10-09T16:32:05.347Z",
+      "nextAttemptAt": "2026-10-09T17:12:05.347Z"
     },
     {
       "id": "telegram-ofertos:43945:amazon:0",
@@ -19312,12 +19311,13 @@
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B0H265MJWF?th=1&amp;linkCode=sl2&amp;linkId=832190af92961095fe5122f489e58f8a&amp;ref_=as_li_ss_tl&amp;btn_type=ss&amp;btn_ref=srctok-691c7fecf766d708&amp;tag=ofertos03-21",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-10-09T16:31:21.036Z",
-      "updatedAt": "2026-10-09T16:31:21.036Z"
+      "updatedAt": "2026-10-09T16:32:05.347Z",
+      "nextAttemptAt": "2026-10-09T17:12:05.347Z"
     },
     {
       "id": "telegram-ofertos:43946:amazon:0",
@@ -19331,12 +19331,13 @@
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B01533NNH0?linkCode=osi&amp;th=1&amp;psc=1&amp;tag=ofertos03-21",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceWeight": 40,
       "priority": true,
       "attempts": 0,
       "createdAt": "2026-10-09T16:31:21.036Z",
-      "updatedAt": "2026-10-09T16:31:21.036Z"
+      "updatedAt": "2026-10-09T16:32:05.347Z",
+      "nextAttemptAt": "2026-10-09T17:12:05.347Z"
     }
   ]
 }
