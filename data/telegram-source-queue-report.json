@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-10-09T07:44:22.797Z",
+  "updatedAt": "2026-10-09T07:54:16.462Z",
   "summary": {
-    "ignored": 119,
-    "rejected": 773,
+    "ignored": 118,
+    "rejected": 774,
     "duplicate": 4,
     "published": 17,
     "needs_review": 9,
     "pending": 78
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7571:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7571,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/tiesometro/7571",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7570:aliexpress:0",
       "source": "telegram-tiesometro",
@@ -81,8 +92,8 @@
       "messageId": 95434,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/95434",
       "resultUrl": ""
     },
@@ -278,9 +289,9 @@
       "source": "telegram-una-ganga",
       "messageId": 95422,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/95422",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/43903",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertos:43902:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 43902,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/43902",
       "resultUrl": ""
     }
   ]
