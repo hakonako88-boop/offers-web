@@ -11,7 +11,7 @@ import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { isGzipFeed, parseFeedList } from './miravia-offers.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
-import { discoverCommunitySignals } from './community-signals.mjs';
+import { communityMatchForTitle, discoverCommunitySignals } from './community-signals.mjs';
 import { isSourceRetryReady } from './source-retry-policy.mjs';
 import {
   AWIN_RETAILERS,
@@ -233,7 +233,17 @@ const discovered = noloSignal || state.feedVersions?.[feed.feed_id] !== feedVers
 const feedCandidates = [...new Map([...queued, ...discovered.candidates].map((offer) => [offer.id, offer])).values()];
 const noloProductId = awinSourceProductId(noloSignal);
 const noloCandidates = noloSignal
-  ? feedCandidates.filter((offer) => String(offer.sourceProductId) === noloProductId).map((offer) => ({
+  ? feedCandidates.filter((offer) => {
+      if (String(offer.sourceProductId) === noloProductId) return true;
+      const match = communityMatchForTitle(offer.title, [noloSignal]);
+      const sourcePrice = Number(noloSignal.price);
+      const offerPrice = Number(offer.price);
+      const priceTolerance = Math.max(0.5, sourcePrice * 0.03);
+      return Boolean(match)
+        && Number.isFinite(sourcePrice)
+        && Number.isFinite(offerPrice)
+        && Math.abs(offerPrice - sourcePrice) <= priceTolerance;
+    }).map((offer) => ({
       ...offer,
       score: offer.score + 1_000,
       communitySignalId: noloSignal.id,
