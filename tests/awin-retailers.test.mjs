@@ -72,6 +72,8 @@ test('applies a PcComponentes filter for popular products and credible brands', 
   assert.ok(retailQualityScore({ title: 'Portátil gaming Lenovo Legion RTX 5070', category: 'Informática', price: 1199, oldPrice: 1599 }, pc) > 0);
   assert.ok(retailQualityScore({ title: 'Samsung QLED The Frame 50 pulgadas Smart TV', category: 'Televisores', price: 669, oldPrice: 1299 }, pc) > 0);
   assert.ok(retailQualityScore({ title: 'Roborock robot aspirador con autovaciado', category: 'Hogar', price: 259, oldPrice: 599 }, pc) > 0);
+  assert.ok(retailQualityScore({ title: 'Monitor MSI PRO MP251W Full HD IPS 144Hz', category: 'Tecnología', price: 87.99, oldPrice: 120 }, pc) > 0);
+  assert.equal(retailQualityScore({ title: 'Gamepad genérico mini', category: 'Accesorios', price: 2.5, oldPrice: 4 }, pc), 0);
 });
 
 test('normalizes a real discounted product and never borrows another publisher link', () => {

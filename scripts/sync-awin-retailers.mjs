@@ -253,6 +253,12 @@ const matchedNoloCandidates = noloSignal
     }))
   : [];
 const directNoloUrl = noloSignal ? convertAwinProductLink(noloSignal.merchantUrl, retailer) : '';
+const directNoloScore = noloSignal ? retailQualityScore({
+  title: noloSignal.title,
+  category: noloSignal.category,
+  price: Number(noloSignal.price),
+  oldPrice: Number(noloSignal.previousPrice),
+}, retailer) : 0;
 const directNoloCandidate = noloSignal && directNoloUrl && noloSignal.sourceImageUrl && Number(noloSignal.price) > 0
   ? {
       id: `awin-${retailer.merchantId}-${noloProductId}`,
@@ -274,7 +280,7 @@ const directNoloCandidate = noloSignal && directNoloUrl && noloSignal.sourceImag
         : 0,
       coupon: noloSignal.coupon || '',
       category: noloSignal.category || 'Tecnología',
-      score: 1_000,
+      score: directNoloScore > 0 ? directNoloScore + 1_000 : 0,
       communitySignalId: noloSignal.id,
       communitySource: noloSignal.source,
       communitySourceUrl: noloSignal.sourceUrl,
@@ -286,7 +292,7 @@ const noloCandidates = matchedNoloCandidates.length
 const merged = noloSignal ? noloCandidates : feedCandidates;
 const deduplicatedCandidates = filterDuplicateDeals(merged, existingWebOffers);
 const candidates = noloSignal
-  ? deduplicatedCandidates
+  ? deduplicatedCandidates.filter((offer) => Number(offer.score) > 0)
   : selectInterestingOffers(deduplicatedCandidates)
     .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable);
 const publicationPolicy = publicationAllowance({ store: retailer.store, offers: existingWebOffers, bypass: scheduleBypassEnabled() });
