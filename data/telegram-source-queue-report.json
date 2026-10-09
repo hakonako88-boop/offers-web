@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-10-09T02:12:58.989Z",
+  "updatedAt": "2026-10-09T02:22:36.827Z",
   "summary": {
-    "rejected": 766,
     "ignored": 120,
+    "rejected": 766,
     "needs_review": 9,
     "duplicate": 4,
     "published": 17,
     "pending": 84
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:95421:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 95421,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/95421",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:95420:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -36,9 +47,9 @@
       "source": "telegram-una-ganga",
       "messageId": 95418,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/95418",
       "resultUrl": ""
     },
@@ -136,8 +147,8 @@
       "messageId": 95410,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/95410",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/paramanitas/4909",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:95378:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 95378,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/95378",
       "resultUrl": ""
     }
   ]
