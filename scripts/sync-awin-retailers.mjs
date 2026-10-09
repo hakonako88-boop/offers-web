@@ -187,7 +187,9 @@ const pendingNoloSignals = communityDiscovery.signals
     && signal.merchantUrl
     && !recentlyPublishedSignalIds.has(signal.id)
     && isSourceRetryReady(noloSignalRetryAfter[signal.id]))
-  .sort((left, right) => Date.parse(left.publishedAt || '') - Date.parse(right.publishedAt || ''));
+  // Publish the newest source post first. Processing the oldest item in the
+  // seven-day recovery window made a fresh deal wait behind stale failures.
+  .sort((left, right) => Date.parse(right.publishedAt || '') - Date.parse(left.publishedAt || ''));
 function awinSourceProductId(signal) {
   try {
     const url = new URL(signal.merchantUrl);
@@ -221,7 +223,13 @@ const queued = (state.queuedOffers?.[retailerStateKey] || [])
     score: retailQualityScore({ title: offer.title, category: offer.category, price: offer.price, oldPrice: offer.previousPrice }, retailer),
   }))
   .filter((offer) => offer.score > 0);
-const discovered = state.feedVersions?.[feed.feed_id] !== feedVersion || queued.length < 5 ? await discover(feed.url, retailer, seenIds) : { candidates: [], scanned: 0 };
+// A precise NoLo product id must be looked up in the current catalogue even
+// when the generic editorial queue is already full. Otherwise a cached queue
+// can never contain a newly published source product and the signal retries
+// forever without being evaluated.
+const discovered = noloSignal || state.feedVersions?.[feed.feed_id] !== feedVersion || queued.length < 5
+  ? await discover(feed.url, retailer, seenIds)
+  : { candidates: [], scanned: 0 };
 const feedCandidates = [...new Map([...queued, ...discovered.candidates].map((offer) => [offer.id, offer])).values()];
 const noloProductId = awinSourceProductId(noloSignal);
 const noloCandidates = noloSignal
