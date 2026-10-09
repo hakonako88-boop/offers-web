@@ -29,6 +29,7 @@ import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliat
 import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
 import { extractProductMetadata } from './link-offer-extractor.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
+import { isSourceRetryReady } from './source-retry-policy.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'miravia-discovery-state.json');
@@ -408,7 +409,7 @@ if (process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' || !Number.isFinite(lastCo
   for (const signal of discovery.signals.filter((entry) => entry.sourceStore === 'Miravia')) mergedSignals.set(signal.id, signal);
   communitySignals = [...mergedSignals.values()]
     .filter((signal) => !Number.isFinite(Date.parse(signal.publishedAt || '')) || Date.parse(signal.publishedAt) > signalCutoff)
-    .filter((signal) => signal.queueItemId || Date.parse(priorSignalRetryAfter[signal.id] || '') <= Date.now())
+    .filter((signal) => signal.queueItemId || isSourceRetryReady(priorSignalRetryAfter[signal.id]))
     .sort((left, right) => Number(right.sourceWeight || 0) - Number(left.sourceWeight || 0))
     .slice(0, 80);
   communityHealth = discovery.sourceHealth;

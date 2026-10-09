@@ -12,6 +12,7 @@ import { offerReplyMarkup } from './offer-presentation.mjs';
 import { isGzipFeed, parseFeedList } from './miravia-offers.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
 import { discoverCommunitySignals } from './community-signals.mjs';
+import { isSourceRetryReady } from './source-retry-policy.mjs';
 import {
   AWIN_RETAILERS,
   AWIN_RETAIL_QUALITY_POLICY_VERSION,
@@ -185,7 +186,7 @@ const pendingNoloSignals = communityDiscovery.signals
   .filter((signal) => signal.source === 'nolodejesescapar'
     && signal.merchantUrl
     && !recentlyPublishedSignalIds.has(signal.id)
-    && Date.parse(noloSignalRetryAfter[signal.id] || '') <= Date.now())
+    && isSourceRetryReady(noloSignalRetryAfter[signal.id]))
   .sort((left, right) => Date.parse(left.publishedAt || '') - Date.parse(right.publishedAt || ''));
 function awinSourceProductId(signal) {
   try {

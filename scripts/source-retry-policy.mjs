@@ -30,3 +30,11 @@ export function isSourceItemReady(item, now = new Date()) {
   const nextAttemptAt = Date.parse(item?.nextAttemptAt || '');
   return !Number.isFinite(nextAttemptAt) || nextAttemptAt <= now.getTime();
 }
+
+// A source item with no retry timestamp is new and must be processed now.
+// Date.parse('') returns NaN; comparing that value directly with a timestamp
+// silently returns false and previously discarded every new NoLo signal.
+export function isSourceRetryReady(retryAt, now = new Date()) {
+  const timestamp = Date.parse(retryAt || '');
+  return !Number.isFinite(timestamp) || timestamp <= now.getTime();
+}

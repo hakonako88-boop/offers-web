@@ -10,9 +10,18 @@ import {
   retailQualityScore,
   socialImageFromHtml,
 } from '../scripts/awin-retailers.mjs';
+import { isSourceRetryReady } from '../scripts/source-retry-policy.mjs';
 
 const pc = AWIN_RETAILERS.find((retailer) => retailer.store === 'PcComponentes');
 const eci = AWIN_RETAILERS.find((retailer) => retailer.store === 'El Corte Inglés');
+
+test('processes new NoLo signals immediately and respects a future retry delay', () => {
+  const now = new Date('2026-10-09T10:00:00Z');
+  assert.equal(isSourceRetryReady('', now), true);
+  assert.equal(isSourceRetryReady(undefined, now), true);
+  assert.equal(isSourceRetryReady('2026-10-09T09:59:00Z', now), true);
+  assert.equal(isSourceRetryReady('2026-10-09T10:01:00Z', now), false);
+});
 
 test('keeps only the requested merchant feeds', () => {
   const feeds = retailerFeedEntries([
