@@ -80,6 +80,26 @@ export function createOwnedAwinLink(destination, retailer) {
   return url.toString();
 }
 
+export function convertAwinProductLink(input, retailer) {
+  try {
+    const source = new URL(input);
+    const host = source.hostname.toLowerCase();
+    const merchant = source.searchParams.get('awinmid') || source.searchParams.get('m');
+    const product = source.searchParams.get('p');
+    if (source.protocol !== 'https:'
+      || (host !== 'awin1.com' && host !== 'www.awin1.com')
+      || merchant !== String(retailer.merchantId)
+      || !product) return '';
+    const owned = new URL('https://www.awin1.com/pclick.php');
+    owned.searchParams.set('p', product);
+    owned.searchParams.set('a', AWIN_PUBLISHER_ID);
+    owned.searchParams.set('m', retailer.merchantId);
+    return owned.toString();
+  } catch {
+    return '';
+  }
+}
+
 export function retailerFeedEntries(feedList = [], retailer) {
   return feedList
     .filter((entry) => String(entry.advertiser_id || entry.merchant_id) === retailer.merchantId)

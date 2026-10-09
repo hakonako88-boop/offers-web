@@ -8,7 +8,7 @@ import sharp from 'sharp';
 import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mjs';
 import { mirrorTelegramMessage } from './telegram-mirror.mjs';
 import { filterDuplicateDeals } from './offer-deduplication.mjs';
-import { offerReplyMarkup } from './offer-presentation.mjs';
+import { improveOfferTitle, offerReplyMarkup } from './offer-presentation.mjs';
 import { isGzipFeed, parseFeedList } from './miravia-offers.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
 import { communityMatchForTitle, discoverCommunitySignals } from './community-signals.mjs';
@@ -16,6 +16,7 @@ import { isSourceRetryReady } from './source-retry-policy.mjs';
 import {
   AWIN_RETAILERS,
   AWIN_RETAIL_QUALITY_POLICY_VERSION,
+  convertAwinProductLink,
   formatRetailCaption,
   formatRetailTelegramCaption,
   normalizeRetailProduct,
@@ -186,7 +187,7 @@ const pendingNoloSignals = communityDiscovery.signals
   .filter((signal) => signal.source === 'nolodejesescapar'
     && signal.merchantUrl
     && !recentlyPublishedSignalIds.has(signal.id)
-    && isSourceRetryReady(noloSignalRetryAfter[signal.id]))
+    && (process.env.FORCE_AUTOMATIC_PUBLICATION === 'true' || isSourceRetryReady(noloSignalRetryAfter[signal.id])))
   // Publish the newest source post first. Processing the oldest item in the
   // seven-day recovery window made a fresh deal wait behind stale failures.
   .sort((left, right) => Date.parse(right.publishedAt || '') - Date.parse(left.publishedAt || ''));
@@ -232,7 +233,7 @@ const discovered = noloSignal || state.feedVersions?.[feed.feed_id] !== feedVers
   : { candidates: [], scanned: 0 };
 const feedCandidates = [...new Map([...queued, ...discovered.candidates].map((offer) => [offer.id, offer])).values()];
 const noloProductId = awinSourceProductId(noloSignal);
-const noloCandidates = noloSignal
+const matchedNoloCandidates = noloSignal
   ? feedCandidates.filter((offer) => {
       if (String(offer.sourceProductId) === noloProductId) return true;
       const match = communityMatchForTitle(offer.title, [noloSignal]);
@@ -251,6 +252,37 @@ const noloCandidates = noloSignal
       communitySourceUrl: noloSignal.sourceUrl,
     }))
   : [];
+const directNoloUrl = noloSignal ? convertAwinProductLink(noloSignal.merchantUrl, retailer) : '';
+const directNoloCandidate = noloSignal && directNoloUrl && noloSignal.sourceImageUrl && Number(noloSignal.price) > 0
+  ? {
+      id: `awin-${retailer.merchantId}-${noloProductId}`,
+      sourceProductId: noloProductId,
+      store: retailer.store,
+      storeSlug: retailer.slug,
+      merchantId: retailer.merchantId,
+      title: improveOfferTitle(String(noloSignal.title || '').replace(/\s+(?:por|a)\s+\d+(?:[.,]\d{1,2})?\s*€\s*$/iu, '')),
+      image: noloSignal.sourceImageUrl,
+      url: directNoloUrl,
+      price: Number(noloSignal.price),
+      priceLabel: new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(noloSignal.price)),
+      previousPrice: Number(noloSignal.previousPrice) > Number(noloSignal.price) ? Number(noloSignal.previousPrice) : 0,
+      previousPriceLabel: Number(noloSignal.previousPrice) > Number(noloSignal.price)
+        ? new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(noloSignal.previousPrice))
+        : '',
+      discount: Number(noloSignal.previousPrice) > Number(noloSignal.price)
+        ? Math.round(((Number(noloSignal.previousPrice) - Number(noloSignal.price)) / Number(noloSignal.previousPrice)) * 100)
+        : 0,
+      coupon: noloSignal.coupon || '',
+      category: noloSignal.category || 'Tecnología',
+      score: 1_000,
+      communitySignalId: noloSignal.id,
+      communitySource: noloSignal.source,
+      communitySourceUrl: noloSignal.sourceUrl,
+    }
+  : null;
+const noloCandidates = matchedNoloCandidates.length
+  ? matchedNoloCandidates
+  : (directNoloCandidate ? [directNoloCandidate] : []);
 const merged = noloSignal ? noloCandidates : feedCandidates;
 const candidates = selectInterestingOffers(filterDuplicateDeals(merged, existingWebOffers))
   .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable);

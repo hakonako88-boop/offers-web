@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   AWIN_RETAILERS,
   createOwnedAwinLink,
+  convertAwinProductLink,
   isOwnedAwinLink,
   normalizeRetailProduct,
   originalImageFromProductServe,
@@ -36,6 +37,14 @@ test('creates and validates a link owned by publisher 2021553', () => {
   assert.equal(isOwnedAwinLink(link, pc.merchantId), true);
   assert.equal(isOwnedAwinLink(link.replace('2021553', '999999'), pc.merchantId), false);
   assert.equal(createOwnedAwinLink('https://example.com/producto', pc), '');
+});
+
+test('converts an exact Awin pclick product to the owner publisher id', () => {
+  const source = 'https://www.awin1.com/pclick.php?p=45780781146&a=540793&m=20982';
+  const converted = convertAwinProductLink(source, pc);
+  assert.equal(converted, 'https://www.awin1.com/pclick.php?p=45780781146&a=2021553&m=20982');
+  assert.equal(isOwnedAwinLink(converted, pc.merchantId), true);
+  assert.equal(convertAwinProductLink(source, eci), '');
 });
 
 test('rejects inflated or uninteresting catalogue rows', () => {
