@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-09T01:12:58.156Z",
+  "updatedAt": "2026-10-09T01:22:51.474Z",
   "summary": {
     "rejected": 766,
     "ignored": 119,
@@ -9,6 +9,17 @@
     "pending": 85
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:95418:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 95418,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/95418",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:95417:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -47,9 +58,9 @@
       "source": "telegram-una-ganga",
       "messageId": 95415,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/95415",
       "resultUrl": ""
     },
@@ -103,8 +114,8 @@
       "messageId": 95410,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/95410",
       "resultUrl": ""
     },
@@ -169,8 +180,8 @@
       "messageId": 95407,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/95407",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 4,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/95376",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-ofertas-supermercados-es:2140:ignored",
-      "source": "telegram-ofertas-supermercados-es",
-      "messageId": 2140,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/OfertasSupermercadosES/2140",
       "resultUrl": ""
     }
   ]
