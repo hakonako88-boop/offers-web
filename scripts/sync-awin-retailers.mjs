@@ -284,8 +284,11 @@ const noloCandidates = matchedNoloCandidates.length
   ? matchedNoloCandidates
   : (directNoloCandidate ? [directNoloCandidate] : []);
 const merged = noloSignal ? noloCandidates : feedCandidates;
-const candidates = selectInterestingOffers(filterDuplicateDeals(merged, existingWebOffers))
-  .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable);
+const deduplicatedCandidates = filterDuplicateDeals(merged, existingWebOffers);
+const candidates = noloSignal
+  ? deduplicatedCandidates
+  : selectInterestingOffers(deduplicatedCandidates)
+    .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable);
 const publicationPolicy = publicationAllowance({ store: retailer.store, offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 const noloPublicationPolicy = noloSignal
   ? publicationAllowance({ store: retailer.store, offers: existingWebOffers, source: 'nolodejesescapar' })

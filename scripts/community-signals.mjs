@@ -244,6 +244,15 @@ export function parseWordPressSignals(source, posts, limit = 100) {
     const merchant = sourceStore(`${title} ${merchantUrl}`);
     const signal = makeSignal(source, link, title, post.date_gmt ? `${post.date_gmt}Z` : post.date || '', merchant, sourceText);
     if (merchantUrl) signal.merchantUrl = merchantUrl;
+    // NoLo commonly renders the current and reference prices inside the
+    // product table without an "Antes" label. The first amount repeats the
+    // title price and the next larger amount is the genuine reference price.
+    if (!signal.previousPrice && signal.price > 0) {
+      const tablePrices = [...content.matchAll(/(\d{1,5}(?:[.,]\d{1,2})?)\s*(?:€|&euro;)/giu)]
+        .map((match) => Number.parseFloat(String(match[1]).replace(',', '.')) || 0)
+        .filter((price) => price > signal.price);
+      if (tablePrices[0]) signal.previousPrice = tablePrices[0];
+    }
     signal.sourceImageUrl = String(post.yoast_head_json?.og_image?.[0]?.url
       || post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '').trim();
     return signal.terms.length >= 2 ? [signal] : [];

@@ -319,3 +319,16 @@ test('matches a catalogue product only when a priority signal shares concrete te
   assert.equal(communityMatchForTitle('Robot aspirador Xiaomi S20 con base', signals)?.source, 'michollo');
   assert.equal(communityMatchForTitle('Auriculares Bluetooth deportivos', signals), null);
 });
+
+test('recovers an unlabeled reference price from a NoLo product table', () => {
+  const source = COMMUNITY_SOURCES.find((entry) => entry.id === 'nolodejesescapar');
+  const [signal] = parseWordPressSignals(source, [{
+    link: 'https://nolodejesescapar.com/monitor-msi/',
+    date_gmt: '2026-10-09T07:51:28',
+    title: { rendered: 'Monitor MSI PRO MP251W a 87,99€' },
+    excerpt: { rendered: '' },
+    content: { rendered: '<a href="https://www.awin1.com/pclick.php?p=1&a=2&m=20982">Ver oferta</a><span>87,99&euro;</span><del>120,00&euro;</del>' },
+  }], 10);
+  assert.equal(signal.price, 87.99);
+  assert.equal(signal.previousPrice, 120);
+});

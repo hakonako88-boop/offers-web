@@ -282,7 +282,7 @@ jobs:
         run: npm run sync:amazon
 
       - name: Publicar todas las ofertas de producto de hoy de NoLoDejesEscapar
-        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[nolo-today-batch]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' && env.AMAZON_PARTNER_TAG != '' }}
+        if: ${{ ((github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[nolo-today-batch]') || contains(github.event.head_commit.message, '[recheck-community]')))) && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' && env.AMAZON_PARTNER_TAG != '' }}
         timeout-minutes: 20
         env:
           NOLO_BATCH_GAP_MS: "8000"
