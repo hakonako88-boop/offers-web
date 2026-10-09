@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-10-09T12:13:03.099Z",
+  "updatedAt": "2026-10-09T12:24:15.668Z",
   "summary": {
-    "rejected": 793,
+    "rejected": 792,
     "ignored": 116,
     "duplicate": 4,
     "published": 20,
     "needs_review": 10,
-    "pending": 57
+    "pending": 58
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:95451:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 95451,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/95451",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-tiesometro:7572:aliexpress:0",
       "source": "telegram-tiesometro",
       "messageId": 7572,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
       "sourceUrl": "https://t.me/tiesometro/7572",
       "resultUrl": ""
     },
@@ -26,8 +37,8 @@
       "messageId": 95450,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
       "sourceUrl": "https://t.me/una_ganga/95450",
       "resultUrl": ""
     },
@@ -950,8 +961,8 @@
       "messageId": 95402,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 4,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 5,
+      "reason": "Pendiente de reintento (5/6)",
       "sourceUrl": "https://t.me/una_ganga/95402",
       "resultUrl": ""
     },
@@ -1089,17 +1100,6 @@
     },
     {
       "id": "telegram-paramanitas:4913:amazon:6",
-      "source": "telegram-paramanitas",
-      "messageId": 4913,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/paramanitas/4913",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-paramanitas:4913:amazon:5",
       "source": "telegram-paramanitas",
       "messageId": 4913,
       "store": "Amazon",
