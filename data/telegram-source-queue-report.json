@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-10-10T18:43:41.057Z",
+  "updatedAt": "2026-10-10T18:54:37.205Z",
   "summary": {
-    "rejected": 788,
     "ignored": 98,
+    "rejected": 788,
     "published": 22,
     "needs_review": 9,
     "duplicate": 5,
     "pending": 78
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7584:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7584,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/6)",
+      "sourceUrl": "https://t.me/tiesometro/7584",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:95549:miravia:0",
       "source": "telegram-una-ganga",
@@ -48,8 +59,8 @@
       "messageId": 45661,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/chollosdiario/45661",
       "resultUrl": ""
     },
@@ -136,8 +147,8 @@
       "messageId": 44008,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/6)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/6)",
       "sourceUrl": "https://t.me/Ofertos/44008",
       "resultUrl": ""
     },
@@ -257,8 +268,8 @@
       "messageId": 4921,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/paramanitas/4921",
       "resultUrl": ""
     },
@@ -279,8 +290,8 @@
       "messageId": 43999,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/Ofertos/43999",
       "resultUrl": ""
     },
@@ -290,8 +301,8 @@
       "messageId": 43998,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/Ofertos/43998",
       "resultUrl": ""
     },
@@ -335,7 +346,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/7583",
       "resultUrl": ""
     },
@@ -346,7 +357,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/95541",
       "resultUrl": ""
     },
@@ -454,9 +465,9 @@
       "source": "telegram-una-ganga",
       "messageId": 95533,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/95533",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 4,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/Ofertos/43967",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15625:amazon:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15625,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/erroresde_precio/15625",
       "resultUrl": ""
     }
   ]
