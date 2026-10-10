@@ -14,7 +14,7 @@ test('selects diverse useful weekly products and excludes filler', () => {
     offer('robot', 'Robot aspirador Cecotec con estación', 'Amazon', '199,00 €', '299,00 €', date),
     offer('phone', 'Smartphone Samsung Galaxy 5G 256 GB', 'PcComponentes', '299,00 €', '399,00 €', date),
     offer('coffee', 'Café en grano natural pack ahorro', 'Amazon', '12,00 €', '20,00 €', date),
-    offer('game', 'Videojuego Nintendo Switch edición española', 'MediaMarkt', '29,00 €', '49,00 €', date),
+    offer('tool', 'Taladro Bosch con dos baterías', 'MediaMarkt', '79,00 €', '119,00 €', date),
     offer('inflated-tv', 'Televisor profesional 55 pulgadas', 'PcComponentes', '700,00 €', '1999,00 €', date),
     offer('shoe', 'Zapatillas de moda casual', 'AliExpress', '15,00 €', '80,00 €', date),
   ], now);
@@ -29,7 +29,7 @@ test('builds a substantial indexable weekly article from factual prices', () => 
   const products = [
     offer('robot', 'Robot aspirador Cecotec con estación', 'Amazon', '199,00 €', '299,00 €', date),
     offer('phone', 'Smartphone Samsung Galaxy 5G 256 GB', 'PcComponentes', '299,00 €', '399,00 €', date, 'AHORRA20'),
-    offer('game', 'Videojuego Nintendo Switch edición española', 'MediaMarkt', '29,00 €', '49,00 €', date),
+    offer('tool', 'Taladro Bosch con dos baterías', 'MediaMarkt', '79,00 €', '119,00 €', date),
   ];
   const post = buildWeeklyProductGuide(products, '2026-09-13');
   assert.equal(post.id, 'mejores-productos-semana-2026-09-13');
@@ -37,7 +37,7 @@ test('builds a substantial indexable weekly article from factual prices', () => 
   assert.match(post.body, /AHORRA20/u);
   assert.match(post.body, /últimos siete días/u);
   assert.equal(post.images.length, 3);
-  assert.deepEqual(post.offer_ids, ['robot', 'phone', 'game']);
+  assert.deepEqual(post.offer_ids, ['robot', 'phone', 'tool']);
   const workflow = fs.readFileSync(new URL('../.github/workflows/weekly-product-guide.yml', import.meta.url), 'utf8');
   assert.match(workflow, /30 9,10 \* \* 0/u);
 });

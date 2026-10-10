@@ -26,10 +26,16 @@ test('keeps useful, food and coupon deals with credible savings', () => {
 
 test('keeps exceptional big-ticket savings and diversifies useful families', () => {
   const selected = selectInterestingOffers([
-    { title: 'Monitor gaming LG', price: 199, oldPrice: 249, score: 70 },
+    { title: 'Monitor IPS LG', price: 199, oldPrice: 249, score: 70 },
     { title: 'Auriculares Sony', price: 35, oldPrice: 55, score: 60 },
     { title: 'Aspiradora Bosch', price: 99, oldPrice: 149, score: 65 },
   ]);
   assert.equal(selected.length, 3);
   assert.deepEqual(new Set(selected.map(interestFamily)), new Set(['informatica', 'moviles-audio', 'limpieza']));
+});
+
+test('rejects games, consoles and gaming accessories from automatic discovery', () => {
+  for (const title of ['PlayStation 5 Slim', 'Videojuego para Nintendo Switch', 'Ratón gaming Logitech']) {
+    assert.equal(automaticInterest({ title, price: 39, oldPrice: 69 }, { requireDealEvidence: true }), -1);
+  }
 });

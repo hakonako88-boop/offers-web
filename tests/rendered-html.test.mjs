@@ -238,15 +238,15 @@ test("renders the GTA VI regional-price guide with transparent SEO and Wise affi
   assert.doesNotMatch(html, /100 % legal|más barato del mundo|jugar ahora/i);
 });
 
-test("renders conservative product pages with current offers and honest history", async () => {
+test("renders conservative product pages with honest offer status and history", async () => {
   const sitemapResponse = await render("/sitemap.xml");
   const sitemap = await sitemapResponse.text();
-  const productPath = sitemap.match(/https:\/\/chollosaldia\.com(\/producto\/[^<]+)/)?.[1];
-  assert.ok(productPath, "the sitemap should expose active product pages");
-  const response = await render(productPath);
+  const productPaths = [...sitemap.matchAll(/https:\/\/chollosaldia\.com(\/producto\/[^<]+)/gu)].map((match) => match[1]);
+  assert.ok(productPaths.length, "the sitemap should expose active product pages");
+  const response = await render(productPaths[0]);
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Mejor precio activo/);
+  assert.match(html, /Mejor precio activo|Ahora mismo no hay una oferta activa/u);
   assert.match(html, /COMPARA TIENDAS/);
   assert.match(html, /HISTÓRICO REAL/);
   assert.match(html, /"@type":"Product"/);

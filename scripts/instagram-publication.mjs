@@ -1,3 +1,5 @@
+import { isGamingOffer } from './editorial-interest.mjs';
+
 const TIME_ZONE = 'Europe/Madrid';
 
 function compact(value = '') {
@@ -41,6 +43,7 @@ export function selectInstagramOffer(offers = [], state = {}, { now = new Date()
       const id = publicOfferId(offer);
       return id
         && !publishedIds.has(id)
+        && !isGamingOffer(offer)
         && stamp(offer) >= recentCutoff
         && compact(offer.title).length >= 8
         && compact(offer.price)

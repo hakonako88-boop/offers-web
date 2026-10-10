@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isGamingOffer } from './editorial-interest.mjs';
 
 const ROOT = process.cwd();
 const OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
@@ -52,7 +53,7 @@ function qualityScore(offer) {
   const previous = priceNumber(offer.previousPrice);
   const discount = previous > price ? Math.round((1 - price / previous) * 100) : 0;
   const coupon = String(offer.coupon || '').trim() ? 25 : 0;
-  const useful = /xiaomi|samsung|apple|robot|aspirador|portátil|tablet|móvil|gaming|playstation|televisor|cafetera|herramienta|lego/iu.test(String(offer.title || '')) ? 15 : 0;
+  const useful = /xiaomi|samsung|apple|robot|aspirador|portátil|tablet|móvil|televisor|cafetera|herramienta|lego/iu.test(String(offer.title || '')) ? 15 : 0;
   return discount * 2 + coupon + useful + Math.min(20, price / 25);
 }
 
@@ -65,6 +66,7 @@ export function selectAutomaticTikTokOffer(offers, publications, now = new Date(
   const oldestAllowed = now.getTime() - 36 * 60 * 60 * 1000;
   return offers
     .filter(isAutomatic)
+    .filter((offer) => !isGamingOffer(offer))
     .filter((offer) => {
       const publishedAt = Number(offer.date) * 1000;
       const id = identity(offer);

@@ -8,6 +8,7 @@ import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mj
 import { improveOfferTitle, offerReplyMarkup } from './offer-presentation.mjs';
 import { amazonProductImageFromUrl } from './telegram-inbox-commands.mjs';
 import { mirrorTelegramMessage } from './telegram-mirror.mjs';
+import { isGamingOffer } from './editorial-interest.mjs';
 
 const ROOT = process.cwd();
 const OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
@@ -47,7 +48,10 @@ function cleanSourceTitle(value = '') {
 export async function todayNoloAmazonCandidates({ fetchImpl = fetch, now = Date.now(), posts } = {}) {
   const sourcePosts = posts || await fetchRecentWordPressPosts({ fetchImpl, now, maxPages: 2 });
   const signals = parseWordPressSignals(SOURCE, sourcePosts, 500)
-    .filter((signal) => signal.sourceStore === 'Amazon' && sameMadridDay(signal.publishedAt, now) && signal.price > 0);
+    .filter((signal) => signal.sourceStore === 'Amazon'
+      && sameMadridDay(signal.publishedAt, now)
+      && signal.price > 0
+      && !isGamingOffer(signal));
   const candidates = [];
   for (const signal of signals) {
     const asin = await resolveAmazonAsin(signal.merchantUrl, fetchImpl);

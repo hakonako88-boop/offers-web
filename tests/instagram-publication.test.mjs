@@ -19,6 +19,15 @@ test('selects a recent visual offer that has not been posted to Instagram', () =
   assert.equal(instagramImageUrl(selected), 'https://chollosaldia.com/tg/m1.jpg');
 });
 
+test('does not select gaming offers for Instagram', () => {
+  const now = new Date('2026-08-29T10:00:00Z');
+  const offer = {
+    source_product_id: 'game-1', title: 'Videojuego PlayStation 5', price: '29,99 €',
+    image: '/tg/game.jpg', date: Math.floor(now.getTime() / 1000),
+  };
+  assert.equal(selectInstagramOffer([offer], { published: [] }, { now }), null);
+});
+
 test('limits Instagram to useful daytime slots and four posts per day', () => {
   assert.equal(instagramPublicationWindow({}, { now: new Date('2026-08-31T03:00:00+02:00') }).reason, 'quiet-hours');
   const state = { published: Array.from({ length: 4 }, (_, index) => ({ offerId: `x${index}`, publishedAt: `2026-08-31T${10 + index}:00:00.000Z` })) };

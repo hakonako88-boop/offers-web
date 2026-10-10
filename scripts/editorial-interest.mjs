@@ -28,6 +28,9 @@ function dealFacts(offer = {}) {
 
 const LOW_INTEREST = /\b(mochilas?|backpacks?|rucksacks?|llaveros?|pegatinas?|stickers?|fundas? (?:decorativas? )?(?:de )?(?:cojin|almohada)|album(?:es)? de fotos?|huchas?|conos? de (?:trafico|seguridad)|reloj(?:es)? (?:digital(?:es)? )?(?:unisex|militar(?:es)?)|zapatillas?|zapatos?|shoes?|boots?|sneakers?|trainers?|sandalias?|tenis|camisetas?|polos?|bragas?|ropa interior|vaqueros?|jeans|chaquetas?|tarjeteros?|bolsos?|vestidos?|sudaderas?|bisuteria|figuras? decorativas?|adornos?|peluches?)\b/u;
 const LOW_QUALITY_PHRASES = /\b(calzado estilo|moda casual informal|alfombrilla.*(?:anime|naruto|pikachu|dragon ball)|producto aleatorio|color aleatorio)\b/u;
+// The channel is aimed at broadly useful household and technology deals. The
+// owner explicitly does not want gaming offers in automatic discovery.
+const GAMING_OFFER = /\b(?:gaming|gamer|videojuegos?|playstation|ps[345]\b|xbox|nintendo|switch\b|steam(?:\s+deck)?|game\s*pass|psn|gamepad|mandos?\s+(?:para\s+)?(?:pc|consola|playstation|xbox|nintendo)|consolas?|sillas?\s+gaming|mesas?\s+gaming|alfombrillas?\s+gaming|rat[oó]n\s+gaming|teclados?\s+gaming)\b/u;
 const TRUSTED_BRAND = /\b(amazon|apple|samsung|xiaomi|poco|redmi|google|motorola|sony|lg|philips|bosch|rowenta|cecotec|dyson|roborock|dreame|tapo|tp-link|logitech|lenovo|asus|acer|hp|dell|msi|intel|amd|nintendo|playstation|xbox|lego|intex|gillette|old spice|finish|fairy|wipp|puleva|central lechera asturiana|el almendro|cafe borbone|lotus)\b/u;
 
 export function interestFamily(offer = {}) {
@@ -40,7 +43,6 @@ export function interestFamily(offer = {}) {
     ['cocina', /\b(cafeteras?|freidoras?|exprimidor(?:es)?|batidoras?|robots? de cocina|microondas)\b/u],
     ['electrodomesticos', /\b(lavadoras?|frigorificos?|congelador(?:es)?|televisor(?:es)?|lavavajillas|planchas? de vapor)\b/u],
     ['bricolaje', /\b(taladros?|destornillador(?:es)?|herramientas?|sierras? (?:sable|circular|electrica))\b/u],
-    ['gaming', /\b(consolas?|videojuegos?|playstation|xbox|nintendo|silla gaming)\b/u],
     ['automovil', /\b(cargador ev|cable de (?:carga )?(?:ev|vehiculo electrico)|portaequipajes|arrancador de bateria)\b/u],
     ['hogar-util', /\b(colchon(?:es)? hinchable|perchero|zapatero|sillas? camping|domotica|bombilla inteligente)\b/u],
     ['cuidado-personal', /\b(afeitadora|cuchillas? de afeitar|secador de pelo|desodorante|gel de bano|crema hidratante|perfume)\b/u],
@@ -50,6 +52,10 @@ export function interestFamily(offer = {}) {
   return families.find(([, pattern]) => pattern.test(title))?.[0] || 'otros';
 }
 
+export function isGamingOffer(offer = {}) {
+  return GAMING_OFFER.test(text(`${offer.title || ''} ${offer.category || ''} ${offer.description || ''}`));
+}
+
 export function automaticInterest(offer = {}, { requireDealEvidence = false } = {}) {
   const title = text(offer.title);
   // Telegram source links enter the queue before Amazon metadata is fetched.
@@ -57,6 +63,7 @@ export function automaticInterest(offer = {}, { requireDealEvidence = false } = 
   // the official product reader and apply the strict gate to the enriched
   // offer afterwards.
   if (!title) return requireDealEvidence ? -1 : 0;
+  if (isGamingOffer(offer)) return -1;
   if (LOW_INTEREST.test(title) || LOW_QUALITY_PHRASES.test(title)) return -1;
   const family = interestFamily(offer);
   const priorityFamily = family !== 'otros';

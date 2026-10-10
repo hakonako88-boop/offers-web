@@ -10,7 +10,6 @@ export const ALIEXPRESS_SEARCH_TOPICS = [
   { keywords: 'freidora de aire', category: 'Hogar', titleTerms: ['freidora', 'air fryer'] },
   { keywords: 'herramientas bricolaje', category: 'Bricolaje', titleTerms: ['herramienta', 'destornillador', 'taladro', 'alicates', 'broca'] },
   { keywords: 'smartwatch', category: 'Tecnología', titleTerms: ['smartwatch', 'reloj inteligente', 'pulsera inteligente'] },
-  { keywords: 'accesorios gaming', category: 'Videojuegos', titleTerms: ['gaming', 'mando', 'ratón', 'mouse', 'teclado'] },
   { keywords: 'cafetera', category: 'Hogar', titleTerms: ['cafetera', 'café'] },
   { keywords: 'juguetes educativos', category: 'Juguetes', titleTerms: ['juguete', 'muñeco', 'juego', 'tamagotchi'] },
   { keywords: 'cargador usb c', category: 'Tecnología', titleTerms: ['cargador', 'cable usb', 'usb-c'] },

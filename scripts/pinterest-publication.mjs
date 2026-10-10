@@ -1,4 +1,5 @@
 import { instagramImageUrl, publicOfferId } from './instagram-publication.mjs';
+import { isGamingOffer } from './editorial-interest.mjs';
 
 const TIME_ZONE = 'Europe/Madrid';
 const SITE_URL = 'https://chollosaldia.com';
@@ -75,6 +76,7 @@ export function selectPinterestOffer(offers = [], state = {}, { now = new Date()
       const id = publicOfferId(offer);
       return id
         && !published.has(id)
+        && !isGamingOffer(offer)
         && stamp(offer) >= cutoff
         && compact(offer.title).length >= 12
         && compact(offer.price)
