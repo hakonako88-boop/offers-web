@@ -18692,14 +18692,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/DUsMHYaPBfD3AiHNG8wVxD2RvFbqqODr4wIn-MeeDLT9ZmJ-l2mMLWqssPGBsnneJPrhX8he8CxBg2qltxE3NMXKJujR7KNTmGjPskEoQLg0vOLcXQfdvRZ3X4y7fsrvZyMoQrqhdHB5lOkVfoPhUY8hYKf3f_6wDrBLZjQs9xR-oYLXlNLHqhnr8mHdDHukShyqZfo_PutckHa5FK8Q7G0JW6nE1t1GW6ctBY8RG6V_VtmdtlIiZFccr63FEG7SctSSAUTTnvn9oSerfd3BMJEVLZqtV-jKTlSAAHvwOHTAV5Xcc4tMFofNawjpVqQOOthsHOtPhtuincM6MHGpgg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://www.amazon.es/dp/B00P11GW0U?th=1&amp;linkCode=sl2&amp;linkId=c97805219807621834920d92a2a1dbf1&amp;ref_=as_li_ss_tl&amp;tag=ofertos03-21",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 40,
       "priority": true,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-10-10T17:41:11.382Z",
-      "updatedAt": "2026-10-10T19:23:57.256Z",
-      "nextAttemptAt": "2026-10-10T20:03:57.256Z"
+      "updatedAt": "2026-10-10T20:04:35.958Z"
     },
     {
       "id": "telegram-una-ganga:95546:miravia:0",
@@ -18713,13 +18712,13 @@
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4Amr0z7",
       "status": "pending",
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 3,
+      "attempts": 0,
       "createdAt": "2026-10-10T17:41:12.037Z",
-      "updatedAt": "2026-10-10T18:43:41.057Z",
-      "nextAttemptAt": "2026-10-10T20:03:41.057Z"
+      "updatedAt": "2026-10-10T20:06:22.848Z",
+      "retryPolicyVersion": "exact-official-page-v1"
     },
     {
       "id": "telegram-ofertos:44011:amazon:0",
@@ -18853,14 +18852,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/lXPXkK-tpRtjFjtZbtKSYbEDtY65TzTzQJSy1qFnOoJoVJg3dK3e2VVFePdo755LnzpOlQR_G8_Y4loR4vm45S0n47dmqnLNnLECA71J99IYdGzg8tUlO7BtMWdeHvK6K7SUQwP02FXBRM-fj6Gwg9AVAC71SNTu6Uhma-GqTUeeOgGY1s7dnTfLXwJrkduJ-5d4vESfdAm0gSlCslzRWCZ-qm5ly0JQydkdy-_iOy1Fyxg1FSHqSaKZsNaO_KI477apOW5tRlTF1RjSdoMR2q1I6nkrUahyX1Vo4HafZGWO-c1DvVfdauqx2XZMpJ5H72JaDPk3iSk63UKUc3k3qQ.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B01N4XmGQ",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-10-10T18:21:29.075Z",
-      "updatedAt": "2026-10-10T19:23:57.256Z",
-      "nextAttemptAt": "2026-10-10T20:03:57.256Z"
+      "updatedAt": "2026-10-10T20:04:35.958Z"
     },
     {
       "id": "telegram-una-ganga:95549:miravia:0",
@@ -18894,14 +18892,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://chz.to/o0yfx",
       "status": "pending",
-      "reason": "Pendiente de reintento (2/6)",
+      "reason": "Pendiente de reintento (3/6)",
       "sourceWeight": 22,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-10T18:51:17.880Z",
-      "updatedAt": "2026-10-10T19:23:57.256Z",
-      "nextAttemptAt": "2026-10-10T20:03:57.256Z"
+      "updatedAt": "2026-10-10T20:06:22.848Z",
+      "nextAttemptAt": "2026-10-10T21:26:22.848Z"
     },
     {
       "id": "telegram-una-ganga:95550:aliexpress:0",
@@ -19410,13 +19408,14 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3BdN3TF",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de reintento (1/6)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 0,
+      "attempts": 1,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-10T20:04:01.559Z",
-      "updatedAt": "2026-10-10T20:04:01.559Z"
+      "updatedAt": "2026-10-10T20:06:22.848Z",
+      "nextAttemptAt": "2026-10-10T20:26:22.848Z"
     }
   ]
 }
