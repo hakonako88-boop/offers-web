@@ -1,14 +1,25 @@
 {
-  "updatedAt": "2026-10-10T16:45:16.606Z",
+  "updatedAt": "2026-10-10T16:53:15.349Z",
   "summary": {
-    "rejected": 801,
+    "rejected": 802,
     "ignored": 100,
     "published": 23,
     "needs_review": 11,
     "duplicate": 5,
-    "pending": 60
+    "pending": 59
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:44000:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 44000,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/44000",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-paramanitas:4921:amazon:0",
       "source": "telegram-paramanitas",
@@ -311,9 +322,9 @@
       "source": "telegram-errores-de-precio",
       "messageId": 15626,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/erroresde_precio/15626",
       "resultUrl": ""
     },
@@ -333,9 +344,9 @@
       "source": "telegram-una-ganga",
       "messageId": 95526,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/95526",
       "resultUrl": ""
     },
@@ -1096,17 +1107,6 @@
       "attempts": 5,
       "reason": "Pendiente de reintento (5/6)",
       "sourceUrl": "https://t.me/una_ganga/95497",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-una-ganga:95496:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 95496,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/95496",
       "resultUrl": ""
     }
   ]
