@@ -45,6 +45,21 @@ function score(offer) {
   return automaticInterest(offer, { requireDealEvidence: true }) * 50 + Math.min(discount, 60) * 2 + Math.min(saving, 200) + (offer.coupon ? 20 : 0);
 }
 
+function buyingAdvice(offer) {
+  const advice = {
+    limpieza: 'Para quienes quieren ahorrar tiempo en la limpieza. Comprueba el tamaño de la vivienda, el mantenimiento y los recambios antes de elegir.',
+    climatizacion: 'Para mejorar el confort de casa. Revisa la superficie recomendada, el consumo y las dimensiones.',
+    informatica: 'Para trabajar, estudiar o renovar el equipo. Comprueba las conexiones y que sus especificaciones encajen con tu uso.',
+    'moviles-audio': 'Para renovar el móvil o el equipo de sonido. Confirma la capacidad, la compatibilidad y la versión exacta del producto.',
+    cocina: 'Para facilitar las tareas diarias en la cocina. Revisa la capacidad, las dimensiones y la facilidad de limpieza.',
+    electrodomesticos: 'Para renovar un electrodoméstico de uso diario. Comprueba las medidas, la eficiencia y las condiciones de entrega.',
+    bricolaje: 'Para reparaciones y proyectos de casa. Comprueba qué accesorios incluye y si necesita baterías adicionales.',
+    alimentacion: 'Para ahorrar en la compra habitual. Compara el precio por kilo o litro y revisa la cantidad y la conservación.',
+    consumo: 'Para reponer productos de uso frecuente. Compara el precio por unidad y el tamaño del paquete.',
+  };
+  return advice[interestFamily(offer)] || 'Comprueba la variante, las dimensiones y las condiciones de envío para valorar si encaja con lo que necesitas.';
+}
+
 export function selectWeeklyProducts(offers, now = new Date(), maximum = 5) {
   const newest = now.getTime();
   const earliest = newest - 7 * 24 * 60 * 60 * 1000;
@@ -57,7 +72,9 @@ export function selectWeeklyProducts(offers, now = new Date(), maximum = 5) {
     const store = String(offer.store || '').toLowerCase();
     const credibleMarketplacePrice = !store.includes('aliexpress') || coupon || (discount <= 50 && previous <= price * 2);
     const credibleHighValueReference = price <= 250 || previous <= price * 2 || coupon;
-    return timestamp >= earliest && timestamp <= newest && price > 0 && previous > price
+    return !/removed|daily-summary|campaign/iu.test(String(offer.source || ''))
+      && !offer.expired && !offer.removed
+      && timestamp >= earliest && timestamp <= newest && price > 0 && previous > price
       && credibleMarketplacePrice && credibleHighValueReference
       && String(offer.image || '').trim() && /^https?:\/\//iu.test(String(offer.url || ''));
   })).map((offer) => ({ ...offer, weeklyScore: score(offer) }))
@@ -84,14 +101,14 @@ export function buildWeeklyProductGuide(offers, date) {
     const previous = numericPrice(offer.previousPrice);
     const saving = previous - price;
     const discount = Math.round((saving / previous) * 100);
-    const coupon = offer.coupon ? ` Necesita el cupón ${clean(offer.coupon, 40)}; conviene copiarlo y comprobar que se aplique antes de pagar.` : ' El precio publicado no necesita un código adicional.';
-    return `${index + 1}. ${clean(offer.title)}\n\nEstá disponible en ${offer.store || 'la tienda'} por ${offer.price}, frente a ${offer.previousPrice}: un ahorro publicado de ${saving.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })} (${discount} %).${coupon} Lo hemos incluido por su utilidad, el ahorro visible y la calidad de la oferta. Consulta su ficha desde la selección de ofertas de Chollos al Día para revisar variante, envío, stock y precio final.`;
+    const coupon = offer.coupon ? ` Cupón publicado: ${clean(offer.coupon, 40)}. Comprueba que se aplique antes de pagar.` : ' No tenemos un código de cupón registrado para esta oferta.';
+    return `${index + 1}. ${clean(offer.title)}\n\nPrecio publicado en ${offer.store || 'la tienda'}: ${offer.price}, frente a ${offer.previousPrice}. Ahorro respecto al precio de referencia registrado: ${saving.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })} (${discount} %).${coupon}\n\n${buyingAdvice(offer)} Consulta la ficha enlazada al final del artículo para comprobar el precio actual, la variante y el envío.`;
   });
   return {
     id,
     source_product_id: `weekly-guide:${date}`,
     date: Math.floor(new Date(`${date}T11:30:00+02:00`).getTime() / 1000),
-    title: `Los ${offers.length} mejores productos en oferta de la semana`,
+    title: `Top ${offers.length}: mejores productos en oferta y rebajados · ${displayDate}`,
     body: `Guía actualizada el ${displayDate}. Hemos revisado las ofertas publicadas durante los últimos siete días y seleccionado productos útiles con ahorro visible. No elegimos únicamente el porcentaje más alto: también valoramos el interés del producto, la credibilidad del precio anterior y la variedad de tiendas y categorías.\n\n${sections.join('\n\n')}\n\nCómo usar esta selección\n\nLos precios, cupones y existencias pueden cambiar. Abre la ficha del producto, confirma que la variante coincide y revisa el total del carrito antes de comprar. Esta guía se actualiza con una nueva selección semanal y no sustituye las condiciones de cada comercio.`,
     image: offers[0].image,
     images: offers.map((offer) => offer.image).filter(Boolean).slice(0, 5),
@@ -105,7 +122,7 @@ async function main() {
   const now = new Date();
   const current = madridParts(now);
   const force = String(process.env.WEEKLY_GUIDE_FORCE || '').toLowerCase() === 'true';
-  if (!force && (current.weekday !== 'Sun' || current.hour !== 11 || current.minute < 30)) {
+  if (!force && (!['Wed', 'Sun'].includes(current.weekday) || current.hour !== 11 || current.minute < 30)) {
     console.log(`Guía semanal omitida: en Madrid es ${current.weekday} ${current.hour}:${String(current.minute).padStart(2, '0')}.`);
     return;
   }

@@ -39,5 +39,5 @@ test('builds a substantial indexable weekly article from factual prices', () => 
   assert.equal(post.images.length, 3);
   assert.deepEqual(post.offer_ids, ['robot', 'phone', 'tool']);
   const workflow = fs.readFileSync(new URL('../.github/workflows/weekly-product-guide.yml', import.meta.url), 'utf8');
-  assert.match(workflow, /30 9,10 \* \* 0/u);
+  assert.match(workflow, /30 9,10 \* \* 0,3/u);
 });

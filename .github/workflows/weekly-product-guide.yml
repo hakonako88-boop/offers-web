@@ -2,8 +2,8 @@ name: Publicar guía semanal de mejores productos
 
 on:
   schedule:
-    # Domingo a las 11:30 de Madrid, cubriendo horario de verano e invierno.
-    - cron: "30 9,10 * * 0"
+    # Miércoles y domingo a las 11:30 de Madrid, verano e invierno.
+    - cron: "30 9,10 * * 0,3"
   workflow_dispatch:
 
 permissions:
