@@ -18931,13 +18931,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c3B5sL7L",
       "status": "pending",
-      "reason": "Esperando una nueva comprobación de AliExpress; el fallo anterior no cuenta como otro intento",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 2,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-11T19:01:29.833Z",
-      "updatedAt": "2026-10-11T20:15:34.128Z",
+      "updatedAt": "2026-10-11T20:23:54.542Z",
       "nextAttemptAt": "2026-10-11T20:14:12.467Z"
     },
     {
@@ -18951,14 +18951,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/qwcX70wIcGmp9RCakwTWhqkRng-1q6-P1B6sVAxE-d_Enj3JlElBCE0wS1Zb9WWJTrBBFJHkxhTRjHbAv9RT1AluKIyajNwDZd0bFBlvk-DqZR4bz5rciYmZ1ATSCli1Adti0KnGP1dJFsnHorhwzuIBVPC66PP5AN4Kq9oyNwb8YGbrNH2SmZ8GDy4CYPbXaxnvgbJoMDhBCrvQTEZL1rw60q37bruZXQGg92IXOQfPUN3z4jHeijMwbLX4DH4tGXo331WYoPdOTM9AyL8j33xKFxS6JFvIXAztxBM2WgPoyAD4w_-DnlJjQ9mFgZ0kcO8WmIzf3i3JYp7E3l0Mag.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B06TmP6Oa",
-      "status": "pending",
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-10-11T19:21:15.465Z",
-      "updatedAt": "2026-10-11T19:42:40.377Z",
-      "nextAttemptAt": "2026-10-11T20:22:40.377Z"
+      "updatedAt": "2026-10-11T20:23:54.542Z"
     },
     {
       "id": "telegram-una-ganga:95626:miravia:0",
@@ -19372,13 +19371,13 @@
       "store": "AliExpress",
       "merchantUrl": "https://s.click.aliexpress.com/e/_c4BW2JLx",
       "status": "pending",
-      "reason": "Esperando una nueva comprobación de AliExpress; el fallo anterior no cuenta como otro intento",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "retryPolicyVersion": "exact-id-query-and-diagnostics-v15-republication-cooldown",
       "createdAt": "2026-10-11T20:04:57.399Z",
-      "updatedAt": "2026-10-11T20:15:34.128Z"
+      "updatedAt": "2026-10-11T20:23:54.542Z"
     },
     {
       "id": "telegram-paramanitas:4932:ignored",
@@ -19409,12 +19408,13 @@
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B029mj8QY",
       "status": "pending",
-      "reason": "",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceWeight": 24,
       "priority": false,
       "attempts": 0,
       "createdAt": "2026-10-11T20:21:12.224Z",
-      "updatedAt": "2026-10-11T20:21:12.225Z"
+      "updatedAt": "2026-10-11T20:21:51.473Z",
+      "nextAttemptAt": "2026-10-11T21:01:51.473Z"
     }
   ]
 }
