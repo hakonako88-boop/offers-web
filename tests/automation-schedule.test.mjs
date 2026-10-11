@@ -207,7 +207,7 @@ test('does not leave the afternoon blocked after the morning slots fill up', () 
     now: new Date('2026-09-10T16:45:00+02:00'),
   });
   assert.equal(allowance.allowed, true);
-  assert.equal(allowance.globalLimit, 9);
+  assert.equal(allowance.globalLimit, 11);
   assert.equal(allowance.remaining, 1);
 });
 
@@ -239,7 +239,7 @@ test('does not let an inbox burst from one shop starve the other retailers', () 
     now: new Date('2026-08-30T22:00:00+02:00'),
   });
   assert.equal(allowance.allowed, true);
-  assert.equal(allowance.publishedToday, 4);
+  assert.equal(allowance.publishedToday, 5);
   assert.equal(allowance.rawPublishedToday, 56);
   assert.equal(allowance.remaining, 1);
 });
@@ -258,7 +258,7 @@ test('prevents automatic Telegram bursts across retailers', () => {
   assert.ok(allowance.retryAfterMs > 0);
 });
 
-test('caps AliExpress source posts to protect channel retention', () => {
+test('raises AliExpress capacity moderately while preserving a daily cap', () => {
   const offers = Array.from({ length: 10 }, (_, index) => ({
     store: 'AliExpress',
     date: Math.floor(Date.parse(`2026-08-31T${String(9 + index).padStart(2, '0')}:00:00+02:00`) / 1000),
@@ -269,7 +269,7 @@ test('caps AliExpress source posts to protect channel retention', () => {
     now: new Date('2026-08-31T21:00:00+02:00'),
   });
   assert.equal(afterTen.allowed, false);
-  assert.equal(afterTen.storeLimit, 4);
+  assert.equal(afterTen.storeLimit, 5);
   assert.equal(afterTen.reason, 'store-daily-limit');
 });
 
