@@ -18862,14 +18862,13 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/pSSE6dlmaZb9L0uehTdIXC3Yrd30BDG9yBcc6T2l7ZAXu72d6IhiErML8NXPDX6jyFuJQVj96iB7KlPuunehK1QHMKOumO0Kt8vjt0tNIuOYJ7Jh7_OJ1UTeUGCECkC_7hZsjZfphnWfFV4RXZ8Bqi0Z2bZbGbe3zgW9glUXGk2AX3sPKZKywi9O6IDdxfaN7zOQ3jjIOkxNwIKaPQrZwfVqc19qjB8Yqlr_bJ681T8jZ6lnMmw5tN22mSYmG2tMdaTZL4oKgMdkXRkOmpx6ZUgL4Q86Eahl6o7sh8wsz-CuFduZxarieQ1OSBDQj0DRB9MzBRtGZD2H_vnxT5SbEg.jpg",
       "store": "Amazon",
       "merchantUrl": "https://link.amazon/B00UHVu33",
-      "status": "pending",
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "status": "rejected",
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 2,
+      "attempts": 3,
       "createdAt": "2026-10-11T11:21:11.878Z",
-      "updatedAt": "2026-10-11T13:51:47.790Z",
-      "nextAttemptAt": "2026-10-11T15:11:47.790Z"
+      "updatedAt": "2026-10-11T15:12:53.708Z"
     },
     {
       "id": "telegram-ofertos:44040:aliexpress:0",
@@ -19125,13 +19124,15 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/QpoXRoE4NqKGyy2jr0hQUFurZPzDtd2MDXezBOnSytyNzWO4jA3jD4Ttv2y4blELlHU4P0s7yQb9VGO9Vm0T6LgXfC91gp9DwdwDZNBx91wYH9nwr5YiCBO26L81s5WPGl_gT243UttffCsjXFm6UPmkVouqa7FdItH69wY0lme3cbBDcwnxevFPO3LMufOBt09t9zuKX-WAQ1jiedL4S6P6LTAaegyrLHopIcoyRqH7qazUeRup4q3kulAyXZna9Oehfm9696pSXf7dOZTBCpO_RYUIdVqhTG4lZKUxPSq7ZPfeHVl8P2g7gp65jyvDnsvAb0n8UbHCxR7LZIl97w.jpg",
       "store": "Miravia",
       "merchantUrl": "https://tidd.ly/4wKHkIa",
-      "status": "rejected",
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "reason": "Pendiente de reintento (1/4)",
       "sourceWeight": 24,
       "priority": false,
-      "attempts": 4,
+      "attempts": 1,
       "createdAt": "2026-10-11T12:41:13.012Z",
-      "updatedAt": "2026-10-11T15:03:38.163Z"
+      "updatedAt": "2026-10-11T15:12:53.708Z",
+      "retryPolicyVersion": "exact-official-page-v1",
+      "nextAttemptAt": "2026-10-11T15:32:53.708Z"
     },
     {
       "id": "telegram-una-ganga:95604:aliexpress:0",
