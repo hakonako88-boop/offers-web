@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-11T13:43:01.702Z",
+  "updatedAt": "2026-10-11T13:53:01.138Z",
   "summary": {
     "rejected": 838,
     "ignored": 71,
@@ -9,6 +9,17 @@
     "pending": 51
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:95608:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 95608,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/95608",
+      "resultUrl": ""
+    },
     {
       "id": "telegram-una-ganga:95607:miravia:0",
       "source": "telegram-una-ganga",
@@ -443,9 +454,9 @@
       "source": "telegram-una-ganga",
       "messageId": 95591,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/95591",
       "resultUrl": ""
     },
@@ -1089,17 +1100,6 @@
     },
     {
       "id": "telegram-chollosdiario:45662:amazon:2",
-      "source": "telegram-chollosdiario",
-      "messageId": 45662,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/chollosdiario/45662",
-      "resultUrl": ""
-    },
-    {
-      "id": "telegram-chollosdiario:45662:amazon:1",
       "source": "telegram-chollosdiario",
       "messageId": 45662,
       "store": "Amazon",
