@@ -19,7 +19,16 @@ import {
   isSourceItemReady,
   nextSourceRetryAt,
   sourceRetryDelayMs,
+  hasNewSourceDiagnostic,
 } from '../scripts/source-retry-policy.mjs';
+
+test('counts each real product diagnostic once instead of burning attempts on stale results', () => {
+  const checkedAt = '2026-10-11T10:00:00Z';
+  assert.equal(hasNewSourceDiagnostic({}, { checkedAt }), true);
+  assert.equal(hasNewSourceDiagnostic({ lastCountedDiagnosticAt: checkedAt }, { checkedAt }), false);
+  assert.equal(hasNewSourceDiagnostic({ lastCountedDiagnosticAt: checkedAt }, { checkedAt: '2026-10-11T10:20:00Z' }), true);
+  assert.equal(hasNewSourceDiagnostic({}, {}), false);
+});
 
 test('spaces failed source checks and only wakes work whose retry time has arrived', () => {
   const now = new Date('2026-09-13T16:00:00Z');

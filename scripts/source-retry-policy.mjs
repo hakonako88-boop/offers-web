@@ -38,3 +38,11 @@ export function isSourceRetryReady(retryAt, now = new Date()) {
   const timestamp = Date.parse(retryAt || '');
   return !Number.isFinite(timestamp) || timestamp <= now.getTime();
 }
+
+// A stored diagnostic is evidence of one lookup, not a new attempt every
+// time another retailer causes the queue reconciler to run.
+export function hasNewSourceDiagnostic(item = {}, diagnostic = {}) {
+  const checkedAt = Date.parse(diagnostic.checkedAt || '');
+  const countedAt = Date.parse(item.lastCountedDiagnosticAt || '');
+  return Number.isFinite(checkedAt) && (!Number.isFinite(countedAt) || checkedAt > countedAt);
+}

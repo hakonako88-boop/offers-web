@@ -5,6 +5,7 @@ import {
   isSourceItemReady,
   nextSourceRetryAt,
   SOURCE_RETRY_MAX_AGE_MS,
+  hasNewSourceDiagnostic,
 } from './source-retry-policy.mjs';
 
 const ROOT = process.cwd();
@@ -155,6 +156,15 @@ for (const item of queue.items || []) {
     continue;
   }
 
+  if (item.store === 'AliExpress') {
+    const diagnostic = aliExpressDiagnostics.items?.[item.id] || {};
+    if (!hasNewSourceDiagnostic(item, diagnostic)) {
+      item.reason = 'Esperando una nueva comprobación de AliExpress; el fallo anterior no cuenta como otro intento';
+      continue;
+    }
+    item.lastCountedDiagnosticAt = diagnostic.checkedAt;
+  }
+
   if (hasTemporaryAliExpressApiLimit(item)) {
     // The endpoint itself asks for a one-second pause. That is an operational
     // condition, not evidence that the product is invalid, so never burn one
@@ -219,6 +229,8 @@ const report = {
     reason: item.reason,
     sourceUrl: item.sourceUrl,
     resultUrl: item.resultUrl || '',
+    lastCheckedAt: item.lastCountedDiagnosticAt || '',
+    nextAttemptAt: item.nextAttemptAt || '',
   })),
 };
 
