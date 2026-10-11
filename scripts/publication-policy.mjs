@@ -117,7 +117,11 @@ export function publicationAllowance({ store, offers = [], now = new Date(), byp
       storeLimit: null,
     };
   }
-  const storeCount = today.filter((offer) => normalizedStore(offer.store) === storeName).length;
+  // NoLo has its own uncapped source allowance. Its publications must not
+  // exhaust the quota reserved for other discovery sources from that store.
+  const ordinaryToday = today.filter((offer) => offer.communitySource !== 'nolodejesescapar'
+    && offer.source !== 'nolodejesescapar');
+  const storeCount = ordinaryToday.filter((offer) => normalizedStore(offer.store) === storeName).length;
   const storeLimit = STORE_DAILY_LIMITS[storeName] || 1;
   // A direct/manual ingestion path can occasionally add many posts from one
   // retailer before the scheduled discovery jobs run. Count at most each
@@ -127,6 +131,7 @@ export function publicationAllowance({ store, offers = [], now = new Date(), byp
   // an automatic source from flooding the channel.
   const scheduledByStore = new Map();
   for (const offer of scheduledToday) {
+    if (offer.communitySource === 'nolodejesescapar' || offer.source === 'nolodejesescapar') continue;
     const scheduledStore = normalizedStore(offer.store);
     scheduledByStore.set(scheduledStore, (scheduledByStore.get(scheduledStore) || 0) + 1);
   }

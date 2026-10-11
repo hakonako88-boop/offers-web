@@ -317,6 +317,19 @@ test('does not impose a daily or retailer quantity cap on verified NoLo deals', 
   assert.equal(allowance.storeLimit, null);
 });
 
+test('NoLo publications do not exhaust other source quotas from the same store', () => {
+  const now = new Date('2026-10-11T18:00:00+02:00');
+  const offers = Array.from({ length: 30 }, (_, index) => ({
+    store: 'Amazon',
+    ...(index % 2 ? { source: 'nolodejesescapar' } : { communitySource: 'nolodejesescapar' }),
+    date: Math.floor(Date.parse('2026-10-11T12:00:00+02:00') / 1000) + index,
+  }));
+  const allowance = publicationAllowance({ store: 'Amazon', offers, now });
+  assert.equal(allowance.allowed, true);
+  assert.equal(allowance.storeCount, 0);
+  assert.equal(allowance.publishedToday, 0);
+});
+
 test('drains exact AliExpress Telegram posts before generic community discovery', () => {
   assert.match(aliExpressSync, /MAX_POSTS_PER_RUN = 1/u);
   assert.match(aliExpressSync, /MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE \? 24 : 8/u);
