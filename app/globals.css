@@ -609,7 +609,7 @@ body { background: var(--paper); }
   .dealHome .imageWrap { min-height: 210px; border-right: 0; border-bottom: 1px solid #edf0f5; }
 }
 
-/* Professional offer hierarchy: product → price → saving → coupon → action. */
+/* Offer hierarchy: product → price → saving → coupon → action. */
 .resultsInsights {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1095,4 +1095,31 @@ body { background: var(--paper); }
   .gtaGuideTeaser > div { padding: 13px 10px 13px 0; }
   .gtaGuideTeaser > div > span { display: none; }
   .gtaGuideLink { grid-column: 1 / -1; justify-content: center; margin: 0 12px 12px; }
+}
+
+/* Clearer shopping cards across desktop and mobile. */
+.dealHome .dealGrid { gap: 24px; }
+.dealHome .dealCard { border: 1px solid #e2e8f0; border-radius: 20px; box-shadow: 0 6px 22px rgb(15 23 42 / 5%); }
+.dealHome .imageWrap { background: #fff; border-bottom: 1px solid #edf0f5; }
+.dealHome .imageWrap img { object-fit: contain; padding: 16px; }
+.dealHome .dealBody { padding: 20px; gap: 3px; }
+.dealHome .dealCard h3 { color: #172033; font-size: 17px; line-height: 1.5; font-weight: 750; margin-bottom: 18px; }
+.dealHome .dealCard .priceRow { flex-wrap: wrap; padding: 14px; background: #f0fdf4; border: 1px solid #bbebcc; border-radius: 12px; }
+.dealHome .dealCard .priceRow strong { color: #08633e; background: transparent; font-size: 32px; letter-spacing: -.04em; padding: 0; }
+.dealHome .dealCard .priceRow span { color: #586477; font-size: 11px; }
+.dealHome .dealCard .saving { margin-top: 10px; color: #08633e; line-height: 1.5; }
+.dealHome .dealCard .dealButton { min-height: 48px; border-radius: 12px; background: #172554; font-size: 14px; }
+.dealHome .dealCard .dealButton:hover { background: #253d7c; }
+.dealHome .couponCopyCompact { min-height: 50px; margin-top: 14px; }
+.dealHome .verified { color: #5b687a; line-height: 1.5; }
+@media (max-width: 640px) {
+  .dealHome .dealGrid { gap: 20px; }
+  .dealHome .dealBody { padding: 18px; }
+  .dealHome .dealCard h3 { font-size: 17px; line-height: 1.5; }
+  .dealHome .dealCard .priceRow strong { font-size: 31px; }
+  .dealHome .imageWrap { aspect-ratio: 1.25; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dealHome .dealCard, .dealHome .imageWrap img { transition: none; }
+  .dealHome .dealCard:hover, .dealHome .dealCard:hover .imageWrap img { transform: none; }
 }

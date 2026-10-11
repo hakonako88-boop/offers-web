@@ -286,7 +286,7 @@ export function formatTelegramDealCard({
     previousPrice ? `📛 <b>Antes:</b> <s>${escapeHtml(previousPrice)}</s>` : '',
     `💶 <b>PRECIO OFERTA:</b> <b>${escapeHtml(price)}</b> 💥`,
     actionLine,
-  ].filter(Boolean).join('\n');
+  ].filter(Boolean).join('\n\n');
 
   return [
     headline,
