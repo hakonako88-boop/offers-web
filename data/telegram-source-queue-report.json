@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-12T06:04:41.962Z",
+  "updatedAt": "2026-10-12T06:14:44.399Z",
   "summary": {
-    "rejected": 843,
     "ignored": 57,
+    "rejected": 842,
     "published": 20,
     "duplicate": 8,
-    "needs_review": 23,
+    "needs_review": 24,
     "pending": 49
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:95657:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 95657,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Esperando una nueva comprobación de AliExpress; el fallo anterior no cuenta como otro intento",
+      "sourceUrl": "https://t.me/una_ganga/95657",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:95656:miravia:0",
       "source": "telegram-una-ganga",
@@ -27,9 +40,9 @@
       "source": "telegram-una-ganga",
       "messageId": 95655,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/95655",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -92,13 +105,13 @@
       "source": "telegram-una-ganga",
       "messageId": 95650,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/95650",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": ""
+      "nextAttemptAt": "2026-10-12T06:34:44.399Z"
     },
     {
       "id": "telegram-una-ganga:95649:amazon:0",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/tiesometro/7589",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-12T06:03:37.963Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:4929:amazon:0",
-      "source": "telegram-paramanitas",
-      "messageId": 4929,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/paramanitas/4929",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
