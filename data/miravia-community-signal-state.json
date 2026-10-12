@@ -1330,18 +1330,18 @@
       "merchantUrl": "https://tidd.ly/3XA4MaB",
       "sourceImageUrl": "https://cdn4.telesco.pe/file/L19lMjGwf14JGsUWcYN2J6AxjRpha-p7T-5djGD_SblzwmgP5iXOEnJs141MLBZviZFNNmEEEeppGoOJbgFfApAdLvcJ0sneyoQm91jmCVmG4ji6nnaftsvVC-LL2m9MqI_A7t3Od1fezI3JtYPfJC3koRvMPNBIXC0ZQS9SvoQX9rkJXhT-b5Os0Mo8hau0IUNMjB--jqUY7rQrKAnCtLs0GU46oZEcgAwXAHARZUgcTNjT132Fth8GPXjAZfhCJqM1fAgtul26ig-tf9JY4vB6zkauZMAI40-zftg3vQDgq_rVyW074sIBr2STMZRHSWoiSADr7_Ov3ETNjziPUg.jpg",
       "priority": false,
-      "retryPolicyVersion": "",
-      "attempts": 2
+      "retryPolicyVersion": "exact-official-page-v1",
+      "attempts": 0
     }
   ],
   "signalRetryAfter": {},
-  "lastCheckedAt": "2026-10-12T17:06:02.533Z",
+  "lastCheckedAt": "2026-10-12T17:16:19.941Z",
   "micholloLastCheckedAt": "2026-10-12T17:05:41.260Z",
   "sourceHealth": [
     {
       "source": "telegram-source-queue",
       "status": "ok",
-      "found": 68
+      "found": 72
     },
     {
       "source": "chollometro-subiendo",
@@ -1350,8 +1350,7 @@
     },
     {
       "source": "michollo",
-      "status": "unavailable",
-      "detail": "incorrect header check"
+      "status": "deferred"
     },
     {
       "source": "nolodejesescapar",
