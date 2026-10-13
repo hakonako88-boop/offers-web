@@ -271,7 +271,7 @@ jobs:
         run: npm run send:test-telegram
 
       - name: Reactivar enlaces pendientes tras actualizar los extractores
-        if: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || env.RECHECK_ALIEXPRESS_SOURCE == 'true' }}
+        if: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || env.RECHECK_ALIEXPRESS_SOURCE == 'true' || (github.event_name == 'push' && contains(github.event.head_commit.message, '[recheck-community]')) }}
         run: node scripts/reconcile-telegram-source-queue.mjs
 
       - name: Buscar y publicar ofertas de Amazon
@@ -321,7 +321,7 @@ jobs:
         run: node scripts/discover-tradedoubler-lidl.mjs
 
       - name: Clasificar mensajes pendientes de los canales
-        if: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || env.RECHECK_ALIEXPRESS_SOURCE == 'true' }}
+        if: ${{ (github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed') || env.RECHECK_ALIEXPRESS_SOURCE == 'true' || (github.event_name == 'push' && contains(github.event.head_commit.message, '[recheck-community]')) }}
         run: node scripts/reconcile-telegram-source-queue.mjs
 
       - name: Preparar vista previa automática de Amazon
