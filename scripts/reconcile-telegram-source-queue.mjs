@@ -82,6 +82,19 @@ const retryCutoff = Date.now() - SOURCE_RETRY_MAX_AGE_MS;
 const reopenedIds = new Set();
 for (const item of queue.items || []) {
   const publishedAt = Date.parse(item.publishedAt || '');
+  if (item.store === 'Amazon'
+    && item.status === 'needs_review'
+    && /Sin ahorro suficiente/u.test(item.reason || '')
+    && item.editorialPolicyVersion !== 'source-evidence-v2'
+    && Number.isFinite(publishedAt) && publishedAt >= retryCutoff
+    && Number(item.sourceWeight || 0) >= 30) {
+    item.status = 'pending';
+    item.editorialPolicyVersion = 'source-evidence-v2';
+    item.reason = 'Recomprobar conservando la evidencia del canal de origen';
+    item.updatedAt = now;
+    delete item.nextAttemptAt;
+    reopenedIds.add(item.id);
+  }
   // A price from a Telegram message older than two days is no longer a safe
   // candidate for a deals site. Leaving it pending made the bot look stalled
   // even though it correctly refused to publish an obsolete price.

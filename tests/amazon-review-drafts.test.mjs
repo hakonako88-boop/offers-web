@@ -31,6 +31,8 @@ test('builds a complete reviewed draft from a factual Amazon source post', async
     partnerTag: 'chollos00a-21',
     item: {
       id: 'telegram-ofertos:1:amazon:0',
+      source: 'telegram-ofertos',
+      sourceWeight: 38,
       store: 'Amazon',
       merchantUrl: 'https://www.amazon.es/dp/B0DGG9F59B?tag=another-21',
       sourceUrl: 'https://t.me/Ofertos/1',
@@ -44,6 +46,8 @@ test('builds a complete reviewed draft from a factual Amazon source post', async
   assert.equal(result.offer.url, 'https://www.amazon.es/dp/B0DGG9F59B?tag=chollos00a-21');
   assert.match(result.offer.imageUrl, /^https:\/\/m\.media-amazon\.com\/images\/(?:I|P)\//u);
   assert.equal(result.offer.sourceProductId, 'amazon:B0DGG9F59B');
+  assert.equal(result.offer.source, 'telegram-ofertos');
+  assert.equal(result.offer.sourceWeight, 38);
   assert.doesNotMatch(result.offer.title, /Oferta reenviada/iu);
 });
 
