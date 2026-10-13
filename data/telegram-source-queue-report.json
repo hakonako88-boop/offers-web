@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-13T07:43:29.973Z",
+  "updatedAt": "2026-10-13T07:53:44.773Z",
   "summary": {
     "rejected": 780,
     "ignored": 39,
@@ -9,6 +9,19 @@
     "pending": 105
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7610:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7610,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/tiesometro/7610",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:95746:miravia:0",
       "source": "telegram-una-ganga",
@@ -145,12 +158,12 @@
       "messageId": 4940,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/paramanitas/4940",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-13T07:51:49.747Z"
+      "nextAttemptAt": "2026-10-13T08:12:11.352Z"
     },
     {
       "id": "telegram-una-ganga:95743:aliexpress:0",
@@ -417,13 +430,13 @@
       "source": "telegram-una-ganga",
       "messageId": 95730,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/95730",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-13T07:46:10.332Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:95729:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/95704",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:44105:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 44105,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/44105",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
