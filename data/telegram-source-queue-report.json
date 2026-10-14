@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-10-14T22:02:27.277Z",
+  "updatedAt": "2026-10-14T22:12:57.295Z",
   "summary": {
-    "rejected": 648,
-    "published": 35,
+    "published": 34,
     "needs_review": 62,
+    "rejected": 648,
     "ignored": 106,
     "duplicate": 21,
-    "pending": 128
+    "pending": 129
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:95910:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 95910,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/95910",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-chollosdiario:45702:amazon:0",
+      "source": "telegram-chollosdiario",
+      "messageId": 45702,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/chollosdiario/45702",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-14T22:31:21.984Z"
+    },
     {
       "id": "telegram-una-ganga:95909:miravia:0",
       "source": "telegram-una-ganga",
@@ -80,12 +106,12 @@
       "messageId": 95906,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/95906",
       "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-10-14T22:12:39.619Z",
+      "nextAttemptAt": "2026-10-14T22:32:57.295Z"
     },
     {
       "id": "telegram-una-ganga:95905:amazon:0",
@@ -406,7 +432,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/7626",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-14T20:47:14.743Z",
@@ -898,13 +924,13 @@
       "source": "telegram-una-ganga",
       "messageId": 95888,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/95888",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-14T20:43:17.219Z",
-      "nextAttemptAt": "2026-10-14T22:03:34.266Z"
+      "lastCheckedAt": "2026-10-14T22:02:12.238Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:95887:amazon:0",
@@ -1279,32 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/95871",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:44190:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 44190,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/44190",
-      "resultUrl": "https://www.amazon.es/dp/B0FDKGZGF4?tag=chollos00a-21",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-14T11:41:24.625Z"
-    },
-    {
-      "id": "telegram-ofertos:44189:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 44189,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/44189",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
