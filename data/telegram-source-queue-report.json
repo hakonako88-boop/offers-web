@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-14T23:02:29.429Z",
+  "updatedAt": "2026-10-14T23:13:08.737Z",
   "summary": {
     "rejected": 675,
     "needs_review": 61,
@@ -9,6 +9,19 @@
     "pending": 103
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:95913:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 95913,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/95913",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:95912:miravia:0",
       "source": "telegram-una-ganga",
@@ -66,13 +79,13 @@
       "source": "telegram-chollosdiario",
       "messageId": 45702,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/chollosdiario/45702",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-14T23:12:46.337Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:95909:miravia:0",
@@ -626,12 +639,12 @@
       "messageId": 95897,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/95897",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-14T22:22:45.525Z",
-      "nextAttemptAt": "2026-10-14T23:03:01.001Z"
+      "lastCheckedAt": "2026-10-14T23:02:11.543Z",
+      "nextAttemptAt": "2026-10-15T00:31:17.389Z"
     },
     {
       "id": "telegram-ofertos:44208:amazon:0",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/95873",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-14T16:44:34.436Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-tiesometro:7622:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7622,
-      "store": "AliExpress",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/tiesometro/7622",
-      "resultUrl": "https://s.click.aliexpress.com/e/_c3KV4X9b",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
