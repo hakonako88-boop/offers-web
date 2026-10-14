@@ -14,6 +14,7 @@ const REPORT_FILE = path.join(ROOT, 'data', 'telegram-source-queue-report.json')
 const AMAZON_STATE_FILE = path.join(ROOT, 'data', 'amazon-discovery-state.json');
 const ALIEXPRESS_COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'community-signal-state.json');
 const ALIEXPRESS_DIAGNOSTICS_FILE = path.join(ROOT, 'data', 'aliexpress-source-diagnostics.json');
+const MIRAVIA_COMMUNITY_STATE_FILE = path.join(ROOT, 'data', 'miravia-community-signal-state.json');
 const PUBLICATION_FILES = [
   path.join(ROOT, 'data', 'aliexpress-publications.json'),
   path.join(ROOT, 'data', 'miravia-publications.json'),
@@ -44,6 +45,7 @@ const publicationBySignal = new Map(publications
 const amazonError = String(readJson(AMAZON_STATE_FILE, {}).lastError || '');
 const aliExpressCommunityState = readJson(ALIEXPRESS_COMMUNITY_STATE_FILE, { seen: [] });
 const aliExpressDiagnostics = readJson(ALIEXPRESS_DIAGNOSTICS_FILE, { items: {} });
+const miraviaCommunityState = readJson(MIRAVIA_COMMUNITY_STATE_FILE, {});
 const latestAliExpressCheck = String(aliExpressCommunityState.lastCheckedAt || '');
 const attemptedAliExpressIds = new Set((aliExpressCommunityState.seen || [])
   .filter((entry) => latestAliExpressCheck && entry.seenAt === latestAliExpressCheck)
@@ -150,6 +152,16 @@ for (const item of queue.items || []) {
   }
 
   if (!isSourceItemReady(item, new Date(now))) continue;
+
+  if (item.store === 'Miravia') {
+    const attemptedIds = miraviaCommunityState.attemptedQueueItemIds || [];
+    const diagnostic = { checkedAt: miraviaCommunityState.lastCheckedAt };
+    if (!attemptedIds.includes(item.id) || !hasNewSourceDiagnostic(item, diagnostic)) {
+      item.reason = 'Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento';
+      continue;
+    }
+    item.lastCountedDiagnosticAt = diagnostic.checkedAt;
+  }
 
   if (item.store === 'Amazon' && /eligibility requirements/iu.test(amazonError)) {
     // The catalogue API may still be unavailable, but public source messages

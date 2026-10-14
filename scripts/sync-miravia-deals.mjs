@@ -439,7 +439,9 @@ if (!feed) throw new Error('No Spanish Miravia product feed is available for thi
 // publisher's private Awin feeds, so neither another channel's photo nor its
 // affiliate tracking is reused.
 const exactQueueCandidates = [];
+const attemptedQueueItemIds = [];
 for (const signal of communitySignals.filter((entry) => pendingMiraviaQueueIds.has(entry.queueItemId)).slice(0, 3)) {
+  attemptedQueueItemIds.push(signal.queueItemId);
   try {
     const destinationUrl = await resolvedMiraviaSignalUrl(signal);
     let metadata = destinationUrl ? await extractProductMetadata(destinationUrl).catch(() => ({})) : {};
@@ -563,6 +565,7 @@ for (const signal of communitySignals) {
 for (const signalId of consumedCommunitySignalIds) delete signalRetryAfter[signalId];
 writeJson(COMMUNITY_STATE_FILE, {
   recentSignals: communitySignals,
+  attemptedQueueItemIds,
   signalRetryAfter: Object.fromEntries(Object.entries(signalRetryAfter).slice(-500)),
   lastCheckedAt: new Date().toISOString(),
   micholloLastCheckedAt,
