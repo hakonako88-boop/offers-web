@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-10-14T13:06:05.028Z",
+  "updatedAt": "2026-10-14T13:15:44.627Z",
   "summary": {
-    "rejected": 697,
-    "ignored": 69,
+    "rejected": 694,
+    "ignored": 71,
     "duplicate": 22,
     "needs_review": 61,
     "published": 36,
-    "pending": 115
+    "pending": 116
   },
   "recent": [
+    {
+      "id": "telegram-paramanitas:4948:amazon:0",
+      "source": "telegram-paramanitas",
+      "messageId": 4948,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/paramanitas/4948",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-14T13:51:25.789Z"
+    },
+    {
+      "id": "telegram-una-ganga:95877:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 95877,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Esperando una nueva comprobación de AliExpress; el fallo anterior no cuenta como otro intento",
+      "sourceUrl": "https://t.me/una_ganga/95877",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:95876:miravia:0",
       "source": "telegram-una-ganga",
@@ -54,12 +80,12 @@
       "messageId": 7623,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/6)",
       "sourceUrl": "https://t.me/tiesometro/7623",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-14T12:41:53.251Z",
-      "nextAttemptAt": "2026-10-14T13:05:51.756Z"
+      "lastCheckedAt": "2026-10-14T13:12:07.907Z",
+      "nextAttemptAt": "2026-10-14T13:55:44.627Z"
     },
     {
       "id": "telegram-una-ganga:95875:amazon:0",
@@ -222,13 +248,13 @@
       "source": "telegram-una-ganga",
       "messageId": 95870,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/95870",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": ""
+      "nextAttemptAt": "2026-10-14T13:35:44.627Z"
     },
     {
       "id": "telegram-tiesometro:7621:aliexpress:0",
@@ -288,12 +314,12 @@
       "messageId": 95867,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/95867",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-14T13:11:40.896Z"
+      "nextAttemptAt": "2026-10-14T14:35:44.627Z"
     },
     {
       "id": "telegram-ofertos:44187:aliexpress:0",
@@ -1279,32 +1305,6 @@
       "attempts": 4,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/95817",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:4944:ignored",
-      "source": "telegram-paramanitas",
-      "messageId": 4944,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/paramanitas/4944",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:95816:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 95816,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Esperando una nueva comprobación de AliExpress; el fallo anterior no cuenta como otro intento",
-      "sourceUrl": "https://t.me/una_ganga/95816",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
