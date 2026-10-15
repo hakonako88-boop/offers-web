@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-15T18:53:05.507Z",
+  "updatedAt": "2026-10-15T19:06:25.198Z",
   "summary": {
     "rejected": 589,
     "published": 41,
@@ -9,6 +9,19 @@
     "pending": 133
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:44270:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 44270,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/Ofertos/44270",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-ofertos:44269:miravia:0",
       "source": "telegram-ofertos",
@@ -54,12 +67,12 @@
       "messageId": 44267,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/Ofertos/44267",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-15T18:43:02.630Z",
-      "nextAttemptAt": "2026-10-15T19:03:20.362Z"
+      "lastCheckedAt": "2026-10-15T19:06:07.452Z",
+      "nextAttemptAt": "2026-10-15T19:46:25.198Z"
     },
     {
       "id": "telegram-ofertos:44266:amazon:0",
@@ -326,13 +339,13 @@
       "source": "telegram-ofertos",
       "messageId": 44253,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/44253",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-15T18:53:09.209Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:44252:aliexpress:0",
@@ -1292,19 +1305,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/95944",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:95943:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 95943,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/una_ganga/95943",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
