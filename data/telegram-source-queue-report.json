@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-10-15T07:25:22.326Z",
+  "updatedAt": "2026-10-15T07:32:25.753Z",
   "summary": {
-    "rejected": 656,
-    "ignored": 117,
+    "rejected": 654,
+    "ignored": 121,
     "published": 34,
     "duplicate": 22,
     "needs_review": 60,
-    "pending": 111
+    "pending": 109
   },
   "recent": [
+    {
+      "id": "telegram-paramanitas:4954:amazon:0",
+      "source": "telegram-paramanitas",
+      "messageId": 4954,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/paramanitas/4954",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-15T07:51:31.151Z"
+    },
+    {
+      "id": "telegram-errores-de-precio:15641:ignored",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15641,
+      "store": "Otra",
+      "status": "ignored",
+      "attempts": 0,
+      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
+      "sourceUrl": "https://t.me/erroresde_precio/15641",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:95938:amazon:0",
       "source": "telegram-una-ganga",
@@ -1279,32 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/Ofertos/44199",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:95893:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 95893,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/95893",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-10-15T00:02:59.780Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:44198:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 44198,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/44198",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
