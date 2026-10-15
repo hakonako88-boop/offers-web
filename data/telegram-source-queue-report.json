@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-15T05:13:51.665Z",
+  "updatedAt": "2026-10-15T05:22:49.675Z",
   "summary": {
     "rejected": 669,
     "ignored": 110,
@@ -9,6 +9,19 @@
     "pending": 107
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:95932:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 95932,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/95932",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-15T05:41:34.416Z"
+    },
     {
       "id": "telegram-una-ganga:95931:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -716,13 +729,13 @@
       "source": "telegram-una-ganga",
       "messageId": 95903,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/95903",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-15T04:02:06.171Z",
-      "nextAttemptAt": "2026-10-15T05:22:23.700Z"
+      "lastCheckedAt": "2026-10-15T05:22:17.981Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-tiesometro:7626:aliexpress:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "2026-10-14T19:32:50.355Z",
       "nextAttemptAt": "2026-10-14T19:54:54.783Z"
-    },
-    {
-      "id": "telegram-una-ganga:95883:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 95883,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/95883",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-10-14T21:52:38.312Z",
-      "nextAttemptAt": ""
     }
   ]
 }
