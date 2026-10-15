@@ -65,6 +65,20 @@ test('creates one professional ranking cover instead of relying only on an album
   assert.equal(card[1], 0xd8);
 });
 
+test('publishes an indexable daily product selection on editorial days when enough deals exist', () => {
+  const date = Math.floor(Date.parse('2026-10-15T12:00:00+02:00') / 1000);
+  const offers = [
+    offer({ id: 'one', store: 'Amazon', price: '20,00 €', previousPrice: '30,00 €', date }),
+    offer({ id: 'two', store: 'AliExpress', price: '40,00 €', previousPrice: '50,00 €', date }),
+    offer({ id: 'three', store: 'Miravia', price: '60,00 €', previousPrice: '70,00 €', date }),
+  ];
+  const summary = buildDailySummary(offers, '2026-10-15');
+  assert.equal(summary.post.id, 'mejores-productos-dia-2026-10-15');
+  assert.equal(summary.post.source, 'daily-editorial');
+  assert.deepEqual(summary.post.offer_ids, ['one', 'two', 'three']);
+  assert.match(summary.post.body, /Cómo aprovechar estas rebajas/u);
+});
+
 test('schedules the professional summary for 21:45 Madrid and stores duplicate protection', () => {
   const workflow = fs.readFileSync(new URL('../.github/workflows/daily-summary.yml', import.meta.url), 'utf8');
   const script = fs.readFileSync(new URL('../scripts/publish-daily-summary.mjs', import.meta.url), 'utf8');

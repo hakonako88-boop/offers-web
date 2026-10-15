@@ -8,6 +8,7 @@ const pageDescription = "Prime Day de otoño en Amazon España: la Fiesta de Ofe
 const eventUrl = "https://chollosaldia.com/fiesta-ofertas-prime-2026/";
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: true },
   title: pageTitle,
   description: pageDescription,
   alternates: { canonical: "/fiesta-ofertas-prime-2026/" },

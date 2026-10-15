@@ -228,9 +228,13 @@ export function buildDailySummary(offers, targetDate) {
   });
   const telegram = `🏆 <b>TOP ${offers.length} CHOLLOS DEL DÍA</b>\n${escapeHtml(displayDate)}\nSelección por ahorro, descuento y utilidad.\n\n${lines.join('\n\n')}\n\n👇 Acceso directo a cada oferta en los botones.\n🔔 Mañana, más ofertas en @aldiachollos\n⚠️ Precio y stock pueden cambiar. #Publi`;
   const body = offers.map((offer, index) => {
-    const coupon = String(offer.coupon || '').trim() ? ` · Cupón: ${offer.coupon}` : '';
-    return `${index + 1}. ${cleanTitle(offer.title, 160)}\n${offer.price} en ${offer.store || 'la tienda'}${coupon}`;
+    const { previous, discount, saving } = offerMetrics(offer);
+    const coupon = String(offer.coupon || '').trim() ? ` Necesita el cupón ${offer.coupon}; comprueba que se aplique en la cesta.` : '';
+    const before = previous > numericPrice(offer.price) ? ` frente a ${offer.previousPrice} registrados anteriormente` : '';
+    return `${index + 1}. ${cleanTitle(offer.title, 160)}\n\nPrecio publicado: ${offer.price} en ${offer.store || 'la tienda'}${before}. ${saving > 0 ? `Ahorro calculado: ${euroAmount(saving)} (${discount} %).` : ''}${coupon}\n\nEsta selección destaca el ahorro publicado y la utilidad del producto. Consulta la ficha enlazada más abajo para revisar la variante, el precio actual, los gastos de envío y la disponibilidad.`;
   }).join('\n\n');
+  const editorialDay = [2, 4, 6].includes(new Date(`${targetDate}T12:00:00Z`).getUTCDay());
+  const editorialPost = editorialDay && offers.length >= 3;
   return {
     telegram,
     album: offers.map((offer, index) => {
@@ -252,15 +256,16 @@ export function buildDailySummary(offers, targetDate) {
       url: offer.url,
     }]) },
     post: {
-      id: `resumen-diario-${targetDate}`,
+      id: editorialPost ? `mejores-productos-dia-${targetDate}` : `resumen-diario-${targetDate}`,
       source_product_id: `daily-summary:${targetDate}`,
       date: Math.floor(Date.now() / 1000),
-      title: `Las mejores ofertas del ${displayDate}`,
-      body: `Esta es la selección diaria de Chollos al Día, ordenada por descuento real, ahorro y calidad de la oferta.\n\n${body}\n\nLos precios y el stock pueden cambiar. Comprueba siempre las condiciones en la tienda antes de comprar.`,
+      title: editorialPost ? `Top ${offers.length} productos rebajados del ${displayDate}` : `Las mejores ofertas del ${displayDate}`,
+      body: `Selección de Chollos al Día del ${displayDate}. Reunimos productos con fotografía, precio publicado y ficha individual para ayudarte a comparar antes de comprar.\n\n${body}\n\nCómo aprovechar estas rebajas\n\nEl precio y el stock pueden cambiar. Antes de comprar, revisa la variante, el envío y el total de la cesta. Si hay cupón, confirma que se haya aplicado. Las fichas enlazadas muestran los datos de cada oferta y permiten volver a comprobarlos.`,
       image: offers[0].image,
       images: offers.map((offer) => offer.image).filter(Boolean),
+      offer_ids: offers.map((offer) => String(offer.source_product_id || offer.message_id || '')).filter(Boolean),
       url: 'https://chollosaldia.com/',
-      source: 'daily-summary',
+      source: editorialPost ? 'daily-editorial' : 'daily-summary',
     },
   };
 }
@@ -333,7 +338,7 @@ async function main() {
     || current.date;
   const state = readJson(STATE_FILE, { publishedDates: [] });
   const posts = readJson(POSTS_FILE, []);
-  if ((state.publishedDates || []).includes(targetDate) || posts.some((post) => post.id === `resumen-diario-${targetDate}`)) {
+  if ((state.publishedDates || []).includes(targetDate) || posts.some((post) => post.id === `resumen-diario-${targetDate}` || post.id === `mejores-productos-dia-${targetDate}`)) {
     console.log(`El resumen ${targetDate} ya estaba publicado.`);
     return;
   }

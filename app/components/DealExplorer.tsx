@@ -58,6 +58,7 @@ function offerCountLabel(total: number) {
 }
 
 export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: Deal[]; posts: PublishedPost[]; summary: DealSummary }) {
+  const featuredPost = posts.find((post) => /^mejores-productos-(?:dia|semana)-/u.test(post.id));
   const [deals] = useState<Deal[]>(initialDeals);
   const [visibleLimit, setVisibleLimit] = useState(12);
   const [category, setCategory] = useState("Todos");
@@ -166,7 +167,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           <nav aria-label="Navegación principal">
             <a href="#ofertas">Ofertas de hoy</a>
             <a href="/buscar/">Buscar</a>
-            <a href="/fiesta-ofertas-prime-2026/">Fiesta Prime</a>
+            <a href="/blog/">Blog</a>
             {posts.length > 0 && <a href="#novedades">Novedades</a>}
             <a href="#como-funciona">Cómo seleccionamos</a>
             <a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram <span aria-hidden="true">↗</span></a>
@@ -176,7 +177,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             <div className="mobileNavMenu">
               <a href="#ofertas">🔥 Ofertas de hoy</a>
               <a href="/buscar/">⌕ Buscar ofertas</a>
-              <a href="/fiesta-ofertas-prime-2026/">⭐ Fiesta de Ofertas Prime</a>
+              <a href="/blog/">⭐ Mejores productos</a>
               <a href="/chollos/tecnologia/">📱 Tecnología</a>
               <a href="/chollos/hogar/">🏠 Hogar y cocina</a>
               {posts.length > 0 && <a href="#novedades">📰 Guías y novedades</a>}
@@ -186,10 +187,10 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
         </div>
       </header>
 
-      <section className="primeHomeBanner shell" aria-labelledby="prime-home-title">
-        <div className="primeHomeCopy"><p>6 Y 7 DE OCTUBRE · AMAZON ESPAÑA</p><h2 id="prime-home-title">Fiesta de Ofertas Prime</h2><span>Preparamos una selección especial con precios y cupones comprobados.</span><a href="/fiesta-ofertas-prime-2026/">Ver ofertas Prime <b aria-hidden="true">→</b></a></div>
-        <a className="primeHomeArtwork" href="/fiesta-ofertas-prime-2026/" aria-label="Ver la guía de la Fiesta de Ofertas Prime del 6 y 7 de octubre"><img src="/images/fiesta-ofertas-prime-octubre-2026-v2.png" alt="Fiesta de Ofertas Prime: 6 y 7 de octubre, 48 horas de ofertas" width="1672" height="941" fetchPriority="high" /></a>
-      </section>
+      {featuredPost && <section className="editorialSpotlight shell" aria-labelledby="spotlight-title">
+        <div className="editorialSpotlightCopy"><p>SELECCIÓN EDITORIAL · {featuredPost.publishedLabel}</p><h2 id="spotlight-title">{featuredPost.title}</h2><span>Productos útiles con rebajas publicadas, fotos y fichas para comprobar el precio final.</span><a href={postHref(featuredPost.id)}>Explorar la selección <b aria-hidden="true">↗</b></a></div>
+        <a className="editorialSpotlightArtwork" href={postHref(featuredPost.id)} aria-label={`Leer ${featuredPost.title}`}><img src={featuredPost.imageUrl} alt={featuredPost.title} width="720" height="480" fetchPriority="high" /></a>
+      </section>}
 
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="heroCopy">

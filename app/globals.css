@@ -1123,3 +1123,28 @@ body { background: var(--paper); }
   .dealHome .dealCard, .dealHome .imageWrap img { transition: none; }
   .dealHome .dealCard:hover, .dealHome .dealCard:hover .imageWrap img { transform: none; }
 }
+
+/* Current editorial content takes the former seasonal campaign position. */
+.dealHome { background: #f6f8fc; }
+.dealHome .siteHeader { background: rgb(255 255 255 / 94%); border-bottom-color: #e5eaf2; }
+.editorialSpotlight { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(290px, .9fr); overflow: hidden; align-items: stretch; margin-top: 24px; border: 1px solid #dae4ee; border-radius: 24px; background: #10263c; box-shadow: 0 18px 48px rgb(17 36 58 / 12%); }
+.editorialSpotlightCopy { padding: clamp(28px, 4vw, 56px); color: #fff; }
+.editorialSpotlightCopy p { margin-bottom: 14px; color: #94e3cc; font-size: 11px; font-weight: 850; letter-spacing: .12em; }
+.editorialSpotlightCopy h2 { max-width: 640px; margin-bottom: 17px; font-size: clamp(31px, 4vw, 54px); line-height: 1.08; letter-spacing: -.055em; }
+.editorialSpotlightCopy > span { display: block; max-width: 520px; color: #d9e6ee; font-size: 15px; line-height: 1.6; }
+.editorialSpotlightCopy > a { display: inline-flex; min-height: 48px; align-items: center; gap: 16px; margin-top: 25px; border-radius: 11px; background: #cbf6d5; padding: 0 19px; color: #0f3127; font-size: 13px; font-weight: 850; }
+.editorialSpotlightCopy > a:hover { background: #a9ecc2; }
+.editorialSpotlightArtwork { min-height: 290px; background: #fff; }
+.editorialSpotlightArtwork img { display: block; width: 100%; height: 100%; max-height: 390px; object-fit: contain; padding: 24px; }
+.dealHome .hero { min-height: 0; padding-top: clamp(54px, 6vw, 96px); padding-bottom: clamp(54px, 6vw, 96px); }
+.dealHome .hero h1 { max-width: 900px; font-size: clamp(46px, 6vw, 84px); line-height: 1.02; }
+.dealHome .offersSection { background: #fff; }
+.dealHome .storeRail { background: #fff; border: 1px solid #e3eaf2; border-radius: 17px; box-shadow: 0 8px 28px rgb(16 38 60 / 5%); }
+@media (max-width: 760px) {
+  .editorialSpotlight { grid-template-columns: 1fr; margin-top: 14px; }
+  .editorialSpotlightArtwork { min-height: 210px; max-height: 270px; order: -1; }
+  .editorialSpotlightArtwork img { max-height: 270px; padding: 18px; }
+  .editorialSpotlightCopy { padding: 24px; }
+  .editorialSpotlightCopy h2 { font-size: clamp(29px, 8vw, 39px); }
+  .editorialSpotlightCopy > a { width: 100%; justify-content: space-between; }
+}
