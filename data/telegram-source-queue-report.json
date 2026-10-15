@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-15T00:52:50.023Z",
+  "updatedAt": "2026-10-15T01:03:01.406Z",
   "summary": {
-    "rejected": 674,
+    "rejected": 673,
     "ignored": 108,
     "published": 33,
     "duplicate": 21,
     "needs_review": 60,
-    "pending": 104
+    "pending": 105
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:95919:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 95919,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/95919",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:95918:miravia:0",
       "source": "telegram-una-ganga",
@@ -236,12 +249,12 @@
       "messageId": 95906,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Reabierta para verificar la ficha oficial de Miravia y generar el enlace Awin propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/95906",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-15T00:41:55.747Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-10-15T01:02:43.868Z",
+      "nextAttemptAt": "2026-10-15T01:23:01.406Z"
     },
     {
       "id": "telegram-una-ganga:95905:amazon:0",
@@ -717,12 +730,12 @@
       "messageId": 95897,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/95897",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-15T00:41:55.747Z",
-      "nextAttemptAt": "2026-10-15T01:02:12.449Z"
+      "lastCheckedAt": "2026-10-15T01:02:43.868Z",
+      "nextAttemptAt": "2026-10-15T01:43:01.406Z"
     },
     {
       "id": "telegram-ofertos:44208:amazon:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-10-14T13:35:36.613Z"
-    },
-    {
-      "id": "telegram-errores-de-precio:15638:ignored",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15638,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/erroresde_precio/15638",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
     }
   ]
 }
