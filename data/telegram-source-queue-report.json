@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-16T14:14:07.738Z",
+  "updatedAt": "2026-10-16T14:21:06.234Z",
   "summary": {
-    "ignored": 177,
-    "rejected": 540,
+    "rejected": 541,
+    "ignored": 176,
     "duplicate": 27,
     "published": 44,
     "needs_review": 81,
     "pending": 131
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96041:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96041,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/96041",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-16T14:37:55.340Z"
+    },
     {
       "id": "telegram-una-ganga:96040:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -131,13 +144,13 @@
       "source": "telegram-chollosdiario",
       "messageId": 45718,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/chollosdiario/45718",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-16T14:14:45.039Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96032:amazon:0",
@@ -300,13 +313,13 @@
       "source": "telegram-ofertos",
       "messageId": 44298,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/44298",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-16T14:15:06.573Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:44297:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/95987",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:95986:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 95986,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Esperando una nueva comprobación de AliExpress; el fallo anterior no cuenta como otro intento",
-      "sourceUrl": "https://t.me/una_ganga/95986",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
