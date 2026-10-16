@@ -1020,8 +1020,8 @@
       "merchantUrl": "https://tidd.ly/46wrmFN",
       "sourceImageUrl": "https://cdn4.telesco.pe/file/Y9RzlS4w8-zFs8lRThnh2dje4WIPAhxeFIB68Ay-5soaDxq4jOCUZ5j_mNhBKWZ_HP6MSEBzq77pVRAEGzoxmB9VEqyJBePLiBxgt-V3XRd5uL5vSV7SIyprYSaq7_iv6iTn-FfC9zOmiLb_wyQwxHrG06rgjv18dMQ8TpzXQuKndFPi-vWzBnOfvu0_pP9qVcF55t6ZTSC0hDJr_TSDPz7KmpotUH17ChkHdhAsP56-2p-uvuB2pGPlrjXQlmV5QYRhAsC5BfNWaKxYtl0oJogsK8GZ2-l3PaMFwWuhibBbuPrTJZ_7U4GYLhi3T7gPu7oQG-Ht5Qy_3K5YwfS6jQ.jpg",
       "priority": false,
-      "retryPolicyVersion": "",
-      "attempts": 1
+      "retryPolicyVersion": "exact-official-page-v1",
+      "attempts": 0
     },
     {
       "id": "telegram-una-ganga:95948:miravia:0",
@@ -1647,20 +1647,20 @@
   "attemptedQueueItemIds": [
     "telegram-ofertos:44276:miravia:0",
     "telegram-ofertos:44276:miravia:1",
-    "telegram-una-ganga:95948:miravia:0"
+    "telegram-una-ganga:95945:miravia:0"
   ],
   "signalRetryAfter": {
     "nolodejesescapar:https://nolodejesescapar.com/relleno-nordico-microfibra-naturals/": "2026-10-16T09:52:46.699Z",
     "nolodejesescapar:https://nolodejesescapar.com/carrito-plegable-de-transporte-inuitz-60-litros/": "2026-10-16T09:52:46.699Z",
     "nolodejesescapar:https://nolodejesescapar.com/lego-botanicals-ramo-de-tulipanes/": "2026-10-16T09:52:46.699Z"
   },
-  "lastCheckedAt": "2026-10-16T06:14:29.846Z",
-  "micholloLastCheckedAt": "2026-10-16T00:22:41.609Z",
+  "lastCheckedAt": "2026-10-16T06:24:07.400Z",
+  "micholloLastCheckedAt": "2026-10-16T06:23:52.103Z",
   "sourceHealth": [
     {
       "source": "telegram-source-queue",
       "status": "ok",
-      "found": 117
+      "found": 116
     },
     {
       "source": "chollometro-subiendo",
@@ -1669,7 +1669,8 @@
     },
     {
       "source": "michollo",
-      "status": "deferred"
+      "status": "unavailable",
+      "detail": "incorrect header check"
     },
     {
       "source": "nolodejesescapar",
