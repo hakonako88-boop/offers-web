@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DealExplorer, type Deal, type DealSummary } from "./components/DealExplorer";
 import { dealDiscount, publishedDeals } from "./lib/deals";
-import { publishedPosts } from "./lib/posts";
+import { isProductSelection, publishedPosts } from "./lib/posts";
 
 const title = "Chollos de hoy: ofertas, descuentos y cupones";
 const description = "Encuentra ofertas y chollos de hoy en Amazon, AliExpress, Miravia y más tiendas. Descubre rebajas, descuentos y cupones para ahorrar en tus compras online.";
@@ -130,7 +130,7 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <DealExplorer initialDeals={homepageDeals} posts={publishedPosts.slice(0, 6)} summary={summary} />
+      <DealExplorer initialDeals={homepageDeals} posts={publishedPosts.filter(isProductSelection).slice(0, 6)} summary={summary} />
     </>
   );
 }

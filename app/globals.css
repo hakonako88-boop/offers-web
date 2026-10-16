@@ -1148,3 +1148,95 @@ body { background: var(--paper); }
   .editorialSpotlightCopy h2 { font-size: clamp(29px, 8vw, 39px); }
   .editorialSpotlightCopy > a { width: 100%; justify-content: space-between; }
 }
+
+/* 2026 editorial refresh: a warm, readable shopping magazine rather than
+   stacked campaign banners. Keep colours scoped to these three surfaces. */
+.dealHome, .blogHub, .postPage { --editorial-ink: #152438; --editorial-accent: #e75b34; --editorial-mint: #d6f4e6; background: #f8f7f4; color: var(--editorial-ink); }
+.dealHome .siteHeader, .blogHub .siteHeader, .postPage .siteHeader { background: rgb(255 255 255 / 96%); border-bottom: 1px solid #e6e8e9; box-shadow: 0 5px 22px rgb(21 36 56 / 4%); }
+.dealHome .brandMark, .blogHub .brandMark, .postPage .brandMark { background: var(--editorial-accent); box-shadow: none; transform: none; border-radius: 11px; }
+.dealHome .telegramLink, .blogHub .telegramLink, .postPage .telegramLink { border: 0; background: #eaf8f0; color: #126444; }
+.dealHome .telegramLink:hover, .blogHub .telegramLink:hover, .postPage .telegramLink:hover { background: #ccecd9; color: #08482f; }
+.dealHome .announcement { background: #17354c; }
+.dealHome .hero { margin-top: 28px; margin-bottom: 24px; padding: clamp(32px, 5.5vw, 76px); border: 0; border-radius: 28px; background: radial-gradient(circle at 94% 10%, rgb(131 213 188 / 25%), transparent 30%), linear-gradient(125deg, #14283d, #205171); box-shadow: 0 22px 54px rgb(20 40 61 / 13%); }
+.dealHome .hero h1 { max-width: 950px; font-size: clamp(42px, 5.4vw, 73px); line-height: 1.04; }
+.dealHome .hero h1 em { color: #9ce7c6; font-family: inherit; font-style: normal; font-weight: 750; }
+.dealHome .heroLead { max-width: 730px; color: #deebee; }
+.dealHome .heroSearchBox { border-color: transparent; box-shadow: 0 9px 26px rgb(0 0 0 / 16%); }
+.dealHome .hero .primaryButton { background: var(--editorial-accent); }
+.dealHome .hero .primaryButton:hover { background: #cb4425; }
+.dealHome .storeRail { margin-top: 22px; margin-bottom: 30px; padding: 14px; }
+.editorialSpotlight { grid-template-columns: minmax(0, 1fr) minmax(260px, .68fr); margin-top: 0; margin-bottom: 26px; border-color: #e8e5dc; background: #fff; box-shadow: 0 11px 38px rgb(21 36 56 / 7%); }
+.editorialSpotlightCopy { padding: clamp(28px, 4vw, 48px); color: var(--editorial-ink); }
+.editorialSpotlightCopy p { color: #a33a20; }
+.editorialSpotlightCopy h2 { max-width: 620px; font-size: clamp(27px, 3.1vw, 42px); line-height: 1.13; }
+.editorialSpotlightCopy > span { color: #526174; }
+.editorialSpotlightCopy > a { background: var(--editorial-mint); color: #0d5137; }
+.editorialSpotlightArtwork { min-height: 250px; background: #f3f7f5; }
+.editorialSpotlightArtwork img { max-height: 330px; }
+.dealHome .offersSection { background: #f8f7f4; }
+.dealHome .dealGrid { gap: 22px; }
+.dealHome .dealCard { border-color: #e5e9e8; border-radius: 18px; box-shadow: 0 8px 25px rgb(21 36 56 / 6%); }
+.dealHome .dealCard .imageWrap { background: #f4f7f6; }
+.dealHome .dealCard .priceRow { background: #edf9f1; border-color: #d8eee0; }
+.dealHome .dealCard .dealButton { background: #17354c; }
+.dealHome .dealCard .dealButton:hover { background: #265b74; }
+.dealHome .postGrid, .blogHub .postGrid { gap: 22px; }
+.dealHome .postCard, .blogHub .postCard { display: flex; flex-direction: column; border-color: #e5e9e8; border-radius: 18px; box-shadow: 0 9px 29px rgb(21 36 56 / 6%); }
+.dealHome .postCardImage, .blogHub .postCardImage { aspect-ratio: 1.65; background: #f2f7f5; }
+.dealHome .postCard > div, .blogHub .postCard > div { display: flex; flex: 1; flex-direction: column; padding: 23px; }
+.dealHome .postCard time, .blogHub .postCard time { color: #a33a20; letter-spacing: .07em; }
+.dealHome .postCard h3, .blogHub .postCard h3 { margin: 12px 0; font-size: clamp(20px, 2vw, 25px); line-height: 1.25; }
+.dealHome .postCard p, .blogHub .postCard p { color: #526174; font-size: 14px; }
+.dealHome .postRead, .blogHub .postRead { margin-top: auto; padding-top: 18px; color: #b34226; }
+.blogHubArticle { padding-bottom: 100px; }
+.blogHubHero { position: relative; overflow: hidden; margin-top: 12px; padding: clamp(38px, 6vw, 72px); background: radial-gradient(circle at 93% 10%, rgb(133 222 188 / 28%), transparent 35%), #17354c; }
+.blogHubHero h1 { max-width: 760px; font-size: clamp(46px, 6vw, 76px); line-height: 1.04; }
+.blogHubHero > p { max-width: 610px; }
+.blogHubHero > div a:first-child { border-color: #a3e8c6; background: #a3e8c6; color: #13392a; }
+.blogFeatured { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); overflow: hidden; margin-top: 34px; border: 1px solid #e4eae8; border-radius: 22px; background: #fff; box-shadow: 0 14px 40px rgb(21 36 56 / 8%); }
+.blogFeaturedImage { min-height: 360px; background: #edf4f1; }
+.blogFeaturedImage img { width: 100%; height: 100%; max-height: 460px; object-fit: contain; padding: 26px; }
+.blogFeatured > div { display: flex; flex-direction: column; align-items: flex-start; padding: clamp(27px, 4vw, 55px); }
+.blogFeatured time { color: #66768a; font-size: 13px; }
+.blogFeatured h2 { margin: 18px 0; font-size: clamp(30px, 3.3vw, 48px); line-height: 1.1; }
+.blogFeatured > div > p:not(.eyebrow) { color: #536376; font-size: 15px; line-height: 1.65; }
+.blogFeaturedLink { display: inline-flex; justify-content: space-between; gap: 30px; margin-top: auto; border-radius: 10px; background: #17354c; padding: 14px 20px; color: #fff; font-size: 13px; font-weight: 800; }
+.blogPosts { padding: 74px 0 50px; scroll-margin-top: 100px; }
+.blogGuideSection { padding: 55px 0 85px; border-top: 1px solid #e0e5e4; }
+.blogGuideGrid article { border-color: #e5e9e8; border-radius: 17px; box-shadow: 0 7px 20px rgb(21 36 56 / 4%); }
+.blogGuideGrid article > span { color: #ad4528; }
+.postArticle { max-width: 1000px; padding-top: 42px; }
+.postBreadcrumb { margin-bottom: 35px; }
+.postArticle > .eyebrow { color: #a43d23; }
+.postArticle h1 { max-width: 920px; font-size: clamp(39px, 5.5vw, 68px); line-height: 1.09; }
+.postMeta { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; color: #68798c; font-size: 13px; }
+.postHeroImage, .postImageGallery { margin: 32px 0 46px; }
+.postImageGallery img, .postHeroImage { border: 1px solid #e5e9e8; box-shadow: 0 12px 36px rgb(21 36 56 / 8%); }
+.postBody { max-width: 780px; margin-inline: auto; color: #354457; font-size: 17px; line-height: 1.8; }
+.postBody p { white-space: pre-line; }
+.postBody h2 { margin: 44px 0 16px; color: #152438; font-size: clamp(27px, 3vw, 36px); line-height: 1.2; }
+.postBodyProductTitle { display: flex; gap: 18px; align-items: baseline; padding-top: 26px; border-top: 1px solid #e1e7e7; }
+.postBodyProductTitle:first-of-type { margin-top: 28px; }
+.postBodyProductTitle::first-letter { color: #d55632; }
+.postBodyProductTitle span { font-size: clamp(24px, 2.8vw, 33px); }
+.postProductSelection { margin: 65px 0; padding-top: 43px; border-top: 2px solid #dce9e3; }
+.postProductSelection article { border-color: #e5e9e8; border-radius: 17px; box-shadow: 0 7px 19px rgb(21 36 56 / 4%); }
+.postProductSelection img { background: #f3f7f5; }
+.postProductSelection strong { color: #0b6844; }
+.postProductSelection article > a { background: #17354c; }
+.postBack { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+@media (max-width: 760px) {
+  .dealHome .hero { margin-top: 12px; padding: 30px 23px; }
+  .dealHome .hero h1 { font-size: clamp(38px, 10vw, 50px); }
+  .editorialSpotlight, .blogFeatured { grid-template-columns: 1fr; }
+  .editorialSpotlightArtwork { order: -1; }
+  .blogFeaturedImage { min-height: 250px; max-height: 310px; }
+  .blogFeaturedImage img { max-height: 310px; }
+  .blogHubHero { width: calc(100% + 28px); margin-left: -14px; border-radius: 0; }
+  .blogHubHero h1 { font-size: clamp(43px, 11vw, 60px); }
+  .blogPosts { padding-top: 55px; }
+  .postArticle h1 { font-size: clamp(37px, 9vw, 48px); }
+  .postImageGallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .postImageGallery img, .postImageGallery img:first-child { height: 200px; }
+  .postImageGallery img:first-child { grid-column: 1 / -1; height: 300px; }
+}

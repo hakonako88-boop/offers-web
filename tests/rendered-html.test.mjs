@@ -283,7 +283,8 @@ test("renders an indexable blog hub for existing search demand", async () => {
   const response = await render("/blog");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Blog de chollos, ofertas y ahorro/);
+  assert.match(html, /Buenas compras empiezan aquí/);
+  assert.match(html, /ÚLTIMA PUBLICACIÓN/);
   assert.match(html, /"@type":"CollectionPage"/);
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/blog\/"/);
   assert.match(html, /href="\/guias\/chollos-electronica\/"/);

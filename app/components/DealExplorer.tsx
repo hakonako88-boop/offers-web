@@ -187,11 +187,6 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
         </div>
       </header>
 
-      {featuredPost && <section className="editorialSpotlight shell" aria-labelledby="spotlight-title">
-        <div className="editorialSpotlightCopy"><p>SELECCIÓN EDITORIAL · {featuredPost.publishedLabel}</p><h2 id="spotlight-title">{featuredPost.title}</h2><span>Productos útiles con rebajas publicadas, fotos y fichas para comprobar el precio final.</span><a href={postHref(featuredPost.id)}>Explorar la selección <b aria-hidden="true">↗</b></a></div>
-        <a className="editorialSpotlightArtwork" href={postHref(featuredPost.id)} aria-label={`Leer ${featuredPost.title}`}><img src={featuredPost.imageUrl} alt={featuredPost.title} width="720" height="480" fetchPriority="high" /></a>
-      </section>}
-
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="heroCopy">
           <p className="eyebrow"><span aria-hidden="true" />CHOLLOS DIARIOS · OFERTAS NUEVAS DURANTE TODO EL DÍA</p>
@@ -218,6 +213,11 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           </ul>
         </div>
       </section>
+
+      {featuredPost && <section className="editorialSpotlight shell" aria-labelledby="spotlight-title">
+        <div className="editorialSpotlightCopy"><p>EN EL BLOG · {featuredPost.publishedLabel}</p><h2 id="spotlight-title">{featuredPost.title}</h2><span>Una selección de productos con fotos, precios publicados y fichas para consultar antes de comprar.</span><a href={postHref(featuredPost.id)}>Ver selección <b aria-hidden="true">↗</b></a></div>
+        <a className="editorialSpotlightArtwork" href={postHref(featuredPost.id)} aria-label={`Leer ${featuredPost.title}`}><img src={featuredPost.imageUrl} alt={featuredPost.title} width="720" height="480" loading="lazy" /></a>
+      </section>}
 
       <section className="storeRail shell" aria-label="Explorar ofertas por tienda">
         <div className="storeRailLead"><span className="liveDot" aria-hidden="true" /><div><b>{summary.total} ofertas activas</b><small>Actualizadas durante el día</small></div></div>

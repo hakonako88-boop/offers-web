@@ -66,6 +66,10 @@ export function postHref(id: string) {
   return `/publicacion/${encodeURIComponent(id)}/`;
 }
 
+export function isProductSelection(post: Pick<PublishedPost, "id">) {
+  return /^mejores-productos-(?:dia|semana)-/u.test(post.id);
+}
+
 /** Daily machine-generated recaps and legacy numeric posts stay available to
  * visitors, but are not separate search landing pages. Campaigns, coupons and
  * manually named editorial posts remain indexable. */
