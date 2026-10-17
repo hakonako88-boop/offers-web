@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-17T19:16:38.044Z",
+  "updatedAt": "2026-10-17T19:26:00.103Z",
   "summary": {
+    "ignored": 209,
     "rejected": 503,
-    "ignored": 208,
     "published": 38,
     "duplicate": 28,
     "needs_review": 95,
-    "pending": 128
+    "pending": 127
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96131:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96131,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/96131",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-17T19:41:34.036Z"
+    },
     {
       "id": "telegram-una-ganga:96130:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -131,13 +144,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96128,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/96128",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-17T19:21:38.973Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-tiesometro:7649:aliexpress:0",
@@ -146,7 +159,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/6)",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/7649",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-17T18:42:13.374Z",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-10-17T09:44:17.966Z"
-    },
-    {
-      "id": "telegram-una-ganga:96096:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 96096,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 2,
-      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
-      "sourceUrl": "https://t.me/una_ganga/96096",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-17T08:21:04.540Z"
     }
   ]
 }
