@@ -26,13 +26,13 @@
 .dealHome .dealCard .dealBody{padding:48px 17px 15px;min-width:0}
 .dealHome .dealCard .categoryLabel{margin:0 0 8px;color:#485e51;font-family:Arial,sans-serif;font-size:10px;letter-spacing:.09em}
 .dealHome .dealCard h3{min-height:0;margin:0 0 14px;font-size:18px;line-height:1.22;letter-spacing:-.035em;-webkit-line-clamp:3;color:#132b2b}
-.dealHome .dealCard .priceRow{display:grid;grid-template-columns:1fr auto;align-items:end;gap:4px 12px;width:100%;margin:auto 0 0;padding:11px 12px 9px;border:2px solid #132d2b;border-radius:3px;background:#f4f1df}
-.dealHome .dealCard .priceRow .priceCurrent{display:grid;gap:1px;color:#132d2b}
-.dealHome .dealCard .priceRow .priceCurrent small,.dealHome .dealCard .priceRow .priceWas small{color:#526456;font-size:9px;font-weight:900;letter-spacing:.1em}
-.dealHome .dealCard .priceRow strong{color:#0c2725;font-family:Arial,sans-serif;font-size:clamp(27px,3vw,38px);font-weight:950;letter-spacing:-.065em;line-height:1}
-.dealHome .dealCard .priceRow .priceWas{display:grid;gap:3px;align-self:center;color:#59665c;text-align:right}
-.dealHome .dealCard .priceRow .priceWas s{font-size:13px}
-.dealHome .dealCard .priceRow .saving{grid-column:1/-1;margin:4px -12px -9px;padding:5px 12px;border-top:1px solid #b5bca9;background:#d7e7d5;color:#144232;font-size:10px;font-weight:800;letter-spacing:.04em}
+.dealHome .dealCard .priceRow{display:grid;grid-template-columns:1fr auto;align-items:end;gap:4px 12px;width:100%;margin:auto 0 0;padding:11px 12px 9px;border:2px solid #173238;border-radius:3px;background:#173238;box-shadow:0 4px 0 #a8c1ad}
+.dealHome .dealCard .priceRow .priceCurrent{display:grid;gap:1px;color:#ffe678}
+.dealHome .dealCard .priceRow .priceCurrent small,.dealHome .dealCard .priceRow .priceWas small{color:#b9d4cd;font-size:9px;font-weight:900;letter-spacing:.1em}
+.dealHome .dealCard .priceRow strong{color:#ffe678;font-family:Arial,sans-serif;font-size:clamp(29px,3.2vw,41px);font-weight:950;letter-spacing:-.065em;line-height:1.05;text-shadow:0 1px 0 #684e17}
+.dealHome .dealCard .priceRow .priceWas{display:grid;gap:3px;align-self:center;color:#d7e5e0;text-align:right}
+.dealHome .dealCard .priceRow .priceWas s{color:#d7e5e0;font-size:13px}
+.dealHome .dealCard .priceRow .saving{grid-column:1/-1;margin:4px -12px -9px;padding:5px 12px;border-top:1px solid #3a665e;background:#284f46;color:#fff5c7;font-size:10px;font-weight:800;letter-spacing:.04em}
 .dealHome .dealCard .priceRow .saving b{font-size:12px}
 .dealHome .dealCard .coupon,.dealHome .dealCard .noCoupon{min-height:31px;margin-top:9px;border-radius:2px}
 .dealHome .dealCard .coupon{border-color:#b06640;background:#fff4e8}
@@ -51,10 +51,15 @@
 .postPage .postBody h2{max-width:770px;color:#143b35}
 .postPage .postBodyProductTitle{border-top:2px solid #b9cfc0}
 .postPage .postProductSelection article{border:1px solid #b9cdc0;border-radius:3px;box-shadow:4px 4px 0 #c2d3c5}
-.postPage .postProductSelection strong{color:#0a5138;font-size:26px;font-weight:900}
+.postPage .postProductSelection strong{color:#b83916;font-size:28px;font-weight:950}
 .postPage .postProductSelection article>a{border-radius:2px;background:#153b35}
-.offerPage .offerPriceBox{border:2px solid #102e2b;border-radius:3px;background:#f5f0d9;box-shadow:5px 5px 0 #c8d4c4}
-.offerPage .offerPriceBox strong{color:#103a31;font-size:clamp(42px,6vw,65px);font-weight:950}
+.offerPage .offerPriceBox{border:2px solid #173238;border-radius:3px;background:#173238;box-shadow:6px 6px 0 #a8c1ad}
+.offerPage .offerPriceBox>span{color:#c2dbd1}
+.offerPage .offerPriceBox strong{color:#ffe678;font-size:clamp(46px,6vw,70px);font-weight:950;line-height:1.06}
+.offerPage .offerPriceBox p{color:#d7e5e0}
+.offerPage .offerPriceBox p b,.offerPage .offerPriceBox em{color:#ffe678}
+.offerPage .relatedDeals .priceRow strong,.dealHome .postCard strong{color:#b83916}
+.heroFeatureDetails strong{color:#b83916}
 .offerPage .offerCta{border-radius:3px;background:#103c34}
 .offerPage .storeBadge{padding:0;background:transparent}
 .offerPage .priceHistoryEmpty{border:1px solid #c1d1c3;background:#f4f8f2}
