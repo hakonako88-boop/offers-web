@@ -22,9 +22,13 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   const html = await response.text();
   assert.match(html, /<html lang="es">/i);
   assert.match(html, /Chollos de hoy y ofertas del día/);
-  assert.match(html, /Ofertas del día que merecen la pena/);
-  assert.match(html, /CHOLLOS DIARIOS/);
+  assert.match(html, /Menos ruido\. Más ahorro/);
+  assert.match(html, /SELECCIÓN DIARIA/);
   assert.match(html, /Últimos chollos/);
+  assert.match(html, /Oferta destacada ahora/);
+  assert.match(html, /Guardadas/);
+  assert.match(html, /Guardar oferta/);
+  assert.match(html, /Compartir esta oferta/);
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/"/);
   assert.match(html, /href="\/oferta\//);
@@ -37,6 +41,7 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.ok((html.match(/class="dealCard"/g) ?? []).length <= 43, "homepage should not render hundreds of offer cards at once");
   assert.match(html, /og-chollosaldia-v2\.png/);
   assert.match(html, /rel="icon" href="\/favicon\.ico" sizes="48x48"/);
+  assert.match(html, /rel="icon" href="\/favicon\.svg" type="image\/svg\+xml"/);
   assert.match(html, /href="\/site\.webmanifest"/);
   assert.match(html, /chollosaldia@gmail\.com/);
   assert.match(html, /"@type":"ContactPoint"/);

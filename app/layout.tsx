@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   publisher: "Chollos al Día",
   manifest: "/site.webmanifest",
   icons: {
-    icon: [{ url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" }],
-    shortcut: "/favicon.ico",
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }, { url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" }],
+    shortcut: "/favicon.svg",
     apple: [{ url: "/favicon-192.png", sizes: "192x192", type: "image/png" }],
   },
   referrer: "origin-when-cross-origin",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   ...(adsenseEnabled ? { other: { "google-adsense-account": adsenseClientId } } : {}),
 };
 
-export const viewport: Viewport = { themeColor: "#18213e", colorScheme: "light" };
+export const viewport: Viewport = { themeColor: "#143247", colorScheme: "light" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

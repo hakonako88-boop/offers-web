@@ -74,7 +74,27 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
     return new URLSearchParams(window.location.search).get("q")?.slice(0, 80) ?? "";
   });
   const [copied, setCopied] = useState<string | null>(null);
+  const [savedIds, setSavedIds] = useState<string[]>([]);
+  const [savedReady, setSavedReady] = useState(false);
+  const [savedOnly, setSavedOnly] = useState(false);
+  const [sharedId, setSharedId] = useState<string | null>(null);
   const filtersReady = useRef(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      try {
+        const stored = JSON.parse(window.localStorage.getItem("chollosaldia:saved-offers") || "[]");
+        if (Array.isArray(stored)) setSavedIds(stored.filter((id): id is string => typeof id === "string").slice(0, 100));
+      } catch { /* Storage may be disabled. The feature still works for this visit. */ }
+      setSavedReady(true);
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!savedReady) return;
+    try { window.localStorage.setItem("chollosaldia:saved-offers", JSON.stringify(savedIds)); } catch { /* Private browsing can block storage. */ }
+  }, [savedIds, savedReady]);
 
   useEffect(() => {
     if (!filtersReady.current) { filtersReady.current = true; return; }
@@ -101,6 +121,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
       && (!Number.isFinite(max) || deal.price <= max)
       && (deal.oldPrice > deal.price ? Math.round((1 - deal.price / deal.oldPrice) * 100) : 0) >= minimumDiscount
       && (!couponOnly || Boolean(deal.coupon))
+      && (!savedOnly || savedIds.includes(deal.id))
       && (!Number.isFinite(maximumAge) || Boolean(deal.verifiedDate && newestTimestamp - Date.parse(deal.verifiedDate) <= maximumAge))
     ));
     return filtered.sort((left, right) => {
@@ -109,13 +130,13 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
       if (sortBy === "price") return left.price - right.price;
       return Date.parse(right.verifiedDate || "") - Date.parse(left.verifiedDate || "");
     });
-  }, [deals, category, store, query, minimumPrice, maximumPrice, minimumDiscount, dateRange, couponOnly, sortBy]);
+  }, [deals, category, store, query, minimumPrice, maximumPrice, minimumDiscount, dateRange, couponOnly, savedOnly, savedIds, sortBy]);
 
-  const filtersActive = category !== "Todos" || store !== "Todas" || query.trim() !== "" || minimumPrice !== "" || maximumPrice !== "" || minimumDiscount > 0 || dateRange !== "all" || couponOnly || sortBy !== "recent";
+  const filtersActive = category !== "Todos" || store !== "Todas" || query.trim() !== "" || minimumPrice !== "" || maximumPrice !== "" || minimumDiscount > 0 || dateRange !== "all" || couponOnly || savedOnly || sortBy !== "recent";
 
   function clearFilters() {
     setCategory("Todos"); setStore("Todas"); setQuery(""); setMinimumPrice(""); setMaximumPrice("");
-    setMinimumDiscount(0); setDateRange("all"); setCouponOnly(false); setSortBy("recent");
+    setMinimumDiscount(0); setDateRange("all"); setCouponOnly(false); setSavedOnly(false); setSortBy("recent");
   }
 
   const storeTotals = summary.stores;
@@ -133,6 +154,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
   }), [deals]);
 
   const gridDeals = visibleDeals.slice(0, visibleLimit);
+  const heroDeal = deals[0];
   const visibleInsights = useMemo(() => {
     const discounted = visibleDeals.filter((deal) => deal.oldPrice > deal.price);
     const totalSaving = discounted.reduce((total, deal) => total + (deal.oldPrice - deal.price), 0);
@@ -147,6 +169,18 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
     navigator.clipboard?.writeText(code);
     setCopied(code);
     window.setTimeout(() => setCopied(null), 1600);
+  }
+
+  function toggleSaved(id: string) {
+    setSavedIds((current) => current.includes(id) ? current.filter((saved) => saved !== id) : [...current, id].slice(-100));
+  }
+
+  async function shareDeal(deal: Deal) {
+    const url = new URL(dealDetailsUrl(deal), window.location.origin).toString();
+    try {
+      if (navigator.share) await navigator.share({ title: deal.title, url });
+      else if (navigator.clipboard) { await navigator.clipboard.writeText(url); setSharedId(deal.id); window.setTimeout(() => setSharedId(null), 2000); }
+    } catch { /* The visitor can cancel the native share sheet. */ }
   }
 
   return (
@@ -189,9 +223,9 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
 
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="heroCopy">
-          <p className="eyebrow"><span aria-hidden="true" />CHOLLOS DIARIOS · OFERTAS NUEVAS DURANTE TODO EL DÍA</p>
-          <h1 id="hero-title">Chollos de hoy.<br /> <em>Ofertas del día que merecen la pena.</em></h1>
-          <p className="heroLead">Descubre ofertas, chollos y rebajas para ahorrar en tus compras online. Compara precios y descuentos de Amazon, AliExpress, Miravia y más tiendas, con cupones cuando estén disponibles.</p>
+          <p className="eyebrow"><span aria-hidden="true" />SELECCIÓN DIARIA · PRECIOS CLAROS</p>
+          <h1 id="hero-title">Chollos de hoy.<br /> <em>Menos ruido. Más ahorro.</em></h1>
+          <p className="heroLead">Ofertas de Amazon, AliExpress, Miravia y más tiendas, con precio visible, foto y cupón cuando esté disponible. Encuentra lo que buscas sin dar mil vueltas.</p>
           <form className="heroSearch" role="search" onSubmit={(event) => { event.preventDefault(); document.getElementById("ofertas")?.scrollIntoView({ behavior: "smooth" }); }}>
             <label htmlFor="home-offer-search">¿Qué estás buscando?</label>
             <div className="heroSearchBox"><span aria-hidden="true">⌕</span><input id="home-offer-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Móvil, cafetera, cupón…" /><button type="submit">Buscar ofertas</button></div>
@@ -203,7 +237,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             </div>
           </form>
           <div className="heroActions">
-            <a className="primaryButton" href="#ofertas">Ver ofertas ahora <span aria-hidden="true">↓</span></a>
+            <a className="primaryButton" href="#ofertas">Explorar chollos <span aria-hidden="true">↓</span></a>
             <a className="quietLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis <span aria-hidden="true">↗</span></a>
           </div>
           <ul className="trustList" aria-label="Compromisos de Chollos al Día">
@@ -212,6 +246,10 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             <li>Alertas gratis</li>
           </ul>
         </div>
+        {heroDeal && <aside className="heroFeature" aria-label="Oferta destacada ahora">
+          <a className="heroFeatureImage" href={dealDetailsUrl(heroDeal)}><img src={heroDeal.imageUrl} alt={heroDeal.title} width={620} height={500} fetchPriority="high" /></a>
+          <div className="heroFeatureDetails"><span>SELECCIÓN DE HOY · {heroDeal.store}</span><h2><a href={dealDetailsUrl(heroDeal)}>{shortTitle(heroDeal.title, 82)}</a></h2><div><strong>{money.format(heroDeal.price)}</strong>{heroDeal.oldPrice > heroDeal.price && <s>{money.format(heroDeal.oldPrice)}</s>}</div><a className="heroFeatureButton" href={dealDetailsUrl(heroDeal)}>Ver detalles de la oferta <b aria-hidden="true">↗</b></a></div>
+        </aside>}
       </section>
 
       {featuredPost && <section className="editorialSpotlight shell" aria-labelledby="spotlight-title">
@@ -241,6 +279,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             <p>Precios válidos en el momento de la publicación. Pueden cambiar o agotarse.</p>
           </div>
 
+          <div className="offerToolbar"><p>Explora a tu ritmo</p><button type="button" className={savedOnly ? "savedFilter active" : "savedFilter"} onClick={() => setSavedOnly((active) => !active)} aria-pressed={savedOnly}>♥ Guardadas <span>{savedIds.length}</span></button></div>
           <div className="controls">
             <details className="advancedFilters"><summary>Filtros <span>{filtersActive ? "activos" : ""}</span></summary><div className="filterGrid">
               <label>Categoría<select value={category} onChange={(event) => setCategory(event.target.value)}>{categories.map((item) => <option key={item}>{item}</option>)}</select></label>
@@ -271,6 +310,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                     <span className="storeBadge">{deal.store}</span>
                     {index === 0 && !filtersActive && <span className="topDealBadge">⭐ DESTACADA</span>}
                   </a>
+                  <button className={savedIds.includes(deal.id) ? "saveDealButton active" : "saveDealButton"} type="button" onClick={() => toggleSaved(deal.id)} aria-pressed={savedIds.includes(deal.id)} aria-label={`${savedIds.includes(deal.id) ? "Quitar de guardadas" : "Guardar oferta"}: ${deal.title}`}>{savedIds.includes(deal.id) ? "♥ Guardada" : "♡ Guardar"}</button>
                   <div className="dealBody">
                     <p className="categoryLabel"><b>{offerEditorialLabel({ id: deal.id, price: deal.price, discount })}</b> en {deal.category}</p>
                     <h3 title={deal.title}><a href={dealDetailsUrl(deal)}>{editorialCardTitle({ title: deal.title, store: deal.store, price: deal.price, discount, coupon: deal.coupon })}</a></h3>
@@ -285,6 +325,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                       </button>
                     ) : <p className="noCoupon"><span aria-hidden="true">✓</span> Precio directo · sin código</p>}
                     <a className="dealButton" href={dealDetailsUrl(deal)} onClick={() => window.gtag?.("event", "offer_card_open", { offer_id: deal.id, store: deal.store, price: deal.price })}>{deal.coupon ? "Ver oferta y aplicar cupón" : "Ver oferta y comprar"} <span aria-hidden="true">→</span></a>
+                    <button className="shareDealButton" type="button" onClick={() => void shareDeal(deal)}>{sharedId === deal.id ? "Enlace copiado ✓" : "Compartir esta oferta ↗"}</button>
                     <p className="verified"><span aria-hidden="true" />Oferta activa · {deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt}</p>
                   </div>
                 </article>
@@ -292,7 +333,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             })}
           </div>
           {gridDeals.length < visibleDeals.length && <div className="loadMoreWrap"><button className="loadMoreButton" onClick={() => setVisibleLimit((current) => current + 12)}>Ver 12 ofertas más <span aria-hidden="true">↓</span></button><p>También puedes filtrar por tienda, categoría o cupón para dar con lo que buscas.</p></div>}
-          {!visibleDeals.length && <div className="empty"><b>No hemos encontrado ofertas con esa búsqueda.</b><span>Prueba con otra palabra o vuelve a “Todos”.</span></div>}
+          {!visibleDeals.length && <div className="empty"><b>{savedOnly && savedIds.length === 0 ? "Aún no has guardado ofertas." : "No hemos encontrado ofertas con esos filtros."}</b><span>{savedOnly && savedIds.length === 0 ? "Pulsa «Guardar» en una oferta para verla aquí más tarde, en este navegador." : "Prueba con otra palabra o quita alguno de los filtros."}</span></div>}
         </div>
       </section>
 

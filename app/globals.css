@@ -1240,3 +1240,74 @@ body { background: var(--paper); }
   .postImageGallery img, .postImageGallery img:first-child { height: 200px; }
   .postImageGallery img:first-child { grid-column: 1 / -1; height: 300px; }
 }
+
+/* Chollos al Día identity: one logo, one colour system and clearer actions. */
+.brand .brandMark { flex: 0 0 auto; width: 42px; height: 42px; border-radius: 12px; background: url("/favicon.svg") center / contain no-repeat; color: transparent; font-size: 0; box-shadow: none; transform: none; }
+.dealHome .brand, .blogHub .brand, .postPage .brand { font-weight: 900; letter-spacing: -.07em; }
+.dealHome .brand > span:last-child > span, .blogHub .brand > span:last-child > span, .postPage .brand > span:last-child > span { color: #e75b34; }
+.dealHome .hero { grid-template-columns: minmax(0, 1.08fr) minmax(320px, .72fr); gap: clamp(24px, 4vw, 54px); align-items: center; }
+.dealHome .hero h1 { font-size: clamp(45px, 5.2vw, 72px); }
+.heroFeature { overflow: hidden; border: 1px solid rgb(255 255 255 / 20%); border-radius: 22px; background: #fff; color: #153247; box-shadow: 0 21px 45px rgb(0 0 0 / 22%); transform: rotate(1.5deg); }
+.heroFeatureImage { display: flex; height: clamp(205px, 24vw, 330px); align-items: center; justify-content: center; background: #f0f7f3; }
+.heroFeatureImage img { width: 100%; height: 100%; object-fit: contain; padding: 22px; }
+.heroFeatureDetails { padding: 22px 25px 25px; }
+.heroFeatureDetails > span { color: #b2462b; font-size: 10px; font-weight: 850; letter-spacing: .11em; }
+.heroFeatureDetails h2 { margin: 9px 0 18px; font-size: clamp(19px, 2vw, 27px); line-height: 1.23; letter-spacing: -.04em; }
+.heroFeatureDetails > div { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px; }
+.heroFeatureDetails strong { color: #0c6845; font-size: clamp(29px, 3vw, 40px); letter-spacing: -.06em; }
+.heroFeatureDetails s { color: #6e7b86; font-size: 15px; }
+.heroFeatureButton { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 46px; margin-top: 18px; border-radius: 11px; background: #153247; padding: 0 16px; color: #fff; font-size: 13px; font-weight: 800; }
+.heroFeatureButton:hover { background: #225477; }
+.dealHome .heroSearchBox button, .dealHome .loadMoreButton { border-radius: 10px; background: #bdf1d6; color: #103e30; font-weight: 800; }
+.dealHome .heroSearchBox button:hover, .dealHome .loadMoreButton:hover { background: #9be7bf; }
+.dealHome .storeRail { border: 0; background: transparent; box-shadow: none; padding: 4px 0; }
+.dealHome .storeRailLead { border-radius: 15px; background: #e5f4eb; }
+.dealHome .storeQuick { border-radius: 15px; background: #fff; box-shadow: 0 6px 16px rgb(21 36 56 / 5%); }
+.dealHome .sectionIntro h2, .blogHub .sectionIntro h2 { color: #153247; }
+.offerToolbar { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-top: 25px; }
+.offerToolbar p { margin: 0; color: #536678; font-size: 14px; font-weight: 750; }
+.savedFilter { display: inline-flex; align-items: center; gap: 8px; min-height: 43px; border: 1px solid #d9e2df; border-radius: 999px; background: #fff; padding: 0 15px; color: #153247; font-size: 13px; font-weight: 800; }
+.savedFilter span { display: grid; min-width: 23px; height: 23px; place-items: center; border-radius: 999px; background: #e9f5ef; color: #0f6845; font-size: 11px; }
+.savedFilter:hover, .savedFilter.active { border-color: #9ed8b7; background: #e6f5ec; }
+.dealHome .controls { margin-top: 12px; }
+.dealHome .dealCard { position: relative; }
+.saveDealButton { position: absolute; z-index: 2; top: 14px; right: 14px; min-height: 34px; border: 1px solid #dde5e2; border-radius: 999px; background: rgb(255 255 255 / 96%); padding: 0 12px; color: #17354c; font-size: 12px; font-weight: 850; box-shadow: 0 3px 12px rgb(21 36 56 / 9%); }
+.saveDealButton:hover, .saveDealButton.active { border-color: #e75b34; background: #fff4ee; color: #b63c21; }
+.dealHome .discountBadge { right: auto; left: 13px; top: 53px; background: #e75b34; }
+.dealHome .storeBadge { top: 13px; left: 13px; }
+.shareDealButton { align-self: flex-start; margin-top: 11px; border: 0; background: transparent; padding: 4px 0; color: #315b70; font-size: 12px; font-weight: 750; text-decoration: underline; text-underline-offset: 3px; }
+.shareDealButton:hover { color: #ba4529; }
+.dealHome .dealCard .categoryLabel { color: #a4432a; }
+.dealHome .dealCard .priceRow strong { color: #0b6844; }
+.dealHome .dealCard .dealButton { border-radius: 10px; }
+.dealHome .sectionCover { border-radius: 19px; }
+.dealHome .categoryDirectory, .dealHome .storeDirectory { padding-top: 76px; padding-bottom: 76px; }
+.dealHome .telegramCta { background: #143247; }
+.dealHome .telegramDock { background: #143247; color: #fff; }
+@media (max-width: 900px) {
+  .dealHome .hero { grid-template-columns: 1fr; }
+  .heroFeature { display: grid; grid-template-columns: 42% 1fr; transform: none; }
+  .heroFeatureImage { height: 100%; min-height: 240px; }
+}
+@media (max-width: 620px) {
+  .dealHome .hero { padding: 30px 22px; }
+  .heroFeature { grid-template-columns: 1fr; }
+  .heroFeatureImage { height: 225px; min-height: 0; }
+  .heroFeatureDetails { padding: 18px; }
+  .dealHome .storeRail { padding: 0; }
+  .offerToolbar { align-items: flex-start; }
+  .offerToolbar p { padding-top: 10px; }
+  .dealHome .categoryDirectory, .dealHome .storeDirectory { padding-top: 56px; padding-bottom: 56px; }
+}
+
+.blogHubHero { min-height: 0; padding: clamp(38px, 5vw, 62px); }
+.blogHubHero h1 { max-width: 650px; font-size: clamp(42px, 5.3vw, 68px); }
+.blogHubHero > p { max-width: 540px; }
+.blogHeroVisual { position: absolute; right: clamp(28px, 4.5vw, 64px); top: 50%; width: 32%; max-width: 360px; transform: translateY(-50%) rotate(4deg); border: 1px solid rgb(255 255 255 / 22%); border-radius: 18px; background: #f8fbf8; padding: 16px; color: #17354c; box-shadow: 0 20px 40px rgb(0 0 0 / 17%); }
+.blogHeroVisual > span { display: block; margin-bottom: 11px; color: #a34529; font-size: 9px; font-weight: 900; letter-spacing: .12em; }
+.blogHeroVisual > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+.blogHeroVisual img { display: block; width: 100%; aspect-ratio: 1; border-radius: 9px; background: #fff; object-fit: contain; padding: 4px; }
+.blogHeroVisual > b { display: block; margin-top: 11px; font-size: 12px; }
+@media (max-width: 900px) {
+  .blogHeroVisual { display: none; }
+}
