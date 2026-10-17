@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-17T15:06:43.555Z",
+  "updatedAt": "2026-10-17T15:16:17.733Z",
   "summary": {
-    "rejected": 511,
-    "ignored": 198,
+    "rejected": 510,
+    "ignored": 200,
     "duplicate": 29,
-    "needs_review": 95,
+    "needs_review": 96,
     "published": 42,
-    "pending": 125
+    "pending": 123
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96118:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96118,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Esperando una nueva comprobación de AliExpress; el fallo anterior no cuenta como otro intento",
+      "sourceUrl": "https://t.me/una_ganga/96118",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-ofertos:44350:aliexpress:0",
       "source": "telegram-ofertos",
@@ -27,9 +40,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45730,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/chollosdiario/45730",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -1290,21 +1303,8 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 0,
-      "reason": "Esperando una nueva comprobación de AliExpress; el fallo anterior no cuenta como otro intento",
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/96064",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-chollosdiario:45722:amazon:2",
-      "source": "telegram-chollosdiario",
-      "messageId": 45722,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/chollosdiario/45722",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
