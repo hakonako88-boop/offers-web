@@ -11,6 +11,7 @@ import { postHref } from "../lib/posts";
 import type { PublishedPost } from "../lib/posts";
 import { offerEditorialLabel } from "../lib/offer-label";
 import { editorialCardTitle } from "../lib/display-title";
+import StoreLogo from "./StoreLogo";
 
 export type Deal = {
   id: string;
@@ -259,10 +260,10 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
 
       <section className="storeRail shell" aria-label="Explorar ofertas por tienda">
         <div className="storeRailLead"><span className="liveDot" aria-hidden="true" /><div><b>{summary.total} ofertas activas</b><small>Actualizadas durante el día</small></div></div>
-        <a className="storeQuick storeQuickAmazon" href="/ofertas/amazon"><span>a</span><div><b>Amazon</b><small>{offerCountLabel(storeTotals.Amazon)}</small></div><i aria-hidden="true">→</i></a>
-        <a className="storeQuick storeQuickAli" href="/ofertas/aliexpress"><span>AE</span><div><b>AliExpress</b><small>{offerCountLabel(storeTotals.AliExpress)}</small></div><i aria-hidden="true">→</i></a>
-        <a className="storeQuick storeQuickMiravia" href="/ofertas/miravia"><span>M</span><div><b>Miravia</b><small>{offerCountLabel(storeTotals.Miravia)}</small></div><i aria-hidden="true">→</i></a>
-        <a className="storeQuick" href="/ofertas/pccomponentes"><span>PC</span><div><b>PcComponentes</b><small>{offerCountLabel(storeTotals.PcComponentes)}</small></div><i aria-hidden="true">→</i></a>
+        <a className="storeQuick storeQuickAmazon" href="/ofertas/amazon"><StoreLogo store="Amazon" /><div><b>Amazon</b><small>{offerCountLabel(storeTotals.Amazon)}</small></div><i aria-hidden="true">→</i></a>
+        <a className="storeQuick storeQuickAli" href="/ofertas/aliexpress"><StoreLogo store="AliExpress" /><div><b>AliExpress</b><small>{offerCountLabel(storeTotals.AliExpress)}</small></div><i aria-hidden="true">→</i></a>
+        <a className="storeQuick storeQuickMiravia" href="/ofertas/miravia"><StoreLogo store="Miravia" /><div><b>Miravia</b><small>{offerCountLabel(storeTotals.Miravia)}</small></div><i aria-hidden="true">→</i></a>
+        <a className="storeQuick" href="/ofertas/pccomponentes"><StoreLogo store="PcComponentes" /><div><b>PcComponentes</b><small>{offerCountLabel(storeTotals.PcComponentes)}</small></div><i aria-hidden="true">→</i></a>
       </section>
 
       {adsenseHomeSlot && <div className="shell adSection">
@@ -307,7 +308,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                   <a className="imageWrap dealPreviewLink" href={dealDetailsUrl(deal)} aria-label={`Ver análisis de ${deal.title}`}>
                     <img src={deal.imageUrl} alt={deal.title} loading="lazy" decoding="async" width={720} height={560} />
                     {discount > 0 && <span className="discountBadge">AHORRA {discount}%</span>}
-                    <span className="storeBadge">{deal.store}</span>
+                    <span className="storeBadge"><StoreLogo store={deal.store} /></span>
                     {index === 0 && !filtersActive && <span className="topDealBadge">⭐ DESTACADA</span>}
                   </a>
                   <button className={savedIds.includes(deal.id) ? "saveDealButton active" : "saveDealButton"} type="button" onClick={() => toggleSaved(deal.id)} aria-pressed={savedIds.includes(deal.id)} aria-label={`${savedIds.includes(deal.id) ? "Quitar de guardadas" : "Guardar oferta"}: ${deal.title}`}>{savedIds.includes(deal.id) ? "♥ Guardada" : "♡ Guardar"}</button>
@@ -315,17 +316,17 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                     <p className="categoryLabel"><b>{offerEditorialLabel({ id: deal.id, price: deal.price, discount })}</b> en {deal.category}</p>
                     <h3 title={deal.title}><a href={dealDetailsUrl(deal)}>{editorialCardTitle({ title: deal.title, store: deal.store, price: deal.price, discount, coupon: deal.coupon })}</a></h3>
                     <div className="priceRow">
-                      <strong>{money.format(deal.price)}</strong>
-                      {discount > 0 && <span>Antes <s>{money.format(deal.oldPrice)}</s></span>}
+                      <span className="priceCurrent"><small>PRECIO AHORA</small><strong>{money.format(deal.price)}</strong></span>
+                      {discount > 0 && <span className="priceWas"><small>ANTES</small><s>{money.format(deal.oldPrice)}</s></span>}
+                      {discount > 0 && <span className="saving">AHORRAS <b>{money.format(deal.oldPrice - deal.price)}</b></span>}
                     </div>
-                    {discount > 0 && <p className="saving">Ahorras {money.format(deal.oldPrice - deal.price)}</p>}
                     {deal.coupon ? (
                       <button className="coupon" onClick={() => copyCoupon(deal.coupon!)} aria-label={`Copiar cupón ${deal.coupon}`}>
                         <span>Cupón necesario</span><b>{copied === deal.coupon ? "¡Copiado!" : deal.coupon}</b><i aria-hidden="true">COPIAR</i>
                       </button>
                     ) : <p className="noCoupon"><span aria-hidden="true">✓</span> Precio directo · sin código</p>}
-                    <a className="dealButton" href={dealDetailsUrl(deal)} onClick={() => window.gtag?.("event", "offer_card_open", { offer_id: deal.id, store: deal.store, price: deal.price })}>{deal.coupon ? "Ver oferta y aplicar cupón" : "Ver oferta y comprar"} <span aria-hidden="true">→</span></a>
-                    <button className="shareDealButton" type="button" onClick={() => void shareDeal(deal)}>{sharedId === deal.id ? "Enlace copiado ✓" : "Compartir esta oferta ↗"}</button>
+                    <div className="dealActions"><a className="dealButton" href={dealDetailsUrl(deal)} onClick={() => window.gtag?.("event", "offer_card_open", { offer_id: deal.id, store: deal.store, price: deal.price })}>Ver ficha <span aria-hidden="true">↗</span></a>
+                    <button className="shareDealButton" type="button" onClick={() => void shareDeal(deal)} aria-label="Compartir oferta">{sharedId === deal.id ? "Copiado ✓" : "Compartir ↗"}</button></div>
                     <p className="verified"><span aria-hidden="true" />Oferta activa · {deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt}</p>
                   </div>
                 </article>

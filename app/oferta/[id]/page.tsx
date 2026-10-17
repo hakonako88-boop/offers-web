@@ -18,6 +18,8 @@ import {
 } from "../../lib/deals";
 import { categorySlugForName } from "../../lib/categories";
 import { getProductForDeal, productHref } from "../../lib/products";
+import StoreLogo from "../../components/StoreLogo";
+import priceHistory from "../../../data/price-history.json";
 
 const money = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
 const siteUrl = "https://chollosaldia.com";
@@ -82,7 +84,6 @@ function schemaFor(deal: NonNullable<ReturnType<typeof getDealById>>) {
       url: publicUrl,
       priceCurrency: "EUR",
       price: deal.price.toFixed(2),
-      availability: deal.active ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
       seller: { "@type": "Organization", name: deal.store },
     },
   };
@@ -136,6 +137,13 @@ export default async function OfferPage({ params }: OfferPageProps) {
   ];
   const productSchema = JSON.stringify(schemaFor(deal)).replace(/</g, "\\u003c");
   const breadcrumbsSchema = JSON.stringify(breadcrumbSchemaFor(deal)).replace(/</g, "\\u003c");
+  const historyKey = `${deal.store.toLowerCase()}:${deal.sourceProductId || ""}`;
+  const observations = (priceHistory as Record<string, { date: string; price: number }[]>)[historyKey] || [];
+  const minimumObserved = observations.length > 1 ? Math.min(...observations.map((point) => point.price)) : null;
+  const maximumObserved = observations.length > 1 ? Math.max(...observations.map((point) => point.price)) : null;
+  const chartWidth = 600;
+  const chartHeight = 90;
+  const chartPoints = observations.map((point, index) => `${(index / Math.max(1, observations.length - 1)) * chartWidth},${chartHeight - ((point.price - (minimumObserved ?? point.price)) / Math.max(1, (maximumObserved ?? point.price) - (minimumObserved ?? point.price))) * chartHeight}`).join(" ");
 
   return (
     <main className="offerPage">
@@ -154,7 +162,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
       <article className="offerArticle shell">
         <nav className="offerBreadcrumb" aria-label="Migas de pan"><Link href="/">Inicio</Link><span>/</span><Link href={categoryHref}>{deal.category}</Link><span>/</span><b>Oferta</b></nav>
         <div className="offerHero">
-          <div className="offerGallery"><div className="offerImageWrap"><img src={deal.imageUrl} alt={productTitle} width={960} height={760} fetchPriority="high" decoding="async" /><span className="storeBadge">{deal.store}</span>{discount > 0 && <span className="offerDiscount">−{discount}%</span>}</div><p>Imagen del producto. Comprueba la variante elegida en la tienda.</p></div>
+          <div className="offerGallery"><div className="offerImageWrap"><img src={deal.imageUrl} alt={productTitle} width={960} height={760} fetchPriority="high" decoding="async" /><span className="storeBadge"><StoreLogo store={deal.store} /></span>{discount > 0 && <span className="offerDiscount">−{discount}%</span>}</div><p>Imagen del producto. Comprueba la variante elegida en la tienda.</p></div>
           <div className="offerSummary">
             <p className="offerKicker">{deal.category}{deal.subcategory ? ` · ${deal.subcategory}` : ""} · {deal.active ? "Oferta activa" : "Oferta finalizada"}</p>
             <h1>{productTitle}</h1>
@@ -184,7 +192,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
 
 <section className="offerDecision" aria-labelledby="decision-title"><div><p className="eyebrow"><span aria-hidden="true" />DECISIÓN CON DATOS</p><h2 id="decision-title">¿Merece la pena?</h2><span className="assessmentBadge">{assessment.label}</span><p>{assessment.explanation}</p></div><dl><div><dt>Precio actual o último registrado</dt><dd>{money.format(deal.price)}</dd></div><div><dt>Precio anterior publicado</dt><dd>{deal.oldPrice > deal.price ? money.format(deal.oldPrice) : "No disponible"}</dd></div><div><dt>Ahorro publicado</dt><dd>{savings > 0 ? `${money.format(savings)} · ${discount} %` : "No verificable"}</dd></div><div><dt>Cupón necesario</dt><dd>{deal.coupon ? `Sí · ${deal.coupon}` : "No indicado"}</dd></div><div><dt>Tienda</dt><dd>{deal.store}</dd></div><div><dt>Vendedor</dt><dd>No disponible</dd></div><div><dt>Gastos de envío</dt><dd>No disponibles · comprobar en tienda</dd></div><div><dt>Detección / última comprobación</dt><dd>{deal.verifiedAt}</dd></div></dl></section>
 
-        <section className="priceHistoryEmpty" aria-labelledby="history-title"><p className="eyebrow"><span aria-hidden="true" />SEGUIMIENTO REAL</p><h2 id="history-title">Evolución del precio</h2><p>Estamos empezando a registrar el historial de este producto. Mostraremos los periodos de 30 días, 90 días y máximo disponible cuando existan suficientes comprobaciones reales.</p><div><span>Precio actual<strong>{money.format(deal.price)}</strong></span><span>Mínimo registrado<strong>Sin datos suficientes</strong></span><span>Precio medio<strong>Sin datos suficientes</strong></span><span>Máximo registrado<strong>Sin datos suficientes</strong></span></div></section>
+        <section className="priceHistoryEmpty" aria-labelledby="history-title"><p className="eyebrow"><span aria-hidden="true" />SEGUIMIENTO REAL</p><h2 id="history-title">Evolución del precio</h2><p>{observations.length > 1 ? `Precio observado por Chollos al Día en ${observations.length} días, del ${observations[0].date} al ${observations.at(-1)?.date}. No representa todas las variaciones de la tienda.` : "Hemos empezado a registrar los precios de forma diaria. La gráfica aparecerá cuando tengamos al menos dos observaciones reales de este mismo producto."}</p>{observations.length > 1 && <svg className="priceHistoryChart" viewBox="0 0 600 110" role="img" aria-label={`Evolución de ${observations.length} precios observados`} preserveAspectRatio="none"><polyline points={chartPoints} fill="none" stroke="#135a47" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" /></svg>}<div><span>Último registrado<strong>{money.format(observations.at(-1)?.price ?? deal.price)}</strong></span><span>Mínimo observado<strong>{minimumObserved === null ? "Pendiente" : money.format(minimumObserved)}</strong></span><span>Máximo observado<strong>{maximumObserved === null ? "Pendiente" : money.format(maximumObserved)}</strong></span><span>Observaciones<strong>{observations.length}</strong></span></div></section>
 
         <AdSlot slot={adsenseOfferSlot} placement="offer" />
 

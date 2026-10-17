@@ -28,7 +28,8 @@ test("renders the Chollos al Día storefront and SEO metadata", async () => {
   assert.match(html, /Oferta destacada ahora/);
   assert.match(html, /Guardadas/);
   assert.match(html, /Guardar oferta/);
-  assert.match(html, /Compartir esta oferta/);
+  assert.match(html, /Compartir ↗/);
+  assert.match(html, /PRECIO AHORA/);
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /rel="canonical" href="https:\/\/chollosaldia\.com\/"/);
   assert.match(html, /href="\/oferta\//);

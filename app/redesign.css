@@ -1,0 +1,63 @@
+/* Editorial storefront: product first, price impossible to miss. */
+.merchantLogo{display:inline-flex;align-items:center;justify-content:center;min-width:58px;min-height:27px;padding:3px 9px;border-radius:5px;background:#fff;color:#142237;font-family:Arial,sans-serif;font-size:13px;font-weight:900;letter-spacing:-.055em;line-height:1;white-space:nowrap}
+.merchantLogo[data-merchant="Amazon"]{font-weight:900;letter-spacing:-.075em;box-shadow:inset 0 -3px #ff9900}
+.merchantLogo[data-merchant="AliExpress"]{color:#ea2b2b;font-size:12px;letter-spacing:-.06em}
+.merchantLogo[data-merchant="Miravia"]{color:#7440cf;font-size:13px;letter-spacing:-.07em}
+.merchantLogo[data-merchant="Xiaomi"]{background:#ff6900;color:white;font-size:17px;min-width:34px}
+.merchantLogo[data-merchant="PcComponentes"]{color:#ed6a22;font-size:10px;letter-spacing:-.05em}
+.merchantLogo[data-merchant="MediaMarkt"]{color:#d32027;font-size:11px;letter-spacing:-.07em}
+.merchantLogo[data-merchant="El Corte Inglés"]{background:#087c4d;color:white;font-size:10px;letter-spacing:-.055em}
+.dealHome .storeQuick>.merchantLogo{display:inline-flex;width:auto;min-width:61px;height:auto;min-height:30px;flex:0 0 auto;border-radius:3px;background:#fff;color:#142237;font-size:inherit}
+.dealHome .storeQuick>.merchantLogo[data-merchant="Amazon"]{box-shadow:inset 0 -3px #ff9900}
+.dealHome .storeQuick>.merchantLogo[data-merchant="AliExpress"]{color:#ea2b2b}
+.dealHome .storeQuick>.merchantLogo[data-merchant="Miravia"]{color:#7440cf}
+.dealHome .storeQuick>.merchantLogo[data-merchant="PcComponentes"]{color:#ed6a22}
+.dealHome .storeQuick>.merchantLogo>span{font-size:11px;line-height:1}
+.dealHome .offersSection{background:#e9eee9;padding-top:76px}
+.dealHome .dealGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.dealHome .dealCard{display:grid;grid-template-columns:minmax(155px,41%) minmax(0,1fr);min-height:306px;border:1px solid #ced8d0;border-radius:5px;box-shadow:5px 5px 0 #cad6cb;background:#fff;transition:transform .18s ease,box-shadow .18s ease}
+.dealHome .dealCard:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 #b4c8b8}
+.dealHome .dealCard .imageWrap{aspect-ratio:auto;height:100%;min-height:300px;border-right:1px solid #e1e7e0;background:#f6f8f5}
+.dealHome .dealCard .imageWrap img{object-fit:contain;padding:38px 16px 20px}
+.dealHome .dealCard .storeBadge{top:10px;left:10px;padding:0;border-radius:3px;background:none}
+.dealHome .dealCard .discountBadge{top:auto;bottom:12px;left:12px;padding:8px 11px;border-radius:3px;background:#152e2c;color:#fff;font-size:13px}
+.dealHome .dealCard .topDealBadge{display:none}
+.dealHome .dealCard .saveDealButton{top:10px;right:10px;border-radius:4px;box-shadow:none}
+.dealHome .dealCard .dealBody{padding:48px 17px 15px;min-width:0}
+.dealHome .dealCard .categoryLabel{margin:0 0 8px;color:#485e51;font-family:Arial,sans-serif;font-size:10px;letter-spacing:.09em}
+.dealHome .dealCard h3{min-height:0;margin:0 0 14px;font-size:18px;line-height:1.22;letter-spacing:-.035em;-webkit-line-clamp:3;color:#132b2b}
+.dealHome .dealCard .priceRow{display:grid;grid-template-columns:1fr auto;align-items:end;gap:4px 12px;width:100%;margin:auto 0 0;padding:11px 12px 9px;border:2px solid #132d2b;border-radius:3px;background:#f4f1df}
+.dealHome .dealCard .priceRow .priceCurrent{display:grid;gap:1px;color:#132d2b}
+.dealHome .dealCard .priceRow .priceCurrent small,.dealHome .dealCard .priceRow .priceWas small{color:#526456;font-size:9px;font-weight:900;letter-spacing:.1em}
+.dealHome .dealCard .priceRow strong{color:#0c2725;font-family:Arial,sans-serif;font-size:clamp(27px,3vw,38px);font-weight:950;letter-spacing:-.065em;line-height:1}
+.dealHome .dealCard .priceRow .priceWas{display:grid;gap:3px;align-self:center;color:#59665c;text-align:right}
+.dealHome .dealCard .priceRow .priceWas s{font-size:13px}
+.dealHome .dealCard .priceRow .saving{grid-column:1/-1;margin:4px -12px -9px;padding:5px 12px;border-top:1px solid #b5bca9;background:#d7e7d5;color:#144232;font-size:10px;font-weight:800;letter-spacing:.04em}
+.dealHome .dealCard .priceRow .saving b{font-size:12px}
+.dealHome .dealCard .coupon,.dealHome .dealCard .noCoupon{min-height:31px;margin-top:9px;border-radius:2px}
+.dealHome .dealCard .coupon{border-color:#b06640;background:#fff4e8}
+.dealHome .dealCard .coupon span{font-size:9px}
+.dealHome .dealCard .coupon b{color:#71351f;font-size:12px}
+.dealHome .dealCard .dealActions{display:flex;gap:7px;margin-top:10px}
+.dealHome .dealCard .dealButton{display:flex;flex:1;justify-content:space-between;align-items:center;min-height:40px;margin:0;padding:9px 11px;border-radius:2px;background:#133a35;color:#fff;font-size:12px;font-weight:850}
+.dealHome .dealCard .dealButton:hover{background:#0b5b4c}
+.dealHome .dealCard .shareDealButton{min-height:40px;align-self:auto;margin:0;padding:8px 9px;border:1px solid #bdcec2;border-radius:2px;background:#fff;color:#1e5145;text-decoration:none;font-size:10px}
+.dealHome .dealCard .verified{margin-top:9px;color:#50655b;font-size:10px}
+.postPage{background:#e8eeea;color:#162a28;min-height:100vh}
+.postPage .postArticle{max-width:1040px;padding:35px 0 90px}
+.postPage .postArticle>h1{max-width:850px;color:#112a27;font-size:clamp(38px,5.4vw,68px);line-height:1.05}
+.postPage .postBody{max-width:none;margin:36px 0 0;padding:clamp(26px,5vw,58px);border-left:8px solid #1e644b;background:#f8faf5;color:#182d2a;font-size:19px;line-height:1.74;box-shadow:7px 7px 0 #cbd8cd}
+.postPage .postBody p{max-width:730px}
+.postPage .postBody h2{max-width:770px;color:#143b35}
+.postPage .postBodyProductTitle{border-top:2px solid #b9cfc0}
+.postPage .postProductSelection article{border:1px solid #b9cdc0;border-radius:3px;box-shadow:4px 4px 0 #c2d3c5}
+.postPage .postProductSelection strong{color:#0a5138;font-size:26px;font-weight:900}
+.postPage .postProductSelection article>a{border-radius:2px;background:#153b35}
+.offerPage .offerPriceBox{border:2px solid #102e2b;border-radius:3px;background:#f5f0d9;box-shadow:5px 5px 0 #c8d4c4}
+.offerPage .offerPriceBox strong{color:#103a31;font-size:clamp(42px,6vw,65px);font-weight:950}
+.offerPage .offerCta{border-radius:3px;background:#103c34}
+.offerPage .storeBadge{padding:0;background:transparent}
+.offerPage .priceHistoryEmpty{border:1px solid #c1d1c3;background:#f4f8f2}
+.priceHistoryChart{display:block;width:100%;height:110px;margin:20px 0 8px;padding:10px;border:1px solid #bfd4c5;background:repeating-linear-gradient(to bottom,#ecf4ec 0,#ecf4ec 26px,#cfe1d2 27px)}
+@media(max-width:900px){.dealHome .dealGrid{grid-template-columns:1fr}.dealHome .dealCard{grid-template-columns:minmax(160px,35%) minmax(0,1fr)}}
+@media(max-width:580px){.dealHome .offersSection{padding-top:45px}.dealHome .dealGrid{gap:14px}.dealHome .dealCard{grid-template-columns:37% minmax(0,1fr);min-height:0;box-shadow:3px 3px 0 #cad6cb}.dealHome .dealCard .imageWrap{min-height:270px}.dealHome .dealCard .imageWrap img{padding:37px 8px 8px}.dealHome .dealCard .dealBody{padding:45px 10px 11px}.dealHome .dealCard h3{font-size:14px;margin-bottom:9px}.dealHome .dealCard .categoryLabel{font-size:9px}.dealHome .dealCard .priceRow{padding:8px;grid-template-columns:1fr}.dealHome .dealCard .priceRow strong{font-size:27px}.dealHome .dealCard .priceRow .priceWas{display:none}.dealHome .dealCard .priceRow .saving{margin:4px -8px -8px;padding:4px 8px}.dealHome .dealCard .coupon{grid-template-columns:1fr auto;gap:3px}.dealHome .dealCard .coupon span{display:none}.dealHome .dealCard .coupon i{font-size:9px}.dealHome .dealCard .shareDealButton{display:none}.dealHome .dealCard .verified{font-size:9px}.postPage .postBody{font-size:17px;padding:23px;border-left-width:5px}.postPage .postProductSelection article{grid-template-columns:80px 1fr}.postPage .postProductSelection img{width:80px;height:80px}.postPage .postProductSelection article>a{grid-column:1/-1;text-align:center}}
