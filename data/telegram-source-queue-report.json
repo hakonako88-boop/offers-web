@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-17T12:05:56.118Z",
+  "updatedAt": "2026-10-17T12:16:12.087Z",
   "summary": {
-    "ignored": 198,
     "rejected": 520,
+    "ignored": 197,
     "published": 42,
     "duplicate": 29,
-    "needs_review": 82,
-    "pending": 129
+    "needs_review": 85,
+    "pending": 127
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96109:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96109,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Esperando una nueva comprobación de AliExpress; el fallo anterior no cuenta como otro intento",
+      "sourceUrl": "https://t.me/una_ganga/96109",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-ofertos:44349:aliexpress:0",
       "source": "telegram-ofertos",
@@ -46,7 +59,7 @@
       "sourceUrl": "https://t.me/Ofertos/44348",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-17T12:45:56.118Z"
+      "nextAttemptAt": "2026-10-17T12:56:12.087Z"
     },
     {
       "id": "telegram-ofertos:44347:aliexpress:0",
@@ -72,7 +85,7 @@
       "sourceUrl": "https://t.me/Ofertos/44346",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-17T12:45:56.118Z"
+      "nextAttemptAt": "2026-10-17T12:56:12.087Z"
     },
     {
       "id": "telegram-ofertos:44345:aliexpress:0",
@@ -92,9 +105,9 @@
       "source": "telegram-paramanitas",
       "messageId": 4972,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/paramanitas/4972",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -105,9 +118,9 @@
       "source": "telegram-una-ganga",
       "messageId": 96107,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/96107",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -159,11 +172,11 @@
       "store": "Amazon",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceUrl": "https://t.me/Ofertos/44343",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-17T12:12:21.360Z"
+      "nextAttemptAt": "2026-10-17T13:36:12.087Z"
     },
     {
       "id": "telegram-ofertos:44342:amazon:0",
@@ -176,7 +189,7 @@
       "sourceUrl": "https://t.me/Ofertos/44342",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-17T13:25:56.118Z"
+      "nextAttemptAt": "2026-10-17T13:36:12.087Z"
     },
     {
       "id": "telegram-ofertos:44341:amazon:0",
@@ -189,7 +202,7 @@
       "sourceUrl": "https://t.me/Ofertos/44341",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-17T13:25:56.118Z"
+      "nextAttemptAt": "2026-10-17T13:36:12.087Z"
     },
     {
       "id": "telegram-ofertos:44340:amazon:0",
@@ -237,11 +250,11 @@
       "store": "Amazon",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceUrl": "https://t.me/Ofertos/44338",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-17T12:31:04.827Z"
+      "nextAttemptAt": "2026-10-17T13:36:12.087Z"
     },
     {
       "id": "telegram-ofertos:44337:aliexpress:0",
@@ -261,9 +274,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45728,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45728",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -1285,19 +1298,6 @@
     },
     {
       "id": "telegram-paramanitas:4965:amazon:3",
-      "source": "telegram-paramanitas",
-      "messageId": 4965,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/paramanitas/4965",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:4965:amazon:2",
       "source": "telegram-paramanitas",
       "messageId": 4965,
       "store": "Amazon",
