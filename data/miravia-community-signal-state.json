@@ -431,8 +431,8 @@
       "merchantUrl": "https://tidd.ly/47hiu7k",
       "sourceImageUrl": "https://cdn4.telesco.pe/file/mBHcjNF5Nd1VLIzRvDs83uMP7mk4Nbdrl2kdZnpT1ru2Lmd7xABtavoE13X5CZl-2WTtX_lNKYF_h2vVvCWlfba0Mwxlm446mlFcApFmhcUOEb1l6ywLQRMAKY7R_GhIx9Ct7cde8E2Li1zFVKqkgaEKJixZ7hyn3CvU_yoUUYI9oYSZ-ns4C8fxQLO-0_-MbpEOrzY3czGs1uuisjI3evEWKKNNnroAe-hrCz7Y1jehtg6GYVpHdwAVjM7xiARbZ1C5haMiGNpGpLSYcONv2Ec_-1sHtFuOVBsCp4PezTu1ekIORuTYtEe839CCZdg4gVShmnDT5T6WM9ITmI968g.jpg",
       "priority": false,
-      "retryPolicyVersion": "",
-      "attempts": 3
+      "retryPolicyVersion": "exact-official-page-v1",
+      "attempts": 0
     },
     {
       "id": "telegram-una-ganga:96018:miravia:0",
@@ -1459,18 +1459,18 @@
     }
   ],
   "attemptedQueueItemIds": [
-    "telegram-una-ganga:96009:miravia:0",
     "telegram-una-ganga:96012:miravia:0",
-    "telegram-una-ganga:96015:miravia:0"
+    "telegram-una-ganga:96015:miravia:0",
+    "telegram-una-ganga:96018:miravia:0"
   ],
   "signalRetryAfter": {},
-  "lastCheckedAt": "2026-10-17T18:52:32.709Z",
-  "micholloLastCheckedAt": "2026-10-17T12:54:11.916Z",
+  "lastCheckedAt": "2026-10-17T18:59:13.236Z",
+  "micholloLastCheckedAt": "2026-10-17T18:58:08.145Z",
   "sourceHealth": [
     {
       "source": "telegram-source-queue",
       "status": "ok",
-      "found": 120
+      "found": 116
     },
     {
       "source": "chollometro-subiendo",
@@ -1479,7 +1479,8 @@
     },
     {
       "source": "michollo",
-      "status": "deferred"
+      "status": "unavailable",
+      "detail": "incorrect header check"
     },
     {
       "source": "nolodejesescapar",
