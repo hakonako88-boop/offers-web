@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-17T06:22:03.968Z",
+  "updatedAt": "2026-10-17T06:32:01.067Z",
   "summary": {
-    "ignored": 179,
-    "rejected": 542,
+    "rejected": 543,
     "published": 42,
     "needs_review": 73,
+    "ignored": 178,
     "duplicate": 24,
     "pending": 140
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96094:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96094,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/96094",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-17T06:51:06.803Z"
+    },
     {
       "id": "telegram-una-ganga:96093:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -28,12 +41,12 @@
       "messageId": 45726,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/chollosdiario/45726",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-17T06:31:11.579Z"
+      "nextAttemptAt": "2026-10-17T07:12:01.067Z"
     },
     {
       "id": "telegram-una-ganga:96092:miravia:0",
@@ -53,13 +66,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96091,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/96091",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-17T06:22:19.205Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96090:aliexpress:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/96043",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertas-supermercados-es:2146:ignored",
-      "source": "telegram-ofertas-supermercados-es",
-      "messageId": 2146,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/OfertasSupermercadosES/2146",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
