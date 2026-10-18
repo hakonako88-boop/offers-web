@@ -153,7 +153,7 @@
       "sourceImageUrl": "https://cdn4.telesco.pe/file/QjkPZceD8GAi4Ke-MebIvwlGAxzLyRgGmehjDyRZ_YqXPw1piX5JUqYX3cpcVi4NobGcMVxMdZg_RMVwN44lL3JeF3a5u_dsAGdKRfVOrw3jQNIR82Rj8DVOMLq01natXvrCtsPWyEvnLncFm79R9gZGARESmKDmAmbMc1tXaf3gwJixkzoPAGys-BHa2m7xiqdfmBURnWpfjyqk3px6Upkxgv9ze3_SSL3ZSdHkNHqylEJzcqG0Z3n0orGtDcMvbS4105kwJqIOTNX4qTCe1dzkNQ1sD68iLJOeu_kE5HfoD8GKODSwlXmM5S0rHnGfbxBPDukza1hy9Ye3_Azwzw.jpg",
       "priority": false,
       "retryPolicyVersion": "",
-      "attempts": 1
+      "attempts": 2
     },
     {
       "id": "telegram-una-ganga:96072:miravia:0",
@@ -1154,13 +1154,13 @@
     "telegram-una-ganga:96070:miravia:0"
   ],
   "signalRetryAfter": {},
-  "lastCheckedAt": "2026-10-18T19:14:03.178Z",
-  "micholloLastCheckedAt": "2026-10-18T13:14:37.518Z",
+  "lastCheckedAt": "2026-10-18T19:23:34.970Z",
+  "micholloLastCheckedAt": "2026-10-18T19:23:17.988Z",
   "sourceHealth": [
     {
       "source": "telegram-source-queue",
       "status": "ok",
-      "found": 109
+      "found": 113
     },
     {
       "source": "chollometro-subiendo",
@@ -1169,7 +1169,8 @@
     },
     {
       "source": "michollo",
-      "status": "deferred"
+      "status": "unavailable",
+      "detail": "incorrect header check"
     },
     {
       "source": "nolodejesescapar",
