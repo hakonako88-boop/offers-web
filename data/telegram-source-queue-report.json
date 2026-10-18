@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-18T13:05:37.868Z",
+  "updatedAt": "2026-10-18T13:15:11.861Z",
   "summary": {
-    "rejected": 484,
+    "rejected": 485,
     "ignored": 212,
     "duplicate": 28,
     "needs_review": 107,
     "published": 42,
-    "pending": 127
+    "pending": 126
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96184:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96184,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Esperando una nueva comprobación de AliExpress; el fallo anterior no cuenta como otro intento",
+      "sourceUrl": "https://t.me/una_ganga/96184",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:96183:miravia:0",
       "source": "telegram-una-ganga",
@@ -33,7 +46,7 @@
       "sourceUrl": "https://t.me/chollosdiario/45737",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-18T13:11:18.583Z"
+      "nextAttemptAt": "2026-10-18T13:55:11.861Z"
     },
     {
       "id": "telegram-una-ganga:96182:amazon:0",
@@ -521,26 +534,26 @@
       "source": "telegram-ofertos",
       "messageId": 44381,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/Ofertos/44381",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-18T11:41:55.421Z",
-      "nextAttemptAt": "2026-10-18T13:11:07.449Z"
+      "lastCheckedAt": "2026-10-18T13:14:51.494Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:44381:miravia:0",
       "source": "telegram-ofertos",
       "messageId": 44381,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/Ofertos/44381",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-18T11:41:55.421Z",
-      "nextAttemptAt": "2026-10-18T13:11:07.449Z"
+      "lastCheckedAt": "2026-10-18T13:14:51.494Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:44380:amazon:0",
@@ -1285,19 +1298,6 @@
     },
     {
       "id": "telegram-paramanitas:4976:amazon:8",
-      "source": "telegram-paramanitas",
-      "messageId": 4976,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/paramanitas/4976",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:4976:amazon:7",
       "source": "telegram-paramanitas",
       "messageId": 4976,
       "store": "Amazon",
