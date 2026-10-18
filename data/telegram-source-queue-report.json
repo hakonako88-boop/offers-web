@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-18T13:35:48.835Z",
+  "updatedAt": "2026-10-18T13:44:51.101Z",
   "summary": {
-    "ignored": 212,
-    "rejected": 484,
+    "rejected": 485,
+    "ignored": 211,
     "duplicate": 28,
     "needs_review": 107,
     "published": 42,
     "pending": 127
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96186:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96186,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "sourceUrl": "https://t.me/una_ganga/96186",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-ofertas-supermercados-es:2147:ignored",
       "source": "telegram-ofertas-supermercados-es",
@@ -93,12 +106,12 @@
       "messageId": 7655,
       "store": "AliExpress",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/6)",
       "sourceUrl": "https://t.me/tiesometro/7655",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-18T12:51:44.150Z",
-      "nextAttemptAt": "2026-10-18T13:35:16.479Z"
+      "lastCheckedAt": "2026-10-18T13:41:56.893Z",
+      "nextAttemptAt": "2026-10-18T15:04:51.101Z"
     },
     {
       "id": "telegram-una-ganga:96181:aliexpress:0",
@@ -235,13 +248,13 @@
       "source": "telegram-chollosdiario",
       "messageId": 45736,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/chollosdiario/45736",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-18T13:41:24.791Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96176:amazon:0",
@@ -1285,19 +1298,6 @@
     },
     {
       "id": "telegram-paramanitas:4976:amazon:11",
-      "source": "telegram-paramanitas",
-      "messageId": 4976,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/paramanitas/4976",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:4976:amazon:10",
       "source": "telegram-paramanitas",
       "messageId": 4976,
       "store": "Amazon",
