@@ -13,8 +13,10 @@ import {
   parseTelegramPublicMessages,
   publisherDispatchDecision,
   recentNoloPosts,
+  retainSourceQueueItems,
   retryableQueueCount,
 } from '../scripts/check-telegram-source-changes.mjs';
+import { prioritizeAliExpressSignals } from '../scripts/source-queue-priority.mjs';
 import {
   isSourceItemReady,
   nextSourceRetryAt,
@@ -28,6 +30,25 @@ test('counts each real product diagnostic once instead of burning attempts on st
   assert.equal(hasNewSourceDiagnostic({ lastCountedDiagnosticAt: checkedAt }, { checkedAt }), false);
   assert.equal(hasNewSourceDiagnostic({ lastCountedDiagnosticAt: checkedAt }, { checkedAt: '2026-10-11T10:20:00Z' }), true);
   assert.equal(hasNewSourceDiagnostic({}, {}), false);
+});
+
+test('retains pending offers even when the completed queue reaches its cap', () => {
+  const items = [
+    { id: 'pending-old', status: 'pending', createdAt: '2026-10-01T00:00:00Z' },
+    { id: 'done-old', status: 'rejected', createdAt: '2026-10-02T00:00:00Z' },
+    { id: 'done-new', status: 'published', createdAt: '2026-10-03T00:00:00Z' },
+  ];
+  assert.deepEqual(retainSourceQueueItems(items, 1).map((item) => item.id), ['pending-old', 'done-new']);
+});
+
+test('drains older AliExpress links and keeps a slot for NoLo discovery', () => {
+  const signals = [
+    { id: 'new', sourceStore: 'AliExpress', queueItemId: 'new', publishedAt: '2026-10-18T10:00:00Z' },
+    { id: 'other', sourceStore: 'AliExpress', source: 'other', publishedAt: '2026-10-18T11:00:00Z' },
+    { id: 'nolo', sourceStore: 'AliExpress', source: 'nolodejesescapar', publishedAt: '2026-10-18T09:00:00Z' },
+    { id: 'old', sourceStore: 'AliExpress', queueItemId: 'old', publishedAt: '2026-10-17T10:00:00Z' },
+  ];
+  assert.deepEqual(prioritizeAliExpressSignals(signals).map((signal) => signal.id), ['old', 'new', 'nolo', 'other']);
 });
 
 test('spaces failed source checks and only wakes work whose retry time has arrived', () => {

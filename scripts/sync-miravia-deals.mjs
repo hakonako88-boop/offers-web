@@ -29,7 +29,7 @@ import { miraviaAffiliateUrl, miraviaProductIdFromUrl } from './miravia-affiliat
 import { resolveMiraviaFeedMetadata } from './miravia-link-metadata.mjs';
 import { extractProductMetadata } from './link-offer-extractor.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
-import { isSourceRetryReady } from './source-retry-policy.mjs';
+import { isSourceItemReady, isSourceRetryReady } from './source-retry-policy.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'miravia-discovery-state.json');
@@ -44,6 +44,13 @@ const MAX_CANDIDATES = 60;
 const MINIMUM_PUBLICATION_INTERVAL_MS = 8 * 60 * 1000;
 const COMMUNITY_REFRESH_MS = 2 * 60 * 60 * 1000;
 const COMMUNITY_SIGNAL_RETENTION_MS = 48 * 60 * 60 * 1000;
+const QUEUED_SIGNAL_RETENTION_MS = 7 * 24 * 60 * 60 * 1000;
+
+function retainedSignal(signal) {
+  const publishedAt = Date.parse(signal.publishedAt || '');
+  const ageLimit = signal.queueItemId ? QUEUED_SIGNAL_RETENTION_MS : COMMUNITY_SIGNAL_RETENTION_MS;
+  return !Number.isFinite(publishedAt) || publishedAt > Date.now() - ageLimit;
+}
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -391,15 +398,14 @@ const canPublishToday = process.env.FORCE_AUTOMATIC_PUBLICATION === 'true'
   || (Date.now() - lastPublicationAt) >= MINIMUM_PUBLICATION_INTERVAL_MS;
 const publicationPolicy = publicationAllowance({ store: 'Miravia', offers: existingWebOffers, bypass: scheduleBypassEnabled() });
 
-const signalCutoff = Date.now() - COMMUNITY_SIGNAL_RETENTION_MS;
 const priorSignalRetryAfter = Object.fromEntries(Object.entries(storedCommunityState.signalRetryAfter || {})
   .filter(([, retryAt]) => Date.parse(retryAt) > Date.now()));
 const pendingMiraviaQueueIds = new Set(readJson(path.join(ROOT, 'data', 'telegram-source-queue.json'), { items: [] }).items
-  .filter((item) => item.status === 'pending' && item.store === 'Miravia')
+  .filter((item) => item.store === 'Miravia' && isSourceItemReady(item))
   .map((item) => item.id));
 let communitySignals = (storedCommunityState.recentSignals || [])
   .filter((signal) => signal.sourceStore === 'Miravia')
-  .filter((signal) => !Number.isFinite(Date.parse(signal.publishedAt || '')) || Date.parse(signal.publishedAt) > signalCutoff);
+  .filter(retainedSignal);
 const lastCommunityCheck = Date.parse(storedCommunityState.lastCheckedAt || '');
 let communityHealth = storedCommunityState.sourceHealth || [];
 let micholloLastCheckedAt = storedCommunityState.micholloLastCheckedAt;
@@ -408,8 +414,10 @@ if (process.env.TELEGRAM_SOURCE_QUEUE_MODE === 'true' || !Number.isFinite(lastCo
   const mergedSignals = new Map(communitySignals.map((signal) => [signal.id, signal]));
   for (const signal of discovery.signals.filter((entry) => entry.sourceStore === 'Miravia')) mergedSignals.set(signal.id, signal);
   communitySignals = [...mergedSignals.values()]
-    .filter((signal) => !Number.isFinite(Date.parse(signal.publishedAt || '')) || Date.parse(signal.publishedAt) > signalCutoff)
-    .filter((signal) => signal.queueItemId || isSourceRetryReady(priorSignalRetryAfter[signal.id]))
+    .filter(retainedSignal)
+    .filter((signal) => signal.queueItemId
+      ? pendingMiraviaQueueIds.has(signal.queueItemId)
+      : isSourceRetryReady(priorSignalRetryAfter[signal.id]))
     .sort((left, right) => Number(right.sourceWeight || 0) - Number(left.sourceWeight || 0))
     .slice(0, 80);
   communityHealth = discovery.sourceHealth;
@@ -440,7 +448,10 @@ if (!feed) throw new Error('No Spanish Miravia product feed is available for thi
 // affiliate tracking is reused.
 const exactQueueCandidates = [];
 const attemptedQueueItemIds = [];
-for (const signal of communitySignals.filter((entry) => pendingMiraviaQueueIds.has(entry.queueItemId)).slice(0, 3)) {
+for (const signal of communitySignals
+  .filter((entry) => pendingMiraviaQueueIds.has(entry.queueItemId))
+  .sort((left, right) => Date.parse(left.publishedAt || '') - Date.parse(right.publishedAt || ''))
+  .slice(0, 5)) {
   attemptedQueueItemIds.push(signal.queueItemId);
   try {
     const destinationUrl = await resolvedMiraviaSignalUrl(signal);

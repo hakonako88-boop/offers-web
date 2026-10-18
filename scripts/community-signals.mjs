@@ -404,7 +404,10 @@ export function parseMicholloSitemap(source, compressedXml, limit = 10) {
 
 function isFresh(signal, now) {
   const publishedAt = Date.parse(signal.publishedAt || '');
-  const maxAge = signal.source === 'nolodejesescapar' ? MAX_NOLO_SIGNAL_AGE_MS : MAX_SIGNAL_AGE_MS;
+  // Queued links have a verified original posting time and are checked again
+  // against the retailer before publication. Give the backlog a week to drain;
+  // the previous 48-hour cut-off silently stranded legitimate pending links.
+  const maxAge = signal.queueItemId || signal.source === 'nolodejesescapar' ? MAX_NOLO_SIGNAL_AGE_MS : MAX_SIGNAL_AGE_MS;
   return !Number.isFinite(publishedAt) || now - publishedAt <= maxAge;
 }
 

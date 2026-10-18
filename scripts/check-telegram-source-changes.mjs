@@ -29,6 +29,14 @@ const WEB_OFFERS_PATH = path.join(ROOT, 'data', 'offers.json');
 const NOLO_SIGNAL_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 const MAX_HISTORY_PAGES = 8;
 const MAX_QUEUE_ITEMS = 1_000;
+export function retainSourceQueueItems(items = [], completedLimit = MAX_QUEUE_ITEMS) {
+  const ordered = [...items].sort((left, right) => Date.parse(left.createdAt || '') - Date.parse(right.createdAt || ''));
+  // A fixed tail previously discarded unverified offers once 1,000 old
+  // rejections accumulated. Never silently evict work that is still pending.
+  const completed = ordered.filter((item) => item.status !== 'pending').slice(-completedLimit);
+  return [...ordered.filter((item) => item.status === 'pending'), ...completed]
+    .sort((left, right) => Date.parse(left.createdAt || '') - Date.parse(right.createdAt || ''));
+}
 export function retryableQueueCount(items = [], now = new Date()) {
   return retryableAliExpressQueueCount(items, now);
 }
@@ -387,9 +395,7 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
   };
   const persistedQueue = {
     version: 1,
-    items: [...queueItems.values()]
-      .sort((left, right) => Date.parse(left.createdAt || '') - Date.parse(right.createdAt || ''))
-      .slice(-MAX_QUEUE_ITEMS),
+    items: retainSourceQueueItems([...queueItems.values()]),
   };
   const queueChanged = JSON.stringify(persistedQueue) !== JSON.stringify(oldQueue);
   if (stateChanged) {

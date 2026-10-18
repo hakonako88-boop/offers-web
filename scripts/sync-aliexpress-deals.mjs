@@ -19,6 +19,7 @@ import { filterDuplicateDeals, recentDeals, telegramMessageIdForProduct } from '
 import { resolveAliExpressAffiliateProduct, waitForAliExpressApiSlot } from './aliexpress-link-resolver.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
+import { prioritizeAliExpressSignals } from './source-queue-priority.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'aliexpress-discovery-state.json');
@@ -37,6 +38,7 @@ const REPUBLICATION_COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000;
 // Ofertos and ChollosDiario can publish several products close together. Read
 // a broad batch and let later ten-minute source runs drain any remainder.
 const MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE ? 24 : 8;
+const MAX_QUEUE_QUERIES_PER_RUN = SOURCE_QUEUE_MODE ? 16 : 6;
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -411,23 +413,17 @@ const communityStateForDiscovery = {
 };
 const communityDiscovery = await discoverCommunitySignals({ state: communityStateForDiscovery });
 const communitySignals = [];
-const orderedCommunitySignals = [...communityDiscovery.signals].filter((signal) => signal.source === 'nolodejesescapar'
+const orderedCommunitySignals = prioritizeAliExpressSignals(communityDiscovery.signals.filter((signal) => signal.source === 'nolodejesescapar'
   ? publicationAllowance({ store: signal.sourceStore, offers: existingWebOffers, source: signal.source }).allowed
-  : canCheckCommunitySignals).sort((left, right) => {
-  // A direct product link taken from an owner-approved Telegram channel is
-  // more useful than a broad community-search signal.  Process those exact
-  // links first so that a real post cannot remain "pending its turn" while
-  // unrelated discovery pages consume the validation batch.
-  const leftQueuedAli = left.queueItemId && left.sourceStore === 'AliExpress' ? 1 : 0;
-  const rightQueuedAli = right.queueItemId && right.sourceStore === 'AliExpress' ? 1 : 0;
-  return rightQueuedAli - leftQueuedAli || Date.parse(right.publishedAt || '') - Date.parse(left.publishedAt || '');
-});
+  : canCheckCommunitySignals));
 // Drain exact queued Telegram links before generic discovery.  The per-run
 // cap and every factual/affiliate validation still apply.  This is deliberate:
 // Telegram is the user's editorial source of truth, whereas the community
 // pages are only a fallback when its channels are quiet.
 for (const signal of orderedCommunitySignals.filter((entry) => entry.queueItemId && entry.sourceStore === 'AliExpress')) {
-  if (communitySignals.length >= MAX_COMMUNITY_QUERIES_PER_RUN) break;
+  // Reserve room for fresh NoLoDejesEscapar products too. Otherwise a full
+  // Telegram backlog prevented their AliExpress offers from being checked.
+  if (communitySignals.length >= MAX_QUEUE_QUERIES_PER_RUN) break;
   communitySignals.push(signal);
 }
 
