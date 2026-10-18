@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-18T07:13:23.197Z",
+  "updatedAt": "2026-10-18T07:22:33.812Z",
   "summary": {
     "rejected": 512,
-    "ignored": 208,
+    "ignored": 209,
     "duplicate": 27,
     "needs_review": 95,
     "published": 37,
-    "pending": 121
+    "pending": 120
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96167:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96167,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/96167",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-18T07:41:31.596Z"
+    },
     {
       "id": "telegram-paramanitas:4980:amazon:0",
       "source": "telegram-paramanitas",
@@ -66,13 +79,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96164,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/96164",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-18T07:21:59.520Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96163:aliexpress:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "2026-10-17T18:22:57.448Z",
       "nextAttemptAt": "2026-10-17T19:46:19.274Z"
-    },
-    {
-      "id": "telegram-una-ganga:96121:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 96121,
-      "store": "AliExpress",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo producto ya se publicó durante los últimos 14 días; se evita repetirlo",
-      "sourceUrl": "https://t.me/una_ganga/96121",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-10-17T16:30:25.841Z",
-      "nextAttemptAt": ""
     }
   ]
 }
