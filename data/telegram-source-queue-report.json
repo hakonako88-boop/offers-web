@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-10-19T18:24:09.216Z",
+  "updatedAt": "2026-10-19T18:38:50.291Z",
   "summary": {
-    "rejected": 617,
+    "rejected": 618,
     "needs_review": 92,
     "ignored": 229,
     "duplicate": 20,
@@ -9,6 +9,19 @@
     "pending": 111
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:44465:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 44465,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/44465",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-19T19:11:54.250Z"
+    },
     {
       "id": "telegram-una-ganga:96279:amazon:0",
       "source": "telegram-una-ganga",
@@ -171,12 +184,12 @@
       "messageId": 96276,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/96276",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-19T18:36:16.728Z"
+      "nextAttemptAt": "2026-10-19T19:18:50.291Z"
     },
     {
       "id": "telegram-ofertos:44456:amazon:0",
@@ -184,12 +197,12 @@
       "messageId": 44456,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/Ofertos/44456",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-19T18:36:16.728Z"
+      "nextAttemptAt": "2026-10-19T19:18:50.291Z"
     },
     {
       "id": "telegram-tiesometro:7668:aliexpress:0",
@@ -275,12 +288,12 @@
       "messageId": 44452,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/Ofertos/44452",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-19T18:36:16.728Z"
+      "nextAttemptAt": "2026-10-19T19:18:50.291Z"
     },
     {
       "id": "telegram-ofertos:44451:amazon:0",
@@ -288,12 +301,12 @@
       "messageId": 44451,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/Ofertos/44451",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-19T18:36:16.728Z"
+      "nextAttemptAt": "2026-10-19T19:18:50.291Z"
     },
     {
       "id": "telegram-tiesometro:7666:aliexpress:0",
@@ -417,13 +430,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96271,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/96271",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-19T17:03:29.033Z",
-      "nextAttemptAt": "2026-10-19T18:23:46.338Z"
+      "lastCheckedAt": "2026-10-19T18:38:34.849Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96270:amazon:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "2026-10-19T13:35:28.539Z",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:4992:amazon:0",
-      "source": "telegram-paramanitas",
-      "messageId": 4992,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/4992",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-19T08:21:35.330Z"
     }
   ]
 }
