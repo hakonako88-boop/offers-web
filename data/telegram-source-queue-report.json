@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-19T14:15:02.089Z",
+  "updatedAt": "2026-10-19T14:29:22.483Z",
   "summary": {
-    "ignored": 224,
-    "needs_review": 106,
-    "rejected": 609,
     "duplicate": 23,
+    "needs_review": 105,
+    "ignored": 222,
+    "rejected": 609,
     "published": 42,
-    "pending": 97
+    "pending": 96
   },
   "recent": [
     {
@@ -67,12 +67,12 @@
       "messageId": 96263,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/96263",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-19T13:54:39.924Z",
-      "nextAttemptAt": "2026-10-19T14:14:55.637Z"
+      "lastCheckedAt": "2026-10-19T14:29:04.281Z",
+      "nextAttemptAt": "2026-10-19T15:09:22.483Z"
     },
     {
       "id": "telegram-una-ganga:96262:amazon:0",
@@ -81,11 +81,11 @@
       "store": "Amazon",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceUrl": "https://t.me/una_ganga/96262",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-19T14:24:26.225Z"
+      "nextAttemptAt": "2026-10-19T15:49:22.483Z"
     },
     {
       "id": "telegram-una-ganga:96261:aliexpress:0",
@@ -560,13 +560,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96248,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/96248",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-19T13:06:01.406Z",
-      "nextAttemptAt": "2026-10-19T14:26:20.818Z"
+      "lastCheckedAt": "2026-10-19T14:29:04.281Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:44434:amazon:0",
