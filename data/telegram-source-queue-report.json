@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-10-19T19:22:38.316Z",
+  "updatedAt": "2026-10-19T19:35:22.940Z",
   "summary": {
-    "rejected": 618,
+    "rejected": 619,
     "ignored": 230,
     "duplicate": 20,
     "published": 42,
@@ -9,6 +9,19 @@
     "pending": 111
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96282:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96282,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/96282",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-19T20:11:07.413Z"
+    },
     {
       "id": "telegram-tiesometro:7670:aliexpress:0",
       "source": "telegram-tiesometro",
@@ -378,13 +391,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96274,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/96274",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-19T18:02:58.574Z",
-      "nextAttemptAt": "2026-10-19T19:23:16.388Z"
+      "lastCheckedAt": "2026-10-19T19:35:04.532Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:44450:amazon:0",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/Ofertos/44425",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:44426:miravia:0",
-      "source": "telegram-ofertos",
-      "messageId": 44426,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/Ofertos/44426",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-10-19T13:35:28.539Z",
       "nextAttemptAt": ""
     }
   ]
