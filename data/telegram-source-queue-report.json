@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-19T03:02:11.456Z",
+  "updatedAt": "2026-10-19T03:12:38.405Z",
   "summary": {
-    "rejected": 550,
+    "rejected": 554,
     "published": 40,
-    "ignored": 218,
+    "ignored": 219,
     "needs_review": 103,
     "duplicate": 26,
-    "pending": 111
+    "pending": 107
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96231:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96231,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/96231",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:96230:miravia:0",
       "source": "telegram-una-ganga",
@@ -54,12 +67,12 @@
       "messageId": 96227,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/96227",
       "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-10-19T03:12:21.089Z",
+      "nextAttemptAt": "2026-10-19T03:32:38.405Z"
     },
     {
       "id": "telegram-una-ganga:96226:amazon:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-tiesometro:7656:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7656,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 4,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/tiesometro/7656",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-10-18T16:52:41.836Z",
-      "nextAttemptAt": "2026-10-18T19:34:52.417Z"
     }
   ]
 }
