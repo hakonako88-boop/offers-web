@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-10-19T17:03:46.338Z",
+  "updatedAt": "2026-10-19T17:13:35.180Z",
   "summary": {
-    "rejected": 615,
-    "ignored": 226,
     "needs_review": 99,
+    "rejected": 615,
+    "ignored": 224,
     "duplicate": 21,
     "published": 42,
-    "pending": 102
+    "pending": 103
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7667:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7667,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/tiesometro/7667",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-una-ganga:96275:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96275,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/96275",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-ofertos:44453:amazon:0",
       "source": "telegram-ofertos",
@@ -67,12 +93,12 @@
       "messageId": 96274,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/96274",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-19T16:45:26.026Z",
-      "nextAttemptAt": "2026-10-19T17:05:42.696Z"
+      "lastCheckedAt": "2026-10-19T17:13:20.075Z",
+      "nextAttemptAt": "2026-10-19T17:53:35.180Z"
     },
     {
       "id": "telegram-ofertos:44450:amazon:0",
@@ -183,13 +209,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96270,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/96270",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-19T17:05:15.405Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96269:aliexpress:0",
@@ -1281,32 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/96236",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-19T10:43:51.997Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:96235:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 96235,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/96235",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:96234:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 96234,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/una_ganga/96234",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
