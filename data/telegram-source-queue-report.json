@@ -1,22 +1,48 @@
 {
-  "updatedAt": "2026-10-19T07:24:39.926Z",
+  "updatedAt": "2026-10-19T07:34:40.110Z",
   "summary": {
-    "rejected": 574,
+    "rejected": 575,
     "published": 40,
     "ignored": 222,
-    "needs_review": 107,
+    "needs_review": 109,
     "duplicate": 26,
-    "pending": 96
+    "pending": 95
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:44420:miravia:1",
+      "source": "telegram-ofertos",
+      "messageId": 44420,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/Ofertos/44420",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-10-19T07:34:22.885Z",
+      "nextAttemptAt": "2026-10-19T07:54:40.110Z"
+    },
+    {
+      "id": "telegram-ofertos:44420:miravia:0",
+      "source": "telegram-ofertos",
+      "messageId": 44420,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/Ofertos/44420",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-10-19T07:34:22.885Z",
+      "nextAttemptAt": "2026-10-19T07:54:40.110Z"
+    },
     {
       "id": "telegram-paramanitas:4991:amazon:0",
       "source": "telegram-paramanitas",
       "messageId": 4991,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/paramanitas/4991",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -27,9 +53,9 @@
       "source": "telegram-una-ganga",
       "messageId": 96244,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/96244",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -366,12 +392,12 @@
       "messageId": 96221,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/96221",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-19T06:45:13.797Z",
-      "nextAttemptAt": "2026-10-19T07:25:31.689Z"
+      "lastCheckedAt": "2026-10-19T07:34:22.885Z",
+      "nextAttemptAt": "2026-10-19T08:54:40.110Z"
     },
     {
       "id": "telegram-una-ganga:96220:amazon:0",
@@ -405,12 +431,12 @@
       "messageId": 96218,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/96218",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-19T06:45:13.797Z",
-      "nextAttemptAt": "2026-10-19T07:25:31.689Z"
+      "lastCheckedAt": "2026-10-19T07:34:22.885Z",
+      "nextAttemptAt": "2026-10-19T08:54:40.110Z"
     },
     {
       "id": "telegram-chollosdiario:45743:amazon:0",
@@ -521,13 +547,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96212,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/96212",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-19T06:10:21.252Z",
-      "nextAttemptAt": "2026-10-19T07:30:40.294Z"
+      "lastCheckedAt": "2026-10-19T07:34:22.885Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96210:amazon:0",
@@ -1281,32 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/96198",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-19T06:55:17.124Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:44400:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 44400,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/44400",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-chollosdiario:45739:amazon:0",
-      "source": "telegram-chollosdiario",
-      "messageId": 45739,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/chollosdiario/45739",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
