@@ -14,9 +14,9 @@ export const metadata: Metadata = {
     title: `${title} | Chollos al Día`,
     description,
     url: "/",
-    images: [{ url: "/og-chollosaldia-v2.png", width: 1731, height: 909, alt: "Chollos al Día: ofertas verificadas y ahorro real" }],
+    images: [{ url: "/og-chollosaldia-v3.png", width: 1200, height: 630, alt: "Chollos al Día: los chollos que sí merecen tu atención" }],
   },
-  twitter: { card: "summary_large_image", title: `${title} | Chollos al Día`, description, images: ["/og-chollosaldia-v2.png"] },
+  twitter: { card: "summary_large_image", title: `${title} | Chollos al Día`, description, images: ["/og-chollosaldia-v3.png"] },
 };
 
 const websiteSchema = {

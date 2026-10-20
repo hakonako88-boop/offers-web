@@ -4,6 +4,7 @@ import AnalyticsConsent from "./components/AnalyticsConsent";
 import { adsenseClientId, adsenseEnabled } from "./lib/adsense";
 import "./globals.css";
 import "./redesign.css";
+import "./identity.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -30,9 +31,9 @@ export const metadata: Metadata = {
     siteName: "Chollos al Día",
     title: "Chollos al Día | Chollos, ofertas y cupones de hoy",
     description: "Chollos seleccionados, precios claros y enlaces directos para comprar mejor.",
-    images: [{ url: "/og-chollosaldia-v2.png", width: 1731, height: 909, alt: "Chollos al Día, ofertas verificadas y ahorro real" }],
+    images: [{ url: "/og-chollosaldia-v3.png", width: 1200, height: 630, alt: "Chollos al Día: los chollos que sí merecen tu atención" }],
   },
-  twitter: { card: "summary_large_image", title: "Chollos al Día", description: "Ofertas verificadas y ahorro real.", images: ["/og-chollosaldia-v2.png"] },
+  twitter: { card: "summary_large_image", title: "Chollos al Día", description: "Precios sin ruido y ofertas para comprar mejor.", images: ["/og-chollosaldia-v3.png"] },
   robots: {
     index: true,
     follow: true,
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
   ...(adsenseEnabled ? { other: { "google-adsense-account": adsenseClientId } } : {}),
 };
 
-export const viewport: Viewport = { themeColor: "#143247", colorScheme: "light" };
+export const viewport: Viewport = { themeColor: "#171832", colorScheme: "light" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
