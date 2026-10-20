@@ -52,6 +52,21 @@ body{background:var(--paper);color:var(--ink)}
 .merchantLogo[data-merchant="Xiaomi"]{border-color:#ff6900;background:#ff6900;color:#fff}
 .merchantLogo[data-merchant="El Corte Inglés"]{border-color:#087c4d;background:#087c4d;color:#fff;font-size:10px}
 .dealHome .storeQuick>.merchantLogo>span{font-size:inherit}
+.merchantLogo,.dealHome .storeQuick>.merchantLogo{min-width:0;height:38px;gap:6px;padding:5px 8px;border:1px solid #dddeda;background:#fff;color:#171832;box-shadow:0 2px 4px rgb(23 24 50 / 7%)}
+.merchantLogo[data-merchant="Amazon"],.dealHome .storeQuick>.merchantLogo[data-merchant="Amazon"]{box-shadow:0 2px 4px rgb(23 24 50 / 7%)}
+.merchantLogo[data-merchant="Xiaomi"],.merchantLogo[data-merchant="El Corte Inglés"]{border-color:#dddeda;background:#fff;color:#171832}
+.merchantLogo img{display:block;width:auto;max-width:98px;height:auto;max-height:25px;object-fit:contain}
+.merchantLogo[data-merchant="Amazon"] img{max-width:73px}
+.merchantLogo[data-merchant="AliExpress"] img{max-width:83px}
+.merchantLogo[data-merchant="MediaMarkt"] img{max-width:81px}
+.merchantLogo[data-merchant="El Corte Inglés"] img{max-width:39px}
+.merchantLogo[data-merchant="Miravia"] img,.merchantLogo[data-merchant="Xiaomi"] img,.merchantLogo[data-merchant="PcComponentes"] img{max-width:26px}
+.merchantLogo .merchantName{font-family:Arial,sans-serif;font-size:11px;font-weight:800;letter-spacing:-.035em;white-space:nowrap}
+.merchantLogo[data-merchant="PcComponentes"] .merchantName,.merchantLogo[data-merchant="El Corte Inglés"] .merchantName{font-size:10px}
+.dealHome .storeQuick>.merchantLogo{flex:0 0 auto}
+.sectionStoreIdentity{display:inline-flex;align-items:center;gap:9px;min-width:0}
+.storeDirectoryGrid .sectionCover .sectionStoreIdentity>.merchantLogo{flex:0 0 auto}
+.sectionStoreIdentity>span:last-child{color:#fff;font-size:13px;font-weight:850;letter-spacing:-.02em}
 .dealHome .offersSection{padding-top:76px;border-block:1px solid #e2e1db;background:#fff;box-shadow:none}
 .dealHome .sectionIntro h2,.blogHub .sectionIntro h2{color:#171832}
 .dealHome .sectionIntro h2::after{display:block;width:72px;height:6px;margin-top:16px;border-radius:5px;background:#ed503e;content:''}
