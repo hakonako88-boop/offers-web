@@ -33,7 +33,9 @@ function numericPrice(value = '') {
 }
 
 function clean(value = '', maximum = 150) {
-  const text = String(value).replace(/[*_`<>#[\]]/gu, '').replace(/\s+/gu, ' ').trim();
+  const text = String(value)
+    .replace(/&#(\d+);/gu, (match, code) => { const point = Number(code); return point > 0 && point <= 0x10ffff ? String.fromCodePoint(point) : match; })
+    .replace(/[*_`<>#[\]]/gu, '').replace(/\s+/gu, ' ').trim();
   return text.length > maximum ? `${text.slice(0, maximum - 1).trimEnd()}…` : text;
 }
 
@@ -71,11 +73,13 @@ export function selectWeeklyProducts(offers, now = new Date(), maximum = 5) {
     const coupon = Boolean(String(offer.coupon || '').trim());
     const store = String(offer.store || '').toLowerCase();
     const credibleMarketplacePrice = !store.includes('aliexpress') || coupon || (discount <= 50 && previous <= price * 2);
-    const credibleHighValueReference = price <= 250 || previous <= price * 2 || coupon;
+    // Even inexpensive catalogue products can advertise an implausible PVP.
+    // Exclude uncorroborated 4x/5x comparisons from a "best of" article.
+    const credibleReference = previous <= price * (price > 250 ? 2.5 : 3);
     return !/removed|daily-summary|campaign/iu.test(String(offer.source || ''))
       && !offer.expired && !offer.removed
       && timestamp >= earliest && timestamp <= newest && price > 0 && previous > price
-      && credibleMarketplacePrice && credibleHighValueReference
+      && credibleMarketplacePrice && credibleReference
       && String(offer.image || '').trim() && /^https?:\/\//iu.test(String(offer.url || ''));
   })).map((offer) => ({ ...offer, weeklyScore: score(offer) }))
     .sort((left, right) => right.weeklyScore - left.weeklyScore || Number(right.date) - Number(left.date));
