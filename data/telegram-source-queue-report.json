@@ -1,26 +1,39 @@
 {
-  "updatedAt": "2026-10-20T03:03:00.094Z",
+  "updatedAt": "2026-10-20T03:12:45.619Z",
   "summary": {
-    "duplicate": 20,
     "rejected": 621,
     "ignored": 228,
     "published": 42,
     "needs_review": 90,
-    "pending": 95
+    "duplicate": 19,
+    "pending": 96
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96305:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96305,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/96305",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:96304:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 96304,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/96304",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-20T02:42:24.516Z",
-      "nextAttemptAt": "2026-10-20T03:02:41.861Z"
+      "lastCheckedAt": "2026-10-20T03:12:26.327Z",
+      "nextAttemptAt": "2026-10-20T03:52:45.619Z"
     },
     {
       "id": "telegram-una-ganga:96303:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/96262",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:96261:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 96261,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/una_ganga/96261",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
