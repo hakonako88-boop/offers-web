@@ -59,7 +59,9 @@ function offerCountLabel(total: number) {
 }
 
 export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: Deal[]; posts: PublishedPost[]; summary: DealSummary }) {
-  const featuredPost = posts.find((post) => /^mejores-productos-(?:dia|semana)-/u.test(post.id));
+  const newestOfferDate = Date.parse(initialDeals[0]?.verifiedDate || "");
+  const featuredPost = posts.find((post) => /^mejores-productos-(?:dia|semana)-/u.test(post.id)
+    && Number.isFinite(newestOfferDate) && newestOfferDate - Date.parse(post.publishedAt) < 7 * 24 * 60 * 60 * 1000);
   const [deals] = useState<Deal[]>(initialDeals);
   const [visibleLimit, setVisibleLimit] = useState(12);
   const [category, setCategory] = useState("Todos");
@@ -188,7 +190,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
     <main className="dealHome" id="inicio">
       <div className="announcement" role="status">
         <div className="shell announcementInner">
-          <span><b>Actualizado a diario</b> · precios y enlaces comprobados</span>
+          <span><b>Ofertas recientes</b> · confirma precio y disponibilidad en la tienda</span>
           <a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Alertas en Telegram <span aria-hidden="true">↗</span></a>
         </div>
       </div>
@@ -243,7 +245,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           </div>
           <ul className="trustList" aria-label="Compromisos de Chollos al Día">
             <li>Precios a la vista</li>
-            <li>Ofertas revisadas</li>
+            <li>Datos publicados con fecha</li>
             <li>Alertas gratis</li>
           </ul>
         </div>
@@ -259,10 +261,10 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
       </section>}
 
       <section className="storeRail shell" aria-label="Explorar ofertas por tienda">
-        <div className="storeRailLead"><span className="liveDot" aria-hidden="true" /><div><b>{summary.total} ofertas activas</b><small>Actualizadas durante el día</small></div></div>
+        <div className="storeRailLead"><span className="liveDot" aria-hidden="true" /><div><b>{summary.total} ofertas recientes</b><small>Comprueba el precio final en la tienda</small></div></div>
         <a className="storeQuick storeQuickAmazon" href="/ofertas/amazon"><StoreLogo store="Amazon" /><div><b>Amazon</b><small>{offerCountLabel(storeTotals.Amazon)}</small></div><i aria-hidden="true">→</i></a>
         <a className="storeQuick storeQuickAli" href="/ofertas/aliexpress"><StoreLogo store="AliExpress" /><div><b>AliExpress</b><small>{offerCountLabel(storeTotals.AliExpress)}</small></div><i aria-hidden="true">→</i></a>
-        <a className="storeQuick storeQuickMiravia" href="/ofertas/miravia"><StoreLogo store="Miravia" /><div><b>Miravia</b><small>{offerCountLabel(storeTotals.Miravia)}</small></div><i aria-hidden="true">→</i></a>
+        {storeTotals.Miravia > 0 && <a className="storeQuick storeQuickMiravia" href="/ofertas/miravia"><StoreLogo store="Miravia" /><div><b>Miravia</b><small>{offerCountLabel(storeTotals.Miravia)}</small></div><i aria-hidden="true">→</i></a>}
         <a className="storeQuick" href="/ofertas/pccomponentes"><StoreLogo store="PcComponentes" /><div><b>PcComponentes</b><small>{offerCountLabel(storeTotals.PcComponentes)}</small></div><i aria-hidden="true">→</i></a>
       </section>
 
@@ -294,7 +296,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             </div>{filtersActive && <button className="clearFilters" onClick={clearFilters}>Quitar todos los filtros</button>}</details>
           </div>
 
-          <p className="resultsSummary" aria-live="polite"><b>{summary.total}</b> ofertas activas · <b>{visibleDeals.length}</b> {visibleDeals.length === 1 ? "coincide" : "coinciden"} con tus filtros · mostrando {Math.min(gridDeals.length, visibleDeals.length)}</p>
+          <p className="resultsSummary" aria-live="polite"><b>{summary.total}</b> ofertas recientes · <b>{visibleDeals.length}</b> {visibleDeals.length === 1 ? "coincide" : "coinciden"} con tus filtros · mostrando {Math.min(gridDeals.length, visibleDeals.length)}</p>
           {visibleDeals.length > 0 && <div className="resultsInsights" aria-label="Resumen de las ofertas mostradas">
             <span><b>{visibleInsights.bestDiscount}%</b><small>mayor descuento</small></span>
             <span><b>{visibleInsights.averageSaving ? money.format(visibleInsights.averageSaving) : "—"}</b><small>ahorro medio</small></span>
@@ -307,7 +309,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                 <article className="dealCard" data-store={deal.store} key={deal.id}>
                   <a className="imageWrap dealPreviewLink" href={dealDetailsUrl(deal)} aria-label={`Ver análisis de ${deal.title}`}>
                     <img src={deal.imageUrl} alt={deal.title} loading="lazy" decoding="async" width={720} height={560} />
-                    {discount > 0 && <span className="discountBadge">AHORRA {discount}%</span>}
+                    {discount >= 5 && <span className="discountBadge">AHORRA {discount}%</span>}
                     <span className="storeBadge"><StoreLogo store={deal.store} /></span>
                     {index === 0 && !filtersActive && <span className="topDealBadge">⭐ DESTACADA</span>}
                   </a>
@@ -327,7 +329,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                     ) : <p className="noCoupon"><span aria-hidden="true">✓</span> Precio directo · sin código</p>}
                     <div className="dealActions"><a className="dealButton" href={dealDetailsUrl(deal)} onClick={() => window.gtag?.("event", "offer_card_open", { offer_id: deal.id, store: deal.store, price: deal.price })}>Ver ficha <span aria-hidden="true">↗</span></a>
                     <button className="shareDealButton" type="button" onClick={() => void shareDeal(deal)} aria-label="Compartir oferta">{sharedId === deal.id ? "Copiado ✓" : "Compartir ↗"}</button></div>
-                    <p className="verified"><span aria-hidden="true" />Oferta activa · {deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt}</p>
+                    <p className="verified"><span aria-hidden="true" />{deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt} · confirma precio y stock</p>
                   </div>
                 </article>
               );
@@ -369,7 +371,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
         <div className="storeDirectoryGrid">
           <a className="sectionCover storeAmazon" href="/ofertas/amazon">{sectionCovers.amazon && <img src={sectionCovers.amazon.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Amazon</span><b>Ofertas con precio y ahorro visible <i aria-hidden="true">→</i></b></a>
           <a className="sectionCover storeAliExpress" href="/ofertas/aliexpress">{sectionCovers.aliexpress && <img src={sectionCovers.aliexpress.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>AliExpress</span><b>Chollos y cupones publicados <i aria-hidden="true">→</i></b></a>
-          <a className="sectionCover storeMiravia" href="/ofertas/miravia">{sectionCovers.miravia && <img src={sectionCovers.miravia.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Miravia</span><b>Productos seleccionados de Miravia <i aria-hidden="true">→</i></b></a>
+          {sectionCovers.miravia && <a className="sectionCover storeMiravia" href="/ofertas/miravia"><img src={sectionCovers.miravia.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} /><span className="coverShade" aria-hidden="true" /><span>Miravia</span><b>Productos seleccionados de Miravia <i aria-hidden="true">→</i></b></a>}
           <a className="sectionCover storeXiaomi" href="/ofertas/xiaomi">{sectionCovers.xiaomi && <img src={sectionCovers.xiaomi.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>Xiaomi</span><b>Tecnología oficial con ahorro real <i aria-hidden="true">→</i></b></a>
           <a className="sectionCover storePcComponentes" href="/ofertas/pccomponentes">{sectionCovers.pccomponentes && <img src={sectionCovers.pccomponentes.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>PcComponentes</span><b>Informática, gaming y electrónica <i aria-hidden="true">→</i></b></a>
           <a className="sectionCover storeElCorteIngles" href="/ofertas/el-corte-ingles">{sectionCovers.elCorteIngles && <img src={sectionCovers.elCorteIngles.imageUrl} alt="" loading="lazy" decoding="async" width={960} height={560} />}<span className="coverShade" aria-hidden="true" /><span>El Corte Inglés</span><b>Selección de descuentos destacados <i aria-hidden="true">→</i></b></a>
@@ -411,7 +413,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
       <section className="faq shell" aria-labelledby="faq-title">
         <p className="eyebrow"><span aria-hidden="true" />TRANSPARENCIA ANTE TODO</p>
         <h2 id="faq-title">Preguntas frecuentes</h2>
-        <details><summary>¿Dónde encontrar ofertas y chollos de hoy?<span aria-hidden="true">+</span></summary><p>Reunimos ofertas activas con producto identificable, precio visible y enlace directo. Puedes filtrar por tienda, categoría, descuento o cupón y recibir alertas gratuitas en Telegram.</p></details>
+        <details><summary>¿Dónde encontrar ofertas y chollos de hoy?<span aria-hidden="true">+</span></summary><p>Reunimos ofertas recientes con producto identificable, precio publicado y enlace directo. Puedes filtrar por tienda, categoría, descuento o cupón y recibir alertas gratuitas en Telegram. Confirma el precio y el stock en la tienda antes de pagar.</p></details>
         <details><summary>¿Cómo seleccionáis las ofertas?<span aria-hidden="true">+</span></summary><p>Priorizamos descuentos visibles, precios comparados, productos con actividad y enlaces de compra que se puedan comprobar.</p></details>
         <details><summary>¿El precio final puede cambiar?<span aria-hidden="true">+</span></summary><p>Sí. Las tiendas pueden modificar el precio, el stock o las condiciones sin previo aviso. Mostramos el dato disponible cuando se publica la oferta.</p></details>
         <details><summary>¿Comprar desde estos enlaces cuesta más?<span aria-hidden="true">+</span></summary><p>No. Algunos enlaces son de afiliación y pueden generar una comisión para Chollos al Día, sin aumentar el precio para ti.</p></details>

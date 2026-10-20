@@ -122,7 +122,8 @@ async function main() {
   const now = new Date();
   const current = madridParts(now);
   const force = String(process.env.WEEKLY_GUIDE_FORCE || '').toLowerCase() === 'true';
-  if (!force && (!['Wed', 'Sun'].includes(current.weekday) || current.hour !== 11 || current.minute < 30)) {
+  // Scheduled GitHub jobs are not guaranteed to start at the exact cron minute.
+  if (!force && (!['Wed', 'Sun'].includes(current.weekday) || current.hour < 11 || (current.hour === 11 && current.minute < 30))) {
     console.log(`Guía semanal omitida: en Madrid es ${current.weekday} ${current.hour}:${String(current.minute).padStart(2, '0')}.`);
     return;
   }

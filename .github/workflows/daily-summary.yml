@@ -35,6 +35,9 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Instalar dependencias para generar la portada
+        run: npm ci
+
       - name: Publicar las mejores ofertas del día
         run: node scripts/publish-daily-summary.mjs
 

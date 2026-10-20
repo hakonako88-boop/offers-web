@@ -329,7 +329,9 @@ async function main() {
   const now = new Date();
   const force = String(process.env.DAILY_SUMMARY_FORCE || '').toLowerCase() === 'true';
   const current = madridParts(now);
-  if (!force && (current.hour !== 21 || current.minute < 45)) {
+  // GitHub scheduled jobs can start late. Keep the same Madrid day eligible
+  // after 21:45 instead of silently discarding a delayed run.
+  if (!force && (current.hour < 21 || (current.hour === 21 && current.minute < 45))) {
     console.log(`Resumen omitido: en Madrid son las ${String(current.hour).padStart(2, '0')}:${String(current.minute).padStart(2, '0')}.`);
     return;
   }

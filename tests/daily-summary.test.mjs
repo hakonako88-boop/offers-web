@@ -89,7 +89,7 @@ test('schedules the professional summary for 21:45 Madrid and stores duplicate p
   assert.match(script, /publishedDates/u);
   assert.match(script, /sendMediaGroup/u);
   assert.match(script, /sendPhoto/u);
-  assert.match(script, /current\.hour !== 21 \|\| current\.minute < 45/u);
+  assert.match(script, /current\.hour < 21 \|\| \(current\.hour === 21 && current\.minute < 45\)/u);
   assert.match(script, /sendProfessionalSummary/u);
   assert.equal(previousMadridDate(new Date('2026-08-29T00:05:00+02:00')), '2026-08-28');
   assert.equal(previousMadridDate(new Date('2026-12-01T00:05:00+01:00')), '2026-11-30');

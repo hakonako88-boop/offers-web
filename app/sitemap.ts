@@ -14,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: siteUrl, lastModified: homepageLastModified, changeFrequency: "daily", priority: 1 },
     { url: `${siteUrl}/ofertas/amazon/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
     { url: `${siteUrl}/ofertas/aliexpress/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
-    { url: `${siteUrl}/ofertas/miravia/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
+    ...(publishedDeals.some((deal) => deal.store === "Miravia") ? [{ url: `${siteUrl}/ofertas/miravia/`, lastModified: homepageLastModified, changeFrequency: "daily" as const, priority: 0.8 }] : []),
     { url: `${siteUrl}/ofertas/xiaomi/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
     { url: `${siteUrl}/ofertas/pccomponentes/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
     { url: `${siteUrl}/ofertas/el-corte-ingles/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },

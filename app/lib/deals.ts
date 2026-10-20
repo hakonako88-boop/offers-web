@@ -97,11 +97,11 @@ function couponFor(text?: string) {
 }
 
 function formatDate(timestamp?: number) {
-  if (!timestamp) return { label: "Revisado recientemente", dateTime: undefined };
+  if (!timestamp) return { label: "Fecha de publicación no disponible", dateTime: undefined };
   const date = new Date(timestamp * 1000);
-  if (Number.isNaN(date.getTime())) return { label: "Revisado recientemente", dateTime: undefined };
+  if (Number.isNaN(date.getTime())) return { label: "Fecha de publicación no disponible", dateTime: undefined };
   return {
-    label: `Revisado el ${date.toLocaleDateString("es-ES", { day: "numeric", month: "short" })}`,
+    label: `Publicado el ${date.toLocaleDateString("es-ES", { day: "numeric", month: "short" })}`,
     dateTime: date.toISOString(),
   };
 }

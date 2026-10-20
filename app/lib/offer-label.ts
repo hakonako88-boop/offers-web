@@ -11,6 +11,7 @@ function stableChoice(id: string, choices: readonly string[]) {
 
 /** An editorial label, kept outside the product name to avoid SEO keyword stuffing. */
 export function offerEditorialLabel({ id = "", price = 0, discount = 0 }: OfferLabelInput) {
+  if (discount < 5) return "Precio publicado";
   if (discount >= 50) return stableChoice(id, ["Superoferta", "Chollo irresistible"]);
   if (discount >= 30) return stableChoice(id, ["Chollo destacado", "Gran oferta"]);
   if (price > 0 && price <= 15) return stableChoice(id, ["Ofertita", "Pequeño chollo"]);
