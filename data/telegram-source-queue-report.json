@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-10-22T16:24:06.404Z",
+  "updatedAt": "2026-10-22T16:34:26.205Z",
   "summary": {
+    "ignored": 216,
     "rejected": 643,
-    "ignored": 217,
     "duplicate": 22,
     "needs_review": 80,
     "published": 42,
-    "pending": 129
+    "pending": 128
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:44606:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 44606,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/44606",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-22T16:51:33.530Z"
+    },
+    {
+      "id": "telegram-ofertos:44605:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 44605,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/Ofertos/44605",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:96502:amazon:0",
       "source": "telegram-una-ganga",
@@ -106,12 +132,12 @@
       "messageId": 96495,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/96495",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-22T15:44:03.783Z",
-      "nextAttemptAt": "2026-10-22T16:24:19.945Z"
+      "lastCheckedAt": "2026-10-22T16:34:09.018Z",
+      "nextAttemptAt": "2026-10-22T17:54:26.205Z"
     },
     {
       "id": "telegram-una-ganga:96494:aliexpress:0",
@@ -184,12 +210,12 @@
       "messageId": 96490,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/una_ganga/96490",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-22T16:24:19.945Z"
+      "nextAttemptAt": "2026-10-22T16:51:33.530Z"
     },
     {
       "id": "telegram-una-ganga:96489:miravia:0",
@@ -301,12 +327,12 @@
       "messageId": 96481,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/96481",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-22T16:31:47.652Z"
+      "nextAttemptAt": "2026-10-22T17:14:26.205Z"
     },
     {
       "id": "telegram-paramanitas:5018:amazon:0",
@@ -417,13 +443,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96477,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/96477",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-22T16:34:05.053Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:44602:aliexpress:1",
@@ -573,13 +599,13 @@
       "source": "telegram-ofertos",
       "messageId": 44595,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/44595",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-22T16:34:05.053Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96475:amazon:0",
@@ -612,13 +638,13 @@
       "source": "telegram-paramanitas",
       "messageId": 5017,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/paramanitas/5017",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-22T16:34:05.053Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-tiesometro:7703:aliexpress:0",
@@ -1279,32 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/96454",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:96453:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 96453,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/96453",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:96452:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 96452,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/una_ganga/96452",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
