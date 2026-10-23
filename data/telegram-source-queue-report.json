@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-10-23T03:21:51.009Z",
+  "updatedAt": "2026-10-23T03:32:08.452Z",
   "summary": {
-    "rejected": 676,
+    "rejected": 677,
     "ignored": 209,
     "duplicate": 17,
     "published": 37,
@@ -9,6 +9,19 @@
     "pending": 113
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96540:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96540,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/96540",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-23T03:51:11.018Z"
+    },
     {
       "id": "telegram-una-ganga:96539:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -40,13 +53,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96537,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/96537",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-23T03:22:34.582Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96536:aliexpress:0",
@@ -1292,19 +1305,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/96490",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:96485:ignored",
-      "source": "telegram-una-ganga",
-      "messageId": 96485,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/una_ganga/96485",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
