@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-23T13:05:37.268Z",
+  "updatedAt": "2026-10-23T13:15:27.166Z",
   "summary": {
     "rejected": 651,
     "ignored": 219,
@@ -9,6 +9,19 @@
     "pending": 103
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96569:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96569,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/96569",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:96568:miravia:0",
       "source": "telegram-una-ganga",
@@ -417,13 +430,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96553,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/96553",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-23T11:51:55.257Z",
-      "nextAttemptAt": "2026-10-23T13:12:09.194Z"
+      "lastCheckedAt": "2026-10-23T13:15:05.745Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-tiesometro:7712:aliexpress:0",
@@ -1285,19 +1298,6 @@
     },
     {
       "id": "telegram-paramanitas:5022:amazon:9",
-      "source": "telegram-paramanitas",
-      "messageId": 5022,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/paramanitas/5022",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:5022:amazon:8",
       "source": "telegram-paramanitas",
       "messageId": 5022,
       "store": "Amazon",
