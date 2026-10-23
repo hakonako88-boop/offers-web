@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-23T03:32:08.452Z",
+  "updatedAt": "2026-10-23T03:42:28.620Z",
   "summary": {
     "rejected": 677,
     "ignored": 209,
@@ -9,6 +9,19 @@
     "pending": 113
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96541:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96541,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/96541",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-10-23T03:42:10.981Z",
+      "nextAttemptAt": "2026-10-23T04:02:28.620Z"
+    },
     {
       "id": "telegram-una-ganga:96540:amazon:0",
       "source": "telegram-una-ganga",
@@ -118,13 +131,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96532,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/96532",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-23T02:11:52.478Z",
-      "nextAttemptAt": "2026-10-23T03:32:09.388Z"
+      "lastCheckedAt": "2026-10-23T03:42:10.981Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-chollosdiario:45785:amazon:0",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/96487",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-22T20:06:22.191Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:96490:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 96490,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/96490",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
