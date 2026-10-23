@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-23T21:32:38.970Z",
+  "updatedAt": "2026-10-23T21:41:53.432Z",
   "summary": {
     "rejected": 673,
-    "needs_review": 59,
-    "ignored": 226,
+    "ignored": 221,
+    "needs_review": 52,
     "published": 40,
     "duplicate": 15,
     "pending": 121
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96599:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96599,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/96599",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-10-23T21:41:39.011Z",
+      "nextAttemptAt": "2026-10-23T22:01:53.432Z"
+    },
     {
       "id": "telegram-una-ganga:96598:amazon:0",
       "source": "telegram-una-ganga",
@@ -482,13 +495,13 @@
       "source": "telegram-ofertos",
       "messageId": 44660,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/44660",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-23T21:41:09.420Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96589:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/7714",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:44636:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 44636,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/44636",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
