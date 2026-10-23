@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-23T15:06:22.439Z",
+  "updatedAt": "2026-10-23T15:15:50.722Z",
   "summary": {
-    "ignored": 221,
     "rejected": 646,
+    "ignored": 220,
     "needs_review": 74,
     "duplicate": 18,
     "published": 42,
-    "pending": 104
+    "pending": 105
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96577:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96577,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/96577",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:96576:miravia:0",
       "source": "telegram-una-ganga",
@@ -80,12 +93,12 @@
       "messageId": 96572,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/96572",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-23T14:28:00.465Z",
-      "nextAttemptAt": "2026-10-23T15:08:18.458Z"
+      "lastCheckedAt": "2026-10-23T15:15:35.954Z",
+      "nextAttemptAt": "2026-10-23T16:35:50.722Z"
     },
     {
       "id": "telegram-tiesometro:7715:aliexpress:0",
@@ -146,7 +159,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/96568",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-23T13:55:14.373Z",
@@ -328,7 +341,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/96559",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-23T13:55:14.373Z",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/96517",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:5023:ignored",
-      "source": "telegram-paramanitas",
-      "messageId": 5023,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/paramanitas/5023",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
