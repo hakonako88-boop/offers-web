@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-24T00:02:05.555Z",
+  "updatedAt": "2026-10-24T00:12:14.162Z",
   "summary": {
     "rejected": 678,
     "duplicate": 14,
-    "ignored": 222,
+    "ignored": 223,
     "needs_review": 46,
     "published": 39,
     "pending": 110
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96604:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96604,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/96604",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:96603:amazon:0",
       "source": "telegram-una-ganga",
@@ -133,7 +146,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/96596",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-23T23:51:37.902Z",
@@ -457,12 +470,12 @@
       "messageId": 96593,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/96593",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-23T23:25:28.331Z",
-      "nextAttemptAt": "2026-10-24T00:05:43.118Z"
+      "lastCheckedAt": "2026-10-24T00:12:00.005Z",
+      "nextAttemptAt": "2026-10-24T01:32:14.162Z"
     },
     {
       "id": "telegram-tiesometro:7719:aliexpress:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "2026-10-23T16:31:58.511Z",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:44637:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 44637,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/44637",
-      "resultUrl": "https://www.amazon.es/dp/B0D5RJ636Z?tag=chollos00a-21",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-23T11:21:02.035Z"
     }
   ]
 }
