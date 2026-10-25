@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-25T15:53:22.399Z",
+  "updatedAt": "2026-10-25T16:03:33.054Z",
   "summary": {
-    "published": 42,
-    "rejected": 675,
+    "rejected": 676,
     "duplicate": 16,
-    "needs_review": 39,
-    "ignored": 228,
-    "pending": 130
+    "needs_review": 40,
+    "ignored": 229,
+    "published": 41,
+    "pending": 127
   },
   "recent": [
     {
@@ -14,9 +14,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45809,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45809",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -106,12 +106,12 @@
       "messageId": 96719,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/96719",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-25T15:13:46.931Z",
-      "nextAttemptAt": "2026-10-25T15:54:04.665Z"
+      "lastCheckedAt": "2026-10-25T16:03:17.016Z",
+      "nextAttemptAt": "2026-10-25T17:23:33.054Z"
     },
     {
       "id": "telegram-una-ganga:96718:aliexpress:0",
@@ -235,13 +235,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96711,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/96711",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-25T14:32:52.738Z",
-      "nextAttemptAt": "2026-10-25T15:53:08.497Z"
+      "lastCheckedAt": "2026-10-25T16:03:17.016Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96710:aliexpress:0",
