@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-10-25T07:12:13.672Z",
+  "updatedAt": "2026-10-25T07:22:01.272Z",
   "summary": {
-    "rejected": 701,
+    "rejected": 702,
     "ignored": 216,
     "duplicate": 15,
     "published": 37,
@@ -9,6 +9,19 @@
     "pending": 120
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96698:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96698,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/96698",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:96697:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -27,13 +40,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96696,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/96696",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-25T07:21:10.997Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96695:aliexpress:0",
@@ -1292,19 +1305,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/chollosdiario/45801",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:96646:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 96646,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/96646",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
