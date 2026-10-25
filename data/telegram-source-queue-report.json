@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-25T13:05:16.464Z",
+  "updatedAt": "2026-10-25T13:14:13.310Z",
   "summary": {
-    "rejected": 686,
-    "ignored": 227,
-    "published": 41,
+    "ignored": 228,
+    "rejected": 684,
+    "published": 42,
     "duplicate": 15,
     "needs_review": 32,
-    "pending": 129
+    "pending": 127
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96710:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96710,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/96710",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-paramanitas:5039:amazon:0",
       "source": "telegram-paramanitas",
@@ -105,13 +118,13 @@
       "source": "telegram-ofertos",
       "messageId": 44747,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/44747",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-25T14:25:16.464Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-tiesometro:7743:aliexpress:0",
@@ -170,11 +183,11 @@
       "source": "telegram-ofertos",
       "messageId": 44744,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 2,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/44744",
-      "resultUrl": "",
+      "resultUrl": "https://www.amazon.es/dp/B0BZ553DZW?tag=chollos00a-21",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-10-25T14:01:57.382Z"
     },
@@ -1285,19 +1298,6 @@
     },
     {
       "id": "telegram-paramanitas:5033:amazon:3",
-      "source": "telegram-paramanitas",
-      "messageId": 5033,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/paramanitas/5033",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:5033:amazon:2",
       "source": "telegram-paramanitas",
       "messageId": 5033,
       "store": "Amazon",
