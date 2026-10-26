@@ -63,7 +63,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
   const featuredPost = posts.find((post) => /^mejores-productos-(?:dia|semana)-/u.test(post.id)
     && Number.isFinite(newestOfferDate) && newestOfferDate - Date.parse(post.publishedAt) < 7 * 24 * 60 * 60 * 1000);
   const [deals] = useState<Deal[]>(initialDeals);
-  const [visibleLimit, setVisibleLimit] = useState(12);
+  const [visibleLimit, setVisibleLimit] = useState(18);
   const [category, setCategory] = useState("Todos");
   const [store, setStore] = useState("Todas");
   const [minimumPrice, setMinimumPrice] = useState("");
@@ -335,7 +335,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
               );
             })}
           </div>
-          {gridDeals.length < visibleDeals.length && <div className="loadMoreWrap"><button className="loadMoreButton" onClick={() => setVisibleLimit((current) => current + 12)}>Ver 12 ofertas más <span aria-hidden="true">↓</span></button><p>También puedes filtrar por tienda, categoría o cupón para dar con lo que buscas.</p></div>}
+          {gridDeals.length < visibleDeals.length && <div className="loadMoreWrap"><button className="loadMoreButton" onClick={() => setVisibleLimit((current) => current + 18)}>Ver 18 ofertas más <span aria-hidden="true">↓</span></button><p>También puedes filtrar por tienda, categoría o cupón para dar con lo que buscas.</p></div>}
           {!visibleDeals.length && <div className="empty"><b>{savedOnly && savedIds.length === 0 ? "Aún no has guardado ofertas." : "No hemos encontrado ofertas con esos filtros."}</b><span>{savedOnly && savedIds.length === 0 ? "Pulsa «Guardar» en una oferta para verla aquí más tarde, en este navegador." : "Prueba con otra palabra o quita alguno de los filtros."}</span></div>}
         </div>
       </section>

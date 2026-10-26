@@ -187,7 +187,7 @@ test('publishes the channel welcome only once and pins it without notifying subs
 test('spreads publications through Madrid daytime and enforces retailer caps', () => {
   const night = publicationAllowance({ store: 'Amazon', now: new Date('2026-08-28T03:00:00+02:00') });
   assert.equal(night.reason, 'quiet-hours');
-  const offers = Array.from({ length: 2 }, () => ({
+  const offers = Array.from({ length: 3 }, () => ({
     store: 'Miravia',
     date: Math.floor(Date.parse('2026-08-28T13:00:00+02:00') / 1000),
   }));
@@ -207,7 +207,7 @@ test('does not leave the afternoon blocked after the morning slots fill up', () 
     now: new Date('2026-09-10T16:45:00+02:00'),
   });
   assert.equal(allowance.allowed, true);
-  assert.equal(allowance.globalLimit, 11);
+  assert.equal(allowance.globalLimit, 12);
   assert.equal(allowance.remaining, 1);
 });
 
@@ -239,7 +239,7 @@ test('does not let an inbox burst from one shop starve the other retailers', () 
     now: new Date('2026-08-30T22:00:00+02:00'),
   });
   assert.equal(allowance.allowed, true);
-  assert.equal(allowance.publishedToday, 5);
+  assert.equal(allowance.publishedToday, 8);
   assert.equal(allowance.rawPublishedToday, 56);
   assert.equal(allowance.remaining, 1);
 });
@@ -269,8 +269,17 @@ test('raises AliExpress capacity moderately while preserving a daily cap', () =>
     now: new Date('2026-08-31T21:00:00+02:00'),
   });
   assert.equal(afterTen.allowed, false);
-  assert.equal(afterTen.storeLimit, 5);
+  assert.equal(afterTen.storeLimit, 8);
   assert.equal(afterTen.reason, 'store-daily-limit');
+});
+
+test('adds evening capacity without publishing during quiet hours', () => {
+  const weekday = publicationAllowance({ store: 'AliExpress', now: new Date('2026-10-27T22:05:00+01:00') });
+  const weekend = publicationAllowance({ store: 'Amazon', now: new Date('2026-10-25T22:05:00+01:00') });
+  const quiet = publicationAllowance({ store: 'Amazon', now: new Date('2026-10-27T23:05:00+01:00') });
+  assert.equal(weekday.globalLimit, 21);
+  assert.equal(weekend.globalLimit, 18);
+  assert.equal(quiet.reason, 'quiet-hours');
 });
 
 test('allows verified NoLo source deals beyond the normal store caps while preserving quiet hours and cadence', () => {
