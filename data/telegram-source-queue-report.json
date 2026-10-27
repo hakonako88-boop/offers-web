@@ -1,22 +1,48 @@
 {
-  "updatedAt": "2026-10-27T14:16:23.804Z",
+  "updatedAt": "2026-10-27T14:25:00.298Z",
   "summary": {
-    "ignored": 243,
     "rejected": 637,
-    "needs_review": 51,
+    "ignored": 242,
+    "needs_review": 52,
     "published": 49,
     "duplicate": 20,
-    "pending": 86
+    "pending": 87
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96864:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96864,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/96864",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-10-27T14:24:42.180Z",
+      "nextAttemptAt": "2026-10-27T14:45:00.298Z"
+    },
+    {
+      "id": "telegram-una-ganga:96863:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96863,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/96863",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-27T15:01:52.970Z"
+    },
     {
       "id": "telegram-una-ganga:96862:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 96862,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/96862",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -1281,32 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/96816",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-27T02:52:10.065Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertas-supermercados-es:2160:ignored",
-      "source": "telegram-ofertas-supermercados-es",
-      "messageId": 2160,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/OfertasSupermercadosES/2160",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-chollosdiario:45823:amazon:2",
-      "source": "telegram-chollosdiario",
-      "messageId": 45823,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/chollosdiario/45823",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
