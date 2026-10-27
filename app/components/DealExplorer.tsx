@@ -63,6 +63,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
   const featuredPost = posts.find((post) => /^mejores-productos-(?:dia|semana)-/u.test(post.id)
     && Number.isFinite(newestOfferDate) && newestOfferDate - Date.parse(post.publishedAt) < 7 * 24 * 60 * 60 * 1000);
   const [deals] = useState<Deal[]>(initialDeals);
+  const [blackFridayVisible, setBlackFridayVisible] = useState(false);
   const [visibleLimit, setVisibleLimit] = useState(18);
   const [category, setCategory] = useState("Todos");
   const [store, setStore] = useState("Todas");
@@ -82,6 +83,11 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
   const [savedOnly, setSavedOnly] = useState(false);
   const [sharedId, setSharedId] = useState<string | null>(null);
   const filtersReady = useRef(false);
+
+  useEffect(() => {
+    const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Madrid", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+    setBlackFridayVisible(today >= "2026-10-27" && today <= "2026-11-30");
+  }, []);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -205,6 +211,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             <a href="#ofertas">Ofertas de hoy</a>
             <a href="/buscar/">Buscar</a>
             <a href="/blog/">Blog</a>
+            <a href="/black-friday-2026/">Black Friday</a>
             {posts.length > 0 && <a href="#novedades">Novedades</a>}
             <a href="#como-funciona">Cómo seleccionamos</a>
             <a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram <span aria-hidden="true">↗</span></a>
@@ -215,6 +222,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
               <a href="#ofertas">🔥 Ofertas de hoy</a>
               <a href="/buscar/">⌕ Buscar ofertas</a>
               <a href="/blog/">⭐ Mejores productos</a>
+              <a href="/black-friday-2026/">Black Friday 2026</a>
               <a href="/chollos/tecnologia/">📱 Tecnología</a>
               <a href="/chollos/hogar/">🏠 Hogar y cocina</a>
               {posts.length > 0 && <a href="#novedades">📰 Guías y novedades</a>}
@@ -223,6 +231,11 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           </details>
         </div>
       </header>
+
+      {blackFridayVisible && <aside className="shell blackFridayHome" aria-label="Especial Black Friday 2026">
+        <div><span>ESPECIAL · 27–30 NOVIEMBRE</span><h2>Black Friday 2026, sin descuentos de humo.</h2><p>Guía, cupones y ofertas verificadas de varias tiendas. Consulta las ofertas recientes y comprueba las condiciones de cada promoción.</p></div>
+        <a href="/black-friday-2026/">Ver el especial <b aria-hidden="true">↗</b></a>
+      </aside>}
 
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="heroCopy">

@@ -196,6 +196,14 @@ test('spreads publications through Madrid daytime and enforces retailer caps', (
   assert.equal(publicationAllowance({ store: 'Miravia', offers, now: new Date(), bypass: true }).allowed, true);
 });
 
+test('Black Friday through Cyber Monday has extra daytime slots but keeps quiet hours and a store cap', () => {
+  const event = publicationAllowance({ store: 'Amazon', now: new Date('2026-11-27T22:15:00+01:00') });
+  assert.equal(event.globalLimit, 30);
+  assert.equal(event.storeLimit, 12);
+  assert.equal(publicationAllowance({ store: 'Amazon', now: new Date('2026-11-30T23:05:00+01:00') }).reason, 'quiet-hours');
+  assert.equal(publicationAllowance({ store: 'Amazon', now: new Date('2026-12-01T22:15:00+01:00') }).globalLimit, 21);
+});
+
 test('does not leave the afternoon blocked after the morning slots fill up', () => {
   const sevenMorningOffers = Array.from({ length: 7 }, (_, index) => ({
     store: index < 2 ? 'Miravia' : (index === 2 ? 'Xiaomi' : 'AliExpress'),

@@ -32,6 +32,14 @@ function cumulativeLimit(minuteOfDay, weekend) {
   return minuteOfDay >= 1380 ? 0 : limit;
 }
 
+function blackFridayLimit(date, minuteOfDay) {
+  if (date < '2026-11-27' || date > '2026-11-30') return null;
+  const slots = [[480, 2], [600, 5], [720, 9], [840, 13], [960, 17], [1080, 22], [1200, 26], [1320, 30]];
+  let limit = 0;
+  for (const [start, maximum] of slots) if (minuteOfDay >= start) limit = maximum;
+  return minuteOfDay >= 1380 ? 0 : limit;
+}
+
 function firstPublicationMinute(weekend) {
   return weekend ? 600 : 480;
 }
@@ -39,7 +47,7 @@ function firstPublicationMinute(weekend) {
 export function publicationWindow({ now = new Date() } = {}) {
   const local = madridParts(now);
   const weekend = ['Sat', 'Sun', 'sáb', 'dom'].includes(local.weekday);
-  const globalLimit = cumulativeLimit(local.minuteOfDay, weekend);
+  const globalLimit = blackFridayLimit(local.date, local.minuteOfDay) ?? cumulativeLimit(local.minuteOfDay, weekend);
   return {
     allowed: globalLimit > 0,
     reason: globalLimit > 0 ? 'publication-window-open' : 'quiet-hours',
@@ -122,7 +130,8 @@ export function publicationAllowance({ store, offers = [], now = new Date(), byp
   const ordinaryToday = today.filter((offer) => offer.communitySource !== 'nolodejesescapar'
     && offer.source !== 'nolodejesescapar');
   const storeCount = ordinaryToday.filter((offer) => normalizedStore(offer.store) === storeName).length;
-  const storeLimit = STORE_DAILY_LIMITS[storeName] || 1;
+  const eventDays = local.date >= '2026-11-27' && local.date <= '2026-11-30';
+  const storeLimit = (STORE_DAILY_LIMITS[storeName] || 1) + (eventDays && storeName in STORE_DAILY_LIMITS ? 4 : 0);
   // A direct/manual ingestion path can occasionally add many posts from one
   // retailer before the scheduled discovery jobs run. Count at most each
   // retailer's editorial quota towards the shared slot. This keeps a burst of
@@ -136,7 +145,7 @@ export function publicationAllowance({ store, offers = [], now = new Date(), byp
     scheduledByStore.set(scheduledStore, (scheduledByStore.get(scheduledStore) || 0) + 1);
   }
   const editorialPublishedToday = [...scheduledByStore.entries()].reduce((total, [scheduledStore, count]) => {
-    const editorialCap = STORE_DAILY_LIMITS[scheduledStore] || 1;
+    const editorialCap = (STORE_DAILY_LIMITS[scheduledStore] || 1) + (eventDays && scheduledStore in STORE_DAILY_LIMITS ? 4 : 0);
     return total + Math.min(count, editorialCap);
   }, 0);
   const remaining = Math.max(0, Math.min(1, globalLimit - editorialPublishedToday, storeLimit - storeCount));

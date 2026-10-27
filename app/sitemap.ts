@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}/ofertas/mediamarkt/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
     ...Object.entries(guides).map(([slug, guide]) => ({ url: `${siteUrl}/guias/${slug}/`, lastModified: new Date(`${"updatedAt" in guide ? guide.updatedAt : "2026-08-25"}T00:00:00.000Z`), changeFrequency: "monthly" as const, priority: 0.72 })),
     { url: `${siteUrl}/blog/`, lastModified: homepageLastModified, changeFrequency: "weekly", priority: 0.74 },
+    { url: `${siteUrl}/black-friday-2026/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.88 },
     { url: `${siteUrl}/telegram/`, lastModified: new Date("2026-08-26T00:00:00.000Z"), changeFrequency: "weekly", priority: 0.82 },
     { url: `${siteUrl}/gta-vi-mas-barato-ps5/`, lastModified: new Date("2026-08-31T10:00:00.000Z"), changeFrequency: "daily", priority: 0.95 },
     { url: `${siteUrl}/como-verificamos-ofertas/`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.65 },

@@ -1311,3 +1311,45 @@ body { background: var(--paper); }
 @media (max-width: 900px) {
   .blogHeroVisual { display: none; }
 }
+
+.blackFridayHome { display: flex; align-items: center; justify-content: space-between; gap: 30px; margin-top: 18px; border-radius: 18px; background: linear-gradient(110deg, #171c2d, #313451); padding: 24px 30px; color: #fff; }
+.blackFridayHome span, .blackFridayHero > p:first-child, .blackFridaySectionTitle p { color: #ffd777; font-size: 11px; font-weight: 900; letter-spacing: .13em; }
+.blackFridayHome h2 { margin: 7px 0; font-size: clamp(22px, 3vw, 32px); letter-spacing: -.04em; }
+.blackFridayHome p { max-width: 680px; margin: 0; color: #dfe3ef; font-size: 14px; line-height: 1.5; }
+.blackFridayHome > a, .blackFridayHero a { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 45px; border-radius: 10px; background: #ffd777; padding: 10px 18px; color: #1d2530; font-weight: 850; white-space: nowrap; }
+.blackFridayHome > a:hover, .blackFridayHero a:hover { background: #ffe59e; }
+.blackFridayPage { min-height: 100vh; background: #f7f8f7; color: #182837; }
+.blackFridayContent { padding-bottom: 80px; }
+.blackFridayBreadcrumb { display: flex; gap: 9px; padding: 23px 0; color: #586978; font-size: 13px; }
+.blackFridayBreadcrumb b { color: #182837; }
+.blackFridayHero { border-radius: 22px; background: radial-gradient(circle at 88% 22%, #48466d, transparent 35%), linear-gradient(125deg, #161c2b, #252d46); padding: clamp(32px, 6vw, 76px); color: #fff; }
+.blackFridayHero h1 { margin: 9px 0 12px; font-size: clamp(42px, 7vw, 88px); letter-spacing: -.07em; line-height: 1; }
+.blackFridayHero h1 em { color: #ffd777; font-style: normal; }
+.blackFridayHero > span { display: block; color: #ffd777; font-size: clamp(16px, 2.1vw, 22px); font-weight: 800; }
+.blackFridayHero > p:not(:first-child) { max-width: 650px; margin: 24px 0; color: #e0e6ef; font-size: 17px; line-height: 1.55; }
+.blackFridayHero > div { display: flex; flex-wrap: wrap; gap: 12px; }
+.blackFridayHero a + a { border: 1px solid #aeb8ca; background: transparent; color: #fff; }
+.blackFridayNote { display: grid; grid-template-columns: auto 1fr; gap: 18px; margin: 24px 0 55px; border: 1px solid #e5dcc1; border-radius: 14px; background: #fff8e8; padding: 19px 24px; }
+.blackFridayNote b { color: #8c5616; }
+.blackFridayNote p { margin: 0; color: #49596a; line-height: 1.55; }
+.blackFridaySectionTitle { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 22px; }
+.blackFridaySectionTitle p { margin: 0 0 7px; color: #9c5e15; }
+.blackFridaySectionTitle h2, .blackFridayAdvice h2 { margin: 0; font-size: clamp(28px, 4vw, 42px); letter-spacing: -.05em; }
+.blackFridaySectionTitle > a { color: #0b6844; font-weight: 800; }
+.blackFridayGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.blackFridayGrid article { overflow: hidden; border: 1px solid #e1e6e2; border-radius: 16px; background: #fff; box-shadow: 0 6px 18px rgb(24 40 55 / 5%); }
+.blackFridayImage { display: block; height: 190px; background: #fff; }
+.blackFridayImage img { width: 100%; height: 100%; object-fit: contain; padding: 13px; }
+.blackFridayCardBody { padding: 17px; }
+.blackFridayCardBody small { color: #667888; font-weight: 700; }
+.blackFridayCardBody h3 { min-height: 3.8em; margin: 9px 0; font-size: 15px; line-height: 1.27; }
+.blackFridayCardBody p { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; }
+.blackFridayCardBody p strong { color: #09623d; font-size: 25px; }
+.blackFridayCardBody p del { color: #81909a; }
+.blackFridayCardBody p span { border-radius: 5px; background: #fff0e8; padding: 3px 6px; color: #ac3d1f; font-size: 12px; font-weight: 900; }
+.blackFridayCoupon { display: block; margin-bottom: 10px; color: #9d521c; font-size: 12px; }
+.blackFridayCardLink { display: block; border-radius: 9px; background: #17354c; padding: 11px; color: #fff; text-align: center; font-size: 13px; font-weight: 800; }
+.blackFridayAdvice { margin-top: 72px; border-top: 1px solid #dce3e0; padding-top: 35px; }
+.blackFridayAdvice ol { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px 28px; padding-left: 23px; line-height: 1.55; }
+@media (max-width: 900px) { .blackFridayGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .blackFridayHome, .blackFridayNote, .blackFridaySectionTitle { display: block; }.blackFridayHome > a { margin-top: 17px; }.blackFridayHero { border-radius: 0; margin-inline: -14px; }.blackFridayHero > p:not(:first-child) { font-size: 15px; }.blackFridayGrid { gap: 9px; }.blackFridayImage { height: 145px; }.blackFridayCardBody { padding: 12px; }.blackFridayCardBody h3 { font-size: 13px; }.blackFridayAdvice ol { grid-template-columns: 1fr; } }
