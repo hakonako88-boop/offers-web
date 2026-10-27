@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-27T12:02:59.546Z",
+  "updatedAt": "2026-10-27T12:15:50.951Z",
   "summary": {
-    "rejected": 647,
-    "ignored": 241,
-    "duplicate": 20,
-    "needs_review": 45,
+    "rejected": 644,
+    "ignored": 242,
+    "duplicate": 21,
+    "needs_review": 46,
     "published": 48,
-    "pending": 82
+    "pending": 80
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:96851:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96851,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/96851",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-10-27T12:15:31.414Z",
+      "nextAttemptAt": "2026-10-27T12:35:50.951Z"
+    },
     {
       "id": "telegram-una-ganga:96850:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -40,9 +53,9 @@
       "source": "telegram-ofertos",
       "messageId": 44826,
       "store": "Amazon",
-      "status": "pending",
+      "status": "duplicate",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "El mismo ASIN ya estaba publicado recientemente",
       "sourceUrl": "https://t.me/Ofertos/44826",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -79,9 +92,9 @@
       "source": "telegram-ofertos",
       "messageId": 44824,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/44824",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/96807",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-27T00:41:43.266Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:44805:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 44805,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/44805",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
