@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-10-27T12:24:35.306Z",
+  "updatedAt": "2026-10-27T12:34:54.771Z",
   "summary": {
-    "ignored": 242,
     "rejected": 643,
+    "ignored": 243,
     "duplicate": 21,
-    "needs_review": 46,
+    "needs_review": 47,
     "published": 48,
-    "pending": 83
+    "pending": 82
   },
   "recent": [
+    {
+      "id": "telegram-errores-de-precio:15653:amazon:0",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15653,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/erroresde_precio/15653",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-27T13:12:00.915Z"
+    },
+    {
+      "id": "telegram-una-ganga:96854:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 96854,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/96854",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-10-27T12:34:38.642Z",
+      "nextAttemptAt": "2026-10-27T12:54:54.771Z"
+    },
     {
       "id": "telegram-tiesometro:7755:aliexpress:0",
       "source": "telegram-tiesometro",
@@ -27,9 +53,9 @@
       "source": "telegram-una-ganga",
       "messageId": 96853,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/96853",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -1281,32 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/96810",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-27T01:01:42.703Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-chollosdiario:45822:amazon:0",
-      "source": "telegram-chollosdiario",
-      "messageId": 45822,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/chollosdiario/45822",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-tiesometro:7753:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7753,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/tiesometro/7753",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
