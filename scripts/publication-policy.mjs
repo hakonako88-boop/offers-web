@@ -1,8 +1,8 @@
 const TIME_ZONE = 'Europe/Madrid';
 
 export const STORE_DAILY_LIMITS = Object.freeze({
-  Amazon: 8,
-  AliExpress: 8,
+  Amazon: 10,
+  AliExpress: 10,
   Miravia: 3,
   MediaMarkt: 4,
   PcComponentes: 4,
@@ -25,8 +25,8 @@ function madridParts(now) {
 
 function cumulativeLimit(minuteOfDay, weekend) {
   const slots = weekend
-    ? [[600, 2], [720, 4], [840, 7], [960, 10], [1080, 13], [1200, 16], [1320, 18]]
-    : [[480, 1], [600, 3], [720, 6], [840, 9], [960, 12], [1080, 16], [1200, 19], [1320, 21]];
+    ? [[600, 2], [720, 5], [840, 8], [960, 11], [1080, 15], [1200, 18], [1320, 21]]
+    : [[480, 1], [600, 4], [720, 7], [840, 11], [960, 14], [1080, 18], [1200, 22], [1320, 25]];
   let limit = 0;
   for (const [start, maximum] of slots) if (minuteOfDay >= start) limit = maximum;
   return minuteOfDay >= 1380 ? 0 : limit;

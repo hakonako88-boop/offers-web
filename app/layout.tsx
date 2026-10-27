@@ -5,6 +5,7 @@ import { adsenseClientId, adsenseEnabled } from "./lib/adsense";
 import "./globals.css";
 import "./redesign.css";
 import "./identity.css";
+import "./radar.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });

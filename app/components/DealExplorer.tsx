@@ -239,9 +239,9 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
 
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="heroCopy">
-          <p className="eyebrow"><span aria-hidden="true" />SELECCIÓN DIARIA · PRECIOS CLAROS</p>
-          <h1 id="hero-title">Chollos de hoy.<br /> <em>Menos ruido. Más ahorro.</em></h1>
-          <p className="heroLead">Ofertas de Amazon, AliExpress, Miravia y más tiendas, con precio visible, foto y cupón cuando esté disponible. Encuentra lo que buscas sin dar mil vueltas.</p>
+          <p className="eyebrow"><span aria-hidden="true" />EL RADAR DE CHOLLOS AL DÍA · EDICIÓN DIARIA</p>
+          <h1 id="hero-title">Chollos de hoy.<br /> <em>Elegidos con criterio.</em></h1>
+          <p className="heroLead">Ofertas recientes de Amazon, AliExpress y otras tiendas. Producto reconocible, precio a la vista y condiciones claras para decidir mejor.</p>
           <form className="heroSearch" role="search" onSubmit={(event) => { event.preventDefault(); document.getElementById("ofertas")?.scrollIntoView({ behavior: "smooth" }); }}>
             <label htmlFor="home-offer-search">¿Qué estás buscando?</label>
             <div className="heroSearchBox"><span aria-hidden="true">⌕</span><input id="home-offer-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Móvil, cafetera, cupón…" /><button type="submit">Buscar ofertas</button></div>
@@ -256,41 +256,24 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             <a className="primaryButton" href="#ofertas">Explorar chollos <span aria-hidden="true">↓</span></a>
             <a className="quietLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis <span aria-hidden="true">↗</span></a>
           </div>
-          <ul className="trustList" aria-label="Compromisos de Chollos al Día">
-            <li>Precios a la vista</li>
-            <li>Datos publicados con fecha</li>
-            <li>Alertas gratis</li>
+          <ul className="trustList" aria-label="Qué muestra cada oferta">
+            <li>Precio publicado</li>
+            <li>Foto del producto</li>
+            <li>Cupón cuando existe</li>
           </ul>
         </div>
         {heroDeal && <aside className="heroFeature" aria-label="Oferta destacada ahora">
           <a className="heroFeatureImage" href={dealDetailsUrl(heroDeal)}><img src={heroDeal.imageUrl} alt={heroDeal.title} width={620} height={500} fetchPriority="high" /></a>
-          <div className="heroFeatureDetails"><span>SELECCIÓN DE HOY · {heroDeal.store}</span><h2><a href={dealDetailsUrl(heroDeal)}>{shortTitle(heroDeal.title, 82)}</a></h2><div><strong>{money.format(heroDeal.price)}</strong>{heroDeal.oldPrice > heroDeal.price && <s>{money.format(heroDeal.oldPrice)}</s>}</div><a className="heroFeatureButton" href={dealDetailsUrl(heroDeal)}>Ver detalles de la oferta <b aria-hidden="true">↗</b></a></div>
+          <div className="heroFeatureDetails"><span>EN PORTADA · {heroDeal.store}</span><h2><a href={dealDetailsUrl(heroDeal)}>{shortTitle(heroDeal.title, 82)}</a></h2><div><strong>{money.format(heroDeal.price)}</strong>{heroDeal.oldPrice - heroDeal.price >= 1 && <s>{money.format(heroDeal.oldPrice)}</s>}</div><a className="heroFeatureButton" href={dealDetailsUrl(heroDeal)}>Analizar esta oferta <b aria-hidden="true">↗</b></a></div>
         </aside>}
       </section>
-
-      {featuredPost && <section className="editorialSpotlight shell" aria-labelledby="spotlight-title">
-        <div className="editorialSpotlightCopy"><p>EN EL BLOG · {featuredPost.publishedLabel}</p><h2 id="spotlight-title">{featuredPost.title}</h2><span>Una selección de productos con fotos, precios publicados y fichas para consultar antes de comprar.</span><a href={postHref(featuredPost.id)}>Ver selección <b aria-hidden="true">↗</b></a></div>
-        <a className="editorialSpotlightArtwork" href={postHref(featuredPost.id)} aria-label={`Leer ${featuredPost.title}`}><img src={featuredPost.imageUrl} alt={featuredPost.title} width="720" height="480" loading="lazy" /></a>
-      </section>}
-
-      <section className="storeRail shell" aria-label="Explorar ofertas por tienda">
-        <div className="storeRailLead"><span className="liveDot" aria-hidden="true" /><div><b>{summary.total} ofertas recientes</b><small>Comprueba el precio final en la tienda</small></div></div>
-        <a className="storeQuick storeQuickAmazon" href="/ofertas/amazon"><StoreLogo store="Amazon" /><div><b>Amazon</b><small>{offerCountLabel(storeTotals.Amazon)}</small></div><i aria-hidden="true">→</i></a>
-        <a className="storeQuick storeQuickAli" href="/ofertas/aliexpress"><StoreLogo store="AliExpress" /><div><b>AliExpress</b><small>{offerCountLabel(storeTotals.AliExpress)}</small></div><i aria-hidden="true">→</i></a>
-        {storeTotals.Miravia > 0 && <a className="storeQuick storeQuickMiravia" href="/ofertas/miravia"><StoreLogo store="Miravia" /><div><b>Miravia</b><small>{offerCountLabel(storeTotals.Miravia)}</small></div><i aria-hidden="true">→</i></a>}
-        <a className="storeQuick" href="/ofertas/pccomponentes"><StoreLogo store="PcComponentes" /><div><b>PcComponentes</b><small>{offerCountLabel(storeTotals.PcComponentes)}</small></div><i aria-hidden="true">→</i></a>
-      </section>
-
-      {adsenseHomeSlot && <div className="shell adSection">
-        <AdSlot slot={adsenseHomeSlot} />
-      </div>}
 
       <section className="offersSection" id="ofertas" aria-labelledby="offers-title">
         <div className="shell">
           <div className="sectionIntro">
             <div>
               <p className="eyebrow"><span aria-hidden="true" />RECIÉN PUBLICADOS</p>
-              <h2 id="offers-title">Últimos chollos</h2>
+              <h2 id="offers-title">El radar de hoy</h2>
             </div>
             <p>Precios válidos en el momento de la publicación. Pueden cambiar o agotarse.</p>
           </div>
@@ -318,11 +301,12 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           <div className="dealGrid">
             {gridDeals.map((deal, index) => {
               const discount = Math.max(0, Math.round((1 - deal.price / deal.oldPrice) * 100));
+              const meaningfulSaving = discount >= 5 && deal.oldPrice - deal.price >= 1;
               return (
                 <article className="dealCard" data-store={deal.store} key={deal.id}>
                   <a className="imageWrap dealPreviewLink" href={dealDetailsUrl(deal)} aria-label={`Ver análisis de ${deal.title}`}>
                     <img src={deal.imageUrl} alt={deal.title} loading="lazy" decoding="async" width={720} height={560} />
-                    {discount >= 5 && <span className="discountBadge">AHORRA {discount}%</span>}
+                    {meaningfulSaving && <span className="discountBadge">AHORRA {discount}%</span>}
                     <span className="storeBadge"><StoreLogo store={deal.store} /></span>
                     {index === 0 && !filtersActive && <span className="topDealBadge">⭐ DESTACADA</span>}
                   </a>
@@ -332,8 +316,8 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                     <h3 title={deal.title}><a href={dealDetailsUrl(deal)}>{editorialCardTitle({ title: deal.title, store: deal.store, price: deal.price, discount, coupon: deal.coupon })}</a></h3>
                     <div className="priceRow">
                       <span className="priceCurrent"><small>PRECIO AHORA</small><strong>{money.format(deal.price)}</strong></span>
-                      {discount > 0 && <span className="priceWas"><small>ANTES</small><s>{money.format(deal.oldPrice)}</s></span>}
-                      {discount > 0 && <span className="saving">AHORRAS <b>{money.format(deal.oldPrice - deal.price)}</b></span>}
+                      {meaningfulSaving && <span className="priceWas"><small>ANTES</small><s>{money.format(deal.oldPrice)}</s></span>}
+                      {meaningfulSaving && <span className="saving">AHORRAS <b>{money.format(deal.oldPrice - deal.price)}</b></span>}
                     </div>
                     {deal.coupon ? (
                       <button className="coupon" onClick={() => copyCoupon(deal.coupon!)} aria-label={`Copiar cupón ${deal.coupon}`}>
@@ -352,6 +336,21 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
           {!visibleDeals.length && <div className="empty"><b>{savedOnly && savedIds.length === 0 ? "Aún no has guardado ofertas." : "No hemos encontrado ofertas con esos filtros."}</b><span>{savedOnly && savedIds.length === 0 ? "Pulsa «Guardar» en una oferta para verla aquí más tarde, en este navegador." : "Prueba con otra palabra o quita alguno de los filtros."}</span></div>}
         </div>
       </section>
+
+      {featuredPost && <section className="editorialSpotlight shell" aria-labelledby="spotlight-title">
+        <div className="editorialSpotlightCopy"><p>EN EL BLOG · {featuredPost.publishedLabel}</p><h2 id="spotlight-title">{featuredPost.title}</h2><span>Una selección de productos con fotos, precios publicados y fichas para consultar antes de comprar.</span><a href={postHref(featuredPost.id)}>Ver selección <b aria-hidden="true">↗</b></a></div>
+        <a className="editorialSpotlightArtwork" href={postHref(featuredPost.id)} aria-label={`Leer ${featuredPost.title}`}><img src={featuredPost.imageUrl} alt={featuredPost.title} width="720" height="480" loading="lazy" /></a>
+      </section>}
+
+      <section className="storeRail shell" aria-label="Explorar ofertas por tienda">
+        <div className="storeRailLead"><span className="liveDot" aria-hidden="true" /><div><b>{summary.total} ofertas recientes</b><small>Explora por tienda</small></div></div>
+        <a className="storeQuick storeQuickAmazon" href="/ofertas/amazon"><StoreLogo store="Amazon" /><div><b>Amazon</b><small>{offerCountLabel(storeTotals.Amazon)}</small></div><i aria-hidden="true">→</i></a>
+        <a className="storeQuick storeQuickAli" href="/ofertas/aliexpress"><StoreLogo store="AliExpress" /><div><b>AliExpress</b><small>{offerCountLabel(storeTotals.AliExpress)}</small></div><i aria-hidden="true">→</i></a>
+        {storeTotals.Miravia > 0 && <a className="storeQuick storeQuickMiravia" href="/ofertas/miravia"><StoreLogo store="Miravia" /><div><b>Miravia</b><small>{offerCountLabel(storeTotals.Miravia)}</small></div><i aria-hidden="true">→</i></a>}
+        <a className="storeQuick" href="/ofertas/pccomponentes"><StoreLogo store="PcComponentes" /><div><b>PcComponentes</b><small>{offerCountLabel(storeTotals.PcComponentes)}</small></div><i aria-hidden="true">→</i></a>
+      </section>
+
+      {adsenseHomeSlot && <div className="shell adSection"><AdSlot slot={adsenseHomeSlot} /></div>}
 
       <aside className="gtaGuideTeaser shell" aria-label="Guía destacada de GTA VI">
         <a className="gtaGuideImage" href="/gta-vi-mas-barato-ps5/"><img src="/images/gta-vi-official.jpg" alt="Arte promocional oficial de Grand Theft Auto VI" width="1200" height="630" loading="lazy" /><span>GUÍA GAMING</span></a>
