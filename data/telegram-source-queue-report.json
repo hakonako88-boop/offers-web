@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-27T16:56:09.173Z",
+  "updatedAt": "2026-10-27T17:05:41.756Z",
   "summary": {
-    "ignored": 243,
-    "rejected": 631,
+    "ignored": 244,
+    "rejected": 632,
     "published": 49,
     "duplicate": 20,
-    "needs_review": 56,
-    "pending": 95
+    "needs_review": 57,
+    "pending": 92
   },
   "recent": [
     {
@@ -14,9 +14,9 @@
       "source": "telegram-paramanitas",
       "messageId": 5058,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/paramanitas/5058",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -132,12 +132,12 @@
       "messageId": 96869,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/96869",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-27T16:15:32.197Z",
-      "nextAttemptAt": "2026-10-27T16:55:49.734Z"
+      "lastCheckedAt": "2026-10-27T17:05:23.323Z",
+      "nextAttemptAt": "2026-10-27T18:25:41.756Z"
     },
     {
       "id": "telegram-paramanitas:5057:amazon:0",
@@ -248,13 +248,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96864,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/96864",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-27T15:38:18.222Z",
-      "nextAttemptAt": "2026-10-27T16:58:35.062Z"
+      "lastCheckedAt": "2026-10-27T17:05:23.323Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96863:amazon:0",
