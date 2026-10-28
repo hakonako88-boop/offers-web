@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-28T22:53:09.733Z",
+  "updatedAt": "2026-10-28T23:02:34.182Z",
   "summary": {
-    "rejected": 625,
-    "ignored": 233,
+    "rejected": 629,
+    "ignored": 234,
     "published": 62,
     "duplicate": 19,
     "needs_review": 61,
-    "pending": 137
+    "pending": 132
   },
   "recent": [
     {
@@ -15,12 +15,12 @@
       "messageId": 96984,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/96984",
       "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-10-28T23:02:18.813Z",
+      "nextAttemptAt": "2026-10-28T23:22:34.182Z"
     },
     {
       "id": "telegram-una-ganga:96983:amazon:0",
@@ -41,12 +41,12 @@
       "messageId": 96982,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/96982",
       "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-10-28T23:02:18.813Z",
+      "nextAttemptAt": "2026-10-28T23:22:34.182Z"
     },
     {
       "id": "telegram-una-ganga:96981:aliexpress:0",
@@ -417,13 +417,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96974,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/96974",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-28T23:01:24.629Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-tiesometro:7770:aliexpress:0",
