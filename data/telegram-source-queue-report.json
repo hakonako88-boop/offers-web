@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-29T06:12:44.301Z",
+  "updatedAt": "2026-10-29T06:22:35.887Z",
   "summary": {
-    "ignored": 220,
-    "rejected": 645,
+    "rejected": 646,
+    "ignored": 219,
     "published": 57,
     "duplicate": 18,
     "needs_review": 61,
     "pending": 93
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97000:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97000,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/97000",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-29T06:41:45.290Z"
+    },
     {
       "id": "telegram-una-ganga:96999:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -27,13 +40,13 @@
       "source": "telegram-una-ganga",
       "messageId": 96998,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/96998",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-29T06:22:30.961Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:96997:aliexpress:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "https://www.amazon.es/dp/B0BTJD6LCL?tag=chollos00a-21",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-10-28T20:13:36.964Z"
-    },
-    {
-      "id": "telegram-ofertos:44874:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 44874,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/44874",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
     }
   ]
 }
