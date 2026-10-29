@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-29T20:04:09.913Z",
+  "updatedAt": "2026-10-29T20:14:15.197Z",
   "summary": {
-    "rejected": 592,
+    "rejected": 593,
     "ignored": 225,
     "published": 68,
     "duplicate": 22,
-    "needs_review": 91,
-    "pending": 134
+    "needs_review": 92,
+    "pending": 132
   },
   "recent": [
     {
@@ -28,21 +28,21 @@
       "messageId": 97048,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/97048",
       "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-10-29T20:13:57.052Z",
+      "nextAttemptAt": "2026-10-29T20:34:15.197Z"
     },
     {
       "id": "telegram-ofertos:44956:amazon:0",
       "source": "telegram-ofertos",
       "messageId": 44956,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/44956",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -521,13 +521,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97037,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97037",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-29T18:45:03.654Z",
-      "nextAttemptAt": "2026-10-29T20:05:23.316Z"
+      "lastCheckedAt": "2026-10-29T20:13:57.052Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97036:aliexpress:0",
