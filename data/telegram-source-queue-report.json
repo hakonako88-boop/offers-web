@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-30T06:12:28.381Z",
+  "updatedAt": "2026-10-30T06:22:25.627Z",
   "summary": {
-    "ignored": 216,
     "needs_review": 102,
-    "rejected": 600,
+    "rejected": 601,
+    "ignored": 215,
     "published": 63,
     "duplicate": 20,
     "pending": 122
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97077:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97077,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/97077",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-30T06:41:31.655Z"
+    },
     {
       "id": "telegram-una-ganga:97076:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -27,13 +40,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97075,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/97075",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-30T06:21:37.386Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97074:aliexpress:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-10-29T17:54:27.362Z"
-    },
-    {
-      "id": "telegram-una-ganga:97034:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 97034,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/97034",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-10-29T22:12:58.178Z",
-      "nextAttemptAt": ""
     }
   ]
 }
