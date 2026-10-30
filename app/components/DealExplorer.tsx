@@ -12,6 +12,7 @@ import type { PublishedPost } from "../lib/posts";
 import { offerEditorialLabel } from "../lib/offer-label";
 import { editorialCardTitle } from "../lib/display-title";
 import StoreLogo from "./StoreLogo";
+import { campaignStage } from "../../scripts/black-friday-selection.mjs";
 
 export type Deal = {
   id: string;
@@ -63,7 +64,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
   const featuredPost = posts.find((post) => /^mejores-productos-(?:dia|semana)-/u.test(post.id)
     && Number.isFinite(newestOfferDate) && newestOfferDate - Date.parse(post.publishedAt) < 7 * 24 * 60 * 60 * 1000);
   const [deals] = useState<Deal[]>(initialDeals);
-  const [blackFridayVisible, setBlackFridayVisible] = useState(false);
+  const [campaign, setCampaign] = useState<"hidden" | "preparation" | "black-friday" | "cyber-monday">("hidden");
   const [visibleLimit, setVisibleLimit] = useState(18);
   const [category, setCategory] = useState("Todos");
   const [store, setStore] = useState("Todas");
@@ -85,8 +86,13 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
   const filtersReady = useRef(false);
 
   useEffect(() => {
-    const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Madrid", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
-    setBlackFridayVisible(today >= "2026-10-27" && today <= "2026-11-30");
+    const update = () => {
+      const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Madrid", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+      setCampaign(today >= "2026-10-27" && today <= "2026-11-30" ? campaignStage(new Date()) as "preparation" | "black-friday" | "cyber-monday" : "hidden");
+    };
+    update();
+    const timer = window.setInterval(update, 60_000);
+    return () => window.clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -232,9 +238,9 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
         </div>
       </header>
 
-      {blackFridayVisible && <aside className="shell blackFridayHome" aria-label="Especial Black Friday 2026">
-        <div><span>ESPECIAL · 27–30 NOVIEMBRE</span><h2>Black Friday 2026, sin descuentos de humo.</h2><p>Guía, cupones y ofertas verificadas de varias tiendas. Consulta las ofertas recientes y comprueba las condiciones de cada promoción.</p></div>
-        <a href="/black-friday-2026/">Ver el especial <b aria-hidden="true">↗</b></a>
+      {campaign !== "hidden" && <aside className="shell blackFridayHome" aria-label="Especial Black Friday y Cyber Monday 2026">
+        <div><span>{campaign === "preparation" ? "EL RADAR SE PREPARA · 27–30 NOVIEMBRE" : campaign === "cyber-monday" ? "HOY · CYBER MONDAY" : "EN MARCHA · BLACK FRIDAY"}</span><h2>{campaign === "preparation" ? "Black Friday 2026: prepara tu lista, no compres con prisa." : campaign === "cyber-monday" ? "Cyber Monday: la última selección del radar." : "Black Friday: ofertas que merecen una segunda mirada."}</h2><p>{campaign === "preparation" ? "Compara precios y guarda tus favoritos. Las promociones oficiales aún no han empezado." : "Selección automática con precio visible, producto identificable y condiciones para comparar."}</p></div>
+        <a href="/black-friday-2026/">Abrir el radar <b aria-hidden="true">↗</b></a>
       </aside>}
 
       <section className="hero shell" aria-labelledby="hero-title">
