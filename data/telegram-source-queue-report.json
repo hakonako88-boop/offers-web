@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-30T07:43:41.842Z",
+  "updatedAt": "2026-10-30T07:52:39.459Z",
   "summary": {
     "ignored": 215,
     "duplicate": 20,
     "rejected": 599,
     "published": 62,
-    "needs_review": 103,
+    "needs_review": 104,
     "pending": 123
   },
   "recent": [
+    {
+      "id": "telegram-errores-de-precio:15660:aliexpress:0",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15660,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/erroresde_precio/15660",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-errores-de-precio:15659:aliexpress:0",
       "source": "telegram-errores-de-precio",
@@ -27,9 +40,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45856,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/chollosdiario/45856",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/97037",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-29T22:57:08.565Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:97036:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 97036,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/una_ganga/97036",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
