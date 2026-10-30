@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-10-30T16:14:30.145Z",
+  "updatedAt": "2026-10-30T16:23:53.138Z",
   "summary": {
-    "rejected": 563,
+    "rejected": 564,
     "ignored": 222,
     "published": 69,
     "duplicate": 18,
@@ -9,6 +9,19 @@
     "pending": 135
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97108:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97108,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/97108",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-10-30T17:01:12.284Z"
+    },
     {
       "id": "telegram-una-ganga:97107:miravia:0",
       "source": "telegram-una-ganga",
@@ -209,13 +222,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97096,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97096",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-30T14:53:27.584Z",
-      "nextAttemptAt": "2026-10-30T16:13:44.912Z"
+      "lastCheckedAt": "2026-10-30T16:23:36.456Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-chollosdiario:45859:amazon:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:5074:amazon:14",
-      "source": "telegram-paramanitas",
-      "messageId": 5074,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/5074",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-29T21:51:53.161Z"
     }
   ]
 }
