@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-10-31T13:23:39.711Z",
+  "updatedAt": "2026-10-31T13:33:39.900Z",
   "summary": {
-    "duplicate": 19,
     "rejected": 552,
     "ignored": 226,
-    "published": 70,
+    "duplicate": 18,
+    "published": 71,
     "needs_review": 133,
     "pending": 122
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97168:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97168,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/97168",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-10-31T13:33:20.818Z",
+      "nextAttemptAt": "2026-10-31T13:53:39.900Z"
+    },
     {
       "id": "telegram-una-ganga:97167:amazon:0",
       "source": "telegram-una-ganga",
@@ -66,11 +79,11 @@
       "source": "telegram-chollosdiario",
       "messageId": 45870,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/chollosdiario/45870",
-      "resultUrl": "",
+      "resultUrl": "https://www.amazon.es/dp/B08ZPTQ75W?tag=chollos00a-21",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-10-31T13:51:49.220Z"
     },
@@ -189,7 +202,7 @@
       "sourceUrl": "https://t.me/Ofertos/45022",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-31T13:32:19.460Z"
+      "nextAttemptAt": "2026-10-31T14:13:39.900Z"
     },
     {
       "id": "telegram-errores-de-precio:15662:aliexpress:10",
@@ -1285,19 +1298,6 @@
     },
     {
       "id": "telegram-paramanitas:5081:amazon:1",
-      "source": "telegram-paramanitas",
-      "messageId": 5081,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/paramanitas/5081",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:5081:amazon:0",
       "source": "telegram-paramanitas",
       "messageId": 5081,
       "store": "Amazon",
