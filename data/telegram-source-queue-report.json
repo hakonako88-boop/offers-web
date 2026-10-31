@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-10-31T16:03:58.132Z",
+  "updatedAt": "2026-10-31T16:13:21.610Z",
   "summary": {
-    "rejected": 542,
+    "rejected": 543,
     "duplicate": 18,
     "ignored": 227,
     "published": 72,
@@ -9,6 +9,19 @@
     "pending": 124
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97182:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97182,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/97182",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:97181:miravia:0",
       "source": "telegram-una-ganga",
@@ -235,13 +248,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97168,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97168",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-31T14:52:31.427Z",
-      "nextAttemptAt": "2026-10-31T16:12:48.836Z"
+      "lastCheckedAt": "2026-10-31T16:13:03.866Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97167:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/45010",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:5082:ignored",
-      "source": "telegram-paramanitas",
-      "messageId": 5082,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/paramanitas/5082",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
