@@ -1,14 +1,66 @@
 {
-  "updatedAt": "2026-10-31T22:54:46.817Z",
+  "updatedAt": "2026-10-31T23:02:59.637Z",
   "summary": {
-    "ignored": 230,
     "rejected": 511,
+    "ignored": 229,
     "published": 73,
     "duplicate": 17,
     "needs_review": 171,
-    "pending": 128
+    "pending": 129
   },
   "recent": [
+    {
+      "id": "telegram-errores-de-precio:15666:ignored",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15666,
+      "store": "Otra",
+      "status": "ignored",
+      "attempts": 0,
+      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
+      "sourceUrl": "https://t.me/erroresde_precio/15666",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-errores-de-precio:15665:ignored",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15665,
+      "store": "Otra",
+      "status": "ignored",
+      "attempts": 0,
+      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
+      "sourceUrl": "https://t.me/erroresde_precio/15665",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-ofertos:45039:aliexpress:1",
+      "source": "telegram-ofertos",
+      "messageId": 45039,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/Ofertos/45039",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-ofertos:45039:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 45039,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/Ofertos/45039",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:97211:miravia:0",
       "source": "telegram-una-ganga",
@@ -16,7 +68,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/97211",
       "resultUrl": "",
       "lastCheckedAt": "2026-10-31T22:42:33.532Z",
@@ -469,13 +521,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97200,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97200",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-31T21:35:32.857Z",
-      "nextAttemptAt": "2026-10-31T22:55:50.621Z"
+      "lastCheckedAt": "2026-10-31T23:02:42.959Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97199:aliexpress:0",
@@ -495,13 +547,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97198,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/97198",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-31T22:52:30.372Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-10-31T23:02:42.959Z",
+      "nextAttemptAt": "2026-10-31T23:22:59.637Z"
     },
     {
       "id": "telegram-chollosdiario:45873:amazon:0",
@@ -768,13 +820,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97189,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97189",
       "resultUrl": "",
-      "lastCheckedAt": "2026-10-31T21:35:32.857Z",
-      "nextAttemptAt": "2026-10-31T22:55:50.621Z"
+      "lastCheckedAt": "2026-10-31T23:02:42.959Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:45027:amazon:0",
@@ -1256,58 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:97162:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 97162,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/una_ganga/97162",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45023:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 45023,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 2,
-      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
-      "sourceUrl": "https://t.me/Ofertos/45023",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-31T16:33:54.343Z"
-    },
-    {
-      "id": "telegram-tiesometro:7787:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7787,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/tiesometro/7787",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45022:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 45022,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 2,
-      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
-      "sourceUrl": "https://t.me/Ofertos/45022",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-31T16:33:54.343Z"
     }
   ]
 }
