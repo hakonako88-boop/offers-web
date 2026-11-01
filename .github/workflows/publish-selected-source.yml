@@ -8,6 +8,7 @@ on:
         type: string
 permissions:
   contents: write
+  actions: write
 concurrency:
   group: chollosaldia-production
   cancel-in-progress: false
@@ -40,11 +41,28 @@ jobs:
       - name: Comprobar y publicar solo la oferta solicitada
         run: npm run sync:aliexpress
       - name: Guardar resultado y activar actualización web
+        id: persist
         if: always()
         run: |
+          if git diff --quiet -- data/offers.json; then
+            echo 'web_changed=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'web_changed=true' >> "$GITHUB_OUTPUT"
+          fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data/offers.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/aliexpress-source-diagnostics.json data/community-signal-state.json public/tg
           git diff --cached --quiet || git commit -m 'Procesar oferta seleccionada [selected-source]'
           git pull --rebase origin main
           git push origin main
+      - name: Desplegar la oferta en la web
+        if: steps.persist.outputs.web_changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          curl --fail-with-body --request POST \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            --header 'Accept: application/vnd.github+json' \
+            --header 'Content-Type: application/json' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/deploy.yml/dispatches" \
+            --data '{"ref":"main","inputs":{"run_automatic_source":"none"}}'
