@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-11-01T19:14:29.822Z",
+  "updatedAt": "2026-11-01T19:24:36.225Z",
   "summary": {
-    "ignored": 239,
+    "ignored": 238,
     "rejected": 505,
     "published": 78,
-    "needs_review": 164,
+    "needs_review": 165,
     "duplicate": 15,
     "pending": 222
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97275:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97275,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/97275",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-01T20:01:41.243Z"
+    },
+    {
+      "id": "telegram-ofertos:45139:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 45139,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/Ofertos/45139",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:97274:miravia:0",
       "source": "telegram-una-ganga",
@@ -53,9 +79,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45881,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45881",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -639,12 +665,12 @@
       "messageId": 97256,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/97256",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-01T18:37:07.728Z",
-      "nextAttemptAt": "2026-11-01T19:17:25.443Z"
+      "lastCheckedAt": "2026-11-01T19:24:19.279Z",
+      "nextAttemptAt": "2026-11-01T20:44:36.225Z"
     },
     {
       "id": "telegram-una-ganga:97257:aliexpress:0",
@@ -859,13 +885,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97246,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97246",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-01T17:56:48.675Z",
-      "nextAttemptAt": "2026-11-01T19:17:06.531Z"
+      "lastCheckedAt": "2026-11-01T19:24:19.279Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97245:aliexpress:0",
@@ -1279,32 +1305,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/97237",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45098:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 45098,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/45098",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45097:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 45097,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/45097",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
