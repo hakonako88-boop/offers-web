@@ -63,6 +63,14 @@ test('spaces failed source checks and only wakes work whose retry time has arriv
   assert.equal(isSourceItemReady({ status: 'rejected' }, now), false);
 });
 
+test('an explicit publication request is checked before the historical backlog', () => {
+  const signals = [
+    { id: 'old', queueItemId: 'old', sourceStore: 'AliExpress', publishedAt: '2026-10-30T10:00:00Z' },
+    { id: 'requested', queueItemId: 'requested', sourceStore: 'AliExpress', publishedAt: '2026-11-01T11:00:00Z' },
+  ];
+  assert.deepEqual(prioritizeAliExpressSignals(signals, ['requested']).map((signal) => signal.id), ['requested', 'old']);
+});
+
 test('dispatches pending source offers immediately, including outside old editorial slots', () => {
   const overnight = publisherDispatchDecision({
     pendingCount: 4,

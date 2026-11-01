@@ -39,6 +39,9 @@ const REPUBLICATION_COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000;
 // a broad batch and let later ten-minute source runs drain any remainder.
 const MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE ? 24 : 8;
 const MAX_QUEUE_QUERIES_PER_RUN = SOURCE_QUEUE_MODE ? 16 : 6;
+const editorialRequests = readJson(path.join(ROOT, 'data', 'source-publication-priorities.json'), { requests: [] }).requests
+  .filter((request) => Date.parse(request.expiresAt) > Date.now());
+const requestedSourceIds = editorialRequests.map((request) => request.id);
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -146,6 +149,7 @@ async function telegram(method, token, payload) {
 }
 
 function linkedAliExpressOffer(metadata, signal) {
+  const editorialRequest = editorialRequests.find((request) => request.id === (signal.queueItemId || signal.id));
   const id = String(metadata.productId || '').trim();
   const title = String(metadata.title || '').trim();
   const image = String(metadata.imageUrl || '').trim();
@@ -203,7 +207,8 @@ function linkedAliExpressOffer(metadata, signal) {
     category: 'AliExpress',
     siteCategory: signal.category || 'Tecnología',
     price,
-    priceLabel: euro(price),
+    priceLabel: editorialRequest?.condition ? `Desde ${euro(price)}` : euro(price),
+    description: editorialRequest?.condition || '',
     previousPrice,
     previousPriceLabel: previousPrice ? euro(previousPrice) : '',
     discount,
@@ -360,7 +365,7 @@ async function saveOfferForWeb(offer, message) {
     source: offer.communitySource || 'aliexpress-official',
     source_url: offer.communitySourceUrl || '',
     category: offer.siteCategory,
-    description: offer.title,
+    description: offer.description || offer.title,
     coupon: offer.coupon || '',
   };
   const withoutPreviousVersion = existingOffers.filter((entry) => String(entry.source_product_id || '') !== offer.id);
@@ -415,7 +420,7 @@ const communityDiscovery = await discoverCommunitySignals({ state: communityStat
 const communitySignals = [];
 const orderedCommunitySignals = prioritizeAliExpressSignals(communityDiscovery.signals.filter((signal) => signal.source === 'nolodejesescapar'
   ? publicationAllowance({ store: signal.sourceStore, offers: existingWebOffers, source: signal.source }).allowed
-  : canCheckCommunitySignals));
+  : canCheckCommunitySignals || requestedSourceIds.includes(signal.queueItemId || signal.id)), requestedSourceIds);
 // Drain exact queued Telegram links before generic discovery.  The per-run
 // cap and every factual/affiliate validation still apply.  This is deliberate:
 // Telegram is the user's editorial source of truth, whereas the community
@@ -552,7 +557,8 @@ function publishableCandidates(sourceCandidates) {
 }
 
 const hasPublishableNoloSignal = candidates.some((offer) => offer.communitySource === 'nolodejesescapar');
-let uniqueCandidates = canPublishNow && (publicationPolicy.allowed || hasPublishableNoloSignal) ? publishableCandidates(candidates) : [];
+const hasRequestedCandidate = candidates.some((offer) => requestedSourceIds.includes(offer.communitySignalId));
+let uniqueCandidates = canPublishNow && (publicationPolicy.allowed || hasPublishableNoloSignal || hasRequestedCandidate) ? publishableCandidates(candidates) : [];
 
 if (canPublishNow && publicationPolicy.allowed && !uniqueCandidates.length) {
   // Cuatro categorías rotatorias dan margen cuando las fuentes comunitarias
@@ -582,8 +588,11 @@ try {
 } catch (error) {
   console.warn(`Could not check the recent public Telegram channel for duplicates: ${error.message}`);
 }
+uniqueCandidates.sort((left, right) => Number(requestedSourceIds.includes(right.communitySignalId)) - Number(requestedSourceIds.includes(left.communitySignalId)));
 for (const offer of uniqueCandidates.slice(0, MAX_PUBLICATION_ATTEMPTS)) {
-  const offerAllowance = offer.communitySource === 'nolodejesescapar'
+  const offerAllowance = requestedSourceIds.includes(offer.communitySignalId)
+    ? publicationAllowance({ store: 'AliExpress', offers: existingWebOffers, bypass: true })
+    : offer.communitySource === 'nolodejesescapar'
     ? publicationAllowance({ store: 'AliExpress', offers: existingWebOffers, source: offer.communitySource })
     : publicationPolicy;
   if (!offerAllowance.allowed || sent >= Math.min(MAX_POSTS_PER_RUN, offerAllowance.remaining)) break;

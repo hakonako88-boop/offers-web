@@ -3,8 +3,11 @@ function timestamp(value) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-export function prioritizeAliExpressSignals(signals = []) {
+export function prioritizeAliExpressSignals(signals = [], requestedIds = []) {
+  const requested = new Set(requestedIds);
   return [...signals].sort((left, right) => {
+    const explicitPriority = Number(requested.has(right.queueItemId || right.id)) - Number(requested.has(left.queueItemId || left.id));
+    if (explicitPriority) return explicitPriority;
     const leftQueued = Number(Boolean(left.queueItemId && left.sourceStore === 'AliExpress'));
     const rightQueued = Number(Boolean(right.queueItemId && right.sourceStore === 'AliExpress'));
     if (leftQueued !== rightQueued) return rightQueued - leftQueued;

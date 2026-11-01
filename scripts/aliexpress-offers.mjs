@@ -154,6 +154,7 @@ export function formatAliExpressCaption(offer) {
     coupon: offer.coupon,
     couponDiscount: offer.couponDiscount,
     couponMinimumSpend: offer.couponMinimumSpend,
+    description: offer.description,
   });
 }
 
@@ -168,6 +169,7 @@ export function formatAliExpressTelegramCaption(offer) {
     savings: offer.previousPrice > offer.price ? euro(offer.previousPrice - offer.price) : '',
     discount: offer.discount,
     highlight: popularity,
+    description: offer.description,
     coupon: offer.coupon,
     couponDiscount: offer.couponDiscount,
     couponMinimumSpend: offer.couponMinimumSpend,
