@@ -1,0 +1,50 @@
+name: Publicar oferta seleccionada
+on:
+  workflow_dispatch:
+    inputs:
+      source_item_id:
+        description: ID exacto de la oferta pendiente
+        required: true
+        type: string
+permissions:
+  contents: write
+concurrency:
+  group: chollosaldia-production
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      ALIEXPRESS_APP_KEY: ${{ secrets.ALIEXPRESS_APP_KEY }}
+      ALIEXPRESS_APP_SECRET: ${{ secrets.ALIEXPRESS_APP_SECRET }}
+      ALIEXPRESS_TRACKING_ID: ${{ secrets.ALIEXPRESS_TRACKING_ID }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      REQUESTED_SOURCE_ITEM_ID: ${{ inputs.source_item_id }}
+      FORCE_AUTOMATIC_PUBLICATION: 'true'
+      BYPASS_PUBLICATION_SCHEDULE: 'true'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - name: Actualizar estado de la cola
+        run: |
+          git fetch origin main
+          git merge --ff-only origin/main
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Comprobar y publicar solo la oferta solicitada
+        run: npm run sync:aliexpress
+      - name: Guardar resultado y activar actualización web
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/offers.json data/aliexpress-discovery-state.json data/aliexpress-publications.json data/aliexpress-source-diagnostics.json data/community-signal-state.json public/tg
+          git diff --cached --quiet || git commit -m 'Procesar oferta seleccionada [selected-source]'
+          git pull --rebase origin main
+          git push origin main

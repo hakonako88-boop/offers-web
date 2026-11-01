@@ -41,7 +41,10 @@ const MAX_COMMUNITY_QUERIES_PER_RUN = SOURCE_QUEUE_MODE ? 24 : 8;
 const MAX_QUEUE_QUERIES_PER_RUN = SOURCE_QUEUE_MODE ? 16 : 6;
 const editorialRequests = readJson(path.join(ROOT, 'data', 'source-publication-priorities.json'), { requests: [] }).requests
   .filter((request) => Date.parse(request.expiresAt) > Date.now());
-const requestedSourceIds = editorialRequests.map((request) => request.id);
+const requestedSourceIds = [...new Set([
+  ...editorialRequests.map((request) => request.id),
+  process.env.REQUESTED_SOURCE_ITEM_ID || '',
+].filter(Boolean))];
 
 function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback;
@@ -417,6 +420,11 @@ const communityStateForDiscovery = {
   seen: (communityState.seen || []).filter((entry) => !entry.id.startsWith('nolodejesescapar:') || publishedAliSignalIds.has(entry.id)),
 };
 const communityDiscovery = await discoverCommunitySignals({ state: communityStateForDiscovery });
+if (process.env.REQUESTED_SOURCE_ITEM_ID) {
+  communityDiscovery.signals = communityDiscovery.signals.filter((signal) => signal.id === process.env.REQUESTED_SOURCE_ITEM_ID);
+  console.log(`Directed source request ${process.env.REQUESTED_SOURCE_ITEM_ID}: ${communityDiscovery.signals.length} ready signal(s).`);
+  if (!communityDiscovery.signals.length) throw new Error('Requested source is not ready; refusing unrelated fallback products.');
+}
 const communitySignals = [];
 const orderedCommunitySignals = prioritizeAliExpressSignals(communityDiscovery.signals.filter((signal) => signal.source === 'nolodejesescapar'
   ? publicationAllowance({ store: signal.sourceStore, offers: existingWebOffers, source: signal.source }).allowed
@@ -560,7 +568,7 @@ const hasPublishableNoloSignal = candidates.some((offer) => offer.communitySourc
 const hasRequestedCandidate = candidates.some((offer) => requestedSourceIds.includes(offer.communitySignalId));
 let uniqueCandidates = canPublishNow && (publicationPolicy.allowed || hasPublishableNoloSignal || hasRequestedCandidate) ? publishableCandidates(candidates) : [];
 
-if (canPublishNow && publicationPolicy.allowed && !uniqueCandidates.length) {
+if (canPublishNow && publicationPolicy.allowed && !uniqueCandidates.length && !process.env.REQUESTED_SOURCE_ITEM_ID) {
   // Cuatro categorías rotatorias dan margen cuando las fuentes comunitarias
   // están vacías o no responden, pero se conserva el filtro de calidad.
   const fallbackTopics = topicsForAliExpressRun(Number(state.nextTopic || 0), 4);
