@@ -414,6 +414,8 @@ const candidates = [];
 const publishedAliSignalIds = new Set(published.map((entry) => entry.communitySignalId).filter(Boolean));
 const communityStateForDiscovery = {
   ...communityState,
+  retryAfter: Object.fromEntries(Object.entries(communityState.retryAfter || {})
+    .filter(([id]) => !requestedSourceIds.includes(id))),
   // Older releases marked every inspected Nolo post as done, even when it
   // never produced a real affiliate publication. Reopen those recent posts
   // once, while preserving Chollometro, Telegram and confirmed publications.
@@ -559,7 +561,11 @@ writeJson(SOURCE_DIAGNOSTICS_FILE, sourceDiagnostics);
 // estricto de descuento, ventas y artículos poco interesantes.
 function publishableCandidates(sourceCandidates) {
   return filterDuplicateDeals(Array.from(new Map(
-    selectInterestingOffers(sourceCandidates).map((offer) => [offer.id, offer]),
+    selectInterestingOffers(sourceCandidates).map((offer) => [offer.id, {
+      ...offer,
+      store: 'AliExpress',
+      sourceProductId: `aliexpress:${offer.id}`,
+    }]),
   ).values()), recentWebOffers)
     .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable);
 }

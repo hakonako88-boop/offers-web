@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { formatAliExpressCaption, formatAliExpressTelegramCaption } from '../scripts/aliexpress-offers.mjs';
+import { filterDuplicateDeals } from '../scripts/offer-deduplication.mjs';
 
 test('keeps personalised price eligibility visible on Telegram and the web', () => {
   const offer = {
@@ -14,4 +15,12 @@ test('keeps personalised price eligibility visible on Telegram and the web', () 
     assert.match(caption, /ventaja personalizada de 5/);
     assert.match(caption, /No disponible para todos/);
   }
+});
+
+test('an AliExpress pack is not discarded merely because Amazon offered the same brand', () => {
+  const title = 'Coca-Cola Sabor Original refresco de cola Pack de 24 x 330 ml';
+  const candidate = { title, store: 'AliExpress', sourceProductId: 'aliexpress:1005008375729710', url: 'https://s.click.aliexpress.com/e/example' };
+  const existing = [{ title, store: 'Amazon', source_product_id: 'amazon:B00DPKUKPC' }];
+  assert.equal(filterDuplicateDeals([candidate], existing).length, 1);
+  assert.equal(filterDuplicateDeals([candidate], [{ ...candidate }]).length, 0);
 });
