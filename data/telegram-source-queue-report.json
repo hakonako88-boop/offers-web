@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-01T08:12:40.251Z",
+  "updatedAt": "2026-11-01T08:22:31.364Z",
   "summary": {
-    "rejected": 522,
     "needs_review": 169,
     "duplicate": 15,
+    "rejected": 522,
     "ignored": 227,
     "published": 68,
     "pending": 168
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97231:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97231,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/97231",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-01T08:41:44.261Z"
+    },
     {
       "id": "telegram-paramanitas:5091:amazon:0",
       "source": "telegram-paramanitas",
@@ -66,13 +79,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97229,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/97229",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-01T08:21:25.961Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97228:aliexpress:0",
@@ -1285,19 +1298,6 @@
     },
     {
       "id": "telegram-paramanitas:5088:amazon:5",
-      "source": "telegram-paramanitas",
-      "messageId": 5088,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/5088",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-10-31T21:41:44.943Z"
-    },
-    {
-      "id": "telegram-paramanitas:5088:amazon:4",
       "source": "telegram-paramanitas",
       "messageId": 5088,
       "store": "Amazon",
