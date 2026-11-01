@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-01T12:24:00.411Z",
+  "updatedAt": "2026-11-01T12:30:05.683Z",
   "summary": {
     "needs_review": 159,
-    "rejected": 519,
+    "rejected": 520,
     "ignored": 235,
     "published": 73,
     "duplicate": 14,
-    "pending": 201
+    "pending": 200
   },
   "recent": [
     {
@@ -237,7 +237,7 @@
       "store": "AliExpress",
       "status": "pending",
       "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "reason": "Esperando una nueva comprobación de AliExpress; el fallo anterior no cuenta como otro intento",
       "sourceUrl": "https://t.me/Ofertos/45100",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -261,13 +261,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97237,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/97237",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-01T12:24:58.846Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:45098:aliexpress:0",
@@ -731,7 +731,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/Ofertos/45073",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-01T12:04:06.877Z",
@@ -744,7 +744,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/Ofertos/45073",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-01T12:04:06.877Z",
