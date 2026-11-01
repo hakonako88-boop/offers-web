@@ -79,7 +79,7 @@ function schemaFor(deal: NonNullable<ReturnType<typeof getDealById>>) {
     image: [absoluteImageUrl(deal.imageUrl)],
     description: dealDescription(deal),
     category: deal.category,
-    offers: {
+    offers: deal.priceCondition ? undefined : {
       "@type": "Offer",
       url: publicUrl,
       priceCurrency: "EUR",
@@ -168,8 +168,9 @@ export default async function OfferPage({ params }: OfferPageProps) {
             <h1>{productTitle}</h1>
             <p className="offerLead">{description}</p>
             <div className="offerPriceBox">
-              <span>PRECIO DE OFERTA</span>
+              <span>{deal.priceCondition ? 'PRECIO CON CONDICIONES · DESDE' : 'PRECIO DE OFERTA'}</span>
               <strong>{money.format(deal.price)}</strong>
+              {deal.priceCondition && <p role="note">{deal.priceCondition}</p>}
               {deal.oldPrice > deal.price && <p>Antes <s>{money.format(deal.oldPrice)}</s> <b>−{discount}%</b></p>}
               {savings > 0 && <em>Ahorras {money.format(savings)}</em>}
             </div>

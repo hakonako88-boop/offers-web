@@ -24,6 +24,7 @@ export type Deal = {
   price: number;
   oldPrice: number;
   coupon?: string;
+  priceCondition?: string;
   imageUrl: string;
   affiliateUrl: string;
   verifiedAt: string;
@@ -321,7 +322,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
                     <p className="categoryLabel"><b>{offerEditorialLabel({ id: deal.id, price: deal.price, discount })}</b> en {deal.category}</p>
                     <h3 title={deal.title}><a href={dealDetailsUrl(deal)}>{editorialCardTitle({ title: deal.title, store: deal.store, price: deal.price, discount, coupon: deal.coupon })}</a></h3>
                     <div className="priceRow">
-                      <span className="priceCurrent"><small>PRECIO AHORA</small><strong>{money.format(deal.price)}</strong></span>
+                      <span className="priceCurrent"><small>{deal.priceCondition ? 'DESDE · CON CONDICIONES' : 'PRECIO AHORA'}</small><strong>{money.format(deal.price)}</strong></span>
                       {meaningfulSaving && <span className="priceWas"><small>ANTES</small><s>{money.format(deal.oldPrice)}</s></span>}
                       {meaningfulSaving && <span className="saving">AHORRAS <b>{money.format(deal.oldPrice - deal.price)}</b></span>}
                     </div>

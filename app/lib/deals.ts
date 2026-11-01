@@ -15,6 +15,7 @@ export type PublishedDeal = {
   coupon?: string;
   couponDiscount?: number;
   couponMinimumSpend?: number;
+  priceCondition?: string;
   imageUrl: string;
   affiliateUrl: string;
   verifiedAt: string;
@@ -22,6 +23,7 @@ export type PublishedDeal = {
 };
 
 type LegacyOffer = {
+  description?: string;
   message_id?: number;
   chollometroId?: string;
   source_product_id?: string;
@@ -231,6 +233,7 @@ const candidates: PublishedDeal[] = (rawOffers as LegacyOffer[]).flatMap((offer)
     coupon,
     couponDiscount: Number(offer.couponDiscount) || undefined,
     couponMinimumSpend: Number(offer.couponMinimumSpend) || undefined,
+    priceCondition: /^Precio condicionado:/iu.test(String(offer.description || '')) ? String(offer.description).trim().slice(0, 500) : undefined,
     imageUrl: offer.image,
     affiliateUrl: offer.url,
     verifiedAt: date.label,
@@ -362,5 +365,5 @@ export function dealDescription(deal: PublishedDeal) {
   const savingText = savings > 0 ? ` Ahorras ${money.format(savings)}${discount ? ` (${discount}% de descuento)` : ""}.` : "";
   const couponText = deal.coupon ? ` Cupón: ${deal.coupon}.` : "";
   const priceText = deal.active ? `en ${deal.store} por ${money.format(deal.price)}` : `en ${deal.store}: oferta finalizada, último precio ${money.format(deal.price)}`;
-  return `${dealSearchTitle(deal.title)} ${priceText}.${couponText}${savingText} Comprueba las condiciones en la tienda.`;
+  return `${dealSearchTitle(deal.title)} ${priceText}.${deal.priceCondition ? ` ${deal.priceCondition}` : ''}${couponText}${savingText} Comprueba las condiciones en la tienda.`;
 }
