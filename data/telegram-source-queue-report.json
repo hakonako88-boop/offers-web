@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-01T04:12:18.827Z",
+  "updatedAt": "2026-11-01T04:22:52.743Z",
   "summary": {
-    "published": 70,
     "ignored": 228,
-    "rejected": 519,
+    "rejected": 520,
     "needs_review": 170,
     "duplicate": 15,
+    "published": 68,
     "pending": 168
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97223:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97223,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/97223",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-01T04:41:43.908Z"
+    },
     {
       "id": "telegram-una-ganga:97222:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -846,13 +859,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97211,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97211",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-01T02:52:14.309Z",
-      "nextAttemptAt": "2026-11-01T04:12:31.832Z"
+      "lastCheckedAt": "2026-11-01T04:22:25.212Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-errores-de-precio:15664:aliexpress:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-10-31T21:01:38.849Z"
-    },
-    {
-      "id": "telegram-una-ganga:97200:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 97200,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/97200",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-01T01:52:43.899Z",
-      "nextAttemptAt": ""
     }
   ]
 }
