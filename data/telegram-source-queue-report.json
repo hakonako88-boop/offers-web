@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-02T05:13:09.002Z",
+  "updatedAt": "2026-11-02T05:23:29.862Z",
   "summary": {
-    "rejected": 501,
+    "rejected": 502,
     "published": 73,
     "ignored": 231,
     "duplicate": 15,
@@ -9,6 +9,19 @@
     "pending": 221
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97302:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97302,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/97302",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-02T05:42:18.864Z"
+    },
     {
       "id": "telegram-una-ganga:97301:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -27,13 +40,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97300,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/97300",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-02T05:22:54.316Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97299:aliexpress:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/Ofertos/45119",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45118:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 45118,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/45118",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
