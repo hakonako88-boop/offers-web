@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-11-02T09:23:46.441Z",
+  "updatedAt": "2026-11-02T09:36:23.743Z",
   "summary": {
-    "ignored": 234,
-    "rejected": 493,
+    "rejected": 492,
+    "ignored": 233,
     "duplicate": 17,
-    "published": 71,
+    "published": 73,
     "needs_review": 185,
     "pending": 229
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:45156:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 45156,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/45156",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-02T09:52:00.810Z"
+    },
+    {
+      "id": "telegram-ofertos:45155:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 45155,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/Ofertos/45155",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:97310:amazon:0",
       "source": "telegram-una-ganga",
@@ -33,18 +59,18 @@
       "sourceUrl": "https://t.me/Ofertos/45154",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-02T10:02:14.923Z"
+      "nextAttemptAt": "2026-11-02T10:16:23.743Z"
     },
     {
       "id": "telegram-ofertos:45153:amazon:0",
       "source": "telegram-ofertos",
       "messageId": 45153,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/45153",
-      "resultUrl": "",
+      "resultUrl": "https://www.amazon.es/dp/B0FWQT71KB?tag=chollos00a-21",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-02T10:02:14.923Z"
     },
@@ -145,12 +171,12 @@
       "messageId": 45148,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/Ofertos/45148",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-02T08:54:56.326Z",
-      "nextAttemptAt": "2026-11-02T09:35:14.385Z"
+      "lastCheckedAt": "2026-11-02T09:36:03.840Z",
+      "nextAttemptAt": "2026-11-02T10:56:23.743Z"
     },
     {
       "id": "telegram-ofertos:45148:miravia:0",
@@ -158,12 +184,12 @@
       "messageId": 45148,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/Ofertos/45148",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-02T08:54:56.326Z",
-      "nextAttemptAt": "2026-11-02T09:35:14.385Z"
+      "lastCheckedAt": "2026-11-02T09:36:03.840Z",
+      "nextAttemptAt": "2026-11-02T10:56:23.743Z"
     },
     {
       "id": "telegram-paramanitas:5098:amazon:0",
@@ -1279,32 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/Ofertos/45135",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45134:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 45134,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/45134",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15675:aliexpress:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15675,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/erroresde_precio/15675",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
