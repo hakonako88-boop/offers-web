@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-02T10:23:38.279Z",
+  "updatedAt": "2026-11-02T10:34:03.177Z",
   "summary": {
-    "rejected": 491,
     "ignored": 235,
+    "rejected": 491,
     "duplicate": 17,
     "published": 73,
     "needs_review": 185,
     "pending": 238
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7834:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7834,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/tiesometro/7834",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:97312:amazon:0",
       "source": "telegram-una-ganga",
@@ -157,13 +170,13 @@
       "source": "telegram-ofertos",
       "messageId": 45156,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/45156",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-02T10:34:00.910Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:45155:aliexpress:0",
@@ -184,12 +197,12 @@
       "messageId": 97310,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/97310",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-02T10:24:24.237Z"
+      "nextAttemptAt": "2026-11-02T11:12:07.945Z"
     },
     {
       "id": "telegram-ofertos:45153:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/7824",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45140:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 45140,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/45140",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
