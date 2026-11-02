@@ -130,7 +130,7 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <DealExplorer initialDeals={homepageDeals} posts={publishedPosts.filter(isProductSelection).slice(0, 6)} summary={summary} />
+      <DealExplorer initialDeals={homepageDeals} posts={publishedPosts.filter(isProductSelection).slice(0, 6)} aliexpressCampaignPost={publishedPosts.find((post) => post.id === "aliexpress-11-11-2026-cupones-ofertas")} summary={summary} />
     </>
   );
 }

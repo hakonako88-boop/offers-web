@@ -1,0 +1,89 @@
+/* Campaign led homepage. Scoped overrides keep offer, search and saved actions intact. */
+.dealHome{background:#f6f7f9;color:#15233a;font-family:var(--font-geist-sans),Arial,sans-serif}
+.dealHome .shell{width:min(calc(100% - 48px),1200px)}
+.dealHome .announcement{background:#111e34}
+.dealHome .siteHeader{border-bottom:1px solid #e1e6ee;background:#fff}
+.dealHome .headerInner{min-height:72px}
+.dealHome .brand{font-family:var(--font-geist-sans),Arial,sans-serif;font-size:26px;font-weight:850;letter-spacing:-.06em;color:#16253b}
+.dealHome .headerInner nav a{font-size:13px;color:#27374d}
+.dealHome .headerInner nav a[href="/black-friday-2026/"]{color:#c64229}
+.dealHome .hero{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,5vw,68px);align-items:center;min-height:0;padding:54px 0 66px}
+.dealHome .heroKicker,.campaignEyebrow{display:inline-block;color:#d24b2e;font-size:11px;font-weight:850;letter-spacing:.13em}
+.dealHome .hero h1{max-width:12ch;margin:13px 0 0;color:#13243c;font-family:var(--font-geist-sans),Arial,sans-serif;font-size:clamp(45px,5vw,70px);font-weight:850;line-height:1.04;letter-spacing:-.065em}
+.dealHome .heroLead{max-width:54ch;margin:20px 0 25px;color:#526075;font-size:16px;line-height:1.65}
+.dealHome .heroSearch{max-width:610px}
+.dealHome .heroSearchBox{border:1px solid #ccd5e1;border-radius:12px;box-shadow:0 8px 28px rgb(20 39 68 / 7%)}
+.dealHome .heroSearchBox button,.dealHome .hero .primaryButton{border-radius:9px;background:#e45434;color:#fff}
+.dealHome .heroSearchBox button:hover,.dealHome .hero .primaryButton:hover{background:#bf3f25}
+.dealHome .heroSearchShortcuts button{border-radius:99px;border-color:#d5dce5;background:#fff}
+.dealHome .heroActions{margin-top:20px}
+.dealHome .heroFeature{display:grid;grid-template-columns:1fr;grid-template-rows:260px auto;min-height:0;border:1px solid #e0e5ed;border-radius:18px;background:#fff;box-shadow:0 18px 45px rgb(22 38 63 / 10%)}
+.dealHome .heroFeatureImage{height:260px;min-height:0;border-right:0;border-bottom:1px solid #edf0f4;background:#fff}
+.dealHome .heroFeatureImage img{padding:20px;max-height:260px}
+.dealHome .heroFeatureDetails{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 18px;min-height:0;padding:19px 23px}
+.dealHome .heroFeatureDetails>span{grid-column:1/-1;color:#69778a}
+.dealHome .heroFeatureDetails h2{grid-column:1;grid-row:2;font-family:var(--font-geist-sans),Arial,sans-serif;font-size:17px;font-weight:750;line-height:1.35}
+.dealHome .heroFeatureDetails>div{grid-column:2;grid-row:2;display:flex;flex-direction:column;align-items:end;gap:2px;border:0;padding:0}
+.dealHome .heroFeatureDetails strong{color:#d7472a;font-family:var(--font-geist-sans),Arial,sans-serif;font-size:34px;font-weight:850}
+.dealHome .heroFeatureButton{grid-column:1/-1;grid-row:3;border-radius:9px;background:#16283f}
+.dealHome .heroFeatureButton:hover{background:#2b4666}
+.dealHome .campaignHub{padding:48px 0 62px;background:#fff}
+.campaignHubHeading{display:flex;align-items:end;justify-content:space-between;gap:32px;margin-bottom:24px}
+.campaignHubHeading h2{max-width:730px;margin:7px 0 0;color:#15253d;font-family:var(--font-geist-sans),Arial,sans-serif;font-size:clamp(30px,3.2vw,43px);font-weight:850;line-height:1.1;letter-spacing:-.05em}
+.campaignHubHeading p{max-width:330px;margin:0;color:#647187;font-size:13px;line-height:1.6}
+.campaignHubGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.campaignTile{display:grid;grid-template-columns:minmax(0,1fr) 42%;min-height:300px;overflow:hidden;border-radius:18px;box-shadow:0 12px 28px rgb(21 36 61 / 10%)}
+.campaignTileCopy{display:flex;flex-direction:column;align-items:flex-start;padding:28px}
+.campaignTag{display:inline-flex;padding:6px 9px;border-radius:5px;background:rgb(255 255 255 / 20%);font-size:10px;font-weight:850;letter-spacing:.12em}
+.campaignTile h3{max-width:18ch;margin:23px 0 8px;font-family:var(--font-geist-sans),Arial,sans-serif;font-size:clamp(23px,2.4vw,31px);font-weight:850;line-height:1.08;letter-spacing:-.05em}
+.campaignTile p{max-width:38ch;margin:0 0 20px;font-size:13px;line-height:1.55}
+.campaignTileCopy>a{display:inline-flex;align-items:center;justify-content:space-between;gap:18px;min-height:42px;margin-top:auto;padding:0 15px;border-radius:7px;background:#fff;color:#17283e;font-size:12px;font-weight:850;text-decoration:none}
+.campaignTileCopy>a:hover{background:#f1f4f8}
+.campaignTileAli{background:#e84c2a;color:#fff}
+.campaignTileAli p{color:#fff2eb}
+.campaignTileVisual{display:block;min-width:0;background:#fff2e9}
+.campaignTileVisual img{display:block;width:100%;height:100%;object-fit:cover}
+.campaignTileBlack{background:#14263e;color:#fff}
+.campaignTileBlack p{color:#d4ddeb}
+.campaignBlackGraphic{display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:repeating-linear-gradient(-35deg,#203953 0,#203953 12px,#1c344f 12px,#1c344f 24px);color:#fff;text-align:center;transform:none}
+.campaignBlackGraphic span,.campaignBlackGraphic strong{font-size:clamp(28px,3vw,43px);font-weight:950;line-height:.95;letter-spacing:-.09em;transform:rotate(-8deg)}
+.campaignBlackGraphic strong{color:#ff6b45}
+.campaignBlackGraphic small{margin-top:12px;font-size:18px;font-weight:800;letter-spacing:.3em;transform:rotate(-8deg)}
+.dealHome .offersSection{padding:62px 0 78px;border:0;background:#f6f7f9}
+.dealHome .sectionIntro{border-bottom:1px solid #dce3eb}
+.dealHome .sectionIntro h2{color:#17283e;font-family:var(--font-geist-sans),Arial,sans-serif;font-size:clamp(34px,3.3vw,48px);font-weight:850;letter-spacing:-.055em}
+.dealHome .dealGrid{gap:18px}
+.dealHome .dealCard{display:flex;flex-direction:column;min-height:0;overflow:hidden;border:1px solid #e2e7ee;border-radius:14px;background:#fff;box-shadow:0 4px 16px rgb(22 38 63 / 5%)}
+.dealHome .dealCard:hover{background:#fff;box-shadow:0 12px 26px rgb(22 38 63 / 11%)}
+.dealHome .dealCard .imageWrap{height:205px;min-height:0;aspect-ratio:auto;border-bottom:1px solid #edf0f4}
+.dealHome .dealCard .imageWrap img{padding:20px}
+.dealHome .dealCard .dealBody{display:flex;flex:1;flex-direction:column;padding:17px}
+.dealHome .dealCard h3{font-size:16px;line-height:1.35}
+.dealHome .dealCard .priceRow{border-top:1px solid #e7ebf0}
+.dealHome .dealCard .priceRow strong{color:#d6472b;font-family:var(--font-geist-sans),Arial,sans-serif;font-size:30px;font-weight:850}
+.dealHome .dealCard .dealButton{border-radius:8px;background:#16283f}
+.dealHome .dealCard .discountBadge,.dealHome .dealCard .coupon{border-radius:6px}
+.dealHome .storeRail,.dealHome .sectionIntro{border-color:#dce3eb}
+.dealHome .postCard,.dealHome .guideCard{border:1px solid #e2e7ee;border-radius:12px;background:#fff}
+@media(max-width:1000px){.dealHome .headerInner>nav{display:none}.dealHome .mobileNav{position:relative;display:block;margin-left:auto}.dealHome .mobileNav summary{display:inline-flex;align-items:center;gap:7px;min-height:42px;padding:0 12px;border:1px solid #d8deea;border-radius:9px;background:#fff;color:#23304b;font-size:12px;font-weight:800;cursor:pointer}.dealHome .mobileNavMenu{position:absolute;z-index:50;top:calc(100% + 8px);right:0;display:grid;width:min(290px,calc(100vw - 28px));gap:4px;padding:9px;border:1px solid #dfe4ed;border-radius:12px;background:#fff;box-shadow:0 18px 40px rgb(16 24 40 / 18%)}.dealHome .mobileNavMenu a{display:flex;align-items:center;min-height:42px;padding:0 10px;border-radius:7px;color:#26334b;font-size:12px;font-weight:750}.dealHome .hero{grid-template-columns:1fr 1fr;gap:24px}.campaignTile{grid-template-columns:1fr;min-height:0}.campaignTileVisual,.campaignBlackGraphic{height:170px}.campaignTile h3{max-width:none}}
+@media(max-width:760px){.dealHome .shell{width:min(calc(100% - 32px),1200px)}.dealHome .hero{grid-template-columns:1fr;padding:36px 0 44px}.dealHome .hero h1{max-width:14ch;font-size:clamp(43px,8vw,58px)}.dealHome .heroFeature{grid-template-columns:38% 62%;grid-template-rows:auto}.dealHome .heroFeatureImage{height:100%;min-height:230px;border-right:1px solid #edf0f4;border-bottom:0}.dealHome .heroFeatureImage img{max-height:230px}.dealHome .heroFeatureDetails{display:flex;flex-direction:column;justify-content:center}.dealHome .heroFeatureDetails>div{align-items:start}.campaignHubHeading{display:block}.campaignHubHeading p{max-width:60ch;margin-top:12px}.campaignHubGrid{grid-template-columns:1fr}.campaignTile{grid-template-columns:minmax(0,1fr) 38%}.campaignTileVisual,.campaignBlackGraphic{height:auto}.dealHome .dealGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.dealHome .announcementInner{gap:10px;font-size:10px}.dealHome .headerInner{min-height:62px}.dealHome .brand{font-size:23px}.dealHome .hero{padding:29px 0 38px}.dealHome .hero h1{font-size:43px}.dealHome .heroLead{font-size:14px;margin:14px 0 20px}.dealHome .heroSearchBox{display:grid;grid-template-columns:auto minmax(0,1fr)}.dealHome .heroSearchBox button{grid-column:1/-1;min-height:43px}.dealHome .heroSearchShortcuts{flex-wrap:wrap}.dealHome .heroActions{gap:13px}.dealHome .heroFeature{grid-template-columns:38% 62%}.dealHome .heroFeatureImage{min-height:200px}.dealHome .heroFeatureDetails{gap:6px;padding:12px}.dealHome .heroFeatureDetails h2{font-size:13px}.dealHome .heroFeatureDetails strong{font-size:25px}.dealHome .heroFeatureButton{min-height:38px;font-size:11px}.dealHome .campaignHub{padding:37px 0 45px}.campaignHubHeading h2{font-size:31px}.campaignTile{grid-template-columns:1fr;min-height:0}.campaignTileCopy{padding:22px}.campaignTile h3{margin:15px 0 7px;font-size:25px}.campaignTileVisual,.campaignBlackGraphic{height:160px}.dealHome .offersSection{padding:45px 0}.dealHome .dealGrid{grid-template-columns:1fr}.dealHome .dealCard{display:grid;grid-template-columns:34% minmax(0,1fr)}.dealHome .dealCard .imageWrap{height:100%;min-height:220px;border-right:1px solid #edf0f4;border-bottom:0}.dealHome .dealCard .imageWrap img{padding:8px}.dealHome .dealCard .dealBody{padding:12px}.dealHome .dealCard h3{font-size:14px}.dealHome .dealCard .priceRow strong{font-size:25px}}
+.blogHub{background:#f6f7f9;color:#17283e;font-family:var(--font-geist-sans),Arial,sans-serif}
+.blogHub .siteHeader{border-bottom:1px solid #e0e6ed;background:#fff}
+.blogHub .brand{font-family:var(--font-geist-sans),Arial,sans-serif;font-weight:850;letter-spacing:-.06em}
+.blogHub .blogHubArticle{padding-top:24px}
+.blogHub .blogHubHero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);gap:0 42px;min-height:0;margin:18px 0 32px;padding:45px;border:0;border-radius:18px;background:#17283e;color:#fff}
+.blogHub .blogHubHero h1{max-width:14ch;color:#fff;font-family:var(--font-geist-sans),Arial,sans-serif;font-size:clamp(42px,5vw,64px);font-weight:850;line-height:1.04;letter-spacing:-.06em}
+.blogHub .blogHubHero>p{max-width:52ch;margin:16px 0;color:#d8e0e9;font-size:15px;line-height:1.65}
+.blogHub .blogHubHero>div{margin-top:22px}
+.blogHub .blogHubHero>div a{border-radius:7px;color:#fff}
+.blogHub .blogHubHero>div a:first-child{border-color:#e45434;background:#e45434;color:#fff}
+.blogHub .blogHubHero .blogHeroVisual{grid-column:2;grid-row:1/span 3;display:flex;flex-direction:column;gap:12px;min-width:0;padding:12px;border:0;border-radius:12px;background:#fff;color:#17283e}
+.blogHub .blogHeroVisual>span{padding:5px 7px 0;color:#c7472c;font-size:10px;font-weight:850;letter-spacing:.1em}
+.blogHub .blogHeroVisual>a{display:block;min-height:0;flex:1;overflow:hidden;border-radius:7px;background:#f7f4f0}
+.blogHub .blogHeroVisual img{display:block;width:100%;height:100%;min-height:220px;max-height:300px;object-fit:cover}
+.blogHub .blogHeroVisual>b{padding:0 7px 6px;font-size:13px;line-height:1.35}
+.blogHub .blogFeatured,.blogHub .postCard,.blogHub .blogGuideGrid article{overflow:hidden;border:1px solid #e2e7ee;border-radius:12px;background:#fff;box-shadow:0 6px 20px rgb(20 39 68 / 5%)}
+.blogHub .sectionIntro{border-color:#dce3eb}
+.blogHub .sectionIntro h2{font-family:var(--font-geist-sans),Arial,sans-serif;font-weight:850;letter-spacing:-.05em}
+@media(max-width:760px){.blogHub .blogHubHero{grid-template-columns:1fr;gap:0;padding:28px 23px}.blogHub .blogHubHero h1,.blogHub .blogHubHero>p,.blogHub .blogHubHero>div{grid-column:1}.blogHub .blogHubHero h1{font-size:clamp(37px,8vw,52px)}.blogHub .blogHubHero .blogHeroVisual{grid-column:1;grid-row:auto;margin-top:25px}.blogHub .blogHeroVisual img{max-height:235px}}

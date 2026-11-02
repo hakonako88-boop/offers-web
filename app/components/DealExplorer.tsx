@@ -60,7 +60,7 @@ function offerCountLabel(total: number) {
   return `${total} ${total === 1 ? "oferta" : "ofertas"}`;
 }
 
-export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: Deal[]; posts: PublishedPost[]; summary: DealSummary }) {
+export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summary }: { initialDeals: Deal[]; posts: PublishedPost[]; aliexpressCampaignPost?: PublishedPost; summary: DealSummary }) {
   const newestOfferDate = Date.parse(initialDeals[0]?.verifiedDate || "");
   const featuredPost = posts.find((post) => /^mejores-productos-(?:dia|semana)-/u.test(post.id)
     && Number.isFinite(newestOfferDate) && newestOfferDate - Date.parse(post.publishedAt) < 7 * 24 * 60 * 60 * 1000);
@@ -239,15 +239,27 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
         </div>
       </header>
 
-      {campaign !== "hidden" && <aside className="shell blackFridayHome" aria-label="Especial Black Friday y Cyber Monday 2026">
-        <div><span>{campaign === "preparation" ? "EL RADAR SE PREPARA · 27–30 NOVIEMBRE" : campaign === "cyber-monday" ? "HOY · CYBER MONDAY" : "EN MARCHA · BLACK FRIDAY"}</span><h2>{campaign === "preparation" ? "Black Friday 2026: prepara tu lista, no compres con prisa." : campaign === "cyber-monday" ? "Cyber Monday: la última selección del radar." : "Black Friday: ofertas que merecen una segunda mirada."}</h2><p>{campaign === "preparation" ? "Compara precios y guarda tus favoritos. Las promociones oficiales aún no han empezado." : "Selección automática con precio visible, producto identificable y condiciones para comparar."}</p></div>
-        <a href="/black-friday-2026/">Abrir el radar <b aria-hidden="true">↗</b></a>
-      </aside>}
+      <section className="campaignHub" id="campanas" aria-labelledby="campaigns-title">
+        <div className="shell">
+          <div className="campaignHubHeading"><div><span className="campaignEyebrow">EN EL RADAR</span><h2 id="campaigns-title">Campañas que no querrás perderte.</h2></div><p>Consulta las fechas, cupones y ofertas publicadas antes de decidir. Comprueba siempre el precio final en la tienda.</p></div>
+          <div className="campaignHubGrid">
+            {aliexpressCampaignPost && <article className="campaignTile campaignTileAli">
+              <div className="campaignTileCopy"><span className="campaignTag">11.11 · ALIEXPRESS</span><h3>El Día del Soltero, con los cupones a mano.</h3><p>Fechas, condiciones y códigos publicados para comparar el precio final de tus compras.</p><a href={postHref(aliexpressCampaignPost.id)}>Ver la guía 11.11 <span aria-hidden="true">↗</span></a></div>
+              <a className="campaignTileVisual" href={postHref(aliexpressCampaignPost.id)} aria-label="Leer la publicación de AliExpress 11.11"><img src={aliexpressCampaignPost.imageUrl} alt="Campaña AliExpress 11.11 2026" width={640} height={420} /></a>
+            </article>}
+            <article className="campaignTile campaignTileBlack">
+              <div className="campaignTileCopy"><span className="campaignTag">27—30 NOV · BLACK FRIDAY 2026</span><h3>Prepara tu lista. Sigue las ofertas.</h3><p>{campaign === "black-friday" || campaign === "cyber-monday" ? "Consulta la selección actual y comprueba precio y condiciones antes de comprar." : "La campaña oficial aún no ha empezado. Explora la selección reciente y guarda tus favoritos."}</p><a href="/black-friday-2026/">Explorar Black Friday <span aria-hidden="true">↗</span></a></div>
+              <div className="campaignBlackGraphic" aria-hidden="true"><span>BLACK</span><strong>FRIDAY</strong><small>2026</small></div>
+            </article>
+          </div>
+        </div>
+      </section>
 
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="heroCopy">
-          <h1 id="hero-title">Chollos de hoy, elegidos con criterio.</h1>
-          <p className="heroLead">Ofertas recientes de Amazon, AliExpress y otras tiendas. Producto reconocible, precio a la vista y condiciones claras para decidir mejor.</p>
+          <span className="heroKicker">TU RADAR DE OFERTAS · NOVIEMBRE 2026</span>
+          <h1 id="hero-title">Las mejores compras empiezan aquí.</h1>
+          <p className="heroLead">Descubre las campañas de AliExpress 11.11 y Black Friday, además de ofertas recientes con precios y condiciones a la vista.</p>
           <form className="heroSearch" role="search" onSubmit={(event) => { event.preventDefault(); document.getElementById("ofertas")?.scrollIntoView({ behavior: "smooth" }); }}>
             <label htmlFor="home-offer-search">¿Qué estás buscando?</label>
             <div className="heroSearchBox"><span aria-hidden="true">⌕</span><input id="home-offer-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Móvil, cafetera, cupón…" /><button type="submit">Buscar ofertas</button></div>
@@ -259,7 +271,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             </div>
           </form>
           <div className="heroActions">
-            <a className="primaryButton" href="#ofertas">Explorar chollos</a>
+            <a className="primaryButton" href="#campanas">Ver campañas <span aria-hidden="true">↗</span></a>
             <a className="quietLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis</a>
           </div>
           <ul className="trustList" aria-label="Qué muestra cada oferta">
