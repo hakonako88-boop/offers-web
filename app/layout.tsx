@@ -7,6 +7,7 @@ import "./redesign.css";
 import "./identity.css";
 import "./radar.css";
 import "./campaign.css";
+import "./hallmark-home.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });

@@ -203,8 +203,8 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
     <main className="dealHome" id="inicio">
       <div className="announcement" role="status">
         <div className="shell announcementInner">
-          <span><b>Ofertas recientes</b> · confirma precio y disponibilidad en la tienda</span>
-          <a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Alertas en Telegram <span aria-hidden="true">↗</span></a>
+          <span><b>Ofertas recientes.</b> Confirma precio y disponibilidad en la tienda.</span>
+          <a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Alertas en Telegram</a>
         </div>
       </div>
 
@@ -221,19 +221,19 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             <a href="/black-friday-2026/">Black Friday</a>
             {posts.length > 0 && <a href="#novedades">Novedades</a>}
             <a href="#como-funciona">Cómo seleccionamos</a>
-            <a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram <span aria-hidden="true">↗</span></a>
+            <a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram</a>
           </nav>
           <details className="mobileNav">
             <summary aria-label="Abrir menú de navegación"><span aria-hidden="true">☰</span> Menú</summary>
             <div className="mobileNavMenu">
-              <a href="#ofertas">🔥 Ofertas de hoy</a>
-              <a href="/buscar/">⌕ Buscar ofertas</a>
-              <a href="/blog/">⭐ Mejores productos</a>
+              <a href="#ofertas">Ofertas de hoy</a>
+              <a href="/buscar/">Buscar ofertas</a>
+              <a href="/blog/">Mejores productos</a>
               <a href="/black-friday-2026/">Black Friday 2026</a>
-              <a href="/chollos/tecnologia/">📱 Tecnología</a>
-              <a href="/chollos/hogar/">🏠 Hogar y cocina</a>
-              {posts.length > 0 && <a href="#novedades">📰 Guías y novedades</a>}
-              <a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">✈️ Canal de Telegram ↗</a>
+              <a href="/chollos/tecnologia/">Tecnología</a>
+              <a href="/chollos/hogar/">Hogar y cocina</a>
+              {posts.length > 0 && <a href="#novedades">Guías y novedades</a>}
+              <a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Canal de Telegram</a>
             </div>
           </details>
         </div>
@@ -246,8 +246,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
 
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="heroCopy">
-          <p className="eyebrow"><span aria-hidden="true" />EL RADAR DE CHOLLOS AL DÍA · EDICIÓN DIARIA</p>
-          <h1 id="hero-title">Chollos de hoy.<br /> <em>Elegidos con criterio.</em></h1>
+          <h1 id="hero-title">Chollos de hoy, elegidos con criterio.</h1>
           <p className="heroLead">Ofertas recientes de Amazon, AliExpress y otras tiendas. Producto reconocible, precio a la vista y condiciones claras para decidir mejor.</p>
           <form className="heroSearch" role="search" onSubmit={(event) => { event.preventDefault(); document.getElementById("ofertas")?.scrollIntoView({ behavior: "smooth" }); }}>
             <label htmlFor="home-offer-search">¿Qué estás buscando?</label>
@@ -260,8 +259,8 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
             </div>
           </form>
           <div className="heroActions">
-            <a className="primaryButton" href="#ofertas">Explorar chollos <span aria-hidden="true">↓</span></a>
-            <a className="quietLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis <span aria-hidden="true">↗</span></a>
+            <a className="primaryButton" href="#ofertas">Explorar chollos</a>
+            <a className="quietLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis</a>
           </div>
           <ul className="trustList" aria-label="Qué muestra cada oferta">
             <li>Precio publicado</li>
@@ -271,7 +270,7 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
         </div>
         {heroDeal && <aside className="heroFeature" aria-label="Oferta destacada ahora">
           <a className="heroFeatureImage" href={dealDetailsUrl(heroDeal)}><img src={heroDeal.imageUrl} alt={heroDeal.title} width={620} height={500} fetchPriority="high" /></a>
-          <div className="heroFeatureDetails"><span>EN PORTADA · {heroDeal.store}</span><h2><a href={dealDetailsUrl(heroDeal)}>{shortTitle(heroDeal.title, 82)}</a></h2><div><strong>{money.format(heroDeal.price)}</strong>{heroDeal.oldPrice - heroDeal.price >= 1 && <s>{money.format(heroDeal.oldPrice)}</s>}</div><a className="heroFeatureButton" href={dealDetailsUrl(heroDeal)}>Analizar esta oferta <b aria-hidden="true">↗</b></a></div>
+          <div className="heroFeatureDetails"><span>En portada: {heroDeal.store}</span><h2><a href={dealDetailsUrl(heroDeal)}>{shortTitle(heroDeal.title, 82)}</a></h2><div><strong>{money.format(heroDeal.price)}</strong>{heroDeal.oldPrice - heroDeal.price >= 1 && <s>{money.format(heroDeal.oldPrice)}</s>}</div><a className="heroFeatureButton" href={dealDetailsUrl(heroDeal)}>Analizar esta oferta</a></div>
         </aside>}
       </section>
 
@@ -279,7 +278,6 @@ export function DealExplorer({ initialDeals, posts, summary }: { initialDeals: D
         <div className="shell">
           <div className="sectionIntro">
             <div>
-              <p className="eyebrow"><span aria-hidden="true" />RECIÉN PUBLICADOS</p>
               <h2 id="offers-title">El radar de hoy</h2>
             </div>
             <p>Precios válidos en el momento de la publicación. Pueden cambiar o agotarse.</p>
