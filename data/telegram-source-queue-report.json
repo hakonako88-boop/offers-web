@@ -1,22 +1,35 @@
 {
-  "updatedAt": "2026-11-02T16:58:59.075Z",
+  "updatedAt": "2026-11-02T17:07:56.770Z",
   "summary": {
     "rejected": 448,
-    "ignored": 247,
+    "ignored": 248,
     "published": 82,
-    "needs_review": 199,
+    "needs_review": 200,
     "duplicate": 23,
-    "pending": 229
+    "pending": 228
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97338:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97338,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/97338",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-paramanitas:5101:amazon:0",
       "source": "telegram-paramanitas",
       "messageId": 5101,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/paramanitas/5101",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/7830",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:97290:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 97290,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/97290",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
