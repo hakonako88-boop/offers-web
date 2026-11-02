@@ -1,26 +1,39 @@
 {
-  "updatedAt": "2026-11-02T21:59:15.469Z",
+  "updatedAt": "2026-11-02T22:04:53.150Z",
   "summary": {
-    "rejected": 432,
     "published": 87,
+    "rejected": 428,
     "ignored": 246,
     "needs_review": 210,
     "duplicate": 28,
-    "pending": 254
+    "pending": 256
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97358:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97358,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/97358",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-02T22:04:31.612Z",
+      "nextAttemptAt": "2026-11-02T22:24:53.150Z"
+    },
     {
       "id": "telegram-una-ganga:97357:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 97357,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/97357",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-02T21:33:44.304Z",
-      "nextAttemptAt": "2026-11-02T21:54:04.798Z"
+      "lastCheckedAt": "2026-11-02T22:04:31.612Z",
+      "nextAttemptAt": "2026-11-02T22:44:53.150Z"
     },
     {
       "id": "telegram-una-ganga:97356:amazon:0",
@@ -495,13 +508,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97347,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/97347",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-02T21:58:59.184Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-02T22:04:31.612Z",
+      "nextAttemptAt": "2026-11-02T22:24:53.150Z"
     },
     {
       "id": "telegram-tiesometro:7841:aliexpress:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "https://www.amazon.es/dp/B0BSXFDS9C?tag=chollos00a-21",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-02T13:23:28.775Z"
-    },
-    {
-      "id": "telegram-paramanitas:5099:amazon:0",
-      "source": "telegram-paramanitas",
-      "messageId": 5099,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/5099",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-02T15:22:12.679Z"
     }
   ]
 }
