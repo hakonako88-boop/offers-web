@@ -1,0 +1,119 @@
+/* Hallmark v2 · redesign: full · scope: blog, search, offer, store · theme: Loom ecru adapted to Chollos al Día brand · signature: real product and published price */
+/* Critique: the secondary pages mixed dark gradients, rounded cards and competing accent colours; ruled paper and one brand accent now connect the buying journey. */
+.blogHub, .searchPage, .offerPage, .storePage { background: var(--hl-paper); color: var(--hl-ink); font-family: var(--hl-body); }
+:is(.blogHub, .searchPage, .offerPage, .storePage) .shell { width: min(calc(100% - 48px), 1200px); }
+:is(.blogHub, .offerPage, .storePage) .siteHeader, .searchPage .productHeader { position: relative; border-bottom: 2px solid var(--hl-ink); background: var(--hl-paper); box-shadow: none; backdrop-filter: none; }
+:is(.blogHub, .offerPage, .storePage) .brand, .searchPage .brand { color: var(--hl-ink); font-family: var(--hl-display); letter-spacing: -.025em; }
+:is(.blogHub, .offerPage, .storePage) .brandMark, .searchPage .brandMark { border-radius: 0; background: var(--hl-accent); color: var(--hl-ink); font-family: var(--hl-body); }
+:is(.blogHub, .offerPage, .storePage) .brandMark, .searchPage .brandMark { background: var(--hl-ink) url('/favicon.svg') center / cover no-repeat; color: transparent; font-size: 0; }
+:is(.blogHub, .offerPage, .storePage) .siteHeader nav a, .searchPage .productHeader>a { color: var(--hl-ink); font-family: var(--hl-body); letter-spacing: 0; }
+:is(.blogHub, .offerPage, .storePage) .siteHeader nav a:hover, .searchPage .productHeader>a:hover { color: var(--hl-accent-hover); }
+:is(.blogHub, .offerPage, .storePage) .offerBreadcrumb { color: var(--hl-muted); font-size: 13px; }
+:is(.blogHub, .offerPage, .storePage) .offerBreadcrumb a { color: var(--hl-ink); text-decoration: underline; text-underline-offset: 3px; }
+:is(.blogHub, .offerPage, .storePage) .eyebrow, .searchPage .eyebrow { display: none; }
+:is(.blogHub, .searchPage, .offerPage, .storePage) :is(h1,h2) { color: var(--hl-ink); font-family: var(--hl-display); font-weight: 400; font-style: normal; letter-spacing: -.03em; line-height: 1.04; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+:is(.blogHub, .searchPage, .offerPage, .storePage) h3 { color: var(--hl-ink); font-family: var(--hl-body); font-weight: 600; letter-spacing: -.025em; overflow-wrap: break-word; min-width: 0; }
+:is(.blogHub, .searchPage, .offerPage, .storePage) :is(a,button,input,select,summary):focus-visible { outline: 3px solid var(--hl-focus); outline-offset: 3px; transition: none; }
+
+/* Blog: the published selection leads; ruled entries follow. */
+.blogHubArticle { padding-top: 32px; }
+.blogHubHero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); align-items: center; gap: 32px; min-height: 450px; margin-top: 0; padding: 48px; border: 0; border-top: 2px solid var(--hl-ink); border-bottom: 2px solid var(--hl-ink); border-radius: 0; background: var(--hl-paper-2); box-shadow: none; color: var(--hl-ink); }
+.blogHubHero::before, .blogHubHero::after { content: none; }
+.blogHubHero h1 { grid-column: 1; max-width: 620px; margin: 0; font-size: clamp(48px, 5.8vw, 78px); }
+.blogHubHero>p { grid-column: 1; max-width: 560px; margin: 0; color: var(--hl-muted); font-size: 16px; line-height: 1.5; }
+.blogHubHero>div { grid-column: 1; gap: 20px; }
+.blogHubHero>div a { min-height: 44px; padding: 12px 20px; border: 1px solid var(--hl-ink); border-radius: 0; background: transparent; color: var(--hl-ink); font-size: 13px; letter-spacing: 0; }
+.blogHubHero>div a:first-child { border-color: var(--hl-accent); background: var(--hl-accent); color: var(--hl-ink); }
+.blogHubHero>div a:hover { background: var(--hl-ink); color: var(--hl-paper); }
+.blogHubHero .blogHeroVisual { grid-column: 2; grid-row: 1 / span 3; border: 1px solid var(--hl-rule); border-radius: 0; background: var(--hl-paper); box-shadow: none; }
+.blogHeroVisual span, .blogHeroVisual b { color: var(--hl-muted); font-family: var(--hl-body); letter-spacing: 0; text-transform: none; }
+.blogFeatured { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); margin-top: 48px; border: 1px solid var(--hl-rule); border-radius: 0; background: var(--hl-paper); box-shadow: none; }
+.blogFeaturedImage { background: var(--hl-paper-2); }
+.blogFeatured>div { padding: clamp(24px, 4vw, 48px); }
+.blogFeatured h2 { font-size: clamp(32px, 3.6vw, 50px); }
+.blogFeatured time, .blogFeatured>div>p:not(.eyebrow) { color: var(--hl-muted); }
+.blogFeaturedLink { border-radius: 0; background: var(--hl-accent); color: var(--hl-ink); }
+.blogFeaturedLink:hover { background: var(--hl-accent-hover); color: var(--hl-paper); }
+.blogHub .sectionIntro { border-bottom: 2px solid var(--hl-ink); }
+.blogHub .sectionIntro h2 { font-size: clamp(36px, 4vw, 58px); }
+.blogHub .postCard, .blogGuideGrid article { border: 1px solid var(--hl-rule); border-radius: 0; background: var(--hl-paper); box-shadow: none; }
+.blogGuideGrid article>span { color: var(--hl-muted); font-family: var(--hl-body); font-size: 12px; letter-spacing: 0; text-transform: none; }
+.blogGuideGrid h3 { margin-top: 24px; }
+.blogGuideGrid article>a { border-top-color: var(--hl-rule); color: var(--hl-accent-hover); }
+.blogHub .guideCta { border-radius: 0; background: var(--hl-paper-2); }
+
+/* Search: one large query field and flat results. */
+.searchPage .productHeader { min-height: 72px; padding-inline: max(24px, calc((100% - 1200px) / 2)); }
+.searchShell { width: min(calc(100% - 48px), 1200px); padding: 72px 0 112px; }
+.searchShell>h1 { max-width: 930px; margin: 0; font-size: clamp(45px, 5.2vw, 74px); }
+.searchLead { max-width: 690px; margin-top: 20px; color: var(--hl-muted); font-size: 17px; line-height: 1.5; }
+.globalSearchForm { max-width: 860px; margin-top: 40px; }
+.globalSearchForm>label { color: var(--hl-ink); font-size: 13px; letter-spacing: 0; text-transform: none; }
+.globalSearchForm>div { padding: 0; border: 2px solid var(--hl-ink); border-radius: 0; background: var(--hl-paper); box-shadow: none; }
+.globalSearchForm input { min-height: 62px; background: transparent; color: var(--hl-ink); font-family: var(--hl-body); }
+.globalSearchForm button { border-radius: 0; background: var(--hl-accent); color: var(--hl-ink); font-family: var(--hl-body); }
+.globalSearchForm button:hover { background: var(--hl-accent-hover); color: var(--hl-paper); }
+.searchEmpty, .searchCount { border-radius: 0; background: var(--hl-paper-2); color: var(--hl-muted); }
+.searchSection { border-top: 2px solid var(--hl-ink); }
+.searchSection h2 { font-size: clamp(32px, 3vw, 44px); }
+.searchGrid>a { border: 1px solid var(--hl-rule); border-radius: 0; background: var(--hl-paper); }
+.searchGrid>a:hover { border-color: var(--hl-ink); }
+.searchGrid span { color: var(--hl-muted); font-size: 12px; letter-spacing: 0; text-transform: none; }
+.searchGrid strong { color: var(--hl-accent-hover); }
+.searchGuides a { border-radius: 0; background: var(--hl-ink); color: var(--hl-paper); }
+.searchGuides span { color: var(--hl-paper-2); font-size: 12px; }
+
+/* Offer: the product image and current price share the first screen. */
+.offerPage .offerArticle { padding-top: 32px; }
+.offerPage .offerHero { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(28px, 4vw, 56px); padding: 32px 0 48px; border: 0; border-top: 2px solid var(--hl-ink); border-bottom: 2px solid var(--hl-ink); border-radius: 0; background: transparent; box-shadow: none; }
+.offerPage .offerImageWrap { border: 1px solid var(--hl-rule); border-radius: 0; background: var(--hl-paper-2); }
+.offerPage .offerImageWrap img { object-fit: contain; }
+.offerPage .offerGallery>p { color: var(--hl-muted); font-size: 12px; }
+.offerPage .offerKicker { color: var(--hl-muted); font-family: var(--hl-body); font-size: 13px; letter-spacing: 0; text-transform: none; }
+.offerPage .offerSummary h1 { font-size: clamp(38px, 3.8vw, 58px); }
+.offerPage .offerLead { color: var(--hl-muted); font-size: 16px; }
+.offerPage .offerPriceBox { margin-top: 24px; padding: 20px 0; border: 0; border-top: 2px solid var(--hl-ink); border-bottom: 1px solid var(--hl-rule); border-radius: 0; background: transparent; box-shadow: none; color: var(--hl-ink); }
+.offerPage .offerPriceBox>span { color: var(--hl-muted); font-family: var(--hl-body); font-size: 12px; letter-spacing: 0; text-transform: none; }
+.offerPage .offerPriceBox strong { color: var(--hl-ink); font-family: var(--hl-display); font-size: clamp(50px, 5.5vw, 78px); font-weight: 400; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
+.offerPage .offerPriceBox p, .offerPage .offerPriceBox p b { color: var(--hl-muted); }
+.offerPage .offerPriceBox em { color: var(--hl-accent-hover); font-family: var(--hl-body); }
+.offerPage .offerCta, .offerPage .primaryButton { border-radius: 0; background: var(--hl-accent); color: var(--hl-ink); }
+.offerPage .offerCta:hover, .offerPage .primaryButton:hover { background: var(--hl-accent-hover); color: var(--hl-paper); }
+.offerPage .offerContent, .offerPage .offerDecision, .offerPage .priceHistoryEmpty, .offerPage .relatedDeals, .offerPage .offerPurchase { border-radius: 0; }
+.offerPage .offerDecision, .offerPage .priceHistoryEmpty { border: 1px solid var(--hl-rule); background: var(--hl-paper-2); box-shadow: none; }
+.offerPage .offerDecision dl>div { border-color: var(--hl-rule); }
+.offerPage .offerTelegramJoin { border-radius: 0; background: var(--hl-ink); color: var(--hl-paper); }
+.offerPage .offerTelegramJoin h2 { color: var(--hl-paper); }
+
+/* Store index: factual counts, then product rows. */
+.storePage .storeArticle { padding-top: 32px; }
+.storePage .storeHero { grid-template-columns: minmax(0, 1fr) auto; gap: 48px; align-items: end; padding: 40px 0 48px; border-top: 2px solid var(--hl-ink); border-bottom: 2px solid var(--hl-ink); border-radius: 0; background: transparent; color: var(--hl-ink); }
+.storePage .storeHero h1 { font-size: clamp(45px, 5vw, 70px); }
+.storePage .storeHero>div>p:last-child { color: var(--hl-muted); font-size: 16px; line-height: 1.5; }
+.storePage .storeHero aside { border: 0; border-left: 1px solid var(--hl-rule); border-radius: 0; background: transparent; }
+.storePage .storeHero aside strong, .storePage .storeHero aside b { color: var(--hl-ink); font-family: var(--hl-display); font-size: 36px; font-weight: 400; }
+.storePage .storeHero aside span, .storePage .storeHero aside small { color: var(--hl-muted); font-family: var(--hl-body); font-size: 12px; }
+.storePage .storeDeals { padding-top: 60px; }
+.storePage .sectionIntro { border-bottom: 2px solid var(--hl-ink); }
+.storePage .sectionIntro h2 { font-size: clamp(38px, 4vw, 58px); }
+.storePage .storeDealGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.storePage .dealCard { border: 1px solid var(--hl-rule); border-radius: 0; background: var(--hl-paper); box-shadow: none; }
+.storePage .dealCard:hover { border-color: var(--hl-ink); box-shadow: none; transform: none; }
+.storePage .dealCard .imageWrap { background: var(--hl-paper-2); }
+.storePage .dealCard .priceRow strong { color: var(--hl-ink); font-family: var(--hl-display); font-size: 34px; font-variant-numeric: tabular-nums; }
+.storePage .dealCard .dealButton { border-radius: 0; background: var(--hl-accent); color: var(--hl-ink); }
+.storePage .dealCard .dealButton:hover { background: var(--hl-accent-hover); color: var(--hl-paper); }
+.storePage .storeAdvice { border-top: 2px solid var(--hl-ink); border-radius: 0; background: var(--hl-paper-2); }
+.storePage .storeAdvice h2 { font-size: clamp(35px, 3.8vw, 52px); }
+
+@media (max-width: 900px) { .blogHubHero { grid-template-columns: minmax(0, 1fr); } .blogHubHero .blogHeroVisual { grid-column: 1; grid-row: auto; } .storePage .storeHero { grid-template-columns: minmax(0, 1fr); gap: 16px; } .storePage .storeHero aside { justify-self: start; border-left: 0; border-top: 1px solid var(--hl-rule); padding-left: 0; } }
+@media (max-width: 700px) { :is(.blogHub, .offerPage, .storePage) .shell { width: min(calc(100% - 30px), 1200px); } .blogHubHero { gap: 20px; min-height: 0; padding: 32px 0; } .blogHubHero h1 { font-size: clamp(42px, 9vw, 62px); } .blogFeatured { grid-template-columns: minmax(0, 1fr); } .blogFeaturedImage { min-height: 250px; } .searchShell { width: min(calc(100% - 30px), 1200px); padding: 48px 0 80px; } .searchShell>h1 { font-size: clamp(40px, 9vw, 60px); } .searchGrid { grid-template-columns: minmax(0, 1fr); } .searchGuides { grid-template-columns: minmax(0, 1fr); } .offerPage .offerHero { grid-template-columns: minmax(0, 1fr); } .storePage .storeDealGrid { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { :is(.blogHub, .searchPage, .offerPage, .storePage) :is(a,button) { transition: none; } }
+
+:is(.blogHub, .searchPage, .offerPage, .storePage) :is(.primaryButton, .dealButton, .offerCta, button):active { transform: translateY(1px); }
+.blogHubHero .blogHeroVisual { position: static; width: auto; max-width: none; transform: none; padding: 16px; color: var(--hl-ink); }
+.blogHubHero .blogHeroVisual img { border-radius: 0; background: var(--hl-paper); }
+.offerPage .offerImageWrap img { background: var(--hl-paper-2); }
+@media (max-width: 700px) { .blogHubHero .blogHeroVisual { display: block; } .offerPage .offerHero { width: auto; margin-left: 0; } }
+:is(.blogHub, .offerPage, .storePage) .siteHeader nav .telegramLink { color: var(--hl-surface); background: var(--hl-ink); border-color: var(--hl-ink); box-shadow: none; }
+:is(.blogHub, .offerPage, .storePage) .siteHeader nav .telegramLink:hover { color: var(--hl-surface); background: var(--hl-accent-hover); }

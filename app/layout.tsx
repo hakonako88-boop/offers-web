@@ -7,7 +7,11 @@ import "./redesign.css";
 import "./identity.css";
 import "./radar.css";
 import "./campaign.css";
+import "./tokens.css";
+import "./base.css";
+import "./hallmark-system.css";
 import "./hallmark-home.css";
+import "./hallmark-pages.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -52,6 +56,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="es">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Libre+Caslon+Display&display=swap" rel="stylesheet" />
         {adsenseEnabled && (
           <script
             async

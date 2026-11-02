@@ -1,0 +1,45 @@
+/* Hallmark · shape: editorial market · genre: editorial · theme: Loom with Chollos al Día brand · redesign: full
+ * paper: warm ecru · accent: brand coral · display: Libre Caslon Display · body: Hanken Grotesk · hero: Offer · nav: search-led masthead · footer: statement · signature: real product and current price
+ * axes: light/roman-serif/coral · posture: Offer · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: S, made the live offer and its price the opening visual rather than a generic editorial photograph. */
+:root {
+  --hl-paper: var(--color-paper);
+  --hl-paper-2: var(--color-paper-2);
+  --hl-paper-3: var(--color-paper-3);
+  --hl-surface: #fffaf1;
+  --hl-ink: var(--color-ink);
+  --hl-muted: var(--color-muted);
+  --hl-rule: var(--color-rule);
+  --hl-accent: var(--color-accent);
+  --hl-accent-hover: #ba3524;
+  --hl-focus: var(--color-focus);
+  --hl-display: var(--font-display);
+  --hl-body: var(--font-body);
+}
+html, body { overflow-x: clip; }
+body { background: var(--hl-paper); color: var(--hl-ink); font-family: var(--hl-body); }
+button, input, select, textarea { font-family: var(--hl-body); }
+:is(a, button, input, select, textarea, summary):focus-visible { outline: 3px solid var(--hl-focus); outline-offset: 3px; transition: none; }
+:is(a, button, summary):active { transform: translateY(1px); }
+.shell { width: min(calc(100% - 48px), 1280px); }
+.brand, .blogHub .brand, .postPage .brand, .productHeader .brand { font-family: var(--hl-display); font-weight: 400; letter-spacing: -.03em; }
+.brandMark { border-radius: 0; box-shadow: none; }
+.siteHeader, .productHeader { border-bottom: 2px solid var(--hl-ink); background: var(--hl-paper); box-shadow: none; backdrop-filter: none; }
+.siteHeader nav a, .productHeader>a { font-family: var(--hl-body); letter-spacing: 0; text-transform: none; }
+.siteHeader nav a:hover, .productHeader>a:hover { color: var(--hl-accent-hover); }
+.telegramLink { border-radius: 0; }
+.mobileNav summary, .mobileNavMenu { border-radius: 0; background: var(--hl-paper); }
+.mobileNavMenu a { font-family: var(--hl-body); letter-spacing: 0; }
+.eyebrow, .liveDot, .trustList li::before { display: none; }
+.sectionIntro h2, .blogHub h1, .blogHub h2, .postPage h1, .postPage h2, .offerPage h1, .offerPage h2, .guidePage h1, .guidePage h2, .storePage h1, .storePage h2, .searchPage h1, .searchPage h2 { font-family: var(--hl-display); font-weight: 400; letter-spacing: -.025em; line-height: 1.05; text-wrap: balance; overflow-wrap: break-word; min-width: 0; }
+.dealHome, .blogHub, .postPage, .offerPage, .guidePage, .storePage, .searchPage { background: var(--hl-paper); color: var(--hl-ink); font-family: var(--hl-body); }
+.primaryButton, .dealButton, .offerCta, .heroFeatureButton, .loadMoreButton { border-radius: 0; box-shadow: none; }
+.primaryButton, .dealButton, .offerCta { background: var(--hl-accent); color: var(--hl-surface); }
+.primaryButton:hover, .dealButton:hover, .offerCta:hover { background: var(--hl-accent-hover); }
+.guideCard, .postCard, .storeQuick, .resultsInsights span { border-radius: 0; box-shadow: none; }
+.sectionIntro h2::after { content: none; }
+@media (max-width: 760px) { .shell { width: min(calc(100% - 30px), 1280px); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+.brandMark, .dealHome .brandMark, .blogHub .brandMark, .postPage .brandMark, .offerPage .brandMark, .storePage .brandMark, .searchPage .brandMark { background: var(--hl-ink) url('/favicon.svg') center / cover no-repeat; color: transparent; font-size: 0; }
+.blogHub .telegramLink, .postPage .telegramLink, .offerPage .telegramLink, .storePage .telegramLink { border: 1px solid var(--hl-ink); border-radius: 0; background: var(--hl-ink); color: var(--hl-surface); box-shadow: none; }
+.blogHub .telegramLink:hover, .postPage .telegramLink:hover, .offerPage .telegramLink:hover, .storePage .telegramLink:hover { background: var(--hl-accent-hover); color: var(--hl-surface); }
