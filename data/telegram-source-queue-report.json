@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-02T00:42:58.853Z",
+  "updatedAt": "2026-11-02T00:53:06.869Z",
   "summary": {
-    "rejected": 499,
+    "rejected": 501,
     "ignored": 231,
     "published": 74,
     "duplicate": 15,
     "needs_review": 180,
-    "pending": 229
+    "pending": 227
   },
   "recent": [
     {
@@ -53,13 +53,13 @@
       "source": "telegram-chollosdiario",
       "messageId": 45884,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/chollosdiario/45884",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-02T00:52:32.234Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-tiesometro:7830:aliexpress:0",
@@ -157,13 +157,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97285,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97285",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-01T23:22:55.102Z",
-      "nextAttemptAt": "2026-11-02T00:43:18.172Z"
+      "lastCheckedAt": "2026-11-02T00:52:50.383Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:45147:amazon:0",
@@ -744,7 +744,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/97274",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-01T23:32:28.063Z",
