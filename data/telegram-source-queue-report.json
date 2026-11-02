@@ -1,22 +1,35 @@
 {
-  "updatedAt": "2026-11-02T07:31:09.224Z",
+  "updatedAt": "2026-11-02T07:42:06.608Z",
   "summary": {
-    "rejected": 500,
     "published": 72,
     "ignored": 232,
+    "rejected": 498,
     "duplicate": 15,
-    "needs_review": 181,
-    "pending": 222
+    "needs_review": 183,
+    "pending": 221
   },
   "recent": [
+    {
+      "id": "telegram-errores-de-precio:15677:aliexpress:0",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15677,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/erroresde_precio/15677",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:97306:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 97306,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/97306",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -27,9 +40,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45886,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45886",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/Ofertos/45124",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45123:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 45123,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/45123",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
