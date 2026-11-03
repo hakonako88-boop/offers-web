@@ -1,3 +1,4 @@
+import BrandLink from "../components/BrandLink";
 import Link from "next/link";
 import "../legal.css";
 
@@ -7,7 +8,7 @@ export default function Page() {
   return (
     <main className="legalPage">
       <header className="legalHead shell">
-        <Link className="brand" href="/"><span className="brandMark">€</span><span>chollos<span>al</span>día</span></Link>
+        <BrandLink />
       </header>
       <article className="legalBody shell">
         <h1>Términos de uso</h1>

@@ -1,3 +1,4 @@
+import BrandLink from "../components/BrandLink";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -29,7 +30,7 @@ const schema = {
 export default function TelegramPage() {
   return <main className="telegramLanding">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-    <header className="siteHeader"><div className="shell headerInner"><Link className="brand" href="/"><span className="brandMark">€</span><span>Chollos <span>al</span>Día</span></Link><nav><Link href="/">Ofertas de hoy</Link><a className="telegramLink" href={joinUrl} target="_blank" rel="noreferrer">Abrir Telegram ↗</a></nav></div></header>
+    <header className="siteHeader"><div className="shell headerInner"><BrandLink /><nav><Link href="/">Ofertas de hoy</Link><a className="telegramLink" href={joinUrl} target="_blank" rel="noreferrer">Abrir Telegram ↗</a></nav></div></header>
     <section className="telegramLandingHero shell">
       <div><p className="eyebrow"><span />CANAL GRATUITO DE OFERTAS</p><h1>Los mejores chollos,<br /><em>directamente en Telegram.</em></h1><p>Recibe alertas claras con foto, precio, descuento, cupón cuando exista y acceso directo a la tienda. Sin tener que revisar siete webs distintas.</p><a className="primaryButton" href={joinUrl} target="_blank" rel="noreferrer">Unirme gratis a @aldiachollos <span>→</span></a><small>Telegram te mostrará una vista previa del canal antes de unirte.</small></div>
       <aside className="telegramPreview"><div className="telegramPreviewHead"><span>€</span><div><b>Chollos al Día</b><small>@aldiachollos</small></div></div><div className="telegramSample"><strong>🔥 Oferta seleccionada</strong><p>Producto destacado con descuento comprobado</p><s>59,99 €</s><b>24,99 €</b><em>🎟 Cupón cuando esté disponible</em><button>VER OFERTA</button></div><p>Alertas rápidas · Precios visibles · Sin coste</p></aside>

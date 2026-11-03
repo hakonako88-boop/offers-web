@@ -1,3 +1,4 @@
+import BrandLink from "../components/BrandLink";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -65,7 +66,7 @@ export default function GtaGuide() {
   ] };
   return <main className="gtaGuide">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-    <header className="gtaTop"><Link className="brand" href="/"><span className="brandMark">€</span><span>Chollos <span>al</span>Día</span></Link><Link href="/">Ofertas de hoy</Link></header>
+    <header className="gtaTop"><BrandLink /><Link href="/">Ofertas de hoy</Link></header>
     <section className="gtaHero">
       <Image src="/images/gta-vi-official.jpg" alt="Arte promocional oficial de Grand Theft Auto VI con sus personajes, vehículos y Vice City" fill priority sizes="100vw" />
       <div className="gtaHeroShade" /><div className="gtaHeroCopy"><p>GUÍA DE PRECIOS · ACTUALIZADA</p><h1>GTA 6 barato en PS5: precio, reserva y ahorro frente a España</h1><h2>Comparamos el precio oficial de GTA VI en España con la referencia regional, las ediciones, los requisitos de PlayStation y la fecha de lanzamiento.</h2><div><span><time dateTime={updatedAt}>Actualizado: 31 agosto 2026</time></span><span>Ahorro teórico: ≈26 €</span><span>Lanzamiento: 19 noviembre 2026</span><span>Lectura: 12 min</span></div><p className="gtaByline">Por Chollos al Día · Precios contrastados con PlayStation y Rockstar Games</p><a href="#precio">Ver precio de GTA 6 ↓</a></div>

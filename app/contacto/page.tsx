@@ -1,3 +1,4 @@
+import BrandLink from "../components/BrandLink";
 import type { Metadata } from "next";
 import Link from "next/link";
 import "../legal.css";
@@ -12,7 +13,7 @@ export default function ContactPage() {
   return (
     <main className="legalPage">
       <header className="legalHead shell">
-        <Link className="brand" href="/" aria-label="Chollos al Día, inicio"><span className="brandMark" aria-hidden="true">€</span><span>Chollos <span>al</span>Día</span></Link>
+        <BrandLink />
       </header>
       <article className="legalBody shell">
         <p className="eyebrow"><span aria-hidden="true" />CONTACTO</p>

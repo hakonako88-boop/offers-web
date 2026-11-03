@@ -1,3 +1,4 @@
+import BrandLink from "../../components/BrandLink";
 import type { Metadata } from "next";
 import Link from "next/link";
 import CouponCopy from "../../components/CouponCopy";
@@ -126,7 +127,7 @@ export default async function StoreOffersPage({ params }: StorePageProps) {
     <main className="storePage">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema).replace(/</g, "\\u003c") }} />
       <div className="announcement"><div className="shell announcementInner"><span><b>Ofertas actualizadas</b> · descuentos y enlaces revisados al publicar</span><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Alertas en Telegram ↗</a></div></div>
-      <header className="siteHeader"><div className="shell headerInner"><Link className="brand" href="/" aria-label="Chollos al Dia, inicio"><span className="brandMark" aria-hidden="true">€</span><span>Chollos <span>al</span>Dia</span></Link><nav aria-label="Navegacion principal"><Link href="/#ofertas">Ofertas de hoy</Link><a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram ↗</a></nav></div></header>
+      <header className="siteHeader"><div className="shell headerInner"><BrandLink /><nav aria-label="Navegacion principal"><Link href="/#ofertas">Ofertas de hoy</Link><a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram ↗</a></nav></div></header>
       <article className="storeArticle shell">
         <nav className="offerBreadcrumb" aria-label="Migas de pan"><Link href="/">Inicio</Link><span>/</span><b>{store.label}</b></nav>
         <header className="storeHero"><div><h1>{store.title}</h1><p>{store.description}</p></div><aside><strong>{deals.length}</strong><span>ofertas activas</span><b>{averageDiscount ? `-${averageDiscount}%` : "Precio"}</b><small>{averageDiscount ? "descuento medio" : "registrado al publicar"}</small></aside></header>

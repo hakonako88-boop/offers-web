@@ -1,3 +1,4 @@
+import BrandLink from "../../components/BrandLink";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -32,7 +33,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema).replace(/</g, "\\u003c") }} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} />
     <div className="announcement"><div className="shell announcementInner"><span><b>Guia para comprar mejor</b> · informacion clara antes de decidir</span><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Alertas en Telegram ↗</a></div></div>
-    <header className="siteHeader"><div className="shell headerInner"><Link className="brand" href="/" aria-label="Chollos al Dia, inicio"><span className="brandMark" aria-hidden="true">€</span><span>Chollos <span>al</span>Dia</span></Link><nav aria-label="Navegacion principal"><Link href="/#ofertas">Ofertas de hoy</Link><a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram ↗</a></nav></div></header>
+    <header className="siteHeader"><div className="shell headerInner"><BrandLink /><nav aria-label="Navegacion principal"><Link href="/#ofertas">Ofertas de hoy</Link><a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram ↗</a></nav></div></header>
     <article className="guideArticle shell">
       <nav className="offerBreadcrumb" aria-label="Migas de pan"><Link href="/">Inicio</Link><span>/</span><b>Guias</b><span>/</span><b>{guide.title}</b></nav>
       <header className="guideHero"><p className="eyebrow"><span aria-hidden="true" />{guide.eyebrow}</p><h1>{guide.title}</h1><p>{guide.intro}</p><div><span>Lectura: {readingMinutes} min</span><span>Actualizada el <time dateTime={updatedAt}>{new Date(`${updatedAt}T12:00:00Z`).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" })}</time></span><span>Por Chollos al Dia</span></div></header>

@@ -1,3 +1,4 @@
+import BrandLink from "../../components/BrandLink";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -24,7 +25,7 @@ export default async function ProductPage({ params }: Props) {
   if (!product) notFound();
   const schema = { "@context": "https://schema.org", "@graph": [{ "@type": "Product", "@id": `${siteUrl}${productHref(product)}#product`, name: product.name, image: [product.imageUrl], category: product.category, offers: product.activeOffers.map((offer) => ({ "@type": "Offer", price: offer.price, priceCurrency: "EUR", availability: "https://schema.org/InStock", url: offer.affiliateUrl, seller: { "@type": "Organization", name: offer.store } })) }, { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Inicio", item: siteUrl }, { "@type": "ListItem", position: 2, name: product.category, item: `${siteUrl}/#ofertas` }, { "@type": "ListItem", position: 3, name: product.name, item: `${siteUrl}${productHref(product)}` }] }] };
   return <main className="productPage"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</gu, "\\u003c") }} />
-    <header className="productHeader"><Link className="brand" href="/"><span className="brandMark">€</span><span>Chollos <span>al</span>Día</span></Link><Link href="/#ofertas">Ofertas de hoy</Link></header>
+    <header className="productHeader"><BrandLink /><Link href="/#ofertas">Ofertas de hoy</Link></header>
     <article className="productShell">
       <nav className="offerBreadcrumb" aria-label="Migas de pan"><Link href="/">Inicio</Link><span>/</span><Link href="/#ofertas">{product.category}</Link><span>/</span><b>{product.name}</b></nav>
       <section className="productHero"><div className="productImage"><img src={product.imageUrl} alt={product.name} width={900} height={700} /></div><div><p className="eyebrow"><span />PRODUCTO · {product.category}</p><h1>{product.name}</h1>{product.subcategory && <p className="productSubcategory">{product.subcategory}</p>}{product.bestOffer ? <><p className="productBestLabel">Mejor precio activo</p><strong className="productBestPrice">{money.format(product.bestOffer.price)}</strong><p>Disponible en {product.bestOffer.store}. Comprueba el precio, la variante y el envío antes de pagar.</p><a className="productCta" href={product.bestOffer.affiliateUrl} target="_blank" rel="sponsored nofollow noopener noreferrer">Ver mejor oferta ↗</a></> : <div className="expiredNotice"><b>Ahora mismo no hay una oferta activa.</b><p>Conservamos esta página para comparar el último precio registrado y mostrar nuevas ofertas cuando aparezcan.</p></div>}</div></section>

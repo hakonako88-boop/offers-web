@@ -14,6 +14,7 @@ import "./hallmark-home.css";
 import "./hallmark-pages.css";
 import "./campaign-refresh.css";
 import "./coupon-guide.css";
+import "./brand.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -29,8 +30,8 @@ export const metadata: Metadata = {
   publisher: "Chollos al Día",
   manifest: "/site.webmanifest",
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }, { url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" }],
-    shortcut: "/favicon.svg",
+    icon: [{ url: "/brand-mark-2026.svg", type: "image/svg+xml" }, { url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" }],
+    shortcut: "/brand-mark-2026.svg",
     apple: [{ url: "/favicon-192.png", sizes: "192x192", type: "image/png" }],
   },
   referrer: "origin-when-cross-origin",

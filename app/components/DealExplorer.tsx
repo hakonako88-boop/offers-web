@@ -1,5 +1,7 @@
 "use client";
 
+import BrandLink from "./BrandLink";
+
 /* The site is statically exported to GitHub Pages, so native links and the
  * already-optimized merchant images are intentional in this client view. */
 /* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element */
@@ -210,10 +212,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
 
       <header className="siteHeader">
         <div className="shell headerInner">
-          <a className="brand" href="#inicio" aria-label="Chollos al Día, inicio">
-            <span className="brandMark" aria-hidden="true">€</span>
-            <span>Chollos <span>al</span>Día</span>
-          </a>
+          <BrandLink />
           <nav aria-label="Navegación principal">
             <a href="#ofertas">Ofertas de hoy</a>
             <a href="/buscar/">Buscar</a>
@@ -450,7 +449,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
 
       <footer>
         <div className="shell footerGrid">
-          <div className="footerBrand"><a className="brand" href="#inicio"><span className="brandMark" aria-hidden="true">€</span><span>Chollos <span>al</span>Día</span></a><p>Ofertas verificadas para comprar mejor cada día.</p></div>
+          <div className="footerBrand"><BrandLink /><p>Ofertas verificadas para comprar mejor cada día.</p></div>
           <div><strong>Explora</strong><a href="#ofertas">Ofertas de hoy</a><a href="/buscar/">Buscar productos</a><a href="/blog/">Blog de chollos</a><a href="/guias/detectar-chollos-reales/">Guias para ahorrar</a><a href="/guias/chollos-electronica/">Guía de electrónica</a><a href="/guias/ofertas-cocina/">Guía de cocina</a><a href="/telegram/">Canal de chollos en Telegram</a></div>
           <div><strong>Información</strong><a href="/contacto">Contacto</a><a href="/como-verificamos-ofertas">Cómo verificamos las ofertas</a><a href="mailto:chollosaldia@gmail.com">chollosaldia@gmail.com</a><a href="/aviso-legal">Aviso legal</a><a href="/terminos">Términos de uso</a><a href="/privacidad">Privacidad</a><a href="/afiliacion">Política de afiliación</a></div>
         </div>

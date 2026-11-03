@@ -1,3 +1,4 @@
+import BrandLink from "../components/BrandLink";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { isProductSelection, postHref, publishedPosts } from "../lib/posts";
@@ -31,7 +32,7 @@ export default function BlogPage() {
   const schema = { "@context": "https://schema.org", "@type": "CollectionPage", "@id": `${siteUrl}/blog/`, name: "Blog de chollos y guías para ahorrar", description: "Guías y publicaciones de Chollos al Día para comprobar ofertas y comprar mejor.", inLanguage: "es-ES", isPartOf: { "@id": `${siteUrl}/#website` }, mainEntity: { "@type": "ItemList", numberOfItems: editorialItems.length + guideItems.length, itemListElement: [...editorialItems, ...guideItems].map((item, index) => ({ "@type": "ListItem", position: index + 1, name: item.name, url: item.url })) } };
   return <main className="blogHub">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</gu, "\\u003c") }} />
-    <header className="siteHeader"><div className="shell headerInner"><Link className="brand" href="/"><span className="brandMark" aria-hidden="true">€</span><span>Chollos <span>al</span>Día</span></Link><nav aria-label="Navegación principal"><Link href="/#ofertas">Ofertas de hoy</Link><a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram ↗</a></nav></div></header>
+    <header className="siteHeader"><div className="shell headerInner"><BrandLink /><nav aria-label="Navegación principal"><Link href="/#ofertas">Ofertas de hoy</Link><a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram ↗</a></nav></div></header>
     <article className="shell blogHubArticle">
       <nav className="offerBreadcrumb" aria-label="Migas de pan"><Link href="/">Inicio</Link><span>/</span><b>Blog de chollos</b></nav>
       <header className="blogHubHero"><h1>Buenas compras empiezan aquí.</h1><p>Selecciones de productos, precios a la vista y guías útiles. Encuentra una idea, consulta la oferta y decide con todos los datos.</p><div><Link href="/#ofertas">Ver ofertas de hoy</Link><a href={posts.length > 1 ? "#ultimas-publicaciones" : "#guias-practicas"}>Leer el blog ↓</a></div>{featured && <aside className="blogHeroVisual" aria-label="Última publicación"><span>ÚLTIMA PUBLICACIÓN</span><Link href={postHref(featured.id)}><img src={featured.imageUrl} alt={featured.title} width={640} height={420} loading="eager" /></Link><b>{featured.title}</b></aside>}</header>

@@ -1,3 +1,4 @@
+import BrandLink from "../../components/BrandLink";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPostById, postHref, postIsIndexable, publishedPosts } from "../../lib/posts";
@@ -53,7 +54,7 @@ export default async function PublicationPage({ params }: PageProps) {
   })}</div>;
   return <main className={isCouponGuide ? "postPage couponGuidePage" : "postPage"}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</gu, "\\u003c") }} />
-    <header className="siteHeader"><div className="shell headerInner"><Link className="brand" href="/"><span className="brandMark">€</span><span>Chollos <span>al</span>Día</span></Link><nav><Link href="/">Ofertas de hoy</Link><a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram ↗</a></nav></div></header>
+    <header className="siteHeader"><div className="shell headerInner"><BrandLink /><nav><Link href="/">Ofertas de hoy</Link><a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram ↗</a></nav></div></header>
     <article className="postArticle shell">
       <nav className="postBreadcrumb"><Link href="/">Inicio</Link><span>/</span><Link href="/blog/">Blog</Link><span>/</span><b>Artículo</b></nav>
       <p className="eyebrow"><span aria-hidden="true" />BLOG · CHOLLOS AL DÍA</p>

@@ -1,3 +1,4 @@
+import BrandLink from "../../components/BrandLink";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -154,7 +155,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
       </div>
       <header className="siteHeader">
         <div className="shell headerInner">
-          <Link className="brand" href="/" aria-label="Chollos al Día, inicio"><span className="brandMark" aria-hidden="true">€</span><span>Chollos <span>al</span>Día</span></Link>
+          <BrandLink />
           <nav aria-label="Navegación principal"><Link href="/">Ofertas de hoy</Link><a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram ↗</a></nav>
         </div>
       </header>
