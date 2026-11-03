@@ -24,6 +24,21 @@
 .campaign26Top a{color:var(--page-action)}
 .campaign26Top>.shell>a:last-child{padding:12px 16px;border:1px solid #dfdaf8;border-radius:12px;font-size:12px;background:#f5f2ff}
 .campaign26Crumb{margin:26px 0;color:var(--page-muted)}
+.campaign26Crumb a{color:var(--page-action)}
+.postPage .postArticle>h1,.guidePage h1{color:var(--page-ink)}
+.couponGuidePage .campaignCouponGuide{color:var(--page-ink)}
+.couponGuidePage :is(.campaignCouponIntro,.campaignCouponRules,.campaignCouponCard,.campaignCouponCheckout,.campaignGuideDetails){border-radius:18px;overflow:hidden;border-color:var(--page-line)}
+.couponGuidePage .campaignCouponIntro{box-shadow:0 8px 25px #18233c05}
+.couponGuidePage .campaignCouponRules p{background:#eceefa}
+.couponGuidePage :is(.campaignCouponEyebrow,.campaignCouponIntro>div>a,.campaignCouponSectionTitle>div>span){color:var(--page-action)}
+.couponGuidePage .campaignCouponCard{border-top-color:#8a78e3}
+.couponGuidePage .campaignCouponSaving>strong{color:var(--page-price)}
+.couponGuidePage .campaignCouponCodes button{border-color:#9785db;border-radius:10px;background:#f1edff;color:#43338d}
+.couponGuidePage .campaignCouponCodes button:hover{background:#e5ddff}
+.couponGuidePage .campaignCouponCardLimited{background:#ece9ff}
+.couponGuidePage .campaignCouponCheckout{background:#202c50}
+.couponGuidePage .campaignCouponCheckout h2{color:#fff}
+.couponGuidePage .campaignCouponCheckout>a{border-radius:10px;background:#c7bcff;color:#241d52}
 .campaign26Hero{position:relative;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:24px;min-height:0;overflow:visible;border-radius:26px;background:#202c50;color:#fff;box-shadow:0 20px 55px #28315916}
 .campaign26HeroCopy{padding:clamp(28px,4vw,52px)}
 .campaign26Kicker{color:#c9c0ff;font-family:inherit;letter-spacing:.09em;font-size:10px}
