@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getPostById, postHref, postIsIndexable, publishedPosts } from "../../lib/posts";
 import { dealHref, publishedDeals } from "../../lib/deals";
+import CampaignCouponGuide from "../../components/CampaignCouponGuide";
+import { ALIEXPRESS_11_GUIDE_ID } from "../../../scripts/aliexpress-11-11-data.mjs";
 
 const siteUrl = "https://chollosaldia.com";
 
@@ -29,6 +31,7 @@ export default async function PublicationPage({ params }: PageProps) {
   const post = getPostById((await params).id);
   if (!post) return <main className="postNotFound shell"><Link href="/">← Volver al inicio</Link><h1>Esta publicación no está disponible</h1></main>;
   const description = post.body.replace(/\s+/gu, " ").slice(0, 220);
+  const isCouponGuide = post.id === ALIEXPRESS_11_GUIDE_ID;
   const selectedDeals = post.offerIds.map((id) => publishedDeals.find((deal) => deal.sourceProductId === id)).filter((deal) => Boolean(deal));
   const schema = {
     "@context": "https://schema.org",
@@ -42,23 +45,24 @@ export default async function PublicationPage({ params }: PageProps) {
     author: { "@type": "Organization", name: "Chollos al Día", url: siteUrl },
     publisher: { "@type": "Organization", name: "Chollos al Día", logo: { "@type": "ImageObject", url: `${siteUrl}/favicon-512.png` } },
   };
-  return <main className="postPage">
+  const articleBody = <div className="postBody">{post.body.split(/\n{2,}/gu).map((paragraph, index) => {
+    const numbered = paragraph.match(/^(\d+)\.\s+(.+)$/u);
+    if (numbered) return <h2 className="postBodyProductTitle" key={`${index}-${paragraph}`}>{numbered[1].padStart(2, "0")} <span>{numbered[2]}</span></h2>;
+    if (/^(Cómo |Consejos |En resumen|Antes de comprar|Nuestra selección)/iu.test(paragraph) && paragraph.length < 65 && !paragraph.includes("\n")) return <h2 key={`${index}-${paragraph}`}>{paragraph}</h2>;
+    return <p key={`${index}-${paragraph}`}>{paragraph}</p>;
+  })}</div>;
+  return <main className={isCouponGuide ? "postPage couponGuidePage" : "postPage"}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</gu, "\\u003c") }} />
     <header className="siteHeader"><div className="shell headerInner"><Link className="brand" href="/"><span className="brandMark">€</span><span>Chollos <span>al</span>Día</span></Link><nav><Link href="/">Ofertas de hoy</Link><a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram ↗</a></nav></div></header>
     <article className="postArticle shell">
       <nav className="postBreadcrumb"><Link href="/">Inicio</Link><span>/</span><Link href="/blog/">Blog</Link><span>/</span><b>Artículo</b></nav>
       <p className="eyebrow"><span aria-hidden="true" />BLOG · CHOLLOS AL DÍA</p>
-      <h1>{post.title}</h1>
+      <h1>{isCouponGuide ? "11.11 de AliExpress: elige tu cupón" : post.title}</h1>
       <div className="postMeta"><time dateTime={post.publishedAt}>Publicado el {post.publishedLabel}</time><span>·</span><span>{selectedDeals.length ? `${selectedDeals.length} productos seleccionados` : "Guía de compra"}</span></div>
-      {post.imageUrls.length > 1 ? <div className="postImageGallery" aria-label="Fotos de las ofertas del resumen">{post.imageUrls.map((image, index) => <img key={image} src={image} alt={`${post.title}: oferta ${index + 1}`} width={720} height={560} />)}</div> : <img className="postHeroImage" src={post.imageUrl} alt={post.title} width={1200} height={800} />}
-      <div className="postBody">{post.body.split(/\n{2,}/gu).map((paragraph, index) => {
-        const numbered = paragraph.match(/^(\d+)\.\s+(.+)$/u);
-        if (numbered) return <h2 className="postBodyProductTitle" key={`${index}-${paragraph}`}>{numbered[1].padStart(2, "0")} <span>{numbered[2]}</span></h2>;
-        if (/^(Cómo |Consejos |En resumen|Antes de comprar|Nuestra selección)/iu.test(paragraph) && paragraph.length < 65 && !paragraph.includes("\n")) return <h2 key={`${index}-${paragraph}`}>{paragraph}</h2>;
-        return <p key={`${index}-${paragraph}`}>{paragraph}</p>;
-      })}</div>
+      {isCouponGuide ? <CampaignCouponGuide affiliateUrl={post.linkUrl} imageUrl={post.imageUrl} /> : post.imageUrls.length > 1 ? <div className="postImageGallery" aria-label="Fotos de las ofertas del resumen">{post.imageUrls.map((image, index) => <img key={image} src={image} alt={`${post.title}: oferta ${index + 1}`} width={720} height={560} />)}</div> : <img className="postHeroImage" src={post.imageUrl} alt={post.title} width={1200} height={800} />}
+      {isCouponGuide ? <details className="campaignGuideDetails"><summary>Leer la guía completa, los ejemplos y las fuentes</summary>{articleBody}</details> : articleBody}
       {selectedDeals.length > 0 && <section className="postProductSelection" aria-labelledby="post-products-title"><p className="eyebrow"><span aria-hidden="true" />SELECCIÓN ACTUAL</p><h2 id="post-products-title">Consulta las fichas y el precio final</h2><div>{selectedDeals.map((deal, index) => deal && <article key={deal.id}><img src={deal.imageUrl} alt={deal.title} width={240} height={190} /><div><span>{index + 1} · {deal.store}</span><h3>{deal.title}</h3><strong>{deal.price.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</strong>{deal.coupon && <small>Cupón: {deal.coupon}</small>}</div><Link href={dealHref(deal.id)}>Ver ficha y oferta →</Link></article>)}</div></section>}
-      {post.linkUrl && <a className="primaryButton postExternal" href={post.linkUrl} target="_blank" rel="nofollow sponsored noreferrer">Abrir enlace <span aria-hidden="true">↗</span></a>}
+      {post.linkUrl && !isCouponGuide && <a className="primaryButton postExternal" href={post.linkUrl} target="_blank" rel="nofollow sponsored noreferrer">Abrir enlace <span aria-hidden="true">↗</span></a>}
       <div className="postBack"><Link href="/blog/">← Volver al blog</Link><Link href="/#ofertas">Ver ofertas de hoy →</Link></div>
     </article>
   </main>;

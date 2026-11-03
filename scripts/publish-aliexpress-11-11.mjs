@@ -2,27 +2,23 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { generateAliExpressAffiliateLink } from './aliexpress-link-resolver.mjs';
+import { ALIEXPRESS_11_COUPONS, ALIEXPRESS_11_GUIDE_ID } from './aliexpress-11-11-data.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-export const CAMPAIGN_ID = 'aliexpress-11-11-2026-cupones-ofertas';
-export const COUPONS_11 = [
-  ['ESD1103 / AEES03', 3, 18], ['ESD1108 / AEES08', 8, 45],
-  ['ESD1112 / AEES12', 12, 69], ['ESD1123 / AEES23', 23, 135],
-  ['ESD1139 / AEES39', 39, 230], ['ESD1158 / AEES58', 58, 325],
-  ['ESD1175 / AEES75', 75, 429],
-];
+export const CAMPAIGN_ID = ALIEXPRESS_11_GUIDE_ID;
+export const COUPONS_11 = ALIEXPRESS_11_COUPONS.map(({ code, alternative, discount, minimum }) => [`${code} / ${alternative}`, discount, minimum]);
 
 export function campaignCaption() {
   return [
-    '<b>🧡 11.11 de AliExpress: guarda estos cupones</b>', '',
-    '📅 Campaña anunciada: <b>1–18 noviembre de 2026</b> · España.', '',
-    ...COUPONS_11.map(([code, discount, minimum]) => `🎟 <code>${code.split(' / ')[0]}</code> · ${discount} € desde ${minimum} €`), '',
-    '<b>EXTRA · solo 1–3 y 11–12 noviembre</b>',
-    '<code>ESD11100</code> · 100 € desde 500 €',
-    '<code>ESD11120</code> · 120 € desde 600 €', '',
-    '⚠️ No se suman entre sí. Solo pedidos y productos elegibles; pueden agotarse. Confirma el descuento en el carrito. Ventajas personales o de PayPal: solo si aparecen en tu cuenta.', '',
-    '📖 Guía, alternativas de códigos y consejos en la web.',
-    '🪐 @aldiachollos · #AliExpress #1111 #Cupones #Publi',
+    '<b>🧡 11.11 ALIEXPRESS · CUPONES</b>', '',
+    '📅 <b>1–18 noviembre 2026</b> · España', '',
+    ...COUPONS_11.map(([code, discount, minimum], index) => `${index === 3 ? '\n' : ''}<b>${discount} €</b> desde <b>${minimum} €</b> · <code>${code.split(' / ')[0]}</code>`), '',
+    '<b>⚠️ SOLO 1–3 y 11–12 NOVIEMBRE</b>',
+    '<b>100 €</b> desde <b>500 €</b> · <code>ESD11100</code>',
+    '<b>120 €</b> desde <b>600 €</b> · <code>ESD11120</code>', '',
+    'Elige un código. No se suman entre sí. Sujetos a disponibilidad y productos elegibles. Confirma el total en el carrito. Extras personales o de PayPal: solo si aparecen en tu cuenta.', '',
+    '👇 Guía visual y códigos alternativos en el botón.',
+    '@aldiachollos #AliExpress #Publi',
   ].join('\n');
 }
 
@@ -59,6 +55,23 @@ async function main() {
   const postsFile = path.join(ROOT, 'data/posts.json');
   const stateFile = path.join(ROOT, 'data/aliexpress-11-11-publication.json');
   const posts = JSON.parse(fs.readFileSync(postsFile, 'utf8'));
+  if (process.env.UPDATE_11_11_TELEGRAM_CAPTION === 'true') {
+    const existing = posts.find((post) => post.id === CAMPAIGN_ID);
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHANNEL_ID;
+    if (!existing?.message_id || !existing?.url || !token || !chatId) throw new Error('No se puede localizar y editar el mensaje existente; no se crea otro.');
+    const response = await fetch(`https://api.telegram.org/bot${token}/editMessageCaption`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, message_id: existing.message_id, caption: campaignCaption(), parse_mode: 'HTML', reply_markup: { inline_keyboard: [
+        [{ text: '🛍 ABRIR ALIEXPRESS', url: existing.url }],
+        [{ text: '🎟 GUÍA VISUAL Y CUPONES', url: `https://chollosaldia.com/publicacion/${CAMPAIGN_ID}/` }],
+      ] } }),
+    });
+    const result = await response.json();
+    if ((!response.ok || !result.ok) && !/message is not modified/iu.test(result.description || '')) throw new Error(`No se pudo editar la guía de Telegram: ${result.description || response.status}`);
+    console.log(`Formato de Telegram actualizado sin reenviar: ${existing.message_id}`);
+    return;
+  }
   if (posts.some((post) => post.id === CAMPAIGN_ID)) return console.log('La guía 11.11 ya está publicada; no se repite.');
   // A saved acknowledgement also protects a retry after a failed Git push.
   if (fs.existsSync(stateFile)) {

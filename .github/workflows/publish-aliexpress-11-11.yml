@@ -1,6 +1,11 @@
 name: Publicar especial AliExpress 11.11
 on:
   workflow_dispatch:
+    inputs:
+      update_existing:
+        description: Mejorar el formato del mensaje existente sin reenviarlo
+        type: boolean
+        default: false
 permissions:
   contents: write
   actions: write
@@ -12,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
+      UPDATE_11_11_TELEGRAM_CAPTION: ${{ inputs.update_existing }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
       ALIEXPRESS_APP_KEY: ${{ secrets.ALIEXPRESS_APP_KEY }}
@@ -35,6 +41,7 @@ jobs:
           git pull --rebase origin main
           git push origin main
       - name: Desplegar la guía en la web
+        if: ${{ inputs.update_existing != true }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

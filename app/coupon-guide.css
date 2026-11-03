@@ -1,0 +1,64 @@
+/* Scoped to the existing 11.11 article: no changes to other blog posts. */
+.couponGuidePage .postArticle { max-width:1120px; }
+.couponGuidePage .postArticle>h1 { max-width:900px; font-size:clamp(32px,4.5vw,56px); line-height:1.08; }
+.campaignCouponGuide { color:#18343a; font-family:Arial,Helvetica,sans-serif; }
+.campaignCouponGuide h2 { font-family:inherit; font-weight:800; letter-spacing:-.04em; line-height:1.15; }
+.campaignCouponIntro { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr); gap:30px; align-items:center; margin:28px 0 18px; padding:28px; border:1px solid #d4dfd9; background:#fff; }
+.campaignCouponEyebrow,.campaignCouponSectionTitle>div>span,.campaignCouponCheckout>div>span { color:#97452d; font-size:11px; font-weight:800; letter-spacing:.08em; }
+.campaignCouponIntro h2 { margin:12px 0; font-size:clamp(25px,3vw,38px); }
+.campaignCouponIntro p { margin:0 0 15px; font-size:16px; line-height:1.6; }
+.campaignCouponIntro>div>a { display:inline-flex; align-items:center; min-height:44px; color:#913e24; font-weight:800; text-decoration:underline; text-underline-offset:4px; }
+.campaignCouponIntro img { display:block; width:100%; height:auto; border-radius:5px; }
+.campaignCouponRules { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; margin:0 0 42px; border:1px solid #cfdcd5; background:#cfdcd5; }
+.campaignCouponRules p { margin:0; padding:18px; background:#eef4ef; }
+.campaignCouponRules b { display:block; margin-bottom:7px; font-size:14px; }
+.campaignCouponRules span { display:block; color:#445e5d; font-size:13px; line-height:1.5; }
+.campaignCouponGuide section { scroll-margin-top:95px; }
+.campaignCouponSectionTitle { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:20px; }
+.campaignCouponSectionTitle h2 { margin:7px 0 0; font-size:clamp(27px,3vw,37px); }
+.campaignCouponSectionTitle>p { max-width:390px; margin:0; color:#435d5b; font-size:14px; line-height:1.6; }
+.campaignCouponGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.campaignCouponCard { display:grid; grid-template-columns:minmax(90px,.85fr) minmax(0,1.15fr); gap:10px 16px; min-width:0; padding:22px; border:1px solid #c9d9d0; border-top:4px solid #d15b32; background:#fff; box-shadow:0 5px 14px rgb(22 48 44 / 4%); }
+.campaignCouponSaving>span { color:#536961; font-size:10px; font-weight:800; letter-spacing:.07em; }
+.campaignCouponSaving>strong { display:block; margin:7px 0; color:#a93c20; font-size:clamp(39px,4vw,52px); font-weight:900; letter-spacing:-.06em; line-height:1; white-space:nowrap; }
+.campaignCouponSaving strong small { font-size:.55em; }
+.campaignCouponSaving p { margin:0; color:#48635a; font-size:12px; line-height:1.5; }
+.campaignCouponSaving p>b { display:block; color:#193b32; font-size:22px; }
+.campaignCouponCodes { display:flex; flex-direction:column; justify-content:center; gap:9px; min-width:0; }
+.campaignCouponCodes button { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; width:100%; min-height:68px; padding:10px; border:1px dashed #ad5b39; border-radius:5px; background:#fff4e5; color:#783b20; cursor:pointer; }
+.campaignCouponCodes button:hover { background:#ffe8c9; }
+.campaignCouponCodes button:focus-visible { outline:3px solid #1c6c66; outline-offset:3px; }
+.campaignCouponCodes code { font-family:monospace; font-size:clamp(17px,2vw,23px); font-weight:800; overflow-wrap:anywhere; }
+.campaignCouponCodes button>span { font-size:11px; font-weight:700; }
+.campaignCouponCodes .campaignCouponAlternative { min-height:44px; flex-direction:row; flex-wrap:wrap; gap:4px 8px; border:1px solid #d8e1dc; background:#f4f7f3; color:#38564c; }
+.campaignCouponAlternative code { font-size:15px; }
+.campaignCouponAlternative small { font-size:10px; }
+.campaignCouponDates { grid-column:1/-1; margin:6px 0 0; padding-top:12px; border-top:1px solid #e1e7df; color:#52685e; font-size:11px; line-height:1.5; }
+.campaignCouponLimitedSection { margin-top:48px; }
+.campaignCouponCardLimited { border-color:#b9c9c6; border-top-color:#cb663d; background:#eaf1ee; }
+.campaignCouponCardLimited .campaignCouponDates { color:#833a25; font-size:12px; font-weight:800; }
+.campaignCouponNotice { margin:28px 0; padding:20px 22px; border-left:4px solid #ba5a36; background:#fff1de; }
+.campaignCouponNotice>b { font-size:17px; }
+.campaignCouponNotice p { margin:9px 0 0; color:#5b4a36; font-size:14px; line-height:1.7; }
+.campaignCouponCheckout { display:flex; justify-content:space-between; align-items:center; gap:25px; padding:26px; background:#17383b; color:#fffaf1; }
+.campaignCouponCheckout>div>span { color:#ffbd9c; }
+.campaignCouponCheckout h2 { margin:8px 0; font-size:30px; }
+.campaignCouponCheckout p { max-width:560px; margin:0; color:#e1ebe6; font-size:14px; line-height:1.6; }
+.campaignCouponCheckout>a { display:flex; flex-shrink:0; align-items:center; justify-content:space-between; gap:24px; min-height:48px; padding:12px 18px; border-radius:4px; background:#ffb47e; color:#233632; font-weight:800; }
+.campaignCouponCopyStatus { min-height:44px; padding:12px 0; color:#415e52; font-size:13px; line-height:1.5; }
+.campaignGuideDetails { margin:20px 0 35px; border:1px solid #cfd9d1; background:#fff; }
+.campaignGuideDetails>summary { min-height:54px; padding:18px 22px; color:#243f34; font-weight:800; cursor:pointer; }
+.couponGuidePage .campaignGuideDetails .postBody { margin:0; padding:24px; border:0; box-shadow:none; color:#263d33; font-size:16px; }
+@media(max-width:650px) {
+  .couponGuidePage .postArticle>h1 { font-size:34px; }
+  .campaignCouponIntro { grid-template-columns:1fr; gap:17px; padding:20px; }
+  .campaignCouponIntro img { max-height:160px; object-fit:contain; background:#142f35; }
+  .campaignCouponIntro h2 { font-size:28px; }
+  .campaignCouponRules { grid-template-columns:1fr; margin-bottom:32px; }
+  .campaignCouponRules p { padding:13px 16px; }
+  .campaignCouponSectionTitle { align-items:flex-start; flex-direction:column; gap:12px; }
+  .campaignCouponGrid { grid-template-columns:1fr; }
+  .campaignCouponCard { padding:18px; gap:10px 14px; }
+  .campaignCouponCheckout { align-items:stretch; flex-direction:column; padding:22px; }
+  .campaignCouponCheckout>a { width:100%; }
+}
