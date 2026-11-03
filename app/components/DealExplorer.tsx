@@ -243,7 +243,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
           <div className="campaignHubHeading"><div><span className="campaignEyebrow">EN EL RADAR</span><h2 id="campaigns-title">Campañas que no querrás perderte.</h2></div><p>Consulta las fechas, cupones y ofertas publicadas antes de decidir. Comprueba siempre el precio final en la tienda.</p></div>
           <div className="campaignHubGrid">
             {aliexpressCampaignPost && <article className="campaignTile campaignTileAli">
-              <div className="campaignTileCopy"><span className="campaignTag">11.11 · ALIEXPRESS</span><h3>El Día del Soltero, con los cupones a mano.</h3><p>Fechas, condiciones y códigos publicados para comparar el precio final de tus compras.</p><a href={postHref(aliexpressCampaignPost.id)}>Ver la guía 11.11 <span aria-hidden="true">↗</span></a></div>
+              <div className="campaignTileCopy"><span className="campaignTag">11.11 · ALIEXPRESS</span><h3>El 11.11, con los cupones a mano.</h3><p>Fechas, condiciones y códigos publicados para comparar el precio final de tus compras.</p><a href={postHref(aliexpressCampaignPost.id)}>Ver la guía 11.11 <span aria-hidden="true">↗</span></a></div>
               <a className="campaignTileVisual" href={postHref(aliexpressCampaignPost.id)} aria-label="Leer la publicación de AliExpress 11.11"><img src={aliexpressCampaignPost.imageUrl} alt="Campaña AliExpress 11.11 2026" width={640} height={420} /></a>
             </article>}
             <article className="campaignTile campaignTileBlack">
