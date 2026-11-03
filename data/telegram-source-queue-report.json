@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-03T04:14:00.528Z",
+  "updatedAt": "2026-11-03T04:22:57.451Z",
   "summary": {
     "published": 80,
     "ignored": 271,
-    "rejected": 431,
+    "rejected": 432,
     "duplicate": 25,
     "needs_review": 193,
     "pending": 181
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97374:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97374,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/97374",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:97373:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -40,13 +53,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97371,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/97371",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-03T04:22:03.526Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97370:aliexpress:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "https://www.amazon.es/dp/B0FH4KMC5J?tag=chollos00a-21",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-02T16:25:26.466Z"
-    },
-    {
-      "id": "telegram-tiesometro:7837:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 7837,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/tiesometro/7837",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
     }
   ]
 }
