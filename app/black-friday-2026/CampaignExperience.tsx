@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import StoreLogo from "../components/StoreLogo";
+import BrandLink from "../components/BrandLink";
 import { dealHref, type PublishedDeal } from "../lib/deals";
 import { campaignStage, selectCampaignDeals } from "../../scripts/black-friday-selection.mjs";
 
@@ -26,12 +27,12 @@ export default function CampaignExperience({ initialDeals }: { initialDeals: Pub
   const featured = offers[0];
 
   return <main className="campaign26">
-    <div className="campaign26Top"><div className="shell"><Link href="/">← Chollos al Día</Link><span>EL RADAR DE OFERTAS · EDICIÓN 2026</span><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Alertas en Telegram ↗</a></div></div>
+    <div className="campaign26Top"><div className="shell"><BrandLink /><span>ESPECIAL COMPRAS · NOVIEMBRE 2026</span><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Alertas en Telegram ↗</a></div></div>
     <div className="shell campaign26Content">
       <nav className="campaign26Crumb" aria-label="Migas de pan"><Link href="/">Inicio</Link><span>/</span><b>Black Friday y Cyber Monday 2026</b></nav>
       <header className="campaign26Hero">
         <div className="campaign26HeroCopy"><span className="campaign26Kicker"><i aria-hidden="true" />{copy.eyebrow}</span><h1>{copy.title}<br /><em>{copy.accent}</em></h1><p>{copy.description}</p><div className="campaign26HeroActions"><a href="#seleccion">Explorar selección <span aria-hidden="true">↓</span></a><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir avisos ↗</a></div></div>
-        <div className="campaign26Board" aria-label="Calendario de la campaña"><span className="campaign26BoardLabel">AGENDA DE OFERTAS</span><div><small>VIERNES 27 NOV</small><b>BLACK<br />FRIDAY</b><span>01 / 02</span></div><div><small>LUNES 30 NOV</small><b>CYBER<br />MONDAY</b><span>02 / 02</span></div><p><span className="campaign26Pulse" />{copy.label} · hora peninsular</p></div>
+        <div className="campaign26Board" aria-label="Calendario de la campaña"><span className="campaign26BoardLabel">GUARDA ESTAS FECHAS</span><div><small>NOVIEMBRE · VIERNES</small><strong className="campaign26Date">27</strong><b>Black Friday</b><span>Compara antes de comprar</span></div><div><small>NOVIEMBRE · LUNES</small><strong className="campaign26Date">30</strong><b>Cyber Monday</b><span>Una última revisión de tu lista</span></div><p><span className="campaign26Pulse" />{copy.label} · hora peninsular</p></div>
       </header>
       <div className="campaign26Caveat"><b>Cómo leemos los precios</b><p>El descuento se calcula con el precio anterior publicado, no con un histórico independiente. No afirmamos que sea un mínimo histórico ni que cada oferta pertenezca a la campaña oficial de una tienda.</p></div>
       <section id="seleccion" className="campaign26Selection" aria-labelledby="campaign-title">
