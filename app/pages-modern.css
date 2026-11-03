@@ -1,11 +1,11 @@
 /* One shared secondary-page language. Loaded after legacy templates. */
-:root{--page-ink:#18233c;--page-muted:#53617a;--page-line:#dfe5f0;--page-bg:#f5f7fc;--page-action:#4d3dd1;--page-price:#c52c44}
+:root{--page-ink:#292827;--page-muted:#68635f;--page-line:#e5e1dc;--page-bg:#f7f6f3;--page-action:#a74325;--page-price:#c52c44}
 :is(.categoryPage,.telegramLanding){background:var(--page-bg);color:var(--page-ink);font-family:var(--font-geist-sans,Arial),Arial,sans-serif}
 :is(.categoryPage,.telegramLanding) :is(h1,h2,h3){font-family:var(--font-geist-sans,Arial),Arial,sans-serif;font-weight:750;letter-spacing:-.04em;line-height:1.15;color:var(--page-ink)}
 :is(.categoryPage,.telegramLanding) .siteHeader{background:#fff;border-bottom:1px solid var(--page-line)}
 .categoryPage .storeHero{border:1px solid var(--page-line);border-radius:22px;background:#fff;color:var(--page-ink)}
 .categoryPage .storeHero h1{font-size:clamp(34px,4.5vw,60px)}
-.categoryPage .storeHero aside{border-radius:16px;background:#ece8ff;color:#40318d}
+.categoryPage .storeHero aside{border-radius:16px;background:#f8e9de;color:#913b23}
 :is(.categoryPage,.storePage,.guidePage) .dealCard{overflow:hidden;border:1px solid var(--page-line);border-radius:16px;background:#fff;box-shadow:0 6px 25px #18233c05}
 :is(.categoryPage,.storePage,.guidePage) .priceRow strong{color:var(--page-price);font-family:Arial,sans-serif;font-size:32px;font-weight:850}
 :is(.categoryPage,.storePage,.guidePage) .dealButton{border-radius:10px;background:var(--page-action);color:#fff}
@@ -27,54 +27,55 @@
 .offerPage .offerPriceBox>strong,.productPage .productBestPrice,.storePage .priceRow strong,.postProductSelection strong{color:var(--page-price);font-family:var(--font-geist-sans),Arial,sans-serif;font-weight:850}
 .offerPage .offerPriceBox>strong{font-size:clamp(40px,4.5vw,62px);letter-spacing:-.06em}
 :is(.offerPage,.storePage,.searchPage,.postPage,.guidePage,.productPage,.legalPage) :is(.primaryButton,.offerBuy,.productCta,.dealButton,.globalSearchForm button){border-radius:11px;background:var(--page-action);color:#fff;border-color:var(--page-action);box-shadow:none}
-.offerPage .offerCoupon{border:1px dashed #9b8de6;border-radius:12px;background:#f1eeff;color:#392c91}
-.blogHub .blogHubHero{background:#202c50;border-radius:24px}
+.offerPage .offerCoupon{border:1px dashed #c39372;border-radius:12px;background:#fff4e9;color:#874123}
+.blogHub .blogHubHero{background:#302e2b;border-radius:24px}
 .blogHub .blogHubHero h1{font-size:clamp(38px,4.5vw,60px)}
 .campaign26 .shell{width:min(calc(100% - 48px),1200px)}
 .campaign26Top{background:#fff;color:var(--page-ink);border-bottom:1px solid var(--page-line)}
 .campaign26Top>.shell{min-height:82px;gap:24px}
 .campaign26Top span{color:var(--page-muted);font-family:inherit;font-size:10px}
 .campaign26Top a{color:var(--page-action)}
-.campaign26Top>.shell>a:last-child{padding:12px 16px;border:1px solid #dfdaf8;border-radius:12px;font-size:12px;background:#f5f2ff}
+.campaign26Top>.shell>a:last-child{padding:12px 16px;border:1px solid #e8d5c8;border-radius:12px;font-size:12px;background:#fff5ed}
 .campaign26Crumb{margin:26px 0;color:var(--page-muted)}
 .campaign26Crumb a{color:var(--page-action)}
 .postPage .postArticle>h1,.guidePage h1{color:var(--page-ink)}
 .couponGuidePage .campaignCouponGuide{color:var(--page-ink)}
 .couponGuidePage :is(.campaignCouponIntro,.campaignCouponRules,.campaignCouponCard,.campaignCouponCheckout,.campaignGuideDetails){border-radius:18px;overflow:hidden;border-color:var(--page-line)}
 .couponGuidePage .campaignCouponIntro{box-shadow:0 8px 25px #18233c05}
-.couponGuidePage .campaignCouponRules p{background:#eceefa}
+.couponGuidePage .campaignCouponRules p{background:#f1ede6}
 .couponGuidePage :is(.campaignCouponEyebrow,.campaignCouponIntro>div>a,.campaignCouponSectionTitle>div>span){color:var(--page-action)}
-.couponGuidePage .campaignCouponCard{border-top-color:#8a78e3}
+.couponGuidePage .campaignCouponCard{border-top-color:#bc6c43}
 .couponGuidePage .campaignCouponSaving>strong{color:var(--page-price)}
-.couponGuidePage .campaignCouponCodes button{border-color:#9785db;border-radius:10px;background:#f1edff;color:#43338d}
-.couponGuidePage .campaignCouponCodes button:hover{background:#e5ddff}
-.couponGuidePage .campaignCouponCardLimited{background:#ece9ff}
-.couponGuidePage .campaignCouponCheckout{background:#202c50}
+.couponGuidePage .campaignCouponCodes button{border-color:#c39372;border-radius:10px;background:#fff4e9;color:#874123}
+.couponGuidePage .campaignCouponCodes button:hover{background:#f9e5d2}
+.couponGuidePage .campaignCouponCardLimited{background:#f5eee4}
+.couponGuidePage .campaignCouponCheckout{background:#302e2b}
 .couponGuidePage .campaignCouponCheckout h2{color:#fff}
-.couponGuidePage .campaignCouponCheckout>a{border-radius:10px;background:#c7bcff;color:#241d52}
-.campaign26Hero{position:relative;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:24px;min-height:0;overflow:visible;border-radius:26px;background:#202c50;color:#fff;box-shadow:0 20px 55px #28315916}
+.couponGuidePage .campaignCouponCheckout>a{border-radius:10px;background:#f4bc85;color:#422719}
+.campaign26Hero{position:relative;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:24px;min-height:0;overflow:visible;border:1px solid #e5ddd3;border-radius:26px;background:#f0ebe3;color:#292827;box-shadow:0 20px 55px #493c2810}
 .campaign26HeroCopy{padding:clamp(28px,4vw,52px)}
-.campaign26Kicker{color:#c9c0ff;font-family:inherit;letter-spacing:.09em;font-size:10px}
-.campaign26Kicker i{background:#a99aff}
+.campaign26Kicker{color:#945034;font-family:inherit;letter-spacing:.09em;font-size:10px}
+.campaign26Kicker i{background:#b96138}
 .campaign26Hero h1{margin:22px 0;font-size:clamp(40px,5vw,67px);font-weight:850;letter-spacing:-.065em;line-height:1.04}
-.campaign26Hero h1 em{font-family:inherit;font-style:normal;font-weight:850;color:#b9adff}
+.campaign26Hero h1{color:#292827}
+.campaign26Hero h1 em{font-family:inherit;font-style:normal;font-weight:850;color:#a74325}
 .campaign26 :is(h1,h2,h3),:is(.blogHub,.searchPage,.offerPage,.storePage,.postPage,.guidePage,.productPage,.legalPage) :is(h1,h2,h3){font-family:var(--font-geist-sans,Arial),Arial,sans-serif}
 .campaign26Top .brand.brandUnified .brandWordmark{font-family:Arial,sans-serif;color:var(--page-ink);letter-spacing:normal}
 .campaign26Top .brand.brandUnified .brandWordmark strong{font-family:var(--font-geist-sans,Arial),Arial,sans-serif;font-size:25px;line-height:1;font-weight:800}
-.campaign26HeroCopy>p{color:#dce2f1;font-size:15px;line-height:1.75}
-.campaign26HeroActions a{border:1px solid #647198;border-radius:12px;min-height:48px;font-size:13px}
-.campaign26HeroActions a:first-child{background:#c7bcff;border-color:#c7bcff;color:#211951}
-.campaign26HeroActions a:hover{background:#4d3dd1;color:#fff}
-.campaign26Board{align-self:center;margin:24px 24px 24px 0;padding:22px;gap:12px;border:1px solid #657099;border-radius:20px;background:#2b385f;color:#fff}
-.campaign26BoardLabel{font-family:inherit;color:#c9c8e5;font-size:10px}
-.campaign26Board>div{min-height:238px;gap:14px;justify-content:flex-start;border:0;border-radius:14px;background:#f6f4ff;color:#202c50;padding:18px}
-.campaign26Board>div:nth-of-type(2){background:#e0ddff}
+.campaign26HeroCopy>p{color:#625b54;font-size:15px;line-height:1.75}
+.campaign26HeroActions a{border:1px solid #bcb1a4;border-radius:12px;min-height:48px;font-size:13px;color:#3c352e}
+.campaign26HeroActions a:first-child{background:#a74325;border-color:#a74325;color:#fff}
+.campaign26HeroActions a:hover{background:#81331e;color:#fff}
+.campaign26Board{align-self:center;margin:24px 24px 24px 0;padding:22px;gap:12px;border:1px solid #49443e;border-radius:20px;background:#302e2b;color:#fff}
+.campaign26BoardLabel{font-family:inherit;color:#d5ccc0;font-size:10px}
+.campaign26Board>div{min-height:238px;gap:14px;justify-content:flex-start;border:0;border-radius:14px;background:#fffdf9;color:#292827;padding:18px}
+.campaign26Board>div:nth-of-type(2){background:#f5d9ba}
 .campaign26Board small{font-size:9px;line-height:1.5;letter-spacing:.05em}
 .campaign26Date{font-size:clamp(60px,6vw,86px);font-weight:850;letter-spacing:-.08em;line-height:1}
 .campaign26Board b{font-size:18px;letter-spacing:-.04em;line-height:1.15}
-.campaign26Board>div span{margin-top:auto;font-family:inherit;font-size:11px;line-height:1.4;color:#56617a}
-.campaign26Board p{font-size:11px;color:#e3e6f6;line-height:1.5}
-.campaign26Pulse{background:#b9adff}
+.campaign26Board>div span{margin-top:auto;font-family:inherit;font-size:11px;line-height:1.4;color:#6b6054}
+.campaign26Board p{font-size:11px;color:#e9e0d6;line-height:1.5}
+.campaign26Pulse{background:#efb67d}
 .campaign26Caveat{grid-template-columns:180px 1fr;margin:20px 0 44px;border:1px solid var(--page-line);border-radius:14px;background:#fff;padding:20px;color:var(--page-ink)}
 .campaign26Caveat p,.campaign26SectionHead>p{color:var(--page-muted);line-height:1.7}
 .campaign26SectionHead{border-top:0;padding-top:12px}
@@ -84,14 +85,16 @@
 .campaign26FeatureBody>span{font-family:inherit;color:var(--page-action)}
 .campaign26FeatureBody h3{font-size:clamp(23px,2.3vw,31px);line-height:1.23}
 .campaign26FeaturePrice strong,.campaign26CardPrice strong{color:var(--page-price);font-weight:850}
-.campaign26FeatureBody .campaign26Code{border-color:#a598e2;border-radius:9px;background:#f3f0ff;color:#41329a}
+.campaign26FeatureBody .campaign26Code{border-color:#c39372;border-radius:9px;background:#fff4e9;color:#874123}
 .campaign26ProductLink{border-radius:11px;background:var(--page-action);color:#fff;min-height:46px;align-items:center}
 .campaign26Card{overflow:hidden;border:1px solid var(--page-line);border-radius:18px;box-shadow:0 6px 25px #18233c05}
-.campaign26CardMeta>span{border:0;border-radius:8px;background:#eae6ff;color:#4433a5}
+.campaign26CardMeta>span{border:0;border-radius:8px;background:#f8e9de;color:#913b23}
 .campaign26Card h3 a,.campaign26FeatureBody h3 a{color:var(--page-ink)}
 .campaign26Card h3{line-height:1.4;min-height:4.2em;letter-spacing:-.02em}
 .campaign26CardBody>p{color:var(--page-muted);line-height:1.65}
-.campaign26CardBody>a{padding:12px;border:0;border-radius:10px;background:#f0edff;color:#41329a;min-height:44px;align-items:center}
+.campaign26CardBody>a{padding:12px;border:0;border-radius:10px;background:#f7ede5;color:#913b23;min-height:44px;align-items:center}
 .campaign26Method{border-color:var(--page-line)}
+:is(.blogHub,.searchPage,.offerPage,.storePage,.postPage,.guidePage,.productPage,.legalPage){--hl-paper-2:#f0ede7;--hl-accent:#f3ddc9}
+:is(.postPage,.guidePage,.legalPage) :is(.postBody,.guideBody,.legalBody){color:#514c46}
 @media(max-width:900px){.campaign26Hero{grid-template-columns:1fr;gap:0}.campaign26Board{margin:0 24px 24px}.campaign26Board>div{min-height:215px}.campaign26Date{font-size:72px}}
 @media(max-width:620px){.campaign26 .shell{width:calc(100% - 32px)}.campaign26Top>.shell{min-height:72px;gap:12px}.campaign26Top>.shell>a:last-child{max-width:132px;padding:10px;font-size:11px}.campaign26Hero{border-radius:20px}.campaign26HeroCopy{padding:28px 22px}.campaign26Hero h1{font-size:43px}.campaign26Board{margin:0 14px 14px;padding:14px}.campaign26Board>div{min-height:212px;padding:13px}.campaign26Date{font-size:66px}.campaign26Board b{font-size:17px}.campaign26Caveat{grid-template-columns:1fr;gap:8px;margin-bottom:30px}.campaign26Feature{box-shadow:none}.campaign26Card{display:flex;flex-direction:column}.campaign26CardImage{height:230px;min-height:0;border-right:0;border-bottom:1px solid var(--page-line)}.campaign26CardBody{padding:20px}.campaign26Card h3{font-size:17px;min-height:0}.campaign26CardPrice strong{font-size:34px}.campaign26CardPrice del{font-size:14px}.offerPage .offerHero{padding:18px;gap:24px}.offerPage .offerSummary h1{font-size:29px}}

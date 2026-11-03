@@ -8,6 +8,10 @@ test('shared secondary-page design follows legacy styles', () => {
   const css = read('app/pages-modern.css');
   for (const scope of ['.offerPage','.storePage','.postPage','.guidePage','.productPage','.legalPage','.campaign26']) assert.ok(css.includes(scope));
   assert.match(css, /--page-price:#c52c44/);
+  assert.match(css, /--page-bg:#f7f6f3/);
+  assert.match(css, /--page-action:#a74325/);
+  assert.ok(!css.includes('background:#202c50'));
+  assert.ok(!css.includes('background:#2b385f'));
   assert.match(css, /\.campaign26Card\{display:flex;flex-direction:column\}/);
 });
 test('campaign uses shared home brand and explicit calendar dates', () => {
