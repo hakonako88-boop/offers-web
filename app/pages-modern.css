@@ -1,5 +1,18 @@
 /* One shared secondary-page language. Loaded after legacy templates. */
 :root{--page-ink:#18233c;--page-muted:#53617a;--page-line:#dfe5f0;--page-bg:#f5f7fc;--page-action:#4d3dd1;--page-price:#c52c44}
+:is(.categoryPage,.telegramLanding){background:var(--page-bg);color:var(--page-ink);font-family:var(--font-geist-sans,Arial),Arial,sans-serif}
+:is(.categoryPage,.telegramLanding) :is(h1,h2,h3){font-family:var(--font-geist-sans,Arial),Arial,sans-serif;font-weight:750;letter-spacing:-.04em;line-height:1.15;color:var(--page-ink)}
+:is(.categoryPage,.telegramLanding) .siteHeader{background:#fff;border-bottom:1px solid var(--page-line)}
+.categoryPage .storeHero{border:1px solid var(--page-line);border-radius:22px;background:#fff;color:var(--page-ink)}
+.categoryPage .storeHero h1{font-size:clamp(34px,4.5vw,60px)}
+.categoryPage .storeHero aside{border-radius:16px;background:#ece8ff;color:#40318d}
+:is(.categoryPage,.storePage,.guidePage) .dealCard{overflow:hidden;border:1px solid var(--page-line);border-radius:16px;background:#fff;box-shadow:0 6px 25px #18233c05}
+:is(.categoryPage,.storePage,.guidePage) .priceRow strong{color:var(--page-price);font-family:Arial,sans-serif;font-size:32px;font-weight:850}
+:is(.categoryPage,.storePage,.guidePage) .dealButton{border-radius:10px;background:var(--page-action);color:#fff}
+.telegramLandingHero h1 em{font-family:inherit;font-style:normal;color:var(--page-action)}
+.telegramLanding :is(.telegramPreview,.telegramBenefits article){border:1px solid var(--page-line);border-radius:20px;background:#fff;box-shadow:0 10px 35px #18233c07}
+.telegramLanding :is(.primaryButton,.telegramLandingCta){background:var(--page-action);color:#fff;border-radius:12px}
+.telegramLanding .telegramLandingCta h2{color:#fff}
 :is(.blogHub,.searchPage,.offerPage,.storePage,.postPage,.guidePage,.productPage,.legalPage,.campaign26){background:var(--page-bg);color:var(--page-ink);font-family:var(--font-geist-sans),Arial,sans-serif;--hl-paper:var(--page-bg);--hl-paper-2:#edf0fa;--hl-surface:#fff;--hl-ink:var(--page-ink);--hl-muted:var(--page-muted);--hl-rule:var(--page-line);--hl-accent:#e7e3ff;--hl-accent-hover:var(--page-action);--hl-display:var(--font-geist-sans),Arial,sans-serif;--hl-body:var(--font-geist-sans),Arial,sans-serif}
 :is(.blogHub,.searchPage,.offerPage,.storePage,.postPage,.guidePage,.productPage,.legalPage) :is(h1,h2,h3){font-family:var(--font-geist-sans),Arial,sans-serif;font-weight:750;letter-spacing:-.04em;line-height:1.14;text-wrap:balance}
 :is(.postPage,.guidePage,.productPage,.legalPage) h1{font-size:clamp(32px,4.4vw,58px);max-width:24ch}
