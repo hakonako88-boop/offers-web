@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-11-03T08:24:57.389Z",
+  "updatedAt": "2026-11-03T08:35:11.715Z",
   "summary": {
-    "rejected": 429,
+    "rejected": 431,
     "published": 78,
-    "ignored": 275,
+    "ignored": 276,
     "duplicate": 25,
     "needs_review": 193,
-    "pending": 196
+    "pending": 195
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:45199:aliexpress:1",
+      "source": "telegram-ofertos",
+      "messageId": 45199,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/Ofertos/45199",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-ofertos:45199:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 45199,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/Ofertos/45199",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:97386:amazon:0",
       "source": "telegram-una-ganga",
@@ -119,12 +145,12 @@
       "messageId": 45897,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
       "sourceUrl": "https://t.me/chollosdiario/45897",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-03T08:34:18.602Z"
+      "nextAttemptAt": "2026-11-03T08:55:11.715Z"
     },
     {
       "id": "telegram-ofertos:45197:aliexpress:0",
@@ -248,13 +274,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97378,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97378",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-03T07:11:45.324Z",
-      "nextAttemptAt": "2026-11-03T08:32:03.312Z"
+      "lastCheckedAt": "2026-11-03T08:34:51.941Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97377:amazon:0",
@@ -365,13 +391,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97369,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97369",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-03T07:11:45.324Z",
-      "nextAttemptAt": "2026-11-03T08:32:03.312Z"
+      "lastCheckedAt": "2026-11-03T08:34:51.941Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97368:amazon:0",
@@ -1282,32 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-02T19:00:22.359Z"
-    },
-    {
-      "id": "telegram-ofertos:45181:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 45181,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/45181",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45180:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 45180,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/45180",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
     }
   ]
 }
