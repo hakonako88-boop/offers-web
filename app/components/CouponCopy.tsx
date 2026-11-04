@@ -1,24 +1,30 @@
 "use client";
 
 import { useState } from "react";
+import { couponOptions } from "../../scripts/coupon-options.mjs";
 
 export default function CouponCopy({ code, compact = false, discount = 0, minimumSpend = 0 }: { code: string; compact?: boolean; discount?: number; minimumSpend?: number }) {
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState("");
+  const { codes, cashback } = couponOptions(code);
 
-  async function copy() {
+  async function copy(value: string) {
     try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1800);
+      await navigator.clipboard.writeText(value);
+      setCopied(value);
+      window.setTimeout(() => setCopied(""), 1800);
     } catch {
-      setCopied(false);
+      setCopied("");
     }
   }
 
-  return <button className={`couponCopy${compact ? " couponCopyCompact" : ""}`} type="button" onClick={copy} aria-label={`Copiar cupón ${code}`}>
-    <span>CUPÓN</span><b>{code}</b><strong aria-live="polite">{copied ? "¡COPIADO!" : "COPIAR"}</strong>
-    {!compact && <small>{discount > 0 && minimumSpend > 0
-      ? `Descuenta ${discount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })} en pedidos desde ${minimumSpend.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}. El precio mostrado ya incluye el cupón.`
-      : "Úsalo en el carrito si continúa disponible. Comprueba el precio final antes de pagar."}</small>}
-  </button>;
+  return <div className="couponOptions" aria-label="Cupones de la oferta">
+    {codes.map((value: string, index: number) => <button key={value} className={`couponCopy${compact ? " couponCopyCompact" : ""}`} type="button" onClick={() => void copy(value)} aria-label={`Copiar cupón ${value}`}>
+      <span>{index ? "ALTERNATIVA" : "CUPÓN"}</span><b>{value}</b><strong aria-live="polite">{copied === value ? "¡COPIADO!" : "COPIAR"}</strong>
+    </button>)}
+    {codes.length > 1 && <small>Usa solo uno de estos códigos; no se suman entre sí.</small>}
+    {!compact && codes.length > 0 && <small>{codes.length === 1 && discount > 0 && minimumSpend > 0
+      ? `Descuento anunciado: ${discount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })} desde ${minimumSpend.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}. Confirma su aplicación en la cesta.`
+      : "Comprueba que el código se aplica y confirma el total antes de pagar."}</small>}
+    {cashback.length > 0 && <small>Cashback aparte: no es un código ni un descuento inmediato en caja.</small>}
+  </div>;
 }

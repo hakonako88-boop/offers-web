@@ -9,6 +9,7 @@ import { improveOfferTitle, offerReplyMarkup } from './offer-presentation.mjs';
 import { amazonProductImageFromUrl } from './telegram-inbox-commands.mjs';
 import { mirrorTelegramMessage } from './telegram-mirror.mjs';
 import { isGamingOffer } from './editorial-interest.mjs';
+import { meaningfulSaving } from './offer-quality-score.mjs';
 
 const ROOT = process.cwd();
 const OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
@@ -162,6 +163,10 @@ export async function main() {
 
   let sent = 0;
   for (const candidate of pending) {
+    if (!meaningfulSaving(candidate)) {
+      console.log(`Sin ahorro significativo: ${candidate.asin}`);
+      continue;
+    }
     const url = canonicalAmazonAffiliateUrl(candidate.asin, config.partnerTag);
     const pageImage = await amazonPageImage(url);
     const imageCandidates = [...new Set([

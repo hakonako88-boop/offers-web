@@ -1,3 +1,5 @@
+import { couponOptions } from './coupon-options.mjs';
+
 function compact(value = '') {
   return String(value).replace(/\s+/gu, ' ').trim();
 }
@@ -231,7 +233,9 @@ function offerDescription({ title, discount, description = '' } = {}) {
   const supplied = compact(description);
   const product = improveOfferTitle(title);
   const sameAsTitle = normalized(supplied) === normalized(product)
-    || normalized(supplied) === normalized(title);
+    || normalized(supplied) === normalized(title)
+    || (normalized(product).length > 28 && normalized(supplied).startsWith(normalized(product).replace(/…$/u, '')))
+    || (normalized(supplied).length > 28 && normalized(title).startsWith(normalized(supplied)));
   const usableDescription = supplied
     && !sameAsTitle
     && !/oferta publicada en chollos al dia/i.test(normalized(supplied))
@@ -242,13 +246,16 @@ function offerDescription({ title, discount, description = '' } = {}) {
   if (usableDescription) return trimAtWord(usableDescription, 210);
   const titleText = normalized(title);
   if (/ventilador/.test(titleText)) {
-    const speeds = /3\s+velocidades/.test(titleText) ? '3 velocidades, ' : '';
-    const blades = /aspas.*aluminio/.test(titleText) ? 'aspas de aluminio y ' : '';
-    const quiet = /silencios/.test(titleText) ? 'funcionamiento silencioso' : 'dirección ajustable';
-    return trimAtWord(`Ventilador de sobremesa con ${speeds}${blades}${quiet}. Ideal para refrescar espacios pequeños.`, 210);
+    const facts = [
+      /3\s+velocidades/.test(titleText) && '3 velocidades',
+      /aspas.*aluminio/.test(titleText) && 'aspas de aluminio',
+      /silencios/.test(titleText) && 'funcionamiento silencioso',
+    ].filter(Boolean);
+    if (facts.length > 1) return `${facts.slice(0,-1).join(', ')} y ${facts.at(-1)}.`;
   }
-  if (/baliza\s+v16|luz\s+de\s+emergencia.*(?:dgt|coche)/.test(titleText)) {
-    return 'Baliza de emergencia V16 con visibilidad 360°, conexión DGT 3.0 y base imantada para el coche.';
+  if (/baliza\s+v16/.test(titleText)) {
+    const facts = [/360\s*°/.test(titleText) && 'Visibilidad 360°', /dgt\s*3[.,]0/.test(titleText) && 'conexión DGT 3.0', /imantad/.test(titleText) && 'base imantada'].filter(Boolean);
+    if (facts.length) return `${facts.join(' · ')}.`;
   }
   if (Number(discount) > 0) {
     return '';
@@ -269,17 +276,20 @@ export function formatTelegramDealCard({
   couponMinimumSpend = 0,
   description = '',
 } = {}) {
+  const options = couponOptions(coupon);
+  const couponLines = options.codes.map((code, index) => `${index ? '↳ Alternativa' : '🎟️ Cupón'}: <code>${escapeHtml(code)}</code>`).join('\n');
+  const cashbackLine = options.cashback.length ? 'ℹ️ Cashback aparte: no lo descontamos del precio de compra.' : '';
   const storeTag = storeHashtag(store);
   const discountLabel = Number(discount) > 0 ? ` · <b>−${Math.round(Number(discount))}%</b>` : '';
   const savingsText = savings ? `Ahorras <b>${escapeHtml(savings)}</b>${discountLabel}` : (discountLabel ? `Descuento${discountLabel}` : 'Precio sujeto a stock');
   const couponCondition = Number(couponDiscount) > 0 && Number(couponMinimumSpend) > 0
     ? ` · descuenta ${escapeHtml(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(couponDiscount)))} desde ${escapeHtml(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(couponMinimumSpend)))}`
     : '';
-  const actionLine = coupon
-    ? `🎟️ <b>CUPÓN NECESARIO:</b> <code>${escapeHtml(coupon)}</code>${couponCondition}\n✅ El precio mostrado ya incluye el cupón; aplícalo en la cesta.${highlight ? `\n📈 ${escapeHtml(highlight)}` : ''}`
+  const actionLine = options.codes.length
+    ? `${couponLines}${couponCondition}\n${options.codes.length > 1 ? 'Usa solo uno de estos códigos. ' : ''}Comprueba el total en la cesta.${cashbackLine ? `\n${cashbackLine}` : ''}${highlight ? `\n📈 ${escapeHtml(highlight)}` : ''}`
     : highlight
       ? `🔻 ${escapeHtml(highlight)}`
-      : `🔻 ${savingsText}`;
+      : `🔻 ${savingsText}${cashbackLine ? `\n${cashbackLine}` : ''}`;
   const linkLine = `👇🏻 <b>ABRIR OFERTA EN ${escapeHtml(storeHashtag(store).toUpperCase())}</b>`;
   const headline = `🔥 <b>${escapeHtml(editorialOfferHeadline({ title, store, price, discount, coupon }))}</b>`;
   const priceBlock = [
@@ -293,7 +303,7 @@ export function formatTelegramDealCard({
     offerDescription({ title, discount, description }) ? `✨ ${escapeHtml(offerDescription({ title, discount, description }))}` : '',
     priceBlock,
     linkLine,
-    `🔔 Sigue @aldiachollos · #${storeTag} #Chollos`,
+    `🔔 Sigue @aldiachollos · #${storeTag} #Chollos #Publi`,
   ].filter(Boolean).join('\n\n').slice(0, 850);
 }
 

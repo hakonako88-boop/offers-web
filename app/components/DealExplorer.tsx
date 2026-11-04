@@ -1,6 +1,7 @@
 "use client";
 
 import BrandLink from "./BrandLink";
+import CouponCopy from "./CouponCopy";
 
 /* The site is statically exported to GitHub Pages, so native links and the
  * already-optimized merchant images are intentional in this client view. */
@@ -12,7 +13,7 @@ import { adsenseHomeSlot } from "../lib/adsense";
 import { postHref } from "../lib/posts";
 import type { PublishedPost } from "../lib/posts";
 import { offerEditorialLabel } from "../lib/offer-label";
-import { editorialCardTitle } from "../lib/display-title";
+import { offerDisplayTitle } from "../lib/display-title";
 import StoreLogo from "./StoreLogo";
 import { campaignStage } from "../../scripts/black-friday-selection.mjs";
 
@@ -81,7 +82,6 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
     if (typeof window === "undefined") return "";
     return new URLSearchParams(window.location.search).get("q")?.slice(0, 80) ?? "";
   });
-  const [copied, setCopied] = useState<string | null>(null);
   const [savedIds, setSavedIds] = useState<string[]>([]);
   const [savedReady, setSavedReady] = useState(false);
   const [savedOnly, setSavedOnly] = useState(false);
@@ -182,12 +182,6 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
       bestDiscount: discounted.reduce((best, deal) => Math.max(best, Math.round((1 - deal.price / deal.oldPrice) * 100)), 0),
     };
   }, [visibleDeals]);
-
-  function copyCoupon(code: string) {
-    navigator.clipboard?.writeText(code);
-    setCopied(code);
-    window.setTimeout(() => setCopied(null), 1600);
-  }
 
   function toggleSaved(id: string) {
     setSavedIds((current) => current.includes(id) ? current.filter((saved) => saved !== id) : [...current, id].slice(-100));
@@ -329,16 +323,14 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
                   <button className={savedIds.includes(deal.id) ? "saveDealButton active" : "saveDealButton"} type="button" onClick={() => toggleSaved(deal.id)} aria-pressed={savedIds.includes(deal.id)} aria-label={`${savedIds.includes(deal.id) ? "Quitar de guardadas" : "Guardar oferta"}: ${deal.title}`}>{savedIds.includes(deal.id) ? "♥ Guardada" : "♡ Guardar"}</button>
                   <div className="dealBody">
                     <p className="categoryLabel"><b>{offerEditorialLabel({ id: deal.id, price: deal.price, discount })}</b> en {deal.category}</p>
-                    <h3 title={deal.title}><a href={dealDetailsUrl(deal)}>{editorialCardTitle({ title: deal.title, store: deal.store, price: deal.price, discount, coupon: deal.coupon })}</a></h3>
+                    <h3 title={deal.title}><a href={dealDetailsUrl(deal)}>{offerDisplayTitle(deal.title)}</a></h3>
                     <div className="priceRow">
                       <span className="priceCurrent"><small>{deal.priceCondition ? 'DESDE · CON CONDICIONES' : 'PRECIO AHORA'}</small><strong>{money.format(deal.price)}</strong></span>
                       {meaningfulSaving && <span className="priceWas"><small>ANTES</small><s>{money.format(deal.oldPrice)}</s></span>}
                       {meaningfulSaving && <span className="saving">AHORRAS <b>{money.format(deal.oldPrice - deal.price)}</b></span>}
                     </div>
                     {deal.coupon ? (
-                      <button className="coupon" onClick={() => copyCoupon(deal.coupon!)} aria-label={`Copiar cupón ${deal.coupon}`}>
-                        <span>Cupón necesario</span><b>{copied === deal.coupon ? "¡Copiado!" : deal.coupon}</b><i aria-hidden="true">COPIAR</i>
-                      </button>
+                      <CouponCopy code={deal.coupon} compact />
                     ) : <p className="noCoupon"><span aria-hidden="true">✓</span> Precio directo · sin código</p>}
                     <div className="dealActions"><a className="dealButton" href={dealDetailsUrl(deal)} onClick={() => window.gtag?.("event", "offer_card_open", { offer_id: deal.id, store: deal.store, price: deal.price })}>Ver ficha <span aria-hidden="true">↗</span></a>
                     <button className="shareDealButton" type="button" onClick={() => void shareDeal(deal)} aria-label="Compartir oferta">{sharedId === deal.id ? "Copiado ✓" : "Compartir ↗"}</button></div>

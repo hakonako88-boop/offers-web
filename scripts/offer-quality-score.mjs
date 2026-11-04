@@ -7,6 +7,15 @@ function money(value = '') {
   return Number(comma > dot ? raw.replaceAll('.', '').replace(',', '.') : raw.replaceAll(',', '')) || 0;
 }
 
+export function meaningfulSaving(offer = {}) {
+  const price = money(offer.price ?? offer.priceLabel ?? offer.currentPrice);
+  const previous = money(offer.previousPrice ?? offer.oldPrice ?? offer.previousPriceLabel);
+  // No reference is not proof of a saving; other quality checks still apply.
+  if (!(previous > 0 && price > 0)) return true;
+  const saving = previous - price;
+  return saving >= 0.5 && saving / previous >= 0.01;
+}
+
 export function offerQuality(offer = {}) {
   const price = money(offer.price ?? offer.priceLabel ?? offer.currentPrice);
   const previous = money(offer.previousPrice ?? offer.oldPrice ?? offer.previousPriceLabel);
@@ -28,11 +37,11 @@ export function offerQuality(offer = {}) {
   let score = Object.values(breakdown).reduce((total, value) => total + value, 0);
   const suspiciousReference = price >= 250 && previous > price * 2 && !coupon;
   if (interest < 0 || !price || !title || !image || !/^https?:\/\//iu.test(url)) score = Math.min(score, 39);
-  if (suspiciousReference) score = Math.min(score, 49);
+  if (suspiciousReference || !meaningfulSaving(offer)) score = Math.min(score, 49);
   score = Math.max(0, Math.min(100, Math.round(score)));
   return {
     score, breakdown, discount, saving,
     level: score >= 80 ? 'excelente' : score >= 70 ? 'buena' : score >= 50 ? 'revisar' : 'descartar',
-    publishable: score >= 70 && !suspiciousReference && interest >= 0,
+    publishable: score >= 70 && !suspiciousReference && meaningfulSaving(offer) && interest >= 0,
   };
 }

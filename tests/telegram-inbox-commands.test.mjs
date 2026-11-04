@@ -170,13 +170,14 @@ test('keeps a manually supplied coupon in Telegram and in the website record', (
   assert.match(formatManualWebsiteText(result.offer), /Cupón: AHORRA10/);
 });
 
-test('explains that a coupon price must not be discounted a second time', () => {
+test('shows coupon conditions without promising an unverified final price', () => {
   const caption = formatTelegramDealCard({
     title: 'Tablet de prueba', store: 'AliExpress', price: '83,00 €', previousPrice: '95,00 €',
     coupon: 'FSES12', couponDiscount: 12, couponMinimumSpend: 89,
   });
   assert.match(caption, /descuenta 12,00\s€ desde 89,00\s€/u);
-  assert.match(caption, /precio mostrado ya incluye el cupón/u);
+  assert.match(caption, /Comprueba el total en la cesta/u);
+  assert.doesNotMatch(caption, /precio mostrado ya incluye el cupón/u);
 });
 
 test('keeps an explicitly labelled coupon from a forwarded offer without inventing one', () => {
@@ -520,7 +521,8 @@ test('formats a V16 safety light without catalogue separators', () => {
     price: '13,23 €',
   });
   assert.match(card, /Baliza V16 DGT con geolocalización para coche/);
-  assert.match(card, /visibilidad 360°, conexión DGT 3.0 y base imantada/);
+  assert.match(card, /Visibilidad 360° · conexión DGT 3.0/);
+  assert.doesNotMatch(card, /base imantada/);
   assert.doesNotMatch(card, /\|/);
 });
 
