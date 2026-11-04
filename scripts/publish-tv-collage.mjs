@@ -8,7 +8,7 @@ const post=posts.find(p=>p.id===guide.id);
 if(!post) throw new Error('No existe la guía de televisores.');
 post.image=guide.collage; post.images=[guide.collage];
 fs.writeFileSync(file,JSON.stringify(posts,null,2)+'\n');
-if(post.collage_message_id && post.collage_revision==='per-product-links-v3') {console.log(`Enlaces individuales ya actualizados: ${post.collage_message_id}`);process.exit(0);}
+if(post.collage_message_id && post.collage_revision==='editorial-html-v4') {console.log(`Diseño editorial ya actualizado: ${post.collage_message_id}`);process.exit(0);}
 if(process.env.PUBLISH_TELEGRAM!=='true') {console.log('Resumen visual guardado, sin envío.');process.exit(0);}
 const token=process.env.TELEGRAM_BOT_TOKEN, chat=process.env.TELEGRAM_CHANNEL_ID;
 if(!token||!chat) throw new Error('Faltan credenciales de Telegram.');
@@ -21,14 +21,14 @@ const form=new FormData();
 form.set('chat_id',chat);form.set('reply_markup',JSON.stringify(keyboard));
 if(post.collage_message_id) {
   form.set('message_id',String(post.collage_message_id));
-  form.set('media',JSON.stringify({type:'photo',media:'attach://photo',caption}));
-} else form.set('caption',caption);
+  form.set('media',JSON.stringify({type:'photo',media:'attach://photo',caption,parse_mode:'HTML'}));
+} else {form.set('caption',caption);form.set('parse_mode','HTML');}
 form.set('photo',new Blob([fs.readFileSync(`public${guide.collage}`)],{type:'image/png'}),'comparativa-tv.png');
 const method=post.collage_message_id?'editMessageMedia':'sendPhoto';
 const response=await fetch(`https://api.telegram.org/bot${token}/${method}`,{method:'POST',body:form});
 const result=await response.json();
 if(!response.ok||!result.ok) throw new Error(`No se confirmó la imagen única: ${result.description||response.status}`);
 post.collage_message_id=result.result.message_id;
-post.collage_revision='per-product-links-v3';
+post.collage_revision='editorial-html-v4';
 fs.writeFileSync(file,JSON.stringify(posts,null,2)+'\n');
 console.log(`Imagen única confirmada: ${post.collage_message_id}`);
