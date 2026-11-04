@@ -19,6 +19,7 @@ test('comparison keeps affiliate URLs and warns against subtracting coupons twic
   assert.match(source,/No restes el cupón otra vez/u);
   assert.match(source,/scope="col"/u);
   assert.match(source,/scope="row"/u);
+  assert.match(source,/allDeals\.find/u);
 });
 test('publisher requires Telegram confirmation and prevents routine duplicate sends', () => {
   const source = fs.readFileSync('scripts/publish-mobile-comparison.mjs','utf8');

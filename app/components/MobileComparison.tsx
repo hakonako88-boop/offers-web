@@ -1,9 +1,10 @@
 import guide from "../../data/mobile-comparison.json";
-import { publishedDeals } from "../lib/deals";
+import { allDeals } from "../lib/deals";
 import CouponCopy from "./CouponCopy";
 
 export default function MobileComparison() {
-  const entries = guide.products.map(product => ({ ...product, deal: publishedDeals.find(d => d.sourceProductId === product.offerId) }));
+  // Comparisons reference their exact reviewed records, not the capped home feed.
+  const entries = guide.products.map(product => ({ ...product, deal: allDeals.find(d => d.sourceProductId === product.offerId) }));
   return <section className="mobileComparison">
     <p>{guide.intro}</p>
     <aside className="comparisonNotice">Revisión editorial: 4 de noviembre de 2026. Los precios son los últimos registrados en nuestras fichas, no una comprobación del carrito en tiempo real. No restes el cupón otra vez al precio publicado.</aside>
