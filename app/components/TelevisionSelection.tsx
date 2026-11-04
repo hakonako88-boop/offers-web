@@ -11,7 +11,7 @@ export default function TelevisionSelection() {
     <h2 id="tv-picks">Una televisión para cada espacio</h2>
     <div className="tvGuideCards">{entries.map(p => <article key={p.offerId}>
       <div className="tvGuideCardTop"><span>{p.badge}</span><b>{p.size}</b></div>
-      {p.deal && <img className="tvGuidePhoto" src={p.deal.imageUrl} alt={p.name} width={520} height={340} />}
+      <img className="tvGuidePhoto" src={guide.images[p.offerId as keyof typeof guide.images].local} alt={p.name} width={520} height={340} />
       <h3>{p.name}</h3><div className="tvGuideSpecs"><span>{p.panel}</span><span>{p.refresh}</span><span>{p.system}</span></div>
       <p className="tvGuideVerdict">{p.verdict}</p>
       {p.deal ? <div className="tvGuidePurchase"><StoreLogo store={p.deal.store} /><small>Último registro: {p.deal.verifiedAt.replace(/^Publicado el /u,'')}</small><strong>{p.deal.price.toLocaleString('es-ES',{style:'currency',currency:'EUR'})}</strong><a className="primaryButton" href={p.deal.affiliateUrl} target="_blank" rel="sponsored nofollow noreferrer">Ver oferta en {p.deal.store} ↗</a>{p.deal.coupon ? <CouponCopy code={p.deal.coupon} /> : <p className="tvGuideNoCoupon">Sin código de cupón registrado.</p>}</div> : <p>Oferta no disponible actualmente.</p>}

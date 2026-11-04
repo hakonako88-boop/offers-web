@@ -12,6 +12,8 @@ if (!post) {
   post = {id:guide.id,title:guide.title,body:guide.intro,date:Math.floor(Date.now()/1000),image:entries[0].offer.image,images:entries.map(p=>p.offer.image),source:'editorial-tv-selection'};
   posts.unshift(post);
 }
+post.image=guide.images[entries[0].offerId].local;
+post.images=entries.map(p=>guide.images[p.offerId].local);
 fs.writeFileSync(file,JSON.stringify(posts,null,2)+'\n');
 if(process.env.PUBLISH_TELEGRAM==='true' && !post.message_id) {
   let available = false;
@@ -38,3 +40,18 @@ if(process.env.PUBLISH_TELEGRAM==='true' && !post.message_id) {
   fs.writeFileSync(file,JSON.stringify(posts,null,2)+'\n');
   console.log(`Álbum confirmado: ${post.message_ids.join(', ')}`);
 } else console.log('Guía guardada; no se ha enviado otro álbum.');
+if(process.env.PUBLISH_TELEGRAM==='true' && post.message_ids?.length===3 && post.image_revision!=='official-v1') {
+  const token=process.env.TELEGRAM_BOT_TOKEN, chat=process.env.TELEGRAM_CHANNEL_ID;
+  if(!token||!chat) throw new Error('Faltan credenciales para actualizar fotos.');
+  for(let i=0;i<entries.length;i++) {
+    const p=entries[i], code=couponOptions(p.offer.coupon||'').codes[0];
+    const caption=`${i===0?'📺 TRES TELEVISORES PARA TRES USOS\n\n':''}${p.badge}\n${p.name}\n\n💶 Último precio registrado: ${p.offer.price}\n📺 ${p.size} · ${p.panel}\n⚡ ${p.refresh} · ${p.system}\n${code?`🎟 Código publicado: ${code} (no lo restes otra vez)\n`:''}\n${p.verdict}\n\n🛒 Consultar oferta:\n${p.offer.url}\n\n📖 Comparativa y condiciones:\n${articleUrl}\n\nConfirma variante, cupón y total en tienda. #Publi @aldiachollos`;
+    const media={type:'photo',media:guide.images[p.offerId].official,caption};
+    const res=await fetch(`https://api.telegram.org/bot${token}/editMessageMedia`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chat,message_id:post.message_ids[i],media})});
+    const result=await res.json();
+    if(!result.ok && !String(result.description||'').includes('message is not modified')) throw new Error(`No se confirmó la foto ${i+1}: ${result.description||res.status}`);
+  }
+  post.image_revision='official-v1';
+  fs.writeFileSync(file,JSON.stringify(posts,null,2)+'\n');
+  console.log('Tres fotos oficiales actualizadas en el álbum existente.');
+}
