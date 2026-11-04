@@ -172,7 +172,6 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
   }), [deals]);
 
   const gridDeals = visibleDeals.slice(0, visibleLimit);
-  const heroDeal = deals[0];
   const visibleInsights = useMemo(() => {
     const discounted = visibleDeals.filter((deal) => deal.oldPrice > deal.price);
     const totalSaving = discounted.reduce((total, deal) => total + (deal.oldPrice - deal.price), 0);
@@ -232,28 +231,11 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
         </div>
       </header>
 
-      {featuredSelection}
-      <section className="campaignHub" id="campanas" aria-labelledby="campaigns-title">
-        <div className="shell">
-          <div className="campaignHubHeading"><div><span className="campaignEyebrow">EN EL RADAR</span><h2 id="campaigns-title">Campañas que no querrás perderte.</h2></div><p>Consulta las fechas, cupones y ofertas publicadas antes de decidir. Comprueba siempre el precio final en la tienda.</p></div>
-          <div className="campaignHubGrid">
-            {aliexpressCampaignPost && <article className="campaignTile campaignTileAli">
-              <div className="campaignTileCopy"><span className="campaignTag">11.11 · ALIEXPRESS</span><h3>El 11.11, con los cupones a mano.</h3><p>Fechas, condiciones y códigos publicados para comparar el precio final de tus compras.</p><a href={postHref(aliexpressCampaignPost.id)}>Ver la guía 11.11 <span aria-hidden="true">↗</span></a></div>
-              <a className="campaignTileVisual" href={postHref(aliexpressCampaignPost.id)} aria-label="Leer la publicación de AliExpress 11.11"><img src={aliexpressCampaignPost.imageUrl} alt="Campaña AliExpress 11.11 2026" width={640} height={420} /></a>
-            </article>}
-            <article className="campaignTile campaignTileBlack">
-              <div className="campaignTileCopy"><span className="campaignTag">27—30 NOV · BLACK FRIDAY 2026</span><h3>Prepara tu lista. Sigue las ofertas.</h3><p>{campaign === "black-friday" || campaign === "cyber-monday" ? "Consulta la selección actual y comprueba precio y condiciones antes de comprar." : "La campaña oficial aún no ha empezado. Explora la selección reciente y guarda tus favoritos."}</p><a href="/black-friday-2026/">Explorar Black Friday <span aria-hidden="true">↗</span></a></div>
-              <div className="campaignBlackGraphic" aria-hidden="true"><span>BLACK</span><strong>FRIDAY</strong><small>2026</small></div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section className="hero shell" aria-labelledby="hero-title">
+      <section className="hero buyerIntro shell" aria-labelledby="hero-title">
         <div className="heroCopy">
           <span className="heroKicker">TU RADAR DE OFERTAS · NOVIEMBRE 2026</span>
-          <h1 id="hero-title">Las mejores compras empiezan aquí.</h1>
-          <p className="heroLead">Descubre las campañas de AliExpress 11.11 y Black Friday, además de ofertas recientes con precios y condiciones a la vista.</p>
+          <h1 id="hero-title">Chollos para comprar mejor.</h1>
+          <p className="heroLead">Busca un producto o empieza por la selección. Precios y condiciones, a la vista.</p>
           <form className="heroSearch" role="search" onSubmit={(event) => { event.preventDefault(); document.getElementById("ofertas")?.scrollIntoView({ behavior: "smooth" }); }}>
             <label htmlFor="home-offer-search">¿Qué estás buscando?</label>
             <div className="heroSearchBox"><span aria-hidden="true">⌕</span><input id="home-offer-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Móvil, cafetera, cupón…" /><button type="submit">Buscar ofertas</button></div>
@@ -265,7 +247,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
             </div>
           </form>
           <div className="heroActions">
-            <a className="primaryButton" href="#campanas">Ver campañas <span aria-hidden="true">↗</span></a>
+            <a className="primaryButton" href="#ofertas">Ver todas las ofertas <span aria-hidden="true">↓</span></a>
             <a className="quietLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis</a>
           </div>
           <ul className="trustList" aria-label="Qué muestra cada oferta">
@@ -274,17 +256,15 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
             <li>Cupón cuando existe</li>
           </ul>
         </div>
-        {heroDeal && <aside className="heroFeature" aria-label="Oferta destacada ahora">
-          <a className="heroFeatureImage" href={dealDetailsUrl(heroDeal)}><img src={heroDeal.imageUrl} alt={heroDeal.title} width={620} height={500} fetchPriority="high" /></a>
-          <div className="heroFeatureDetails"><span>En portada: {heroDeal.store}</span><h2><a href={dealDetailsUrl(heroDeal)}>{shortTitle(heroDeal.title, 82)}</a></h2><div><strong>{money.format(heroDeal.price)}</strong>{heroDeal.oldPrice - heroDeal.price >= 1 && <s>{money.format(heroDeal.oldPrice)}</s>}</div><a className="heroFeatureButton" href={dealDetailsUrl(heroDeal)}>Analizar esta oferta</a></div>
-        </aside>}
       </section>
+
+      {featuredSelection}
 
       <section className="offersSection" id="ofertas" aria-labelledby="offers-title">
         <div className="shell">
           <div className="sectionIntro">
             <div>
-              <h2 id="offers-title">El radar de hoy</h2>
+              <h2 id="offers-title">Todas las ofertas recientes</h2>
             </div>
             <p>Precios válidos en el momento de la publicación. Pueden cambiar o agotarse.</p>
           </div>
@@ -345,6 +325,8 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
           {!visibleDeals.length && <div className="empty"><b>{savedOnly && savedIds.length === 0 ? "Aún no has guardado ofertas." : "No hemos encontrado ofertas con esos filtros."}</b><span>{savedOnly && savedIds.length === 0 ? "Pulsa «Guardar» en una oferta para verla aquí más tarde, en este navegador." : "Prueba con otra palabra o quita alguno de los filtros."}</span></div>}
         </div>
       </section>
+
+      <section className="campaignHub buyerCampaigns" id="campanas" aria-labelledby="campaigns-title"><div className="shell"><div className="campaignHubHeading"><div><span className="campaignEyebrow">FECHAS Y CUPONES</span><h2 id="campaigns-title">¿Preparas una compra para las campañas?</h2></div><p>Consulta las guías sin perder de vista las ofertas de hoy.</p></div><div className="buyerCampaignLinks">{aliexpressCampaignPost && <a href={postHref(aliexpressCampaignPost.id)}><span>ALIEXPRESS · 11.11</span><strong>Ver fechas y cupones →</strong></a>}<a href="/black-friday-2026/"><span>BLACK FRIDAY · 27—30 NOV</span><strong>{campaign === 'black-friday' || campaign === 'cyber-monday' ? 'Ver la campaña →' : 'Preparar mi lista →'}</strong></a></div></div></section>
 
       {featuredPost && <section className="editorialSpotlight shell" aria-labelledby="spotlight-title">
         <div className="editorialSpotlightCopy"><p>EN EL BLOG · {featuredPost.publishedLabel}</p><h2 id="spotlight-title">{featuredPost.title}</h2><span>Una selección de productos con fotos, precios publicados y fichas para consultar antes de comprar.</span><a href={postHref(featuredPost.id)}>Ver selección <b aria-hidden="true">↗</b></a></div>
