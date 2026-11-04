@@ -17,10 +17,12 @@ export default function CouponCopy({ code, compact = false, discount = 0, minimu
     }
   }
 
-  return <div className="couponOptions" aria-label="Cupones de la oferta">
-    {codes.map((value: string, index: number) => <button key={value} className={`couponCopy${compact ? " couponCopyCompact" : ""}`} type="button" onClick={() => void copy(value)} aria-label={`Copiar cupón ${value}`}>
+  const renderCode = (value: string, index: number) => <button key={value} className={`couponCopy${compact ? " couponCopyCompact" : ""}`} type="button" onClick={() => void copy(value)} aria-label={`Copiar cupón ${value}`}>
       <span>{index ? "ALTERNATIVA" : "CUPÓN"}</span><b>{value}</b><strong aria-live="polite">{copied === value ? "¡COPIADO!" : "COPIAR"}</strong>
-    </button>)}
+    </button>;
+  return <div className="couponOptions" aria-label="Cupones de la oferta">
+    {codes[0] && renderCode(codes[0], 0)}
+    {codes.length > 1 && <details className="couponAlternatives"><summary>Ver {codes.length - 1} {codes.length === 2 ? "código alternativo" : "códigos alternativos"}</summary>{codes.slice(1).map((value: string, index: number) => renderCode(value, index + 1))}</details>}
     {codes.length > 1 && <small>Usa solo uno de estos códigos; no se suman entre sí.</small>}
     {!compact && codes.length > 0 && <small>{codes.length === 1 && discount > 0 && minimumSpend > 0
       ? `Descuento anunciado: ${discount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })} desde ${minimumSpend.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}. Confirma su aplicación en la cesta.`

@@ -5,6 +5,11 @@
 .couponOptions .couponCopy :is(span,strong){font-size:10px;letter-spacing:.03em}
 .couponOptions>small{display:block;color:#68635f;font:12px/1.55 Arial,sans-serif}
 .couponOptions .couponCopy:focus-visible{outline:3px solid #a74325;outline-offset:3px}
+.couponOptions .couponCopy>strong{background:#a74325;color:#fff;border-radius:6px;padding:8px 10px;box-shadow:none}
+.couponOptions .couponCopy>span{color:#874123}
+.couponAlternatives{border-top:1px solid #e8ded3}
+.couponAlternatives>summary{display:list-item;min-height:44px;padding:13px 4px;color:#874123;font:700 12px/1.5 Arial,sans-serif;cursor:pointer}
+.couponAlternatives .couponCopy{margin-bottom:8px;background:#fffaf5}
 :root{--page-ink:#292827;--page-muted:#68635f;--page-line:#e5e1dc;--page-bg:#f7f6f3;--page-action:#a74325;--page-price:#c52c44}
 :is(.categoryPage,.telegramLanding){background:var(--page-bg);color:var(--page-ink);font-family:var(--font-geist-sans,Arial),Arial,sans-serif}
 :is(.categoryPage,.telegramLanding) :is(h1,h2,h3){font-family:var(--font-geist-sans,Arial),Arial,sans-serif;font-weight:750;letter-spacing:-.04em;line-height:1.15;color:var(--page-ink)}

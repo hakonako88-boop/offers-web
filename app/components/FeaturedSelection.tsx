@@ -10,7 +10,7 @@ export default function FeaturedSelection() {
   if (!deals.length) return null;
   const money = new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'});
   return <section className="featuredSelection" aria-labelledby="featured-selection-title">
-    <div className="featuredSelectionHeading"><div><span>LA SELECCIÓN · ÚLTIMAS 48 HORAS</span><h2 id="featured-selection-title">Pocas ofertas. Motivos claros.</h2></div><p>Selección por ahorro publicado, actualidad y variedad. No es un ranking de mínimos históricos.</p></div>
+    <div className="featuredSelectionHeading"><div><span>DESTACADOS · ÚLTIMAS 48 HORAS</span><h2 id="featured-selection-title">La selección de hoy</h2></div><p>Ofertas recientes con un motivo para destacar. El ahorro se compara con el precio anterior publicado.</p></div>
     <div className="featuredSelectionGrid">{deals.map((deal: PublishedDeal & {editorialReason:string}, index:number) => <article key={deal.id}>
       <a className="featuredSelectionImage" href={dealHref(deal.id)}><span>0{index+1}</span><img src={deal.imageUrl} alt={deal.title} width={420} height={320} loading={index === 0 ? 'eager' : 'lazy'} /></a>
       <div className="featuredSelectionBody"><StoreLogo store={deal.store}/><h3><a href={dealHref(deal.id)}>{offerDisplayTitle(deal.title)}</a></h3>
