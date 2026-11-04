@@ -2,7 +2,7 @@ import { selectFeaturedOffers } from '../../scripts/editorial-selection.mjs';
 import { publishedDeals, dealHref, type PublishedDeal } from '../lib/deals';
 import { offerDisplayTitle } from '../lib/display-title';
 import StoreLogo from './StoreLogo';
-import { couponOptions } from '../../scripts/coupon-options.mjs';
+import { couponOptions, isCollectableCoupon } from '../../scripts/coupon-options.mjs';
 
 export default function FeaturedSelection() {
   const deals = selectFeaturedOffers(publishedDeals);
@@ -14,7 +14,7 @@ export default function FeaturedSelection() {
       <a className="featuredSelectionImage" href={dealHref(deal.id)} tabIndex={-1} aria-hidden="true"><img src={deal.imageUrl} alt="" width={420} height={320} loading={index === 0 ? 'eager' : 'lazy'} /></a>
       <div className="featuredSelectionBody"><StoreLogo store={deal.store}/><h3><a href={dealHref(deal.id)}>{offerDisplayTitle(deal.title)}</a></h3>
       <div className="featuredSelectionPrice"><strong>{money.format(deal.price)}</strong>{deal.oldPrice>deal.price && <s aria-label={`Precio anterior publicado: ${money.format(deal.oldPrice)}`}>{money.format(deal.oldPrice)}</s>}</div>
-      <span className="featuredSelectionCondition">{couponOptions(deal.coupon).codes.length > 0 ? 'Con cupón · consulta condiciones' : 'Sin código de cupón registrado'}</span>
+      <span className="featuredSelectionCondition">{isCollectableCoupon(deal.coupon) ? 'Recoge el cupón en la ficha' : couponOptions(deal.coupon).codes.length > 0 ? 'Con cupón · consulta condiciones' : 'Sin código de cupón registrado'}</span>
       <p>{deal.editorialReason}</p><a className="featuredSelectionLink" href={dealHref(deal.id)} aria-label={`Ver oferta: ${offerDisplayTitle(deal.title)}`}>Ver oferta <span aria-hidden="true">→</span></a></div>
     </article>)}</div>
     <p className="featuredSelectionNote">Precios publicados en las últimas 48 horas. Confirma variante, cupón y total en la tienda.</p>

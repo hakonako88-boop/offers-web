@@ -5,7 +5,7 @@ import { createDealImageCard } from './deal-image-card.mjs';
 
 export const requestedGta = {
   source_product_id: 'miravia:1374712289389270:6187750476753622',
-  title: 'GTA VI para PS5: reserva con código en caja por 69,63 € con cupón',
+  title: 'GTA VI para PS5 · reserva de la Edición Estándar con código en caja',
   price: '69,63 €', previousPrice: '79,99 €', store: 'Miravia', category: 'Videojuegos',
   coupon: 'Cupón 11.11 de 7 €: recoger en la ficha y aplicar al pagar',
   description: 'Precio condicionado: 76,63 € en la ficha; 69,63 € si se aplica el cupón 11.11 de 7 €. Reserva de la Edición Estándar para PS5 en formato CIAB: código de descarga en caja, sin disco. Comprueba cuenta compatible, cupón, gastos y fecha de entrega en Miravia. No implica acceso anticipado.',

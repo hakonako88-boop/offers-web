@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { requestedGta, requestedGtaCaption } from '../scripts/publish-requested-gta.mjs';
+import { couponOptions, isCollectableCoupon } from '../scripts/coupon-options.mjs';
 test('requested reservation uses owner affiliate and exact variant, with conditional price',()=>{
   const link=new URL(requestedGta.url);
   assert.equal(link.searchParams.get('awinaffid'),'2023977');
@@ -12,4 +13,8 @@ test('requested reservation uses owner affiliate and exact variant, with conditi
   assert.match(requestedGtaCaption,/76,63/);
   assert.match(requestedGtaCaption,/69,63/);
   assert(!requestedGta.coupon.includes('ESFS'));
+  assert(isCollectableCoupon(requestedGta.coupon));
+  assert.deepEqual(couponOptions(requestedGta.coupon).codes,[]);
+  assert.deepEqual(couponOptions('ESD1123 / AHORRA-20').codes,['ESD1123','AHORRA-20']);
+  assert(!requestedGta.title.includes('69,63'));
 });
