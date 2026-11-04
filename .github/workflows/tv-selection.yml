@@ -1,6 +1,11 @@
 name: Publicar selección editorial de televisores
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/tv-selection.yml
+      - data/tv-selection.json
 permissions:
   contents: write
 concurrency:

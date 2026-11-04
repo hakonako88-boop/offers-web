@@ -14,8 +14,15 @@ if (!post) {
 }
 fs.writeFileSync(file,JSON.stringify(posts,null,2)+'\n');
 if(process.env.PUBLISH_TELEGRAM==='true' && !post.message_id) {
-  const live = await fetch(articleUrl);
-  if(!live.ok || !(await live.text()).includes('tvGuideCards')) throw new Error('La guía aún no está disponible en la web. No se envía Telegram.');
+  let available = false;
+  // Pages activation follows the web build; wait without posting a broken link.
+  for(let attempt=0;attempt<30;attempt++) {
+    const live=await fetch(`${articleUrl}?revision=tv-${Date.now()}`).catch(()=>null);
+    if(live?.ok && (await live.text()).includes('tvGuideCards')) { available=true; break; }
+    console.log(`Esperando activación de la guía: ${attempt+1}/30`);
+    await new Promise(resolve=>setTimeout(resolve,30000));
+  }
+  if(!available) throw new Error('La guía aún no está disponible en la web. No se envía Telegram.');
   const token=process.env.TELEGRAM_BOT_TOKEN, chat=process.env.TELEGRAM_CHANNEL_ID;
   if(!token||!chat) throw new Error('Faltan credenciales de Telegram.');
   const media=entries.map((p,i)=>{
