@@ -18,6 +18,7 @@ import "./brand.css";
 import "./pages-modern.css";
 import "./featured-selection.css";
 import "./comparison.css";
+import "./tv-guide.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });

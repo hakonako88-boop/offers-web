@@ -1,0 +1,32 @@
+name: Publicar selección editorial de televisores
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: chollosaldia-tv-selection
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - run: node scripts/publish-tv-selection.mjs
+        env:
+          PUBLISH_TELEGRAM: 'true'
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      - name: Guardar publicación y confirmación
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/posts.json
+          git diff --cached --quiet || git commit -m "Publicar selección de televisores [editorial]"
+          git pull --rebase origin main
+          git push
