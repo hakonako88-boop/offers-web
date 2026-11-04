@@ -63,7 +63,7 @@ function offerCountLabel(total: number) {
   return `${total} ${total === 1 ? "oferta" : "ofertas"}`;
 }
 
-export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summary }: { initialDeals: Deal[]; posts: PublishedPost[]; aliexpressCampaignPost?: PublishedPost; summary: DealSummary }) {
+export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summary, featuredSelection }: { initialDeals: Deal[]; posts: PublishedPost[]; aliexpressCampaignPost?: PublishedPost; summary: DealSummary; featuredSelection?: React.ReactNode }) {
   const newestOfferDate = Date.parse(initialDeals[0]?.verifiedDate || "");
   const featuredPost = posts.find((post) => /^mejores-productos-(?:dia|semana)-/u.test(post.id)
     && Number.isFinite(newestOfferDate) && newestOfferDate - Date.parse(post.publishedAt) < 7 * 24 * 60 * 60 * 1000);
@@ -232,6 +232,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
         </div>
       </header>
 
+      {featuredSelection}
       <section className="campaignHub" id="campanas" aria-labelledby="campaigns-title">
         <div className="shell">
           <div className="campaignHubHeading"><div><span className="campaignEyebrow">EN EL RADAR</span><h2 id="campaigns-title">Campañas que no querrás perderte.</h2></div><p>Consulta las fechas, cupones y ofertas publicadas antes de decidir. Comprueba siempre el precio final en la tienda.</p></div>

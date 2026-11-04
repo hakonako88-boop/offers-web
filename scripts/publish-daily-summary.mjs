@@ -3,6 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import { automaticInterest, interestFamily, selectInterestingOffers } from './editorial-interest.mjs';
+import { editorialReason } from './editorial-selection.mjs';
+import { couponOptions } from './coupon-options.mjs';
 
 const ROOT = process.cwd();
 const OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
@@ -115,23 +117,23 @@ export async function createDailySummaryCard(offers, targetDate, { fetchImpl = f
   const rows = offers.slice(0, 3).map((offer, index) => {
     const y = 190 + index * 310;
     const { saving, discount } = offerMetrics(offer);
-    const lines = titleLines(offer.title).map((line, lineIndex) =>
+    const lines = titleLines(offer.title, 32).map((line, lineIndex) =>
       `<text x="390" y="${y + 70 + lineIndex * 46}" font-family="Arial,sans-serif" font-size="34" font-weight="800" fill="#18213e">${escapeXml(line)}</text>`).join('');
     const previous = numericPrice(offer.previousPrice) > numericPrice(offer.price)
       ? `<text x="365" y="${y + 221}" font-family="Arial,sans-serif" font-size="25" fill="#7b8495">Antes ${escapeXml(offer.previousPrice)}</text>` : '';
-    const coupon = offer.coupon ? `<rect x="760" y="${y + 195}" width="370" height="54" rx="16" fill="#fff2df"/><text x="945" y="${y + 232}" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="800" fill="#9a4d00">CUPÓN ${escapeXml(offer.coupon).slice(0, 22)}</text>` : '';
+    const primaryCoupon = couponOptions(offer.coupon).codes[0];
+    const coupon = primaryCoupon ? `<rect x="760" y="${y + 195}" width="370" height="54" rx="16" fill="#fff2df"/><text x="945" y="${y + 232}" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="800" fill="#9a4d00">${primaryCoupon.length <= 18 ? `CUPÓN ${escapeXml(primaryCoupon)}` : 'VER CUPÓN EN FICHA'}</text>` : '';
     const badge = discount ? `<rect x="1000" y="${y + 25}" width="130" height="50" rx="25" fill="#eafff3"/><text x="1065" y="${y + 59}" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="900" fill="#087a46">−${discount}%</text>` : '';
-    const savingText = saving ? `<text x="560" y="${y + 221}" font-family="Arial,sans-serif" font-size="25" font-weight="800" fill="#087a46">Ahorras ${escapeXml(euroAmount(saving))}</text>` : '';
     return `<rect x="35" y="${y}" width="1130" height="280" rx="30" fill="#ffffff" stroke="#e6e8ee" stroke-width="3"/>
-      <circle cx="350" cy="${y + 42}" r="30" fill="#ff5a36"/><text x="350" y="${y + 54}" text-anchor="middle" font-family="Arial,sans-serif" font-size="31" font-weight="900" fill="#fff">${index + 1}</text>
-      ${badge}${lines}<text x="365" y="${y + 184}" font-family="Arial,sans-serif" font-size="51" font-weight="900" fill="#ff5a36">${escapeXml(offer.price)}</text>${previous}${savingText}${coupon}
-      <text x="1125" y="${y + 265}" text-anchor="end" font-family="Arial,sans-serif" font-size="23" font-weight="800" fill="#6769f0">${escapeXml(offer.store || 'OFERTA').toUpperCase()}</text>`;
+      <circle cx="350" cy="${y + 42}" r="20" fill="#a74325"/><text x="350" y="${y + 50}" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="900" fill="#fff">${index + 1}</text>
+      ${badge}${lines}<text x="365" y="${y + 184}" font-family="Arial,sans-serif" font-size="51" font-weight="900" fill="#c52c44">${escapeXml(offer.price)}</text>${previous}${coupon}
+      <text x="365" y="${y + 265}" font-family="Arial,sans-serif" font-size="20" fill="#68635f">${escapeXml(cleanTitle(`${offer.store || 'Oferta'} · ${editorialReason(offer)}`, 72))}</text>`;
   }).join('');
   const overlay = Buffer.from(`<svg width="1200" height="1200" xmlns="http://www.w3.org/2000/svg">
-    <rect width="1200" height="1200" fill="#f6f7fb"/><rect width="1200" height="165" fill="#18213e"/>
+    <rect width="1200" height="1200" fill="#f7f6f3"/><rect width="1200" height="165" fill="#302e2b"/>
     <text x="55" y="72" font-family="Arial,sans-serif" font-size="53" font-weight="900" fill="#fff">🏆 MEJORES CHOLLOS DEL DÍA</text>
     <text x="57" y="126" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#ffb59f">${escapeXml(displayDate)} · Selección ChollosAlDía</text>
-    ${rows}<rect x="35" y="1130" width="1130" height="50" rx="20" fill="#18213e"/><text x="600" y="1165" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="800" fill="#fff">CHOLLOSALDIA.COM · @ALDIACHOLLOS</text>
+    ${rows}<rect x="35" y="1130" width="1130" height="50" rx="20" fill="#302e2b"/><text x="600" y="1165" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="800" fill="#fff">CHOLLOSALDIA.COM · @ALDIACHOLLOS</text>
   </svg>`);
   return sharp({ create: { width: 1200, height: 1200, channels: 3, background: '#f6f7fb' } })
     .composite([{ input: overlay, left: 0, top: 0 }, ...composites]).jpeg({ quality: 91, mozjpeg: true }).toBuffer();
@@ -214,24 +216,26 @@ export function selectDailyOffers(offers, targetDate, maximum = MAX_OFFERS) {
 }
 
 export function buildDailySummary(offers, targetDate) {
+  offers = offers.slice(0, MAX_OFFERS);
   const displayDate = new Date(`${targetDate}T12:00:00Z`).toLocaleDateString('es-ES', {
     day: 'numeric', month: 'long', year: 'numeric', timeZone: TIME_ZONE,
   });
   const lines = offers.map((offer, index) => {
     const { previous, discount, saving } = offerMetrics(offer);
     const price = numericPrice(offer.price);
-    const coupon = String(offer.coupon || '').trim() ? `\n🎟 Cupón: ${escapeHtml(offer.coupon)}` : '';
+    const primaryCoupon = couponOptions(offer.coupon).codes[0];
+    const coupon = primaryCoupon ? `\n🎟 Cupón: ${escapeHtml(primaryCoupon)}` : '';
     const before = previous > price ? ` · <s>${escapeHtml(offer.previousPrice)}</s>` : '';
-    const savingLine = saving ? `\n💚 Ahorras ${escapeHtml(euroAmount(saving))}` : '';
+    const savingLine = `\n💡 ${escapeHtml(editorialReason(offer))}`;
     const label = index === 0 ? '⭐ MEJOR CHOLLO' : `🔥 CHOLLO ${index + 1}`;
-    return `<b>${label}</b>\n<b>${escapeHtml(cleanTitle(offer.title, 76))}</b>\n💶 <b>${escapeHtml(offer.price)}</b>${before}${discount ? ` · 🔻 ${discount}%` : ''}${savingLine}${coupon}\n🛍 ${escapeHtml(offer.store || 'Oferta')} · <a href="${escapeHtml(offer.url)}">FICHA COMPLETA</a>`;
+    return `<b>${label}</b>\n<b>${escapeHtml(cleanTitle(offer.title, 52))}</b>\n💶 <b>${escapeHtml(offer.price)}</b>${before}${discount ? ` · −${discount}%` : ''}${savingLine}${coupon}\n<a href="${escapeHtml(offer.url)}">${escapeHtml(offer.store || 'Oferta')} · VER OFERTA</a>`;
   });
-  const telegram = `🏆 <b>TOP ${offers.length} CHOLLOS DEL DÍA</b>\n${escapeHtml(displayDate)}\nSelección por ahorro, descuento y utilidad.\n\n${lines.join('\n\n')}\n\n👇 Acceso directo a cada oferta en los botones.\n🔔 Mañana, más ofertas en @aldiachollos\n⚠️ Precio y stock pueden cambiar. #Publi`;
+  const telegram = `🏆 <b>TOP ${offers.length} CHOLLOS DEL DÍA</b>\n${escapeHtml(displayDate)}\n\n${lines.join('\n\n')}\n\n⚠️ Confirma precio, cupón y envío en la tienda.\n@aldiachollos · #Publi`;
   const body = offers.map((offer, index) => {
     const { previous, discount, saving } = offerMetrics(offer);
     const coupon = String(offer.coupon || '').trim() ? ` Necesita el cupón ${offer.coupon}; comprueba que se aplique en la cesta.` : '';
     const before = previous > numericPrice(offer.price) ? ` frente a ${offer.previousPrice} registrados anteriormente` : '';
-    return `${index + 1}. ${cleanTitle(offer.title, 160)}\n\nPrecio publicado: ${offer.price} en ${offer.store || 'la tienda'}${before}. ${saving > 0 ? `Ahorro calculado: ${euroAmount(saving)} (${discount} %).` : ''}${coupon}\n\nEsta selección destaca el ahorro publicado y la utilidad del producto. Consulta la ficha enlazada más abajo para revisar la variante, el precio actual, los gastos de envío y la disponibilidad.`;
+    return `${index + 1}. ${cleanTitle(offer.title, 160)}\n\nPrecio publicado: ${offer.price} en ${offer.store || 'la tienda'}${before}. ${saving > 0 ? `Ahorro calculado: ${euroAmount(saving)} (${discount} %).` : ''}${coupon}\n\nPor qué entra en la selección: ${editorialReason(offer)} Consulta la ficha enlazada más abajo para revisar la variante, el precio actual, los gastos de envío y la disponibilidad.`;
   }).join('\n\n');
   const editorialDay = [2, 4, 6].includes(new Date(`${targetDate}T12:00:00Z`).getUTCDay());
   const editorialPost = editorialDay && offers.length >= 3;
@@ -241,14 +245,15 @@ export function buildDailySummary(offers, targetDate) {
       const price = numericPrice(offer.price);
       const previous = numericPrice(offer.previousPrice);
       const discount = previous > price ? Math.round(((previous - price) / previous) * 100) : 0;
-      const coupon = String(offer.coupon || '').trim() ? `\n🎟 <b>Cupón:</b> <code>${escapeHtml(offer.coupon)}</code>` : '';
+      const primaryCoupon = couponOptions(offer.coupon).codes[0];
+      const coupon = primaryCoupon ? `\n🎟 <b>Cupón:</b> <code>${escapeHtml(primaryCoupon)}</code>` : '';
       const heading = index === 0 ? `🏆 <b>TOP ${offers.length} CHOLLOS DEL DÍA</b>\n${escapeHtml(displayDate)}\n\n` : '';
       const before = previous > price ? `\n<s>${escapeHtml(offer.previousPrice)}</s>${discount ? ` · 🔻 ${discount}%` : ''}` : '';
       return {
         type: 'photo',
         media: String(offer.image || '').startsWith('/') ? `${SITE_URL}${offer.image}` : String(offer.image || ''),
         parse_mode: 'HTML',
-        caption: `${heading}<b>${index + 1}. ${escapeHtml(cleanTitle(offer.title, 76))}</b>\n\n🔥 <b>${escapeHtml(offer.price)}</b>${before}${coupon}\n🛍 ${escapeHtml(offer.store || 'Oferta')}\n\n👉 <a href="${escapeHtml(offer.url)}"><b>VER OFERTA</b></a>${index === offers.length - 1 ? '\n\n🔔 @aldiachollos · #Publi' : ''}`,
+        caption: `${heading}<b>${index + 1}. ${escapeHtml(cleanTitle(offer.title, 76))}</b>\n\n🔥 <b>${escapeHtml(offer.price)}</b>${before}${coupon}\n💡 ${escapeHtml(editorialReason(offer))}\n🛍 ${escapeHtml(offer.store || 'Oferta')}\n\n👉 <a href="${escapeHtml(offer.url)}"><b>VER OFERTA</b></a>${index === offers.length - 1 ? '\n\n🔔 @aldiachollos · #Publi' : ''}`,
       };
     }),
     keyboard: { inline_keyboard: offers.map((offer, index) => [{
