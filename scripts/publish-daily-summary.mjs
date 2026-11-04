@@ -123,7 +123,7 @@ export async function createDailySummaryCard(offers, targetDate, { fetchImpl = f
       ? `<text x="365" y="${y + 221}" font-family="Arial,sans-serif" font-size="25" fill="#7b8495">Antes ${escapeXml(offer.previousPrice)}</text>` : '';
     const primaryCoupon = couponOptions(offer.coupon).codes[0];
     const coupon = primaryCoupon ? `<rect x="760" y="${y + 195}" width="370" height="54" rx="16" fill="#fff2df"/><text x="945" y="${y + 232}" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="800" fill="#9a4d00">${primaryCoupon.length <= 18 ? `CUPÓN ${escapeXml(primaryCoupon)}` : 'VER CUPÓN EN FICHA'}</text>` : '';
-    const badge = discount ? `<rect x="1000" y="${y + 25}" width="130" height="50" rx="25" fill="#eafff3"/><text x="1065" y="${y + 59}" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="900" fill="#087a46">−${discount}%</text>` : '';
+    const badge = discount ? `<rect x="1000" y="${y + 130}" width="130" height="50" rx="25" fill="#eafff3"/><text x="1065" y="${y + 164}" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="900" fill="#087a46">−${discount}%</text>` : '';
     return `<rect x="35" y="${y}" width="1130" height="280" rx="30" fill="#ffffff" stroke="#e6e8ee" stroke-width="3"/>
       <circle cx="350" cy="${y + 42}" r="20" fill="#a74325"/><text x="350" y="${y + 50}" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="900" fill="#fff">${index + 1}</text>
       ${badge}${lines}<text x="365" y="${y + 184}" font-family="Arial,sans-serif" font-size="51" font-weight="900" fill="#c52c44">${escapeXml(offer.price)}</text>${previous}${coupon}
