@@ -4,6 +4,8 @@ import Link from "next/link";
 import { getPostById, postHref, postIsIndexable, publishedPosts } from "../../lib/posts";
 import { dealHref, publishedDeals } from "../../lib/deals";
 import CampaignCouponGuide from "../../components/CampaignCouponGuide";
+import MobileComparison from "../../components/MobileComparison";
+import mobileGuide from "../../../data/mobile-comparison.json";
 import { ALIEXPRESS_11_GUIDE_ID } from "../../../scripts/aliexpress-11-11-data.mjs";
 
 const siteUrl = "https://chollosaldia.com";
@@ -61,7 +63,7 @@ export default async function PublicationPage({ params }: PageProps) {
       <h1>{isCouponGuide ? "11.11 de AliExpress: elige tu cupón" : post.title}</h1>
       <div className="postMeta"><time dateTime={post.publishedAt}>Publicado el {post.publishedLabel}</time><span>·</span><span>{selectedDeals.length ? `${selectedDeals.length} productos seleccionados` : "Guía de compra"}</span></div>
       {isCouponGuide ? <CampaignCouponGuide affiliateUrl={post.linkUrl} imageUrl={post.imageUrl} /> : post.imageUrls.length > 1 ? <div className="postImageGallery" aria-label="Fotos de las ofertas del resumen">{post.imageUrls.map((image, index) => <img key={image} src={image} alt={`${post.title}: oferta ${index + 1}`} width={720} height={560} />)}</div> : <img className="postHeroImage" src={post.imageUrl} alt={post.title} width={1200} height={800} />}
-      {isCouponGuide ? <details className="campaignGuideDetails"><summary>Leer la guía completa, los ejemplos y las fuentes</summary>{articleBody}</details> : articleBody}
+      {post.id === mobileGuide.id ? <MobileComparison /> : isCouponGuide ? <details className="campaignGuideDetails"><summary>Leer la guía completa, los ejemplos y las fuentes</summary>{articleBody}</details> : articleBody}
       {selectedDeals.length > 0 && <section className="postProductSelection" aria-labelledby="post-products-title"><p className="eyebrow"><span aria-hidden="true" />SELECCIÓN ACTUAL</p><h2 id="post-products-title">Consulta las fichas y el precio final</h2><div>{selectedDeals.map((deal, index) => deal && <article key={deal.id}><img src={deal.imageUrl} alt={deal.title} width={240} height={190} /><div><span>{index + 1} · {deal.store}</span><h3>{deal.title}</h3><strong>{deal.price.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</strong>{deal.coupon && <small>Cupón: {deal.coupon}</small>}</div><Link href={dealHref(deal.id)}>Ver ficha y oferta →</Link></article>)}</div></section>}
       {post.linkUrl && !isCouponGuide && <a className="primaryButton postExternal" href={post.linkUrl} target="_blank" rel="nofollow sponsored noreferrer">Abrir enlace <span aria-hidden="true">↗</span></a>}
       <div className="postBack"><Link href="/blog/">← Volver al blog</Link><Link href="/#ofertas">Ver ofertas de hoy →</Link></div>
