@@ -258,10 +258,9 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
         </div>
       </section>
 
-      {featuredSelection}
-
       <section className="offersSection" id="ofertas" aria-labelledby="offers-title">
         <div className="shell">
+          <div className="catalogueWithHighlights"><div className="catalogueMain">
           <div className="sectionIntro">
             <div>
               <h2 id="offers-title">Todas las ofertas recientes</h2>
@@ -323,6 +322,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
           </div>
           {gridDeals.length < visibleDeals.length && <div className="loadMoreWrap"><button className="loadMoreButton" onClick={() => setVisibleLimit((current) => current + 18)}>Ver 18 ofertas más <span aria-hidden="true">↓</span></button><p>También puedes filtrar por tienda, categoría o cupón para dar con lo que buscas.</p></div>}
           {!visibleDeals.length && <div className="empty"><b>{savedOnly && savedIds.length === 0 ? "Aún no has guardado ofertas." : "No hemos encontrado ofertas con esos filtros."}</b><span>{savedOnly && savedIds.length === 0 ? "Pulsa «Guardar» en una oferta para verla aquí más tarde, en este navegador." : "Prueba con otra palabra o quita alguno de los filtros."}</span></div>}
+          </div><aside className="catalogueHighlights" aria-label="Ofertas destacadas">{featuredSelection}</aside></div>
         </div>
       </section>
 
