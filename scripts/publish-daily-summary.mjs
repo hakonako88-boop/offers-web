@@ -233,9 +233,11 @@ export function buildDailySummary(offers, targetDate) {
   const telegram = `🏆 <b>TOP ${offers.length} CHOLLOS DEL DÍA</b>\n${escapeHtml(displayDate)}\n\n${lines.join('\n\n')}\n\n⚠️ Confirma precio, cupón y envío en la tienda.\n@aldiachollos · #Publi`;
   const body = offers.map((offer, index) => {
     const { previous, discount, saving } = offerMetrics(offer);
-    const coupon = String(offer.coupon || '').trim() ? ` Necesita el cupón ${offer.coupon}; comprueba que se aplique en la cesta.` : '';
+    const { codes, cashback } = couponOptions(offer.coupon);
+    const coupon = codes.length ? ` Código publicado: ${codes[0]}.${codes.length > 1 ? ` Alternativas: ${codes.slice(1).join(', ')}. Usa solo un código, no los sumes.` : ''} Comprueba su aplicación en la cesta.` : '';
+    const cashbackNote = cashback.length ? ' El cashback se consulta aparte; no es un código ni una rebaja inmediata en caja.' : '';
     const before = previous > numericPrice(offer.price) ? ` frente a ${offer.previousPrice} registrados anteriormente` : '';
-    return `${index + 1}. ${cleanTitle(offer.title, 160)}\n\nPrecio publicado: ${offer.price} en ${offer.store || 'la tienda'}${before}. ${saving > 0 ? `Ahorro calculado: ${euroAmount(saving)} (${discount} %).` : ''}${coupon}\n\nPor qué entra en la selección: ${editorialReason(offer)} Consulta la ficha enlazada más abajo para revisar la variante, el precio actual, los gastos de envío y la disponibilidad.`;
+    return `${index + 1}. ${cleanTitle(offer.title, 160)}\n\nPrecio publicado: ${offer.price} en ${offer.store || 'la tienda'}${before}. ${saving > 0 ? `Ahorro calculado: ${euroAmount(saving)} (${discount} %).` : ''}${coupon}${cashbackNote}\n\nPor qué entra en la selección: ${editorialReason(offer)} Consulta la ficha enlazada más abajo para revisar la variante, el precio actual, los gastos de envío y la disponibilidad.`;
   }).join('\n\n');
   const editorialDay = [2, 4, 6].includes(new Date(`${targetDate}T12:00:00Z`).getUTCDay());
   const editorialPost = editorialDay && offers.length >= 3;

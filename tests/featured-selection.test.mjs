@@ -24,4 +24,6 @@ test('three summary items have reasons, a single coupon, and a caption under Tel
   assert.ok(plain.length<=1024,plain.length);
   assert.ok(summary.album.every(p=>p.caption.includes('💡')));
   assert.ok(summary.post.body.includes('Por qué entra en la selección'));
+  assert.ok(summary.post.body.includes('Alternativas: AEES23'));
+  assert.ok(!summary.post.body.includes('Necesita el cupón ESD1123 /'));
 });
