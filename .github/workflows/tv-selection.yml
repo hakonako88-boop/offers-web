@@ -6,6 +6,8 @@ on:
     paths:
       - .github/workflows/tv-selection.yml
       - data/tv-selection.json
+      - scripts/publish-tv-collage.mjs
+      - scripts/tv-collage-caption.mjs
 permissions:
   contents: write
 concurrency:
