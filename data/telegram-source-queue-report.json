@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-04T22:23:44.468Z",
+  "updatedAt": "2026-11-04T22:33:29.990Z",
   "summary": {
-    "rejected": 357,
+    "rejected": 358,
     "published": 81,
     "needs_review": 235,
     "ignored": 296,
@@ -9,6 +9,19 @@
     "pending": 169
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97539:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97539,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "sourceUrl": "https://t.me/una_ganga/97539",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:97538:amazon:0",
       "source": "telegram-una-ganga",
@@ -42,7 +55,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/97536",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-04T22:03:29.327Z",
@@ -405,12 +418,12 @@
       "messageId": 97532,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/97532",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-04T21:44:04.876Z",
-      "nextAttemptAt": "2026-11-04T22:24:22.465Z"
+      "lastCheckedAt": "2026-11-04T22:33:09.801Z",
+      "nextAttemptAt": "2026-11-04T23:53:29.990Z"
     },
     {
       "id": "telegram-una-ganga:97531:amazon:0",
@@ -548,12 +561,12 @@
       "messageId": 97526,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/97526",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-04T22:03:29.327Z",
-      "nextAttemptAt": "2026-11-04T22:23:48.161Z"
+      "lastCheckedAt": "2026-11-04T22:33:09.801Z",
+      "nextAttemptAt": "2026-11-04T23:13:29.990Z"
     },
     {
       "id": "telegram-ofertos:45293:aliexpress:0",
@@ -600,12 +613,12 @@
       "messageId": 97524,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/97524",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-04T22:03:29.327Z",
-      "nextAttemptAt": "2026-11-04T22:23:48.161Z"
+      "lastCheckedAt": "2026-11-04T22:33:09.801Z",
+      "nextAttemptAt": "2026-11-04T23:13:29.990Z"
     },
     {
       "id": "telegram-ofertos:45291:amazon:0",
@@ -678,12 +691,12 @@
       "messageId": 97522,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/97522",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-04T21:44:04.876Z",
-      "nextAttemptAt": "2026-11-04T22:24:22.465Z"
+      "lastCheckedAt": "2026-11-04T22:33:09.801Z",
+      "nextAttemptAt": "2026-11-04T23:53:29.990Z"
     },
     {
       "id": "telegram-una-ganga:97521:aliexpress:0",
@@ -898,13 +911,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97516,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97516",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-04T21:08:59.972Z",
-      "nextAttemptAt": "2026-11-04T22:29:20.621Z"
+      "lastCheckedAt": "2026-11-04T22:33:09.801Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97514:aliexpress:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45274:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 45274,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 2,
-      "reason": "Publicada automáticamente en Telegram y la web",
-      "sourceUrl": "https://t.me/Ofertos/45274",
-      "resultUrl": "https://www.amazon.es/dp/B0DHYZKF7X?tag=chollos00a-21",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-04T13:21:57.006Z"
     }
   ]
 }
