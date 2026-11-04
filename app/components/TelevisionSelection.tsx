@@ -6,6 +6,8 @@ import StoreLogo from "./StoreLogo";
 export default function TelevisionSelection() {
   const entries = guide.products.map(p => ({ ...p, deal: allDeals.find(d => d.sourceProductId === p.offerId) }));
   return <section className="tvSelection">
+    <figure className="tvCollage"><img src={guide.collage} alt="Comparativa visual: Xiaomi Mini LED 55 por 300,45 euros, Xiaomi F 65 por 351,11 euros y Xiaomi A 32 por 91,12 euros. Precios registrados; confirma el total en tienda." width={1024} height={1536} /><figcaption>Resumen visual · precios registrados, no una comprobación del carrito en tiempo real.</figcaption></figure>
+    <nav className="tvCollageLinks" aria-label="Enlaces de los tres televisores">{entries.map(p=>p.deal && <a key={p.offerId} href={p.deal.affiliateUrl} target="_blank" rel="sponsored nofollow noreferrer">Ver {p.size} · {p.deal.price.toLocaleString('es-ES',{style:'currency',currency:'EUR'})} ↗</a>)}</nav>
     <div className="tvGuideIntro"><span>ELIGE POR USO · NO SOLO POR PULGADAS</span><p>{guide.intro}</p><div><a href="#tv-picks">Ver los televisores ↓</a><a href="#tv-compare">Comparar características ↓</a></div></div>
     <div className="tvGuideNotice">Revisión: 4 de noviembre de 2026. Precios registrados, no verificados en el carrito en tiempo real. Confirma modelo, vendedor, entrega y total antes de pagar. No vuelvas a restar el cupón al precio publicado.</div>
     <h2 id="tv-picks">Una televisión para cada espacio</h2>

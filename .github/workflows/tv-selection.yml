@@ -26,6 +26,12 @@ jobs:
           PUBLISH_TELEGRAM: 'true'
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      - name: Publicar una imagen con los tres televisores y botones
+        run: node scripts/publish-tv-collage.mjs
+        env:
+          PUBLISH_TELEGRAM: 'true'
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
       - name: Guardar publicación y confirmación
         if: always()
         run: |
