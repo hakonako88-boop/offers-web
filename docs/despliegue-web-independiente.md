@@ -16,6 +16,11 @@ publicar compara los archivos públicos de la compilación con `main`. Si ya
 existe contenido distinto, no publica esa copia antigua. Cada publicación
 incluye `web-build.json` con su revisión y huella de contenido.
 
+La concurrencia se aplica al trabajo de publicación, no al workflow completo:
+un evento de origen cancelado u omitido no puede cancelar una compilación válida.
+**Comprobar enlace de despliegue web** es una prueba manual de solo lectura que
+permite verificar el encadenamiento sin publicar ofertas ni modificar datos.
+
 Los cursores y contadores privados del bot no forman parte de esa huella.
 Si la web ya contiene los mismos archivos, se omiten instalación y compilación.
 Una ejecución manual fuerza la compilación, por ejemplo al cambiar configuración

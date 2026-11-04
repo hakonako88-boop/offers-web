@@ -13,8 +13,12 @@ const web=fs.readFileSync('.github/workflows/web-deploy.yml','utf8');
 
 test('workflow YAML parses and only the isolated web job publishes Pages',()=>{
   const config=yaml.load(web), old=yaml.load(source);
-  assert.equal(config.concurrency.group,'chollosaldia-web-only');
-  assert.equal(config.concurrency['cancel-in-progress'],true);
+  assert.equal(config.concurrency,undefined);
+  assert.equal(config.jobs.website.concurrency.group,'chollosaldia-web-only');
+  assert.equal(config.jobs.website.concurrency['cancel-in-progress'],true);
+  assert(config.jobs.website.if.includes("conclusion != 'cancelled'"));
+  assert(config.jobs.website.if.includes("conclusion != 'skipped'"));
+  assert(config.jobs.website.if.includes('head_repository.id == github.event.repository.id'));
   assert.equal(old.concurrency['cancel-in-progress'],false);
   assert(!source.includes('peaceiris/actions-gh-pages'));
   assert(!source.includes('npm run build:github'));

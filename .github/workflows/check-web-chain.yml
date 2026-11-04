@@ -1,0 +1,15 @@
+name: Comprobar enlace de despliegue web
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/check-web-chain.yml
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prueba sin publicaciones ni cambios de datos
+        run: echo "Comprobación de workflow_run. No se envían ofertas, no se rastrean tiendas y no se modifican datos."

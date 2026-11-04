@@ -36,20 +36,21 @@ on:
       - Publicar 15 aniversario Amazon
       - Publicar cupón Amazon GET5OFF
       - Actualizar estadísticas privadas de la web
+      - Comprobar enlace de despliegue web
     types: [completed]
     branches: [main]
 
 permissions:
   contents: write
 
-# Only website builds are cancelled; offer jobs keep their original queue.
-concurrency:
-  group: chollosaldia-web-only
-  cancel-in-progress: true
-
 jobs:
   website:
-    if: ${{ github.event_name != 'workflow_run' || (github.event.workflow_run.head_repository.full_name == github.repository && github.event.workflow_run.conclusion != 'cancelled' && github.event.workflow_run.conclusion != 'skipped') }}
+    if: ${{ github.event_name != 'workflow_run' || (github.event.workflow_run.head_repository.id == github.event.repository.id && github.event.workflow_run.conclusion != 'cancelled' && github.event.workflow_run.conclusion != 'skipped') }}
+    # Job-level concurrency is intentional: an ignored/cancelled source event
+    # must not enter this queue and cancel a valid website compilation.
+    concurrency:
+      group: chollosaldia-web-only
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -69,7 +70,7 @@ jobs:
           node-version: '22'
           cache: npm
       - name: Leer la revisión publicada
-        run: git fetch --depth=1 origin gh-pages:refs/remotes/origin/gh-pages || true
+        run: git fetch --depth=1 origin +gh-pages:refs/remotes/origin/gh-pages || true
       - name: Comprobar si cambió el contenido de la web
         id: source
         run: node scripts/web-deployment-state.mjs prepare
