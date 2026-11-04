@@ -2,7 +2,11 @@ import BrandLink from "../../components/BrandLink";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPostById, postHref, postIsIndexable, publishedPosts } from "../../lib/posts";
-import { dealHref, publishedDeals } from "../../lib/deals";
+import { dealHref, allDeals, type PublishedDeal } from "../../lib/deals";
+import { editorialProductBlocks } from '../../../scripts/editorial-product-blocks.mjs';
+import { offerDisplayTitle } from '../../lib/display-title';
+import CouponCopy from '../../components/CouponCopy';
+import StoreLogo from '../../components/StoreLogo';
 import CampaignCouponGuide from "../../components/CampaignCouponGuide";
 import MobileComparison from "../../components/MobileComparison";
 import TelevisionSelection from "../../components/TelevisionSelection";
@@ -37,7 +41,16 @@ export default async function PublicationPage({ params }: PageProps) {
   if (!post) return <main className="postNotFound shell"><Link href="/">← Volver al inicio</Link><h1>Esta publicación no está disponible</h1></main>;
   const description = post.body.replace(/\s+/gu, " ").slice(0, 220);
   const isCouponGuide = post.id === ALIEXPRESS_11_GUIDE_ID;
-  const selectedDeals = post.offerIds.map((id) => publishedDeals.find((deal) => deal.sourceProductId === id)).filter((deal) => Boolean(deal));
+  const blocks = editorialProductBlocks(post, allDeals);
+  const isStructuredSelection = post.offerIds.length > 0 && blocks.sections.length > 0 && post.id !== tvGuide.id && post.id !== mobileGuide.id;
+  const selectedDeals = isStructuredSelection ? [] : post.offerIds.map((id) => allDeals.find((deal) => deal.sourceProductId === id || deal.id === id)).filter((deal): deal is PublishedDeal => Boolean(deal));
+  const productArticle = <div className="editorialReading"><div className="editorialReadingIntro">{blocks.intro.map((p:string)=><p key={p}>{p}</p>)}</div>{blocks.sections.map((section: {number:number;title:string;paragraphs:string[];deal?:PublishedDeal;image:string})=><section className="editorialProductBlock" key={section.number}>
+    {section.image && <img src={section.deal?.imageUrl || section.image} alt={section.title} width={400} height={330} loading="lazy"/>}
+    <div><span className="editorialProductNumber">SELECCIÓN {String(section.number).padStart(2,'0')}</span><h2>{offerDisplayTitle(section.title)}</h2>
+    {section.deal && <><StoreLogo store={section.deal.store}/><div className="editorialProductPrice"><strong>{section.deal.price.toLocaleString('es-ES',{style:'currency',currency:'EUR'})}</strong>{section.deal.oldPrice>section.deal.price && <s>{section.deal.oldPrice.toLocaleString('es-ES',{style:'currency',currency:'EUR'})}</s>}</div><p>{section.deal.active ? 'Último precio publicado · confirma el total en la tienda.' : 'Oferta histórica: este precio puede no seguir disponible.'}</p>{section.deal.coupon && <CouponCopy code={section.deal.coupon} compact/>}</>}
+    {section.paragraphs.map((p:string,index:number)=><p key={index}>{p}</p>)}
+    {section.deal ? <Link href={dealHref(section.deal.id)}>Ver {offerDisplayTitle(section.deal.title)} →</Link> : <p className="editorialMissing">No hay una ficha verificable de este producto. No lo sustituimos por otro ni mostramos un enlace de compra distinto.</p>}
+    </div></section>)}</div>;
   const schema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -47,6 +60,7 @@ export default async function PublicationPage({ params }: PageProps) {
     datePublished: post.publishedAt,
     dateModified: post.publishedAt,
     mainEntityOfPage: `${siteUrl}${postHref(post.id)}`,
+    mainEntity: isStructuredSelection ? { '@type':'ItemList', numberOfItems:blocks.sections.length, itemListElement:blocks.sections.map((section:{title:string;deal?:PublishedDeal},index:number)=>({'@type':'ListItem',position:index+1,name:section.title,...(section.deal ? {url:`${siteUrl}${dealHref(section.deal.id)}`} : {})})) } : undefined,
     author: { "@type": "Organization", name: "Chollos al Día", url: siteUrl },
     publisher: { "@type": "Organization", name: "Chollos al Día", logo: { "@type": "ImageObject", url: `${siteUrl}/favicon-512.png` } },
   };
@@ -63,9 +77,9 @@ export default async function PublicationPage({ params }: PageProps) {
       <nav className="postBreadcrumb"><Link href="/">Inicio</Link><span>/</span><Link href="/blog/">Blog</Link><span>/</span><b>Artículo</b></nav>
       <p className="eyebrow"><span aria-hidden="true" />BLOG · CHOLLOS AL DÍA</p>
       <h1>{isCouponGuide ? "11.11 de AliExpress: elige tu cupón" : post.title}</h1>
-      <div className="postMeta"><time dateTime={post.publishedAt}>Publicado el {post.publishedLabel}</time><span>·</span><span>{selectedDeals.length ? `${selectedDeals.length} productos seleccionados` : "Guía de compra"}</span></div>
-      {post.id === mobileGuide.id || post.id === tvGuide.id ? null : isCouponGuide ? <CampaignCouponGuide affiliateUrl={post.linkUrl} imageUrl={post.imageUrl} /> : post.imageUrls.length > 1 ? <div className="postImageGallery" aria-label="Fotos de las ofertas del resumen">{post.imageUrls.map((image, index) => <img key={image} src={image} alt={`${post.title}: oferta ${index + 1}`} width={720} height={560} />)}</div> : <img className="postHeroImage" src={post.imageUrl} alt={post.title} width={1200} height={800} />}
-      {post.id === tvGuide.id ? <TelevisionSelection /> : post.id === mobileGuide.id ? <MobileComparison /> : isCouponGuide ? <details className="campaignGuideDetails"><summary>Leer la guía completa, los ejemplos y las fuentes</summary>{articleBody}</details> : articleBody}
+      <div className="postMeta"><time dateTime={post.publishedAt}>Publicado el {post.publishedLabel}</time><span>·</span><span>{isStructuredSelection ? `${blocks.sections.length} productos seleccionados` : selectedDeals.length ? `${selectedDeals.length} productos seleccionados` : "Guía de compra"}</span></div>
+      {isStructuredSelection || post.id === mobileGuide.id || post.id === tvGuide.id ? null : isCouponGuide ? <CampaignCouponGuide affiliateUrl={post.linkUrl} imageUrl={post.imageUrl} /> : post.imageUrls.length > 1 ? <div className="postImageGallery" aria-label="Fotos de las ofertas del resumen">{post.imageUrls.map((image, index) => <img key={image} src={image} alt={`${post.title}: oferta ${index + 1}`} width={720} height={560} />)}</div> : <img className="postHeroImage" src={post.imageUrl} alt={post.title} width={1200} height={800} />}
+      {post.id === tvGuide.id ? <TelevisionSelection /> : post.id === mobileGuide.id ? <MobileComparison /> : isCouponGuide ? <details className="campaignGuideDetails"><summary>Leer la guía completa, los ejemplos y las fuentes</summary>{articleBody}</details> : isStructuredSelection ? productArticle : articleBody}
       {selectedDeals.length > 0 && <section className="postProductSelection" aria-labelledby="post-products-title"><p className="eyebrow"><span aria-hidden="true" />SELECCIÓN ACTUAL</p><h2 id="post-products-title">Consulta las fichas y el precio final</h2><div>{selectedDeals.map((deal, index) => deal && <article key={deal.id}><img src={deal.imageUrl} alt={deal.title} width={240} height={190} /><div><span>{index + 1} · {deal.store}</span><h3>{deal.title}</h3><strong>{deal.price.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</strong>{deal.coupon && <small>Cupón: {deal.coupon}</small>}</div><Link href={dealHref(deal.id)}>Ver ficha y oferta →</Link></article>)}</div></section>}
       {post.linkUrl && !isCouponGuide && <a className="primaryButton postExternal" href={post.linkUrl} target="_blank" rel="nofollow sponsored noreferrer">Abrir enlace <span aria-hidden="true">↗</span></a>}
       <div className="postBack"><Link href="/blog/">← Volver al blog</Link><Link href="/#ofertas">Ver ofertas de hoy →</Link></div>

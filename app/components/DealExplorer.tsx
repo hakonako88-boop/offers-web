@@ -12,7 +12,6 @@ import AdSlot from "./AdSlot";
 import { adsenseHomeSlot } from "../lib/adsense";
 import { postHref } from "../lib/posts";
 import type { PublishedPost } from "../lib/posts";
-import { offerEditorialLabel } from "../lib/offer-label";
 import { offerDisplayTitle } from "../lib/display-title";
 import StoreLogo from "./StoreLogo";
 import { campaignStage } from "../../scripts/black-friday-selection.mjs";
@@ -302,7 +301,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
                   </a>
                   <button className={savedIds.includes(deal.id) ? "saveDealButton active" : "saveDealButton"} type="button" onClick={() => toggleSaved(deal.id)} aria-pressed={savedIds.includes(deal.id)} aria-label={`${savedIds.includes(deal.id) ? "Quitar de guardadas" : "Guardar oferta"}: ${deal.title}`}>{savedIds.includes(deal.id) ? "♥ Guardada" : "♡ Guardar"}</button>
                   <div className="dealBody">
-                    <p className="categoryLabel"><b>{offerEditorialLabel({ id: deal.id, price: deal.price, discount })}</b> en {deal.category}</p>
+                    <p className="categoryLabel">{deal.category === 'Otros / Sin clasificar' ? 'Selección de ofertas' : deal.category}</p>
                     <h3 title={deal.title}><a href={dealDetailsUrl(deal)}>{offerDisplayTitle(deal.title)}</a></h3>
                     <div className="priceRow">
                       <span className="priceCurrent"><small>{deal.priceCondition ? 'DESDE · CON CONDICIONES' : 'PRECIO AHORA'}</small><strong>{money.format(deal.price)}</strong></span>
@@ -312,7 +311,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
                     {deal.coupon ? (
                       <CouponCopy code={deal.coupon} compact />
                     ) : <p className="noCoupon"><span aria-hidden="true">✓</span> Precio directo · sin código</p>}
-                    <div className="dealActions"><a className="dealButton" href={dealDetailsUrl(deal)} onClick={() => window.gtag?.("event", "offer_card_open", { offer_id: deal.id, store: deal.store, price: deal.price })}>Ver ficha <span aria-hidden="true">↗</span></a>
+                    <div className="dealActions"><a className="dealButton" href={dealDetailsUrl(deal)} onClick={() => window.gtag?.("event", "offer_card_open", { offer_id: deal.id, store: deal.store, price: deal.price })}>Ver oferta <span aria-hidden="true">→</span></a>
                     <button className="shareDealButton" type="button" onClick={() => void shareDeal(deal)} aria-label="Compartir oferta">{sharedId === deal.id ? "Copiado ✓" : "Compartir ↗"}</button></div>
                     <p className="verified"><span aria-hidden="true" />{deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt} · confirma precio y stock</p>
                   </div>
@@ -351,7 +350,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
 
       {posts.length > 0 && <section className="editorialPosts shell" id="novedades" aria-labelledby="posts-title">
         <div className="sectionIntro"><div><p className="eyebrow"><span aria-hidden="true" />GUÍAS Y AVISOS</p><h2 id="posts-title">Novedades para ahorrar mejor</h2></div><p>Campañas, noticias y contenidos añadidos directamente por Chollos al Día.</p></div>
-        <div className="postGrid">{posts.map((post) => <article className="postCard" key={post.id}>
+        <div className="postGrid">{posts.slice(0, 3).map((post) => <article className="postCard" key={post.id}>
           <a className="postCardImage" href={postHref(post.id)}><img src={post.imageUrl} alt={post.title} loading="lazy" decoding="async" width={720} height={480} /></a>
           <div><time dateTime={post.publishedAt}>{post.publishedLabel}</time><h3><a href={postHref(post.id)}>{post.title}</a></h3><p>{shortTitle(post.body.replace(/\s+/gu, " "), 150)}</p><a className="postRead" href={postHref(post.id)}>Leer publicación <span aria-hidden="true">→</span></a></div>
         </article>)}</div>

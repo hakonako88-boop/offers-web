@@ -79,7 +79,10 @@ jobs:
       - name: Instalar dependencias
         if: steps.source.outputs.needed == 'true'
         run: npm ci
-      - name: Construir solo la web con los datos guardados
+      - name: Comprobar tarjetas, contenido y navegación
+        if: steps.source.outputs.needed == 'true'
+        run: npm run test:storefront
+      - name: Compilar y exportar la web pública
         if: steps.source.outputs.needed == 'true'
         run: npm run build:github
       - name: Rechazar una compilación si ya existe contenido más reciente

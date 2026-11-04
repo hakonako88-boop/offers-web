@@ -40,9 +40,12 @@ function startAnalytics() {
 
 export default function AnalyticsConsent() {
   const [preference, setPreference] = useState<"granted" | "denied" | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const saved = window.localStorage.getItem(preferenceKey);
+    let saved: string | null = null;
+    try { saved = window.localStorage.getItem(preferenceKey); } catch { /* Private browsing may disallow storage. */ }
+    queueMicrotask(() => setLoaded(true));
     if (saved === "granted") {
       queueMicrotask(() => setPreference("granted"));
       startAnalytics();
@@ -64,12 +67,12 @@ export default function AnalyticsConsent() {
   }, []);
 
   function choose(value: "granted" | "denied") {
-    window.localStorage.setItem(preferenceKey, value);
+    try { window.localStorage.setItem(preferenceKey, value); } catch { /* Honour the choice for this visit. */ }
     setPreference(value);
     if (value === "granted") startAnalytics();
   }
 
-  if (preference !== null) return null;
+  if (!loaded || preference !== null) return null;
   return (
     <aside className="analyticsConsent" aria-label="Preferencia de medición">
       <div>

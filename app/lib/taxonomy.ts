@@ -16,6 +16,10 @@ export type CategoryClassification = {
 type Rule = { category: CanonicalCategory; subcategory?: string; pattern: RegExp; weight: number };
 
 const rules: Rule[] = [
+  { category: "Tecnología", subcategory: "Drones y vídeo", pattern: /\b(?:dji\s+goggles|fpv|dron(?:es)?)\b/iu, weight: 1.1 },
+  { category: "Moda", subcategory: "Ropa y calzado", pattern: /\b(?:calcetines?|socks|skechers|zapatillas?|textile\s+trim)\b/iu, weight: 1.05 },
+  { category: "Hogar", subcategory: "Textil", pattern: /\b(?:manta|blanket|flannel\s+fleece)\b/iu, weight: 1.05 },
+  { category: "Informática", subcategory: "Tablets", pattern: /\b(?:tablet|xiaomi\s+pad|ipad)\b/iu, weight: 1.05 },
   { category: "Telefonía", subcategory: "Smartphones", pattern: /\b(?:smartphone|tel[eé]fono|m[oó]vil|iphone|galaxy\s+s\d|pixel\s+\d|redmi|poco\s+[a-zxmf]?\d|nothing\s+phone|oneplus|realme)\b/iu, weight: 1 },
   { category: "Telefonía", subcategory: "Accesorios", pattern: /\b(?:funda\s+(?:para\s+)?(?:iphone|m[oó]vil)|protector\s+de\s+pantalla|powerbank|cargador\s+(?:usb|magsafe|para\s+m[oó]vil))\b/iu, weight: .9 },
   { category: "Informática", subcategory: "Ordenadores", pattern: /\b(?:port[aá]til|laptop|notebook\s+pc|chromebook|macbook|mini\s*pc|ordenador|desktop)\b/iu, weight: 1 },

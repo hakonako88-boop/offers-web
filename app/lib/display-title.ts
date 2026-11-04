@@ -22,6 +22,13 @@ export function offerDisplayTitle(value: string) {
     .replace(/^Oficial\s*\|\s*/iu, "");
   const text = normalized(original);
 
+  if (/soxco/.test(text) && /calcetines/.test(text)) {
+    const count = original.match(/\b(\d+)\s+pares\b/iu)?.[1];
+    const size = original.match(/\b(\d{2}\s*[-–]\s*\d{2})\b/u)?.[1];
+    return `Calcetines de trabajo SOXCO${count ? ` · ${count} pares` : ''}${size ? ` · tallas ${size}` : ''}`;
+  }
+  if (/winrhome/.test(text) && /blanket/.test(text)) return `Manta${/sleeves|mangas/u.test(text) ? ' con mangas' : ''} Winrhome`;
+
   if (/realme 16 pro plus/.test(text)) return "realme 16 Pro+ 5G · AMOLED 144 Hz · cámara de 200 MP";
   if (/aspirador de colchones/.test(text) && /taurus/.test(text)) return "Aspirador de colchones Taurus Textile Care con luz UV-C";
   if (/xiaomi compact hair dryer h101/.test(text)) return "Secador plegable Xiaomi Compact Hair Dryer H101";
@@ -42,7 +49,12 @@ export function offerDisplayTitle(value: string) {
   if (/bascula de bano.*grasa corporal/.test(text)) return "Báscula inteligente de baño con análisis corporal y app";
   if (/nyx.*brow glue/.test(text)) return "Gel fijador de cejas NYX The Brow Glue";
 
-  return trimAtWord(original.replace(/\s*[|_]\s*/gu, " · ").replace(/\s+-\s+/gu, " · "), 74);
+  const readable = original.replace(/\bGlobal Version\b/giu, 'versión global')
+    .replace(/\bSmartphone\b/giu, 'móvil').replace(/\bDisplay\b/giu, 'pantalla')
+    .replace(/\bHeadphones?\b/giu, 'auriculares').replace(/\bBluetooth Earbuds\b/giu, 'auriculares Bluetooth')
+    .replace(/\bWORK Socks\b/giu, '').replace(/\bENTRENADOR\b/gu, 'zapatillas')
+    .replace(/\s*[|_]\s*/gu, " · ").replace(/\s+-\s+/gu, " · ");
+  return trimAtWord(readable, 74);
 }
 
 export function editorialCardTitle({ title, store, price, discount, coupon = "" }: {

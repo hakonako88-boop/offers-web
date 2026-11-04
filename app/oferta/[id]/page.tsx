@@ -20,6 +20,9 @@ import {
 import { categorySlugForName } from "../../lib/categories";
 import { getProductForDeal, productHref } from "../../lib/products";
 import StoreLogo from "../../components/StoreLogo";
+import { offerDisplayTitle } from '../../lib/display-title';
+import { offerBuyingNotes, priceConditionSummary } from '../../../scripts/offer-buying-notes.mjs';
+import { isCollectableCoupon } from '../../../scripts/coupon-options.mjs';
 import priceHistory from "../../../data/price-history.json";
 
 const money = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
@@ -126,16 +129,12 @@ export default async function OfferPage({ params }: OfferPageProps) {
     .filter((candidate) => candidate.id !== deal.id)
     .sort((left, right) => Number(right.category === deal.category) - Number(left.category === deal.category) || Number(right.store === deal.store) - Number(left.store === deal.store))
     .slice(0, 3);
+  const notes = offerBuyingNotes(deal);
   const pros = [
     discount > 0 ? `Descuento visible del ${discount}% frente al precio anterior.` : "Precio localizado y enlazado directamente a la tienda.",
-    savings > 0 ? `Ahorro estimado de ${money.format(savings)}.` : "Compra directa sin pasos intermedios.",
-    deal.coupon ? `Incluye el cupón ${deal.coupon} indicado en la publicación.` : `Enlace directo y atribuido a ${deal.store}.`,
+    ...notes.facts,
   ];
-  const cons = [
-    "El precio, el stock y las condiciones de envío pueden cambiar.",
-    "Comprueba las características exactas y la variante elegida antes de pagar.",
-    "La valoración se basa en el precio publicado; no sustituye la ficha del vendedor.",
-  ];
+  const cons = notes.checks;
   const productSchema = JSON.stringify(schemaFor(deal)).replace(/</g, "\\u003c");
   const breadcrumbsSchema = JSON.stringify(breadcrumbSchemaFor(deal)).replace(/</g, "\\u003c");
   const historyKey = `${deal.store.toLowerCase()}:${deal.sourceProductId || ""}`;
@@ -166,17 +165,18 @@ export default async function OfferPage({ params }: OfferPageProps) {
           <div className="offerGallery"><div className="offerImageWrap"><img src={deal.imageUrl} alt={productTitle} width={960} height={760} fetchPriority="high" decoding="async" /><span className="storeBadge"><StoreLogo store={deal.store} /></span>{discount > 0 && <span className="offerDiscount">−{discount}%</span>}</div><p>Imagen del producto. Comprueba la variante elegida en la tienda.</p></div>
           <div className="offerSummary">
             <p className="offerKicker">{deal.category}{deal.subcategory ? ` · ${deal.subcategory}` : ""} · {deal.active ? "Oferta activa" : "Oferta finalizada"}</p>
-            <h1>{productTitle}</h1>
-            <p className="offerLead">{description}</p>
+            <h1>{offerDisplayTitle(productTitle)}</h1>
+            <p className="offerLead">{notes.summary}</p>
             <div className="offerPriceBox">
               <span>{deal.priceCondition ? 'PRECIO CON CONDICIONES · DESDE' : 'PRECIO DE OFERTA'}</span>
               <strong>{money.format(deal.price)}</strong>
-              {deal.priceCondition && <p role="note">{deal.priceCondition}</p>}
+              {deal.priceCondition && <p role="note">{priceConditionSummary(deal.priceCondition)}</p>}
               {deal.oldPrice > deal.price && <p>Antes <s>{money.format(deal.oldPrice)}</s> <b>−{discount}%</b></p>}
               {savings > 0 && <em>Ahorras {money.format(savings)}</em>}
             </div>
-            {deal.coupon && <CouponCopy code={deal.coupon} discount={deal.couponDiscount} minimumSpend={deal.couponMinimumSpend} />}
             {deal.active ? <a className="offerCta" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ir a la oferta en {deal.store} <span aria-hidden="true">→</span></a> : <div className="expiredNotice"><b>Oferta finalizada</b><p>Este fue el último precio registrado. La tienda puede haber cambiado el precio o retirado el producto.</p></div>}
+            {deal.coupon && <CouponCopy code={deal.coupon} discount={deal.couponDiscount} minimumSpend={deal.couponMinimumSpend} />}
+            {deal.priceCondition && <details className="offerConditions"><summary>Condiciones completas de esta oferta</summary><p>{deal.priceCondition}</p></details>}
             <div className="offerShare"><span>¿Conoces a alguien a quien le interese?</span><div><a href={whatsappShareUrl} target="_blank" rel="noreferrer">Compartir por WhatsApp</a><a href={telegramShareUrl} target="_blank" rel="noreferrer">Enviar por Telegram</a></div></div>
             <p className="offerMeta"><span aria-hidden="true" />{deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt} · Precio sujeto a cambios.</p>
             {product && <Link className="offerProductLink" href={productHref(product)}>Comparar este producto y sus tiendas →</Link>}
@@ -185,9 +185,9 @@ export default async function OfferPage({ params }: OfferPageProps) {
         </div>
 
         <section className="offerContent" aria-labelledby="analysis-title">
-          <div className="offerIntro"><h2 id="analysis-title">Lo importante de esta oferta</h2><p>{deal.coupon ? `Para esta oferta se indica el cupón ${deal.coupon}${deal.couponMinimumSpend ? `, válido desde ${money.format(deal.couponMinimumSpend)}` : ""}. El precio mostrado ya contempla el cupón: aplícalo en la cesta y comprueba que el total coincide antes de pagar.` : `Antes de comprar en ${deal.store}, compara la variante elegida y el total del carrito, incluidos los gastos de envío.`}</p></div>
+          <div className="offerIntro"><h2 id="analysis-title">Claves para decidir</h2><p>{notes.advice}</p>{deal.coupon && <p>{isCollectableCoupon(deal.coupon) ? 'Recoge el cupón en la ficha de la tienda y comprueba el descuento en el resumen de compra.' : 'Introduce el código indicado y comprueba su aplicación. No vuelvas a restarlo al precio publicado.'}</p>}</div>
           <div className="prosCons">
-            <section className="pros"><h3><span aria-hidden="true">✓</span> Puntos a favor</h3><ul>{pros.map((item) => <li key={item}>{item}</li>)}</ul></section>
+            <section className="pros"><h3><span aria-hidden="true">✓</span> Datos de la publicación</h3><ul>{pros.map((item) => <li key={item}>{item}</li>)}</ul></section>
             <section className="cons"><h3><span aria-hidden="true">!</span> A tener en cuenta</h3><ul>{cons.map((item) => <li key={item}>{item}</li>)}</ul></section>
           </div>
         </section>

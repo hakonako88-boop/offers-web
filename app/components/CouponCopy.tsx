@@ -20,7 +20,7 @@ export default function CouponCopy({ code, compact = false, discount = 0, minimu
   const renderCode = (value: string, index: number) => <button key={value} className={`couponCopy${compact ? " couponCopyCompact" : ""}`} type="button" onClick={() => void copy(value)} aria-label={`Copiar cupón ${value}`}>
       <span>{index ? "ALTERNATIVA" : "CUPÓN"}</span><b>{value}</b><strong aria-live="polite">{copied === value ? "¡COPIADO!" : "COPIAR"}</strong>
     </button>;
-  if (isCollectableCoupon(code)) return <div className="couponOptions couponCollectable" aria-label="Cupón para recoger en la tienda"><b>🎟 Cupón para recoger</b><p>{code}</p>{!compact && <small>No hay un código para copiar. Recoge el cupón en la ficha y confirma que se aplica en el resumen de compra.</small>}</div>;
+  if (isCollectableCoupon(code)) return <div className="couponOptions couponCollectable" aria-label="Cupón para recoger en la tienda"><b>🎟 {compact ? `Cupón${code.match(/\d+(?:[.,]\d+)?\s*€/u)?.[0] ? ` de ${code.match(/\d+(?:[.,]\d+)?\s*€/u)?.[0]}` : ' en ficha'}` : 'Cupón para recoger'}</b><p>{compact ? 'Recógelo en la ficha antes de pagar.' : code}</p>{!compact && <small>No hay un código para copiar. Recoge el cupón en la ficha y confirma que se aplica en el resumen de compra.</small>}</div>;
   return <div className="couponOptions" aria-label="Cupones de la oferta">
     {codes[0] && renderCode(codes[0], 0)}
     {codes.length > 1 && <details className="couponAlternatives"><summary>Ver {codes.length - 1} {codes.length === 2 ? "código alternativo" : "códigos alternativos"}</summary>{codes.slice(1).map((value: string, index: number) => renderCode(value, index + 1))}</details>}

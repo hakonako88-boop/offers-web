@@ -2,6 +2,7 @@ import BrandLink from "../../components/BrandLink";
 import type { Metadata } from "next";
 import Link from "next/link";
 import CouponCopy from "../../components/CouponCopy";
+import { offerDisplayTitle } from '../../lib/display-title';
 import { notFound } from "next/navigation";
 import { categoryDeals, categoryIsIndexable, categoryPages, getCategoryPage } from "../../lib/categories";
 import { dealDiscount, dealHref, dealSavings, publishedDeals } from "../../lib/deals";
@@ -40,7 +41,7 @@ export default async function CategoryOffersPage({ params }: CategoryPageProps) 
   const category = getCategoryPage(categoria);
   if (!category) notFound();
   const deals = categoryDeals(categoria, publishedDeals);
-  const displayedDeals = deals.slice(0, 60);
+  const displayedDeals = deals.slice(0, 60).map(deal=>({...deal,title:offerDisplayTitle(deal.title)}));
   const averageDiscount = deals.length ? Math.round(deals.reduce((total, deal) => total + dealDiscount(deal), 0) / deals.length) : 0;
   const indexable = categoryIsIndexable(categoria, publishedDeals);
   const relatedGuide = categoria === "tecnologia"
