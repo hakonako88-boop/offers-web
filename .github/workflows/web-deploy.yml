@@ -46,12 +46,13 @@ permissions:
 
 jobs:
   website:
-    if: ${{ github.event_name != 'workflow_run' || (github.event.workflow_run.head_repository.id == github.event.repository.id && github.event.workflow_run.conclusion != 'cancelled' && github.event.workflow_run.conclusion != 'skipped') }}
-    # Job-level concurrency is intentional: an ignored/cancelled source event
-    # must not enter this queue and cancel a valid website compilation.
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.head_repository.id == github.event.repository.id }}
+    # Even cancelled source runs can persist public data in always() steps.
+    # Serialize completion checks without cancelling a valid build. The queued
+    # run checks the latest main fingerprint and becomes a no-op if unchanged.
     concurrency:
       group: chollosaldia-web-only
-      cancel-in-progress: true
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:

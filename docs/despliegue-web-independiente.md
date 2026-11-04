@@ -11,13 +11,18 @@ cuando terminan los workflows que guardan ofertas o artículos. Este último
 evento permite publicar contenido escrito con `GITHUB_TOKEN`, cuyos commits
 no disparan otro workflow de tipo `push`.
 
-Su cola `chollosaldia-web-only` conserva la compilación más reciente. Antes de
+Su cola `chollosaldia-web-only` deja terminar la compilación en curso y conserva
+una comprobación pendiente con la revisión más reciente. Antes de
 publicar compara los archivos públicos de la compilación con `main`. Si ya
 existe contenido distinto, no publica esa copia antigua. Cada publicación
 incluye `web-build.json` con su revisión y huella de contenido.
 
 La concurrencia se aplica al trabajo de publicación, no al workflow completo:
-un evento de origen cancelado u omitido no puede cancelar una compilación válida.
+un evento de origen cancelado u omitido no cancela una compilación válida.
+También se comprueban estos eventos: sus pasos `always()` pueden haber guardado
+precios o histórico antes de la cancelación. Si cambian datos públicos durante
+una compilación, la ejecución pendiente relee `main` y construye la versión nueva;
+si nada cambió, termina sin volver a instalar ni compilar.
 **Comprobar enlace de despliegue web** es una prueba manual de solo lectura que
 permite verificar el encadenamiento sin publicar ofertas ni modificar datos.
 
