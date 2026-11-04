@@ -1,0 +1,109 @@
+name: Desplegar web sin rastrear ofertas
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - app/**
+      - public/**
+      - scripts/**
+      - build/**
+      - data/offers.json
+      - data/posts.json
+      - data/price-history.json
+      - data/editor-recommendations.json
+      - data/mobile-comparison.json
+      - data/tv-selection.json
+      - package.json
+      - package-lock.json
+      - tsconfig.json
+      - next.config.*
+      - vite.config.*
+      - vinext.config.*
+      - postcss.config.*
+      - .github/workflows/web-deploy.yml
+  workflow_run:
+    workflows:
+      - Publicar ChollosAlDía
+      - Publicar resumen diario de ofertas
+      - Publicar guía semanal de mejores productos
+      - Publicar comparativa editorial de móviles
+      - Publicar selección editorial de televisores
+      - Publicar oferta seleccionada
+      - Publicar especial AliExpress 11.11
+      - Publicar Choice Day AliExpress
+      - Publicar 15 aniversario Amazon
+      - Publicar cupón Amazon GET5OFF
+      - Actualizar estadísticas privadas de la web
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: write
+
+# Only website builds are cancelled; offer jobs keep their original queue.
+concurrency:
+  group: chollosaldia-web-only
+  cancel-in-progress: true
+
+jobs:
+  website:
+    if: ${{ github.event_name != 'workflow_run' || (github.event.workflow_run.head_repository.full_name == github.repository && github.event.workflow_run.conclusion != 'cancelled' && github.event.workflow_run.conclusion != 'skipped') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_ADSENSE_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_ADSENSE_CLIENT_ID }}
+      NEXT_PUBLIC_ADSENSE_HOME_SLOT: ${{ secrets.NEXT_PUBLIC_ADSENSE_HOME_SLOT }}
+      NEXT_PUBLIC_ADSENSE_OFFER_SLOT: ${{ secrets.NEXT_PUBLIC_ADSENSE_OFFER_SLOT }}
+      FORCE_WEB_DEPLOY: ${{ github.event_name == 'workflow_dispatch' }}
+    steps:
+      - name: Descargar siempre main, nunca código de una solicitud externa
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 2
+      - name: Preparar Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Leer la revisión publicada
+        run: git fetch --depth=1 origin gh-pages:refs/remotes/origin/gh-pages || true
+      - name: Comprobar si cambió el contenido de la web
+        id: source
+        run: node scripts/web-deployment-state.mjs prepare
+      - name: Instalar dependencias
+        if: steps.source.outputs.needed == 'true'
+        run: npm ci
+      - name: Construir solo la web con los datos guardados
+        if: steps.source.outputs.needed == 'true'
+        run: npm run build:github
+      - name: Rechazar una compilación si ya existe contenido más reciente
+        if: steps.source.outputs.needed == 'true'
+        id: guard
+        run: |
+          git fetch --depth=1 origin main
+          node scripts/web-deployment-state.mjs guard
+      - name: Registrar la revisión que se va a publicar
+        if: steps.source.outputs.needed == 'true' && steps.guard.outputs.current == 'true'
+        run: node scripts/web-deployment-state.mjs manifest
+      - name: Publicar en GitHub Pages
+        if: steps.source.outputs.needed == 'true' && steps.guard.outputs.current == 'true'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out-github
+          publish_branch: gh-pages
+          cname: chollosaldia.com
+      - name: Resumen de la ejecución
+        if: always()
+        env:
+          NEEDED: ${{ steps.source.outputs.needed }}
+          CURRENT: ${{ steps.guard.outputs.current }}
+          SOURCE_SHA: ${{ steps.source.outputs.source_sha }}
+        run: |
+          echo "### Despliegue web independiente" >> "$GITHUB_STEP_SUMMARY"
+          echo "Revisión leída: $SOURCE_SHA" >> "$GITHUB_STEP_SUMMARY"
+          echo "Contenido cambiado: $NEEDED. Compilación vigente: $CURRENT." >> "$GITHUB_STEP_SUMMARY"
+          echo "Esta ejecución no rastrea tiendas, no envía mensajes ni utiliza credenciales de afiliación." >> "$GITHUB_STEP_SUMMARY"

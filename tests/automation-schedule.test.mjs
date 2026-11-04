@@ -59,11 +59,14 @@ test('keeps automatic source runs fast and prevents state commits from redeployi
   assert.match(buttonStep, /inputs\.repair_telegram_captions/u);
 });
 
-test('serializes every Pages deployment and persists reconciled source queue state', () => {
+test('serializes offer state while independent web workflow deploys Pages', () => {
   assert.doesNotMatch(workflow, /chollosaldia-source-publication/u);
   assert.match(workflow, /'chollosaldia-telegram-inbox' \|\| 'chollosaldia-production'/u);
   assert.match(sourcePollWorkflow, /group: chollosaldia-production/u);
   assert.match(sourcePollWorkflow, /cancel-in-progress: false/u);
+  assert.doesNotMatch(workflow, /peaceiris\/actions-gh-pages/u);
+  const webDeploy = fs.readFileSync(new URL('../.github/workflows/web-deploy.yml', import.meta.url), 'utf8');
+  assert.match(webDeploy, /group: chollosaldia-web-only/u);
   const saveStep = workflow.match(/- name: Guardar ofertas nuevas[\s\S]*?(?=\n\s{6}- name:|$)/u)?.[0] || '';
   assert.doesNotMatch(saveStep, /git restore -- data\/telegram-source-queue\.json/u);
   const stagedLine = saveStep.split('\n').find((line) => line.includes('git add data/offers.json')) || '';
