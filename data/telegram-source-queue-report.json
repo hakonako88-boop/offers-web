@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-11-05T14:07:06.698Z",
+  "updatedAt": "2026-11-05T14:17:24.704Z",
   "summary": {
-    "rejected": 367,
     "ignored": 314,
+    "rejected": 366,
     "duplicate": 32,
     "published": 73,
     "needs_review": 215,
-    "pending": 151
+    "pending": 153
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97576:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97576,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/97576",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-05T14:17:02.670Z",
+      "nextAttemptAt": "2026-11-05T14:37:24.704Z"
+    },
+    {
+      "id": "telegram-una-ganga:97575:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97575,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/97575",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-ofertos:45332:miravia:0",
       "source": "telegram-ofertos",
@@ -1282,32 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-04T21:54:16.157Z"
-    },
-    {
-      "id": "telegram-paramanitas:5127:ignored",
-      "source": "telegram-paramanitas",
-      "messageId": 5127,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/paramanitas/5127",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:5128:amazon:14",
-      "source": "telegram-paramanitas",
-      "messageId": 5128,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/5128",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-04T21:36:05.859Z"
     }
   ]
 }
