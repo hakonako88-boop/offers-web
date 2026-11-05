@@ -24,4 +24,6 @@ test('a blocked clipboard exposes the actual code instead of claiming success', 
   assert.match(component, /setCopyFailed\(value\)/);
   assert.match(component, /No se ha podido copiar automáticamente/);
   assert.match(component, /<code tabIndex=\{0\}>\{copyFailed\}<\/code>/);
+  const css = fs.readFileSync('app/home-priorities.css','utf8');
+  assert.match(css, /color:#fff; background:#173d3b/);
 });
