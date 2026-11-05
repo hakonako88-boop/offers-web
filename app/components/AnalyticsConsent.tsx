@@ -24,7 +24,9 @@ function startAnalytics() {
   });
   window.gtag("js", new Date());
   window.gtag("config", measurementId, { anonymize_ip: true });
-  const viewEvent = window.location.pathname.startsWith("/guias/") || window.location.pathname.startsWith("/gta-vi-")
+  const viewEvent = window.location.pathname.startsWith('/tesla/guias/') ? 'tesla_guide_view'
+    : window.location.pathname.startsWith('/tesla/') ? 'tesla_hub_view'
+    : window.location.pathname.startsWith("/guias/") || window.location.pathname.startsWith("/gta-vi-")
     ? "guide_view"
     : window.location.pathname.startsWith("/producto/") ? "product_view" : null;
   if (viewEvent && !document.documentElement.dataset.chollosViewTracked) {
@@ -60,7 +62,7 @@ export default function AnalyticsConsent() {
         ? "telegram_click"
         : link.rel.includes("sponsored") ? "affiliate_click"
           : href.startsWith("/oferta/") ? "offer_click" : null;
-      if (eventName) window.gtag("event", eventName, { link_url: link.href, link_text: link.textContent?.trim().slice(0, 100) });
+      if (eventName) window.gtag("event", eventName, { link_url: link.href, link_text: link.textContent?.trim().slice(0, 100), ...(link.dataset.teslaProduct ? { tesla_product_id: link.dataset.teslaProduct, page_path: window.location.pathname } : {}) });
     }
     document.addEventListener("click", trackClick);
     return () => document.removeEventListener("click", trackClick);

@@ -17,6 +17,7 @@ on:
       - data/tv-selection.json
       - data/tesla-catalogue.json
       - data/tesla-import-details.json
+      - data/tesla-price-observations.json
       - package.json
       - package-lock.json
       - tsconfig.json
@@ -27,6 +28,7 @@ on:
       - .github/workflows/web-deploy.yml
   workflow_run:
     workflows:
+      - Actualizar precios Tesla con API autorizada
       - Publicar ChollosAlDía
       - Publicar resumen diario de ofertas
       - Publicar guía semanal de mejores productos

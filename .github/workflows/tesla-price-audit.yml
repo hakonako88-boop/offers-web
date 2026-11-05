@@ -1,11 +1,16 @@
-name: Auditar precios Tesla sin publicar
+name: Actualizar precios Tesla con API autorizada
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '23 */6 * * *'
   push:
     branches: [tesla-price-audit-20261105]
     paths: [scripts/audit-tesla-prices.mjs, .github/workflows/tesla-price-audit.yml]
 permissions:
-  contents: read
+  contents: write
+concurrency:
+  group: tesla-price-observations
+  cancel-in-progress: false
 jobs:
   audit:
     runs-on: ubuntu-latest
@@ -22,9 +27,24 @@ jobs:
           ALIEXPRESS_APP_KEY: ${{ secrets.ALIEXPRESS_APP_KEY }}
           ALIEXPRESS_APP_SECRET: ${{ secrets.ALIEXPRESS_APP_SECRET }}
           ALIEXPRESS_TRACKING_ID: ${{ secrets.ALIEXPRESS_TRACKING_ID }}
-        run: node scripts/audit-tesla-prices.mjs
+        run: |
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            node scripts/audit-tesla-prices.mjs --update-catalogue
+          else
+            node scripts/audit-tesla-prices.mjs
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: tesla-price-audit
           path: outputs/tesla-price-audit.json
           retention-days: 7
+      - name: Guardar únicamente observaciones públicas comprobadas
+        if: github.ref == 'refs/heads/main'
+        run: |
+          if git diff --quiet -- data/tesla-price-observations.json; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/tesla-price-observations.json
+          git commit -m 'Actualizar observaciones de precios Tesla'
+          git pull --rebase origin main
+          git push origin HEAD:main

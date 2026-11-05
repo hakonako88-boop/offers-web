@@ -17,6 +17,7 @@ import { offerDisplayTitle } from "../lib/display-title";
 import StoreLogo from "./StoreLogo";
 import ShopIcon from "./ShopIcon";
 import FeaturedCoupons from "./FeaturedCoupons";
+import TeslaHomeSection from "./TeslaHomeSection";
 import { campaignStage } from "../../scripts/black-friday-selection.mjs";
 
 export type Deal = {
@@ -366,6 +367,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
         </article>)}</div>
       </section>}
 
+      <TeslaHomeSection />
       <section className="savingGuides shell" aria-labelledby="guides-title">
         <div className="guidesIntro">
           <p className="eyebrow"><span aria-hidden="true" />COMPRA MEJOR, SIN BUSCAR MÁS</p>

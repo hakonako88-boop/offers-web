@@ -25,6 +25,7 @@ import "./mobile-offer-cards.css";
 import "./reference-storefront.css";
 import "./home-priorities.css";
 import "./catalogue-sidebar.css";
+import "./tesla-entry.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });

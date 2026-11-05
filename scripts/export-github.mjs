@@ -88,6 +88,8 @@ await render("/telegram", "telegram/index.html");
 await render("/tesla", "tesla/index.html");
 await render("/tesla/guias/model-3", "tesla/guias/model-3/index.html");
 await render("/tesla/guias/model-y", "tesla/guias/model-y/index.html");
+await render("/tesla/guias/alfombrillas", "tesla/guias/alfombrillas/index.html");
+await render("/tesla/guias/organizadores", "tesla/guias/organizadores/index.html");
 await render("/tesla/gestion", "tesla/gestion/index.html");
 await render("/gta-vi-mas-barato-ps5", "gta-vi-mas-barato-ps5/index.html");
 await render("/fiesta-ofertas-prime-2026", "fiesta-ofertas-prime-2026/index.html");

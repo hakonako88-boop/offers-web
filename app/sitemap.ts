@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     { url: siteUrl, lastModified: homepageLastModified, changeFrequency: "daily", priority: 1 },
     { url: `${siteUrl}/tesla/`, lastModified: new Date("2026-11-05T00:00:00Z"), changeFrequency: "weekly", priority: 0.7 },
+    ...['model-y', 'model-3', 'alfombrillas', 'organizadores'].map(slug => ({ url: `${siteUrl}/tesla/guias/${slug}/`, lastModified: new Date('2026-11-05T00:00:00Z'), changeFrequency: 'monthly' as const, priority: 0.65 })),
     { url: `${siteUrl}/ofertas/amazon/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
     { url: `${siteUrl}/ofertas/aliexpress/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
     ...(publishedDeals.some((deal) => deal.store === "Miravia") ? [{ url: `${siteUrl}/ofertas/miravia/`, lastModified: homepageLastModified, changeFrequency: "daily" as const, priority: 0.8 }] : []),

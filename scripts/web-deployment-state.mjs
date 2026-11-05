@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 
 // Public/rendered inputs only. Bot polling cursors and publication attempt
 // counters must not invalidate a completed website build.
-export const WEB_INPUTS=['app','public','scripts','build','package.json','package-lock.json','tsconfig.json','next.config.ts','next.config.mjs','vite.config.ts','vinext.config.ts','postcss.config.mjs','.github/workflows/web-deploy.yml','data/offers.json','data/posts.json','data/price-history.json','data/editor-recommendations.json','data/mobile-comparison.json','data/tv-selection.json','data/tesla-catalogue.json','data/tesla-import-details.json'];
+export const WEB_INPUTS=['app','public','scripts','build','package.json','package-lock.json','tsconfig.json','next.config.ts','next.config.mjs','vite.config.ts','vinext.config.ts','postcss.config.mjs','.github/workflows/web-deploy.yml','data/offers.json','data/posts.json','data/price-history.json','data/editor-recommendations.json','data/mobile-comparison.json','data/tv-selection.json','data/tesla-catalogue.json','data/tesla-import-details.json','data/tesla-price-observations.json'];
 export function webFingerprint(ref='HEAD',cwd=process.cwd()) {
   const tree=execFileSync('git',['ls-tree','-r',ref,'--',...WEB_INPUTS],{cwd,encoding:'utf8'});
   return createHash('sha256').update(tree).digest('hex');

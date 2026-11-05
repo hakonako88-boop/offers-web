@@ -7,6 +7,9 @@ const output = { checkedAt: new Date().toISOString(), country: 'ES', currency: '
 const appKey = process.env.ALIEXPRESS_APP_KEY;
 const appSecret = process.env.ALIEXPRESS_APP_SECRET;
 const trackingId = process.env.ALIEXPRESS_TRACKING_ID;
+const approvedDiscoveryIds = ['1005010473185985', '1005010472747139'];
+let previous = { items: [], discoveries: [] };
+try { previous = JSON.parse(await readFile(new URL('../data/tesla-price-observations.json', import.meta.url), 'utf8')); } catch { /* First audit has no previous observations. */ }
 async function request(method, fields) {
   const params = { app_key: appKey, format: 'json', method, sign_method: 'sha256', timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '), v: '2.0', ...fields };
   const signed = { ...params, sign: createAliExpressSignature(params, appSecret) };
@@ -36,19 +39,34 @@ if (!appKey || !appSecret || !trackingId) output.issues.push('Authorized API con
 else {
   const fields = 'product_id,product_title,product_main_image_url,target_sale_price,target_sale_price_currency,target_original_price,promotion_link,promo_code,promo_code_info';
   try {
-    const products = await request('aliexpress.affiliate.productdetail.get', { product_ids: catalogue.imports.map(item => item.productId).join(','), target_currency: 'EUR', target_language: 'ES', country: 'ES', tracking_id: trackingId, fields });
+    const products = await request('aliexpress.affiliate.productdetail.get', { product_ids: [...catalogue.imports.map(item => item.productId), ...approvedDiscoveryIds].join(','), target_currency: 'EUR', target_language: 'ES', country: 'ES', tracking_id: trackingId, fields });
     for (const entry of catalogue.imports) {
       const product = products.find(product => String(product.product_id) === entry.productId);
       if (product) output.items.push(observation(product, entry.originalUrl));
       else output.issues.push(`No exact API result: ${entry.productId}`);
     }
+    for (const id of approvedDiscoveryIds) {
+      const product = products.find(product => String(product.product_id) === id);
+      if (product) {
+        const row = observation(product);
+        row.generatedAffiliateUrl ||= previous.discoveries.find(item => item.productId === id)?.generatedAffiliateUrl || '';
+        output.discoveries.push(row);
+      }
+    }
   } catch (error) { output.issues.push(`Product detail: ${error.message}`); }
   try {
     const products = await request('aliexpress.affiliate.product.query', { keywords: 'Tesla Model Y organizer floor mats', target_currency: 'EUR', target_language: 'ES', ship_to_country: 'ES', tracking_id: trackingId, page_size: '10', fields });
-    output.discoveries = products.filter(product => /tesla/i.test(product.product_title || '') && /organ|mat|alfombr|storage/i.test(product.product_title || '')).map(product => observation(product));
+    const discoveries = products.filter(product => /tesla/i.test(product.product_title || '') && /organ|mat|alfombr|storage/i.test(product.product_title || '')).map(product => observation(product));
+    output.discoveries.push(...discoveries.filter(item => !output.discoveries.some(existing => existing.productId === item.productId)));
   } catch (error) { output.issues.push(`Discovery: ${error.message}`); }
 }
 await mkdir(new URL('../outputs/', import.meta.url), { recursive: true });
 await writeFile(new URL('../outputs/tesla-price-audit.json', import.meta.url), JSON.stringify(output, null, 2) + '\n');
+if (process.argv.includes('--update-catalogue') && output.items.length) {
+  // Failed rows retain their original timestamp, never a synthetic fresh date.
+  const merge = (oldRows, newRows) => [...new Map([...oldRows, ...newRows].map(row => [row.productId, row])).values()];
+  const updated = { ...output, items: merge(previous.items || [], output.items), discoveries: merge((previous.discoveries || []).filter(row => approvedDiscoveryIds.includes(row.productId)), output.discoveries).slice(0, 25) };
+  await writeFile(new URL('../data/tesla-price-observations.json', import.meta.url), JSON.stringify(updated, null, 2) + '\n');
+}
 // Public product facts only: no request URLs, signatures, keys or private account data.
 console.log('TESLA_AUDIT_RESULT ' + JSON.stringify(output));
