@@ -8,4 +8,12 @@ Amazon utiliza las credenciales de Creators API ya configuradas en GitHub. Los e
 
 Los dos cargadores seleccionados manualmente son referencias, no certificaciones de compatibilidad ni ofertas verificadas; sus enlaces solo se crean si está configurado el identificador de afiliado. La ausencia de acceso a la API no se presenta como descubrimiento automático satisfactorio.
 
-Pruebas locales: 72 comprobaciones del escaparate, incluidas cinco de admisión, deduplicación, caducidad, rotación y persistencia limitada de Amazon. Este flujo actualiza la sección web Tesla; no crea publicaciones de Telegram.
+## Selección diaria
+
+El bloque «Ofertas Tesla de hoy» precede al selector y al catálogo. Selecciona hasta cuatro referencias recientes de AliExpress, con diversidad de categorías, priorizando cambios a la baja del precio anunciado y cupones válidos comunicados por la tienda. No ordena por un supuesto porcentaje de rebaja ni considera que el producto más barato sea necesariamente el mejor. El cliente vuelve a evaluar la caducidad cada minuto.
+
+Cada actualización guarda hasta 120 consultas por identificador en `priceHistory`, dentro del archivo de observaciones existente. No se fabrican fechas anteriores: el histórico empieza con consultas reales guardadas. Se compara la misma base de precio y se excluyen puntos futuros, antiguos o en otra moneda. Al ser precios de ficha sin SKU confirmado, una bajada solo se etiqueta como precio anunciado inferior a la consulta anterior; no como ahorro garantizado, mínimo del mercado o descuento calculado. Amazon no se incorpora a ese histórico.
+
+Prueba real del 5 de noviembre: AliExpress incorporó dos referencias y Amazon devolvió HTTP 403 en las consultas de productos y búsqueda. Las referencias manuales de Amazon conservan su tag; no se presenta el descubrimiento de esa tienda como operativo.
+
+Pruebas locales: 76 comprobaciones del escaparate, incluidas admisión, deduplicación, caducidad, rotación, selección diaria, aislamiento del histórico Amazon y persistencia limitada de Amazon. Este flujo actualiza la sección web Tesla; no crea publicaciones de Telegram.

@@ -1,7 +1,7 @@
 import data from '../../data/tesla-amazon-observations.json';
 import config from '../../data/tesla-discovery-config.json';
 import StoreLogo from '../components/StoreLogo';
-type AmazonReference = { productId: string; originalUrl: string; checkedAt: string; editorialCategory: string; manualReview?: boolean };
+type AmazonReference = { productId: string; originalUrl: string; checkedAt: string | null; editorialCategory: string; manualReview?: boolean };
 export default function AmazonProducts() {
   const items = data.items as AmazonReference[];
   return <section className="teslaSection" id="amazon"><div className="teslaSectionHeading"><div><p>Accesorios y referencias seleccionadas</p><h2>Tesla en Amazon.es</h2></div><a href="/tesla/guias/model-3/">Elegir según tu modelo</a></div><p>Consulta la foto, el precio y la disponibilidad directamente en Amazon y comprueba la variante antes de comprar.</p>

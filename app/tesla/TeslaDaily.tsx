@@ -1,0 +1,16 @@
+'use client';
+import { useEffect, useState } from 'react';
+import data from '../../data/tesla-price-observations.json';
+import config from '../../data/tesla-discovery-config.json';
+import { selectTeslaDaily } from '../../scripts/tesla-daily-selection.mjs';
+import TeslaPrice from './TeslaPrice';
+import StoreLogo from '../components/StoreLogo';
+
+export default function TeslaDaily({ renderedAt }: { renderedAt: number }) {
+  const [now, setNow] = useState(renderedAt);
+  useEffect(() => { const update = () => setNow(Date.now()); update(); const timer = setInterval(update, 60000); return () => clearInterval(timer); }, []);
+  const history = ('priceHistory' in data && data.priceHistory && typeof data.priceHistory === 'object') ? data.priceHistory : {};
+  const admitted = data.discoveries.filter(item => config.reviewedAliExpressIds.includes(item.productId) || ('admission' in item && item.admission === 'automated_low_risk_filter'));
+  const selected = selectTeslaDaily([...data.items, ...admitted], history, now);
+  return <section className="teslaSection teslaDaily" id="ofertas-hoy"><div className="teslaSectionHeading"><div><p>Selección actualizada durante el día</p><h2>Ofertas Tesla de hoy</h2></div><a href="#productos-recibidos">Ver todos los accesorios</a></div><p>Priorizamos cambios de precio observados, cupones vigentes y variedad de accesorios. No equivale al precio más bajo del mercado ni confirma la variante de tu coche.</p>{selected.length ? <div className="teslaDailyGrid">{selected.map(item => <article key={item.productId} className="teslaDailyCard"><a className="teslaDailyImage" href={item.originalUrl || item.generatedAffiliateUrl} target="_blank" rel="sponsored noopener noreferrer" data-tesla-product={item.productId}><img src={item.imageUrl} alt={item.name} width={360} height={250} loading="lazy" /></a><div className="teslaDailyBody"><StoreLogo store="AliExpress" /><span className="teslaDailyBadge">{item.trend?.lowerAdvertisedPrice ? 'Precio anunciado inferior a la consulta anterior' : item.activeCoupon ? 'Cupón comunicado por la tienda' : 'Precio consultado recientemente'}</span><h3>{item.name}</h3><TeslaPrice observation={item} renderedAt={renderedAt} /><p className="teslaDailyFit">Comprueba modelo, generación y variante antes de comprar.</p><a className="teslaAction" href={item.originalUrl || item.generatedAffiliateUrl} target="_blank" rel="sponsored noopener noreferrer" data-tesla-product={item.productId}>Ver oferta y variantes</a></div></article>)}</div> : <div className="teslaEmpty"><h3>Sin selección reciente verificable</h3><p>No destacamos precios caducados. La próxima revisión buscará nuevas oportunidades.</p></div>}<details><summary>Cómo elegimos y comparamos</summary><p>Revisamos cada seis horas. Solo destacamos precios EUR consultados en las últimas 24 horas. Guardamos el precio anunciado de cada ficha, no un histórico certificado de una variante: por eso no calculamos descuentos entre consultas ni comparamos accesorios distintos. Los cupones se muestran con sus condiciones y no se descuentan automáticamente.</p><p>Amazon está pendiente de acceso a las consultas de su API; sus referencias no participan en esta clasificación de precios.</p></details></section>;
+}

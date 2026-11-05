@@ -5,7 +5,7 @@ on:
     - cron: '23 */6 * * *'
   push:
     branches: [main, tesla-price-audit-20261105]
-    paths: [scripts/audit-tesla-prices.mjs, scripts/sync-tesla-amazon.mjs, scripts/tesla-discovery.mjs, data/tesla-discovery-config.json, .github/workflows/tesla-price-audit.yml]
+    paths: [scripts/audit-tesla-prices.mjs, scripts/sync-tesla-amazon.mjs, scripts/tesla-discovery.mjs, scripts/tesla-daily-selection.mjs, data/tesla-discovery-config.json, .github/workflows/tesla-price-audit.yml]
 permissions:
   contents: write
 concurrency:

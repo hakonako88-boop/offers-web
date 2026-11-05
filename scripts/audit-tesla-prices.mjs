@@ -1,6 +1,7 @@
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { ALIEXPRESS_ENDPOINT, createAliExpressSignature } from './aliexpress-offers.mjs';
 import { discoveryTopics, growDiscoveryCatalogue } from './tesla-discovery.mjs';
+import { appendTeslaHistory } from './tesla-daily-selection.mjs';
 
 // Read-only affiliate API audit. Does not generate replacement links or publish anything.
 const catalogue = JSON.parse(await readFile(new URL('../data/tesla-catalogue.json', import.meta.url), 'utf8'));
@@ -74,6 +75,7 @@ if (process.argv.includes('--update-catalogue') && output.items.length) {
   const grown = growDiscoveryCatalogue(previous.discoveries.filter(row => row.admission === 'automated_low_risk_filter'), output.discoveries, { maxNew: discoveryConfig.maxNewPerStorePerRun, maxTotal: discoveryConfig.maxAutomaticPerStore, excludedIds: [...catalogue.imports.map(row => row.productId), ...approvedDiscoveryIds] });
   const reviewed = merge(previous.discoveries.filter(row => approvedDiscoveryIds.includes(row.productId)), output.discoveries.filter(row => approvedDiscoveryIds.includes(row.productId)));
   const updated = { ...output, added: grown.added, items: merge(previous.items || [], output.items), discoveries: merge([...reviewed, ...grown.items], output.discoveries.filter(row => !reviewed.some(existing => existing.productId === row.productId) && !grown.items.some(existing => existing.productId === row.productId))).slice(0, 50) };
+  updated.priceHistory = appendTeslaHistory(previous.priceHistory, [...previous.items, ...previous.discoveries, ...updated.items, ...updated.discoveries]);
   await writeFile(new URL('../data/tesla-price-observations.json', import.meta.url), JSON.stringify(updated, null, 2) + '\n');
 }
 // Public product facts only: no request URLs, signatures, keys or private account data.

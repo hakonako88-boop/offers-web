@@ -3,6 +3,7 @@ import BrandLink from '../components/BrandLink';
 import TeslaExplorer from './TeslaExplorer';
 import ImportedProducts from './ImportedProducts';
 import AmazonProducts from './AmazonProducts';
+import TeslaDaily from './TeslaDaily';
 import catalogue from '../../data/tesla-catalogue.json';
 import TeslaSeo from './TeslaSeo';
 import { teslaGuides } from '../lib/tesla-guides';
@@ -19,6 +20,7 @@ export default function TeslaPage() {
     <header className="teslaHeader"><BrandLink /><a href="/">Todas las ofertas</a></header>
     <TeslaSeo title="Accesorios Tesla Model Y y Model 3" />
     <section className="teslaHero teslaMainHero"><div><p>El garaje de Chollos al Día</p><h1>Tu Tesla.<br />Cada detalle cuenta.</h1><p>Accesorios Model Y y Model 3, precios consultados y guías para elegir la variante correcta.</p><div className="teslaHeroActions"><a className="teslaAction" href="#productos-recibidos">Explorar accesorios</a><a href="#vehiculo">Elegir mi Tesla</a></div></div><figure><img src="/images/tesla/model-y.webp" alt="Tesla Model Y Juniper rojo, imagen ilustrativa" width={900} height={600} fetchPriority="high" /><figcaption>Model Y Juniper. Identifica también tu acabado antes de elegir accesorios.</figcaption></figure></section>
+    <TeslaDaily renderedAt={Date.now()} />
     <TeslaExplorer catalogue={catalogue} />
     <ImportedProducts />
     <AmazonProducts />
