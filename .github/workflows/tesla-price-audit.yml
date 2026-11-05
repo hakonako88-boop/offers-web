@@ -1,0 +1,30 @@
+name: Auditar precios Tesla sin publicar
+on:
+  workflow_dispatch:
+  push:
+    branches: [tesla-price-audit-20261105]
+    paths: [scripts/audit-tesla-prices.mjs, .github/workflows/tesla-price-audit.yml]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Consultar fichas exactas y candidatos con la API autorizada
+        env:
+          ALIEXPRESS_APP_KEY: ${{ secrets.ALIEXPRESS_APP_KEY }}
+          ALIEXPRESS_APP_SECRET: ${{ secrets.ALIEXPRESS_APP_SECRET }}
+          ALIEXPRESS_TRACKING_ID: ${{ secrets.ALIEXPRESS_TRACKING_ID }}
+        run: node scripts/audit-tesla-prices.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tesla-price-audit
+          path: outputs/tesla-price-audit.json
+          retention-days: 7
