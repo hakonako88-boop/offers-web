@@ -16,6 +16,7 @@ import type { PublishedPost } from "../lib/posts";
 import { offerDisplayTitle } from "../lib/display-title";
 import StoreLogo from "./StoreLogo";
 import ShopIcon from "./ShopIcon";
+import FeaturedCoupons from "./FeaturedCoupons";
 import { campaignStage } from "../../scripts/black-friday-selection.mjs";
 
 export type Deal = {
@@ -262,7 +263,9 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
       <nav className="shoppingCategories shell" id="categorias-rapidas" aria-label="Categorías rápidas">
         {[['fire', 'Destacados', 'Todos'], ['tech', 'Tecnología', 'Tecnología'], ['home', 'Hogar', 'Hogar'], ['sport', 'Deporte', 'Deporte'], ['appliance', 'Electrodomésticos', 'Electrodomésticos'], ['fashion', 'Moda', 'Moda'], ['game', 'Gaming', 'Gaming'], ['tag', 'Cupones', 'cupones']].map(([icon, label, value]) => <button key={value} type="button" aria-pressed={value === 'cupones' ? couponOnly : category === value && !couponOnly} onClick={() => { setCategory(value === 'cupones' ? 'Todos' : value); setCouponOnly(value === 'cupones'); setVisibleLimit(18); document.getElementById('ofertas')?.scrollIntoView({ behavior: 'smooth' }); }}><ShopIcon name={icon} /><span>{label}</span></button>)}
       </nav>
-      <section className="shoppingAlert shell" aria-label="Alertas de ofertas en Telegram"><ShopIcon name="mail" /><div><h2>¡No te pierdas ningún chollo!</h2><p>Recibe las ofertas en nuestro canal gratuito de Telegram.</p></div><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer"><ShopIcon name="bell" />Ver alertas</a></section>
+      <div className="telegramQuickJoin shell"><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer"><ShopIcon name="telegram" />Unirme a Telegram <span>Gratis ↗</span></a></div>
+      <FeaturedCoupons deals={initialDeals} />
+      <aside className="homeHighlights catalogueHighlights shell" aria-label="Selección destacada">{featuredSelection}</aside>
 
       <section className="offersSection" id="ofertas" aria-labelledby="offers-title">
         <div className="shell">
@@ -283,7 +286,6 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
               <label>Precio hasta<input inputMode="decimal" value={maximumPrice} onChange={(event) => setMaximumPrice(event.target.value)} placeholder="Sin límite" /></label>
               <label>Descuento mínimo<select value={minimumDiscount} onChange={(event) => setMinimumDiscount(Number(event.target.value))}><option value="0">Cualquiera</option><option value="10">10 %</option><option value="20">20 %</option><option value="30">30 %</option><option value="40">40 %</option><option value="50">50 %+</option></select></label>
               <label>Fecha<select value={dateRange} onChange={(event) => setDateRange(event.target.value)}><option value="all">Últimas 2 semanas</option><option value="today">Últimas 24 horas</option><option value="3d">Últimos 3 días</option><option value="7d">Última semana</option></select></label>
-              <label>Ordenar<select value={sortBy} onChange={(event) => setSortBy(event.target.value)}><option value="recent">Más recientes</option><option value="discount">Mayor descuento</option><option value="saving">Mayor ahorro en €</option><option value="price">Precio más bajo</option></select></label>
               <label className="couponFilter"><input type="checkbox" checked={couponOnly} onChange={(event) => setCouponOnly(event.target.checked)} /> Solo con cupón</label>
             </div>{filtersActive && <button className="clearFilters" onClick={clearFilters}>Quitar todos los filtros</button>}</details>
           </div>
@@ -328,7 +330,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
           </div>
           {gridDeals.length < visibleDeals.length && <div className="loadMoreWrap"><button className="loadMoreButton" onClick={() => setVisibleLimit((current) => current + 18)}>Ver 18 ofertas más <span aria-hidden="true">↓</span></button><p>También puedes filtrar por tienda, categoría o cupón para dar con lo que buscas.</p></div>}
           {!visibleDeals.length && <div className="empty"><b>{savedOnly && savedIds.length === 0 ? "Aún no has guardado ofertas." : "No hemos encontrado ofertas con esos filtros."}</b><span>{savedOnly && savedIds.length === 0 ? "Pulsa «Guardar» en una oferta para verla aquí más tarde, en este navegador." : "Prueba con otra palabra o quita alguno de los filtros."}</span></div>}
-          </div><aside className="catalogueHighlights" aria-label="Ofertas destacadas">{featuredSelection}</aside></div>
+          </div></div>
         </div>
       </section>
 

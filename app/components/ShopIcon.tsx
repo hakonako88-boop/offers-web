@@ -1,5 +1,6 @@
 export default function ShopIcon({ name }: { name: string }) {
   const paths: Record<string, React.ReactNode> = {
+    telegram: <><path d="m21 3-4 18-6-5-4 3 1-6L21 3ZM8 13l9-6-6 9" /></>,
     home: <><path d="m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9" /></>,
     tech: <><rect x="4" y="3" width="16" height="13" rx="1"/><path d="M2 20h20M9 16v4m6-4v4"/></>,
     sport: <><path d="M6 5v14M3 8v8M18 5v14m3-11v8M6 12h12"/></>,

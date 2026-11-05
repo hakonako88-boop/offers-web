@@ -6,7 +6,8 @@ test('selected reference is an interactive storefront with truthful alerts and r
   const home = fs.readFileSync('app/components/DealExplorer.tsx', 'utf8');
   const css = fs.readFileSync('app/reference-storefront.css', 'utf8');
   assert.match(home, /Las mejores ofertas<br \/>y <em>chollos del día/);
-  assert.match(home, /Recibe las ofertas en nuestro canal gratuito de Telegram/);
+  assert.match(home, /Unirme a Telegram/);
+  assert.match(home, /<ShopIcon name="telegram"/);
   assert.match(home, /setCouponOnly\(value === 'cupones'\)/);
   assert.match(home, /aria-label="Ordenar ofertas"/);
   assert.match(home, /money.format\(deal.price\)/);

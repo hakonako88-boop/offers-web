@@ -1,0 +1,61 @@
+/* Short path to the first product. Coupons are product-scoped, never generic
+   storewide promises. Mobile visitors expand this optional information. */
+.telegramQuickJoin { display:flex; justify-content:flex-end; margin-top:0; margin-bottom:20px; }
+.telegramQuickJoin>a { display:inline-flex; align-items:center; gap:10px; min-height:44px; padding:10px 16px; border-radius:10px; background:#087eb7; color:#fff; font-weight:700; font-size:14px; text-decoration:none; }
+.telegramQuickJoin>a span { font-size:11px; font-weight:400; }
+.telegramQuickJoin svg { width:23px; height:23px; }
+.homeCoupons { margin-bottom:24px; }
+.homeCoupons details { border:1px solid #e5e8e5; border-radius:12px; background:#fff; }
+.homeCoupons summary { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; cursor:pointer; list-style:none; min-height:54px; }
+.homeCoupons summary::-webkit-details-marker { display:none; }
+.homeCoupons h2 { font-size:20px; font-weight:800; margin:0; line-height:1.3; }
+.homeCoupons summary>span { color:#476358; font-size:12px; }
+.homeCouponsNotice { font-size:12px; line-height:1.6; color:#53615b; padding:0 16px; margin:0 0 12px; }
+.homeCouponGrid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; padding:0 16px 16px; }
+.homeCouponGrid article { min-width:0; padding:14px; border:1px dashed #d9caa2; border-radius:10px; background:#fffaf0; }
+.homeCouponGrid h3 { font-size:13px; line-height:1.45; min-height:38px; margin:10px 0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.homeCouponGrid h3 a { color:#253c35; }
+.homeCouponGrid .couponOptions { margin:0 0 10px; }
+.homeCouponGrid .couponCopyCompact { display:flex; flex-wrap:wrap; gap:7px; min-height:44px; padding:8px; background:#fff; border:1px dashed #ad863a; border-radius:6px; width:100%; }
+.homeCouponGrid .couponCopyCompact>span { display:none; }.homeCouponGrid .couponCopyCompact b { font-size:15px; overflow-wrap:anywhere; }.homeCouponGrid .couponCopyCompact strong { font-size:10px; margin-left:auto; color:#6a4b0d; }
+.homeCouponGrid .couponCollectable { padding:8px; margin:0 0 10px; }.homeCouponGrid .couponCollectable p { font-size:11px; line-height:1.5; }
+.couponConditionsLink { display:inline-flex; align-items:center; min-height:44px; font-size:12px; color:#23594a; font-weight:700; text-decoration:underline; }
+.couponCopyFailure { font-size:12px; line-height:1.5; color:#743b12; margin:8px 0; }.couponCopyFailure code { display:inline-block; padding:3px 6px; background:#fff2d9; color:#432c11; user-select:all; overflow-wrap:anywhere; }
+.dealHome .homeHighlights.catalogueHighlights { margin:0 auto 28px; }
+.dealHome .homeHighlights .featuredSelection { padding:18px; border:1px solid #e4e9e4; background:#f7faf7; border-radius:14px; }
+.dealHome .homeHighlights .featuredSelectionGrid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; }
+.dealHome .homeHighlights .featuredSelectionHeading { margin-bottom:12px; }
+.dealHome .homeHighlights .featuredSelectionHeading h2 { font-size:25px; }
+.dealHome .homeHighlights .featuredSelectionHeading span { font-size:9px; }
+.dealHome .homeHighlights .featuredSelectionImage { height:130px; }
+.dealHome .homeHighlights .featuredSelectionBody>p { display:none; }
+.dealHome .homeHighlights .featuredSelectionCondition { min-height:0; margin:5px 0 10px; }
+.dealHome .homeHighlights .featuredSelectionLink { min-height:44px; background:#d9440a; }
+.dealHome .homeHighlights .featuredSelectionGrid>article { padding:0; background:#fff; border:1px solid #e4e9e4; border-radius:10px; overflow:hidden; }
+@media(min-width:801px) { .homeCoupons details>summary>span { font-size:11px; } }
+@media(max-width:800px) {
+  .dealHome .hero.buyerIntro { padding:16px 0 0; }
+  .dealHome .buyerIntro .heroCopy { grid-template-areas:'headline headline' 'search search'; gap:12px; }
+  .dealHome .buyerIntro h1 { font-size:29px; }
+  .dealHome .buyerIntro .trustList,.dealHome .shoppingHeroArt { display:none; }
+  .dealHome .buyerIntro .heroSearch { margin-top:0; }
+  .dealHome .shoppingCategories { padding-top:20px; margin-bottom:8px; }
+  .dealHome .shoppingCategories button { min-height:65px; gap:4px; font-size:11px; }.dealHome .shoppingCategories button svg { width:23px; height:23px; }
+  .telegramQuickJoin { justify-content:center; margin-bottom:10px; }.telegramQuickJoin>a { width:100%; justify-content:center; min-height:44px; padding:8px 12px; font-size:13px; }
+  .homeCoupons { margin-bottom:12px; }.homeCoupons summary { padding:11px 12px; min-height:46px; }.homeCoupons h2 { font-size:15px; }.homeCoupons summary>span { font-size:10px; max-width:88px; text-align:right; }
+  .homeCouponGrid { display:flex; overflow-x:auto; scroll-snap-type:x proximity; padding:0 12px 12px; }.homeCouponGrid article { flex:0 0 240px; scroll-snap-align:start; }
+  .dealHome .homeHighlights.catalogueHighlights { margin-bottom:16px; }
+  .dealHome .homeHighlights .featuredSelection { padding:12px; }
+  .dealHome .homeHighlights .featuredSelectionHeading { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .dealHome .homeHighlights .featuredSelectionHeading h2 { font-size:21px; margin:2px 0; }.dealHome .homeHighlights .featuredSelectionAll { margin:0; font-size:10px; padding:0; min-height:44px; }
+  .dealHome .homeHighlights .featuredSelectionGrid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .dealHome .homeHighlights .featuredSelectionImage { height:90px; }.dealHome .homeHighlights .featuredSelectionImage img { padding:8px; }
+  .dealHome .homeHighlights .featuredSelectionBody { padding:9px; }.dealHome .homeHighlights .featuredSelectionBody h3 { font-size:12px; min-height:34px; line-height:1.4; -webkit-line-clamp:2; margin:6px 0; }
+  .dealHome .homeHighlights .featuredSelectionPrice strong { font-size:24px; }.dealHome .homeHighlights .featuredSelectionPrice s { font-size:10px; }
+  .dealHome .homeHighlights .featuredSelectionCondition { font-size:9px; margin:4px 0 7px; }
+  .dealHome .homeHighlights .featuredSelectionLink { font-size:11px; padding:8px; min-height:44px; }
+  .dealHome .homeHighlights .moreHighlights { min-height:40px; font-size:11px; margin-top:8px; }
+  .dealHome .catalogueMain .sectionIntro>p { display:none; }
+  .dealHome .offerToolbar { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:7px; }
+  .dealHome .catalogueMain .dealCard .noCoupon { font-size:10px; }.dealHome .catalogueMain .dealCard .verified { font-size:10px; }
+}
