@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '23 */6 * * *'
   push:
-    branches: [tesla-price-audit-20261105]
+    branches: [main, tesla-price-audit-20261105]
     paths: [scripts/audit-tesla-prices.mjs, .github/workflows/tesla-price-audit.yml]
 permissions:
   contents: write
