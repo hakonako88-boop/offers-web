@@ -265,11 +265,10 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
       </nav>
       <div className="telegramQuickJoin shell"><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer"><ShopIcon name="telegram" />Unirme a Telegram <span>Gratis ↗</span></a></div>
       <FeaturedCoupons deals={initialDeals} />
-      <aside className="homeHighlights catalogueHighlights shell" aria-label="Selección destacada">{featuredSelection}</aside>
 
       <section className="offersSection" id="ofertas" aria-labelledby="offers-title">
         <div className="shell">
-          <div className="catalogueWithHighlights"><div className="catalogueMain">
+          <div className="catalogueWithHighlights"><aside className="homeHighlights catalogueHighlights" aria-label="Selección destacada">{featuredSelection}</aside><div className="catalogueMain">
           <div className="sectionIntro">
             <div>
               <h2 id="offers-title"><ShopIcon name="clock" />Últimos chollos</h2>

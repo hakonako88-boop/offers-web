@@ -8,8 +8,9 @@ test('buyer sees search, optional coupons and shortlist before full catalogue',(
   const catalogue=home.indexOf('id="ofertas"',hero);
   const shortlist=home.indexOf('{featuredSelection}',hero);
   const campaigns=home.indexOf('id="campanas"',catalogue);
-  assert(hero>0 && shortlist>hero && catalogue>shortlist && campaigns>catalogue);
-  assert(home.includes('<aside className="homeHighlights catalogueHighlights shell"'));
+  assert(hero>0 && catalogue>hero && shortlist>catalogue && campaigns>shortlist);
+  assert(home.indexOf('{featuredSelection}') < home.indexOf('<div className="catalogueMain">'));
+  assert(home.includes('<aside className="homeHighlights catalogueHighlights"'));
   assert(home.indexOf('<FeaturedCoupons') < shortlist);
   assert(!home.includes('className="heroFeature"'));
 });
