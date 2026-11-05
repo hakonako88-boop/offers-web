@@ -15,6 +15,7 @@ import { postHref } from "../lib/posts";
 import type { PublishedPost } from "../lib/posts";
 import { offerDisplayTitle } from "../lib/display-title";
 import StoreLogo from "./StoreLogo";
+import ShopIcon from "./ShopIcon";
 import { campaignStage } from "../../scripts/black-friday-selection.mjs";
 
 export type Deal = {
@@ -207,13 +208,12 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
         <div className="shell headerInner">
           <BrandLink />
           <nav aria-label="Navegación principal">
-            <a href="#ofertas">Ofertas de hoy</a>
-            <a href="/buscar/">Buscar</a>
-            <a href="/blog/">Blog</a>
-            <a href="/black-friday-2026/">Black Friday</a>
-            {posts.length > 0 && <a href="#novedades">Novedades</a>}
-            <a href="#como-funciona">Cómo seleccionamos</a>
-            <a className="telegramLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Telegram</a>
+            <a className="referenceNavActive" href="/"><ShopIcon name="home" />Inicio</a>
+            <a href="#categorias-rapidas"><ShopIcon name="tech" />Categorías</a>
+            <button type="button" onClick={() => { setCouponOnly(true); document.getElementById('ofertas')?.scrollIntoView({ behavior: 'smooth' }); }}><ShopIcon name="tag" />Cupones</button>
+            <button type="button" onClick={() => { setSortBy('discount'); document.getElementById('ofertas')?.scrollIntoView({ behavior: 'smooth' }); }}><ShopIcon name="trophy" />Top chollos</button>
+            <a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer"><ShopIcon name="bell" />Alertas</a>
+            <button type="button" onClick={() => { setSavedOnly((active) => !active); document.getElementById('ofertas')?.scrollIntoView({ behavior: 'smooth' }); }} aria-pressed={savedOnly}><ShopIcon name="heart" />Guardadas{savedIds.length > 0 && <b className="navSavedCount">{savedIds.length}</b>}</button>
           </nav>
           <details className="mobileNav">
             <summary aria-label="Abrir menú de navegación"><span aria-hidden="true">☰</span> Menú</summary>
@@ -234,11 +234,11 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
       <section className="hero buyerIntro shell" aria-labelledby="hero-title">
         <div className="heroCopy">
           <span className="heroKicker">TU RADAR DE OFERTAS · NOVIEMBRE 2026</span>
-          <h1 id="hero-title">Chollos para comprar mejor.</h1>
+          <h1 id="hero-title">Las mejores ofertas<br />y <em>chollos del día</em></h1>
           <p className="heroLead">Busca un producto o empieza por la selección. Precios y condiciones, a la vista.</p>
           <form className="heroSearch" role="search" onSubmit={(event) => { event.preventDefault(); document.getElementById("ofertas")?.scrollIntoView({ behavior: "smooth" }); }}>
             <label htmlFor="home-offer-search">¿Qué estás buscando?</label>
-            <div className="heroSearchBox"><span aria-hidden="true">⌕</span><input id="home-offer-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Móvil, cafetera, cupón…" /><button type="submit">Buscar ofertas</button></div>
+            <div className="heroSearchBox"><span aria-hidden="true">⌕</span><input id="home-offer-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Busca productos, marcas o tiendas…" /><button type="submit">Buscar</button></div>
             <div className="heroSearchShortcuts" aria-label="Búsquedas rápidas">
               <span>Explora:</span>
               <button type="button" onClick={() => { setCategory("Tecnología"); document.getElementById("ofertas")?.scrollIntoView({ behavior: "smooth" }); }}>Tecnología</button>
@@ -251,24 +251,30 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
             <a className="quietLink" href="https://t.me/aldiachollos" target="_blank" rel="noreferrer">Recibir alertas gratis</a>
           </div>
           <ul className="trustList" aria-label="Qué muestra cada oferta">
-            <li>Precio publicado</li>
-            <li>Foto del producto</li>
-            <li>Cupón cuando existe</li>
+            <li><ShopIcon name="tag" />Precios y ahorro<br />a la vista</li>
+            <li><ShopIcon name="trophy" />Cupones<br />cuando existen</li>
+            <li><ShopIcon name="clock" />Ofertas<br />recientes</li>
           </ul>
+          <div className="shoppingHeroArt" aria-hidden="true"><img src="/images/shopping-hero-2026.webp" width="1000" height="667" alt="" fetchPriority="high" /><span>¡Ahorra<br />a lo grande!</span></div>
         </div>
       </section>
+
+      <nav className="shoppingCategories shell" id="categorias-rapidas" aria-label="Categorías rápidas">
+        {[['fire', 'Destacados', 'Todos'], ['tech', 'Tecnología', 'Tecnología'], ['home', 'Hogar', 'Hogar'], ['sport', 'Deporte', 'Deporte'], ['appliance', 'Electrodomésticos', 'Electrodomésticos'], ['fashion', 'Moda', 'Moda'], ['game', 'Gaming', 'Gaming'], ['tag', 'Cupones', 'cupones']].map(([icon, label, value]) => <button key={value} type="button" aria-pressed={value === 'cupones' ? couponOnly : category === value && !couponOnly} onClick={() => { setCategory(value === 'cupones' ? 'Todos' : value); setCouponOnly(value === 'cupones'); setVisibleLimit(18); document.getElementById('ofertas')?.scrollIntoView({ behavior: 'smooth' }); }}><ShopIcon name={icon} /><span>{label}</span></button>)}
+      </nav>
+      <section className="shoppingAlert shell" aria-label="Alertas de ofertas en Telegram"><ShopIcon name="mail" /><div><h2>¡No te pierdas ningún chollo!</h2><p>Recibe las ofertas en nuestro canal gratuito de Telegram.</p></div><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer"><ShopIcon name="bell" />Ver alertas</a></section>
 
       <section className="offersSection" id="ofertas" aria-labelledby="offers-title">
         <div className="shell">
           <div className="catalogueWithHighlights"><div className="catalogueMain">
           <div className="sectionIntro">
             <div>
-              <h2 id="offers-title">Todas las ofertas recientes</h2>
+              <h2 id="offers-title"><ShopIcon name="clock" />Últimos chollos</h2>
             </div>
             <p>Precios válidos en el momento de la publicación. Pueden cambiar o agotarse.</p>
           </div>
 
-          <div className="offerToolbar"><p>Explora a tu ritmo</p><button type="button" className={savedOnly ? "savedFilter active" : "savedFilter"} onClick={() => setSavedOnly((active) => !active)} aria-pressed={savedOnly}>♥ Guardadas <span>{savedIds.length}</span></button></div>
+          <div className="offerToolbar"><label className="catalogueSort">Ordenar por:<select aria-label="Ordenar ofertas" value={sortBy} onChange={(event) => setSortBy(event.target.value)}><option value="recent">Más recientes</option><option value="discount">Mayor descuento</option><option value="saving">Mayor ahorro</option><option value="price">Menor precio</option></select></label><button type="button" className={savedOnly ? "savedFilter active" : "savedFilter"} onClick={() => setSavedOnly((active) => !active)} aria-pressed={savedOnly}>♥ Guardadas <span>{savedIds.length}</span></button></div>
           <div className="controls">
             <details className="advancedFilters"><summary>Filtros <span>{filtersActive ? "activos" : ""}</span></summary><div className="filterGrid">
               <label>Categoría<select value={category} onChange={(event) => setCategory(event.target.value)}>{categories.map((item) => <option key={item}>{item}</option>)}</select></label>

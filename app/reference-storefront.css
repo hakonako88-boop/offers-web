@@ -1,0 +1,115 @@
+/* User-selected storefront reference, November 2026. Real content and controls,
+   not a flattened mockup. Keep the phone reading layout from mobile-offer-cards. */
+.dealHome { --shop-accent:#d83f06; --shop-brand:#063e3a; background:#fff; }
+.dealHome .announcement { display:none; }
+.dealHome .shell { width:min(calc(100% - 48px),1280px); }
+body .dealHome .siteHeader { background:#043632; border-bottom:1px solid #ffffff26; }
+.dealHome .headerInner { min-height:88px; gap:28px; }
+.dealHome .brandUnified { gap:14px; flex-shrink:0; }
+.dealHome .brandUnified .brandSymbol { width:60px; height:60px; background:#fff; padding:3px; border-radius:14px; }
+.dealHome .brandUnified .brandWordmark strong { color:#fff; font-size:39px; line-height:1; letter-spacing:-1.6px; }
+.dealHome .brandUnified .brandWordmark small { color:#ff7a28; font-size:14px; letter-spacing:3px; margin-top:6px; }
+.dealHome .headerInner nav { gap:24px; flex:1; justify-content:flex-end; }
+.dealHome .headerInner nav a,.dealHome .headerInner nav button { display:inline-flex; align-items:center; gap:8px; min-height:48px; padding:4px 0; background:none; border:0; border-radius:0; color:white; font-size:15px; white-space:nowrap; position:relative; text-decoration:none; cursor:pointer; }
+.dealHome .headerInner nav a:hover,.dealHome .headerInner nav button:hover { color:#ff9a4b; }
+body .dealHome .siteHeader .headerInner nav a { color:#fff; font-size:15px; }
+body .dealHome .siteHeader .headerInner nav a:hover { color:#ff9a4b; }
+.dealHome .headerInner nav .referenceNavActive::after { content:''; position:absolute; height:3px; background:#ff7900; border-radius:3px; bottom:0; left:0; right:0; }
+.navSavedCount { background:#ed4704; color:#fff; border-radius:50%; min-width:20px; padding:2px; font-size:11px; text-align:center; }
+.dealHome .hero.buyerIntro { width:100%; max-width:none; background:radial-gradient(ellipse at 60% 45%,#336c5e 0%,#114d43 40%,#043b37 80%); padding:30px 0 0; margin:0 0 28px; overflow:visible; border-radius:0; }
+.dealHome .buyerIntro .heroCopy { width:min(calc(100% - 72px),1248px); margin:auto; display:grid; grid-template-columns:1.1fr 1fr; grid-template-areas:'headline art' 'trust art' 'search search'; column-gap:16px; row-gap:12px; position:relative; }
+.dealHome .buyerIntro .heroKicker,.dealHome .buyerIntro .heroLead,.dealHome .buyerIntro .heroActions,.dealHome .buyerIntro .heroSearchShortcuts { display:none; }
+.dealHome .buyerIntro h1 { grid-area:headline; color:#fff; font-size:clamp(38px,4.25vw,58px); line-height:1.13; letter-spacing:-1.7px; margin:0; align-self:end; position:relative; z-index:1; }
+.dealHome .buyerIntro h1 em { display:inline-block; color:#fff; background:#fb6a00; padding:0 10px 5px; font-family:Arial,sans-serif; font-weight:800; font-style:italic; transform:rotate(-1deg); box-decoration-break:clone; }
+.dealHome .buyerIntro .trustList { grid-area:trust; display:flex; align-items:center; justify-content:space-between; gap:18px; margin:10px 0 16px; padding:0; list-style:none; color:#fff; }
+.dealHome .buyerIntro .trustList li { display:flex; align-items:center; gap:10px; font:15px/1.4 Arial,sans-serif; color:#fff; }
+.dealHome .buyerIntro .trustList li::before { content:none; }
+.dealHome .buyerIntro .trustList svg { width:37px; height:37px; color:#ffb917; flex-shrink:0; }
+.shoppingHeroArt { grid-area:art; position:relative; min-width:0; align-self:center; }
+.shoppingHeroArt img { display:block; width:100%; height:265px; object-fit:contain; filter:drop-shadow(0 12px 18px #001e2455); }
+.shoppingHeroArt>span { position:absolute; right:0; top:8px; padding:12px 20px; background:#ff7600; border-radius:14px; color:#fff; font-size:23px; line-height:1.1; font-weight:800; transform:rotate(-9deg); box-shadow:0 6px 20px #002e3a30; }
+.dealHome .buyerIntro .heroSearch { grid-area:search; width:min(100%,980px); justify-self:center; padding:6px; margin:4px 0 -28px; border:1px solid #e2e5e3; background:#fff; border-radius:21px; box-shadow:0 7px 16px #102f321a; position:relative; z-index:2; }
+.dealHome .buyerIntro .heroSearch>label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+.dealHome .buyerIntro .heroSearchBox { display:flex; align-items:center; height:56px; min-height:56px; margin:0; border:0; border-radius:15px; background:#fff; }
+.dealHome .buyerIntro .heroSearchBox>span { padding:0 18px; font-size:31px; color:#52656c; }
+.dealHome .buyerIntro .heroSearchBox input { flex:1; min-width:0; height:100%; padding:0; background:#fff; font-size:19px; color:#202b2f; border:0; }
+.dealHome .buyerIntro .heroSearchBox button { flex:0 0 155px; height:54px; padding:0 20px; border-radius:14px; background:linear-gradient(125deg,#ff6500,#ed3900); color:#fff; font-size:19px; font-weight:700; border:0; }
+.shoppingCategories { display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:12px; padding-top:28px; margin-bottom:30px; }
+.shoppingCategories button { display:flex; flex-direction:column; gap:10px; justify-content:center; align-items:center; min-width:0; min-height:98px; padding:12px 6px; background:linear-gradient(#fff,#fafafa); border:1px solid #e2e5e5; border-radius:19px; color:#151d20; font-weight:700; font-size:14px; box-shadow:0 4px 9px #1b34200b; cursor:pointer; }
+.shoppingCategories button svg { width:33px; height:33px; color:#12564e; }
+.shoppingCategories button[aria-pressed=true] { background:#fff1e6; border-color:#ff6900; box-shadow:0 0 0 1px #ff690021; }
+.shoppingCategories button[aria-pressed=true] svg { color:#f05b0b; }
+.shoppingCategories button:last-child svg { color:#d93859; }
+.shoppingAlert { display:flex; align-items:center; gap:20px; margin-top:10px; margin-bottom:32px; padding:20px 30px; background:#fff0e5; border-radius:17px; }
+.shoppingAlert>svg { width:48px; height:48px; color:#ed4d07; flex-shrink:0; }
+.shoppingAlert h2 { font-size:25px; font-weight:800; line-height:1.25; margin:0 0 4px; color:#12191b; letter-spacing:-.6px; }
+.shoppingAlert p { font-size:16px; margin:0; line-height:1.5; color:#2c383a; }
+.shoppingAlert a { margin-left:auto; display:flex; gap:10px; align-items:center; white-space:nowrap; min-height:54px; padding:12px 24px; border-radius:13px; background:#ec4600; color:#fff; font-size:18px; font-weight:700; text-decoration:none; }
+.dealHome .catalogueWithHighlights { display:block; }
+.dealHome .catalogueMain .sectionIntro h2 { display:flex; gap:16px; align-items:center; font-size:32px; letter-spacing:-.8px; }
+.dealHome .catalogueMain .sectionIntro h2 svg { width:43px; height:43px; color:#ee6508; }
+.dealHome .catalogueMain .sectionIntro>p { max-width:340px; font-size:12px; }
+.dealHome .offerToolbar { gap:12px; justify-content:flex-end; margin:0 0 10px; float:none; }
+.catalogueSort { display:flex; align-items:center; gap:6px; font-size:13px; padding:3px 10px; border:1px solid #e3e5e5; border-radius:10px; background:#fff; min-height:42px; }
+.catalogueSort select { border:0; background:#fff; color:#172423; font-weight:700; min-height:38px; font-size:13px; max-width:170px; }
+.dealHome .catalogueMain .advancedFilters { margin-bottom:12px; }
+.dealHome .catalogueMain .resultsSummary { margin-bottom:18px; }
+.dealHome .catalogueHighlights { position:static; margin:40px 0 0; }
+.dealHome .catalogueHighlights .featuredSelectionGrid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; }
+.dealHome .catalogueHighlights .featuredSelection { padding:20px; }
+@media(min-width:601px) {
+  .dealHome .catalogueMain .dealGrid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:22px; }
+  .dealHome .catalogueMain .dealGrid>.dealCard,.dealHome .catalogueMain .dealGrid>.dealCard:first-child { border-radius:15px; border:1px solid #dedfe1; box-shadow:0 9px 20px #16333409; }
+  .dealHome .catalogueMain .dealCard .imageWrap,.dealHome .catalogueMain .dealCard:first-child .imageWrap { height:218px; border-bottom:0; }
+  .dealHome .catalogueMain .dealCard .imageWrap img { padding:48px 18px 12px; }
+  .dealHome .catalogueMain .dealCard .storeBadge { border:0; left:12px; top:12px; padding:0; }
+  .dealHome .catalogueMain .dealCard .storeBadge img { height:25px; max-width:100px; }
+  .dealHome .catalogueMain .dealCard .saveDealButton { font-size:0; min-height:44px; min-width:44px; padding:0; right:7px; top:4px; border:0; }
+  .dealHome .catalogueMain .dealCard .saveDealButton::first-letter { font-size:25px; }
+  .dealHome .catalogueMain .dealCard .discountBadge { left:15px; bottom:4px; border-radius:20px; padding:7px 10px; font-size:13px; background:#ff590a; }
+  .dealHome .catalogueMain .dealCard .dealBody,.dealHome .catalogueMain .dealCard:first-child .dealBody { padding:14px 16px; }
+  .dealHome .catalogueMain .dealCard .categoryLabel { display:none; }
+  .dealHome .catalogueMain .dealCard h3,.dealHome .catalogueMain .dealCard:first-child h3 { min-height:70px; font-size:17px; line-height:1.38; margin-bottom:10px; }
+  .dealHome .catalogueMain .dealCard .priceRow { border:0; padding:0; gap:5px 10px; justify-content:flex-start; align-items:baseline; margin-bottom:10px; }
+  .dealHome .catalogueMain .dealCard .priceRow strong { color:#dc4006; font-size:34px; }
+  .dealHome .catalogueMain .dealCard .priceCurrent small { font-size:9px; }
+  .dealHome .catalogueMain .dealCard .priceWas { text-align:left; }
+  .dealHome .catalogueMain .dealCard .priceWas small { display:none; }
+  .dealHome .catalogueMain .dealCard .priceWas s { font-size:14px; }
+  .dealHome .catalogueMain .dealCard .saving { display:block; width:fit-content; border-radius:5px; background:#dcf9e2; color:#145a27; padding:5px 7px; font-size:11px; line-height:1.4; }
+  .dealHome .catalogueMain .dealCard .dealButton { background:#ed4700; border-radius:10px; min-height:44px; font-size:14px; padding:11px 14px; }
+  .dealHome .catalogueMain .dealCard .verified { font-size:11px; border-top:1px solid #f1f1f1; padding-top:10px; }
+}
+@media(min-width:601px) and (max-width:1050px) {
+  body .dealHome .siteHeader .headerInner nav a { font-size:12px; }
+  .dealHome .headerInner nav { gap:13px; }.dealHome .headerInner nav a,.dealHome .headerInner nav button { font-size:12px; gap:5px; }.dealHome .headerInner nav svg { width:19px; }
+  .dealHome .brandUnified .brandWordmark strong { font-size:30px; }.dealHome .brandUnified .brandSymbol { width:48px; height:48px; }
+  .dealHome .catalogueMain .dealGrid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+  .shoppingCategories { gap:8px; }.shoppingCategories button { font-size:12px; }
+}
+@media(max-width:800px) {
+  .dealHome .headerInner { min-height:76px; padding:10px 0; }.dealHome .brandUnified .brandSymbol { width:46px; height:46px; }.dealHome .brandUnified .brandWordmark strong { font-size:29px; }.dealHome .brandUnified .brandWordmark small { font-size:10px; }
+  .dealHome .mobileNav summary { color:#fff; background:#ffffff12; border-color:#ffffff40; }.dealHome .mobileNavMenu { background:#fff; }
+  .dealHome .buyerIntro .heroCopy { width:calc(100% - 32px); }.dealHome .buyerIntro h1 { font-size:34px; }.dealHome .buyerIntro .trustList li { font-size:12px; }.dealHome .buyerIntro .trustList svg { width:26px; height:26px; }
+  .shoppingHeroArt img { height:220px; }.shoppingHeroArt>span { font-size:17px; padding:10px; }
+  .shoppingCategories { grid-template-columns:repeat(4,minmax(0,1fr)); gap:9px; }.shoppingCategories button { min-height:82px; border-radius:13px; font-size:12px; gap:7px; }.shoppingCategories button svg { width:27px; height:27px; }
+  .shoppingAlert { gap:12px; padding:17px; }.shoppingAlert>svg { width:31px; height:31px; }.shoppingAlert h2 { font-size:20px; }.shoppingAlert p { font-size:13px; }.shoppingAlert a { font-size:14px; padding:10px 14px; min-height:46px; }
+  .dealHome .catalogueHighlights .featuredSelectionGrid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:600px) {
+  .dealHome .shell { width:calc(100% - 32px); }
+  .dealHome .hero.buyerIntro { padding:22px 0 0; }
+  .dealHome .buyerIntro .heroCopy { grid-template-columns:1fr 1fr; grid-template-areas:'headline headline' 'trust art' 'search search'; gap:12px 5px; }
+  .dealHome .buyerIntro h1 { font-size:35px; letter-spacing:-1px; line-height:1.15; }
+  .dealHome .buyerIntro .trustList { flex-direction:column; align-items:flex-start; gap:11px; margin:2px 0 4px; }
+  .dealHome .buyerIntro .trustList li { gap:9px; font-size:12px; line-height:1.3; }
+  .shoppingHeroArt img { height:155px; width:112%; margin-left:-12%; }.shoppingHeroArt>span { top:-7px; right:0; font-size:12px; border-radius:8px; padding:7px 10px; }
+  .dealHome .buyerIntro .heroSearch { border-radius:15px; padding:5px; margin-bottom:-25px; }
+  .dealHome .buyerIntro .heroSearchBox { min-height:46px; height:46px; }.dealHome .buyerIntro .heroSearchBox>span { font-size:24px; padding:0 8px; }.dealHome .buyerIntro .heroSearchBox input { font-size:13px; }.dealHome .buyerIntro .heroSearchBox button { flex:0 0 77px; height:44px; border-radius:10px; padding:0 12px; font-size:14px; }
+  .shoppingCategories { display:flex; overflow-x:auto; padding:23px 0 8px; gap:8px; margin-bottom:16px; scrollbar-width:thin; }.shoppingCategories button { flex:0 0 91px; min-height:81px; }.shoppingCategories button:nth-child(5) { flex-basis:130px; }
+  .shoppingAlert { display:grid; grid-template-columns:28px 1fr; padding:15px; gap:10px; margin-top:0; margin-bottom:24px; }.shoppingAlert h2 { font-size:19px; }.shoppingAlert a { grid-column:2; justify-self:start; margin-left:0; min-height:44px; padding:8px 13px; font-size:13px; }.shoppingAlert a svg { width:19px; }
+  .dealHome .catalogueMain .sectionIntro h2 { font-size:27px; gap:10px; }.dealHome .catalogueMain .sectionIntro h2 svg { width:32px; height:32px; }
+  .dealHome .offerToolbar { float:none; display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 8px; }.catalogueSort { flex:1; min-width:0; font-size:11px; padding:2px 7px; }.catalogueSort select { max-width:130px; font-size:12px; min-width:0; }.dealHome .savedFilter { margin-left:0; font-size:11px; }
+  .dealHome .advancedFilters>summary { width:100%; }.dealHome .controls { min-height:0; }.dealHome .catalogueMain .dealCard .dealButton { background:#df4305; }.dealHome .catalogueMain .dealCard .priceRow strong { color:#d63e08; }
+}
+@media(min-width:601px) and (max-width:760px) { .dealHome .catalogueMain .dealGrid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
