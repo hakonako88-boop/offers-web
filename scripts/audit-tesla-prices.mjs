@@ -13,7 +13,7 @@ const discoveryConfig = JSON.parse(await readFile(new URL('../data/tesla-discove
 const approvedDiscoveryIds = discoveryConfig.reviewedAliExpressIds;
 let previous = { items: [], discoveries: [] };
 try { previous = JSON.parse(await readFile(new URL('../data/tesla-price-observations.json', import.meta.url), 'utf8')); } catch { /* First audit has no previous observations. */ }
-async function request(method, fields) {
+async function requestOnce(method, fields) {
   const params = { app_key: appKey, format: 'json', method, sign_method: 'sha256', timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '), v: '2.0', ...fields };
   const signed = { ...params, sign: createAliExpressSignature(params, appSecret) };
   const response = await fetch(`${ALIEXPRESS_ENDPOINT}?${new URLSearchParams(signed)}`, { signal: AbortSignal.timeout(25000) });
@@ -24,6 +24,15 @@ async function request(method, fields) {
   if (!envelope || (envelope.resp_code && Number(envelope.resp_code) !== 200)) throw Error(`API result ${Number(envelope?.resp_code) || 'empty'}`);
   const products = envelope.result?.products?.product || [];
   return Array.isArray(products) ? products : [products];
+}
+async function request(method, fields) {
+  for (let attempt = 0; ; attempt++) {
+    try { return await requestOnce(method, fields); }
+    catch (error) {
+      if (attempt >= 3 || !/ApiCallLimit|HTTP 429|HTTP 50[234]/i.test(error.message)) throw error;
+      await new Promise(resolve => setTimeout(resolve, [2000, 5000, 10000][attempt]));
+    }
+  }
 }
 function observation(product, originalUrl = null) {
   const price = Number(product.target_sale_price);
@@ -45,7 +54,10 @@ else {
     const activeAutomatic = previous.discoveries.filter(row => row.admission === 'automated_low_risk_filter').map(row => row.productId);
     const ids = [...new Set([...catalogue.imports.map(item => item.productId), ...approvedDiscoveryIds, ...activeAutomatic])];
     const products = [];
-    for (let offset = 0; offset < ids.length; offset += 10) products.push(...await request('aliexpress.affiliate.productdetail.get', { product_ids: ids.slice(offset, offset + 10).join(','), target_currency: 'EUR', target_language: 'ES', country: 'ES', tracking_id: trackingId, fields }));
+    for (let offset = 0; offset < ids.length; offset += 10) {
+      try { products.push(...await request('aliexpress.affiliate.productdetail.get', { product_ids: ids.slice(offset, offset + 10).join(','), target_currency: 'EUR', target_language: 'ES', country: 'ES', tracking_id: trackingId, fields })); }
+      catch (error) { output.issues.push(`Product batch ${offset / 10 + 1}: ${error.message}`); }
+    }
     for (const entry of catalogue.imports) {
       const product = products.find(product => String(product.product_id) === entry.productId);
       if (product) output.items.push(observation(product, entry.originalUrl));
@@ -69,7 +81,7 @@ else {
 }
 await mkdir(new URL('../outputs/', import.meta.url), { recursive: true });
 await writeFile(new URL('../outputs/tesla-price-audit.json', import.meta.url), JSON.stringify(output, null, 2) + '\n');
-if (process.argv.includes('--update-catalogue') && output.items.length) {
+if (process.argv.includes('--update-catalogue') && (output.items.length || previous.items?.length)) {
   // Failed rows retain their original timestamp, never a synthetic fresh date.
   const merge = (oldRows, newRows) => [...new Map([...oldRows, ...newRows].map(row => [row.productId, row])).values()];
   const grown = growDiscoveryCatalogue(previous.discoveries.filter(row => row.admission === 'automated_low_risk_filter'), output.discoveries, { maxNew: discoveryConfig.maxNewPerStorePerRun, maxTotal: discoveryConfig.maxAutomaticPerStore, excludedIds: [...catalogue.imports.map(row => row.productId), ...approvedDiscoveryIds] });
