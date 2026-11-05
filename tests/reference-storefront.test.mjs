@@ -12,6 +12,8 @@ test('selected reference is an interactive storefront with truthful alerts and r
   assert.match(home, /money.format\(deal.price\)/);
   assert.match(css, /repeat\(4,minmax\(0,1fr\)\)/);
   assert.match(css, /max-width:600px/);
+  assert.match(css, /\.imageWrap>img \{ padding:48px/);
+  assert.match(css, /\.storeBadge img \{ width:auto; height:25px; max-width:100px; padding:0;/);
   assert.ok(fs.statSync('public/images/shopping-hero-2026.webp').size < 150_000);
   const layout = fs.readFileSync('app/layout.tsx', 'utf8');
   assert.ok(layout.indexOf('reference-storefront.css') > layout.indexOf('mobile-offer-cards.css'));
