@@ -21,6 +21,7 @@ import "./comparison.css";
 import "./tv-guide.css";
 import "./buyer-journey.css";
 import "./shopping-system.css";
+import "./mobile-offer-cards.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });

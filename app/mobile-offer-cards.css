@@ -1,0 +1,67 @@
+/* Phone catalogue: one readable offer per row, not two squeezed columns.
+   Scoped to the catalogue so editorials and product detail retain their layout. */
+@media (max-width: 600px) {
+  .dealHome .catalogueMain .dealGrid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .dealHome .catalogueMain .dealGrid > .dealCard,
+  .dealHome .catalogueMain .dealGrid > .dealCard:first-child {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    align-items: stretch;
+    border-radius: 14px;
+  }
+  .dealHome .catalogueMain .dealCard .imageWrap,
+  .dealHome .catalogueMain .dealCard:first-child .imageWrap {
+    height: 100%; min-height: 184px; border: 0; border-right: 1px solid #f0f0ea;
+  }
+  .dealHome .catalogueMain .dealCard .imageWrap img { padding: 48px 8px 50px; }
+  .dealHome .catalogueMain .dealCard .storeBadge { top: 10px; left: 8px; }
+  .dealHome .catalogueMain .dealCard .storeBadge img { max-width: 72px; height: 18px; padding: 0; }
+  .dealHome .catalogueMain .dealCard .discountBadge { bottom: 10px; left: 8px; padding: 5px; font-size: 10px; }
+  .dealHome .catalogueMain .dealCard .saveDealButton {
+    top: 43px; left: 7px; right: auto; width: 44px; min-height: 44px;
+    padding: 0; font-size: 0; border-radius: 50%;
+  }
+  .dealHome .catalogueMain .dealCard .saveDealButton::first-letter { font-size: 23px; }
+  .dealHome .catalogueMain .dealCard .dealBody,
+  .dealHome .catalogueMain .dealCard:first-child .dealBody { min-width: 0; padding: 13px 12px; }
+  .dealHome .catalogueMain .dealCard h3,
+  .dealHome .catalogueMain .dealCard:first-child h3 {
+    font-size: 15px; line-height: 1.4; letter-spacing: -.15px; min-height: 0;
+    margin: 0 0 10px; -webkit-line-clamp: 3;
+  }
+  .dealHome .catalogueMain .dealCard h3 a { color: #202724; }
+  .dealHome .catalogueMain .dealCard .priceRow {
+    padding: 0; margin: 0 0 10px; border: 0; gap: 3px 8px; align-items: baseline;
+  }
+  .dealHome .catalogueMain .dealCard .priceRow strong {
+    color: #b63720; font-size: 32px; line-height: 1.1; letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .dealHome .catalogueMain .dealCard .priceCurrent small { font-size: 9px; margin-bottom: 3px; }
+  .dealHome .catalogueMain .dealCard .priceWas { display: block; text-align: left; }
+  .dealHome .catalogueMain .dealCard .priceWas small { display: inline; margin-right: 4px; }
+  .dealHome .catalogueMain .dealCard .priceWas s { font-size: 12px; }
+  .dealHome .catalogueMain .dealCard .couponCopyCompact {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; width: 100%;
+    min-height: 44px; padding: 9px 8px; margin: 0 0 8px;
+    border: 1px dashed #b78d34; border-radius: 7px; background: #fff7df;
+  }
+  .dealHome .catalogueMain .dealCard .couponCopyCompact b { font-size: 13px; overflow-wrap: anywhere; }
+  .dealHome .catalogueMain .dealCard .couponCopyCompact strong { font-size: 10px; color: #704d00; }
+  .dealHome .catalogueMain .dealCard .couponOptions { min-width: 0; }
+  .dealHome .catalogueMain .dealCard .couponOptions small,
+  .dealHome .catalogueMain .dealCard .couponAlternatives summary { font-size: 11px; line-height: 1.5; }
+  .dealHome .catalogueMain .dealCard .couponCollectable { padding: 8px; margin-bottom: 9px; border-radius: 7px; background: #fff7df; }
+  .dealHome .catalogueMain .dealCard .couponCollectable p { font-size: 11px; line-height: 1.5; margin: 4px 0 0; }
+  .dealHome .catalogueMain .dealCard .dealButton { min-height: 44px; padding: 10px 12px; font-size: 13px; }
+  .dealHome .catalogueMain .dealCard .verified { font-size: 11px; line-height: 1.5; margin-top: 9px; }
+  .dealHome .catalogueMain .dealCard .offerFreshness { font-weight: 700; color: #173d3b; }
+}
+@media (max-width: 360px) {
+  .dealHome .catalogueMain .dealGrid > .dealCard,
+  .dealHome .catalogueMain .dealGrid > .dealCard:first-child { grid-template-columns: 88px minmax(0, 1fr); }
+  .dealHome .catalogueMain .dealCard .dealBody,
+  .dealHome .catalogueMain .dealCard:first-child .dealBody { padding: 11px 10px; }
+  .dealHome .catalogueMain .dealCard .storeBadge img { max-width: 55px; height: 16px; }
+  .dealHome .catalogueMain .dealCard .priceRow strong { font-size: 29px; }
+}
