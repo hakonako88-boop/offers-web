@@ -85,6 +85,10 @@ await render("/como-verificamos-ofertas", "como-verificamos-ofertas/index.html")
 await render("/blog", "blog/index.html");
 await render("/buscar", "buscar/index.html");
 await render("/telegram", "telegram/index.html");
+await render("/tesla", "tesla/index.html");
+await render("/tesla/guias/model-3", "tesla/guias/model-3/index.html");
+await render("/tesla/guias/model-y", "tesla/guias/model-y/index.html");
+await render("/tesla/gestion", "tesla/gestion/index.html");
 await render("/gta-vi-mas-barato-ps5", "gta-vi-mas-barato-ps5/index.html");
 await render("/fiesta-ofertas-prime-2026", "fiesta-ofertas-prime-2026/index.html");
 await render("/black-friday-2026", "black-friday-2026/index.html");

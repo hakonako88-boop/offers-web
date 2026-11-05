@@ -1,0 +1,48 @@
+/* Tesla extension: inherits Chollos al Día tokens; isolated from existing pages. */
+.teslaPage{--tesla-accent:var(--hl-accent);--tesla-ink:var(--hl-ink);--tesla-paper:var(--hl-paper);--tesla-surface:var(--hl-surface);--tesla-line:var(--hl-rule);color:var(--tesla-ink);background:var(--tesla-paper);min-height:100vh;padding-bottom:48px}
+.teslaPage .teslaHeader,.teslaPage .teslaHero,.teslaPage .teslaSection{width:min(1180px,calc(100% - 48px));margin-inline:auto}
+.teslaPage .teslaHeader{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:24px;border-bottom:1px solid var(--tesla-line)}
+.teslaPage .teslaHero{padding-block:64px 48px;display:grid;gap:24px}
+.teslaPage h1{font-size:clamp(36px,5vw,66px);max-width:22ch;line-height:1.06}
+.teslaPage h2{font-size:clamp(25px,3vw,36px);line-height:1.15;max-width:35ch}
+.teslaPage h3{font-size:23px;line-height:1.2}
+.teslaPage p{max-width:72ch;line-height:1.65}
+.teslaPage .teslaSection{padding-block:32px;border-top:1px solid var(--tesla-line);display:grid;gap:20px;min-width:0}
+.teslaPage .teslaAction{background:var(--tesla-accent);color:var(--tesla-surface);padding:14px 22px;display:inline-flex;width:fit-content;min-height:48px;font-weight:700}
+.teslaPage .teslaFilters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.teslaPage label{display:grid;gap:8px;font-weight:650;min-width:0}
+.teslaPage select,.teslaPage input,.teslaPage textarea{width:100%;min-width:0;min-height:48px;border:1px solid var(--tesla-line);padding:12px;background:var(--tesla-surface);color:var(--tesla-ink)}
+.teslaPage button{min-height:46px;border:1px solid var(--tesla-line);padding:10px 16px;background:var(--tesla-surface);color:var(--tesla-ink);cursor:pointer}
+.teslaPage .teslaTools{display:flex;flex-wrap:wrap;gap:12px}
+.teslaPage .teslaEmpty{padding:28px;border-left:4px solid var(--tesla-accent);background:var(--tesla-surface);display:grid;gap:12px}
+.teslaPage .teslaGuideGrid,.teslaPage .teslaProducts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.teslaPage .teslaGuideGrid>a,.teslaPage .teslaGuideGrid>article,.teslaPage .teslaProducts>article{padding-block:24px;border-top:2px solid var(--tesla-accent);display:grid;gap:14px;align-content:start;min-width:0}
+.teslaPage .teslaProducts>article{grid-column:1/-1}
+.teslaPage .teslaProducts img{object-fit:contain;max-height:260px}
+.teslaPage .teslaTable{overflow-x:auto;max-width:100%}
+.teslaPage table{border-collapse:collapse;min-width:640px;width:100%}
+.teslaPage th,.teslaPage td{padding:14px;text-align:left;border-bottom:1px solid var(--tesla-line)}
+.teslaPage td strong{color:var(--tesla-accent);font-size:22px}
+.teslaPage details{padding-block:16px;border-bottom:1px solid var(--tesla-line)}
+.teslaPage summary{cursor:pointer;font-weight:700;min-height:32px}
+.teslaPage details p{margin-top:14px}
+.teslaPage :is(a,button,input,select,textarea,summary):focus-visible{outline:3px solid var(--tesla-accent);outline-offset:4px}
+.teslaPage textarea{min-height:340px;font-family:var(--font-geist-mono)}
+.teslaPage .teslaVehicleCards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.teslaPage .teslaVehicleCards button{padding:0;text-align:left;border:2px solid var(--tesla-line);overflow:hidden}
+.teslaPage .teslaVehicleCards button[aria-pressed="true"]{border-color:var(--tesla-accent);box-shadow:0 0 0 2px var(--tesla-accent)}
+.teslaPage .teslaVehicleCards img{width:100%;height:250px;object-fit:cover;object-position:center}
+.teslaPage .teslaVehicleCards button>span{padding:18px;display:grid;gap:5px}
+.teslaPage .teslaVehicleCards strong{font-size:26px}.teslaPage .teslaPhotoNote{font-size:13px}
+.teslaPage .teslaImportGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.teslaPage .teslaImportCard{min-width:0;background:var(--tesla-surface);border:1px solid var(--tesla-line);display:flex;flex-direction:column}
+.teslaPage .teslaImportImage{padding:18px;border-bottom:1px solid var(--tesla-line)}
+.teslaPage .teslaImportImage img{width:100%;height:220px;object-fit:contain}
+.teslaPage .teslaImportBody{padding:20px;display:flex;flex:1;flex-direction:column;align-items:flex-start;gap:15px}
+.teslaPage .teslaImportBody p{font-size:14px}.teslaPage .teslaImportBody small{font-size:12px;line-height:1.5}
+.teslaPage .teslaImportBody .teslaAction{margin-top:auto;font-size:15px}
+.teslaPage .teslaPending{border-left:3px solid var(--tesla-accent);padding-left:10px;font-size:13px}
+.teslaPage .teslaPendingPrice{font-size:18px}.teslaPage .teslaCaution{font-weight:650}
+@media(max-width:900px){.teslaPage .teslaImportGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.teslaPage .teslaVehicleCards{gap:12px}.teslaPage .teslaVehicleCards img{height:130px}.teslaPage .teslaVehicleCards button>span{padding:12px}.teslaPage .teslaVehicleCards strong{font-size:20px}.teslaPage .teslaVehicleCards small{font-size:12px}.teslaPage .teslaImportGrid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:650px){.teslaPage .teslaHeader,.teslaPage .teslaHero,.teslaPage .teslaSection{width:calc(100% - 32px)}.teslaPage .teslaHero{padding-block:36px}.teslaPage .teslaFilters,.teslaPage .teslaGuideGrid,.teslaPage .teslaProducts{grid-template-columns:minmax(0,1fr)}.teslaPage .teslaHeader{flex-wrap:wrap}.teslaPage .teslaEmpty{padding:20px}}

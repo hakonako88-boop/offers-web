@@ -211,6 +211,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
           <nav aria-label="Navegación principal">
             <a className="referenceNavActive" href="/"><ShopIcon name="home" />Inicio</a>
             <a href="#categorias-rapidas"><ShopIcon name="tech" />Categorías</a>
+            <a href="/tesla/">Tesla</a>
             <button type="button" onClick={() => { setCouponOnly(true); document.getElementById('ofertas')?.scrollIntoView({ behavior: 'smooth' }); }}><ShopIcon name="tag" />Cupones</button>
             <button type="button" onClick={() => { setSortBy('discount'); document.getElementById('ofertas')?.scrollIntoView({ behavior: 'smooth' }); }}><ShopIcon name="trophy" />Top chollos</button>
             <a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer"><ShopIcon name="bell" />Alertas</a>
@@ -221,6 +222,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
             <div className="mobileNavMenu">
               <a href="#ofertas">Ofertas de hoy</a>
               <a href="/buscar/">Buscar ofertas</a>
+              <a href="/tesla/">Accesorios Tesla Model 3 y Model Y</a>
               <a href="/blog/">Mejores productos</a>
               <a href="/black-friday-2026/">Black Friday 2026</a>
               <a href="/chollos/tecnologia/">Tecnología</a>
@@ -370,6 +372,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
           <h2 id="guides-title">Guías rápidas<br />para <em>ahorrar mejor.</em></h2>
         </div>
         <div className="guideGrid">
+          <a href="/tesla/" className="guideCard guideHow"><span>ACCESORIOS TESLA</span><h3>Encuentra accesorios para tu Model 3 o Model Y</h3><p>Selecciona tu coche, revisa generaciones y consulta los productos recibidos con sus fotos.</p><b>Explorar accesorios</b></a>
           <a href="/guias/ofertas-amazon" className="guideCard guideAmazon"><span>AMAZON</span><h3>Como encontrar ofertas de Amazon que merecen la pena</h3><p>Una lista sencilla para comprobar precio, variante y condiciones antes de comprar.</p><b>Leer guia <i aria-hidden="true">→</i></b></a>
           <a href="/guias/cupones-aliexpress" className="guideCard guideAli"><span>ALIEXPRESS</span><h3>Cupones y precios finales de AliExpress</h3><p>Aprende a revisar condiciones y a aplicar el descuento antes de pagar.</p><b>Leer guia <i aria-hidden="true">→</i></b></a>
           <a href="/guias/detectar-chollos-reales" className="guideCard guideHow"><span>MÉTODO</span><h3>Como saber si una oferta es realmente buena</h3><p>Consulta el precio anterior, las condiciones y la ficha antes de comprar.</p><b>Ver el metodo <i aria-hidden="true">→</i></b></a>
