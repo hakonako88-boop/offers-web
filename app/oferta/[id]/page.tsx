@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CouponCopy from "../../components/CouponCopy";
+import OfferFreshness from "../../components/OfferFreshness";
 import AdSlot from "../../components/AdSlot";
 import { adsenseOfferSlot } from "../../lib/adsense";
 import {
@@ -178,7 +179,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
             {deal.coupon && <CouponCopy code={deal.coupon} discount={deal.couponDiscount} minimumSpend={deal.couponMinimumSpend} />}
             {deal.priceCondition && <details className="offerConditions"><summary>Condiciones completas de esta oferta</summary><p>{deal.priceCondition}</p></details>}
             <div className="offerShare"><span>¿Conoces a alguien a quien le interese?</span><div><a href={whatsappShareUrl} target="_blank" rel="noreferrer">Compartir por WhatsApp</a><a href={telegramShareUrl} target="_blank" rel="noreferrer">Enviar por Telegram</a></div></div>
-            <p className="offerMeta"><span aria-hidden="true" />{deal.verifiedDate ? <time dateTime={deal.verifiedDate}>{deal.verifiedAt}</time> : deal.verifiedAt} · Precio sujeto a cambios.</p>
+            <p className="offerMeta"><span aria-hidden="true" /><OfferFreshness date={deal.verifiedDate} fallback={deal.verifiedAt} /> · Precio sujeto a cambios.</p>
             {product && <Link className="offerProductLink" href={productHref(product)}>Comparar este producto y sus tiendas →</Link>}
             <a className="offerReport" href={reportUrl}>¿Ha cambiado el precio o el stock? Avísanos</a>
           </div>
