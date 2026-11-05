@@ -10,7 +10,7 @@ function tokenEndpoints(version = '') {
   return [...new Set([endpoints[String(version).trim()], endpoints['3.2']].filter(Boolean))];
 }
 
-async function accessToken(config, fetchImpl) {
+export async function accessToken(config, fetchImpl) {
   let detail = 'credenciales rechazadas';
   for (const endpoint of tokenEndpoints(config.version)) {
     const response = await fetchImpl(endpoint, {

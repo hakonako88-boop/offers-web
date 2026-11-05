@@ -1,5 +1,6 @@
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { ALIEXPRESS_ENDPOINT, createAliExpressSignature } from './aliexpress-offers.mjs';
+import { discoveryTopics, growDiscoveryCatalogue } from './tesla-discovery.mjs';
 
 // Read-only affiliate API audit. Does not generate replacement links or publish anything.
 const catalogue = JSON.parse(await readFile(new URL('../data/tesla-catalogue.json', import.meta.url), 'utf8'));
@@ -7,7 +8,8 @@ const output = { checkedAt: new Date().toISOString(), country: 'ES', currency: '
 const appKey = process.env.ALIEXPRESS_APP_KEY;
 const appSecret = process.env.ALIEXPRESS_APP_SECRET;
 const trackingId = process.env.ALIEXPRESS_TRACKING_ID;
-const approvedDiscoveryIds = ['1005010473185985', '1005010472747139'];
+const discoveryConfig = JSON.parse(await readFile(new URL('../data/tesla-discovery-config.json', import.meta.url), 'utf8'));
+const approvedDiscoveryIds = discoveryConfig.reviewedAliExpressIds;
 let previous = { items: [], discoveries: [] };
 try { previous = JSON.parse(await readFile(new URL('../data/tesla-price-observations.json', import.meta.url), 'utf8')); } catch { /* First audit has no previous observations. */ }
 async function request(method, fields) {
@@ -25,7 +27,7 @@ async function request(method, fields) {
 function observation(product, originalUrl = null) {
   const price = Number(product.target_sale_price);
   return {
-    productId: String(product.product_id), name: String(product.product_title || ''),
+    productId: String(product.product_id), store: 'AliExpress', name: String(product.product_title || ''),
     imageUrl: String(product.product_main_image_url || ''),
     listedPrice: Number.isFinite(price) && price > 0 ? price : null,
     priceBasis: 'product_level_not_selected_sku', shipping: null, taxIncluded: null,
@@ -39,13 +41,16 @@ if (!appKey || !appSecret || !trackingId) output.issues.push('Authorized API con
 else {
   const fields = 'product_id,product_title,product_main_image_url,target_sale_price,target_sale_price_currency,target_original_price,promotion_link,promo_code,promo_code_info';
   try {
-    const products = await request('aliexpress.affiliate.productdetail.get', { product_ids: [...catalogue.imports.map(item => item.productId), ...approvedDiscoveryIds].join(','), target_currency: 'EUR', target_language: 'ES', country: 'ES', tracking_id: trackingId, fields });
+    const activeAutomatic = previous.discoveries.filter(row => row.admission === 'automated_low_risk_filter').map(row => row.productId);
+    const ids = [...new Set([...catalogue.imports.map(item => item.productId), ...approvedDiscoveryIds, ...activeAutomatic])];
+    const products = [];
+    for (let offset = 0; offset < ids.length; offset += 10) products.push(...await request('aliexpress.affiliate.productdetail.get', { product_ids: ids.slice(offset, offset + 10).join(','), target_currency: 'EUR', target_language: 'ES', country: 'ES', tracking_id: trackingId, fields }));
     for (const entry of catalogue.imports) {
       const product = products.find(product => String(product.product_id) === entry.productId);
       if (product) output.items.push(observation(product, entry.originalUrl));
       else output.issues.push(`No exact API result: ${entry.productId}`);
     }
-    for (const id of approvedDiscoveryIds) {
+    for (const id of [...approvedDiscoveryIds, ...activeAutomatic]) {
       const product = products.find(product => String(product.product_id) === id);
       if (product) {
         const row = observation(product);
@@ -55,8 +60,9 @@ else {
     }
   } catch (error) { output.issues.push(`Product detail: ${error.message}`); }
   try {
-    const products = await request('aliexpress.affiliate.product.query', { keywords: 'Tesla Model Y organizer floor mats', target_currency: 'EUR', target_language: 'ES', ship_to_country: 'ES', tracking_id: trackingId, page_size: '10', fields });
-    const discoveries = products.filter(product => /tesla/i.test(product.product_title || '') && /organ|mat|alfombr|storage/i.test(product.product_title || '')).map(product => observation(product));
+    const products = [];
+    for (const keywords of discoveryTopics(discoveryConfig.topics)) products.push(...await request('aliexpress.affiliate.product.query', { keywords, target_currency: 'EUR', target_language: 'ES', ship_to_country: 'ES', tracking_id: trackingId, page_size: '10', fields }));
+    const discoveries = products.filter(product => /tesla/i.test(product.product_title || '')).map(product => observation(product));
     output.discoveries.push(...discoveries.filter(item => !output.discoveries.some(existing => existing.productId === item.productId)));
   } catch (error) { output.issues.push(`Discovery: ${error.message}`); }
 }
@@ -65,7 +71,9 @@ await writeFile(new URL('../outputs/tesla-price-audit.json', import.meta.url), J
 if (process.argv.includes('--update-catalogue') && output.items.length) {
   // Failed rows retain their original timestamp, never a synthetic fresh date.
   const merge = (oldRows, newRows) => [...new Map([...oldRows, ...newRows].map(row => [row.productId, row])).values()];
-  const updated = { ...output, items: merge(previous.items || [], output.items), discoveries: merge((previous.discoveries || []).filter(row => approvedDiscoveryIds.includes(row.productId)), output.discoveries).slice(0, 25) };
+  const grown = growDiscoveryCatalogue(previous.discoveries.filter(row => row.admission === 'automated_low_risk_filter'), output.discoveries, { maxNew: discoveryConfig.maxNewPerStorePerRun, maxTotal: discoveryConfig.maxAutomaticPerStore, excludedIds: [...catalogue.imports.map(row => row.productId), ...approvedDiscoveryIds] });
+  const reviewed = merge(previous.discoveries.filter(row => approvedDiscoveryIds.includes(row.productId)), output.discoveries.filter(row => approvedDiscoveryIds.includes(row.productId)));
+  const updated = { ...output, added: grown.added, items: merge(previous.items || [], output.items), discoveries: merge([...reviewed, ...grown.items], output.discoveries.filter(row => !reviewed.some(existing => existing.productId === row.productId) && !grown.items.some(existing => existing.productId === row.productId))).slice(0, 50) };
   await writeFile(new URL('../data/tesla-price-observations.json', import.meta.url), JSON.stringify(updated, null, 2) + '\n');
 }
 // Public product facts only: no request URLs, signatures, keys or private account data.

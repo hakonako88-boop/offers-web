@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import BrandLink from '../components/BrandLink';
 import TeslaExplorer from './TeslaExplorer';
 import ImportedProducts from './ImportedProducts';
+import AmazonProducts from './AmazonProducts';
 import catalogue from '../../data/tesla-catalogue.json';
 import TeslaSeo from './TeslaSeo';
 import { teslaGuides } from '../lib/tesla-guides';
@@ -20,6 +21,7 @@ export default function TeslaPage() {
     <section className="teslaHero teslaMainHero"><div><p>El garaje de Chollos al Día</p><h1>Tu Tesla.<br />Cada detalle cuenta.</h1><p>Accesorios Model Y y Model 3, precios consultados y guías para elegir la variante correcta.</p><div className="teslaHeroActions"><a className="teslaAction" href="#productos-recibidos">Explorar accesorios</a><a href="#vehiculo">Elegir mi Tesla</a></div></div><figure><img src="/images/tesla/model-y.webp" alt="Tesla Model Y Juniper rojo, imagen ilustrativa" width={900} height={600} fetchPriority="high" /><figcaption>Model Y Juniper. Identifica también tu acabado antes de elegir accesorios.</figcaption></figure></section>
     <TeslaExplorer catalogue={catalogue} />
     <ImportedProducts />
+    <AmazonProducts />
     <section className="teslaSection"><h2>Compra con criterio</h2><div className="teslaGuideGrid">{Object.entries(teslaGuides).map(([slug, guide]) => <a href={`/tesla/guias/${slug}/`} key={slug}><h3>{guide.title}</h3><p>{guide.description}</p><span>Leer guía</span></a>)}</div></section>
     <section className="teslaSection"><h2>Amazon o AliExpress: compara el total</h2><p>No basta con una foto parecida. Compara la misma referencia, variante, material y cantidad, con envío e impuestos para España. Las promociones personales no se consideran un precio universal.</p><p>Si falta un coste o la verificación tiene más de 24 horas, no mostramos un ahorro calculado. “Más barato” significa únicamente entre las tiendas comprobadas, nunca en todo Internet.</p></section>
     <section className="teslaSection"><h2>Antes de instalar</h2><p>No recomendamos modificaciones de airbags, cámaras, sensores, pedales o sistemas eléctricos sin asesoramiento profesional. No coloques accesorios que dificulten los mandos o la visión.</p><p>Consulta el <a href="https://www.tesla.com/ownersmanual/modely/es_es/" rel="noopener noreferrer" target="_blank">manual oficial del Model Y</a> y las <a href="https://shop.tesla.com/es_es/category/accesorios" rel="noopener noreferrer" target="_blank">compatibilidades de la tienda Tesla</a>. Las fechas de una ficha no sustituyen la identificación de tu vehículo.</p></section>

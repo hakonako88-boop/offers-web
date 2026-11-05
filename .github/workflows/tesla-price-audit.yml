@@ -5,7 +5,7 @@ on:
     - cron: '23 */6 * * *'
   push:
     branches: [main, tesla-price-audit-20261105]
-    paths: [scripts/audit-tesla-prices.mjs, .github/workflows/tesla-price-audit.yml]
+    paths: [scripts/audit-tesla-prices.mjs, scripts/sync-tesla-amazon.mjs, scripts/tesla-discovery.mjs, data/tesla-discovery-config.json, .github/workflows/tesla-price-audit.yml]
 permissions:
   contents: write
 concurrency:
@@ -33,18 +33,30 @@ jobs:
           else
             node scripts/audit-tesla-prices.mjs
           fi
+      - name: Consultar accesorios Tesla en Amazon.es con Creators API
+        env:
+          AMAZON_CREATOR_CREDENTIAL_ID: ${{ secrets.AMAZON_CREATOR_CREDENTIAL_ID }}
+          AMAZON_CREATOR_SECRET: ${{ secrets.AMAZON_CREATOR_SECRET }}
+          AMAZON_CREATOR_VERSION: ${{ secrets.AMAZON_CREATOR_VERSION }}
+          AMAZON_PARTNER_TAG: ${{ secrets.AMAZON_PARTNER_TAG }}
+        run: |
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            node scripts/sync-tesla-amazon.mjs --update-catalogue
+          else
+            node scripts/sync-tesla-amazon.mjs
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: tesla-price-audit
-          path: outputs/tesla-price-audit.json
+          path: outputs/tesla-*-audit.json
           retention-days: 7
       - name: Guardar únicamente observaciones públicas comprobadas
         if: github.ref == 'refs/heads/main'
         run: |
-          if git diff --quiet -- data/tesla-price-observations.json; then exit 0; fi
+          if git diff --quiet -- data/tesla-price-observations.json data/tesla-amazon-observations.json; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/tesla-price-observations.json
+          git add data/tesla-price-observations.json data/tesla-amazon-observations.json
           git commit -m 'Actualizar observaciones de precios Tesla'
           git pull --rebase origin main
           git push origin HEAD:main
