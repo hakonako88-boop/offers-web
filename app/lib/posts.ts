@@ -9,6 +9,7 @@ export type PublishedPost = {
   offerIds: string[];
   linkUrl?: string;
   publishedAt: string;
+  modifiedAt?: string;
   publishedLabel: string;
 };
 
@@ -22,6 +23,7 @@ type StoredPost = {
   offer_ids?: string[];
   url?: string;
   date?: number;
+  reviewed?: string;
 };
 
 function safeExternalUrl(value?: string) {
@@ -48,6 +50,8 @@ export const publishedPosts: PublishedPost[] = (rawPosts as StoredPost[])
     const timestamp = Number(post.date) * 1000;
     if (!id || title.length < 5 || !body || !imageUrl || !Number.isFinite(timestamp)) return [];
     const date = new Date(timestamp);
+    const reviewed = /^\d{4}-\d{2}-\d{2}$/.test(post.reviewed || '') ? Date.parse(`${post.reviewed}T00:00:00Z`) : NaN;
+    const modifiedAt = Number.isFinite(reviewed) && reviewed > timestamp && reviewed <= Date.now() ? new Date(reviewed).toISOString() : date.toISOString();
     return [{
       id,
       title,
@@ -57,6 +61,7 @@ export const publishedPosts: PublishedPost[] = (rawPosts as StoredPost[])
       offerIds: Array.isArray(post.offer_ids) ? post.offer_ids.map((id) => clean(id, 150)).filter(Boolean).slice(0, 8) : [],
       linkUrl: safeExternalUrl(post.url) || undefined,
       publishedAt: date.toISOString(),
+      modifiedAt,
       publishedLabel: date.toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" }),
     }];
   })

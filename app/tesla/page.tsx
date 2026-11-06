@@ -11,16 +11,17 @@ import './tesla.css';
 import './tesla-design.css';
 
 export const metadata: Metadata = {
-  title: 'Accesorios Tesla Model Y y Model 3: precios, cupones y guías',
-  description: 'Selecciona modelo, generación y año de tu Tesla. Guías para revisar accesorios y comparar precios sin confundir variantes.',
+  title: 'Accesorios Tesla Model Y y Model 3: ofertas y guías',
+  description: 'Ofertas de accesorios Tesla Model Y y Model 3 en España. Compara precios consultados, cupones y guías de Juniper, Highland, alfombrillas y organizadores.',
   alternates: { canonical: '/tesla/' },
+  twitter: { card: 'summary_large_image', title: 'Accesorios Tesla Model Y y Model 3: ofertas y guías', description: 'Guías de compatibilidad y precios consultados para España.', images: ['/images/tesla/model-y.webp'] },
   openGraph: { title: 'Accesorios Tesla Model Y y Model 3', description: 'Precios consultados, cupones por producto y guías de compatibilidad.', url: '/tesla/', images: ['/images/tesla/model-y.webp'] },
 };
 export default function TeslaPage() {
   return <main className="teslaPage">
     <header className="teslaHeader"><BrandLink /><a href="/">Todas las ofertas</a></header>
     <TeslaSeo title="Accesorios Tesla Model Y y Model 3" />
-    <section className="teslaHero teslaMainHero"><div><p className="teslaEyebrow"><span />EL GARAJE · CHOLLOS AL DÍA</p><h1>Tu Tesla.<br /><em>Más a tu medida.</em></h1><p>Detalles que cambian tu día a día. Descubre accesorios, compara precios consultados y elige la variante de tu Model 3 o Model Y.</p><div className="teslaHeroActions"><a className="teslaAction" href="#ofertas-hoy">Descubrir ofertas de hoy <span aria-hidden="true">↗</span></a><a className="teslaHeroSecondary" href="#vehiculo">Encontrar mi modelo <span aria-hidden="true">↓</span></a></div><div className="teslaHeroTags"><span>MODEL 3 / HIGHLAND</span><span>MODEL Y / JUNIPER</span></div></div><figure><div className="teslaHeroPhoto"><img src="/images/tesla/model-y.webp" alt="Tesla Model Y Juniper rojo, imagen ilustrativa" width={900} height={600} fetchPriority="high" /><span className="teslaPhotoLabel">01 / MODEL Y JUNIPER</span></div><figcaption>Imagen ilustrativa. Comprueba generación y acabado antes de comprar.</figcaption></figure></section>
+    <section className="teslaHero teslaMainHero"><div><p className="teslaEyebrow"><span />EL GARAJE · CHOLLOS AL DÍA</p><h1>Tu Tesla.<br /><em>Más a tu medida.</em><span className="teslaSeoSubtitle">Accesorios Tesla Model 3 y Model Y</span></h1><p>Detalles que cambian tu día a día. Descubre accesorios, compara precios consultados y elige la variante de tu Model 3 o Model Y.</p><div className="teslaHeroActions"><a className="teslaAction" href="#ofertas-hoy">Descubrir ofertas de hoy <span aria-hidden="true">↗</span></a><a className="teslaHeroSecondary" href="#vehiculo">Encontrar mi modelo <span aria-hidden="true">↓</span></a></div><div className="teslaHeroTags"><span>MODEL 3 / HIGHLAND</span><span>MODEL Y / JUNIPER</span></div></div><figure><div className="teslaHeroPhoto"><img src="/images/tesla/model-y.webp" alt="Tesla Model Y Juniper rojo, imagen ilustrativa" width={900} height={600} fetchPriority="high" /><span className="teslaPhotoLabel">01 / MODEL Y JUNIPER</span></div><figcaption>Imagen ilustrativa. Comprueba generación y acabado antes de comprar.</figcaption></figure></section>
     <nav className="teslaQuickNav" aria-label="Explorar el garaje Tesla"><a href="#ofertas-hoy"><span>01</span> Ofertas de hoy <b aria-hidden="true">↗</b></a><a href="#vehiculo"><span>02</span> Tu modelo <b aria-hidden="true">↗</b></a><a href="#productos-recibidos"><span>03</span> Accesorios <b aria-hidden="true">↗</b></a><a href="#amazon"><span>04</span> Cargadores en Amazon <b aria-hidden="true">↗</b></a></nav>
     <TeslaDaily renderedAt={Date.now()} />
     <TeslaExplorer catalogue={catalogue} />

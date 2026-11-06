@@ -58,7 +58,7 @@ export default async function PublicationPage({ params }: PageProps) {
     description,
     image: post.imageUrls.map((image) => new URL(image, siteUrl).toString()),
     datePublished: post.publishedAt,
-    dateModified: post.publishedAt,
+    dateModified: post.modifiedAt || post.publishedAt,
     mainEntityOfPage: `${siteUrl}${postHref(post.id)}`,
     mainEntity: isStructuredSelection ? { '@type':'ItemList', numberOfItems:blocks.sections.length, itemListElement:blocks.sections.map((section:{title:string;deal?:PublishedDeal},index:number)=>({'@type':'ListItem',position:index+1,name:section.title,...(section.deal ? {url:`${siteUrl}${dealHref(section.deal.id)}`} : {})})) } : undefined,
     author: { "@type": "Organization", name: "Chollos al Día", url: siteUrl },
@@ -77,6 +77,7 @@ export default async function PublicationPage({ params }: PageProps) {
       <nav className="postBreadcrumb"><Link href="/">Inicio</Link><span>/</span><Link href="/blog/">Blog</Link><span>/</span><b>Artículo</b></nav>
       <p className="eyebrow"><span aria-hidden="true" />BLOG · CHOLLOS AL DÍA</p>
       <h1>{isCouponGuide ? "11.11 de AliExpress: elige tu cupón" : post.title}</h1>
+      {post.modifiedAt && post.modifiedAt !== post.publishedAt && <p className="comparisonDate">Actualizado el <time dateTime={post.modifiedAt}>{new Date(post.modifiedAt).toLocaleDateString('es-ES',{timeZone:'Europe/Madrid',day:'numeric',month:'long',year:'numeric'})}</time></p>}
       <div className="postMeta"><time dateTime={post.publishedAt}>Publicado el {post.publishedLabel}</time><span>·</span><span>{isStructuredSelection ? `${blocks.sections.length} productos seleccionados` : selectedDeals.length ? `${selectedDeals.length} productos seleccionados` : "Guía de compra"}</span></div>
       {isStructuredSelection || post.id === mobileGuide.id || post.id === tvGuide.id ? null : isCouponGuide ? <CampaignCouponGuide affiliateUrl={post.linkUrl} imageUrl={post.imageUrl} /> : post.imageUrls.length > 1 ? <div className="postImageGallery" aria-label="Fotos de las ofertas del resumen">{post.imageUrls.map((image, index) => <img key={image} src={image} alt={`${post.title}: oferta ${index + 1}`} width={720} height={560} />)}</div> : <img className="postHeroImage" src={post.imageUrl} alt={post.title} width={1200} height={800} />}
       {post.id === tvGuide.id ? <TelevisionSelection /> : post.id === mobileGuide.id ? <MobileComparison /> : isCouponGuide ? <details className="campaignGuideDetails"><summary>Leer la guía completa, los ejemplos y las fuentes</summary>{articleBody}</details> : isStructuredSelection ? productArticle : articleBody}

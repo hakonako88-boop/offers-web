@@ -4,6 +4,7 @@ import { dealHref, dealIsIndexable, publishedDeals } from "./lib/deals";
 import { postHref, postIsIndexable, publishedPosts } from "./lib/posts";
 import { indexableProducts, productHref } from "./lib/products";
 import { guides } from "./lib/guides";
+import { teslaLastModified, TESLA_SEO_UPDATED } from './lib/tesla-seo';
 
 const siteUrl = "https://chollosaldia.com";
 const latestPublication = Math.max(0, ...publishedDeals.map((deal) => Date.parse(deal.verifiedDate || "") || 0), ...publishedPosts.map((post) => Date.parse(post.publishedAt) || 0));
@@ -12,8 +13,8 @@ const homepageLastModified = latestPublication ? new Date(latestPublication) : n
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     { url: siteUrl, lastModified: homepageLastModified, changeFrequency: "daily", priority: 1 },
-    { url: `${siteUrl}/tesla/`, lastModified: new Date("2026-11-05T00:00:00Z"), changeFrequency: "weekly", priority: 0.7 },
-    ...['model-y', 'model-3', 'alfombrillas', 'organizadores'].map(slug => ({ url: `${siteUrl}/tesla/guias/${slug}/`, lastModified: new Date('2026-11-05T00:00:00Z'), changeFrequency: 'monthly' as const, priority: 0.65 })),
+    { url: `${siteUrl}/tesla/`, lastModified: teslaLastModified(), changeFrequency: "daily", priority: 0.7 },
+    ...['model-y', 'model-3', 'alfombrillas', 'organizadores'].map(slug => ({ url: `${siteUrl}/tesla/guias/${slug}/`, lastModified: new Date(TESLA_SEO_UPDATED), changeFrequency: 'monthly' as const, priority: 0.65 })),
     { url: `${siteUrl}/ofertas/amazon/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
     { url: `${siteUrl}/ofertas/aliexpress/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
     ...(publishedDeals.some((deal) => deal.store === "Miravia") ? [{ url: `${siteUrl}/ofertas/miravia/`, lastModified: homepageLastModified, changeFrequency: "daily" as const, priority: 0.8 }] : []),
@@ -52,7 +53,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...publishedPosts.filter((post) => postIsIndexable(post)).map((post) => ({
       url: `${siteUrl}${postHref(post.id)}`,
-      lastModified: new Date(post.publishedAt),
+      lastModified: new Date(post.modifiedAt || post.publishedAt),
       changeFrequency: "monthly" as const,
       priority: 0.55,
     })),
