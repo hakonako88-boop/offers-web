@@ -1,6 +1,9 @@
 name: Publicar comparativa editorial de móviles
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [data/mobile-comparison.json, scripts/publish-mobile-comparison.mjs, scripts/mobile-comparison-content.mjs]
 permissions:
   contents: write
 concurrency:

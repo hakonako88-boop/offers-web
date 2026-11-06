@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import guide from '../data/mobile-comparison.json' with { type: 'json' };
+import { mobileCaption } from './mobile-comparison-content.mjs';
 const file = 'data/posts.json';
 const posts = JSON.parse(fs.readFileSync(file, 'utf8'));
 const offers = JSON.parse(fs.readFileSync('data/offers.json', 'utf8'));
@@ -10,17 +11,27 @@ if (!post) {
   post = { id: guide.id, title: guide.title, body: guide.intro, date: Math.floor(Date.now()/1000), image: selected[0].image, images: selected.map(o => o.image), source: 'editorial-comparison' };
   posts.unshift(post);
 }
+post.title = guide.title;
+post.body = guide.intro;
+post.reviewed = guide.reviewed;
+post.image = selected[0].image;
+post.images = selected.map(offer=>offer.image);
 fs.writeFileSync(file, JSON.stringify(posts,null,2)+'\n');
-if (process.env.PUBLISH_TELEGRAM === 'true' && !post.message_id) {
+if (process.env.PUBLISH_TELEGRAM === 'true' && post.telegram_reviewed !== guide.reviewed) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chat = process.env.TELEGRAM_CHANNEL_ID;
   if (!token || !chat) throw new Error('Faltan credenciales de Telegram.');
   const url = `https://chollosaldia.com/publicacion/${guide.id}/`;
-  const caption = `📱 ¿Pantalla grande o un móvil más compacto?\n\nPOCO X8 Pro frente a POCO M8 Pro 5G: comparativa para elegir sin pagar de más.\n\n✅ Pantalla, cámara, batería y carga\n✅ Ventajas y límites de cada uno\n✅ Fotos, cupones y enlaces de compra\n\nLos precios son los últimos registrados; confirma variante y total en la tienda.\n\n👉 ${url}\n\n@aldiachollos #Móviles #Publi`;
-  const res = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chat,photo:new URL(post.image,'https://chollosaldia.com').href,caption,reply_markup:{inline_keyboard:[[{text:'📱 Leer comparativa',url}]]}})});
+  const live = await fetch(url, {signal:AbortSignal.timeout(20000)});
+  if (!live.ok) throw new Error('La comparativa no está accesible en la web; no se envía un enlace roto.');
+  const media = guide.products.map((product,index) => ({type:'photo',media:new URL(selected[index].image,'https://chollosaldia.com').href,caption:mobileCaption(product,selected[index],url)}));
+  if (media.some(item=>item.caption.length>1024)) throw new Error('La descripción supera el límite seguro del álbum.');
+  const res = await fetch(`https://api.telegram.org/bot${token}/sendMediaGroup`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chat,media}),signal:AbortSignal.timeout(30000)});
   const data = await res.json();
   if (!res.ok || !data.ok) throw new Error(`Telegram no confirmó la publicación: ${data.description || res.status}`);
-  post.message_id = data.result.message_id;
+  post.message_id = data.result[0].message_id;
+  post.telegram_message_ids = data.result.map(message=>message.message_id);
+  post.telegram_reviewed = guide.reviewed;
   fs.writeFileSync(file,JSON.stringify(posts,null,2)+'\n');
   console.log(`Comparativa publicada. Mensaje Telegram: ${post.message_id}`);
 } else console.log('Comparativa guardada; no se ha enviado otro mensaje.');
