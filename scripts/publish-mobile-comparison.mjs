@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import guide from '../data/mobile-comparison.json' with { type: 'json' };
-import { mobileCaption } from './mobile-comparison-content.mjs';
+import { mobileCaption, mobileSummary } from './mobile-comparison-content.mjs';
 const file = 'data/posts.json';
 const posts = JSON.parse(fs.readFileSync(file, 'utf8'));
 const offers = JSON.parse(fs.readFileSync('data/offers.json', 'utf8'));
@@ -35,3 +35,22 @@ if (process.env.PUBLISH_TELEGRAM === 'true' && post.telegram_reviewed !== guide.
   fs.writeFileSync(file,JSON.stringify(posts,null,2)+'\n');
   console.log(`Comparativa publicada. Mensaje Telegram: ${post.message_id}`);
 } else console.log('Comparativa guardada; no se ha enviado otro mensaje.');
+// Album captions are not all visible in the normal channel view. Send a
+// standalone readable comparison once per review, without resending photos.
+if (process.env.PUBLISH_TELEGRAM === 'true') {
+  const stateFile = 'data/mobile-publication-state.json';
+  const state = fs.existsSync(stateFile) ? JSON.parse(fs.readFileSync(stateFile,'utf8')) : {};
+  if (state.textReviewed !== guide.reviewed) {
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const chat = process.env.TELEGRAM_CHANNEL_ID;
+    if (!token || !chat) throw new Error('Faltan credenciales de Telegram.');
+    const url = `https://chollosaldia.com/publicacion/${guide.id}/`;
+    const text = mobileSummary(guide,selected,url);
+    if (text.length > 4096) throw new Error('Comparativa demasiado larga para un mensaje.');
+    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({chat_id:chat,text,link_preview_options:{is_disabled:true},reply_markup:{inline_keyboard:[[{text:'📱 Leer comparativa completa',url}]]}}),signal:AbortSignal.timeout(30000)});
+    const result = await response.json();
+    if (!response.ok || !result.ok) throw new Error(`Telegram no confirmó el texto: ${result.description || response.status}`);
+    fs.writeFileSync(stateFile,JSON.stringify({textReviewed:guide.reviewed,messageId:result.result.message_id},null,2)+'\n');
+    console.log(`Texto independiente publicado: ${result.result.message_id}`);
+  } else console.log('El texto de esta revisión ya está publicado.');
+}

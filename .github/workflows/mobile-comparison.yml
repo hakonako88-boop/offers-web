@@ -30,6 +30,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/posts.json
+          if [ -f data/mobile-publication-state.json ]; then git add data/mobile-publication-state.json; fi
           git diff --cached --quiet || git commit -m "Publicar comparativa de móviles [editorial]"
           git pull --rebase origin main
           git push
