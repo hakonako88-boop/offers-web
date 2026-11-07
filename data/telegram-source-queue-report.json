@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-07T16:27:12.198Z",
+  "updatedAt": "2026-11-07T16:36:14.001Z",
   "summary": {
-    "needs_review": 256,
-    "rejected": 354,
+    "rejected": 355,
     "ignored": 281,
     "duplicate": 26,
+    "needs_review": 256,
     "published": 83,
-    "pending": 138
+    "pending": 136
   },
   "recent": [
     {
@@ -15,21 +15,21 @@
       "messageId": 97742,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/97742",
       "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-07T16:35:55.221Z",
+      "nextAttemptAt": "2026-11-07T16:56:14.001Z"
     },
     {
       "id": "telegram-una-ganga:97741:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 97741,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/97741",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -222,13 +222,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97728,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97728",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-07T15:13:54.714Z",
-      "nextAttemptAt": "2026-11-07T16:34:16.835Z"
+      "lastCheckedAt": "2026-11-07T16:35:55.221Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97727:amazon:0",
