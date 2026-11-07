@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-07T03:03:40.527Z",
+  "updatedAt": "2026-11-07T03:13:35.608Z",
   "summary": {
-    "ignored": 283,
-    "rejected": 351,
+    "ignored": 284,
+    "rejected": 352,
     "published": 88,
     "needs_review": 253,
     "duplicate": 25,
-    "pending": 136
+    "pending": 135
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97702:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97702,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/97702",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:97701:amazon:0",
       "source": "telegram-una-ganga",
@@ -248,13 +261,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97688,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97688",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-07T01:43:30.169Z",
-      "nextAttemptAt": "2026-11-07T03:03:47.003Z"
+      "lastCheckedAt": "2026-11-07T03:13:14.892Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97687:aliexpress:0",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/97660",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:97659:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 97659,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/97659",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-06T20:19:25.934Z",
       "nextAttemptAt": ""
     }
   ]
