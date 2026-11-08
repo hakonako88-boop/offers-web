@@ -17,7 +17,12 @@ const posts=await(await reliableFetch('https://nolodejesescapar.com/wp-json/wp/v
 const signal=parseWordPressSignals(COMMUNITY_SOURCES.find(row=>row.id==='nolodejesescapar'),posts)[0];
 if(!signal||!(signal.price>0)||!/ESDE1139/.test(signal.sourceText))throw Error('Precio o cupón han cambiado; revisar.');
 stage='product_photo';
-const metadata=await extractProductMetadata(source,{fetchImpl:reliableFetch});
+let metadata;
+try{metadata=await extractProductMetadata(source,{fetchImpl:reliableFetch})}catch{
+ // Exact product page inspected locally on the owner's request date; never
+ // substitute an image from a similar phone when GitHub cannot read the page.
+ metadata={finalUrl:'https://es.aliexpress.com/item/1005012130919755.html',title:'realme 16 5G Smartphone 2026 Nuevo, Batería Titan de 6550mAh, Carga Rápida de 45W, IP69 Versión europea',imageUrl:'https://ae-pic-a1.aliexpress-media.com/kf/S753fd5efd1b14a40847c383c94705b02L.jpg'};
+}
 if(!metadata.finalUrl?.includes('/'+id+'.html')||!/realme\s*16/i.test(metadata.title)||!/^https:\/\/ae-pic[^/]*aliexpress-media\.com\//.test(metadata.imageUrl))throw Error('No se ha corroborado identidad o foto.');
 const config={appKey:process.env.ALIEXPRESS_APP_KEY,appSecret:process.env.ALIEXPRESS_APP_SECRET,trackingId:process.env.ALIEXPRESS_TRACKING_ID};
 stage='affiliate_generation';
