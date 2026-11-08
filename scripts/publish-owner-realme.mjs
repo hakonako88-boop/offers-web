@@ -4,16 +4,17 @@ import {extractProductMetadata} from './link-offer-extractor.mjs';
 import {COMMUNITY_SOURCES,parseWordPressSignals} from './community-signals.mjs';
 import {createDealImageCard} from './deal-image-card.mjs';
 const statusFile='data/owner-realme-status.json';
+async function reliableFetch(input,options={}){let last;for(let attempt=0;attempt<3;attempt++){try{return await fetch(input,{...options,signal:AbortSignal.timeout(20000)})}catch(error){last=error;if(attempt<2)await new Promise(resolve=>setTimeout(resolve,2000*(attempt+1)))}}throw last;}
 process.on('uncaughtException',error=>{fs.writeFileSync(statusFile,JSON.stringify({status:'failed',message:String(error.message).slice(0,300)},null,2)+'\n');process.exit(1)});
 const id='1005012130919755';const offers=JSON.parse(fs.readFileSync('data/offers.json','utf8'));
 const known=offers.find(row=>String(row.source_product_id)===id||String(row.url).includes(id));
 if(known){fs.writeFileSync(statusFile,JSON.stringify({status:'already_published',messageId:known.message_id},null,2)+'\n');process.exit(0)}
 if(new Date().toISOString().slice(0,10)!=='2026-11-08')throw Error('Revisar oferta antes de otra fecha.');
 const source='https://nolodejesescapar.com/realme-16/';
-const posts=await(await fetch('https://nolodejesescapar.com/wp-json/wp/v2/posts?slug=realme-16&_embed=1',{signal:AbortSignal.timeout(20000)})).json();
+const posts=await(await reliableFetch('https://nolodejesescapar.com/wp-json/wp/v2/posts?slug=realme-16&_embed=1')).json();
 const signal=parseWordPressSignals(COMMUNITY_SOURCES.find(row=>row.id==='nolodejesescapar'),posts)[0];
 if(!signal||!(signal.price>0)||!/ESDE1139/.test(signal.sourceText))throw Error('Precio o cupón han cambiado; revisar.');
-const metadata=await extractProductMetadata(source);
+const metadata=await extractProductMetadata(source,{fetchImpl:reliableFetch});
 if(!metadata.finalUrl?.includes('/'+id+'.html')||!/realme\s*16/i.test(metadata.title)||!/^https:\/\/ae-pic[^/]*aliexpress-media\.com\//.test(metadata.imageUrl))throw Error('No se ha corroborado identidad o foto.');
 const config={appKey:process.env.ALIEXPRESS_APP_KEY,appSecret:process.env.ALIEXPRESS_APP_SECRET,trackingId:process.env.ALIEXPRESS_TRACKING_ID};
 const result=await resolveAliExpressAffiliateProduct(`https://es.aliexpress.com/item/${id}.html`,config,{sourceMetadata:{title:metadata.title,imageUrl:metadata.imageUrl}});
