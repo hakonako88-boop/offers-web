@@ -19,7 +19,7 @@ if(!/AEES75/.test(sourceText)||!/PayPal.*20\s*€/i.test(sourceText))throw Error
 const config={appKey:process.env.ALIEXPRESS_APP_KEY,appSecret:process.env.ALIEXPRESS_APP_SECRET,trackingId:process.env.ALIEXPRESS_TRACKING_ID};
 if(Object.values(config).some(value=>!value))throw Error('Falta la integración de afiliación.');
 const url=await generateAliExpressAffiliateLink(signal.merchantUrl,config);
-if(!/^https:\/\/s\.click\.aliexpress\.com\//.test(url))throw Error('No se ha confirmado la generación del enlace de afiliado.');
+if(!/^https:\/\/(?:s\.click|a)\.aliexpress\.com\//.test(url))throw Error(url ? `La API devolvió un dominio no aceptado: ${new URL(url).hostname}` : 'La API no devolvió ningún enlace de afiliado para esta referencia.');
 const metadata=await extractProductMetadata(signal.merchantUrl);
 if(!/^https:\/\/(?:ae-pic|ae01|ae04)[^/]*\./.test(metadata.imageUrl||'')||!/nintendo.*switch\s*2/i.test(metadata.title||''))throw Error('No se ha obtenido una foto y un título fiables del producto.');
 const price=new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(signal.price);
