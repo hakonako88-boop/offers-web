@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: [.github/workflows/owner-switch.yml]
+    paths: [.github/workflows/owner-switch.yml, scripts/publish-owner-switch.mjs]
 permissions:
   contents: write
 concurrency:
