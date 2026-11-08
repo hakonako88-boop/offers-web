@@ -1,0 +1,137 @@
+[
+  {
+    "method": "aliexpress.affiliate.link.generate",
+    "status": 200,
+    "shape": {
+      "error_response": {
+        "type": "string",
+        "code": "ApiCallLimit",
+        "msg": "Api access frequency exceeds the limit. this ban will last 1 seconds",
+        "request_id": "string",
+        "_trace_id_": "string"
+      }
+    }
+  },
+  {
+    "method": "aliexpress.affiliate.link.generate",
+    "status": 200,
+    "shape": {
+      "aliexpress_affiliate_link_generate_response": {
+        "resp_result": {
+          "result": {
+            "total_result_count": "1",
+            "promotion_links": {
+              "promotion_link": {
+                "arrayLength": 1,
+                "first": {
+                  "source_value": "string"
+                }
+              }
+            },
+            "tracking_id": "string"
+          },
+          "resp_code": "200",
+          "resp_msg": "Call succeeds"
+        },
+        "request_id": "string",
+        "_trace_id_": "string"
+      }
+    }
+  },
+  {
+    "method": "aliexpress.affiliate.productdetail.get",
+    "status": 200,
+    "shape": {
+      "aliexpress_affiliate_productdetail_get_response": {
+        "resp_result": {
+          "result": {
+            "current_record_count": "number",
+            "products": {}
+          },
+          "resp_code": "200"
+        },
+        "request_id": "string",
+        "_trace_id_": "string"
+      }
+    }
+  },
+  {
+    "method": "aliexpress.affiliate.link.generate",
+    "status": 200,
+    "shape": {
+      "aliexpress_affiliate_link_generate_response": {
+        "resp_result": {
+          "result": {
+            "total_result_count": "1",
+            "promotion_links": {
+              "promotion_link": {
+                "arrayLength": 1,
+                "first": {
+                  "source_value": "string"
+                }
+              }
+            },
+            "tracking_id": "string"
+          },
+          "resp_code": "200",
+          "resp_msg": "Call succeeds"
+        },
+        "request_id": "string",
+        "_trace_id_": "string"
+      }
+    }
+  },
+  {
+    "method": "aliexpress.affiliate.link.generate",
+    "status": 200,
+    "shape": {
+      "error_response": {
+        "type": "string",
+        "code": "ApiCallLimit",
+        "msg": "Api access frequency exceeds the limit. this ban will last 1 seconds",
+        "request_id": "string",
+        "_trace_id_": "string"
+      }
+    }
+  },
+  {
+    "method": "aliexpress.affiliate.link.generate",
+    "status": 200,
+    "shape": {
+      "aliexpress_affiliate_link_generate_response": {
+        "resp_result": {
+          "result": {
+            "total_result_count": "1",
+            "promotion_links": {
+              "promotion_link": {
+                "arrayLength": 1,
+                "first": {
+                  "source_value": "string"
+                }
+              }
+            },
+            "tracking_id": "string"
+          },
+          "resp_code": "200",
+          "resp_msg": "Call succeeds"
+        },
+        "request_id": "string",
+        "_trace_id_": "string"
+      }
+    }
+  },
+  {
+    "method": "aliexpress.affiliate.product.query",
+    "status": 200,
+    "shape": {
+      "aliexpress_affiliate_product_query_response": {
+        "resp_result": {
+          "resp_code": "405",
+          "resp_msg": "The result is empty"
+        },
+        "request_id": "string",
+        "_trace_id_": "string"
+      }
+    }
+  }
+]
