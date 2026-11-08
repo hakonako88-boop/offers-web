@@ -1,0 +1,41 @@
+name: Publicar realme solicitado sin duplicados
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/owner-realme.yml, scripts/publish-owner-realme.mjs]
+permissions:
+  contents: write
+concurrency:
+  group: owner-realme-exact-publication
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: node scripts/publish-owner-realme.mjs
+        env:
+          ALIEXPRESS_APP_KEY: ${{ secrets.ALIEXPRESS_APP_KEY }}
+          ALIEXPRESS_APP_SECRET: ${{ secrets.ALIEXPRESS_APP_SECRET }}
+          ALIEXPRESS_TRACKING_ID: ${{ secrets.ALIEXPRESS_TRACKING_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      - name: Guardar resultado
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/offers.json public/tg
+          if [ -f data/owner-realme-status.json ]; then git add data/owner-realme-status.json; fi
+          git diff --cached --quiet || git commit -m 'Procesar realme solicitado [owner-selected]'
+          git pull --rebase origin main
+          git push origin main
