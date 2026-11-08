@@ -7,7 +7,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: chollosaldia-production
+  group: owner-switch-exact-publication
   cancel-in-progress: false
 jobs:
   publish:
