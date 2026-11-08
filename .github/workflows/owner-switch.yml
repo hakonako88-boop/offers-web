@@ -36,6 +36,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data/offers.json public/tg
           if [ -f data/owner-switch-status.json ]; then git add data/owner-switch-status.json; fi
+          if [ -f data/owner-switch-api-diagnostic.json ]; then git add data/owner-switch-api-diagnostic.json; fi
           git diff --cached --quiet || git commit -m 'Publicar Switch solicitada [owner-selected]'
           git pull --rebase origin main
           git push origin main

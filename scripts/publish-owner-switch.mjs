@@ -18,8 +18,20 @@ const sourceText=signal.sourceText;
 if(!/AEES75/.test(sourceText)||!/PayPal.*20\s*€/i.test(sourceText))throw Error('Las condiciones del cupón o PayPal han cambiado; revisar.');
 const config={appKey:process.env.ALIEXPRESS_APP_KEY,appSecret:process.env.ALIEXPRESS_APP_SECRET,trackingId:process.env.ALIEXPRESS_TRACKING_ID};
 if(Object.values(config).some(value=>!value))throw Error('Falta la integración de afiliación.');
-let url=await generateAliExpressAffiliateLink(signal.merchantUrl,config);
-if(!url){const resolved=await resolveAliExpressAffiliateProduct(signal.merchantUrl,config,{sourceMetadata:{title:'Nintendo Switch 2',imageUrl:signal.sourceImageUrl}});url=resolved.affiliateUrl||'';}
+const diagnostics=[];
+const diagnosticFetch=async(input,options)=>{
+ const response=await fetch(input,options);
+ const requestUrl=new URL(String(input));
+ if(requestUrl.hostname==='api-sg.aliexpress.com'){
+  const data=await response.clone().json().catch(()=>({}));
+  const shape=(value,depth=0)=>depth>7?'…':Array.isArray(value)?{arrayLength:value.length,first:value.length?shape(value[0],depth+1):null}:value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([key,item])=>[key,/code|msg|message|total_result_count/.test(key)?String(item).slice(0,120):shape(item,depth+1)])):typeof value;
+  diagnostics.push({method:requestUrl.searchParams.get('method'),status:response.status,shape:shape(data)});
+  fs.writeFileSync('data/owner-switch-api-diagnostic.json',JSON.stringify(diagnostics,null,2)+'\n');
+ }
+ return response;
+};
+let url=await generateAliExpressAffiliateLink(signal.merchantUrl,config,diagnosticFetch);
+if(!url){const resolved=await resolveAliExpressAffiliateProduct(signal.merchantUrl,config,{fetchImpl:diagnosticFetch,sourceMetadata:{title:'Nintendo Switch 2',imageUrl:signal.sourceImageUrl}});url=resolved.affiliateUrl||'';}
 if(!/^https:\/\/(?:s\.click|a)\.aliexpress\.com\//.test(url))throw Error(url ? `La API devolvió un dominio no aceptado: ${new URL(url).hostname}` : 'La API no devolvió ningún enlace de afiliado para esta referencia.');
 const metadata=await extractProductMetadata(signal.merchantUrl);
 if(!/^https:\/\/(?:ae-pic|ae01|ae04)[^/]*\./.test(metadata.imageUrl||'')||!/nintendo.*switch\s*2/i.test(metadata.title||''))throw Error('No se ha obtenido una foto y un título fiables del producto.');
