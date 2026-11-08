@@ -1,0 +1,13 @@
+'use client';
+import {useEffect,useState} from 'react';
+import {periodTopOffers} from '../../scripts/period-top-offers.mjs';
+import type {PublishedDeal} from '../lib/deals';
+import {offerDisplayTitle} from '../lib/display-title';
+import OfferFreshness from './OfferFreshness';
+const periods=[{label:'Día',days:1},{label:'Semana',days:7},{label:'Mes',days:30}];
+export default function PeriodTopOffers({deals,renderedAt}:{deals:PublishedDeal[];renderedAt:number}) {
+ const [period,setPeriod]=useState(1);const [now,setNow]=useState(renderedAt);
+ useEffect(()=>{const update=()=>setNow(Date.now());update();const timer=setInterval(update,60000);return()=>clearInterval(timer)},[]);
+ const selected=periodTopOffers(deals,period,now);
+ return <section className="periodTop" aria-labelledby="period-top-title"><header><span>EL RADAR DE CHOLLOS AL DÍA</span><h2 id="period-top-title">Lo más top</h2><p>Ofertas destacadas por periodo</p></header><div className="periodTopTabs" role="group" aria-label="Periodo de las ofertas destacadas">{periods.map(item=><button type="button" key={item.days} aria-pressed={period===item.days} onClick={()=>setPeriod(item.days)}>{item.label}</button>)}</div><p className="periodTopLabel">{period===1?'Top del día':period===7?'Top de la semana':'Top del mes'}</p><div className="periodTopList" aria-live="polite">{selected.length ? selected.map((deal:PublishedDeal,index:number)=><article key={deal.id}><a className="periodTopImage" href={`/oferta/${encodeURIComponent(deal.id)}/`} tabIndex={-1} aria-hidden="true"><span>{String(index+1).padStart(2,'0')}</span><img src={deal.imageUrl} alt="" width={140} height={120} loading="lazy" /></a><div><small>{deal.store}</small><h3><a href={`/oferta/${encodeURIComponent(deal.id)}/`}>{offerDisplayTitle(deal.title)}</a></h3><strong className="periodTopPrice">{deal.price.toLocaleString('es-ES',{style:'currency',currency:'EUR'})}</strong>{(deal.coupon||deal.priceCondition)&&<p className="periodTopCoupon">Precio condicionado · consulta cupón y requisitos</p>}<p className="periodTopDate"><OfferFreshness date={deal.verifiedDate} fallback={deal.verifiedAt}/></p><a className="periodTopLink" href={`/oferta/${encodeURIComponent(deal.id)}/`}>Ver oferta →</a></div></article>):<p>No hay ofertas activas registradas en este periodo. Prueba con semana o mes.</p>}</div><details><summary>Cómo se elige el top</summary><p>Selección automática entre las ofertas que la web considera activas, publicadas en las últimas 24 horas, 7 o 30 días. Prioriza la rebaja anunciada y los cupones registrados; no es un ranking de ventas ni de clics. Una oferta antigua o sin disponibilidad no se recupera solo para llenar el top. Confirma siempre precio, cupón y stock en la tienda.</p></details></section>;
+}
