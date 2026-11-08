@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+process.on('uncaughtException',error=>{fs.writeFileSync('data/owner-switch-status.json',JSON.stringify({status:'failed',message:String(error.message).slice(0,350),checkedAt:new Date().toISOString()},null,2)+'\n');console.error('La publicación no se completó. Consulta el diagnóstico.');process.exit(1);});
 import {generateAliExpressAffiliateLink} from './aliexpress-link-resolver.mjs';
 import {extractProductMetadata} from './link-offer-extractor.mjs';
 import {COMMUNITY_SOURCES,parseWordPressSignals} from './community-signals.mjs';
