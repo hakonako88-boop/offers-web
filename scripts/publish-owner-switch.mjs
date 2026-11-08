@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 process.on('uncaughtException',error=>{fs.writeFileSync('data/owner-switch-status.json',JSON.stringify({status:'failed',message:String(error.message).slice(0,350),checkedAt:new Date().toISOString()},null,2)+'\n');console.error('La publicación no se completó. Consulta el diagnóstico.');process.exit(1);});
-import {generateAliExpressAffiliateLink} from './aliexpress-link-resolver.mjs';
+import {generateAliExpressAffiliateLink,resolveAliExpressAffiliateProduct} from './aliexpress-link-resolver.mjs';
 import {extractProductMetadata} from './link-offer-extractor.mjs';
 import {COMMUNITY_SOURCES,parseWordPressSignals} from './community-signals.mjs';
 import {createDealImageCard} from './deal-image-card.mjs';
@@ -18,7 +18,8 @@ const sourceText=signal.sourceText;
 if(!/AEES75/.test(sourceText)||!/PayPal.*20\s*€/i.test(sourceText))throw Error('Las condiciones del cupón o PayPal han cambiado; revisar.');
 const config={appKey:process.env.ALIEXPRESS_APP_KEY,appSecret:process.env.ALIEXPRESS_APP_SECRET,trackingId:process.env.ALIEXPRESS_TRACKING_ID};
 if(Object.values(config).some(value=>!value))throw Error('Falta la integración de afiliación.');
-const url=await generateAliExpressAffiliateLink(signal.merchantUrl,config);
+let url=await generateAliExpressAffiliateLink(signal.merchantUrl,config);
+if(!url){const resolved=await resolveAliExpressAffiliateProduct(signal.merchantUrl,config,{sourceMetadata:{title:'Nintendo Switch 2',imageUrl:signal.sourceImageUrl}});url=resolved.affiliateUrl||'';}
 if(!/^https:\/\/(?:s\.click|a)\.aliexpress\.com\//.test(url))throw Error(url ? `La API devolvió un dominio no aceptado: ${new URL(url).hostname}` : 'La API no devolvió ningún enlace de afiliado para esta referencia.');
 const metadata=await extractProductMetadata(signal.merchantUrl);
 if(!/^https:\/\/(?:ae-pic|ae01|ae04)[^/]*\./.test(metadata.imageUrl||'')||!/nintendo.*switch\s*2/i.test(metadata.title||''))throw Error('No se ha obtenido una foto y un título fiables del producto.');
