@@ -31,11 +31,11 @@ test('builds a square branded JPEG from the clean product image', async () => {
   assert.ok(lower[0]>240 && lower[1]>240 && lower[2]>230,'price panel is light, not a large green block');
 });
 
-test('product name is preserved across as many lines as necessary',()=>{
+test('image uses a concise commercial name, not the complete catalogue description',()=>{
  assert.match(dealImageTitleLines('Bose QuietComfort SC Headphones Auriculares inalámbricos').join(' '),/Bose QuietComfort/);
  const title='Auriculares de prueba con muchas características y modelo completo '.repeat(4).trim();
- assert.equal(dealImageTitleLines(title).join(' '),title);
- assert.ok(dealImageTitleLines(title).length>2);
+ assert.ok(dealImageTitleLines(title).join(' ').length<=64);
+ assert.ok(dealImageTitleLines(title).length<=2);
  assert.ok(!dealImageTitleLines(title).join(' ').includes('…'));
  assert.ok(fs.existsSync('public/fonts/BarlowCondensed-ExtraBold.ttf'));
  assert.ok(fs.existsSync('public/fonts/BarlowCondensed-OFL.txt'));
@@ -43,12 +43,12 @@ test('product name is preserved across as many lines as necessary',()=>{
  for(const file of ['sync-aliexpress-deals','sync-amazon-deals','sync-miravia-deals','sync-mediamarkt-deals','sync-awin-retailers','process-telegram-inbox']) assert.match(fs.readFileSync(`scripts/${file}.mjs`,'utf8'),/title: offer.title/);
 });
 
-test('long names grow the canvas rather than cutting the title or covering the price',async()=>{
+test('long catalogue descriptions retain a square marketing card and do not cover the price',async()=>{
  const photo=await sharp({create:{width:180,height:180,channels:3,background:'#eee'}}).png().toBuffer();
  const title='Auriculares inalámbricos con cancelación de ruido, conexión Bluetooth, micrófono integrado, estuche de transporte, autonomía de 24 horas y cable de audio incluidos, modelo y variante de prueba';
  const card=await createDealImageCard({imageBytes:photo,title,price:'107,90 €',store:'AliExpress'});
  const meta=await sharp(card).metadata();
- assert.ok(meta.height>1200);
+ assert.equal(meta.height,1200);
  assert.equal(meta.width,1200);
  assert.ok(cardOverlay({title,price:'107,90 €'}).toString().includes(title));
  const pixel=await sharp(card).extract({left:10,top:meta.height-10,width:1,height:1}).raw().toBuffer();

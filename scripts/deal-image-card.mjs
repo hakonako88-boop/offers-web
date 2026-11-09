@@ -1,5 +1,6 @@
 import sharp from 'sharp';
 import { fileURLToPath } from 'node:url';
+import { improveOfferTitle } from './offer-presentation.mjs';
 import { couponOptions } from './coupon-options.mjs';
 
 const CARD_SIZE = 1200;
@@ -62,11 +63,19 @@ function couponBadge(coupon = '', accent = '#ff5a4f') {
 }
 
 export function dealImageTitleLines(title = '') {
-  const words = compact(title).split(' ').filter(Boolean);
+  // The image is a shop window, not a copy of the supplier's full catalogue.
+  const improved=compact(improveOfferTitle(title));
+  const candidate=improved.includes('…') ? compact(title).split(/[,|;]/u)[0] : improved;
+  const selected=[];
+  for(const word of candidate.split(' ').filter(Boolean)) {
+    if(selected.length && [...selected,word].join(' ').length>64) break;
+    selected.push(word);
+  }
+  const words = selected;
   const lines = [];
   let line = '';
   for (const word of words) {
-    if (line && `${line} ${word}`.length > 40) {
+    if (line && `${line} ${word}`.length > 32 && !lines.length) {
       lines.push(line);
       line = word;
     } else line = line ? `${line} ${word}` : word;
@@ -151,13 +160,9 @@ export async function createDealImageCard({
     .jpeg({ quality: 92, chromaSubsampling: '4:4:4' })
     .toBuffer();
 
-  // Measure the complete name first. Longer titles grow the canvas instead of
-  // being clipped, shortened or shrunk into unreadable tiny text.
-  const titleSize = compact(title).length > 100 ? 52 : 76;
-  const titleImage = title ? await sharp({text:{text:`<span foreground="#172c24" weight="heavy">${escapeXml(compact(title))}</span>`,font:`Barlow Condensed ExtraBold ${titleSize}`,fontfile:TITLE_FONT,width:1072,align:'left',rgba:true,wrap:'word-char'}}).png().toBuffer() : null;
-  const titleHeight = titleImage ? (await sharp(titleImage).metadata()).height || 0 : 0;
-  if(titleHeight>4800) throw new Error('El nombre es demasiado largo para una tarjeta legible. Revisa el título del producto.');
-  const extraHeight = Math.max(0,titleHeight-170);
+  const imageTitle=dealImageTitleLines(title).join('\n');
+  const titleImage = title ? await sharp({text:{text:`<span foreground="#172c24" weight="heavy">${escapeXml(imageTitle)}</span>`,font:'Barlow Condensed ExtraBold 76',fontfile:TITLE_FONT,width:1072,height:170,align:'left',rgba:true,wrap:'word-char'}}).png().toBuffer() : null;
+  const extraHeight = 0;
   const titleLayers = titleImage ? [{input:titleImage,left:64,top:151}] : [];
 
   return sharp({
