@@ -1,0 +1,35 @@
+name: Actualizar imagen del canal Chollos al Dia
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+concurrency:
+  group: chollosaldia-channel-brand
+  cancel-in-progress: false
+jobs:
+  update-avatar:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[telegram-brand]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Actualizar solo el canal aldiachollos
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+        run: node scripts/optimize-telegram-channel.mjs
+      - name: Guardar confirmacion de Telegram
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/telegram-channel-profile.json
+          git diff --cached --quiet || git commit -m 'Confirmar nueva imagen del canal [telegram-state]'
+          git pull --rebase origin main
+          git push
