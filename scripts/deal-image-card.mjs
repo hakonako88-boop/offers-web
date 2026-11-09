@@ -1,7 +1,6 @@
 import sharp from 'sharp';
 import { fileURLToPath } from 'node:url';
 import { couponOptions } from './coupon-options.mjs';
-import { improveOfferTitle } from './offer-presentation.mjs';
 
 const CARD_SIZE = 1200;
 const PHOTO_HEIGHT = 760;
@@ -63,25 +62,24 @@ function couponBadge(coupon = '', accent = '#ff5a4f') {
 }
 
 export function dealImageTitleLines(title = '') {
-  const words = compact(improveOfferTitle(title)).split(' ').filter(Boolean);
+  const words = compact(title).split(' ').filter(Boolean);
   const lines = [];
   let line = '';
   for (const word of words) {
-    if (line && `${line} ${word}`.length > 32) {
+    if (line && `${line} ${word}`.length > 40) {
       lines.push(line);
       line = word;
-      if (lines.length === 2) { lines[1] = lines[1].replace(/[.,;:-]+$/u,'') + '…'; return lines; }
     } else line = line ? `${line} ${word}` : word;
   }
-  if (line && lines.length < 2) lines.push(line);
+  if (line) lines.push(line);
   return lines;
 }
 
-export function cardOverlay({ title = '', store, price } = {}) {
+export function cardOverlay({ title = '', store, price, extraHeight = 0 } = {}) {
   const theme = storeTheme(store);
   const currentPrice = escapeXml(priceText(price));
   return Buffer.from(`
-    <svg width="${CARD_SIZE}" height="${CARD_SIZE}" viewBox="0 0 ${CARD_SIZE} ${CARD_SIZE}" xmlns="http://www.w3.org/2000/svg">
+    <svg width="${CARD_SIZE}" height="${CARD_SIZE+extraHeight}" viewBox="0 0 ${CARD_SIZE} ${CARD_SIZE+extraHeight}" xmlns="http://www.w3.org/2000/svg">
       <rect x="0" y="0" width="1200" height="1200" fill="none"/>
       <title>${escapeXml(title)} · ${currentPrice}</title>
       <rect x="0" y="0" width="1200" height="121" fill="#123e30"/>
@@ -92,6 +90,7 @@ export function cardOverlay({ title = '', store, price } = {}) {
       <rect x="860" y="40" width="292" height="58" rx="29" fill="#ff7a2c"/>
       <text x="1006" y="79" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="800" fill="#123e30">${escapeXml(theme.label)}</text>
       <line x1="0" y1="120" x2="1200" y2="120" stroke="#ff641c" stroke-width="4"/>
+      <g transform="translate(0 ${extraHeight})">
       <rect x="48" y="922" width="1104" height="218" rx="30" fill="#edf4ed"/>
       <text x="80" y="967" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800" letter-spacing="3" fill="#123e30">PRECIO DE LA OFERTA</text>
       <rect x="70" y="985" width="850" height="139" rx="20" fill="#c33c08" stroke="#a82c05" stroke-width="2"/>
@@ -100,6 +99,7 @@ export function cardOverlay({ title = '', store, price } = {}) {
       <rect x="0" y="1150" width="1200" height="50" fill="#123e30"/>
       <text x="48" y="1183" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#ffffff">@aldiachollos</text>
       <text x="1152" y="1183" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#ffffff">chollosaldia.com · Publicidad</text>
+      </g>
     </svg>
   `);
 }
@@ -151,19 +151,26 @@ export async function createDealImageCard({
     .jpeg({ quality: 92, chromaSubsampling: '4:4:4' })
     .toBuffer();
 
-  const titleLayers = title ? [{input:await sharp({text:{text:`<span foreground="#172c24" weight="heavy">${dealImageTitleLines(title).map(escapeXml).join('\n')}</span>`,font:'Barlow Condensed ExtraBold 88',fontfile:TITLE_FONT,width:1072,height:170,align:'left',rgba:true,wrap:'word'}}).png().toBuffer(),left:64,top:151}] : [];
+  // Measure the complete name first. Longer titles grow the canvas instead of
+  // being clipped, shortened or shrunk into unreadable tiny text.
+  const titleSize = compact(title).length > 100 ? 52 : 76;
+  const titleImage = title ? await sharp({text:{text:`<span foreground="#172c24" weight="heavy">${escapeXml(compact(title))}</span>`,font:`Barlow Condensed ExtraBold ${titleSize}`,fontfile:TITLE_FONT,width:1072,align:'left',rgba:true,wrap:'word-char'}}).png().toBuffer() : null;
+  const titleHeight = titleImage ? (await sharp(titleImage).metadata()).height || 0 : 0;
+  if(titleHeight>4800) throw new Error('El nombre es demasiado largo para una tarjeta legible. Revisa el título del producto.');
+  const extraHeight = Math.max(0,titleHeight-170);
+  const titleLayers = titleImage ? [{input:titleImage,left:64,top:151}] : [];
 
   return sharp({
     create: {
       width: CARD_SIZE,
-      height: CARD_SIZE,
+      height: CARD_SIZE+extraHeight,
       channels: 3,
       background: '#ffffff',
     },
   })
     .composite([
-      { input: product, left: 60, top: 340 },
-      { input: cardOverlay({ title, store, price, previousPrice, discount, coupon }), left: 0, top: 0 },
+      { input: product, left: 60, top: 340+extraHeight },
+      { input: cardOverlay({ title, store, price, extraHeight }), left: 0, top: 0 },
       ...titleLayers,
     ])
     .jpeg({ quality: 91, chromaSubsampling: '4:4:4', mozjpeg: true })
