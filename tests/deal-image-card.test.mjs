@@ -48,6 +48,7 @@ test('marketing image keeps the name and price, leaving coupon and price compari
  assert.match(svg,/fill="#123e30"/);
  assert.match(svg,/fill="#edf4ed"/);
  assert.match(svg,/fill="#c33c08"/);
+ assert.match(svg,/width="850" height="139" rx="20" fill="#c33c08"/);
  assert.doesNotMatch(svg,/fill="#fff0e4"/);
  assert.doesNotMatch(svg,/fill="#ad3007"/);
 });

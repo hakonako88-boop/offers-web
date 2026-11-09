@@ -94,7 +94,8 @@ export function cardOverlay({ title = '', store, price } = {}) {
       <line x1="0" y1="120" x2="1200" y2="120" stroke="#ff641c" stroke-width="4"/>
       <rect x="48" y="922" width="1104" height="218" rx="30" fill="#edf4ed"/>
       <text x="80" y="967" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800" letter-spacing="3" fill="#123e30">PRECIO DE LA OFERTA</text>
-      <text x="76" y="1100" font-family="Arial, Helvetica, sans-serif" font-size="${priceText(price).length > 10 ? 128 : 158}" font-weight="900" fill="#c33c08">${currentPrice}</text>
+      <rect x="70" y="985" width="850" height="139" rx="20" fill="#c33c08" stroke="#a82c05" stroke-width="2"/>
+      <text x="495" y="1098" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="${priceText(price).length > 10 ? 102 : 132}" font-weight="900" fill="#ffffff">${currentPrice}</text>
       <path d="M1010 1028h80m-31-31 31 31-31 31" fill="none" stroke="#123e30" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
       <rect x="0" y="1150" width="1200" height="50" fill="#123e30"/>
       <text x="48" y="1183" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#ffffff">@aldiachollos</text>
