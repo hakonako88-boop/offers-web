@@ -1,4 +1,16 @@
 /* One offer per row in the main home catalogue. Sidebar remains independent. */
+main.dealHome .catalogueMain .dealCard .imageWrap{grid-column:1;grid-row:1}
+main.dealHome .catalogueMain .dealCard .dealBody{grid-column:2;grid-row:1;color:#20382d;overflow-wrap:break-word}
+main.dealHome .catalogueMain .dealCard .dealBody h3 a{display:block;white-space:normal;word-break:normal;overflow-wrap:break-word;text-decoration:none;opacity:1;-webkit-text-fill-color:currentColor}
+main.dealHome .catalogueMain .dealCard .priceRow .priceCurrent small,main.dealHome .catalogueMain .dealCard .priceRow .priceWas small{display:block;color:#67472d;font-size:11px;font-weight:700;line-height:1.5;letter-spacing:.02em}
+main.dealHome .catalogueMain .dealCard .couponCopyCompact{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:12px;color:#23452d;white-space:normal;box-sizing:border-box}
+main.dealHome .catalogueMain .dealCard .couponCopyCompact span{font-size:10px;color:#375740;line-height:1.5}
+main.dealHome .catalogueMain .dealCard .couponCopyCompact b{font-size:16px;color:#183f28;overflow-wrap:anywhere;line-height:1.5}
+main.dealHome .catalogueMain .dealCard .couponCopyCompact strong{font-size:11px;background:#204b34;color:#fff;padding:8px;border-radius:5px;line-height:1.5}
+main.dealHome .catalogueMain .dealCard .couponOptions{width:100%;min-width:0;color:#304d36;line-height:1.6}
+main.dealHome .catalogueMain .dealCard .verified{font-size:12px!important;color:#435b49!important;line-height:1.6!important}
+main.dealHome .catalogueMain .dealCard .saveDealButton{position:absolute;max-width:105px;padding:8px 12px}
+@media(max-width:600px){main.dealHome .catalogueMain .dealCard .imageWrap,main.dealHome .catalogueMain .dealCard:first-child .imageWrap{grid-column:1;grid-row:1}main.dealHome .catalogueMain .dealCard .dealBody,main.dealHome .catalogueMain .dealCard:first-child .dealBody{grid-column:1;grid-row:2;width:100%;box-sizing:border-box}main.dealHome .catalogueMain .dealCard .priceRow{min-width:0;box-sizing:border-box}main.dealHome .catalogueMain .dealCard .couponCopyCompact{gap:7px;grid-template-columns:minmax(0,1fr) auto}main.dealHome .catalogueMain .dealCard .couponCopyCompact span{grid-column:1/-1}main.dealHome .catalogueMain .dealCard .dealActions{width:100%;box-sizing:border-box}}
 main.dealHome .catalogueMain .dealGrid{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
 main.dealHome .catalogueMain .dealGrid>.dealCard,main.dealHome .catalogueMain .dealGrid>.dealCard:first-child{display:grid;grid-template-columns:minmax(210px,35%) minmax(0,1fr);grid-column:auto;position:relative;border:1px solid #d9e1d8;border-radius:20px;background:#fff;overflow:hidden;box-shadow:0 8px 25px #163d2e09;align-items:stretch}
 main.dealHome .catalogueMain .dealCard .imageWrap,main.dealHome .catalogueMain .dealCard:first-child .imageWrap{height:100%;min-height:340px;display:flex;align-items:center;background:#fff;border:0;border-right:1px solid #e8ece5}
