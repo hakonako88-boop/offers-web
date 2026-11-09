@@ -34,6 +34,9 @@ test('builds a square branded JPEG from the clean product image', async () => {
 test('product name appears as readable text on at most two lines',()=>{
  assert.match(dealImageTitleLines('Bose QuietComfort SC Headphones Auriculares inalámbricos').join(' '),/Bose QuietComfort/);
  assert.ok(dealImageTitleLines('Auriculares de prueba con muchas características '.repeat(12)).length<=2);
+ assert.ok(fs.existsSync('public/fonts/BarlowCondensed-ExtraBold.ttf'));
+ assert.ok(fs.existsSync('public/fonts/BarlowCondensed-OFL.txt'));
+ assert.match(fs.readFileSync('scripts/deal-image-card.mjs','utf8'),/fontfile:TITLE_FONT/);
  for(const file of ['sync-aliexpress-deals','sync-amazon-deals','sync-miravia-deals','sync-mediamarkt-deals','sync-awin-retailers','process-telegram-inbox']) assert.match(fs.readFileSync(`scripts/${file}.mjs`,'utf8'),/title: offer.title/);
 });
 

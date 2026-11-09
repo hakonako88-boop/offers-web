@@ -1,9 +1,11 @@
 import sharp from 'sharp';
+import { fileURLToPath } from 'node:url';
 import { couponOptions } from './coupon-options.mjs';
 import { improveOfferTitle } from './offer-presentation.mjs';
 
 const CARD_SIZE = 1200;
 const PHOTO_HEIGHT = 760;
+const TITLE_FONT = fileURLToPath(new URL('../public/fonts/BarlowCondensed-ExtraBold.ttf',import.meta.url));
 
 function compact(value = '') {
   return String(value).replace(/\s+/gu, ' ').trim();
@@ -65,7 +67,7 @@ export function dealImageTitleLines(title = '') {
   const lines = [];
   let line = '';
   for (const word of words) {
-    if (line && `${line} ${word}`.length > 48) {
+    if (line && `${line} ${word}`.length > 32) {
       lines.push(line);
       line = word;
       if (lines.length === 2) { lines[1] = lines[1].replace(/[.,;:-]+$/u,'') + '…'; return lines; }
@@ -81,11 +83,12 @@ export function cardOverlay({ title = '', store, price } = {}) {
   return Buffer.from(`
     <svg width="${CARD_SIZE}" height="${CARD_SIZE}" viewBox="0 0 ${CARD_SIZE} ${CARD_SIZE}" xmlns="http://www.w3.org/2000/svg">
       <rect x="0" y="0" width="1200" height="1200" fill="none"/>
+      <title>${escapeXml(title)} · ${currentPrice}</title>
       <rect x="0" y="0" width="1200" height="88" fill="#103e30"/>
       <text x="48" y="57" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="900" fill="#ffffff">CHOLLOS AL DÍA</text>
       <text x="1152" y="55" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" fill="#ffffff">${escapeXml(theme.label)}</text>
-      <rect x="0" y="744" width="1200" height="456" fill="#fffcf7"/>
-      ${dealImageTitleLines(title).map((line,index)=>`<text x="600" y="${797+index*50}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800" fill="#183b30">${escapeXml(line)}</text>`).join('')}
+      <rect x="0" y="686" width="1200" height="514" fill="#fffcf7"/>
+      <rect x="64" y="704" width="60" height="7" rx="3" fill="#e6470a"/>
       <rect x="64" y="883" width="1072" height="220" rx="28" fill="#ad3007"/>
       <text x="600" y="1045" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="${priceText(price).length > 10 ? 124 : 164}" font-weight="900" fill="#ffffff">${currentPrice}</text>
       <text x="600" y="1165" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" fill="#525a53">@aldiachollos · Publicidad</text>
@@ -132,13 +135,15 @@ export async function createDealImageCard({
     .trim({ threshold: 8 })
     .resize({
       width: 1080,
-      height: 600,
+      height: 550,
       fit: 'contain',
       background: '#ffffff',
       withoutEnlargement: false,
     })
     .jpeg({ quality: 92, chromaSubsampling: '4:4:4' })
     .toBuffer();
+
+  const titleLayers = title ? [{input:await sharp({text:{text:`<span foreground="#173a2b" weight="heavy">${dealImageTitleLines(title).map(escapeXml).join('\n')}</span>`,font:'Barlow Condensed ExtraBold 76',fontfile:TITLE_FONT,width:1072,height:150,align:'left',rgba:true,wrap:'word'}}).png().toBuffer(),left:64,top:724}] : [];
 
   return sharp({
     create: {
@@ -151,6 +156,7 @@ export async function createDealImageCard({
     .composite([
       { input: product, left: 60, top: 125 },
       { input: cardOverlay({ title, store, price, previousPrice, discount, coupon }), left: 0, top: 0 },
+      ...titleLayers,
     ])
     .jpeg({ quality: 91, chromaSubsampling: '4:4:4', mozjpeg: true })
     .toBuffer();
