@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-09T15:49:27.036Z",
+  "updatedAt": "2026-11-09T15:56:34.225Z",
   "summary": {
-    "rejected": 386,
     "ignored": 232,
-    "published": 86,
-    "needs_review": 257,
+    "published": 87,
+    "rejected": 386,
+    "needs_review": 258,
     "duplicate": 39,
-    "pending": 117
+    "pending": 114
   },
   "recent": [
     {
@@ -14,9 +14,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 45963,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/45963",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -222,13 +222,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97883,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97883",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-09T14:33:57.204Z",
-      "nextAttemptAt": "2026-11-09T15:54:15.922Z"
+      "lastCheckedAt": "2026-11-09T15:56:18.376Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97882:aliexpress:0",
