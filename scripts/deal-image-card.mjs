@@ -2,7 +2,7 @@ import sharp from 'sharp';
 import { couponOptions } from './coupon-options.mjs';
 
 const CARD_SIZE = 1200;
-const PHOTO_HEIGHT = 840;
+const PHOTO_HEIGHT = 760;
 
 function compact(value = '') {
   return String(value).replace(/\s+/gu, ' ').trim();
@@ -34,8 +34,8 @@ function previousPriceLine(previousPrice = '') {
   if (!value) return '';
   const safeValue = escapeXml(value);
   return [
-    `<text x="1136" y="1000" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#676b68">Antes ${safeValue}</text>`,
-    '<line x1="872" y1="987" x2="1138" y2="987" stroke="#ff793d" stroke-width="4" stroke-linecap="round"/>',
+    `<text x="600" y="1035" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#676b68">Antes ${safeValue}</text>`,
+    '<line x1="430" y1="1023" x2="770" y2="1023" stroke="#b9653c" stroke-width="3" stroke-linecap="round"/>',
   ].join('');
 }
 
@@ -43,8 +43,8 @@ function discountBadge(discount = 0, accent = '#ff5a4f') {
   const amount = Math.round(Number(discount) || 0);
   if (amount <= 0 || amount >= 100) return '';
   return [
-    `<rect x="930" y="710" width="206" height="100" rx="24" fill="#ed4b12"/>`,
-    `<text x="1033" y="777" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="900" fill="#ffffff">−${amount}%</text>`,
+    `<rect x="930" y="630" width="206" height="100" rx="24" fill="#ed4b12"/>`,
+    `<text x="1033" y="697" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="900" fill="#ffffff">−${amount}%</text>`,
   ].join('');
 }
 
@@ -70,11 +70,12 @@ function cardOverlay({ store, price, previousPrice = '', discount = 0, coupon = 
       <path d="M56 52 L67 63 L87 40" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
       <text x="119" y="64" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#ffffff">CHOLLOS AL DÍA</text>
       <text x="1158" y="62" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#d9e8dc">chollosaldia.com</text>
-      <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="360" fill="#fffcf7"/>
+      <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="440" fill="#fffcf7"/>
       <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="7" fill="#ff651b"/>
-      <rect x="64" y="869" width="300" height="54" rx="16" fill="${theme.soft}"/>
-      <text x="214" y="906" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="900" fill="#172e23">${theme.label}</text>
-      <text x="64" y="1023" font-family="Arial, Helvetica, sans-serif" font-size="${priceText(price).length > 10 ? 92 : 112}" font-weight="900" fill="#c43b08">${currentPrice}</text>
+      <rect x="64" y="786" width="300" height="54" rx="16" fill="${theme.soft}"/>
+      <text x="214" y="823" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="900" fill="#172e23">${theme.label}</text>
+      <text x="1136" y="823" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" fill="#70421b">PRECIO DE LA PUBLICACIÓN</text>
+      <text x="600" y="982" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="${priceText(price).length > 10 ? 112 : 146}" font-weight="900" fill="#b93207">${currentPrice}</text>
       ${previousPriceLine(previousPrice)}
       ${discountBadge(discount, theme.accent)}
       ${couponBadge(coupon, theme.accent)}
@@ -122,7 +123,7 @@ export async function createDealImageCard({
     .trim({ threshold: 8 })
     .resize({
       width: 1080,
-      height: 670,
+      height: 590,
       fit: 'contain',
       background: '#ffffff',
       withoutEnlargement: false,
