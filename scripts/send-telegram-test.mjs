@@ -39,13 +39,28 @@ if (!token || !channelId) {
     status.membership = membership.status;
     status.canPostMessages = membership.can_post_messages !== false;
 
-    const message = await telegram('sendMessage', {
-      chat_id: channelId,
-      text: '✅ Prueba de conexión de ChollosAlDía\n\nEl bot está correctamente conectado y listo para publicar ofertas. Este es solo un mensaje de prueba.',
-      disable_web_page_preview: true,
-    });
+    const offers = JSON.parse(await readFile(new URL('../data/offers.json', import.meta.url), 'utf8'));
+    const offer = offers.filter(item => item.title && item.price && item.url && String(item.image).startsWith('/tg/') && item.coupon).sort((a,b)=>Number(b.date)-Number(a.date))[0];
+    if (!offer) throw new Error('No hay una oferta guardada con foto y cupón para probar sin inventar datos.');
+    const caption = '🧪 PRUEBA DE FORMATO\nDatos de una publicación guardada, no una oferta nueva ni un precio recién comprobado.\n\n' + formatTelegramDealCard({title:offer.title,store:offer.store,price:offer.price,previousPrice:offer.previousPrice,coupon:offer.coupon,description:offer.description});
+    if (caption.length > 1024) throw new Error('La prueba excede el límite de la foto.');
+    const imagePath = String(offer.image);
+    if (!/^\/tg\/[a-zA-Z0-9._-]+$/.test(imagePath)) throw new Error('Ruta de imagen de prueba no permitida.');
+    const form = new FormData();
+    form.set('chat_id', channelId);
+    form.set('caption', caption);
+    form.set('parse_mode', 'HTML');
+    form.set('disable_notification', 'true');
+    form.set('photo',new Blob([await readFile(new URL(`../public${imagePath}`,import.meta.url))],{type:'image/jpeg'}),'prueba-formato.jpg');
+    form.set('reply_markup', JSON.stringify(offerReplyMarkup({url:offer.url,store:offer.store})));
+    const response = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`,{method:'POST',body:form,signal:AbortSignal.timeout(30000)});
+    const result = await response.json();
+    if (!response.ok || !result.ok) throw new Error(result.description || 'No se pudo enviar la foto de prueba.');
+    const message = result.result;
     status.sent = true;
     status.messageId = message.message_id;
+    status.kind = 'photo-format-preview';
+    status.sourceMessageId = offer.message_id;
   } catch (error) {
     status.error = safeError(error);
   }
@@ -53,3 +68,6 @@ if (!token || !channelId) {
 
 await (await import('node:fs/promises')).writeFile(statusFile, `${JSON.stringify(status, null, 2)}\n`);
 console.log(JSON.stringify(status));
+import { readFile } from 'node:fs/promises';
+import { formatTelegramDealCard, offerReplyMarkup } from './offer-presentation.mjs';
+
