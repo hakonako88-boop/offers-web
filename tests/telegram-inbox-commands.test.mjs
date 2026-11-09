@@ -510,7 +510,7 @@ test('does not pad a factual Telegram card with generic promotional filler', () 
     discount: 45,
   });
   assert.match(card, /Maybelline New York paleta The Nudes/);
-  assert.match(card, /−45% en Amazon/);
+  assert.match(card, /#Amazon · <b>−45%<\/b>/);
   assert.doesNotMatch(card, /Buena ocasión si lo tenías en tu lista|ahora con un 45%/i);
 });
 

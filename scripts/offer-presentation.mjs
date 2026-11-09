@@ -18,6 +18,12 @@ function escapeHtml(value = '') {
     .replace(/>/g, '&gt;');
 }
 
+function escapeCaptionField(value, budget) {
+  const characters = Array.from(compact(value));
+  while (escapeHtml(characters.join('')).length > budget) characters.pop();
+  return escapeHtml(characters.join(''));
+}
+
 export function publicOfferUrl(id, siteUrl = 'https://chollosaldia.com') {
   const cleanId = String(id || '').trim().replace(/[^a-z0-9._~-]+/giu, '-').replace(/^-+|-+$/gu, '');
   if (!cleanId) return '';
@@ -277,34 +283,40 @@ export function formatTelegramDealCard({
   description = '',
 } = {}) {
   const options = couponOptions(coupon);
-  const couponLines = options.codes.map((code, index) => `${index ? '↳ Alternativa' : '🎟️ Cupón'}: <code>${escapeHtml(code)}</code>`).join('\n');
+  // Never shorten a code: that would turn it into a different, invalid coupon.
+  const codes = options.codes.filter(code => escapeHtml(code).length <= 50).slice(0, 3);
+  const couponLines = codes.map((code, index) => `${index ? '↳ Alternativa' : '🎟️ Cupón'}: <code>${escapeHtml(code)}</code>`).join('\n');
   const cashbackLine = options.cashback.length ? 'ℹ️ Cashback aparte: no lo descontamos del precio de compra.' : '';
   const storeTag = storeHashtag(store);
-  const discountLabel = Number(discount) > 0 ? ` · <b>−${Math.round(Number(discount))}%</b>` : '';
-  const savingsText = savings ? `Ahorras <b>${escapeHtml(savings)}</b>${discountLabel}` : (discountLabel ? `Descuento${discountLabel}` : 'Precio sujeto a stock');
+  const percentage = Math.round(Number(discount));
+  const discountLabel = percentage > 0 && percentage < 100 ? ` · <b>−${percentage}%</b>` : '';
   const couponCondition = Number(couponDiscount) > 0 && Number(couponMinimumSpend) > 0
     ? ` · descuenta ${escapeHtml(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(couponDiscount)))} desde ${escapeHtml(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(couponMinimumSpend)))}`
     : '';
-  const actionLine = options.codes.length
-    ? `${couponLines}${couponCondition}\n${options.codes.length > 1 ? 'Usa solo uno de estos códigos. ' : ''}Comprueba el total en la cesta.${cashbackLine ? `\n${cashbackLine}` : ''}${highlight ? `\n📈 ${escapeHtml(highlight)}` : ''}`
+  const actionLine = codes.length
+    ? `${couponLines}${couponCondition}\n${codes.length > 1 ? 'Usa solo uno de estos códigos. ' : ''}Comprueba el total en la cesta y si el descuento ya está aplicado.${cashbackLine ? `\n${cashbackLine}` : ''}`
     : highlight
-      ? `🔻 ${escapeHtml(highlight)}`
-      : `🔻 ${savingsText}${cashbackLine ? `\n${cashbackLine}` : ''}`;
-  const linkLine = `👇🏻 <b>ABRIR OFERTA EN ${escapeHtml(storeHashtag(store).toUpperCase())}</b>`;
-  const headline = `🔥 <b>${escapeHtml(editorialOfferHeadline({ title, store, price, discount, coupon }))}</b>`;
+      ? `🔻 ${escapeCaptionField(highlight, 140)}`
+      : cashbackLine;
+  const linkLine = `👇 <b>Ver en ${escapeCaptionField(store || 'la tienda', 40)}</b> · botón de abajo`;
+  const headline = `🔥 <b>${escapeCaptionField(trimAtWord(improveOfferTitle(title), 130), 260)}</b>\n#${escapeCaptionField(storeTag, 40)}${discountLabel}`;
   const priceBlock = [
-    previousPrice ? `📛 <b>Antes:</b> <s>${escapeHtml(previousPrice)}</s>` : '',
-    `💶 <b>PRECIO OFERTA:</b> <b>${escapeHtml(price)}</b> 💥`,
-    actionLine,
-  ].filter(Boolean).join('\n\n');
+    `💶 <b>PRECIO OFERTA: ${escapeCaptionField(price, 60)}</b>`,
+    previousPrice ? `Antes: <s>${escapeCaptionField(previousPrice, 60)}</s>` : '',
+    savings ? `Ahorras ${escapeCaptionField(savings, 60)}` : '',
+  ].filter(Boolean).join('\n');
 
-  return [
+  const details = offerDescription({ title, discount, description });
+  const render = (withDescription = true, withOptionalNote = true) => [
     headline,
-    offerDescription({ title, discount, description }) ? `✨ ${escapeHtml(offerDescription({ title, discount, description }))}` : '',
+    withDescription && details ? `✨ ${escapeHtml(trimAtWord(details, 150))}` : '',
     priceBlock,
+    codes.length || withOptionalNote ? actionLine : '',
     linkLine,
-    `🔔 Sigue @aldiachollos · #${storeTag} #Chollos #Publi`,
-  ].filter(Boolean).join('\n\n').slice(0, 850);
+    `🔔 Sigue @aldiachollos · #Publi`,
+  ].filter(Boolean).join('\n\n');
+  // Budget complete blocks, never slice HTML tags or entities in a caption.
+  return render().length <= 1000 ? render() : render(false).length <= 1000 ? render(false) : render(false, false);
 }
 
 export function formatWebsiteDealText({ title, store, price, previousPrice = '', savings = '', discount = 0, coupon = '', description = '' } = {}) {

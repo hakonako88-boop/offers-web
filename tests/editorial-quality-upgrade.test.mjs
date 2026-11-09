@@ -1,4 +1,5 @@
 import test from 'node:test';
+import './telegram-caption-quality.test.mjs';
 import assert from 'node:assert/strict';
 import { couponOptions } from '../scripts/coupon-options.mjs';
 import { meaningfulSaving, offerQuality } from '../scripts/offer-quality-score.mjs';
