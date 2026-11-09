@@ -1,22 +1,35 @@
 {
-  "updatedAt": "2026-11-09T21:25:10.849Z",
+  "updatedAt": "2026-11-09T21:37:38.240Z",
   "summary": {
     "rejected": 373,
-    "needs_review": 277,
+    "needs_review": 278,
     "ignored": 225,
     "published": 87,
     "duplicate": 38,
-    "pending": 125
+    "pending": 124
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97919:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97919,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/97919",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-09T21:37:19.530Z",
+      "nextAttemptAt": "2026-11-09T21:57:38.240Z"
+    },
     {
       "id": "telegram-una-ganga:97918:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 97918,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/una_ganga/97918",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -469,13 +482,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97908,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97908",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-09T20:14:25.583Z",
-      "nextAttemptAt": "2026-11-09T21:34:43.328Z"
+      "lastCheckedAt": "2026-11-09T21:37:19.530Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:45538:amazon:0",
@@ -521,13 +534,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97906,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/97906",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-09T21:24:52.740Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-09T21:37:19.530Z",
+      "nextAttemptAt": "2026-11-09T21:57:38.240Z"
     },
     {
       "id": "telegram-una-ganga:97905:aliexpress:0",
@@ -640,7 +653,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/97904",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-09T21:15:03.455Z",
@@ -885,13 +898,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97893,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97893",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-09T20:14:25.583Z",
-      "nextAttemptAt": "2026-11-09T21:34:43.328Z"
+      "lastCheckedAt": "2026-11-09T21:37:19.530Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97892:amazon:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:97876:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 97876,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 1,
-      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
-      "sourceUrl": "https://t.me/una_ganga/97876",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-09T13:47:50.664Z"
     }
   ]
 }
