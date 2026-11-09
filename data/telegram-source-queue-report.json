@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-11-09T18:44:30.030Z",
+  "updatedAt": "2026-11-09T18:54:10.947Z",
   "summary": {
-    "ignored": 229,
     "duplicate": 39,
     "rejected": 384,
-    "needs_review": 261,
+    "ignored": 228,
+    "needs_review": 262,
     "published": 87,
-    "pending": 125
+    "pending": 126
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97908:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97908,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/97908",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-09T18:53:51.886Z",
+      "nextAttemptAt": "2026-11-09T19:14:10.947Z"
+    },
+    {
+      "id": "telegram-ofertos:45538:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 45538,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/45538",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-09T19:31:56.770Z"
+    },
     {
       "id": "telegram-ofertos:45537:aliexpress:0",
       "source": "telegram-ofertos",
@@ -66,9 +92,9 @@
       "source": "telegram-ofertos",
       "messageId": 45535,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 1,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/45535",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -404,13 +430,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97893,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/97893",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-09T18:44:10.518Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-09T18:53:51.886Z",
+      "nextAttemptAt": "2026-11-09T19:14:10.947Z"
     },
     {
       "id": "telegram-una-ganga:97892:amazon:0",
@@ -599,13 +625,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97883,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97883",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-09T17:24:50.415Z",
-      "nextAttemptAt": "2026-11-09T18:45:10.187Z"
+      "lastCheckedAt": "2026-11-09T18:53:51.886Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97882:aliexpress:0",
@@ -1281,32 +1307,6 @@
       "sourceUrl": "https://t.me/Ofertos/45491",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45493:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 45493,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/45493",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45490:miravia:1",
-      "source": "telegram-ofertos",
-      "messageId": 45490,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/Ofertos/45490",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-09T14:05:05.186Z",
       "nextAttemptAt": ""
     }
   ]
