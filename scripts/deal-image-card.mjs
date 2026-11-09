@@ -1,7 +1,8 @@
 import sharp from 'sharp';
+import { couponOptions } from './coupon-options.mjs';
 
 const CARD_SIZE = 1200;
-const PHOTO_HEIGHT = 890;
+const PHOTO_HEIGHT = 840;
 
 function compact(value = '') {
   return String(value).replace(/\s+/gu, ' ').trim();
@@ -33,27 +34,28 @@ function previousPriceLine(previousPrice = '') {
   if (!value) return '';
   const safeValue = escapeXml(value);
   return [
-    `<text x="930" y="1052" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" fill="#94a3b8">Antes ${safeValue}</text>`,
-    '<line x1="700" y1="1038" x2="930" y2="1038" stroke="#ff5a4f" stroke-width="7" stroke-linecap="round"/>',
+    `<text x="1136" y="1000" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#c7d8cf">Antes ${safeValue}</text>`,
+    '<line x1="872" y1="987" x2="1138" y2="987" stroke="#ff793d" stroke-width="4" stroke-linecap="round"/>',
   ].join('');
 }
 
 function discountBadge(discount = 0, accent = '#ff5a4f') {
   const amount = Math.round(Number(discount) || 0);
-  if (amount <= 0) return '';
+  if (amount <= 0 || amount >= 100) return '';
   return [
-    `<rect x="940" y="930" width="205" height="112" rx="32" fill="${accent}"/>`,
-    `<text x="1042" y="1002" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="900" fill="#ffffff">−${amount}%</text>`,
+    `<rect x="930" y="710" width="206" height="100" rx="24" fill="#ed4b12"/>`,
+    `<text x="1033" y="777" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="900" fill="#ffffff">−${amount}%</text>`,
   ].join('');
 }
 
 function couponBadge(coupon = '', accent = '#ff5a4f') {
-  const code = escapeXml(coupon).slice(0, 28);
+  const originalCode = couponOptions(coupon).codes[0] || '';
+  const code = originalCode.length <= 20 ? escapeXml(originalCode) : '';
   if (!code) return '';
   return [
-    `<rect x="650" y="1088" width="494" height="62" rx="18" fill="#ffffff" fill-opacity="0.12" stroke="${accent}" stroke-width="3" stroke-dasharray="9 7"/>`,
-    `<text x="677" y="1129" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#dbe5f5">CUPÓN</text>`,
-    `<text x="1114" y="1129" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="900" fill="#ffffff">${code}</text>`,
+    `<rect x="64" y="1062" width="1072" height="72" rx="18" fill="#e8f3df"/>`,
+    `<text x="90" y="1109" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#254936">CUPÓN AL PAGAR</text>`,
+    `<text x="1106" y="1110" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#123d2c">${code}</text>`,
   ].join('');
 }
 
@@ -63,19 +65,21 @@ function cardOverlay({ store, price, previousPrice = '', discount = 0, coupon = 
   return Buffer.from(`
     <svg width="${CARD_SIZE}" height="${CARD_SIZE}" viewBox="0 0 ${CARD_SIZE} ${CARD_SIZE}" xmlns="http://www.w3.org/2000/svg">
       <rect x="0" y="0" width="1200" height="1200" fill="none"/>
-      <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="310" fill="#18213e"/>
-      <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="13" fill="${theme.accent}"/>
-      <rect x="56" y="927" width="286" height="79" rx="25" fill="${theme.soft}"/>
-      <text x="199" y="980" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="35" font-weight="900" fill="${theme.accent}">${theme.label}</text>
-      <text x="56" y="1094" font-family="Arial, Helvetica, sans-serif" font-size="91" font-weight="900" fill="#ffffff">${currentPrice}</text>
+      <rect x="0" y="0" width="1200" height="104" fill="#103e30"/>
+      <rect x="40" y="22" width="60" height="60" rx="18" fill="#ff651b"/>
+      <path d="M56 52 L67 63 L87 40" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="119" y="64" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#ffffff">CHOLLOS AL DÍA</text>
+      <text x="1158" y="62" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#d9e8dc">chollosaldia.com</text>
+      <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="360" fill="#103e30"/>
+      <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="7" fill="#ff651b"/>
+      <rect x="64" y="869" width="300" height="54" rx="16" fill="${theme.soft}"/>
+      <text x="214" y="906" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="900" fill="#172e23">${theme.label}</text>
+      <text x="64" y="1021" font-family="Arial, Helvetica, sans-serif" font-size="90" font-weight="900" fill="#ffffff" textLength="${currentPrice.length > 9 ? 650 : 540}" lengthAdjust="spacingAndGlyphs">${currentPrice}</text>
       ${previousPriceLine(previousPrice)}
       ${discountBadge(discount, theme.accent)}
       ${couponBadge(coupon, theme.accent)}
-      <rect x="56" y="1126" width="45" height="45" rx="12" fill="#6769f0"/>
-      <text x="78.5" y="1159" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="900" fill="#ffffff">€</text>
-      <text x="116" y="1159" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="900" fill="#ffffff">CHOLLOS</text>
-      <text x="256" y="1159" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="900" fill="#ff6b5f">AL</text>
-      <text x="296" y="1159" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="900" fill="#ffffff">DÍA</text>
+      <text x="64" y="1174" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#d9e8dc">@aldiachollos · Publicidad</text>
+      <text x="1136" y="1174" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#d9e8dc">Precio y condiciones sujetos a cambios</text>
     </svg>
   `);
 }
@@ -115,9 +119,10 @@ export async function createDealImageCard({
   const input = suppliedImage ? Buffer.from(suppliedImage) : await imageBytesFromUrl(imageUrl, fetchImpl);
   const product = await sharp(input, { failOn: 'none' })
     .rotate()
+    .trim({ threshold: 8 })
     .resize({
       width: 1080,
-      height: 790,
+      height: 670,
       fit: 'contain',
       background: '#ffffff',
       withoutEnlargement: false,
@@ -134,7 +139,7 @@ export async function createDealImageCard({
     },
   })
     .composite([
-      { input: product, left: 60, top: 50 },
+      { input: product, left: 60, top: 125 },
       { input: cardOverlay({ store, price, previousPrice, discount, coupon }), left: 0, top: 0 },
     ])
     .jpeg({ quality: 91, chromaSubsampling: '4:4:4', mozjpeg: true })
