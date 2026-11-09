@@ -27,3 +27,4 @@ test('a blocked clipboard exposes the actual code instead of claiming success', 
   const css = fs.readFileSync('app/home-priorities.css','utf8');
   assert.match(css, /color:#fff; background:#173d3b/);
 });
+import './seasonal-banners.test.mjs';

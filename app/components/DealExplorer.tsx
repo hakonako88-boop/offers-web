@@ -66,7 +66,7 @@ function offerCountLabel(total: number) {
   return `${total} ${total === 1 ? "oferta" : "ofertas"}`;
 }
 
-export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summary, featuredSelection }: { initialDeals: Deal[]; posts: PublishedPost[]; aliexpressCampaignPost?: PublishedPost; summary: DealSummary; featuredSelection?: React.ReactNode }) {
+export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summary, featuredSelection, campaignBanners }: { initialDeals: Deal[]; posts: PublishedPost[]; aliexpressCampaignPost?: PublishedPost; summary: DealSummary; featuredSelection?: React.ReactNode; campaignBanners?: React.ReactNode }) {
   const newestOfferDate = Date.parse(initialDeals[0]?.verifiedDate || "");
   const featuredPost = posts.find((post) => /^mejores-productos-(?:dia|semana)-/u.test(post.id)
     && Number.isFinite(newestOfferDate) && newestOfferDate - Date.parse(post.publishedAt) < 7 * 24 * 60 * 60 * 1000);
@@ -263,6 +263,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
         </div>
       </section>
 
+      {campaignBanners}
       <nav className="shoppingCategories shell" id="categorias-rapidas" aria-label="Categorías rápidas">
         {[['fire', 'Destacados', 'Todos'], ['tech', 'Tecnología', 'Tecnología'], ['home', 'Hogar', 'Hogar'], ['sport', 'Deporte', 'Deporte'], ['appliance', 'Electrodomésticos', 'Electrodomésticos'], ['fashion', 'Moda', 'Moda'], ['game', 'Gaming', 'Gaming'], ['tag', 'Cupones', 'cupones']].map(([icon, label, value]) => <button key={value} type="button" aria-pressed={value === 'cupones' ? couponOnly : category === value && !couponOnly} onClick={() => { setCategory(value === 'cupones' ? 'Todos' : value); setCouponOnly(value === 'cupones'); setVisibleLimit(18); document.getElementById('ofertas')?.scrollIntoView({ behavior: 'smooth' }); }}><ShopIcon name={icon} /><span>{label}</span></button>)}
       </nav>

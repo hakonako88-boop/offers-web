@@ -27,6 +27,7 @@ import "./home-priorities.css";
 import "./catalogue-sidebar.css";
 import "./tesla-entry.css";
 import "./single-offer-rows.css";
+import "./seasonal-banners.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });

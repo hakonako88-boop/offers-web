@@ -1,0 +1,23 @@
+/* Isolated seasonal creative: readable live HTML, no heavyweight image or carousel. */
+main.dealHome .seasonalBanners{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:20px auto 28px}
+main.dealHome .seasonalBanner{position:relative;isolation:isolate;display:flex;align-items:center;min-height:244px;overflow:hidden;border-radius:20px;padding:28px;text-decoration:none;border:1px solid transparent;transition:transform .18s ease,box-shadow .18s ease}
+main.dealHome .seasonalBanner:hover{transform:translateY(-3px);box-shadow:0 12px 30px #173a2b18}
+main.dealHome .seasonalBanner:focus-visible{outline:3px solid #d54a08;outline-offset:5px}
+main.dealHome .seasonalBannerCopy{position:relative;z-index:2;width:78%}
+main.dealHome .seasonalBannerEyebrow{display:block;font-size:10px;font-weight:800;letter-spacing:.15em;line-height:1.5}
+main.dealHome .seasonalBanner h2{font-size:clamp(28px,3vw,43px);font-weight:900;line-height:1.03;letter-spacing:-.055em;margin:13px 0 12px;color:inherit}
+main.dealHome .seasonalBannerDate{font-size:12px;font-weight:750;line-height:1.5;margin:0}
+main.dealHome .seasonalBannerDescription{font-size:13px;line-height:1.5;margin:9px 0 20px}
+main.dealHome .seasonalBannerCta{display:inline-flex;align-items:center;justify-content:space-between;gap:20px;min-height:43px;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:800}
+main.dealHome .seasonalBannerCta>span{font-size:19px;line-height:1}
+main.dealHome .seasonalBannerArt{position:absolute;right:-14px;bottom:26px;z-index:0;font-size:100px;font-weight:950;line-height:.83;letter-spacing:-.1em;white-space:pre;transform:rotate(-12deg);pointer-events:none}
+main.dealHome .seasonalBanner--black-friday{color:#fffdf5;background:radial-gradient(ellipse at 100% 0%,#394734 0,transparent 65%),#151c18}
+main.dealHome .seasonalBanner--black-friday .seasonalBannerEyebrow{color:#d9ed80}
+main.dealHome .seasonalBanner--black-friday .seasonalBannerArt{color:#d9ed80;opacity:.12;font-size:90px;bottom:33px}
+main.dealHome .seasonalBanner--black-friday .seasonalBannerCta{color:#17251b;background:#e4f49c}
+main.dealHome .seasonalBanner--aliexpress-1111{background:linear-gradient(125deg,#fff3e3 0%,#ffe5cf 100%);color:#672907;border-color:#f5ceb0}
+main.dealHome .seasonalBanner--aliexpress-1111 .seasonalBannerEyebrow{color:#a63a09}
+main.dealHome .seasonalBanner--aliexpress-1111 .seasonalBannerArt{color:#e64b10;opacity:.15;font-size:145px;bottom:48px}
+main.dealHome .seasonalBanner--aliexpress-1111 .seasonalBannerCta{background:#b93607;color:#fff}
+@media(max-width:640px){main.dealHome .seasonalBanners{gap:10px;margin-top:15px;margin-bottom:18px}main.dealHome .seasonalBanner{min-height:216px;padding:16px;border-radius:14px;align-items:stretch}main.dealHome .seasonalBannerCopy{width:100%;display:flex;flex-direction:column}main.dealHome .seasonalBanner h2{font-size:27px;line-height:1.05;margin:10px 0}main.dealHome .seasonalBannerEyebrow{font-size:8px;letter-spacing:.06em}main.dealHome .seasonalBannerDate{font-size:10px}main.dealHome .seasonalBannerDescription{display:none}main.dealHome .seasonalBannerCta{font-size:10px;padding:10px;margin-top:auto;gap:7px;min-height:44px}main.dealHome .seasonalBannerArt{opacity:.07!important;font-size:90px!important;bottom:70px;right:-5px}}
+@media(prefers-reduced-motion:reduce){main.dealHome .seasonalBanner{transition:none}}
