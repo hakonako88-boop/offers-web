@@ -26,3 +26,6 @@ jobs:
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           TELEGRAM_TEST_REPLACE_ID: '8029'
         run: node scripts/send-telegram-test.mjs
+      - name: Mostrar diagnostico seguro si Telegram rechaza la prueba
+        if: failure()
+        run: node -e "const fs=require('fs');const p='data/telegram-test-status.json';if(fs.existsSync(p)){const s=JSON.parse(fs.readFileSync(p));console.log('::error::'+String(s.error||'Fallo sin detalle').replace(/[\r\n]/g,' '));}"
