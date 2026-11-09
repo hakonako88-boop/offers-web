@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-11-09T13:26:26.805Z",
+  "updatedAt": "2026-11-09T13:34:34.794Z",
   "summary": {
-    "needs_review": 251,
-    "ignored": 242,
+    "ignored": 240,
     "duplicate": 38,
     "published": 85,
     "rejected": 387,
+    "needs_review": 250,
     "pending": 124
   },
   "recent": [
@@ -42,7 +42,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/97883",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-09T13:13:52.857Z",
@@ -374,19 +374,6 @@
       "nextAttemptAt": "2026-11-09T14:46:26.805Z"
     },
     {
-      "id": "telegram-ofertos:45511:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 45511,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/45511",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
       "id": "telegram-ofertos:45510:amazon:0",
       "source": "telegram-ofertos",
       "messageId": 45510,
@@ -395,6 +382,19 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/45510",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-ofertos:45511:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 45511,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/Ofertos/45511",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
