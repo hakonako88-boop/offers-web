@@ -3,7 +3,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 
 const STATE_FILE = path.join(process.cwd(), 'data', 'telegram-channel-profile.json');
-const PROFILE_VERSION = 2;
+const PROFILE_VERSION = 3;
 const token = String(process.env.TELEGRAM_BOT_TOKEN || '').trim();
 const chatId = String(process.env.TELEGRAM_CHANNEL_ID || '').trim();
 
