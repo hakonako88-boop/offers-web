@@ -11,6 +11,13 @@ function readState() {
   try { return JSON.parse(fs.readFileSync(STATE_FILE, 'utf8')); } catch { return { version: 0 }; }
 }
 
+process.on('uncaughtException', error => {
+  const message=String(error?.message || error).replaceAll(token || '[no-token]', '[redacted]');
+  fs.writeFileSync(STATE_FILE,JSON.stringify({...readState(),lastAttemptAt:new Date().toISOString(),lastError:message},null,2)+'\n');
+  console.error(message);
+  process.exitCode=1;
+});
+
 async function telegram(method, body) {
   const response = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
     method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body),
