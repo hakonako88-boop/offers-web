@@ -23,6 +23,7 @@ async function telegram(method, body) {
     method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body),
   });
   const data = await response.json().catch(() => ({}));
+  if (['setChatTitle','setChatDescription'].includes(method) && /not modified/i.test(String(data.description || ''))) return true;
   if (!response.ok || !data.ok) throw new Error(`${method}: ${data.description || response.status}`);
   return data.result;
 }
