@@ -1,0 +1,46 @@
+name: Actualizar Switch existente sin reenviar
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/update-owner-switch.yml]
+permissions:
+  contents: write
+concurrency:
+  group: owner-switch-update
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: node scripts/update-owner-switch.mjs
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: switch-update-recovery
+          path: |
+            data/owner-switch-update-status.json
+            data/offers.json
+            public/tg/owner-switch-updated-1005012594194767.jpg
+      - name: Guardar edición confirmada
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/offers.json public/tg
+          if [ -f data/owner-switch-update-status.json ]; then git add data/owner-switch-update-status.json; fi
+          git diff --cached --quiet || git commit -m 'Actualizar Switch existente [owner-selected]'
+          git pull --rebase origin main
+          git push origin main

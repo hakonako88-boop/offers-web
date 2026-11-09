@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import {createDealImageCard} from './deal-image-card.mjs';
+const statusFile='data/owner-switch-update-status.json';
+process.on('uncaughtException',error=>{fs.writeFileSync(statusFile,JSON.stringify({status:'failed',message:String(error.message).slice(0,250)},null,2)+'\n');process.exit(1)});
+const offers=JSON.parse(fs.readFileSync('data/offers.json','utf8'));
+const offer=offers.find(row=>row.source_product_id==='1005012594194767');
+if(!offer||offer.message_id!==4509||offer.url!=='https://s.click.aliexpress.com/e/_c40vMOIF')throw Error('No coincide la ficha y el enlace existente revisados.');
+if(new Date().toISOString().slice(0,10)!=='2026-11-09')throw Error('Revisar condiciones antes de ejecutar otro día.');
+const title='Nintendo Switch 2 · oferta con cupón ESD1175';
+const description='300 € anunciados por el propietario con el cupón ESD1175. Precio de referencia aportado: 438,50 €. No se ha verificado el total de la cesta ni la vigencia para todas las cuentas. Comprueba variante, batería extraíble, vendedor, envío, cupos y compra mínima. El cashback de 10 € es para una compra posterior y no se resta de los 300 €. No se descuenta un posible ahorro PayPal sin confirmar condiciones.';
+const caption=['🎮 <b>Nintendo Switch 2 · oferta con cupón</b>','','💶 <b>300,00 € anunciados con ESD1175</b>','🎟 Código: <code>ESD1175</code>','🏷 Referencia aportada: 438,50 €; no se afirma mínimo histórico.','','⚠️ Precio y cupón aportados por el propietario; total no verificado en la cesta. Confirma variante, vendedor, gastos, cupos y compra mínima.','','🔋 Comprueba que la opción elegida indique expresamente batería extraíble: no se ha confirmado.','','💰 Los posibles 10 € de cashback son para otra compra, no una rebaja inmediata.','💳 PayPal: consulta condiciones; no descontamos un importe adicional sin confirmar.','','🪐 @aldiachollos #AliExpress #Publi'].join('\n');
+const card=await createDealImageCard({imageUrl:'https://ae-pic-a1.aliexpress-media.com/kf/Se3a4e835d6f0449faa284cd0239b95e1a.jpg',store:'AliExpress',price:'300,00 €',coupon:'ESD1175 · condicionado'});
+const token=process.env.TELEGRAM_BOT_TOKEN;const chat=process.env.TELEGRAM_CHANNEL_ID;if(!token||!chat)throw Error('Falta Telegram.');
+const form=new FormData();form.set('chat_id',chat);form.set('message_id','4509');form.set('media',JSON.stringify({type:'photo',media:'attach://photo',caption,parse_mode:'HTML'}));form.set('photo',new Blob([card],{type:'image/jpeg'}),'switch-actualizada.jpg');form.set('reply_markup',JSON.stringify({inline_keyboard:[[{text:'🎮 VER SWITCH 2 Y CONDICIONES',url:offer.url}]]}));
+const response=await fetch(`https://api.telegram.org/bot${token}/editMessageMedia`,{method:'POST',body:form,signal:AbortSignal.timeout(30000)});const result=await response.json();if(!response.ok||!result.ok)throw Error(`Telegram no confirmó la edición: ${result.description||response.status}`);
+const now=new Date();offer.originalPublicationDate??=offer.date;Object.assign(offer,{date:Math.floor(now.getTime()/1000),updated_at:now.toISOString(),title,description,text:description,price:'300,00 €',previousPrice:'',coupon:'ESD1175',priceCondition:description,source:'telegram-owner-selected',priceVerification:'owner_supplied_checkout_unverified'});
+const image='/tg/owner-switch-updated-1005012594194767.jpg';fs.mkdirSync('public/tg',{recursive:true});fs.writeFileSync('public'+image,card);offer.image=image;
+fs.writeFileSync('data/offers.json',JSON.stringify(offers,null,2)+'\n');fs.writeFileSync(statusFile,JSON.stringify({status:'updated',messageId:4509,productId:offer.source_product_id,affiliateUnchanged:true,updatedAt:now.toISOString()},null,2)+'\n');
