@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import sharp from 'sharp';
+import fs from 'node:fs';
 import { createDealImageCard, dealImageCardFilename } from '../scripts/deal-image-card.mjs';
 
 test('builds a square branded JPEG from the clean product image', async () => {
@@ -37,4 +38,14 @@ test('long coupon alternatives and special characters produce a valid image with
 
 test('creates safe and recognisable Telegram filenames', () => {
   assert.equal(dealImageCardFilename('AliExpress', '123/ABC'), 'aliexpress-123-ABC-telegram.jpg');
+});
+
+test('profile photo updates are restricted to the owners channel and use the vector brand',async()=>{
+ const script=fs.readFileSync('scripts/optimize-telegram-channel.mjs','utf8');
+ assert.match(script,/channel.username/);
+ assert.match(script,/!== 'aldiachollos'/);
+ assert.match(script,/channel.type !== 'channel'/);
+ assert.match(script,/setChatPhoto/);
+ const meta=await sharp('public/telegram-channel-avatar.svg').metadata();
+ assert.equal(meta.width,1024);
 });
