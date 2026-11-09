@@ -42,7 +42,11 @@ if (!token || !channelId) {
     const offers = JSON.parse(await readFile(new URL('../data/offers.json', import.meta.url), 'utf8'));
     const offer = offers.filter(item => item.title && item.price && item.url && String(item.image).startsWith('/tg/') && item.coupon).sort((a,b)=>Number(b.date)-Number(a.date))[0];
     if (!offer) throw new Error('No hay una oferta guardada con foto y cupón para probar sin inventar datos.');
-    const caption = '🧪 PRUEBA DE FORMATO\nDatos de una publicación guardada, no una oferta nueva ni un precio recién comprobado.\n\n' + formatTelegramDealCard({title:offer.title,store:offer.store,price:offer.price,previousPrice:offer.previousPrice,coupon:offer.coupon,description:offer.description});
+    const amount = value => Number(String(value || '').replace(/[^0-9,.-]/g,'').replace(/\.(?=\d{3}(?:\D|$))/g,'').replace(',','.'));
+    const current = amount(offer.price), previous = amount(offer.previousPrice);
+    const discount = current > 0 && previous > current ? Math.round((1-current/previous)*100) : 0;
+    const savings = previous > current ? new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(previous-current) : '';
+    const caption = '🧪 PRUEBA DE DISEÑO\nDatos guardados; precio y cupón no comprobados de nuevo.\n\n' + formatTelegramDealCard({title:offer.title,store:offer.store,price:offer.price,previousPrice:offer.previousPrice,coupon:offer.coupon,description:offer.description,discount,savings});
     if (caption.length > 1024) throw new Error('La prueba excede el límite de la foto.');
     const imagePath = String(offer.image);
     if (!/^\/tg\/[a-zA-Z0-9._-]+$/.test(imagePath)) throw new Error('Ruta de imagen de prueba no permitida.');
@@ -51,7 +55,8 @@ if (!token || !channelId) {
     form.set('caption', caption);
     form.set('parse_mode', 'HTML');
     form.set('disable_notification', 'true');
-    form.set('photo',new Blob([await readFile(new URL(`../public${imagePath}`,import.meta.url))],{type:'image/jpeg'}),'prueba-formato.jpg');
+    const photo = await createDealImageCard({imageBytes:await readFile(new URL(`../public${imagePath}`,import.meta.url)),store:offer.store,price:offer.price,previousPrice:offer.previousPrice,coupon:offer.coupon,discount});
+    form.set('photo',new Blob([photo],{type:'image/jpeg'}),'prueba-diseno.jpg');
     form.set('reply_markup', JSON.stringify(offerReplyMarkup({url:offer.url,store:offer.store})));
     const response = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`,{method:'POST',body:form,signal:AbortSignal.timeout(30000)});
     const result = await response.json();
@@ -70,4 +75,5 @@ await (await import('node:fs/promises')).writeFile(statusFile, `${JSON.stringify
 console.log(JSON.stringify(status));
 import { readFile } from 'node:fs/promises';
 import { formatTelegramDealCard, offerReplyMarkup } from './offer-presentation.mjs';
+import { createDealImageCard } from './deal-image-card.mjs';
 
