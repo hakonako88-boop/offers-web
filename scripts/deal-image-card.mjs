@@ -34,7 +34,7 @@ function previousPriceLine(previousPrice = '') {
   if (!value) return '';
   const safeValue = escapeXml(value);
   return [
-    `<text x="1136" y="1000" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#c7d8cf">Antes ${safeValue}</text>`,
+    `<text x="1136" y="1000" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#676b68">Antes ${safeValue}</text>`,
     '<line x1="872" y1="987" x2="1138" y2="987" stroke="#ff793d" stroke-width="4" stroke-linecap="round"/>',
   ].join('');
 }
@@ -53,9 +53,9 @@ function couponBadge(coupon = '', accent = '#ff5a4f') {
   const code = originalCode.length <= 20 ? escapeXml(originalCode) : '';
   if (!code) return '';
   return [
-    `<rect x="64" y="1062" width="1072" height="72" rx="18" fill="#e8f3df"/>`,
-    `<text x="90" y="1109" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#254936">CUPÓN AL PAGAR</text>`,
-    `<text x="1106" y="1110" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#123d2c">${code}</text>`,
+    `<rect x="64" y="1062" width="1072" height="72" rx="18" fill="#fff0d7" stroke="#e3b77c" stroke-width="2"/>`,
+    `<text x="90" y="1109" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#70421b">CUPÓN AL PAGAR</text>`,
+    `<text x="1106" y="1110" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="900" fill="#713108">${code}</text>`,
   ].join('');
 }
 
@@ -70,16 +70,16 @@ function cardOverlay({ store, price, previousPrice = '', discount = 0, coupon = 
       <path d="M56 52 L67 63 L87 40" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
       <text x="119" y="64" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#ffffff">CHOLLOS AL DÍA</text>
       <text x="1158" y="62" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#d9e8dc">chollosaldia.com</text>
-      <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="360" fill="#103e30"/>
+      <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="360" fill="#fffcf7"/>
       <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="7" fill="#ff651b"/>
       <rect x="64" y="869" width="300" height="54" rx="16" fill="${theme.soft}"/>
       <text x="214" y="906" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="900" fill="#172e23">${theme.label}</text>
-      <text x="64" y="1021" font-family="Arial, Helvetica, sans-serif" font-size="90" font-weight="900" fill="#ffffff" textLength="${currentPrice.length > 9 ? 650 : 540}" lengthAdjust="spacingAndGlyphs">${currentPrice}</text>
+      <text x="64" y="1023" font-family="Arial, Helvetica, sans-serif" font-size="${priceText(price).length > 10 ? 92 : 112}" font-weight="900" fill="#c43b08">${currentPrice}</text>
       ${previousPriceLine(previousPrice)}
       ${discountBadge(discount, theme.accent)}
       ${couponBadge(coupon, theme.accent)}
-      <text x="64" y="1174" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#d9e8dc">@aldiachollos · Publicidad</text>
-      <text x="1136" y="1174" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#d9e8dc">Precio y condiciones sujetos a cambios</text>
+      <text x="64" y="1174" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#525a53">@aldiachollos · Publicidad</text>
+      <text x="1136" y="1174" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#525a53">Precio y condiciones sujetos a cambios</text>
     </svg>
   `);
 }
