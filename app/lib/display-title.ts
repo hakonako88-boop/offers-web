@@ -6,14 +6,7 @@ function normalized(value: string) {
   return compact(value).toLocaleLowerCase("es").normalize("NFD").replace(/\p{Diacritic}/gu, "");
 }
 
-function trimAtWord(value: string, maximum = 82) {
-  const text = compact(value);
-  if (text.length <= maximum) return text;
-  const cut = text.slice(0, maximum + 1).lastIndexOf(" ");
-  return `${text.slice(0, cut > 46 ? cut : maximum).replace(/[,:;|·-]+$/u, "").trim()}…`;
-}
-
-/** Short factual headline for cards; the complete supplier title remains in the offer page. */
+/** Readable factual headline. Never discard words just to fit a card. */
 export function offerDisplayTitle(value: string) {
   const original = compact(value)
     .replace(/^(?:🔥|✨|💥|⭐️?|⚡|🛍️|\s)+/gu, "")
@@ -54,7 +47,7 @@ export function offerDisplayTitle(value: string) {
     .replace(/\bHeadphones?\b/giu, 'auriculares').replace(/\bBluetooth Earbuds\b/giu, 'auriculares Bluetooth')
     .replace(/\bWORK Socks\b/giu, '').replace(/\bENTRENADOR\b/gu, 'zapatillas')
     .replace(/\s*[|_]\s*/gu, " · ").replace(/\s+-\s+/gu, " · ");
-  return trimAtWord(readable, 74);
+  return compact(readable);
 }
 
 export function editorialCardTitle({ title, store, price, discount, coupon = "" }: {

@@ -7,6 +7,13 @@ import {offerBuyingNotes,priceConditionSummary} from '../scripts/offer-buying-no
 const loadTS=async file=>import(`data:text/javascript;base64,${Buffer.from(stripTypeScriptTypes(fs.readFileSync(file,'utf8'))).toString('base64')}`);
 const {offerDisplayTitle}=await loadTS('app/lib/display-title.ts');
 const {classifyProduct}=await loadTS('app/lib/taxonomy.ts');
+test('long offer titles retain the final model details without automatic ellipsis',()=>{
+  const title='Auriculares inalámbricos con cancelación de ruido activa y estuche de carga portátil modelo especial con autonomía de 60 horas';
+  assert.equal(offerDisplayTitle(title),title);
+  assert.ok(!offerDisplayTitle(title).endsWith('…'));
+  const css=fs.readFileSync('app/single-offer-rows.css','utf8');
+  assert.match(css,/text-overflow:clip;-webkit-line-clamp:unset;line-clamp:unset/);
+});
 test('natural titles retain pack quantity and size without inventing attributes',()=>{
   assert.equal(offerDisplayTitle('SOXCO 10 Pares Quarter Calcetines Hombre Trabajo Cortos WORK Socks, 43-46'),'Calcetines de trabajo SOXCO · 10 pares · tallas 43-46');
   assert.equal(offerDisplayTitle('Winrhome Ultra-Soft Flannel Fleece Blanket Coat'),'Manta Winrhome');

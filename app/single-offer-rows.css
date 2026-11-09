@@ -56,3 +56,7 @@ main.dealHome .catalogueMain .dealCard h3,main.dealHome .catalogueMain .dealCard
 .offerPage .priceHistoryEmpty h2{font-size:26px}
 .offerPage .priceHistoryEmpty table{width:100%;border-collapse:collapse;margin-top:16px;font-size:14px}
 .offerPage .priceHistoryEmpty th,.offerPage .priceHistoryEmpty td{text-align:left;padding:10px;border-bottom:1px solid #d9e1d8}
+
+/* Titles wrap naturally on desktop and mobile; no ellipsis or fixed line count. */
+main.dealHome .catalogueMain .dealCard h3,main.dealHome .catalogueMain .dealCard:first-child h3,.storeDealGrid .dealCard .dealBody h3{display:block;height:auto;min-height:0;max-height:none;overflow:visible;white-space:normal;text-overflow:clip;-webkit-line-clamp:unset;line-clamp:unset;overflow-wrap:anywhere}
+main.dealHome .catalogueMain .dealCard h3 a,.storeDealGrid .dealCard .dealBody h3 a{display:block;height:auto;max-height:none;overflow:visible;white-space:normal;text-overflow:clip;-webkit-line-clamp:unset;overflow-wrap:anywhere}
