@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-11-09T14:14:28.869Z",
+  "updatedAt": "2026-11-09T14:24:24.064Z",
   "summary": {
     "ignored": 233,
     "needs_review": 257,
     "rejected": 387,
     "published": 85,
     "duplicate": 38,
-    "pending": 114
+    "pending": 116
   },
   "recent": [
+    {
+      "id": "telegram-errores-de-precio:15693:aliexpress:0",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15693,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/erroresde_precio/15693",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-una-ganga:97888:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97888,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/97888",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-09T14:42:16.078Z"
+    },
     {
       "id": "telegram-una-ganga:97887:miravia:0",
       "source": "telegram-una-ganga",
@@ -1282,32 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:97843:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 97843,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/97843",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-09T02:52:50.687Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-chollosdiario:45955:amazon:2",
-      "source": "telegram-chollosdiario",
-      "messageId": 45955,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 1,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/chollosdiario/45955",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-08T21:22:26.530Z"
     }
   ]
 }
