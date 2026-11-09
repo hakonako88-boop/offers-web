@@ -84,14 +84,19 @@ export function cardOverlay({ title = '', store, price } = {}) {
     <svg width="${CARD_SIZE}" height="${CARD_SIZE}" viewBox="0 0 ${CARD_SIZE} ${CARD_SIZE}" xmlns="http://www.w3.org/2000/svg">
       <rect x="0" y="0" width="1200" height="1200" fill="none"/>
       <title>${escapeXml(title)} · ${currentPrice}</title>
-      <rect x="0" y="0" width="1200" height="88" fill="#103e30"/>
-      <text x="48" y="57" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="900" fill="#ffffff">CHOLLOS AL DÍA</text>
-      <text x="1152" y="55" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" fill="#ffffff">${escapeXml(theme.label)}</text>
-      <rect x="0" y="686" width="1200" height="514" fill="#fffcf7"/>
-      <rect x="64" y="704" width="60" height="7" rx="3" fill="#e6470a"/>
-      <rect x="64" y="883" width="1072" height="220" rx="28" fill="#ad3007"/>
-      <text x="600" y="1045" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="${priceText(price).length > 10 ? 124 : 164}" font-weight="900" fill="#ffffff">${currentPrice}</text>
-      <text x="600" y="1165" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" fill="#525a53">@aldiachollos · Publicidad</text>
+      <rect x="48" y="40" width="58" height="58" rx="18" fill="#ff641c"/>
+      <path d="M85 53a17 17 0 1 0 0 31" fill="none" stroke="#163c2f" stroke-width="8" stroke-linecap="round"/>
+      <path d="m79 70 7 7 13-16" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="124" y="79" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="900" fill="#173a2b">CHOLLOS AL DÍA</text>
+      <rect x="860" y="40" width="292" height="58" rx="29" fill="#173a2b"/>
+      <text x="1006" y="79" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="800" fill="#ffffff">${escapeXml(theme.label)}</text>
+      <line x1="48" y1="121" x2="1152" y2="121" stroke="#e8ebe5" stroke-width="2"/>
+      <rect x="48" y="922" width="1104" height="218" rx="30" fill="#fff0e4"/>
+      <text x="80" y="967" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800" letter-spacing="3" fill="#8f3a13">PRECIO DE LA OFERTA</text>
+      <text x="76" y="1100" font-family="Arial, Helvetica, sans-serif" font-size="${priceText(price).length > 10 ? 128 : 158}" font-weight="900" fill="#b73308">${currentPrice}</text>
+      <path d="M1010 1028h80m-31-31 31 31-31 31" fill="none" stroke="#c23c0c" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="48" y="1180" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#566157">@aldiachollos</text>
+      <text x="1152" y="1180" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#566157">chollosaldia.com · Publicidad</text>
     </svg>
   `);
 }
@@ -135,7 +140,7 @@ export async function createDealImageCard({
     .trim({ threshold: 8 })
     .resize({
       width: 1080,
-      height: 550,
+      height: 560,
       fit: 'contain',
       background: '#ffffff',
       withoutEnlargement: false,
@@ -143,7 +148,7 @@ export async function createDealImageCard({
     .jpeg({ quality: 92, chromaSubsampling: '4:4:4' })
     .toBuffer();
 
-  const titleLayers = title ? [{input:await sharp({text:{text:`<span foreground="#173a2b" weight="heavy">${dealImageTitleLines(title).map(escapeXml).join('\n')}</span>`,font:'Barlow Condensed ExtraBold 76',fontfile:TITLE_FONT,width:1072,height:150,align:'left',rgba:true,wrap:'word'}}).png().toBuffer(),left:64,top:724}] : [];
+  const titleLayers = title ? [{input:await sharp({text:{text:`<span foreground="#172c24" weight="heavy">${dealImageTitleLines(title).map(escapeXml).join('\n')}</span>`,font:'Barlow Condensed ExtraBold 88',fontfile:TITLE_FONT,width:1072,height:170,align:'left',rgba:true,wrap:'word'}}).png().toBuffer(),left:64,top:151}] : [];
 
   return sharp({
     create: {
@@ -154,7 +159,7 @@ export async function createDealImageCard({
     },
   })
     .composite([
-      { input: product, left: 60, top: 125 },
+      { input: product, left: 60, top: 340 },
       { input: cardOverlay({ title, store, price, previousPrice, discount, coupon }), left: 0, top: 0 },
       ...titleLayers,
     ])

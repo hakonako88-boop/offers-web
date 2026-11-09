@@ -25,8 +25,8 @@ test('builds a square branded JPEG from the clean product image', async () => {
   assert.equal(metadata.width, 1200);
   assert.equal(metadata.height, 1200);
   assert.ok(result.length > 20_000);
-  const {data}=await sharp(result).extract({left:10,top:10,width:1,height:1}).raw().toBuffer({resolveWithObject:true});
-  assert.ok(data[1]>data[0] && data[1]>data[2], 'header retains the forest-green brand colour');
+  const {data}=await sharp(result).extract({left:60,top:60,width:1,height:1}).raw().toBuffer({resolveWithObject:true});
+  assert.ok(data[0]>data[1] && data[0]>data[2], 'compact orange brand mark replaces the heavy header bar');
   const lower=await sharp(result).extract({left:10,top:950,width:1,height:1}).raw().toBuffer();
   assert.ok(lower[0]>240 && lower[1]>240 && lower[2]>230,'price panel is light, not a large green block');
 });
@@ -45,6 +45,8 @@ test('marketing image keeps the name and price, leaving coupon and price compari
  assert.match(svg,/107,90/);
  assert.match(svg,/Bose QuietComfort/);
  assert.doesNotMatch(svg,/172,60|ESD1123|−37|CUPÓN|PRECIO DE LA PUBLICACIÓN/);
+ assert.match(svg,/fill="#fff0e4"/);
+ assert.doesNotMatch(svg,/fill="#ad3007"/);
 });
 
 test('long coupon alternatives and special characters produce a valid image without cutting XML',async()=>{
