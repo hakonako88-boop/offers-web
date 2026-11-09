@@ -45,7 +45,10 @@ test('marketing image keeps the name and price, leaving coupon and price compari
  assert.match(svg,/107,90/);
  assert.match(svg,/Bose QuietComfort/);
  assert.doesNotMatch(svg,/172,60|ESD1123|−37|CUPÓN|PRECIO DE LA PUBLICACIÓN/);
- assert.match(svg,/fill="#fff0e4"/);
+ assert.match(svg,/fill="#123e30"/);
+ assert.match(svg,/fill="#edf4ed"/);
+ assert.match(svg,/fill="#c33c08"/);
+ assert.doesNotMatch(svg,/fill="#fff0e4"/);
  assert.doesNotMatch(svg,/fill="#ad3007"/);
 });
 
