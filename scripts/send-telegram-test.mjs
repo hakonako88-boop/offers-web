@@ -13,11 +13,15 @@ function safeError(error) {
 }
 
 async function telegram(method, body) {
-  const response = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
+  let response;
+  for(let attempt=0;attempt<3;attempt++) {
+    try { response = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(body),
-  });
+    signal: AbortSignal.timeout(15000),
+  }); break; } catch(error) { if(attempt===2 || !['getMe','getChatMember'].includes(method)) throw error; }
+  }
   const data = await response.json().catch(() => ({}));
   if (!response.ok || !data.ok) {
     throw new Error(data.description || `HTTP ${response.status}`);
@@ -73,6 +77,7 @@ if (!token || !channelId) {
 
 await (await import('node:fs/promises')).writeFile(statusFile, `${JSON.stringify(status, null, 2)}\n`);
 console.log(JSON.stringify(status));
+if (!status.sent) process.exitCode = 1;
 import { readFile } from 'node:fs/promises';
 import { formatTelegramDealCard, offerReplyMarkup } from './offer-presentation.mjs';
 import { createDealImageCard } from './deal-image-card.mjs';
