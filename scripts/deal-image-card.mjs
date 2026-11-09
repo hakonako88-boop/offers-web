@@ -75,32 +75,20 @@ export function dealImageTitleLines(title = '') {
   return lines;
 }
 
-function cardOverlay({ title = '', store, price, previousPrice = '', discount = 0, coupon = '' } = {}) {
+export function cardOverlay({ title = '', store, price } = {}) {
   const theme = storeTheme(store);
   const currentPrice = escapeXml(priceText(price));
   return Buffer.from(`
     <svg width="${CARD_SIZE}" height="${CARD_SIZE}" viewBox="0 0 ${CARD_SIZE} ${CARD_SIZE}" xmlns="http://www.w3.org/2000/svg">
       <rect x="0" y="0" width="1200" height="1200" fill="none"/>
-      <rect x="0" y="654" width="1200" height="106" fill="#ffffff"/>
-      ${dealImageTitleLines(title).map((line,index)=>`<text x="600" y="${700+index*43}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="800" fill="#183b30">${escapeXml(line)}</text>`).join('')}
-      <rect x="0" y="0" width="1200" height="104" fill="#103e30"/>
-      <rect x="40" y="22" width="60" height="60" rx="18" fill="#ff651b"/>
-      <path d="M76 35a19 19 0 1 0 0 34" fill="none" stroke="#123e30" stroke-width="9" stroke-linecap="round"/>
-      <path d="M69 52 L77 60 L91 43" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-      <text x="119" y="64" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#ffffff">CHOLLOS AL DÍA</text>
-      <text x="1158" y="62" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#d9e8dc">chollosaldia.com</text>
-      <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="440" fill="#fffcf7"/>
-      <rect x="0" y="${PHOTO_HEIGHT}" width="1200" height="7" fill="#ff651b"/>
-      <rect x="64" y="786" width="300" height="54" rx="16" fill="${theme.soft}"/>
-      <text x="214" y="823" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="900" fill="#172e23">${theme.label}</text>
-      <text x="1136" y="823" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" fill="#70421b">PRECIO DE LA PUBLICACIÓN</text>
-      <rect x="64" y="854" width="1072" height="156" rx="24" fill="#ad3007"/>
-      <text x="600" y="975" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="${priceText(price).length > 10 ? 108 : 136}" font-weight="900" fill="#ffffff">${currentPrice}</text>
-      ${previousPriceLine(previousPrice)}
-      ${discountBadge(discount, theme.accent)}
-      ${couponBadge(coupon, theme.accent)}
-      <text x="64" y="1174" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#525a53">@aldiachollos · Publicidad</text>
-      <text x="1136" y="1174" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#525a53">Precio y condiciones sujetos a cambios</text>
+      <rect x="0" y="0" width="1200" height="88" fill="#103e30"/>
+      <text x="48" y="57" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="900" fill="#ffffff">CHOLLOS AL DÍA</text>
+      <text x="1152" y="55" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" fill="#ffffff">${escapeXml(theme.label)}</text>
+      <rect x="0" y="744" width="1200" height="456" fill="#fffcf7"/>
+      ${dealImageTitleLines(title).map((line,index)=>`<text x="600" y="${797+index*50}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800" fill="#183b30">${escapeXml(line)}</text>`).join('')}
+      <rect x="64" y="883" width="1072" height="220" rx="28" fill="#ad3007"/>
+      <text x="600" y="1045" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="${priceText(price).length > 10 ? 124 : 164}" font-weight="900" fill="#ffffff">${currentPrice}</text>
+      <text x="600" y="1165" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" fill="#525a53">@aldiachollos · Publicidad</text>
     </svg>
   `);
 }
@@ -144,7 +132,7 @@ export async function createDealImageCard({
     .trim({ threshold: 8 })
     .resize({
       width: 1080,
-      height: title ? 510 : 590,
+      height: 600,
       fit: 'contain',
       background: '#ffffff',
       withoutEnlargement: false,

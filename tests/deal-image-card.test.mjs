@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import sharp from 'sharp';
 import fs from 'node:fs';
-import { createDealImageCard, dealImageCardFilename, dealImageTitleLines } from '../scripts/deal-image-card.mjs';
+import { createDealImageCard, dealImageCardFilename, dealImageTitleLines, cardOverlay } from '../scripts/deal-image-card.mjs';
 
 test('builds a square branded JPEG from the clean product image', async () => {
   const product = Buffer.from(`
@@ -35,6 +35,13 @@ test('product name appears as readable text on at most two lines',()=>{
  assert.match(dealImageTitleLines('Bose QuietComfort SC Headphones Auriculares inalámbricos').join(' '),/Bose QuietComfort/);
  assert.ok(dealImageTitleLines('Auriculares de prueba con muchas características '.repeat(12)).length<=2);
  for(const file of ['sync-aliexpress-deals','sync-amazon-deals','sync-miravia-deals','sync-mediamarkt-deals','sync-awin-retailers','process-telegram-inbox']) assert.match(fs.readFileSync(`scripts/${file}.mjs`,'utf8'),/title: offer.title/);
+});
+
+test('marketing image keeps the name and price, leaving coupon and price comparisons to the caption',()=>{
+ const svg=cardOverlay({title:'Auriculares Bose QuietComfort SC',store:'AliExpress',price:'107,90 €',previousPrice:'172,60 €',discount:37,coupon:'ESD1123'}).toString();
+ assert.match(svg,/107,90/);
+ assert.match(svg,/Bose QuietComfort/);
+ assert.doesNotMatch(svg,/172,60|ESD1123|−37|CUPÓN|PRECIO DE LA PUBLICACIÓN/);
 });
 
 test('long coupon alternatives and special characters produce a valid image without cutting XML',async()=>{
