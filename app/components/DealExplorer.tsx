@@ -322,7 +322,8 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
                     {deal.coupon ? (
                       <CouponCopy code={deal.coupon} compact />
                     ) : <p className="noCoupon"><span aria-hidden="true">✓</span> Precio directo · sin código</p>}
-                    <div className="dealActions"><a className="dealButton" href={dealDetailsUrl(deal)} onClick={() => window.gtag?.("event", "offer_card_open", { offer_id: deal.id, store: deal.store, price: deal.price })}>Ver oferta <span aria-hidden="true">→</span></a>
+                    {deal.priceCondition && <details className="offerConditionDetails"><summary>Condiciones de este precio</summary><p>{deal.priceCondition}</p></details>}
+                    <div className="dealActions"><a className="dealButton" href={dealDetailsUrl(deal)} onClick={() => window.gtag?.("event", "offer_card_open", { offer_id: deal.id, store: deal.store, price: deal.price })}>Ver oferta y detalles <span aria-hidden="true">→</span></a>
                     <button className="shareDealButton" type="button" onClick={() => void shareDeal(deal)} aria-label="Compartir oferta">{sharedId === deal.id ? "Copiado ✓" : "Compartir ↗"}</button></div>
                     <p className="verified"><span aria-hidden="true" /><OfferFreshness date={deal.verifiedDate} fallback={deal.verifiedAt} /> · confirma precio y stock</p>
                   </div>
