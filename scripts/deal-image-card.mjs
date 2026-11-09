@@ -1,5 +1,6 @@
 import sharp from 'sharp';
 import { couponOptions } from './coupon-options.mjs';
+import { improveOfferTitle } from './offer-presentation.mjs';
 
 const CARD_SIZE = 1200;
 const PHOTO_HEIGHT = 760;
@@ -43,8 +44,8 @@ function discountBadge(discount = 0, accent = '#ff5a4f') {
   const amount = Math.round(Number(discount) || 0);
   if (amount <= 0 || amount >= 100) return '';
   return [
-    `<rect x="930" y="630" width="206" height="100" rx="24" fill="#ed4b12"/>`,
-    `<text x="1033" y="697" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="900" fill="#ffffff">−${amount}%</text>`,
+    `<rect x="930" y="534" width="206" height="100" rx="24" fill="#ed4b12"/>`,
+    `<text x="1033" y="601" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="900" fill="#ffffff">−${amount}%</text>`,
   ].join('');
 }
 
@@ -59,12 +60,29 @@ function couponBadge(coupon = '', accent = '#ff5a4f') {
   ].join('');
 }
 
-function cardOverlay({ store, price, previousPrice = '', discount = 0, coupon = '' } = {}) {
+export function dealImageTitleLines(title = '') {
+  const words = compact(improveOfferTitle(title)).split(' ').filter(Boolean);
+  const lines = [];
+  let line = '';
+  for (const word of words) {
+    if (line && `${line} ${word}`.length > 48) {
+      lines.push(line);
+      line = word;
+      if (lines.length === 2) { lines[1] = lines[1].replace(/[.,;:-]+$/u,'') + '…'; return lines; }
+    } else line = line ? `${line} ${word}` : word;
+  }
+  if (line && lines.length < 2) lines.push(line);
+  return lines;
+}
+
+function cardOverlay({ title = '', store, price, previousPrice = '', discount = 0, coupon = '' } = {}) {
   const theme = storeTheme(store);
   const currentPrice = escapeXml(priceText(price));
   return Buffer.from(`
     <svg width="${CARD_SIZE}" height="${CARD_SIZE}" viewBox="0 0 ${CARD_SIZE} ${CARD_SIZE}" xmlns="http://www.w3.org/2000/svg">
       <rect x="0" y="0" width="1200" height="1200" fill="none"/>
+      <rect x="0" y="654" width="1200" height="106" fill="#ffffff"/>
+      ${dealImageTitleLines(title).map((line,index)=>`<text x="600" y="${700+index*43}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="800" fill="#183b30">${escapeXml(line)}</text>`).join('')}
       <rect x="0" y="0" width="1200" height="104" fill="#103e30"/>
       <rect x="40" y="22" width="60" height="60" rx="18" fill="#ff651b"/>
       <path d="M76 35a19 19 0 1 0 0 34" fill="none" stroke="#123e30" stroke-width="9" stroke-linecap="round"/>
@@ -108,6 +126,7 @@ async function imageBytesFromUrl(imageUrl, fetchImpl = fetch) {
  * The external channel image is never required: the caller should pass the
  * official catalogue image whenever it is available. */
 export async function createDealImageCard({
+  title = '',
   imageUrl = '',
   imageBytes,
   imageBuffer,
@@ -125,7 +144,7 @@ export async function createDealImageCard({
     .trim({ threshold: 8 })
     .resize({
       width: 1080,
-      height: 590,
+      height: title ? 510 : 590,
       fit: 'contain',
       background: '#ffffff',
       withoutEnlargement: false,
@@ -143,7 +162,7 @@ export async function createDealImageCard({
   })
     .composite([
       { input: product, left: 60, top: 125 },
-      { input: cardOverlay({ store, price, previousPrice, discount, coupon }), left: 0, top: 0 },
+      { input: cardOverlay({ title, store, price, previousPrice, discount, coupon }), left: 0, top: 0 },
     ])
     .jpeg({ quality: 91, chromaSubsampling: '4:4:4', mozjpeg: true })
     .toBuffer();

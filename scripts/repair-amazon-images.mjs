@@ -32,7 +32,7 @@ for (const offer of offers.filter((item) => item.store === 'Amazon' && item.imag
     const current = Number(price.replace(/[^0-9,]/gu, '').replace(',', '.')) || 0;
     const previous = Number(previousPrice.replace(/[^0-9,]/gu, '').replace(',', '.')) || 0;
     const discount = previous > current && current > 0 ? Math.round(((previous - current) / previous) * 100) : 0;
-    const card = await createDealImageCard({ imageUrl, store: 'Amazon', price, previousPrice, discount });
+    const card = await createDealImageCard({ title: offer.title, imageUrl, store: 'Amazon', price, previousPrice, discount });
     fs.mkdirSync(path.dirname(target), { recursive: true });
     fs.writeFileSync(target, card);
     console.log(`Reparada: ${offer.message_id} (${card.length} bytes)`);

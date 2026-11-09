@@ -167,6 +167,7 @@ async function publishOffer(config, offer) {
   };
   try {
     const card = await createDealImageCard({
+      title: offer.title,
       imageUrl: offer.image,
       store: 'Amazon',
       price: offer.price,

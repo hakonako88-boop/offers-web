@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import sharp from 'sharp';
 import fs from 'node:fs';
-import { createDealImageCard, dealImageCardFilename } from '../scripts/deal-image-card.mjs';
+import { createDealImageCard, dealImageCardFilename, dealImageTitleLines } from '../scripts/deal-image-card.mjs';
 
 test('builds a square branded JPEG from the clean product image', async () => {
   const product = Buffer.from(`
@@ -14,6 +14,7 @@ test('builds a square branded JPEG from the clean product image', async () => {
   const result = await createDealImageCard({
     imageBytes: product,
     store: 'AliExpress',
+    title: 'Auriculares Bose QuietComfort SC',
     price: '169,00 €',
     previousPrice: '299,00 €',
     discount: 43,
@@ -28,6 +29,12 @@ test('builds a square branded JPEG from the clean product image', async () => {
   assert.ok(data[1]>data[0] && data[1]>data[2], 'header retains the forest-green brand colour');
   const lower=await sharp(result).extract({left:10,top:950,width:1,height:1}).raw().toBuffer();
   assert.ok(lower[0]>240 && lower[1]>240 && lower[2]>230,'price panel is light, not a large green block');
+});
+
+test('product name appears as readable text on at most two lines',()=>{
+ assert.match(dealImageTitleLines('Bose QuietComfort SC Headphones Auriculares inalámbricos').join(' '),/Bose QuietComfort/);
+ assert.ok(dealImageTitleLines('Auriculares de prueba con muchas características '.repeat(12)).length<=2);
+ for(const file of ['sync-aliexpress-deals','sync-amazon-deals','sync-miravia-deals','sync-mediamarkt-deals','sync-awin-retailers','process-telegram-inbox']) assert.match(fs.readFileSync(`scripts/${file}.mjs`,'utf8'),/title: offer.title/);
 });
 
 test('long coupon alternatives and special characters produce a valid image without cutting XML',async()=>{

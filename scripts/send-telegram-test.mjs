@@ -59,7 +59,7 @@ if (!token || !channelId) {
     form.set('caption', caption);
     form.set('parse_mode', 'HTML');
     form.set('disable_notification', 'true');
-    const photo = await createDealImageCard({imageBytes:await readFile(new URL(`../public${imagePath}`,import.meta.url)),store:offer.store,price:offer.price,previousPrice:offer.previousPrice,coupon:offer.coupon,discount});
+    const photo = await createDealImageCard({title:offer.title,imageBytes:await readFile(new URL(`../public${imagePath}`,import.meta.url)),store:offer.store,price:offer.price,previousPrice:offer.previousPrice,coupon:offer.coupon,discount});
     form.set('photo',new Blob([photo],{type:'image/jpeg'}),'prueba-diseno.jpg');
     form.set('reply_markup', JSON.stringify(offerReplyMarkup({url:offer.url,store:offer.store})));
     const response = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`,{method:'POST',body:form,signal:AbortSignal.timeout(30000)});

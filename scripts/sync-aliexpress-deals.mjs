@@ -303,6 +303,7 @@ async function publishOffer(config, offer) {
   };
   try {
     const card = await createDealImageCard({
+      title: offer.title,
       imageUrl: offer.image,
       store: 'AliExpress',
       price: offer.priceLabel,

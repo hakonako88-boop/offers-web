@@ -75,6 +75,7 @@ async function publish(config, offer, originalImage) {
     reply_markup: offerReplyMarkup(offer),
   };
   const card = await createDealImageCard({
+    title: offer.title,
     imageBuffer: originalImage,
     imageUrl: offer.image,
     store: offer.store,

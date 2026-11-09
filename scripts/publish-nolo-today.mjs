@@ -105,6 +105,7 @@ async function firstWorkingCard(offer, imageCandidates) {
   for (const imageUrl of imageCandidates) {
     try {
       const card = await createDealImageCard({
+        title: offer.title,
         imageUrl, store: 'Amazon', price: offer.price, previousPrice: offer.previousPrice,
         discount: offer.discount, coupon: offer.coupon,
       });

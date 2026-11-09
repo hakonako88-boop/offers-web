@@ -164,6 +164,7 @@ async function sendProductPhoto(settings, offer) {
     for (const imageUrl of productImageCandidates) {
       try {
       const card = await createDealImageCard({
+        title: offer.title,
         imageUrl,
         store: offer.store,
         price: offer.priceLabel,
@@ -266,6 +267,7 @@ async function sendOfferPreview(settings, chatId, offer) {
   if (!['post', 'campaign'].includes(offer.kind) && /^https?:\/\//iu.test(String(offer.imageUrl || ''))) {
     try {
       const card = await createDealImageCard({
+        title: offer.title,
         imageUrl: offer.imageUrl,
         store: offer.store,
         price: offer.priceLabel,
