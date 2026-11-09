@@ -305,7 +305,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
               return (
                 <article className="dealCard" data-store={deal.store} key={deal.id}>
                   <a className="imageWrap dealPreviewLink" href={dealDetailsUrl(deal)} aria-label={`Ver análisis de ${deal.title}`}>
-                    <img src={deal.imageUrl} alt={deal.title} loading="lazy" decoding="async" width={720} height={560} />
+                    <img src={deal.imageUrl} alt={deal.title} loading={index < 2 ? "eager" : "lazy"} decoding="async" width={720} height={560} />
                     {meaningfulSaving && <span className="discountBadge">AHORRA {discount}%</span>}
                     <span className="storeBadge"><StoreLogo store={deal.store} /></span>
                     {index === 0 && !filtersActive && <span className="topDealBadge">⭐ DESTACADA</span>}
