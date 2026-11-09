@@ -44,7 +44,13 @@ if (!token || !channelId) {
     status.canPostMessages = membership.can_post_messages !== false;
 
     const offers = JSON.parse(await readFile(new URL('../data/offers.json', import.meta.url), 'utf8'));
-    const offer = offers.filter(item => item.title && item.price && item.url && String(item.image).startsWith('/tg/') && item.coupon).sort((a,b)=>Number(b.date)-Number(a.date))[0];
+    const replaceId = String(process.env.TELEGRAM_TEST_REPLACE_ID || '');
+    if(replaceId && replaceId!=='8029') throw new Error('Solo se puede sustituir la prueba de diseño 8029.');
+    if(replaceId) {
+      const channel=await telegram('getChat',{chat_id:channelId});
+      if(channel.username!=='aldiachollos' || channel.type!=='channel') throw new Error('El canal no coincide con la prueba autorizada.');
+    }
+    const offer = replaceId ? offers.find(item=>item.source_product_id==='1005010044951039') : offers.filter(item => item.title && item.price && item.url && String(item.image).startsWith('/tg/') && item.coupon).sort((a,b)=>Number(b.date)-Number(a.date))[0];
     if (!offer) throw new Error('No hay una oferta guardada con foto y cupón para probar sin inventar datos.');
     const amount = value => Number(String(value || '').replace(/[^0-9,.-]/g,'').replace(/\.(?=\d{3}(?:\D|$))/g,'').replace(',','.'));
     const current = amount(offer.price), previous = amount(offer.previousPrice);
@@ -62,7 +68,12 @@ if (!token || !channelId) {
     const photo = await createDealImageCard({title:offer.title,imageBytes:await readFile(new URL(`../public${imagePath}`,import.meta.url)),store:offer.store,price:offer.price,previousPrice:offer.previousPrice,coupon:offer.coupon,discount});
     form.set('photo',new Blob([photo],{type:'image/jpeg'}),'prueba-diseno.jpg');
     form.set('reply_markup', JSON.stringify(offerReplyMarkup({url:offer.url,store:offer.store})));
-    const response = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`,{method:'POST',body:form,signal:AbortSignal.timeout(30000)});
+    if(replaceId){
+      form.set('message_id',replaceId);
+      form.set('media',JSON.stringify({type:'photo',media:'attach://photo',caption,parse_mode:'HTML'}));
+      form.delete('caption');form.delete('parse_mode');form.delete('disable_notification');
+    }
+    const response = await fetch(`https://api.telegram.org/bot${token}/${replaceId?'editMessageMedia':'sendPhoto'}`,{method:'POST',body:form,signal:AbortSignal.timeout(30000)});
     const result = await response.json();
     if (!response.ok || !result.ok) throw new Error(result.description || 'No se pudo enviar la foto de prueba.');
     const message = result.result;
@@ -70,6 +81,7 @@ if (!token || !channelId) {
     status.messageId = message.message_id;
     status.kind = 'photo-format-preview';
     status.sourceMessageId = offer.message_id;
+    status.replaced = Boolean(replaceId);
   } catch (error) {
     status.error = safeError(error);
   }

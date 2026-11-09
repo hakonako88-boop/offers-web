@@ -1,0 +1,28 @@
+name: Actualizar prueba visual de Telegram sin duplicar
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: chollosaldia-design-preview
+  cancel-in-progress: false
+jobs:
+  refresh:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[telegram-preview]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Sustituir solamente la prueba 8029
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          TELEGRAM_TEST_REPLACE_ID: '8029'
+        run: node scripts/send-telegram-test.mjs
