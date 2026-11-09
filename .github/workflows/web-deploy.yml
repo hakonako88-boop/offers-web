@@ -30,6 +30,7 @@ on:
       - .github/workflows/web-deploy.yml
   workflow_run:
     workflows:
+      - Actualizar Switch existente sin reenviar
       - Actualizar precios Tesla con API autorizada
       - Publicar ChollosAlDía
       - Publicar resumen diario de ofertas
