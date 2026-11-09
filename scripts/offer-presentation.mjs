@@ -294,16 +294,17 @@ export function formatTelegramDealCard({
     ? ` · descuenta ${escapeHtml(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(couponDiscount)))} desde ${escapeHtml(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(couponMinimumSpend)))}`
     : '';
   const actionLine = codes.length
-    ? `${couponLines}${couponCondition}\n${codes.length > 1 ? 'Usa solo uno de estos códigos. ' : ''}Comprueba el total en la cesta y si el descuento ya está aplicado.${cashbackLine ? `\n${cashbackLine}` : ''}`
+    ? `${couponLines}${couponCondition}\n${codes.length > 1 ? 'Usa solo uno de estos códigos. ' : ''}📲 Cópialo y aplícalo al pagar. Comprueba el total en la cesta y si el descuento ya está aplicado.${cashbackLine ? `\n${cashbackLine}` : ''}`
     : highlight
       ? `🔻 ${escapeCaptionField(highlight, 140)}`
       : cashbackLine;
-  const linkLine = `👇 <b>Ver en ${escapeCaptionField(store || 'la tienda', 40)}</b> · botón de abajo`;
-  const headline = `🔥 <b>${escapeCaptionField(trimAtWord(improveOfferTitle(title), 130), 260)}</b>\n#${escapeCaptionField(storeTag, 40)}${discountLabel}`;
+  const linkLine = `🛒 <b>Ver en ${escapeCaptionField(store || 'la tienda', 40)}</b>\n👇 Toca el botón para elegir tu variante y comprar`;
+  const kicker = codes.length ? '🎟 OFERTA CON CUPÓN' : '⚡ OFERTA SELECCIONADA';
+  const headline = `${kicker}\n\n🔥 <b>${escapeCaptionField(trimAtWord(improveOfferTitle(title), 130), 220)}</b>\n#${escapeCaptionField(storeTag, 40)}${discountLabel}`;
   const priceBlock = [
     `💶 <b>PRECIO OFERTA: ${escapeCaptionField(price, 60)}</b>`,
-    previousPrice ? `Antes: <s>${escapeCaptionField(previousPrice, 60)}</s>` : '',
-    savings ? `Ahorras ${escapeCaptionField(savings, 60)}` : '',
+    previousPrice ? `↘️ Antes: <s>${escapeCaptionField(previousPrice, 60)}</s>` : '',
+    savings ? `💰 <b>Te ahorras ${escapeCaptionField(savings, 60)}</b>` : '',
   ].filter(Boolean).join('\n');
 
   const details = offerDescription({ title, discount, description });

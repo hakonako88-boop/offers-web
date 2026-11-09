@@ -8,6 +8,9 @@ test('caption has a single price and a distinct copyable coupon block',()=>{
  assert.equal(caption.split('100,00 €').length-1,1);
  assert.match(caption,/\n\n🎟️ Cupón: <code>AHORRA20<\/code>/);
  assert.match(caption,/#Publi/);
+ assert.match(caption,/🎟 OFERTA CON CUPÓN/);
+ assert.match(caption,/💰 <b>Te ahorras/);
+ assert.match(caption,/Cópialo y aplícalo al pagar/);
 });
 test('long escaped content never cuts an HTML tag or exceeds the photo caption budget',()=>{
  const caption=formatTelegramDealCard({title:'A & <modelo> '.repeat(100),store:'Amazon',price:'19,99 €',description:'Descripción & <real> '.repeat(150),coupon:['UNO','DOS','TRES'].join(' / '),highlight:'Detalle '.repeat(100)});
