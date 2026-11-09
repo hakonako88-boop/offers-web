@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-09T09:59:06.621Z",
+  "updatedAt": "2026-11-09T10:03:54.134Z",
   "summary": {
     "rejected": 379,
-    "ignored": 245,
+    "ignored": 246,
     "needs_review": 255,
     "duplicate": 37,
     "published": 84,
     "pending": 113
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:45501:aliexpress:0",
+      "source": "telegram-ofertos",
+      "messageId": 45501,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/Ofertos/45501",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-errores-de-precio:15692:aliexpress:0",
       "source": "telegram-errores-de-precio",
@@ -28,12 +41,12 @@
       "messageId": 45500,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/Ofertos/45500",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-09T09:59:52.411Z"
+      "nextAttemptAt": "2026-11-09T10:42:18.296Z"
     },
     {
       "id": "telegram-ofertos:45499:aliexpress:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "2026-11-08T23:33:26.248Z",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45480:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 45480,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 0,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/45480",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-08T18:22:12.603Z"
     }
   ]
 }
