@@ -15,6 +15,7 @@ import { filterDuplicateDeals } from './offer-deduplication.mjs';
 import { offerReplyMarkup } from './offer-presentation.mjs';
 import { publicationAllowance, scheduleBypassEnabled } from './publication-policy.mjs';
 import { offerQuality } from './offer-quality-score.mjs';
+import { resolveAmazonAsin, canonicalAmazonAffiliateUrl } from './amazon-review-drafts.mjs';
 
 const ROOT = process.cwd();
 const STATE_FILE = path.join(ROOT, 'data', 'amazon-discovery-state.json');
@@ -96,7 +97,10 @@ async function getAmazonAccessToken(config) {
 }
 
 async function searchAmazon(accessToken, config, topic) {
-  const response = await fetch('https://creatorsapi.amazon/catalog/v1/searchItems', {
+  const exactSource = topic.signal?.source === 'nolodejesescapar';
+  const asin = exactSource ? await resolveAmazonAsin(topic.signal.merchantUrl) : '';
+  if (exactSource && !asin) throw new Error('NoLo: enlace Amazon sin ASIN verificable; se conserva pendiente.');
+  const response = await fetch(`https://creatorsapi.amazon/catalog/v1/${asin ? 'getItems' : 'searchItems'}`, {
     method: 'POST',
     headers: {
       authorization: `Bearer ${accessToken}`,
@@ -106,10 +110,12 @@ async function searchAmazon(accessToken, config, topic) {
     body: JSON.stringify({
       marketplace: AMAZON_MARKETPLACE,
       partnerTag: config.partnerTag,
-      keywords: topic.keywords,
-      searchIndex: topic.searchIndex || 'All',
-      condition: 'New',
-      itemCount: 10,
+      ...(asin ? { itemIds: [asin] } : {
+        keywords: topic.keywords,
+        searchIndex: topic.searchIndex || 'All',
+        condition: 'New',
+        itemCount: 10,
+      }),
       resources: [
         'images.primary.large',
         'images.primary.medium',
@@ -128,6 +134,9 @@ async function searchAmazon(accessToken, config, topic) {
     const detail = data?.errors?.[0]?.message || data?.message || response.status;
     throw new Error(`Amazon search failed: ${detail}`);
   }
+  if (asin) return (data.itemsResult?.items || data.itemResult?.items || data.items || [])
+    .filter((item) => item.asin === asin)
+    .map((item) => ({ ...item, detailPageURL: canonicalAmazonAffiliateUrl(asin, config.partnerTag) }));
   return data.searchResult?.items || [];
 }
 
@@ -274,9 +283,10 @@ if (accessToken) {
     try {
       const items = await searchAmazon(accessToken, config, topic);
       for (const item of items) {
-        let offer = normalizeAmazonItem(item, topic.category);
+        const selectedSource = topic.signal?.source === 'nolodejesescapar';
+        let offer = normalizeAmazonItem(item, topic.category, { selectedSource });
         if (offer && topic.signal) {
-          const match = communityMatchForTitle(offer.title, [topic.signal]);
+          const match = selectedSource ? { score: 0 } : communityMatchForTitle(offer.title, [topic.signal]);
           offer = match ? {
             ...offer,
             score: offer.score + 1_000 + match.score,

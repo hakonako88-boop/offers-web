@@ -42,3 +42,15 @@ test('does not publish a normal product with no deal or meaningful discount', ()
 test('rotates product searches between runs', () => {
   assert.notEqual(topicsForRun(0)[0].keywords, topicsForRun(2)[0].keywords);
 });
+
+test('selected source keeps exact API products without editorial discount thresholds, but still requires stock and data', () => {
+  const item = structuredClone(qualifyingItem);
+  item.offersV2.listings[0].type = 'NEW';
+  item.offersV2.listings[0].price.savings.percentage = 0;
+  assert.equal(normalizeAmazonItem(item, 'Tecnología'), null);
+  assert.ok(normalizeAmazonItem(item, 'Tecnología', { selectedSource: true }));
+  item.offersV2.listings[0].availability.type = 'OUT_OF_STOCK';
+  assert.equal(normalizeAmazonItem(item, 'Tecnología', { selectedSource: true }), null);
+  item.images = {};
+  assert.equal(normalizeAmazonItem(item, 'Tecnología', { selectedSource: true }), null);
+});

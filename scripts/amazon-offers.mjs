@@ -32,7 +32,7 @@ function chooseListing(listings = []) {
     })[0] || null;
 }
 
-export function normalizeAmazonItem(item, category) {
+export function normalizeAmazonItem(item, category, { selectedSource = false } = {}) {
   const listing = chooseListing(item?.offersV2?.listings || []);
   const title = String(item?.itemInfo?.title?.displayValue || '').trim();
   const image = item?.images?.primary?.large?.url || item?.images?.primary?.medium?.url || item?.images?.primary?.small?.url || '';
@@ -42,9 +42,8 @@ export function normalizeAmazonItem(item, category) {
   const isDeal = Boolean(listing?.dealDetails) || /DEAL/i.test(String(listing?.type || ''));
 
   if (!item?.asin || !title || !image || !item?.detailPageURL || !price?.displayAmount) return null;
-  if (!listing || price.amount < 5) return null;
-  if (!isDeal && discount < 20) return null;
-  if (discount < 12) return null;
+  if (!listing || !Number.isFinite(Number(price.amount)) || Number(price.amount) <= 0) return null;
+  if (!selectedSource && (price.amount < 5 || (!isDeal && discount < 20) || discount < 12)) return null;
 
   return {
     asin: item.asin,
