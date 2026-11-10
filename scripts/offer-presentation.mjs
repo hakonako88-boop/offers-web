@@ -228,19 +228,39 @@ export function offerEditorialHook({ title = '', price = 0, discount = 0 } = {})
 
 export function telegramOfferOpening({title='',store='',coupon='',discount=0}={}) {
   const identity=normalized(title);
-  const general=['👀 Esto merece un vistazo','🛍️ Un hallazgo para tu lista','💚 Para tener en el radar','🔎 Ojo a este producto','✨ Un fichaje para tu próxima compra','📌 Para comparar antes de comprar'];
+  const general=['💚 ¿Lo tenías en mente? Aquí tienes un chollo.','👀 Ese capricho merece una segunda mirada.','🛍️ Una compra pendiente, un chollo por comparar.','📌 De «algún día lo miro» a echarle un vistazo.'];
+  const mobile=/smartphone|telefono|movil|iphone|galaxy|poco |realme/.test(identity);
+  const storage=[...new Set([...identity.matchAll(/\b(\d+)\s*gb\b/g)].map(match=>Number(match[1])).filter(size=>size>=64))];
+  const battery=[...new Set([...identity.matchAll(/\b(\d{4,5})\s*mah\b/g)].map(match=>match[1]))];
+  const pack=identity.match(/\bpack\s*(?:de\s*)?(\d+)\b/);
   const themed=/auriculares|headphones|earbuds|altavoz/.test(identity)
-    ? ['🎧 ¿Renovamos el sonido?','🎵 Para tu próxima sesión de música','🎧 Un fichaje para darle al play']
-    : /smartphone|telefono|movil|iphone|galaxy|poco |realme/.test(identity)
-      ? ['📱 ¿Hora de cambiar de móvil?','📲 Un móvil para poner en tu lista','📱 Otro candidato para comparar']
-      : /aspirador|freidora|cafetera|cocina|sarten|batidora|colchon|almohada|ventilador/.test(identity)
-        ? ['🏡 Un hallazgo para casa','🏠 Para tu lista de hogar','💚 Una idea para equipar tu casa']
-        : /cafe|coca.cola|jamon|galletas|leche|chocolate|mayonesa|aceite de oliva/.test(identity)
-          ? ['🛒 Para la próxima compra','🥫 Un fichaje para la despensa','🛍️ Ponlo en tu lista de la compra']
-          : [];
-  const couponOpenings=couponOptions(coupon).codes.length ? ['🎟️ Ojo al código de esta oferta','✂️ El cupón va aparte: revísalo abajo','🎟️ Una oferta con código para comprobar'] : [];
-  const dealOpenings=Number(discount)>=15 && Number(discount)<100 ? ['🔥 Chollo a la vista','💥 Una rebaja para comparar','⚡ Ojo a esta oferta'] : [];
-  const choices=[...themed,...general,...couponOpenings,...dealOpenings];
+    ? /cancelacion.*ruido|noise.cancell/.test(identity)
+      ? ['🎧 Menos ruido. Más de tu música.','🎧 Tu música en primer plano.','🎧 Dale al play. El ruido de fondo, en segundo plano.']
+      : ['🎧 La banda sonora la eliges tú.','🎵 Tu próxima pausa empieza con darle al play.','🎧 Un chollo para ponerle música al día.']
+    : mobile && storage.length===1
+      ? [`📱 ${storage[0]} GB para tu próximo cambio de móvil.`,`📲 ¿Tu móvil pide relevo? Este viene con ${storage[0]} GB.`,`📱 ${storage[0]} GB: un dato para comparar antes de cambiar.`]
+    : mobile && battery.length===1
+      ? [`🔋 ${battery[0]} mAh: la batería tiene protagonismo.`,`📱 Un candidato con batería de ${battery[0]} mAh.`,`🔋 ¿Buscas batería? Aquí hay ${battery[0]} mAh.`]
+    : mobile
+      ? ['📱 ¿Tu móvil ya pide relevo?','📲 Cambiar de móvil empieza por comparar bien.','📱 Tu próximo móvil podría estar en esta oferta.']
+    : /robot.*aspira|aspira.*robot/.test(identity)
+      ? ['🧹 Menos escoba. Más sofá.','🏡 Que la limpieza no se lleve toda la tarde.','🧹 Un fichaje para jubilar unas cuantas pasadas de escoba.']
+    : /cafetera/.test(identity)
+      ? ['☕ Tu próxima cafetería puede estar en casa.','☕ El primer café del día se merece su rincón.','☕ Un chollo para empezar la mañana a tu manera.']
+    : /freidora/.test(identity)
+      ? ['🍟 Tu cocina tiene un nuevo candidato.','🍽️ Un fichaje para darle otra vuelta al menú.','🍟 La próxima cena empieza con una idea.']
+    : /ventilador/.test(identity)
+      ? ['🌬️ Que el calor no te marque el día.','🌬️ Un poco de aire para tu rincón de casa.','🏡 Ponle aire nuevo a esa habitación.']
+    : pack && /coca.cola|cafe|galletas|leche|chocolate|mayonesa|cerveza|atun/.test(identity)
+      ? [`🛒 Un pack de ${pack[1]} para tu próxima compra.`,`📦 Pack de ${pack[1]}: hoy miramos la despensa.`,`🛍️ La lista de la compra también tiene sus chollos: pack de ${pack[1]}.`]
+    : /jamon|coca.cola|cafe|galletas|leche|chocolate|mayonesa|aceite de oliva/.test(identity)
+      ? ['🛒 La despensa también tiene sus chollos.','🍽️ Hoy el chollo se sienta a la mesa.','🛍️ Un fichaje para la próxima lista de la compra.']
+    : /monitor|teclado|raton|pantalla/.test(identity)
+      ? ['🖥️ Tu setup también merece una puesta a punto.','⌨️ Un nuevo candidato para tu escritorio.','🖥️ Dale otra vuelta a tu rincón de trabajo.']
+    : [];
+  // Prefer the actual product/use case over a generic coupon or hype label.
+  const choices=themed.length ? themed : couponOptions(coupon).codes.length
+    ? ['🎟️ El detalle está en el código: lo tienes abajo.','✂️ Antes de pagar, pasa por el cupón.','🎟️ Un chollo con código propio.'] : general;
   // Stable by product, not random on every retry or preview regeneration.
   let seed=2166136261;
   for(const char of `${identity}|${normalized(store)}`) seed=Math.imul(seed^char.codePointAt(0),16777619)>>>0;
@@ -321,7 +341,7 @@ export function formatTelegramDealCard({
       : cashbackLine;
   const linkLine = `🛒 <b>Ver en ${escapeCaptionField(store || 'la tienda', 40)}</b>\n👇 Toca el botón para elegir tu variante y comprar`;
   const kicker = telegramOfferOpening({title,store,coupon:codes.join(' / '),discount});
-  const headline = `${kicker}\n\n<b>${escapeCaptionField(trimAtWord(improveOfferTitle(title), 130), 220)}</b>\n#${escapeCaptionField(storeTag, 40)}${discountLabel}`;
+  const headline = `<b>${escapeHtml(kicker)}</b>\n\n<b>${escapeCaptionField(trimAtWord(improveOfferTitle(title), 130), 220)}</b>\n#${escapeCaptionField(storeTag, 40)}${discountLabel}`;
   const priceBlock = [
     `💶 <b>PRECIO OFERTA: ${escapeCaptionField(price, 60)}</b>`,
     previousPrice ? `↘️ Antes: <s>${escapeCaptionField(previousPrice, 60)}</s>` : '',

@@ -20,6 +20,15 @@ test('openings vary by product, remain stable on retries and do not invent urgen
  assert.equal(telegramOfferOpening({title:titles[0],store:'AliExpress'}),openings[0]);
  for(const text of openings){assert.doesNotMatch(text,/seleccionad|agot|últim|minimo|mínimo|cup[oó]n|c[oó]digo|chollo a la vista/i);}
 });
+
+test('impact comes from the actual product and only unambiguous source specifications',()=>{
+ assert.match(telegramOfferOpening({title:'Móvil POCO 8 GB 256 GB'}),/256 GB/);
+ assert.doesNotMatch(telegramOfferOpening({title:'Móvil POCO 256 GB 512 GB'}),/256|512/);
+ assert.match(telegramOfferOpening({title:'Coca-Cola pack de 24 latas'}),/24/);
+ assert.doesNotMatch(telegramOfferOpening({title:'Auriculares Bluetooth'}),/Menos ruido|ruido de fondo/);
+ assert.match(telegramOfferOpening({title:'Auriculares con cancelación de ruido'}),/música|ruido/);
+ assert.doesNotMatch(telegramOfferOpening({title:'Móvil de prueba'}),/\d+ GB|\d+ mAh/);
+});
 test('long escaped content never cuts an HTML tag or exceeds the photo caption budget',()=>{
  const caption=formatTelegramDealCard({title:'A & <modelo> '.repeat(100),store:'Amazon',price:'19,99 €',description:'Descripción & <real> '.repeat(150),coupon:['UNO','DOS','TRES'].join(' / '),highlight:'Detalle '.repeat(100)});
  assert.ok(caption.length<=1024);
