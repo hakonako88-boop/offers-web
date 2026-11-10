@@ -221,9 +221,30 @@ export function offerEditorialHook({ title = '', price = 0, discount = 0 } = {})
         ? ['Ofertita', 'Pequeño chollo']
         : Number(discount) >= 15
           ? ['Buena oferta', 'Chollo del día']
-          : ['Oferta seleccionada', 'Precio interesante'];
+          : ['Para tener en el radar', 'Un hallazgo para tu lista'];
   const score = Array.from(identity).reduce((total, character) => total + character.codePointAt(0), 0);
   return variants[score % variants.length];
+}
+
+export function telegramOfferOpening({title='',store='',coupon='',discount=0}={}) {
+  const identity=normalized(title);
+  const general=['👀 Esto merece un vistazo','🛍️ Un hallazgo para tu lista','💚 Para tener en el radar','🔎 Ojo a este producto','✨ Un fichaje para tu próxima compra','📌 Para comparar antes de comprar'];
+  const themed=/auriculares|headphones|earbuds|altavoz/.test(identity)
+    ? ['🎧 ¿Renovamos el sonido?','🎵 Para tu próxima sesión de música','🎧 Un fichaje para darle al play']
+    : /smartphone|telefono|movil|iphone|galaxy|poco |realme/.test(identity)
+      ? ['📱 ¿Hora de cambiar de móvil?','📲 Un móvil para poner en tu lista','📱 Otro candidato para comparar']
+      : /aspirador|freidora|cafetera|cocina|sarten|batidora|colchon|almohada|ventilador/.test(identity)
+        ? ['🏡 Un hallazgo para casa','🏠 Para tu lista de hogar','💚 Una idea para equipar tu casa']
+        : /cafe|coca.cola|jamon|galletas|leche|chocolate|mayonesa|aceite de oliva/.test(identity)
+          ? ['🛒 Para la próxima compra','🥫 Un fichaje para la despensa','🛍️ Ponlo en tu lista de la compra']
+          : [];
+  const couponOpenings=couponOptions(coupon).codes.length ? ['🎟️ Ojo al código de esta oferta','✂️ El cupón va aparte: revísalo abajo','🎟️ Una oferta con código para comprobar'] : [];
+  const dealOpenings=Number(discount)>=15 && Number(discount)<100 ? ['🔥 Chollo a la vista','💥 Una rebaja para comparar','⚡ Ojo a esta oferta'] : [];
+  const choices=[...themed,...general,...couponOpenings,...dealOpenings];
+  // Stable by product, not random on every retry or preview regeneration.
+  let seed=2166136261;
+  for(const char of `${identity}|${normalized(store)}`) seed=Math.imul(seed^char.codePointAt(0),16777619)>>>0;
+  return choices[seed%choices.length];
 }
 
 export function editorialOfferHeadline({ title = '', store = '', price = '', discount = 0, coupon = '' } = {}) {
@@ -299,8 +320,8 @@ export function formatTelegramDealCard({
       ? `🔻 ${escapeCaptionField(highlight, 140)}`
       : cashbackLine;
   const linkLine = `🛒 <b>Ver en ${escapeCaptionField(store || 'la tienda', 40)}</b>\n👇 Toca el botón para elegir tu variante y comprar`;
-  const kicker = codes.length ? '🎟 OFERTA CON CUPÓN' : '⚡ OFERTA SELECCIONADA';
-  const headline = `${kicker}\n\n🔥 <b>${escapeCaptionField(trimAtWord(improveOfferTitle(title), 130), 220)}</b>\n#${escapeCaptionField(storeTag, 40)}${discountLabel}`;
+  const kicker = telegramOfferOpening({title,store,coupon:codes.join(' / '),discount});
+  const headline = `${kicker}\n\n<b>${escapeCaptionField(trimAtWord(improveOfferTitle(title), 130), 220)}</b>\n#${escapeCaptionField(storeTag, 40)}${discountLabel}`;
   const priceBlock = [
     `💶 <b>PRECIO OFERTA: ${escapeCaptionField(price, 60)}</b>`,
     previousPrice ? `↘️ Antes: <s>${escapeCaptionField(previousPrice, 60)}</s>` : '',
