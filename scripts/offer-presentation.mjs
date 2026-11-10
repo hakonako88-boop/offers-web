@@ -235,7 +235,7 @@ export function offerEditorialHook({ title = '', price = 0, discount = 0 } = {})
   return variants[score % variants.length];
 }
 
-export function telegramOfferOpening({title='',store='',coupon='',discount=0}={}) {
+export function telegramOfferOpening({title='',store='',coupon='',discount=0,price='',previousPrice=''}={}) {
   const identity=normalized(title);
   const general=['💚 ¿Lo tenías en mente? Aquí tienes un chollo.','👀 Ese capricho merece una segunda mirada.','🛍️ Una compra pendiente, un chollo por comparar.','📌 De «algún día lo miro» a echarle un vistazo.'];
   const mobile=/smartphone|telefono|movil|iphone|galaxy|poco |realme/.test(identity);
@@ -273,7 +273,20 @@ export function telegramOfferOpening({title='',store='',coupon='',discount=0}={}
   // Stable by product, not random on every retry or preview regeneration.
   let seed=2166136261;
   for(const char of `${identity}|${normalized(store)}`) seed=Math.imul(seed^char.codePointAt(0),16777619)>>>0;
-  return choices[seed%choices.length];
+  const amount = value => {
+    if (typeof value === 'number') return value;
+    const raw = String(value).replace(/[^0-9.,]/g, '');
+    return Number(raw.includes(',') ? raw.replaceAll('.', '').replace(',', '.') : raw);
+  };
+  const current = amount(price);
+  const previous = amount(previousPrice);
+  const labels = ['🔥 Chollo', '🛍️ Oferta', '💚 Un buen hallazgo', '👀 Oferta para tu radar'];
+  if (Number.isFinite(current) && current > 0 && Number.isFinite(previous) && previous > current) {
+    labels.push('📉 Bajada de precio', '💸 Ahora por menos');
+  }
+  if (Number(discount) >= 30 && previous > current && current > 0) labels.push('⚡ Ofertón');
+  const label = labels[(seed >>> 8) % labels.length];
+  return `${label} · ${choices[seed%choices.length]}`;
 }
 
 export function editorialOfferHeadline({ title = '', store = '', price = '', discount = 0, coupon = '' } = {}) {
@@ -349,7 +362,7 @@ export function formatTelegramDealCard({
       ? `🔻 ${escapeCaptionField(highlight, 140)}`
       : cashbackLine;
   const linkLine = `🛒 <b>Ver en ${escapeCaptionField(store || 'la tienda', 40)}</b>\n👇 Toca el botón para elegir tu variante y comprar`;
-  const kicker = telegramOfferOpening({title,store,coupon:codes.join(' / '),discount});
+  const kicker = telegramOfferOpening({title,store,coupon:codes.join(' / '),discount,price,previousPrice});
   const headline = `<b>${escapeHtml(kicker)}</b>\n\n<b>${escapeCaptionField(trimAtWord(improveOfferTitle(title), 130), 220)}</b>\n#${escapeCaptionField(storeTag, 40)}${discountLabel}`;
   const priceBlock = [
     `💶 <b>PRECIO OFERTA: ${escapeCaptionField(price, 60)}</b>`,

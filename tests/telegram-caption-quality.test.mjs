@@ -2,6 +2,18 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { formatTelegramDealCard, telegramOfferOpening, improveOfferTitle } from '../scripts/offer-presentation.mjs';
 
+test('varied emoji labels only claim a price drop when both prices support it', () => {
+ const inputs=Array.from({length:60},(_,i)=>({title:`Producto útil modelo ${i}`,store:'Amazon'}));
+ const ordinary=inputs.map(input=>telegramOfferOpening({...input,price:'19,99 €',discount:50}));
+ for(const text of ordinary) assert.doesNotMatch(text,/Bajada de precio|Ahora por menos|Ofertón/);
+ const drops=inputs.map(input=>telegramOfferOpening({...input,price:'19,99 €',previousPrice:'39,99 €',discount:50}));
+ assert.ok(drops.some(text=>text.includes('Bajada de precio')));
+ assert.ok(drops.some(text=>text.includes('Chollo')));
+ assert.ok(drops.some(text=>text.includes('Oferta')));
+ assert.ok(drops.some(text=>text.includes('Ofertón')));
+ for(const input of inputs) assert.doesNotMatch(telegramOfferOpening({...input,price:40,previousPrice:20}),/Bajada de precio|Ahora por menos/);
+});
+
 test('caption has a single price and a distinct copyable coupon block',()=>{
  const caption=formatTelegramDealCard({title:'Robot aspirador de prueba',store:'AliExpress',price:'199,99 €',previousPrice:'299,99 €',savings:'100,00 €',coupon:'AHORRA20',discount:33});
  assert.equal(caption.split('199,99 €').length-1,1);
