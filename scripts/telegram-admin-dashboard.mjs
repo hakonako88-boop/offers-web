@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { isRecentSourceItem, isSourceItemReady } from './source-retry-policy.mjs';
 import { offerQuality } from './offer-quality-score.mjs';
+import { publicationAllowance, publicationReasonLabel } from './publication-policy.mjs';
 
 const STORES = ['Amazon', 'AliExpress', 'Miravia', 'PcComponentes', 'MediaMarkt', 'El Corte Inglés'];
 
@@ -23,6 +24,27 @@ function offerDate(offer) {
   return new Date(offer?.publishedAt || offer?.createdAt || '');
 }
 
+export function queueIssueLabel(item={}) {
+  const reason=String(item.reason || '');
+  if(item.status==='duplicate') return 'Producto ya publicado';
+  if(/producto exacto/iu.test(reason) && /precio/iu.test(reason) && /imagen/iu.test(reason)) return 'Verificación incompleta de producto, precio, foto o afiliación';
+  if(/afiliad|affiliate|tracking/iu.test(reason)) return 'Enlace de afiliación no verificado';
+  if(/asin|producto exacto|product.id/iu.test(reason)) return 'Producto exacto pendiente de verificar';
+  if(/precio|price/iu.test(reason)) return 'Precio pendiente de verificar';
+  if(/foto|imagen|image/iu.test(reason)) return 'Foto pendiente de verificar';
+  if(/ahorro|editorial|selecci[oó]n/iu.test(reason)) return 'Filtro de calidad o ahorro';
+  if(/reintento|intentos|verificar/iu.test(reason)) return 'Verificación fallida o en reintento';
+  return 'Necesita revisión de datos';
+}
+
+function retailerHealth(state,now) {
+  if(!state) return 'sin datos';
+  if(state.lastError || state.healthy===false) return 'con incidencias';
+  const checked=Date.parse(state.checkedAt || state.lastRunAt || state.updatedAt || '');
+  if(Number.isFinite(checked) && now.getTime()-checked>2*60*60*1000) return 'sin comprobación reciente';
+  return Number.isFinite(checked) || state.healthy===true ? 'operativa' : 'sin datos';
+}
+
 export function dashboardSnapshot({ offers = [], queue = { items: [] }, report = {}, states = {}, now = new Date() } = {}) {
   const items = Array.isArray(queue?.items) ? queue.items : [];
   const today = madridDay(now);
@@ -31,8 +53,23 @@ export function dashboardSnapshot({ offers = [], queue = { items: [] }, report =
   const byStore = Object.fromEntries(STORES.map((store) => [store,
     publishedToday.filter((offer) => String(offer.store || '') === store).length]));
   const pending = items.filter((item) => item.status === 'pending');
-  const ready = pending.filter((item) => isSourceItemReady(item, now));
-  const waiting = pending.filter((item) => !isSourceItemReady(item, now));
+  const currentPending=pending.filter(item=>isRecentSourceItem(item,now));
+  const stalePending=pending.length-currentPending.length;
+  const policyCache=new Map();
+  const policyFor=(store,source='')=>{
+    const key=`${store}|${source==='nolodejesescapar'?'nolo':'ordinary'}`;
+    if(!policyCache.has(key)) policyCache.set(key,publicationAllowance({store,source,offers,now}));
+    return policyCache.get(key);
+  };
+  const due = currentPending.filter(item=>isSourceItemReady(item,now));
+  const ready = due.filter(item=>policyFor(item.store,item.source).allowed);
+  const blocked = due.filter(item=>!policyFor(item.store,item.source).allowed);
+  const waiting = currentPending.filter((item) => !isSourceItemReady(item, now));
+  const blockedCounts=new Map();
+  for(const item of blocked){const reason=publicationReasonLabel(policyFor(item.store,item.source));blockedCounts.set(reason,(blockedCounts.get(reason)||0)+1);}
+  const reviewItems=items.filter(item=>item.status==='needs_review');
+  const reviewCounts=new Map();
+  for(const item of reviewItems){const reason=queueIssueLabel(item);reviewCounts.set(reason,(reviewCounts.get(reason)||0)+1);}
   const recentCutoff = now.getTime() - 24 * 60 * 60 * 1000;
   const recentItems = items.filter((item) => {
     const updated = Date.parse(item.updatedAt || item.createdAt || item.publishedAt || '');
@@ -45,6 +82,13 @@ export function dashboardSnapshot({ offers = [], queue = { items: [] }, report =
     generatedAt: now.toISOString(), lastCheckedAt,
     publishedToday: publishedToday.length, byStore,
     ready: ready.length, waiting: waiting.length, pending: pending.length,
+    blocked:blocked.length,stalePending,needsReview:reviewItems.length,
+    blockedReasons:[...blockedCounts].map(([reason,count])=>({reason,count})),
+    reviewReasons:[...reviewCounts].sort((a,b)=>b[1]-a[1]).map(([reason,count])=>({reason,count})),
+    publicationByStore:Object.fromEntries(STORES.map(store=>{
+      const policy=policyFor(store);
+      return [store,{...policy,label:publicationReasonLabel(policy)}];
+    })),
     rejectedToday, duplicateToday,
     recentErrors: recentItems.filter((item) => item.status === 'rejected').slice(-5).reverse(),
     quality: {
@@ -65,12 +109,12 @@ export function dashboardSnapshot({ offers = [], queue = { items: [] }, report =
       trafficSources: Array.isArray(states.analytics?.trafficSources) ? states.analytics.trafficSources.slice(0, 3) : [],
     },
     storeHealth: {
-      Amazon: /eligibility requirements/iu.test(String(states.amazon?.lastError || '')) ? 'pendiente de aprobación API' : 'operativa',
-      AliExpress: states.aliexpress?.healthy === true ? 'operativa' : 'con incidencias',
-      Miravia: states.miravia ? 'operativa' : 'sin datos',
-      PcComponentes: states.awin ? 'operativa' : 'sin datos',
-      MediaMarkt: states.mediamarkt ? 'operativa' : 'sin datos',
-      'El Corte Inglés': states.awin ? 'operativa' : 'sin datos',
+      Amazon: /eligibility requirements/iu.test(String(states.amazon?.lastError || '')) ? 'pendiente de aprobación API' : retailerHealth(states.amazon,now),
+      AliExpress: retailerHealth(states.aliexpress,now),
+      Miravia: retailerHealth(states.miravia,now),
+      PcComponentes: retailerHealth(states.awin,now),
+      MediaMarkt: retailerHealth(states.mediamarkt,now),
+      'El Corte Inglés': retailerHealth(states.awin,now),
     },
   };
 }
@@ -131,15 +175,26 @@ export function dashboardKeyboard(snapshot = {}, section = 'home') {
 export function formatDashboard(snapshot, section = 'home', now = new Date()) {
   if (section === 'queue') return [
     '⏳ COLA DE OFERTAS', '',
-    `🟢 Preparadas ahora: ${snapshot.ready}`,
+    `🔎 Con turno para verificar: ${snapshot.ready}`,
     `🕒 Esperando reintento: ${snapshot.waiting}`,
+    `🚦 Frenadas por horario o cuota: ${snapshot.blocked || 0}`,
+    `📅 Fuera del plazo de reintento: ${snapshot.stalePending || 0}`,
     `📥 Total pendiente: ${snapshot.pending}`,
+    '', 'MOTIVOS DE ESPERA',
+    ...(snapshot.blockedReasons?.length ? snapshot.blockedReasons.map(item=>`• ${item.reason}: ${item.count}`) : ['• Sin bloqueos de horario o cuota.']),
+    '', `📝 Necesitan revisión: ${snapshot.needsReview || 0}`,
+    ...(snapshot.reviewReasons || []).slice(0,5).map(item=>`• ${item.reason}: ${item.count}`),
+    '', 'Tener turno no significa que el producto, precio o afiliación estén verificados.',
     `🚫 Rechazadas en 24 h: ${snapshot.rejectedToday}`,
     `♻️ Duplicadas en 24 h: ${snapshot.duplicateToday}`,
   ].join('\n');
   if (section === 'stores') return [
     '🏪 ESTADO DE TIENDAS', '',
-    ...STORES.map((store) => `${snapshot.storeHealth[store] === 'operativa' ? '🟢' : snapshot.storeHealth[store].startsWith('pendiente') ? '🟡' : '🟠'} ${store}: ${snapshot.storeHealth[store]}`),
+    ...STORES.map((store) => {
+      const policy=snapshot.publicationByStore?.[store];
+      return `${snapshot.storeHealth[store] === 'operativa' ? '🟢' : snapshot.storeHealth[store].startsWith('pendiente') ? '🟡' : '🟠'} ${store}: ${snapshot.storeHealth[store]}${policy?`\n   ${policy.label}${Number.isFinite(policy.storeLimit)?` · ${policy.storeCount}/${policy.storeLimit}`:''}`:''}`;
+    }),
+    '', 'Cuotas ordinarias. NoLoDejesEscapar mantiene su política sin límite diario.',
   ].join('\n');
   if (section === 'today') return [
     '📢 PUBLICADAS HOY', '',
@@ -176,11 +231,13 @@ export function formatDashboard(snapshot, section = 'home', now = new Date()) {
   ].join('\n');
   return [
     '📊 PANEL DE CHOLLOSALDÍA', '',
-    '🟢 Rocky está activo',
+    '📊 PANEL PRIVADO DE ROCKY',
     `🕒 Última revisión: ${relativeCheck(snapshot.lastCheckedAt, now)}`,
     `📢 Publicadas hoy: ${snapshot.publishedToday}`,
-    `📥 Preparadas ahora: ${snapshot.ready}`,
+    `🔎 Con turno para verificar: ${snapshot.ready}`,
     `⏳ Esperando reintento: ${snapshot.waiting}`,
+    `🚦 Bloqueadas por horario o cuota: ${snapshot.blocked || 0}`,
+    `📝 Necesitan revisión: ${snapshot.needsReview || 0}`,
     `⚠️ Rechazadas en 24 h: ${snapshot.rejectedToday}`,
     `♻️ Duplicadas en 24 h: ${snapshot.duplicateToday}`,
     '', 'Usa los botones para ver el detalle.',

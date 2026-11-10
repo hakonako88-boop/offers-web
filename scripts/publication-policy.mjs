@@ -2,11 +2,11 @@ const TIME_ZONE = 'Europe/Madrid';
 
 export const STORE_DAILY_LIMITS = Object.freeze({
   Amazon: 10,
-  AliExpress: 10,
+  AliExpress: 16,
   Miravia: 3,
-  MediaMarkt: 4,
-  PcComponentes: 4,
-  'El Corte Inglés': 4,
+  MediaMarkt: 6,
+  PcComponentes: 6,
+  'El Corte Inglés': 6,
   Xiaomi: 3,
 });
 
@@ -148,18 +148,47 @@ export function publicationAllowance({ store, offers = [], now = new Date(), byp
     const editorialCap = (STORE_DAILY_LIMITS[scheduledStore] || 1) + (eventDays && scheduledStore in STORE_DAILY_LIMITS ? 4 : 0);
     return total + Math.min(count, editorialCap);
   }, 0);
-  const remaining = Math.max(0, Math.min(1, globalLimit - editorialPublishedToday, storeLimit - storeCount));
+  // A bounded shared reserve lets underrepresented retailers get a turn even
+  // when the normal cumulative slots were taken by one or two busy sources.
+  // This never bypasses retailer caps, the eight-minute gap or quiet hours.
+  const reservedStoreSlots = globalLimit >= 14 ? 2 : globalLimit >= 4 ? 1 : 0;
+  const reservedCapacity = 6;
+  const reservedSlot = storeName in STORE_DAILY_LIMITS
+    && storeCount < reservedStoreSlots
+    && storeCount < storeLimit
+    && editorialPublishedToday >= globalLimit
+    && editorialPublishedToday < globalLimit + reservedCapacity;
+  const remaining = Math.max(0, Math.min(1, reservedSlot ? 1 : globalLimit - editorialPublishedToday, storeLimit - storeCount));
   return {
     allowed: remaining > 0,
     remaining,
-    reason: remaining > 0 ? 'slot-available' : (storeCount >= storeLimit ? 'store-daily-limit' : 'time-slot-full'),
+    reason: remaining > 0 ? (reservedSlot ? 'reserved-store-slot' : 'slot-available') : (storeCount >= storeLimit ? 'store-daily-limit' : 'time-slot-full'),
     local,
     globalLimit,
     publishedToday: editorialPublishedToday,
     rawPublishedToday: scheduledToday.length,
     storeCount,
     storeLimit,
+    reservedStoreSlots,
+    reservedCapacity,
+    reservedUsed: Math.max(0,editorialPublishedToday-globalLimit),
   };
+}
+
+export function publicationReasonLabel(policy = {}) {
+  const reasons={
+    'slot-available':'Turno disponible',
+    'reserved-store-slot':'Turno reservado para diversificar tiendas',
+    'store-daily-limit':'Límite diario de esta tienda',
+    'time-slot-full':'Cuota de esta franja completa',
+    'quiet-hours':'Horario de descanso',
+    'global-cadence':'Pausa entre publicaciones',
+    'nolo-cadence':'Pausa entre ofertas de NoLoDejesEscapar',
+    'nolo-slot-available':'Turno NoLoDejesEscapar disponible',
+    'manual-bypass':'Publicación manual autorizada',
+  };
+  const label=reasons[policy.reason] || 'Estado no comprobado';
+  return policy.retryAfterMs>0 ? `${label} · ${Math.ceil(policy.retryAfterMs/60000)} min` : label;
 }
 
 export function scheduleBypassEnabled() {

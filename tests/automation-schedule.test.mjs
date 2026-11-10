@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
 import { publicationAllowance } from '../scripts/publication-policy.mjs';
+import './publication-reliability.test.mjs';
 
 const workflow = fs.readFileSync(new URL('../.github/workflows/deploy.yml', import.meta.url), 'utf8');
 const sourcePollWorkflow = fs.readFileSync(new URL('../.github/workflows/telegram-source-poll.yml', import.meta.url), 'utf8');
@@ -269,18 +270,19 @@ test('prevents automatic Telegram bursts across retailers', () => {
   assert.ok(allowance.retryAfterMs > 0);
 });
 
-test('raises AliExpress capacity moderately while preserving a daily cap', () => {
-  const offers = Array.from({ length: 10 }, (_, index) => ({
+test('raises AliExpress capacity to sixteen while preserving a daily cap', () => {
+  const offers = Array.from({ length: 16 }, (_, index) => ({
     store: 'AliExpress',
-    date: Math.floor(Date.parse(`2026-08-31T${String(9 + index).padStart(2, '0')}:00:00+02:00`) / 1000),
+    date: Math.floor(Date.parse('2026-08-31T09:00:00+02:00') / 1000)+index*600,
   }));
+  assert.equal(publicationAllowance({store:'AliExpress',offers:offers.slice(0,10),now:new Date('2026-08-31T21:00:00+02:00')}).allowed,true);
   const afterTen = publicationAllowance({
     store: 'AliExpress',
     offers,
     now: new Date('2026-08-31T21:00:00+02:00'),
   });
   assert.equal(afterTen.allowed, false);
-  assert.equal(afterTen.storeLimit, 10);
+  assert.equal(afterTen.storeLimit, 16);
   assert.equal(afterTen.reason, 'store-daily-limit');
 });
 

@@ -16,6 +16,7 @@ concurrency:
   # para no sobrescribir reintentos ni publicaciones ya clasificadas.
   group: chollosaldia-production
   cancel-in-progress: false
+  queue: max
 
 jobs:
   check-sources:

@@ -41,6 +41,7 @@ concurrency:
   # Un reenvío de Telegram no puede perderse porque coincida con otra oferta
   # o con una ejecución programada. GitHub lo deja en cola y lo procesa.
   cancel-in-progress: false
+  queue: max
 
 jobs:
   telegram-inbox:

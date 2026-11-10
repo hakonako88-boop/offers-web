@@ -1,0 +1,33 @@
+name: Validar fiabilidad de publicaciones
+on:
+  push:
+    branches: [main]
+    paths:
+      - scripts/publication-policy.mjs
+      - scripts/telegram-admin-dashboard.mjs
+      - tests/publication-reliability.test.mjs
+      - tests/automation-schedule.test.mjs
+      - .github/workflows/publication-reliability.yml
+      - .github/workflows/deploy.yml
+      - .github/workflows/telegram-source-poll.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: validate-publication-reliability
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Comprobar tienda, reservas, colas y escaparate sin publicar
+        run: npm run test:storefront
+      - name: Comprobar bot, fuentes, afiliacion y duplicados con datos de prueba
+        run: node --test tests/telegram-admin-dashboard.test.mjs tests/telegram-source-poll.test.mjs tests/offer-deduplication.test.mjs tests/telegram-inbox-commands.test.mjs tests/amazon-offers.test.mjs tests/aliexpress-offers.test.mjs tests/miravia-offers.test.mjs tests/awin-retailers.test.mjs tests/tradedoubler-mediamarkt.test.mjs tests/conditional-source-offer.test.mjs

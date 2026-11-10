@@ -12,6 +12,7 @@ permissions:
 concurrency:
   group: chollosaldia-production
   cancel-in-progress: false
+  queue: max
 jobs:
   publish:
     runs-on: ubuntu-latest
