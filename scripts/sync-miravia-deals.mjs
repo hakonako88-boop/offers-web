@@ -121,7 +121,7 @@ function exactMiraviaOffer(metadata, signal, destinationUrl) {
     oldPrice: previousPrice,
     sourceWeight: signal.sourceWeight,
   });
-  if (!editorialScore) return null;
+  if (!editorialScore && signal.source !== 'nolodejesescapar') return null;
   return {
     id: `miravia-${id}`,
     sourceProductId: id,

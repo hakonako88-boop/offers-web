@@ -58,6 +58,10 @@ export function isGamingOffer(offer = {}) {
 
 export function automaticInterest(offer = {}, { requireDealEvidence = false } = {}) {
   const title = text(offer.title);
+  // The owner explicitly selects this source in full. Do not apply our
+  // category preferences or minimum-discount editorial policy to it.
+  // Product completeness, affiliation and duplicates are checked downstream.
+  if (title && (offer.communitySource || offer.source) === 'nolodejesescapar') return 3;
   // Telegram source links enter the queue before Amazon metadata is fetched.
   // An empty raw title is therefore unknown, not uninteresting. Let it reach
   // the official product reader and apply the strict gate to the enriched

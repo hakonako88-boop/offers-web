@@ -36,12 +36,14 @@ export function offerQuality(offer = {}) {
   };
   let score = Object.values(breakdown).reduce((total, value) => total + value, 0);
   const suspiciousReference = price >= 250 && previous > price * 2 && !coupon;
+  const selectedSource = (offer.communitySource || offer.source) === 'nolodejesescapar';
+  const complete = price > 0 && Number.isFinite(price) && title.length >= 8 && image && /^https?:\/\//iu.test(url);
   if (interest < 0 || !price || !title || !image || !/^https?:\/\//iu.test(url)) score = Math.min(score, 39);
   if (suspiciousReference || !meaningfulSaving(offer)) score = Math.min(score, 49);
   score = Math.max(0, Math.min(100, Math.round(score)));
   return {
     score, breakdown, discount, saving,
     level: score >= 80 ? 'excelente' : score >= 70 ? 'buena' : score >= 50 ? 'revisar' : 'descartar',
-    publishable: score >= 70 && !suspiciousReference && meaningfulSaving(offer) && interest >= 0,
+    publishable: selectedSource ? Boolean(complete && !suspiciousReference) : score >= 70 && !suspiciousReference && meaningfulSaving(offer) && interest >= 0,
   };
 }

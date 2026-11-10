@@ -2,6 +2,18 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
 import { offerQuality } from '../scripts/offer-quality-score.mjs';
+import { selectInterestingOffers } from '../scripts/editorial-interest.mjs';
+
+test('owner-selected NoLo source bypasses editorial preferences, not completeness or suspect references', () => {
+  const offer = { communitySource: 'nolodejesescapar', title: 'Videojuego Nintendo Switch aventura', price: 20, image: '/tg/game.jpg', url: 'https://example.com/product' };
+  assert.equal(selectInterestingOffers([offer]).length, 1);
+  assert.equal(offerQuality(offer).publishable, true);
+  assert.equal(offerQuality({ ...offer, image: '' }).publishable, false);
+  assert.equal(offerQuality({ ...offer, price: 0 }).publishable, false);
+  assert.equal(offerQuality({ ...offer, url: '' }).publishable, false);
+  assert.equal(offerQuality({ ...offer, price: 300, previousPrice: 1500 }).publishable, false);
+  assert.equal(offerQuality({ ...offer, communitySource: 'other' }).publishable, false);
+});
 
 test('scores a complete useful discounted offer above catalogue filler', () => {
   const now = Math.floor(Date.now() / 1000);

@@ -1,4 +1,4 @@
-import { isGamingOffer, selectInterestingOffers } from './editorial-interest.mjs';
+import { selectInterestingOffers } from './editorial-interest.mjs';
 import { offerQuality } from './offer-quality-score.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -292,7 +292,7 @@ const noloCandidates = matchedNoloCandidates.length
 const merged = noloSignal ? noloCandidates : feedCandidates;
 const deduplicatedCandidates = filterDuplicateDeals(merged, existingWebOffers);
 const candidates = noloSignal
-  ? deduplicatedCandidates.filter((offer) => Number(offer.score) > 0 && !isGamingOffer(offer))
+  ? deduplicatedCandidates.filter((offer) => offerQuality(offer).publishable)
   : selectInterestingOffers(deduplicatedCandidates)
     .filter((offer) => offerQuality({ ...offer, date: Math.floor(Date.now() / 1000) }).publishable);
 const publicationPolicy = publicationAllowance({ store: retailer.store, offers: existingWebOffers, bypass: scheduleBypassEnabled() });
