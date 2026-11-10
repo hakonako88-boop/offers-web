@@ -15,6 +15,15 @@ test('publisher, inbox and every shared producer preserve multiple pending runs'
   assert.equal(workflow.concurrency['cancel-in-progress'],false);
  }
 });
+
+test('an old one-off GTA reservation never runs just because its configuration changes',()=>{
+ const workflow=YAML.load(fs.readFileSync('.github/workflows/requested-gta.yml','utf8'));
+ assert.ok('workflow_dispatch' in workflow.on);
+ assert.ok(!('push' in workflow.on));
+ const script=fs.readFileSync('scripts/publish-requested-gta.mjs','utf8');
+ assert.match(script,/offers.some/);
+ assert.match(script,/Revisar de nuevo precio y cupón/);
+});
 test('a full normal slot does not starve an underrepresented shop',()=>{
  for(const store of ['Amazon','Miravia','PcComponentes']){
   const p=publicationAllowance({store,offers:full,now});

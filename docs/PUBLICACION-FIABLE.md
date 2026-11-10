@@ -8,6 +8,10 @@ GitHub permite hasta 100 ejecuciones pendientes por grupo. No es una cola
 ilimitada ni elimina errores de red: evita sustituir silenciosamente una
 ejecución pendiente por otra nueva dentro de esa capacidad.
 
+La antigua reserva puntual de GTA solo se puede lanzar manualmente; cambiar
+su YAML no inicia una publicación ni ocupa por sí solo la cola de producción.
+Conserva sus comprobaciones de duplicidad y de fecha del precio comprobado.
+
 No se modifica el Worker de Cloudflare ni se contrata un servicio nuevo.
 
 ## Cuotas ordinarias

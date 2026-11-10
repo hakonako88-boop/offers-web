@@ -1,9 +1,6 @@
 name: Publicar reserva GTA solicitada
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: [.github/workflows/requested-gta.yml]
 permissions:
   contents: write
 concurrency:
