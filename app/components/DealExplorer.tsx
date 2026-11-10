@@ -218,6 +218,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
             <a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer"><ShopIcon name="bell" />Alertas</a>
             <button type="button" onClick={() => { setSavedOnly((active) => !active); document.getElementById('ofertas')?.scrollIntoView({ behavior: 'smooth' }); }} aria-pressed={savedOnly}><ShopIcon name="heart" />Guardadas{savedIds.length > 0 && <b className="navSavedCount">{savedIds.length}</b>}</button>
           </nav>
+          <a className="teslaMobileShortcut" href="/tesla/" aria-label="Accesorios Tesla">Tesla <span aria-hidden="true">↗</span></a>
           <details className="mobileNav">
             <summary aria-label="Abrir menú de navegación"><span aria-hidden="true">☰</span> Menú</summary>
             <div className="mobileNavMenu">
