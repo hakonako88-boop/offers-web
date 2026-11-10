@@ -162,7 +162,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
         </div>
       </header>
 
-      <article className="offerArticle shell">
+      <article className="offerArticle shell" data-offer-id={deal.id} data-offer-price={deal.price.toFixed(2)} data-offer-state={deal.active ? 'active' : 'expired'}>
         <nav className="offerBreadcrumb" aria-label="Migas de pan"><Link href="/">Inicio</Link><span>/</span><Link href={categoryHref}>{deal.category}</Link><span>/</span><b>Oferta</b></nav>
         <div className="offerHero">
           <div className="offerGallery"><div className="offerImageWrap"><img src={deal.imageUrl} alt={productTitle} width={960} height={760} fetchPriority="high" decoding="async" /><span className="storeBadge"><StoreLogo store={deal.store} /></span>{discount > 0 && <span className="offerDiscount">−{discount}%</span>}</div><p>Imagen del producto. Comprueba la variante elegida en la tienda.</p></div>

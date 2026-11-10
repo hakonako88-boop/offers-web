@@ -5,6 +5,9 @@ on:
     paths:
       - scripts/publication-policy.mjs
       - scripts/telegram-admin-dashboard.mjs
+      - scripts/publication-sync-audit.mjs
+      - scripts/process-telegram-inbox.mjs
+      - tests/publication-sync-audit.test.mjs
       - tests/publication-reliability.test.mjs
       - tests/automation-schedule.test.mjs
       - .github/workflows/publication-reliability.yml

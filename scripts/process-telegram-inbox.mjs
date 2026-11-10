@@ -33,6 +33,7 @@ import { createDealImageCard, dealImageCardFilename } from './deal-image-card.mj
 import { lookupAmazonProduct } from './amazon-creators-lookup.mjs';
 import { mirrorTelegramMessage } from './telegram-mirror.mjs';
 import { publicationAllowance } from './publication-policy.mjs';
+import { auditRecentPublications } from './publication-sync-audit.mjs';
 import {
   dashboardKeyboard,
   formatDashboard,
@@ -979,10 +980,11 @@ for (const update of updates || []) {
       }
       if (!callbackChatId || !isAuthorizedCallback) {
         if (callbackChatId) await reply(settings.token, callbackChatId, '⛔ Este chat no está autorizado.');
-      } else if (/^dashboard:(?:home|refresh|queue|stores|today|errors|quality|web)$/u.test(String(callback.data || ''))) {
+      } else if (/^dashboard:(?:home|refresh|queue|stores|today|errors|quality|web|sync)$/u.test(String(callback.data || ''))) {
         const requested = String(callback.data).split(':')[1];
         const section = requested === 'refresh' ? 'home' : requested;
         const snapshot = loadDashboardSnapshot(ROOT);
+        if(section==='sync')snapshot.publicationAudit=await auditRecentPublications({offers:readJson(OFFERS_FILE,[])});
         await replaceDashboard(settings, callbackChatId, callback.message?.message_id,
           formatDashboard(snapshot, section), dashboardKeyboard(snapshot, section));
       } else if (callback.data === 'dashboard:retry') {

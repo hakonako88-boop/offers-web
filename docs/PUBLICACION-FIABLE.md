@@ -55,6 +55,24 @@ Enviar `/estado` a Rocky y abrir **COLA** o **TIENDAS**.
   afiliación o filtro de calidad, según el motivo guardado.
 - Tiendas: motivo de disponibilidad/bloqueo y contador de cuota ordinaria.
 
-No se afirma que una oferta aparezca en la web solamente porque exista su
-mensaje en Telegram. Esta fase no incorpora confirmación remota por URL ni
-migra el estado a Cloudflare Queues; esas son mejoras separadas.
+## Comprobación Telegram ↔ web
+
+El botón **TELEGRAM ↔ WEB** del panel privado revisa bajo demanda las cinco
+últimas publicaciones con datos suficientes, sin usar credenciales de tiendas.
+Solo consulta las fichas públicas de chollosaldia.com, el manifiesto público del
+último despliegue y los mensajes públicos de @aldiachollos. Hay un máximo de
+cuatro consultas simultáneas y tiempo de espera por petición.
+
+Comprueba el ID y el enlace de compra del mensaje, su precio cuando se puede
+leer de forma inequívoca, la URL canónica de la ficha y su precio/enlace frente
+al registro guardado. Una respuesta HTTP 200 por sí sola no es una confirmación.
+Las páginas nuevas incluyen ID, precio y estado como atributos de diagnóstico;
+las antiguas pueden comprobarse por su precio visible y enlace canónico.
+
+Un mensaje no visible en la vista pública se indica como **no confirmado**, no
+como perdido. Si el mensaje no incluye un precio reconocible, tampoco se da por
+verificado. Las fichas finalizadas se distinguen de las ofertas activas. Si una
+URL da 404 y el último despliegue es anterior a la oferta, se muestra ese dato.
+
+Esta comprobación no verifica el precio actual de la tienda, no cambia ofertas,
+no publica reintentos, no reenvía mensajes y no migra el estado a Cloudflare Queues.

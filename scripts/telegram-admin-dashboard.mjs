@@ -169,10 +169,22 @@ export function dashboardKeyboard(snapshot = {}, section = 'home') {
     ...(Number(snapshot.pending || 0) > 0
       ? [[{ text: '⚡ REVISAR PENDIENTES', callback_data: 'dashboard:retry' }]]
       : []),
+    [{text:'🔗 TELEGRAM ↔ WEB',callback_data:'dashboard:sync'}],
   ] };
 }
 
 export function formatDashboard(snapshot, section = 'home', now = new Date()) {
+  if(section==='sync') {
+    const audit=snapshot.publicationAudit;
+    if(!audit)return '🔗 TELEGRAM ↔ WEB\n\nComprobación todavía no realizada.';
+    return ['🔗 TELEGRAM ↔ WEB','',
+      `Comprobadas: ${audit.items.length} · Coinciden: ${audit.confirmed}`,
+      `Revisión: ${relativeCheck(audit.checkedAt,now)}`,
+      ...(audit.items.length?audit.items.flatMap(item=>['',`• ${String(item.title).slice(0,78)}`,`Telegram: ${item.telegram.label}`,`Web: ${item.web.label}`,item.url]):['No hay publicaciones con datos suficientes para comprobar.']),
+      '', 'Compara lo publicado con el registro guardado, no con el precio actual de la tienda.',
+      'Solo lectura: no reenvía ofertas ni modifica publicaciones.',
+    ].join('\n');
+  }
   if (section === 'queue') return [
     '⏳ COLA DE OFERTAS', '',
     `🔎 Con turno para verificar: ${snapshot.ready}`,
