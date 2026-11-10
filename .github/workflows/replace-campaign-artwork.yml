@@ -1,0 +1,46 @@
+name: Mejorar imágenes existentes de MediaMarkt y AliExpress
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/replace-campaign-artwork.yml]
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: chollosaldia-production
+  cancel-in-progress: false
+  queue: max
+jobs:
+  replace:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[replace-campaign-artwork]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node --test tests/campaign-artwork-replacement.test.mjs
+      - run: node scripts/replace-campaign-artwork.mjs
+      - name: Guardar cambios
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/posts.json data/mediamarkt-singles-publication.json data/switch-11-preview-publication.json
+          git diff --cached --quiet || git commit -m 'Sustituir portadas de campañas sin duplicar mensajes [telegram-content]'
+          git pull --rebase origin main
+          git push origin main
+      - name: Desplegar web
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          curl --fail-with-body --request POST --header "Authorization: Bearer ${GH_TOKEN}" --header 'Accept: application/vnd.github+json' --header 'Content-Type: application/json' "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/deploy.yml/dispatches" --data '{"ref":"main","inputs":{"run_automatic_source":"none"}}'
