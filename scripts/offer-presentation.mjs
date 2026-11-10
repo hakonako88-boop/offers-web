@@ -99,6 +99,7 @@ function dimensions(value = '') {
 function brandBefore(title, pattern) {
   const before = compact(String(title).split(pattern)[0]);
   if (!before || before.split(' ').length > 4) return '';
+  if (/(?:^|\s)(?:[úu]ltimos?|nuevos?|oferta|preciazo|chollazo|latest|new|official|oficial)(?:\s|$)/iu.test(before)) return '';
   return before.replace(/[,.·|]+$/u, '').trim();
 }
 
@@ -111,6 +112,8 @@ export function improveOfferTitle(value = '') {
   let original = compact(value)
     .replace(/^(?:🔥|✨|💥|⚡|🛍️|\s)+/gu, '')
     .replace(/^(?:(?:super\s+)?ofert(?:a|ón)|chollo|precio\s+incre[ií]ble)\s*[:!·|—-]*\s*/iu, '')
+    .replace(/^(?:preciazo|chollazo|[úu]ltimos?|nuevos?)\b\s*[:!·|—-]*\s*/iu, '')
+    .replace(/\s+(?:[úu]ltimos?|nuevos?)\s*$/iu, '')
     .replace(/\s*(?:\|\s*)?#(?:publicidad|publi|oferta(?:flash)?|chollos?)(?:\s+#[\p{L}\p{N}_]+)*\s*$/giu, '')
     .replace(/\b(\d+)\s*[xX×]\s*(\d+)\s*Cm\b/gu, '$1×$2 cm')
     .replace(/\bCm\b/gu, 'cm');
@@ -124,6 +127,12 @@ export function improveOfferTitle(value = '') {
   }
   const text = normalized(original);
   if (!original) return 'Oferta destacada';
+
+  if (/estrella galicia/.test(text)) {
+    const pack=original.match(/\b(\d+)\s*(botellas?|latas?)\b/iu);
+    const size=original.match(/\b(\d+(?:[.,]\d+)?)\s*cl\b/iu);
+    return `Estrella Galicia${/especial/.test(text)?' Especial':''}${pack?` · ${pack[1]} ${pack[2].toLowerCase()}`:''}${pack&&size?` de ${size[1]} cl`:''}`;
+  }
 
   if (/realme 16 pro plus/.test(text)) return 'realme 16 Pro+ 5G · AMOLED 144 Hz · cámara de 200 MP';
   if (/aspirador de colchones/.test(text) && /taurus/.test(text)) return 'Aspirador de colchones Taurus Textile Care con luz UV-C';
@@ -189,7 +198,7 @@ export function improveOfferTitle(value = '') {
     if (/^auriculares(?:\s+inal[aá]mbricos)?\b/i.test(original)) return trimAtWord(original);
     const brand = brandBefore(original, /(?:auriculares|headphones|earbuds)/i);
     const wireless = /inalambr|bluetooth|wireless/.test(text) ? ' inalámbricos' : '';
-    return trimAtWord(`Auriculares${wireless}${brand ? ` ${brand}` : ''}`);
+    return brand ? trimAtWord(`Auriculares${wireless} ${brand}`) : trimAtWord(original,94);
   }
 
   return trimAtWord(original, 94);
@@ -232,7 +241,7 @@ export function telegramOfferOpening({title='',store='',coupon='',discount=0}={}
   const mobile=/smartphone|telefono|movil|iphone|galaxy|poco |realme/.test(identity);
   const storage=[...new Set([...identity.matchAll(/\b(\d+)\s*gb\b/g)].map(match=>Number(match[1])).filter(size=>size>=64))];
   const battery=[...new Set([...identity.matchAll(/\b(\d{4,5})\s*mah\b/g)].map(match=>match[1]))];
-  const pack=identity.match(/\bpack\s*(?:de\s*)?(\d+)\b/);
+  const pack=identity.match(/\bpack\s*(?:de\s*)?(\d+)\b/) || identity.match(/\b(\d+)\s*(?:botellas?|latas?|unidades)\b/);
   const themed=/auriculares|headphones|earbuds|altavoz/.test(identity)
     ? /cancelacion.*ruido|noise.cancell/.test(identity)
       ? ['🎧 Menos ruido. Más de tu música.','🎧 Tu música en primer plano.','🎧 Dale al play. El ruido de fondo, en segundo plano.']
@@ -251,9 +260,9 @@ export function telegramOfferOpening({title='',store='',coupon='',discount=0}={}
       ? ['🍟 Tu cocina tiene un nuevo candidato.','🍽️ Un fichaje para darle otra vuelta al menú.','🍟 La próxima cena empieza con una idea.']
     : /ventilador/.test(identity)
       ? ['🌬️ Que el calor no te marque el día.','🌬️ Un poco de aire para tu rincón de casa.','🏡 Ponle aire nuevo a esa habitación.']
-    : pack && /coca.cola|cafe|galletas|leche|chocolate|mayonesa|cerveza|atun/.test(identity)
+    : pack && /coca.cola|cafe|galletas|leche|chocolate|mayonesa|cerveza|estrella galicia|atun/.test(identity)
       ? [`🛒 Un pack de ${pack[1]} para tu próxima compra.`,`📦 Pack de ${pack[1]}: hoy miramos la despensa.`,`🛍️ La lista de la compra también tiene sus chollos: pack de ${pack[1]}.`]
-    : /jamon|coca.cola|cafe|galletas|leche|chocolate|mayonesa|aceite de oliva/.test(identity)
+    : /jamon|coca.cola|cafe|galletas|leche|chocolate|mayonesa|cerveza|estrella galicia|aceite de oliva/.test(identity)
       ? ['🛒 La despensa también tiene sus chollos.','🍽️ Hoy el chollo se sienta a la mesa.','🛍️ Un fichaje para la próxima lista de la compra.']
     : /monitor|teclado|raton|pantalla/.test(identity)
       ? ['🖥️ Tu setup también merece una puesta a punto.','⌨️ Un nuevo candidato para tu escritorio.','🖥️ Dale otra vuelta a tu rincón de trabajo.']
@@ -354,6 +363,7 @@ export function formatTelegramDealCard({
     withDescription && details ? `✨ ${escapeHtml(trimAtWord(details, 150))}` : '',
     priceBlock,
     codes.length || withOptionalNote ? actionLine : '',
+    withOptionalNote && codes.length && highlight ? `📌 ${escapeCaptionField(highlight,120)}` : '',
     linkLine,
     `🔔 Sigue @aldiachollos · #Publi`,
   ].filter(Boolean).join('\n\n');
