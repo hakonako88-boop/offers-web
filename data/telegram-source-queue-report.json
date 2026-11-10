@@ -1,26 +1,52 @@
 {
-  "updatedAt": "2026-11-10T08:44:58.828Z",
+  "updatedAt": "2026-11-10T08:54:03.715Z",
   "summary": {
-    "published": 86,
     "rejected": 378,
     "needs_review": 272,
     "ignored": 227,
+    "published": 85,
     "duplicate": 38,
-    "pending": 143
+    "pending": 145
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:45556:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 45556,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/45556",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-10T09:12:08.276Z"
+    },
+    {
+      "id": "telegram-ofertos:45555:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 45555,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/Ofertos/45555",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-10T09:12:08.276Z"
+    },
     {
       "id": "telegram-errores-de-precio:15695:miravia:4",
       "source": "telegram-errores-de-precio",
       "messageId": 15695,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/erroresde_precio/15695",
       "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-10T08:53:45.834Z",
+      "nextAttemptAt": "2026-11-10T09:14:03.715Z"
     },
     {
       "id": "telegram-errores-de-precio:15695:miravia:3",
@@ -80,12 +106,12 @@
       "messageId": 45554,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/Ofertos/45554",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-10T08:52:33.527Z"
+      "nextAttemptAt": "2026-11-10T09:34:03.715Z"
     },
     {
       "id": "telegram-ofertos:45553:amazon:0",
@@ -93,12 +119,12 @@
       "messageId": 45553,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/Ofertos/45553",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-10T08:52:33.527Z"
+      "nextAttemptAt": "2026-11-10T09:34:03.715Z"
     },
     {
       "id": "telegram-una-ganga:97944:amazon:0",
@@ -1282,32 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45532:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 45532,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/45532",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:5170:amazon:0",
-      "source": "telegram-paramanitas",
-      "messageId": 5170,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 2,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/5170",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-09T19:12:40.133Z"
     }
   ]
 }
