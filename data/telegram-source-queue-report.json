@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-10T05:12:44.887Z",
+  "updatedAt": "2026-11-10T05:23:27.509Z",
   "summary": {
-    "rejected": 377,
+    "rejected": 378,
     "needs_review": 275,
     "ignored": 226,
     "published": 85,
@@ -9,6 +9,19 @@
     "pending": 121
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:97938:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 97938,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/97938",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-10T05:42:27.630Z"
+    },
     {
       "id": "telegram-una-ganga:97937:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -27,13 +40,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97936,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/97936",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-10T05:23:02.605Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:97935:aliexpress:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-09T15:24:02.140Z"
-    },
-    {
-      "id": "telegram-una-ganga:97887:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 97887,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/97887",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-09T19:58:35.506Z",
-      "nextAttemptAt": ""
     }
   ]
 }
