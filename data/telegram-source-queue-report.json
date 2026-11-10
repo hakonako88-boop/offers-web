@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-11-10T22:33:28.679Z",
+  "updatedAt": "2026-11-10T22:43:03.744Z",
   "summary": {
     "needs_review": 246,
     "ignored": 214,
-    "rejected": 418,
+    "rejected": 419,
     "duplicate": 41,
     "published": 81,
-    "pending": 149
+    "pending": 150
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7943:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7943,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/tiesometro/7943",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-una-ganga:98004:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98004,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/98004",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-10T22:42:47.986Z",
+      "nextAttemptAt": "2026-11-10T23:03:03.744Z"
+    },
     {
       "id": "telegram-una-ganga:98003:miravia:0",
       "source": "telegram-una-ganga",
@@ -28,12 +54,12 @@
       "messageId": 98002,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/98002",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-10T22:42:29.751Z"
+      "nextAttemptAt": "2026-11-10T23:23:03.744Z"
     },
     {
       "id": "telegram-una-ganga:98001:aliexpress:0",
@@ -625,13 +651,13 @@
       "source": "telegram-una-ganga",
       "messageId": 97992,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/97992",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-10T21:16:06.896Z",
-      "nextAttemptAt": "2026-11-10T22:36:26.269Z"
+      "lastCheckedAt": "2026-11-10T22:42:47.986Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-tiesometro:7942:aliexpress:0",
@@ -1029,12 +1055,12 @@
       "messageId": 97986,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/97986",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-10T21:57:39.010Z",
-      "nextAttemptAt": "2026-11-10T22:37:53.054Z"
+      "lastCheckedAt": "2026-11-10T22:42:47.986Z",
+      "nextAttemptAt": "2026-11-11T00:03:03.744Z"
     },
     {
       "id": "telegram-ofertos:45592:amazon:0",
@@ -1282,32 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "2026-11-10T21:57:39.010Z",
       "nextAttemptAt": "2026-11-10T23:17:53.054Z"
-    },
-    {
-      "id": "telegram-ofertos:45585:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 45585,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/45585",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45584:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 45584,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/45584",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
     }
   ]
 }
