@@ -253,6 +253,18 @@ async function writeOutput(name, value) {
   await fs.appendFile(process.env.GITHUB_OUTPUT, `${name}=${value}\n`, 'utf8');
 }
 
+export function sourceMessagesToQueue(source, messages, previousId, now = new Date()) {
+  if (Number.isSafeInteger(previousId)) return messages.filter(entry => entry.messageId > previousId);
+  // Only an explicitly configured new source may import a bounded recent
+  // preview. Other channels still initialize without reposting their history.
+  const hours = Math.min(24, Math.max(0, Number(source.initialLookbackHours) || 0));
+  if (!hours) return [];
+  return messages.filter(entry => {
+    const stamp = Date.parse(entry.publishedAt || '');
+    return Number.isFinite(stamp) && stamp <= now.getTime() && stamp >= now.getTime() - hours * 3600000;
+  }).slice(-30);
+}
+
 export async function checkTelegramSources({ fetchImpl = fetch, now = new Date() } = {}) {
   const sourceConfig = await readJson(SOURCES_PATH, { channels: [] });
   const oldState = await readJson(STATE_PATH, { version: 1, channels: {} });
@@ -308,12 +320,13 @@ export async function checkTelegramSources({ fetchImpl = fetch, now = new Date()
       if (!Number.isSafeInteger(currentId)) throw new Error('no se encontró ningún mensaje público');
       const comparison = compareCheckpoint(previousId, currentId);
       if (comparison.changed) changedChannels.push(source.id);
-      if (Number.isSafeInteger(previousId)) {
-        for (const message of [...fetchedMessages.values()].filter((entry) => entry.messageId > previousId)) {
+      {
+        for (const message of sourceMessagesToQueue(source, [...fetchedMessages.values()], previousId, now)) {
           const sourceUrl = `https://t.me/${username}/${message.messageId}`;
           // Product-only sources still advance their checkpoint for channel
           // lists and self-promotion, but those posts never enter the queue.
           if (message.blocked || (source.productOnly && !message.links.length)) continue;
+          if (source.singleProductOnly && message.links.length !== 1) continue;
           if (!message.links.length) {
             const id = `${source.id}:${message.messageId}:ignored`;
             if (!queueItems.has(id)) queueItems.set(id, {

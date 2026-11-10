@@ -201,6 +201,7 @@ test('registers every Telegram channel approved by the owner', () => {
     .filter((source) => source.kind === 'telegram-public')
     .map((source) => source.username.toLowerCase());
   assert.deepEqual(usernames, [
+    'tecnofertastop',
     'chollosdiario',
     'ofertos',
     'ofertassupermercadoses',
