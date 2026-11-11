@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   publish:
-    if: contains(github.event.head_commit.message, '[mobile-recap-11-11]')
+    if: contains(github.event.head_commit.message, '[mobile-recap-11-11]') || contains(github.event.head_commit.message, '[mobile-recap-cover]')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
-      - run: node scripts/publish-mobile-recap-11-11.mjs
+      - run: node scripts/publish-mobile-recap-11-11.mjs ${{ contains(github.event.head_commit.message, '[mobile-recap-cover]') && '--add-cover' || '' }}
       - run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
