@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-11-11T01:13:05.025Z",
+  "updatedAt": "2026-11-11T01:23:11.482Z",
   "summary": {
     "published": 82,
-    "rejected": 424,
+    "rejected": 426,
     "ignored": 214,
     "needs_review": 240,
     "duplicate": 40,
     "pending": 197
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7952:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7952,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/tiesometro/7952",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-una-ganga:98013:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98013,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/98013",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-11T01:42:06.429Z"
+    },
     {
       "id": "telegram-una-ganga:98012:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -66,13 +92,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98010,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/98010",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-11T01:22:45.356Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-tiesometro:7950:aliexpress:0",
@@ -809,7 +835,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/98004",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-11T00:02:50.327Z",
@@ -820,13 +846,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98003,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/98003",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-10T23:52:42.082Z",
-      "nextAttemptAt": "2026-11-11T01:13:00.587Z"
+      "lastCheckedAt": "2026-11-11T01:22:54.056Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:98002:amazon:0",
@@ -1272,32 +1298,6 @@
     },
     {
       "id": "telegram-errores-de-precio:15700:aliexpress:10",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15700,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/erroresde_precio/15700",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15700:aliexpress:9",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15700,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/erroresde_precio/15700",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15700:aliexpress:8",
       "source": "telegram-errores-de-precio",
       "messageId": 15700,
       "store": "AliExpress",
