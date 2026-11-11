@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-11T01:23:11.482Z",
+  "updatedAt": "2026-11-11T01:32:54.763Z",
   "summary": {
-    "published": 82,
-    "rejected": 426,
+    "rejected": 427,
     "ignored": 214,
     "needs_review": 240,
     "duplicate": 40,
-    "pending": 197
+    "published": 80,
+    "pending": 196
   },
   "recent": [
     {
@@ -833,26 +833,26 @@
       "source": "telegram-una-ganga",
       "messageId": 98004,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/98004",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-11T00:02:50.327Z",
-      "nextAttemptAt": "2026-11-11T01:23:07.513Z"
+      "lastCheckedAt": "2026-11-11T01:32:39.048Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:98003:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 98003,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/98003",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-11T01:22:54.056Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-11T01:32:39.048Z",
+      "nextAttemptAt": "2026-11-11T01:52:54.763Z"
     },
     {
       "id": "telegram-una-ganga:98002:amazon:0",
