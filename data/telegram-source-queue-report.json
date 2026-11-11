@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-11T13:13:19.677Z",
+  "updatedAt": "2026-11-11T13:27:11.328Z",
   "summary": {
-    "rejected": 434,
-    "duplicate": 48,
+    "rejected": 438,
+    "duplicate": 50,
     "ignored": 223,
     "needs_review": 215,
     "published": 80,
-    "pending": 306
+    "pending": 301
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98051:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98051,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/98051",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-11T14:02:17.829Z"
+    },
     {
       "id": "telegram-tiesometro:7966:aliexpress:0",
       "source": "telegram-tiesometro",
@@ -540,7 +553,7 @@
       "sourceUrl": "https://t.me/Ofertos/45659",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-11T13:22:11.628Z"
+      "nextAttemptAt": "2026-11-11T14:02:17.829Z"
     },
     {
       "id": "telegram-ofertos:45658:aliexpress:0",
@@ -575,7 +588,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/erroresde_precio/15728",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-11T12:45:22.284Z",
@@ -1236,13 +1249,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98043,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/98043",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-11T11:54:05.185Z",
-      "nextAttemptAt": "2026-11-11T13:14:25.890Z"
+      "lastCheckedAt": "2026-11-11T13:26:45.999Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:98042:aliexpress:0",
@@ -1275,39 +1288,26 @@
       "source": "telegram-errores-de-precio",
       "messageId": 15721,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/erroresde_precio/15721",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-11T11:54:05.185Z",
-      "nextAttemptAt": "2026-11-11T13:14:25.890Z"
+      "lastCheckedAt": "2026-11-11T13:26:45.999Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-errores-de-precio:15721:miravia:0",
       "source": "telegram-errores-de-precio",
       "messageId": 15721,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/erroresde_precio/15721",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-11T11:54:05.185Z",
-      "nextAttemptAt": "2026-11-11T13:14:25.890Z"
-    },
-    {
-      "id": "telegram-una-ganga:98041:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 98041,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
-      "sourceUrl": "https://t.me/una_ganga/98041",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-11T13:42:04.591Z"
+      "lastCheckedAt": "2026-11-11T13:26:45.999Z",
+      "nextAttemptAt": ""
     }
   ]
 }
