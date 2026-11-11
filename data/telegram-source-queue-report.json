@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-11-11T21:53:02.700Z",
+  "updatedAt": "2026-11-11T22:04:59.551Z",
   "summary": {
     "ignored": 204,
     "needs_review": 204,
-    "rejected": 471,
+    "rejected": 468,
     "published": 77,
     "duplicate": 45,
-    "pending": 339
+    "pending": 343
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:7971:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 7971,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/tiesometro/7971",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-una-ganga:98099:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98099,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "sourceUrl": "https://t.me/una_ganga/98099",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:98098:miravia:0",
       "source": "telegram-una-ganga",
@@ -29,11 +55,11 @@
       "store": "Amazon",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceUrl": "https://t.me/chollosdiario/45985",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-11T22:02:06.997Z"
+      "nextAttemptAt": "2026-11-11T22:44:59.551Z"
     },
     {
       "id": "telegram-una-ganga:98097:miravia:0",
@@ -59,7 +85,7 @@
       "sourceUrl": "https://t.me/erroresde_precio/15737",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-11T22:02:40.904Z"
+      "nextAttemptAt": "2026-11-11T22:44:59.551Z"
     },
     {
       "id": "telegram-errores-de-precio:15736:amazon:0",
@@ -72,7 +98,7 @@
       "sourceUrl": "https://t.me/erroresde_precio/15736",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-11T22:02:40.904Z"
+      "nextAttemptAt": "2026-11-11T22:44:59.551Z"
     },
     {
       "id": "telegram-una-ganga:98096:amazon:0",
@@ -85,7 +111,7 @@
       "sourceUrl": "https://t.me/una_ganga/98096",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-11T22:02:40.904Z"
+      "nextAttemptAt": "2026-11-11T22:44:59.551Z"
     },
     {
       "id": "telegram-una-ganga:98095:miravia:0",
@@ -1282,32 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-11T18:16:59.567Z"
-    },
-    {
-      "id": "telegram-errores-de-precio:15732:ignored",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15732,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/erroresde_precio/15732",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15731:ignored",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15731,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/erroresde_precio/15731",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
     }
   ]
 }
