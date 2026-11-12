@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-12T03:03:12.662Z",
+  "updatedAt": "2026-11-12T03:12:53.996Z",
   "summary": {
-    "ignored": 192,
-    "rejected": 512,
+    "rejected": 514,
+    "ignored": 191,
     "published": 74,
     "duplicate": 41,
     "needs_review": 182,
-    "pending": 290
+    "pending": 289
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98115:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98115,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/98115",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:98114:amazon:0",
       "source": "telegram-una-ganga",
@@ -951,12 +964,12 @@
       "messageId": 98083,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/98083",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-12T02:42:23.707Z",
-      "nextAttemptAt": "2026-11-12T03:02:44.343Z"
+      "lastCheckedAt": "2026-11-12T03:12:36.973Z",
+      "nextAttemptAt": "2026-11-12T03:52:53.996Z"
     },
     {
       "id": "telegram-una-ganga:98082:amazon:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15735:miravia:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15735,
-      "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
-      "sourceUrl": "https://t.me/erroresde_precio/15735",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-12T02:58:08.528Z",
-      "nextAttemptAt": "2026-11-12T04:18:26.145Z"
     }
   ]
 }
