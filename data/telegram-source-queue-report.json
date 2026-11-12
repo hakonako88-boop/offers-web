@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-12T05:33:36.075Z",
+  "updatedAt": "2026-11-12T05:42:47.650Z",
   "summary": {
-    "duplicate": 41,
-    "rejected": 514,
+    "rejected": 515,
     "ignored": 191,
     "needs_review": 182,
     "published": 73,
-    "pending": 290
+    "duplicate": 40,
+    "pending": 289
   },
   "recent": [
     {
@@ -990,12 +990,12 @@
       "messageId": 98084,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/98084",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-12T02:42:23.707Z",
-      "nextAttemptAt": "2026-11-12T03:02:44.343Z"
+      "lastCheckedAt": "2026-11-12T05:42:28.489Z",
+      "nextAttemptAt": "2026-11-12T06:22:47.650Z"
     },
     {
       "id": "telegram-ofertos:45684:amazon:0",
@@ -1197,13 +1197,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98076,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/98076",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-12T04:13:03.629Z",
-      "nextAttemptAt": "2026-11-12T05:33:26.557Z"
+      "lastCheckedAt": "2026-11-12T05:42:28.489Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:45680:amazon:0",
@@ -1249,13 +1249,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98074,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/98074",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-12T04:13:03.629Z",
-      "nextAttemptAt": "2026-11-12T05:33:26.557Z"
+      "lastCheckedAt": "2026-11-12T05:42:28.489Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:45677:amazon:0",
@@ -1284,6 +1284,19 @@
       "nextAttemptAt": ""
     },
     {
+      "id": "telegram-una-ganga:98072:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98072,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/98072",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-12T05:42:28.489Z",
+      "nextAttemptAt": "2026-11-12T06:02:47.650Z"
+    },
+    {
       "id": "telegram-una-ganga:98073:aliexpress:0",
       "source": "telegram-una-ganga",
       "messageId": 98073,
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/98073",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:98072:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 98072,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/98072",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-12T05:33:12.408Z",
       "nextAttemptAt": ""
     }
   ]
