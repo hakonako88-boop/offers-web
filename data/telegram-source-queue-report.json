@@ -1,26 +1,39 @@
 {
-  "updatedAt": "2026-11-13T04:03:10.051Z",
+  "updatedAt": "2026-11-13T04:12:41.611Z",
   "summary": {
-    "ignored": 212,
     "rejected": 586,
+    "ignored": 211,
     "published": 60,
     "duplicate": 40,
     "needs_review": 103,
-    "pending": 207
+    "pending": 208
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98186:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98186,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/98186",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:98185:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 98185,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/98185",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-13T03:42:26.813Z",
-      "nextAttemptAt": "2026-11-13T04:02:43.677Z"
+      "lastCheckedAt": "2026-11-13T04:12:22.500Z",
+      "nextAttemptAt": "2026-11-13T04:52:41.611Z"
     },
     {
       "id": "telegram-una-ganga:98184:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/45747",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:98158:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 98158,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/98158",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
