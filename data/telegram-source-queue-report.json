@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-13T20:16:41.670Z",
+  "updatedAt": "2026-11-13T20:26:00.269Z",
   "summary": {
-    "rejected": 560,
+    "rejected": 561,
     "ignored": 253,
     "duplicate": 43,
     "needs_review": 75,
@@ -9,6 +9,19 @@
     "pending": 167
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98238:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98238,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/98238",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-13T21:02:03.874Z"
+    },
     {
       "id": "telegram-tiesometro:8003:aliexpress:0",
       "source": "telegram-tiesometro",
@@ -391,13 +404,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98230,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/98230",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-13T19:03:46.098Z",
-      "nextAttemptAt": "2026-11-13T20:24:06.883Z"
+      "lastCheckedAt": "2026-11-13T20:25:35.507Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:45794:aliexpress:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-13T10:32:12.165Z"
-    },
-    {
-      "id": "telegram-ofertos:45772:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 45772,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/45772",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
     }
   ]
 }
