@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-14T15:25:47.154Z",
+  "updatedAt": "2026-11-14T15:36:14.319Z",
   "summary": {
-    "rejected": 606,
+    "rejected": 604,
     "ignored": 255,
-    "published": 65,
+    "published": 66,
     "duplicate": 38,
-    "needs_review": 35,
-    "pending": 145
+    "needs_review": 37,
+    "pending": 141
   },
   "recent": [
     {
@@ -144,9 +144,9 @@
       "source": "telegram-chollosdiario",
       "messageId": 46013,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/chollosdiario/46013",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -157,9 +157,9 @@
       "source": "telegram-tecnofertastop",
       "messageId": 60896,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/tecnofertastop/60896",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -183,11 +183,24 @@
       "source": "telegram-ofertos",
       "messageId": 45842,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/45842",
       "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-ofertos:45840:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 45840,
+      "store": "Amazon",
+      "status": "published",
+      "attempts": 2,
+      "reason": "Publicada automáticamente en Telegram y la web",
+      "sourceUrl": "https://t.me/Ofertos/45840",
+      "resultUrl": "https://www.amazon.es/dp/B0FC2T5SLM?tag=chollos00a-21",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-14T16:02:14.289Z"
     },
@@ -203,19 +216,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45840:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 45840,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
-      "sourceUrl": "https://t.me/Ofertos/45840",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-14T16:02:14.289Z"
     },
     {
       "id": "telegram-ofertos:45839:amazon:0",
