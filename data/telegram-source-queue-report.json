@@ -1,26 +1,39 @@
 {
-  "updatedAt": "2026-11-14T04:33:24.154Z",
+  "updatedAt": "2026-11-14T04:43:26.583Z",
   "summary": {
-    "ignored": 244,
     "rejected": 598,
     "published": 65,
     "needs_review": 59,
+    "ignored": 243,
     "duplicate": 35,
-    "pending": 144
+    "pending": 145
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98262:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98262,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/98262",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:98261:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 98261,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/una_ganga/98261",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-14T04:42:14.296Z"
+      "nextAttemptAt": "2026-11-14T05:22:24.853Z"
     },
     {
       "id": "telegram-una-ganga:98260:aliexpress:0",
@@ -1292,19 +1305,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/98226",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15749:ignored",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15749,
-      "store": "Otra",
-      "status": "ignored",
-      "attempts": 0,
-      "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
-      "sourceUrl": "https://t.me/erroresde_precio/15749",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
