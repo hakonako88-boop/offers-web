@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 
 const guideCards = [
   { href: "/gta-vi-mas-barato-ps5/", label: "GAMING · ACTUALIZADA", title: "GTA 6 barato: precio en PS5, reserva y ahorro", text: "Precio oficial en España, comparación regional, vídeo ampliado, ediciones y requisitos antes de reservar." },
+  { href: "/tesla/", label: "TESLA · ACCESORIOS", title: "Accesorios Tesla Model 3 y Model Y", text: "Encuentra guías para Highland, Juniper y las generaciones originales. Comprueba variante y compatibilidad antes de comprar." },
   { href: "/guias/chollos-electronica/", label: "ELECTRÓNICA", title: "Cómo comparar chollos de electrónica", text: "Modelo, capacidad, accesorios, vendedor y garantía antes de decidir." },
   { href: "/guias/ofertas-cocina/", label: "COCINA", title: "Cómo elegir ofertas de cocina", text: "Capacidad, potencia, medidas, recambios y precio final." },
   { href: "/guias/mejores-aspiradoras-calidad-precio/", label: "RECOMENDACIÓN · LIMPIEZA", title: "Qué aspiradora comprar por calidad-precio", text: "Tipos, autonomía, filtros, recambios y criterios para reconocer una buena oferta." },

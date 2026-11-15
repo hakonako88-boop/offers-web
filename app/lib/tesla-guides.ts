@@ -2,8 +2,8 @@ type Section = { id: string; title: string; text: string[]; source?: string; sou
 export type TeslaGuideData = { title: string; description: string; intro: string; image: string; sections: Section[]; checklist: string[]; faqs: [string, string][] };
 export const teslaGuides: Record<string, TeslaGuideData> = {
   'model-y': {
-    title: 'Accesorios Tesla Model Y: Juniper, Standard y original',
-    description: 'Cómo elegir accesorios Tesla Model Y en España: consola Standard, Juniper, alfombrillas, organizadores y precios con condiciones.',
+    title: 'Accesorios para Tesla Model Y Juniper y original',
+    description: 'Elige alfombrillas y organizadores para Tesla Model Y Juniper u original. Comprueba plazas, maletero y consola según el acabado antes de comprar.',
     intro: 'Un organizador barato deja de ser una buena compra si pertenece a otra consola. Identifica tu Model Y antes de comparar el coste.', image: '/images/tesla/model-y.webp',
     sections: [
       { id: 'juniper', title: 'Juniper: revisa la pieza, no solo la generación', text: ['Juniper no identifica por sí solo el acabado de tu consola. Para una pieza rígida, compara la forma del hueco, las tapas y las fijaciones. Conserva el año de fabricación y el acabado de tu documentación para contrastarlos con la variante del vendedor.', 'En el maletero cuenta plazas y mide el espacio útil con los asientos como los utilizas. Una bandeja que bloquea un compartimento puede ser poco práctica aunque encaje.'] },
@@ -14,8 +14,8 @@ export const teslaGuides: Record<string, TeslaGuideData> = {
     faqs: [['¿Juniper sirve para elegir un organizador?', 'No basta: comprueba también acabado y forma de la consola.'], ['¿Qué significa “Desde”?', 'Precio de producto consultado en la API, no cotización final de la variante con envío.'], ['¿Están probados físicamente?', 'No afirmamos ensayos propios. Contrastamos fichas y precios y señalamos sus límites.']],
   },
   'model-3': {
-    title: 'Accesorios Tesla Model 3: original y Highland',
-    description: 'Guía de accesorios Tesla Model 3 y Highland: consola, pantalla, alfombrillas, variantes y coste final para España.',
+    title: 'Accesorios para Tesla Model 3 Highland y original',
+    description: 'Compara protectores de pantalla, bandejas de consola y alfombrillas para Tesla Model 3 Highland u original. Revisa año, medidas y precio final.',
     intro: 'Elige por el interior y las medidas de tu Model 3, no por una foto genérica ni por el descuento más grande.', image: '/images/tesla/model-3.webp',
     sections: [
       { id: 'highland', title: 'Highland: comprueba la referencia de consola', text: ['La tienda Tesla identifica su conjunto de bandejas como compatible con Model 3 fabricados desde 2024. Eso acredita esa referencia oficial, no cualquier organizador anunciado como Highland.', 'En una alternativa compara forma, profundidad y movimiento de las tapas. Debe mantener accesibles los objetos pequeños sin impedir el cierre ni ocultar otro compartimento.'], source: 'https://shop.tesla.com/es_es/product/model-3-center-console-trays', sourceLabel: 'Periodo publicado para las bandejas oficiales' },
