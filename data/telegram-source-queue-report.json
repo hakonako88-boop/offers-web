@@ -1,14 +1,53 @@
 {
-  "updatedAt": "2026-11-15T15:08:25.841Z",
+  "updatedAt": "2026-11-15T15:17:00.572Z",
   "summary": {
-    "rejected": 590,
+    "rejected": 589,
     "ignored": 255,
     "duplicate": 39,
     "published": 64,
     "needs_review": 55,
-    "pending": 121
+    "pending": 122
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98365:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98365,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/98365",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-chollosdiario:46022:amazon:0",
+      "source": "telegram-chollosdiario",
+      "messageId": 46022,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/chollosdiario/46022",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-15T15:52:07.312Z"
+    },
+    {
+      "id": "telegram-tecnofertastop:60912:aliexpress:0",
+      "source": "telegram-tecnofertastop",
+      "messageId": 60912,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/tecnofertastop/60912",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-paramanitas:5218:amazon:0",
       "source": "telegram-paramanitas",
@@ -120,11 +159,11 @@
       "store": "Amazon",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceUrl": "https://t.me/una_ganga/98360",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-15T15:11:56.267Z"
+      "nextAttemptAt": "2026-11-15T16:32:07.312Z"
     },
     {
       "id": "telegram-una-ganga:98359:aliexpress:0",
@@ -157,13 +196,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98358,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/98358",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-15T13:49:44.622Z",
-      "nextAttemptAt": "2026-11-15T15:10:04.622Z"
+      "lastCheckedAt": "2026-11-15T15:16:37.223Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:98357:amazon:0",
@@ -430,13 +469,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98349,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/98349",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-15T13:49:44.622Z",
-      "nextAttemptAt": "2026-11-15T15:10:04.622Z"
+      "lastCheckedAt": "2026-11-15T15:16:37.223Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:45873:amazon:0",
@@ -1269,45 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:5212:amazon:14",
-      "source": "telegram-paramanitas",
-      "messageId": 5212,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 1,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/5212",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-14T21:52:14.618Z"
-    },
-    {
-      "id": "telegram-paramanitas:5212:amazon:13",
-      "source": "telegram-paramanitas",
-      "messageId": 5212,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 1,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/5212",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-14T21:52:14.618Z"
-    },
-    {
-      "id": "telegram-paramanitas:5212:amazon:12",
-      "source": "telegram-paramanitas",
-      "messageId": 5212,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 1,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/paramanitas/5212",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-14T21:52:14.618Z"
     }
   ]
 }
