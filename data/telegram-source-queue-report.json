@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-15T18:50:09.936Z",
+  "updatedAt": "2026-11-15T18:58:10.011Z",
   "summary": {
-    "ignored": 251,
     "duplicate": 38,
     "published": 63,
     "rejected": 578,
-    "needs_review": 71,
+    "ignored": 249,
+    "needs_review": 72,
     "pending": 110
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:45885:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 45885,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/Ofertos/45885",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-15T19:32:06.508Z"
+    },
     {
       "id": "telegram-una-ganga:98376:miravia:0",
       "source": "telegram-una-ganga",
@@ -92,9 +105,9 @@
       "source": "telegram-ofertos",
       "messageId": 45882,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 0,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
       "sourceUrl": "https://t.me/Ofertos/45882",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -250,7 +263,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/98367",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-15T18:37:45.332Z",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/98326",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:98325:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 98325,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/98325",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-15T07:32:53.026Z",
       "nextAttemptAt": ""
     }
   ]
