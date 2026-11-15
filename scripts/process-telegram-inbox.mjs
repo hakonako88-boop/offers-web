@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { handlePublishedEdit } from './published-edit.mjs';
 import path from 'node:path';
 import {
   activateChatFromMessage,
@@ -1192,6 +1193,14 @@ for (const update of updates || []) {
       && String(message.from?.id || '') === String(settings.allowedChatId);
     const largestPhoto = Array.isArray(message.photo) ? message.photo.at(-1)?.file_id : '';
     const incomingUrl = urlFromTelegramMessage(message, text);
+    if (await handlePublishedEdit({ text, message, isOwnerSender, settings, state,
+      load: () => readJson(OFFERS_FILE, []), save: rows => writeJson(OFFERS_FILE, rows),
+      image: () => fs.readFileSync(path.join(ROOT, 'public', 'og-chollosaldia-v3.png')),
+      telegram, telegramForm, reply })) {
+      processed.add(updateId);
+      handled += 1;
+      continue;
+    }
     const campaign = campaignFromTelegramMessage({ text, photoFileId: largestPhoto, url: incomingUrl });
     const editorialPost = editorialPostFromMessage({
       text,
@@ -1655,6 +1664,7 @@ writeJson(STATE_FILE, {
   pendingConfirmations,
   pendingTikTokByChat,
   mirrorDestination,
+  publishedEdits: state.publishedEdits || {},
   lastCheckedAt: new Date().toISOString(),
 });
 console.log(`Telegram private inbox handled ${handled} message(s) and published ${published} offer(s).`);
