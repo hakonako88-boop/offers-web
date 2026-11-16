@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-16T21:36:58.510Z",
+  "updatedAt": "2026-11-16T21:44:10.341Z",
   "summary": {
-    "rejected": 591,
+    "rejected": 589,
     "ignored": 203,
     "needs_review": 106,
     "published": 69,
     "duplicate": 28,
-    "pending": 147
+    "pending": 150
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98458:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98458,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/98458",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-16T21:43:50.083Z",
+      "nextAttemptAt": "2026-11-16T22:04:10.341Z"
+    },
     {
       "id": "telegram-chollosdiario:46037:amazon:0",
       "source": "telegram-chollosdiario",
@@ -431,12 +444,12 @@
       "messageId": 98455,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/98455",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-16T20:58:15.206Z",
-      "nextAttemptAt": "2026-11-16T21:18:36.360Z"
+      "lastCheckedAt": "2026-11-16T21:43:50.083Z",
+      "nextAttemptAt": "2026-11-16T22:24:10.341Z"
     },
     {
       "id": "telegram-ofertas-supermercados-es:2175:ignored",
@@ -872,13 +885,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98445,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/98445",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-16T21:36:36.037Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-16T21:43:50.083Z",
+      "nextAttemptAt": "2026-11-16T22:04:10.341Z"
     },
     {
       "id": "telegram-ofertos:45935:aliexpress:0",
@@ -959,6 +972,19 @@
       "nextAttemptAt": ""
     },
     {
+      "id": "telegram-ofertos:45932:miravia:1",
+      "source": "telegram-ofertos",
+      "messageId": 45932,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/Ofertos/45932",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-16T21:43:50.083Z",
+      "nextAttemptAt": "2026-11-16T22:04:10.341Z"
+    },
+    {
       "id": "telegram-ofertos:45932:miravia:0",
       "source": "telegram-ofertos",
       "messageId": 45932,
@@ -970,19 +996,6 @@
       "resultUrl": "",
       "lastCheckedAt": "2026-11-16T21:36:36.037Z",
       "nextAttemptAt": "2026-11-16T21:56:58.510Z"
-    },
-    {
-      "id": "telegram-ofertos:45932:miravia:1",
-      "source": "telegram-ofertos",
-      "messageId": 45932,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/Ofertos/45932",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-16T21:36:36.037Z",
-      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:98442:miravia:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tecnofertastop/60927",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-tecnofertastop:60926:aliexpress:0",
-      "source": "telegram-tecnofertastop",
-      "messageId": 60926,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/tecnofertastop/60926",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
