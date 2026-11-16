@@ -29,7 +29,7 @@ function cumulativeLimit(minuteOfDay, weekend) {
     : [[480, 1], [600, 4], [720, 7], [840, 11], [960, 14], [1080, 18], [1200, 22], [1320, 25]];
   let limit = 0;
   for (const [start, maximum] of slots) if (minuteOfDay >= start) limit = maximum;
-  return minuteOfDay >= 1380 ? 0 : limit;
+  return limit;
 }
 
 function blackFridayLimit(date, minuteOfDay) {
@@ -37,7 +37,7 @@ function blackFridayLimit(date, minuteOfDay) {
   const slots = [[480, 2], [600, 5], [720, 9], [840, 13], [960, 17], [1080, 22], [1200, 26], [1320, 30]];
   let limit = 0;
   for (const [start, maximum] of slots) if (minuteOfDay >= start) limit = maximum;
-  return minuteOfDay >= 1380 ? 0 : limit;
+  return limit;
 }
 
 function firstPublicationMinute(weekend) {
@@ -86,7 +86,7 @@ export function publicationAllowance({ store, offers = [], now = new Date(), byp
   const scheduledToday = today.filter((offer) => {
     const stamp = Number(offer.date) > 10_000_000_000 ? Number(offer.date) : Number(offer.date) * 1000;
     const offerLocal = madridParts(new Date(stamp));
-    return offerLocal.minuteOfDay >= firstPublicationMinute(weekend) && offerLocal.minuteOfDay < 1380;
+    return offerLocal.minuteOfDay >= firstPublicationMinute(weekend);
   });
   // Never send several automatic offers within seconds. Telegram users mute
   // or leave channels that arrive in bursts, and every post then receives a

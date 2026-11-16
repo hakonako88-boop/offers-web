@@ -1,0 +1,43 @@
+name: Publicar guía de baterías en Telegram
+on:
+  push:
+    branches: [main]
+jobs:
+  publish:
+    if: contains(github.event.head_commit.message, '[energy-guide]') && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    permissions: {}
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+    steps:
+      - name: Enviar selección al canal
+        run: |
+          node <<'NODE'
+          (async () => {
+            const token = process.env.TELEGRAM_BOT_TOKEN;
+            if (!token) throw new Error('Falta el token de Telegram');
+            const text = `🔋 <b>Tres baterías grandes tipo EcoFlow: ¿cuál te conviene?</b>
+
+          🏆 <b>Más capacidad por euro · BLUETTI Balco 260</b>
+          789 € anunciados · 2.560 Wh · 2.400 W
+          <a href="https://es.bluettipower.eu/collections/estacion-de-energia-portatil">Ver catálogo BLUETTI</a>
+
+          ⚡ <b>Más potencia por debajo de 1.000 € · BLUETTI Elite 200 V2</b>
+          899 € anunciados · 2.074 Wh · 2.600 W
+          <a href="https://es.bluettipower.eu/products/elite-200-v2-estacion-de-energia-portatil?variant=55079580565887">Ver ficha BLUETTI</a>
+
+          🔌 <b>Para ampliar después · EcoFlow DELTA 2 Max</b>
+          2.048 Wh · 2.400 W · hasta 6.144 Wh con baterías adicionales.
+          949 € anunciados para miembros. <a href="https://es.ecoflow.com/pages/portable-power-station-promotion">Consultar promoción EcoFlow</a>
+
+          📌 Comprueba stock, envío y precio final. Los paneles y las baterías adicionales pueden venderse aparte.`;
+            const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+              method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ chat_id: '-1002549368004', text, parse_mode: 'HTML', link_preview_options: { is_disabled: true } }),
+            }).catch(() => null);
+            if (!res) throw new Error('No se pudo contactar con Telegram');
+            const data = await res.json();
+            if (!data.ok) throw new Error(`Telegram rechazó el envío (${res.status})`);
+            console.log(`Publicado: https://t.me/aldiachollos/${data.result.message_id}`);
+          })().catch(error => { console.error(error.message); process.exitCode = 1; });
+          NODE
