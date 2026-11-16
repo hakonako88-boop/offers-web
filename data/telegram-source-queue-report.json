@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-16T02:13:42.981Z",
+  "updatedAt": "2026-11-16T02:23:29.135Z",
   "summary": {
-    "rejected": 571,
+    "rejected": 572,
     "ignored": 238,
     "duplicate": 32,
     "published": 58,
@@ -9,6 +9,19 @@
     "pending": 101
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98397:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98397,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/98397",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-16T02:42:28.015Z"
+    },
     {
       "id": "telegram-una-ganga:98396:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -53,13 +66,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98394,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/98394",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-16T02:23:25.851Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:98393:aliexpress:0",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/98355",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-15T17:19:41.407Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-chollosdiario:46020:amazon:0",
-      "source": "telegram-chollosdiario",
-      "messageId": 46020,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/chollosdiario/46020",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
