@@ -1,0 +1,40 @@
+name: Fijar GTA VI de AliExpress en Telegram
+on:
+  push:
+    branches: [main]
+jobs:
+  pin:
+    if: contains(github.event.head_commit.message, '[pin-gta-aliexpress]') && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    permissions: {}
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+    steps:
+      - run: |
+          node <<'NODE'
+          (async () => {
+            const token = process.env.TELEGRAM_BOT_TOKEN;
+            if (!token) throw new Error('Falta el token de Telegram');
+            const chat_id = '-1002549368004';
+            const link = 'https://s.click.aliexpress.com/e/_EI7SCxM';
+            async function telegram(method, body) {
+              const response = await fetch('https://api.telegram.org/bot' + token + '/' + method, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id, ...body }),
+              }).catch(() => null);
+              if (!response?.ok) throw new Error(method + ' falló (' + (response?.status ?? 'red') + ')');
+              const data = await response.json();
+              if (!data.ok) throw new Error(method + ' rechazado por Telegram');
+              return data.result;
+            }
+            const post = await telegram('sendPhoto', {
+              photo: 'https://ae-pic-a1.aliexpress-media.com/kf/E5fe89577962c4d739b12a3fae8d68d30K.png',
+              caption: '🎮 <b>GTA VI para PS5 · Edición Estándar</b>\n\n📦 Código de descarga en caja, sin disco.\n🛒 Consulta el precio y la disponibilidad en AliExpress.\n\n#AliExpress #Publicidad',
+              parse_mode: 'HTML',
+              reply_markup: { inline_keyboard: [[{ text: 'Ver en AliExpress', url: link }]] },
+            });
+            console.log('Publicado: https://t.me/aldiachollos/' + post.message_id);
+            await telegram('pinChatMessage', { message_id: post.message_id, disable_notification: true });
+            console.log('Fijado: ' + post.message_id);
+          })().catch(error => { console.error(error.message); process.exitCode = 1; });
+          NODE

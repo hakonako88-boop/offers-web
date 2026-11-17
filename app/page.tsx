@@ -4,6 +4,7 @@ import { dealDiscount, publishedDeals } from "./lib/deals";
 import { isProductSelection, publishedPosts } from "./lib/posts";
 import PeriodTopOffers from './components/PeriodTopOffers';
 import SeasonalBanners from './components/SeasonalBanners';
+import TodayGtaFeature from './components/TodayGtaFeature';
 
 const title = "Chollos de hoy: ofertas, descuentos y cupones";
 const description = "Encuentra ofertas y chollos de hoy en Amazon, AliExpress, Miravia y más tiendas. Descubre rebajas, descuentos y cupones para ahorrar en tus compras online.";
@@ -132,6 +133,7 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <TodayGtaFeature />
       <DealExplorer initialDeals={homepageDeals} posts={publishedPosts.filter(isProductSelection).slice(0, 6)} aliexpressCampaignPost={publishedPosts.find((post) => post.id === "aliexpress-11-11-2026-cupones-ofertas")} summary={summary} campaignBanners={<SeasonalBanners renderedAt={Date.now()}/>} featuredSelection={<PeriodTopOffers deals={publishedDeals} renderedAt={Date.now()}/>} />
     </>
   );
