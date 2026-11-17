@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-17T15:58:13.785Z",
+  "updatedAt": "2026-11-17T16:04:35.414Z",
   "summary": {
-    "published": 70,
     "rejected": 585,
-    "ignored": 204,
+    "published": 69,
+    "ignored": 205,
     "duplicate": 32,
     "needs_review": 110,
     "pending": 135
   },
   "recent": [
+    {
+      "id": "telegram-errores-de-precio:15763:amazon:0",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15763,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/erroresde_precio/15763",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-17T16:42:39.802Z"
+    },
     {
       "id": "telegram-chollosdiario:46044:amazon:0",
       "source": "telegram-chollosdiario",
@@ -458,11 +471,11 @@
       "store": "Amazon",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
       "sourceUrl": "https://t.me/una_ganga/98499",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-17T16:03:26.711Z"
+      "nextAttemptAt": "2026-11-17T17:24:35.414Z"
     },
     {
       "id": "telegram-ofertos:45968:aliexpress:0",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/98473",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-17T08:35:37.369Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:98472:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 98472,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/una_ganga/98472",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
