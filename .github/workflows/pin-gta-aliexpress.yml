@@ -4,7 +4,7 @@ on:
     branches: [main]
 jobs:
   pin:
-    if: contains(github.event.head_commit.message, '[pin-gta-aliexpress]') && github.run_attempt == 1
+    if: contains(github.event.head_commit.message, '[update-gta-price]') && github.run_attempt == 1
     runs-on: ubuntu-latest
     permissions: {}
     env:
@@ -27,14 +27,12 @@ jobs:
               if (!data.ok) throw new Error(method + ' rechazado por Telegram');
               return data.result;
             }
-            const post = await telegram('sendPhoto', {
-              photo: 'https://ae-pic-a1.aliexpress-media.com/kf/E5fe89577962c4d739b12a3fae8d68d30K.png',
-              caption: '🎮 <b>GTA VI para PS5 · Edición Estándar</b>\n\n📦 Código de descarga en caja, sin disco.\n🛒 Consulta el precio y la disponibilidad en AliExpress.\n\n#AliExpress #Publicidad',
+            await telegram('editMessageCaption', {
+              message_id: 8281,
+              caption: '🎮 <b>GTA VI para PS5 · Edición Estándar</b>\n\n💶 <b>62,15 € · Envío gratis</b>\n📦 Código de descarga en caja, sin disco.\n🛒 Comprueba el precio final y la disponibilidad en AliExpress.\n\n#AliExpress #Publicidad',
               parse_mode: 'HTML',
               reply_markup: { inline_keyboard: [[{ text: 'Ver en AliExpress', url: link }]] },
             });
-            console.log('Publicado: https://t.me/aldiachollos/' + post.message_id);
-            await telegram('pinChatMessage', { message_id: post.message_id, disable_notification: true });
-            console.log('Fijado: ' + post.message_id);
+            console.log('Actualizado: https://t.me/aldiachollos/8281');
           })().catch(error => { console.error(error.message); process.exitCode = 1; });
           NODE

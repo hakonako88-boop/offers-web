@@ -22,7 +22,8 @@ export default function TodayGtaFeature() {
         <div style={{ flex: "1 1 13rem" }}>
           <small style={{ color: "#ffbb72", fontWeight: 800 }}>DESTACADO DE HOY · ALIEXPRESS</small>
           <h2 style={{ color: "inherit", margin: "0.15rem 0", fontSize: "clamp(1.15rem,3vw,1.65rem)" }}>GTA VI para PS5 · Edición Estándar</h2>
-          <p style={{ margin: 0 }}>Código de descarga en caja, sin disco. Consulta precio y disponibilidad en tienda.</p>
+          <p style={{ margin: 0 }}><strong style={{ color: "#ffbb72", fontSize: "1.25rem" }}>62,15 €</strong> · Envío gratis</p>
+          <p style={{ margin: 0 }}>Código de descarga en caja, sin disco. Comprueba el total y la disponibilidad en tienda.</p>
         </div>
         <a href="https://s.click.aliexpress.com/e/_EI7SCxM" rel="sponsored noopener noreferrer" target="_blank" style={{ background: "#ffbb72", color: "#19201c", padding: "0.65rem 0.9rem", borderRadius: "0.55rem", fontWeight: 800 }}>Ver en AliExpress</a>
       </div>
