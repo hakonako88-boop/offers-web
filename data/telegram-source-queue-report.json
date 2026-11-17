@@ -1,26 +1,39 @@
 {
-  "updatedAt": "2026-11-17T05:04:10.777Z",
+  "updatedAt": "2026-11-17T05:13:29.707Z",
   "summary": {
-    "ignored": 196,
+    "ignored": 195,
     "needs_review": 102,
     "rejected": 607,
     "published": 69,
     "duplicate": 27,
-    "pending": 99
+    "pending": 100
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98480:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98480,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/98480",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:98479:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 98479,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/98479",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-17T04:43:31.606Z",
-      "nextAttemptAt": "2026-11-17T05:03:51.637Z"
+      "lastCheckedAt": "2026-11-17T05:13:08.367Z",
+      "nextAttemptAt": "2026-11-17T05:53:29.707Z"
     },
     {
       "id": "telegram-una-ganga:98478:amazon:0",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/Ofertos/45932",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-17T00:23:38.975Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:98442:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 98442,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/98442",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-17T00:14:36.572Z",
       "nextAttemptAt": ""
     }
   ]
