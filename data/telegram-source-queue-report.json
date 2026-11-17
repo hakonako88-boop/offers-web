@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-17T21:17:29.231Z",
+  "updatedAt": "2026-11-17T21:29:19.618Z",
   "summary": {
-    "rejected": 573,
+    "rejected": 574,
     "ignored": 207,
     "duplicate": 34,
     "published": 69,
@@ -9,6 +9,19 @@
     "pending": 147
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98529:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98529,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/una_ganga/98529",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-17T22:02:46.738Z"
+    },
     {
       "id": "telegram-una-ganga:98528:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -508,13 +521,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98521,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/98521",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-17T20:00:08.550Z",
-      "nextAttemptAt": "2026-11-17T21:20:31.300Z"
+      "lastCheckedAt": "2026-11-17T21:28:57.390Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:45990:amazon:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "https://www.amazon.es/dp/B0DP7K72L5?tag=chollos00a-21",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-17T13:45:48.231Z"
-    },
-    {
-      "id": "telegram-ofertos:45970:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 45970,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 2,
-      "reason": "Sin ahorro suficiente o fuera de la selección editorial automática",
-      "sourceUrl": "https://t.me/Ofertos/45970",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-17T16:06:10.877Z"
     }
   ]
 }
