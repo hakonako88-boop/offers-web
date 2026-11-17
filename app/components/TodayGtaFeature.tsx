@@ -7,6 +7,7 @@ const endsAt = Date.parse("2026-11-18T00:00:00+01:00");
 
 export default function TodayGtaFeature() {
   const [visible, setVisible] = useState(false);
+  const [copyStatus, setCopyStatus] = useState("");
   useEffect(() => {
     const now = Date.now();
     if (now < startsAt || now >= endsAt) return;
@@ -23,7 +24,19 @@ export default function TodayGtaFeature() {
           <small style={{ color: "#ffbb72", fontWeight: 800 }}>DESTACADO DE HOY · ALIEXPRESS</small>
           <h2 style={{ color: "inherit", margin: "0.15rem 0", fontSize: "clamp(1.15rem,3vw,1.65rem)" }}>GTA VI para PS5 · Edición Estándar</h2>
           <p style={{ margin: 0 }}><strong style={{ color: "#ffbb72", fontSize: "1.25rem" }}>54,10 € con cupón</strong> · <code>IFPYJKWQ</code></p>
-          <p style={{ margin: 0 }}>Precio comunicado, no verificado en cesta. Comprueba si el cupón se aplica a tu cuenta y a este vendedor.</p>
+          <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.55rem", margin: "0.55rem 0" }}>
+            <code style={{ color: "#18231e", background: "#fff", borderRadius: "0.4rem", padding: "0.35rem 0.55rem", fontWeight: 800, userSelect: "all" }}>IFPYJKWQ</code>
+            <button type="button" onClick={async () => {
+              try {
+                await navigator.clipboard.writeText("IFPYJKWQ");
+                setCopyStatus("Cupón copiado");
+              } catch {
+                setCopyStatus("Selecciona el código para copiarlo manualmente");
+              }
+            }}>Copiar cupón</button>
+            <span role="status">{copyStatus}</span>
+          </div>
+          <p style={{ margin: 0 }}>Copia el código, abre AliExpress y pégalo en la cesta. Comprueba que el total baje a 54,10 € antes de pagar.</p>
           <p style={{ margin: 0 }}>Edición Estándar: caja con código de descarga, sin disco. La precarga no permite jugar antes del lanzamiento.</p>
         </div>
         <a href="https://s.click.aliexpress.com/e/_EI7SCxM" rel="sponsored noopener noreferrer" target="_blank" style={{ background: "#ffbb72", color: "#19201c", padding: "0.65rem 0.9rem", borderRadius: "0.55rem", fontWeight: 800 }}>Ver en AliExpress</a>

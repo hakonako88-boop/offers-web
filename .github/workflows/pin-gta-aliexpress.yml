@@ -4,7 +4,7 @@ on:
     branches: [main]
 jobs:
   pin:
-    if: contains(github.event.head_commit.message, '[update-gta-coupon]') && github.run_attempt == 1
+    if: contains(github.event.head_commit.message, '[clarify-gta-coupon]') && github.run_attempt == 1
     runs-on: ubuntu-latest
     permissions: {}
     env:
@@ -29,9 +29,9 @@ jobs:
             }
             await telegram('editMessageCaption', {
               message_id: 8281,
-              caption: '🎮 <b>GTA VI para PS5 · Edición Estándar</b>\n\n💶 <b>54,10 € si te aplica el cupón</b>\n🎟️ Prueba <code>IFPYJKWQ</code> en la cesta. Precio comunicado, no verificado para este vendedor ni para todas las cuentas.\n\n📦 Caja con código de descarga, <b>sin disco</b>. Incluye el juego base: sigue a Jason y Lucía por Leonida y Vice City.\n🗓️ La precarga solo adelanta la descarga; no permite jugar antes del lanzamiento.\n\n#AliExpress #Publicidad',
+              caption: '🎮 <b>GTA VI para PS5 · Edición Estándar</b>\n\n💶 <b>54,10 € con cupón</b>\n\n🎟️ <b>CUPÓN PARA COPIAR</b>\n<code>IFPYJKWQ</code>\n\n1️⃣ Abre AliExpress con el botón de abajo.\n2️⃣ Pega el código en la cesta.\n3️⃣ Comprueba que el total baje a 54,10 € antes de pagar.\n\n📦 Caja con código de descarga, <b>sin disco</b>.\nℹ️ El cupón puede depender de tu cuenta y del vendedor.\n\n#AliExpress #Publicidad',
               parse_mode: 'HTML',
-              reply_markup: { inline_keyboard: [[{ text: 'Ver en AliExpress', url: link }]] },
+              reply_markup: { inline_keyboard: [[{ text: '🎟️ Copiar cupón', copy_text: { text: 'IFPYJKWQ' } }], [{ text: '🛒 Ver en AliExpress', url: link }]] },
             });
             console.log('Actualizado: https://t.me/aldiachollos/8281');
           })().catch(error => { console.error(error.message); process.exitCode = 1; });
