@@ -4,7 +4,7 @@ on:
     branches: [main]
 jobs:
   pin:
-    if: contains(github.event.head_commit.message, '[update-gta-pvp]') && github.run_attempt == 1
+    if: contains(github.event.head_commit.message, '[update-gta-coupon]') && github.run_attempt == 1
     runs-on: ubuntu-latest
     permissions: {}
     env:
@@ -29,7 +29,7 @@ jobs:
             }
             await telegram('editMessageCaption', {
               message_id: 8281,
-              caption: '🎮 <b>GTA VI para PS5 · Edición Estándar</b>\n\n▪️ <b>62,15 €</b> · 🚚 Envío gratis\n▫️ PVP de referencia: <s>79,99 €</s>\n💸 <b>Ahorras 17,84 € (22 %)</b> frente al PVP\n\n📦 Código de descarga en caja, sin disco.\n🛒 Comprueba el precio final y la disponibilidad en AliExpress.\n\n#AliExpress #Publicidad',
+              caption: '🎮 <b>GTA VI para PS5 · Edición Estándar</b>\n\n💶 <b>54,10 € si te aplica el cupón</b>\n🎟️ Prueba <code>IFPYJKWQ</code> en la cesta. Precio comunicado, no verificado para este vendedor ni para todas las cuentas.\n\n📦 Caja con código de descarga, <b>sin disco</b>. Incluye el juego base: sigue a Jason y Lucía por Leonida y Vice City.\n🗓️ La precarga solo adelanta la descarga; no permite jugar antes del lanzamiento.\n\n#AliExpress #Publicidad',
               parse_mode: 'HTML',
               reply_markup: { inline_keyboard: [[{ text: 'Ver en AliExpress', url: link }]] },
             });
