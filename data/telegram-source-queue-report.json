@@ -1,14 +1,53 @@
 {
-  "updatedAt": "2026-11-17T09:08:33.961Z",
+  "updatedAt": "2026-11-17T09:14:24.031Z",
   "summary": {
-    "rejected": 603,
     "ignored": 199,
+    "rejected": 602,
     "published": 69,
     "duplicate": 29,
     "needs_review": 101,
-    "pending": 111
+    "pending": 114
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:8025:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 8025,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/tiesometro/8025",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-tecnofertastop:60941:aliexpress:0",
+      "source": "telegram-tecnofertastop",
+      "messageId": 60941,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/tecnofertastop/60941",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-tecnofertastop:60940:amazon:0",
+      "source": "telegram-tecnofertastop",
+      "messageId": 60940,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "sourceUrl": "https://t.me/tecnofertastop/60940",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-17T09:51:10.295Z"
+    },
     {
       "id": "telegram-errores-de-precio:15757:amazon:0",
       "source": "telegram-errores-de-precio",
@@ -302,7 +341,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/98485",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-17T07:54:01.452Z",
@@ -432,7 +471,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/98476",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-17T07:54:01.452Z",
@@ -1269,45 +1308,6 @@
       "resultUrl": "https://www.amazon.es/dp/B07CJ2LL3F?tag=chollos00a-21",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-16T22:03:03.830Z"
-    },
-    {
-      "id": "telegram-ofertos:45951:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 45951,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/45951",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45950:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 45950,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/45950",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:45949:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 45949,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/45949",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
     }
   ]
 }
