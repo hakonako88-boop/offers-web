@@ -135,6 +135,17 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <TodayGtaFeature />
       <DealExplorer initialDeals={homepageDeals} posts={publishedPosts.filter(isProductSelection).slice(0, 6)} aliexpressCampaignPost={publishedPosts.find((post) => post.id === "aliexpress-11-11-2026-cupones-ofertas")} summary={summary} campaignBanners={<SeasonalBanners renderedAt={Date.now()}/>} featuredSelection={<PeriodTopOffers deals={publishedDeals} renderedAt={Date.now()}/>} />
+      <nav aria-label="Guías y ofertas de Chollos al Día" style={{ maxWidth: "76rem", margin: "2rem auto", padding: "0 1rem" }}>
+        <h2>Guías de compra y ofertas por tienda</h2>
+        <ul style={{ display: "flex", flexWrap: "wrap", gap: "0.65rem 1.5rem", listStyle: "none", padding: 0 }}>
+          <li><a href="/black-friday-2026/">Ofertas y cupones de Black Friday</a></li>
+          <li><a href="/gta-vi-mas-barato-ps5/">Dónde comprar GTA VI para PS5</a></li>
+          <li><a href="/tesla/">Accesorios Tesla Model 3 y Model Y</a></li>
+          <li><a href="/ofertas/amazon/">Ofertas de Amazon</a></li>
+          <li><a href="/ofertas/aliexpress/">Ofertas de AliExpress</a></li>
+          <li><a href="/blog/">Comparativas y guías de compra</a></li>
+        </ul>
+      </nav>
     </>
   );
 }
