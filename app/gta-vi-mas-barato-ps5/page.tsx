@@ -6,8 +6,8 @@ import Link from "next/link";
 const wise = "https://wise.com/invite/ahpc/pedrojesush5";
 const pageUrl = "https://chollosaldia.com/gta-vi-mas-barato-ps5/";
 const publishedAt = "2026-08-25T08:00:00+02:00";
-const updatedAt = "2026-08-31T12:00:00+02:00";
-const seoDescription = "GTA 6 barato en PS5: precio oficial en España, comparación regional, ahorro, ediciones, reserva y fecha de lanzamiento de GTA VI en 2026.";
+const updatedAt = "2026-11-18T00:00:00+01:00";
+const seoDescription = "Dónde comprar GTA VI para PS5 en España: compara la edición digital y el código en caja, y revisa precio final, cupones y entrega antes de comprar.";
 const officialVideoUrl = "https://www.youtube.com/watch?v=tJbzMqJGH4k";
 const officialVideoEmbed = "https://www.youtube-nocookie.com/embed/tJbzMqJGH4k";
 const faqs = [
@@ -69,7 +69,13 @@ export default function GtaGuide() {
     <header className="gtaTop"><BrandLink /><Link href="/">Ofertas de hoy</Link></header>
     <section className="gtaHero">
       <Image src="/images/gta-vi-official.jpg" alt="Arte promocional oficial de Grand Theft Auto VI con sus personajes, vehículos y Vice City" fill priority sizes="100vw" />
-      <div className="gtaHeroShade" /><div className="gtaHeroCopy"><p>GUÍA DE PRECIOS · ACTUALIZADA</p><h1>GTA 6 barato en PS5: precio, reserva y ahorro frente a España</h1><h2>Comparamos el precio oficial de GTA VI en España con la referencia regional, las ediciones, los requisitos de PlayStation y la fecha de lanzamiento.</h2><div><span><time dateTime={updatedAt}>Actualizado: 31 agosto 2026</time></span><span>Ahorro teórico: ≈26 €</span><span>Lanzamiento: 19 noviembre 2026</span><span>Lectura: 12 min</span></div><p className="gtaByline">Por Chollos al Día · Precios contrastados con PlayStation y Rockstar Games</p><a href="#precio">Ver precio de GTA 6 ↓</a></div>
+      <div className="gtaHeroShade" /><div className="gtaHeroCopy"><p>GUÍA DE COMPRA · ESPAÑA</p><h1>Dónde comprar GTA VI para PS5 en España</h1><h2>Compara el código en caja con la edición digital y comprueba el precio final, el cupón y la entrega.</h2><div><span><time dateTime={updatedAt}>Actualizado: 18 noviembre 2026</time></span><span>Lanzamiento: 19 noviembre 2026</span></div><a href="#comprar-en-espana">Comparar opciones de compra ↓</a></div>
+      <section id="comprar-en-espana" className="gtaLatest" aria-labelledby="gta-buy-title"><div>
+        <h2 id="gta-buy-title">GTA VI para PS5: digital o código en caja</h2>
+        <p><strong>Digital:</strong> consulta la Edición Estándar en PlayStation Store si prefieres descargar el juego directamente y no depender de un envío.</p>
+        <p><strong>Código en caja (CIAB):</strong> recibes una caja con un código, no un disco. Comprueba que el código se pueda canjear en la región de tu cuenta de PlayStation.</p>
+        <p><strong>Antes de comprar:</strong> compara el total con envío y confirma la fecha de entrega. Los precios con cupón no se deben dar por válidos si no aparecen en tu cesta. La precarga no permite jugar antes del lanzamiento.</p>
+      </div><a href="https://www.playstation.com/es-es/games/grand-theft-auto-vi/" target="_blank" rel="noopener noreferrer">Consultar en PlayStation España ↗</a></section>
     </section>
 
     <article className="gtaArticle">
