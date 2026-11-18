@@ -26,7 +26,13 @@ export default function CouponCopy({ code, compact = false, discount = 0, minimu
   if (isCollectableCoupon(code)) return <div className="couponOptions couponCollectable" aria-label="Cupón para recoger en la tienda"><b>🎟 {compact ? `Cupón${code.match(/\d+(?:[.,]\d+)?\s*€/u)?.[0] ? ` de ${code.match(/\d+(?:[.,]\d+)?\s*€/u)?.[0]}` : ' en ficha'}` : 'Cupón para recoger'}</b><p>{compact ? 'Recógelo en la ficha antes de pagar.' : code}</p>{!compact && <small>No hay un código para copiar. Recoge el cupón en la ficha y confirma que se aplica en el resumen de compra.</small>}</div>;
   return <div className="couponOptions" aria-label="Cupones de la oferta">
     {codes[0] && renderCode(codes[0], 0)}
-    {copyFailed && <p className="couponCopyFailure" role="status">No se ha podido copiar automáticamente. Selecciona este código y cópialo: <code tabIndex={0}>{copyFailed}</code></p>}
+    {copyFailed && <div className="couponCopyFailure">
+      <p role="status">La copia automática no está disponible. Mantén pulsado el código y elige «Copiar».</p>
+      <input aria-label="Código de cupón para copiar manualmente" readOnly value={copyFailed}
+        onFocus={(event) => event.currentTarget.select()}
+        onClick={(event) => event.currentTarget.select()}
+        style={{ maxWidth: "100%", width: "16ch", fontFamily: "monospace" }} />
+    </div>}
     {codes.length > 1 && <details className="couponAlternatives"><summary>Ver {codes.length - 1} {codes.length === 2 ? "código alternativo" : "códigos alternativos"}</summary>{codes.slice(1).map((value: string, index: number) => renderCode(value, index + 1))}</details>}
     {codes.length > 1 && <small>Usa solo uno de estos códigos; no se suman entre sí.</small>}
     {!compact && codes.length > 0 && <small>{codes.length === 1 && discount > 0 && minimumSpend > 0
