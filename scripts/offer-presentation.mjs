@@ -76,6 +76,8 @@ export function purchaseButtonLabel(store = '') {
 export function offerReplyMarkup(offer = {}, purchaseLabel = '') {
   const rows = [];
   if (offer.url) rows.push([{ text: purchaseLabel || purchaseButtonLabel(offer.store), url: offer.url }]);
+  const code = couponOptions(offer.coupon || '').codes[0];
+  if (code && code.length <= 256) rows.push([{ text: '🎟️ COPIAR CUPÓN', copy_text: { text: code } }]);
   const webUrl = trackedPublicOfferUrl(offer);
   if (webUrl) rows.push([
     { text: '📋 VER FICHA', url: webUrl },
