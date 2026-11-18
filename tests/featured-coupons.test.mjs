@@ -22,8 +22,9 @@ test('stale, future and cashback-only entries are not promoted as coupon codes',
 test('a blocked clipboard exposes the actual code instead of claiming success', () => {
   const component = fs.readFileSync('app/components/CouponCopy.tsx','utf8');
   assert.match(component, /setCopyFailed\(value\)/);
-  assert.match(component, /No se ha podido copiar automáticamente/);
-  assert.match(component, /<code tabIndex=\{0\}>\{copyFailed\}<\/code>/);
+  assert.match(component, /<p role="status">La copia automática no está disponible/);
+  assert.match(component, /<input[^>]*readOnly value=\{copyFailed\}/);
+  assert.match(component, /onClick=\{\(event\) => event\.currentTarget\.select\(\)\}/);
   const css = fs.readFileSync('app/home-priorities.css','utf8');
   assert.match(css, /color:#fff; background:#173d3b/);
 });

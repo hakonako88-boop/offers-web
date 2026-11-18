@@ -204,7 +204,8 @@ test('Black Friday through Cyber Monday has extra daytime slots but keeps quiet 
   const event = publicationAllowance({ store: 'Amazon', now: new Date('2026-11-27T22:15:00+01:00') });
   assert.equal(event.globalLimit, 30);
   assert.equal(event.storeLimit, 14);
-  assert.equal(publicationAllowance({ store: 'Amazon', now: new Date('2026-11-30T23:05:00+01:00') }).reason, 'quiet-hours');
+  assert.equal(publicationAllowance({ store: 'Amazon', now: new Date('2026-11-30T23:59:00+01:00') }).allowed, true);
+  assert.equal(publicationAllowance({ store: 'Amazon', now: new Date('2026-11-28T00:00:00+01:00') }).reason, 'quiet-hours');
   assert.equal(publicationAllowance({ store: 'Amazon', now: new Date('2026-12-01T22:15:00+01:00') }).globalLimit, 25);
 });
 
@@ -289,7 +290,9 @@ test('raises AliExpress capacity to sixteen while preserving a daily cap', () =>
 test('adds evening capacity without publishing during quiet hours', () => {
   const weekday = publicationAllowance({ store: 'AliExpress', now: new Date('2026-10-27T22:05:00+01:00') });
   const weekend = publicationAllowance({ store: 'Amazon', now: new Date('2026-10-25T22:05:00+01:00') });
-  const quiet = publicationAllowance({ store: 'Amazon', now: new Date('2026-10-27T23:05:00+01:00') });
+  const late = publicationAllowance({ store: 'Amazon', now: new Date('2026-10-27T23:59:00+01:00') });
+  const quiet = publicationAllowance({ store: 'Amazon', now: new Date('2026-10-28T00:00:00+01:00') });
+  assert.equal(late.allowed, true);
   assert.equal(weekday.globalLimit, 25);
   assert.equal(weekend.globalLimit, 21);
   assert.equal(quiet.reason, 'quiet-hours');
