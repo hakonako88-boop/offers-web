@@ -359,15 +359,14 @@ export function formatTelegramDealCard({
     ? ` · descuenta ${escapeHtml(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(couponDiscount)))} desde ${escapeHtml(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(couponMinimumSpend)))}`
     : '';
   const actionLine = codes.length
-    ? `${couponLines}${couponCondition}\n${codes.length > 1 ? 'Usa solo uno de estos códigos. ' : ''}📲 Cópialo y aplícalo al pagar. Comprueba el total en la cesta y si el descuento ya está aplicado.${cashbackLine ? `\n${cashbackLine}` : ''}`
+    ? `${couponLines}${couponCondition}\n${codes.length > 1 ? 'Usa solo uno. ' : ''}Cópialo y aplícalo al pagar. Revisa el total.${cashbackLine ? `\n${cashbackLine}` : ''}`
     : highlight
       ? `🔻 ${escapeCaptionField(highlight, 140)}`
       : cashbackLine;
-  const linkLine = `🛒 <b>Ver en ${escapeCaptionField(store || 'la tienda', 40)}</b>\n👇 Toca el botón para elegir tu variante y comprar`;
   const kicker = telegramOfferOpening({title,store,coupon:codes.join(' / '),discount,price,previousPrice});
-  const headline = `<b>${escapeHtml(kicker)}</b>\n\n<b>${escapeCaptionField(trimAtWord(improveOfferTitle(title), 130), 220)}</b>\n#${escapeCaptionField(storeTag, 40)}${discountLabel}`;
+  const headline = `<b>${escapeCaptionField(trimAtWord(improveOfferTitle(title), 130), 220)}</b>\n<em>${escapeCaptionField(kicker, 80)}</em> · #${escapeCaptionField(storeTag, 40)}`;
   const priceBlock = [
-    `💶 <b>PRECIO OFERTA: ${escapeCaptionField(price, 60)}</b>`,
+    `💶 <b>${escapeCaptionField(price, 60)}</b>${discountLabel}`,
     previousPrice ? `↘️ Antes: <s>${escapeCaptionField(previousPrice, 60)}</s>` : '',
     savings ? `💰 <b>Te ahorras ${escapeCaptionField(savings, 60)}</b>` : '',
   ].filter(Boolean).join('\n');
@@ -375,11 +374,10 @@ export function formatTelegramDealCard({
   const details = offerDescription({ title, discount, description });
   const render = (withDescription = true, withOptionalNote = true) => [
     headline,
-    withDescription && details ? `✨ ${escapeHtml(trimAtWord(details, 150))}` : '',
     priceBlock,
     codes.length || withOptionalNote ? actionLine : '',
+    withDescription && details ? `✨ ${escapeHtml(trimAtWord(details, 150))}` : '',
     withOptionalNote && codes.length && highlight ? `📌 ${escapeCaptionField(highlight,120)}` : '',
-    linkLine,
     `🔔 Sigue @aldiachollos · #Publi`,
   ].filter(Boolean).join('\n\n');
   // Budget complete blocks, never slice HTML tags or entities in a caption.
