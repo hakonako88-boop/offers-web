@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-18T15:29:12.966Z",
+  "updatedAt": "2026-11-18T15:34:53.437Z",
   "summary": {
-    "ignored": 195,
-    "rejected": 614,
+    "rejected": 600,
+    "ignored": 191,
+    "duplicate": 28,
     "published": 57,
-    "duplicate": 29,
-    "needs_review": 122,
-    "pending": 117
+    "needs_review": 123,
+    "pending": 116
   },
   "recent": [
     {
@@ -261,13 +261,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98575,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/98575",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-18T15:28:50.020Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-18T15:34:32.193Z",
+      "nextAttemptAt": "2026-11-18T15:54:53.437Z"
     },
     {
       "id": "telegram-ofertos:46035:amazon:0",
@@ -456,11 +456,11 @@
       "source": "telegram-ofertos",
       "messageId": 46025,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 2,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "Publicada automáticamente en Telegram y la web",
       "sourceUrl": "https://t.me/Ofertos/46025",
-      "resultUrl": "",
+      "resultUrl": "https://www.amazon.es/dp/B0GBV9WYXK?tag=chollos00a-21",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-18T16:49:12.966Z"
     },
@@ -469,9 +469,9 @@
       "source": "telegram-tecnofertastop",
       "messageId": 60966,
       "store": "Amazon",
-      "status": "pending",
+      "status": "needs_review",
       "attempts": 2,
-      "reason": "Pendiente de vista previa automática con ASIN, imagen oficial y tag propio",
+      "reason": "No se pudo preparar la vista previa: falta precio",
       "sourceUrl": "https://t.me/tecnofertastop/60966",
       "resultUrl": "",
       "lastCheckedAt": "",
