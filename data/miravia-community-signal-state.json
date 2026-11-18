@@ -28,8 +28,8 @@
       "merchantUrl": "https://tidd.ly/4iMX88t",
       "sourceImageUrl": "https://cdn4.telesco.pe/file/sSbSNOhwSdIUq44n7Tvs_DQ31gm6sLDX8QY0RIrN7ChC_KjLwFodJ_G39H8NlZh3CpFqZ65EJILcIyLO8ViAwkG9i9B9BnTsRmt5W0Ho1Fu82IeUdB7Fdw4r6XfWB7yYn7CtY3Fo2-Y4W_o6Z02MXV12DZ58eqBP-VGIczu72Ufb83y-QpjKQtrPxOJzDxB_ZmNxNTcVPriChFmXPgd1IffK0sBFubfaK6Rt7ZgN6FHCUhHsv8Dv6S2RO_gMdZzrDgJhOAuvUZyvI-GsvGWCUhFdneN8T7f4Ndh9YiLe4Gb_pmSEmbKFEU_HjoiToNFXFOUhuBILfb9-wayKiDnq7g.jpg",
       "priority": false,
-      "retryPolicyVersion": "",
-      "attempts": 3
+      "retryPolicyVersion": "exact-official-page-v1",
+      "attempts": 0
     }
   ],
   "attemptedQueueItemIds": [
@@ -41,13 +41,13 @@
     "nolodejesescapar:https://nolodejesescapar.com/nothing-ear-blancos/": "2026-11-18T13:04:24.051Z",
     "nolodejesescapar:https://nolodejesescapar.com/grand-theft-auto-vi-edicion-estandar-ps5/": "2026-11-18T14:54:42.572Z"
   },
-  "lastCheckedAt": "2026-11-18T11:26:03.329Z",
-  "micholloLastCheckedAt": "2026-11-18T05:33:06.003Z",
+  "lastCheckedAt": "2026-11-18T11:38:16.923Z",
+  "micholloLastCheckedAt": "2026-11-18T11:37:59.284Z",
   "sourceHealth": [
     {
       "source": "telegram-source-queue",
       "status": "ok",
-      "found": 89
+      "found": 82
     },
     {
       "source": "chollometro-subiendo",
@@ -56,7 +56,8 @@
     },
     {
       "source": "michollo",
-      "status": "deferred"
+      "status": "unavailable",
+      "detail": "incorrect header check"
     },
     {
       "source": "nolodejesescapar",
