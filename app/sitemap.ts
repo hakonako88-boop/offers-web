@@ -9,24 +9,25 @@ import { teslaLastModified, TESLA_SEO_UPDATED } from './lib/tesla-seo';
 const siteUrl = "https://chollosaldia.com";
 const latestPublication = Math.max(0, ...publishedDeals.map((deal) => Date.parse(deal.verifiedDate || "") || 0), ...publishedPosts.map((post) => Date.parse(post.publishedAt) || 0));
 const homepageLastModified = latestPublication ? new Date(latestPublication) : new Date("2026-08-11T00:00:00.000Z");
+function storeLastModified(store: string) {
+  const dates = publishedDeals.filter(deal => deal.store === store)
+    .map(deal => Date.parse(deal.verifiedDate || "")).filter(Number.isFinite);
+  return dates.length ? new Date(Math.max(...dates)) : undefined;
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     { url: siteUrl, lastModified: homepageLastModified, changeFrequency: "daily", priority: 1 },
     { url: `${siteUrl}/tesla/`, lastModified: teslaLastModified(), changeFrequency: "daily", priority: 0.7 },
     ...['model-y', 'model-3', 'alfombrillas', 'organizadores'].map(slug => ({ url: `${siteUrl}/tesla/guias/${slug}/`, lastModified: new Date(TESLA_SEO_UPDATED), changeFrequency: 'monthly' as const, priority: 0.65 })),
-    { url: `${siteUrl}/ofertas/amazon/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
-    { url: `${siteUrl}/ofertas/aliexpress/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.8 },
-    ...(publishedDeals.some((deal) => deal.store === "Miravia") ? [{ url: `${siteUrl}/ofertas/miravia/`, lastModified: homepageLastModified, changeFrequency: "daily" as const, priority: 0.8 }] : []),
-    { url: `${siteUrl}/ofertas/xiaomi/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
-    { url: `${siteUrl}/ofertas/pccomponentes/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
-    { url: `${siteUrl}/ofertas/el-corte-ingles/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
-    { url: `${siteUrl}/ofertas/mediamarkt/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.78 },
+    ...([["amazon", "Amazon"], ["aliexpress", "AliExpress"], ["miravia", "Miravia"], ["xiaomi", "Xiaomi"], ["pccomponentes", "PcComponentes"], ["el-corte-ingles", "El Corte Inglés"], ["mediamarkt", "MediaMarkt"]] as const)
+      .filter(([slug]) => slug !== "miravia" || publishedDeals.some(deal => deal.store === "Miravia"))
+      .map(([slug, store]) => ({ url: `${siteUrl}/ofertas/${slug}/`, lastModified: storeLastModified(store), changeFrequency: "daily" as const, priority: 0.8 })),
     ...Object.entries(guides).map(([slug, guide]) => ({ url: `${siteUrl}/guias/${slug}/`, lastModified: new Date(`${"updatedAt" in guide ? guide.updatedAt : "2026-08-25"}T00:00:00.000Z`), changeFrequency: "monthly" as const, priority: 0.72 })),
     { url: `${siteUrl}/blog/`, lastModified: homepageLastModified, changeFrequency: "weekly", priority: 0.74 },
     { url: `${siteUrl}/black-friday-2026/`, lastModified: homepageLastModified, changeFrequency: "daily", priority: 0.88 },
     { url: `${siteUrl}/telegram/`, lastModified: new Date("2026-08-26T00:00:00.000Z"), changeFrequency: "weekly", priority: 0.82 },
-    { url: `${siteUrl}/gta-vi-mas-barato-ps5/`, lastModified: new Date("2026-08-31T10:00:00.000Z"), changeFrequency: "daily", priority: 0.95 },
+    { url: `${siteUrl}/gta-vi-mas-barato-ps5/`, lastModified: new Date("2026-11-18T00:00:00+01:00"), changeFrequency: "daily", priority: 0.95 },
     { url: `${siteUrl}/como-verificamos-ofertas/`, lastModified: new Date("2026-08-12T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.65 },
     ...Object.keys(categoryPages)
       .filter((category) => categoryIsIndexable(category, publishedDeals))

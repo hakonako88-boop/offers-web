@@ -119,7 +119,7 @@ export default async function StoreOffersPage({ params }: StorePageProps) {
     }, {
       "@type": "BreadcrumbList", itemListElement: [
         { "@type": "ListItem", position: 1, name: "Inicio", item: siteUrl },
-        { "@type": "ListItem", position: 2, name: store.label, item: `${siteUrl}/ofertas/${tienda}` },
+        { "@type": "ListItem", position: 2, name: store.label, item: `${siteUrl}/ofertas/${tienda}/` },
       ],
     }],
   };
