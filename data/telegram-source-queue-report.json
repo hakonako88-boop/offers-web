@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-19T15:46:34.123Z",
+  "updatedAt": "2026-11-19T15:54:30.481Z",
   "summary": {
     "ignored": 178,
     "rejected": 608,
     "duplicate": 26,
-    "published": 58,
+    "published": 59,
     "needs_review": 129,
     "pending": 181
   },
   "recent": [
+    {
+      "id": "telegram-paramanitas:5263:amazon:0",
+      "source": "telegram-paramanitas",
+      "messageId": 5263,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/paramanitas/5263",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-19T16:12:52.698Z"
+    },
     {
       "id": "telegram-una-ganga:98658:miravia:0",
       "source": "telegram-una-ganga",
@@ -27,13 +40,13 @@
       "source": "telegram-chollosdiario",
       "messageId": 46066,
       "store": "Amazon",
-      "status": "pending",
+      "status": "published",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
       "sourceUrl": "https://t.me/chollosdiario/46066",
-      "resultUrl": "",
+      "resultUrl": "https://www.amazon.es/dp/B0B7K88MBF?tag=chollos00a-21&linkCode=osi&th=1&psc=1",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-19T15:51:49.255Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:98657:amazon:0",
@@ -432,7 +445,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/98649",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-19T15:33:51.229Z",
@@ -1292,19 +1305,6 @@
       "attempts": 3,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/46114",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:46113:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 46113,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/46113",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
