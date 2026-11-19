@@ -32,8 +32,9 @@ function cumulativeLimit(minuteOfDay, weekend) {
   return limit;
 }
 
+const isBlackFridayCampaign = date => date >= '2026-11-19' && date <= '2026-11-30';
 function blackFridayLimit(date, minuteOfDay) {
-  if (date < '2026-11-27' || date > '2026-11-30') return null;
+  if (!isBlackFridayCampaign(date)) return null;
   const slots = [[480, 2], [600, 5], [720, 9], [840, 13], [960, 17], [1080, 22], [1200, 26], [1320, 30]];
   let limit = 0;
   for (const [start, maximum] of slots) if (minuteOfDay >= start) limit = maximum;
@@ -130,7 +131,7 @@ export function publicationAllowance({ store, offers = [], now = new Date(), byp
   const ordinaryToday = today.filter((offer) => offer.communitySource !== 'nolodejesescapar'
     && offer.source !== 'nolodejesescapar');
   const storeCount = ordinaryToday.filter((offer) => normalizedStore(offer.store) === storeName).length;
-  const eventDays = local.date >= '2026-11-27' && local.date <= '2026-11-30';
+  const eventDays = isBlackFridayCampaign(local.date);
   const storeLimit = (STORE_DAILY_LIMITS[storeName] || 1) + (eventDays && storeName in STORE_DAILY_LIMITS ? 4 : 0);
   // A direct/manual ingestion path can occasionally add many posts from one
   // retailer before the scheduled discovery jobs run. Count at most each

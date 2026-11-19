@@ -204,6 +204,9 @@ test('Black Friday through Cyber Monday has extra daytime slots but keeps quiet 
   const event = publicationAllowance({ store: 'Amazon', now: new Date('2026-11-27T22:15:00+01:00') });
   assert.equal(event.globalLimit, 30);
   assert.equal(event.storeLimit, 14);
+  const early = publicationAllowance({ store: 'Amazon', now: new Date('2026-11-19T22:15:00+01:00') });
+  assert.equal(early.globalLimit, 30);
+  assert.equal(early.storeLimit, 14);
   assert.equal(publicationAllowance({ store: 'Amazon', now: new Date('2026-11-30T23:59:00+01:00') }).allowed, true);
   assert.equal(publicationAllowance({ store: 'Amazon', now: new Date('2026-11-28T00:00:00+01:00') }).reason, 'quiet-hours');
   assert.equal(publicationAllowance({ store: 'Amazon', now: new Date('2026-12-01T22:15:00+01:00') }).globalLimit, 25);
