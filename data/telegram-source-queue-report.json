@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-19T14:35:10.385Z",
+  "updatedAt": "2026-11-19T14:44:49.749Z",
   "summary": {
-    "rejected": 609,
+    "rejected": 610,
     "ignored": 179,
     "duplicate": 26,
     "published": 58,
@@ -9,6 +9,19 @@
     "pending": 177
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98655:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98655,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/98655",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-19T14:44:31.767Z",
+      "nextAttemptAt": "2026-11-19T15:04:49.749Z"
+    },
     {
       "id": "telegram-paramanitas:5262:amazon:0",
       "source": "telegram-paramanitas",
@@ -223,12 +236,12 @@
       "messageId": 98652,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/98652",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-19T14:02:51.101Z",
-      "nextAttemptAt": "2026-11-19T14:23:15.343Z"
+      "lastCheckedAt": "2026-11-19T14:44:31.767Z",
+      "nextAttemptAt": "2026-11-19T15:24:49.749Z"
     },
     {
       "id": "telegram-ofertos:46150:amazon:0",
@@ -534,13 +547,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98646,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/98646",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-19T13:14:29.199Z",
-      "nextAttemptAt": "2026-11-19T14:34:54.781Z"
+      "lastCheckedAt": "2026-11-19T14:44:31.767Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-chollosdiario:46064:amazon:0",
@@ -1285,19 +1298,6 @@
     },
     {
       "id": "telegram-una-ganga:98635:miravia:1",
-      "source": "telegram-una-ganga",
-      "messageId": 98635,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/98635",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-19T14:14:30.058Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:98635:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 98635,
       "store": "Miravia",
