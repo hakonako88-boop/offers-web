@@ -35,7 +35,7 @@ function cumulativeLimit(minuteOfDay, weekend) {
 const isBlackFridayCampaign = date => date >= '2026-11-19' && date <= '2026-11-30';
 function blackFridayLimit(date, minuteOfDay) {
   if (!isBlackFridayCampaign(date)) return null;
-  const slots = [[480, 2], [600, 5], [720, 9], [840, 13], [960, 17], [1080, 22], [1200, 26], [1320, 30]];
+  const slots = [[480, 3], [600, 7], [720, 12], [840, 17], [960, 23], [1080, 29], [1200, 35], [1320, 40]];
   let limit = 0;
   for (const [start, maximum] of slots) if (minuteOfDay >= start) limit = maximum;
   return limit;
