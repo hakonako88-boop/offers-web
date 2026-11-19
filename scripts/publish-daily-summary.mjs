@@ -217,6 +217,9 @@ export function selectDailyOffers(offers, targetDate, maximum = MAX_OFFERS) {
 
 export function buildDailySummary(offers, targetDate) {
   offers = offers.slice(0, MAX_OFFERS);
+  const headingText = targetDate >= '2026-11-19' && targetDate <= '2026-11-30'
+    ? `ESPECIAL ${targetDate === '2026-11-30' ? 'CYBER MONDAY' : 'BLACK FRIDAY'} · TOP ${offers.length}`
+    : `TOP ${offers.length} CHOLLOS DEL DÍA`;
   const displayDate = new Date(`${targetDate}T12:00:00Z`).toLocaleDateString('es-ES', {
     day: 'numeric', month: 'long', year: 'numeric', timeZone: TIME_ZONE,
   });
@@ -230,7 +233,7 @@ export function buildDailySummary(offers, targetDate) {
     const label = index === 0 ? '⭐ MEJOR CHOLLO' : `🔥 CHOLLO ${index + 1}`;
     return `<b>${label}</b>\n<b>${escapeHtml(cleanTitle(offer.title, 52))}</b>\n💶 <b>${escapeHtml(offer.price)}</b>${before}${discount ? ` · −${discount}%` : ''}${savingLine}${coupon}\n<a href="${escapeHtml(offer.url)}">${escapeHtml(offer.store || 'Oferta')} · VER OFERTA</a>`;
   });
-  const telegram = `🏆 <b>TOP ${offers.length} CHOLLOS DEL DÍA</b>\n${escapeHtml(displayDate)}\n\n${lines.join('\n\n')}\n\n⚠️ Confirma precio, cupón y envío en la tienda.\n@aldiachollos · #Publi`;
+  const telegram = `🏆 <b>${headingText}</b>\n${escapeHtml(displayDate)}\n\n${lines.join('\n\n')}\n\n⚠️ Confirma precio, cupón y envío en la tienda.\n@aldiachollos · #Publi`;
   const body = offers.map((offer, index) => {
     const { previous, discount, saving } = offerMetrics(offer);
     const { codes, cashback } = couponOptions(offer.coupon);
@@ -249,7 +252,7 @@ export function buildDailySummary(offers, targetDate) {
       const discount = previous > price ? Math.round(((previous - price) / previous) * 100) : 0;
       const primaryCoupon = couponOptions(offer.coupon).codes[0];
       const coupon = primaryCoupon ? `\n🎟 <b>Cupón:</b> <code>${escapeHtml(primaryCoupon)}</code>` : '';
-      const heading = index === 0 ? `🏆 <b>TOP ${offers.length} CHOLLOS DEL DÍA</b>\n${escapeHtml(displayDate)}\n\n` : '';
+      const heading = index === 0 ? `🏆 <b>${headingText}</b>\n${escapeHtml(displayDate)}\n\n` : '';
       const before = previous > price ? `\n<s>${escapeHtml(offer.previousPrice)}</s>${discount ? ` · 🔻 ${discount}%` : ''}` : '';
       return {
         type: 'photo',
