@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-11-20T10:05:13.990Z",
+  "updatedAt": "2026-11-20T10:15:14.155Z",
   "summary": {
-    "needs_review": 120,
+    "needs_review": 116,
     "ignored": 152,
-    "rejected": 663,
+    "rejected": 665,
     "published": 47,
-    "duplicate": 22,
-    "pending": 197
+    "duplicate": 23,
+    "pending": 196
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98745:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98745,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/98745",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-tecnofertastop:61035:amazon:0",
+      "source": "telegram-tecnofertastop",
+      "messageId": 61035,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/tecnofertastop/61035",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-20T10:32:47.566Z"
+    },
     {
       "id": "telegram-ofertos:46197:aliexpress:0",
       "source": "telegram-ofertos",
@@ -94,7 +120,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/98744",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-20T09:45:32.203Z",
@@ -235,13 +261,13 @@
       "source": "telegram-tecnofertastop",
       "messageId": 61032,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/tecnofertastop/61032",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T10:13:57.691Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:46189:aliexpress:0",
@@ -469,13 +495,13 @@
       "source": "telegram-ofertos",
       "messageId": 46184,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/Ofertos/46184",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-20T08:44:14.976Z",
-      "nextAttemptAt": "2026-11-20T10:04:32.861Z"
+      "lastCheckedAt": "2026-11-20T10:14:48.378Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:46182:amazon:0",
@@ -495,26 +521,26 @@
       "source": "telegram-ofertos",
       "messageId": 46181,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/Ofertos/46181",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-20T08:44:14.976Z",
-      "nextAttemptAt": "2026-11-20T10:04:32.861Z"
+      "lastCheckedAt": "2026-11-20T10:14:48.378Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:46180:miravia:0",
       "source": "telegram-ofertos",
       "messageId": 46180,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/Ofertos/46180",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-20T08:44:14.976Z",
-      "nextAttemptAt": "2026-11-20T10:04:32.861Z"
+      "lastCheckedAt": "2026-11-20T10:14:48.378Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-paramanitas:5269:amazon:0",
@@ -547,26 +573,26 @@
       "source": "telegram-ofertos",
       "messageId": 46179,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/Ofertos/46179",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-20T10:04:50.840Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-20T10:14:48.378Z",
+      "nextAttemptAt": "2026-11-20T10:35:14.155Z"
     },
     {
       "id": "telegram-ofertos:46178:miravia:0",
       "source": "telegram-ofertos",
       "messageId": 46178,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/Ofertos/46178",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-20T10:04:50.840Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-20T10:14:48.378Z",
+      "nextAttemptAt": "2026-11-20T10:35:14.155Z"
     },
     {
       "id": "telegram-tecnofertastop:61028:amazon:0",
@@ -1279,32 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/98704",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-tecnofertastop:61025:amazon:0",
-      "source": "telegram-tecnofertastop",
-      "messageId": 61025,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/tecnofertastop/61025",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-tiesometro:8053:aliexpress:0",
-      "source": "telegram-tiesometro",
-      "messageId": 8053,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/tiesometro/8053",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
