@@ -1,26 +1,65 @@
 {
-  "updatedAt": "2026-11-20T20:11:55.318Z",
+  "updatedAt": "2026-11-20T20:17:03.295Z",
   "summary": {
-    "rejected": 632,
-    "duplicate": 22,
-    "published": 51,
     "ignored": 147,
+    "published": 50,
+    "rejected": 631,
+    "duplicate": 21,
     "needs_review": 155,
-    "pending": 157
+    "pending": 156
   },
   "recent": [
+    {
+      "id": "telegram-errores-de-precio:15806:miravia:0",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15806,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "sourceUrl": "https://t.me/erroresde_precio/15806",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-una-ganga:98775:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98775,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/98775",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-tecnofertastop:61052:miravia:0",
+      "source": "telegram-tecnofertastop",
+      "messageId": 61052,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "sourceUrl": "https://t.me/tecnofertastop/61052",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-paramanitas:5274:amazon:0",
       "source": "telegram-paramanitas",
       "messageId": 5274,
       "store": "Amazon",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/3)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/3)",
       "sourceUrl": "https://t.me/paramanitas/5274",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T20:12:36.742Z"
+      "nextAttemptAt": "2026-11-20T20:53:54.691Z"
     },
     {
       "id": "telegram-ofertos:46244:aliexpress:0",
@@ -131,39 +170,39 @@
       "source": "telegram-una-ganga",
       "messageId": 98772,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/98772",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T20:13:09.332Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:46239:amazon:0",
       "source": "telegram-ofertos",
       "messageId": 46239,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/46239",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T20:13:09.332Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:46238:amazon:0",
       "source": "telegram-ofertos",
       "messageId": 46238,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/Ofertos/46238",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T20:13:09.332Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:46237:aliexpress:0",
@@ -183,13 +222,13 @@
       "source": "telegram-chollosdiario",
       "messageId": 46079,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/chollosdiario/46079",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T20:13:09.332Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:46236:amazon:0",
@@ -1259,45 +1298,6 @@
     },
     {
       "id": "telegram-errores-de-precio:15804:amazon:6",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15804,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 2,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/erroresde_precio/15804",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T16:06:14.321Z"
-    },
-    {
-      "id": "telegram-errores-de-precio:15804:amazon:5",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15804,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 2,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/erroresde_precio/15804",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T16:06:14.321Z"
-    },
-    {
-      "id": "telegram-errores-de-precio:15804:amazon:4",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15804,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 2,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/erroresde_precio/15804",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T16:06:14.321Z"
-    },
-    {
-      "id": "telegram-errores-de-precio:15804:amazon:3",
       "source": "telegram-errores-de-precio",
       "messageId": 15804,
       "store": "Amazon",
