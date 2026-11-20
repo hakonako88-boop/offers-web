@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-20T16:34:16.270Z",
+  "updatedAt": "2026-11-20T16:45:47.276Z",
   "summary": {
-    "needs_review": 150,
-    "ignored": 129,
-    "rejected": 664,
+    "rejected": 663,
+    "ignored": 128,
     "duplicate": 18,
     "published": 41,
-    "pending": 184
+    "needs_review": 149,
+    "pending": 186
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98765:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98765,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/98765",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-20T16:45:21.732Z",
+      "nextAttemptAt": "2026-11-20T17:05:47.276Z"
+    },
     {
       "id": "telegram-una-ganga:98764:amazon:0",
       "source": "telegram-una-ganga",
@@ -1262,13 +1275,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98756,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/98756",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-20T16:33:58.609Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-20T16:45:21.732Z",
+      "nextAttemptAt": "2026-11-20T17:05:47.276Z"
     },
     {
       "id": "telegram-errores-de-precio:15801:miravia:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-20T14:25:21.103Z"
-    },
-    {
-      "id": "telegram-errores-de-precio:15800:miravia:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15800,
-      "store": "Miravia",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
-      "sourceUrl": "https://t.me/erroresde_precio/15800",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-20T13:53:42.595Z",
-      "nextAttemptAt": "2026-11-20T14:34:00.225Z"
     }
   ]
 }
