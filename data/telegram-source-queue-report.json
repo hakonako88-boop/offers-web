@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-20T21:37:22.712Z",
+  "updatedAt": "2026-11-20T21:47:28.208Z",
   "summary": {
     "ignored": 144,
-    "rejected": 631,
+    "rejected": 633,
     "published": 49,
     "needs_review": 155,
     "duplicate": 20,
-    "pending": 161
+    "pending": 160
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98780:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98780,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/98780",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-20T21:44:36.541Z",
+      "nextAttemptAt": "2026-11-20T22:07:28.208Z"
+    },
     {
       "id": "telegram-una-ganga:98779:amazon:0",
       "source": "telegram-una-ganga",
@@ -144,26 +157,26 @@
       "source": "telegram-una-ganga",
       "messageId": 98776,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/98776",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T21:40:48.503Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:98776:amazon:0",
       "source": "telegram-una-ganga",
       "messageId": 98776,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/98776",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T21:40:48.503Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-errores-de-precio:15806:miravia:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-tecnofertastop:61047:amazon:0",
-      "source": "telegram-tecnofertastop",
-      "messageId": 61047,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 1,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/tecnofertastop/61047",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T15:32:30.483Z"
     }
   ]
 }
