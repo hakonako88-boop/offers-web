@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-20T22:01:14.634Z",
+  "updatedAt": "2026-11-20T22:10:41.438Z",
   "summary": {
-    "ignored": 143,
-    "rejected": 634,
+    "rejected": 638,
     "published": 49,
+    "ignored": 143,
     "needs_review": 155,
-    "duplicate": 20,
-    "pending": 161
+    "duplicate": 21,
+    "pending": 156
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98782:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98782,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/98782",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-tiesometro:8065:aliexpress:0",
       "source": "telegram-tiesometro",
@@ -41,12 +54,12 @@
       "messageId": 98780,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/98780",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-20T21:44:36.541Z",
-      "nextAttemptAt": "2026-11-20T22:07:28.208Z"
+      "lastCheckedAt": "2026-11-20T22:10:22.906Z",
+      "nextAttemptAt": "2026-11-20T22:50:41.438Z"
     },
     {
       "id": "telegram-una-ganga:98779:amazon:0",
@@ -105,52 +118,52 @@
       "source": "telegram-chollosdiario",
       "messageId": 46080,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/chollosdiario/46080",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T22:10:34.418Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-chollosdiario:46080:amazon:1",
       "source": "telegram-chollosdiario",
       "messageId": 46080,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/chollosdiario/46080",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T22:10:34.418Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-chollosdiario:46080:amazon:0",
       "source": "telegram-chollosdiario",
       "messageId": 46080,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/chollosdiario/46080",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T22:10:34.418Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-paramanitas:5275:amazon:0",
       "source": "telegram-paramanitas",
       "messageId": 5275,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/paramanitas/5275",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T22:10:34.418Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:98777:miravia:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": "2026-11-20T15:32:30.483Z"
-    },
-    {
-      "id": "telegram-errores-de-precio:15805:amazon:25",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15805,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 2,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/erroresde_precio/15805",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T16:15:09.026Z"
     }
   ]
 }
