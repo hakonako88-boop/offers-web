@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-21T16:15:02.020Z",
+  "updatedAt": "2026-11-21T16:25:34.931Z",
   "summary": {
-    "duplicate": 21,
     "rejected": 630,
     "ignored": 156,
     "needs_review": 151,
+    "duplicate": 20,
     "published": 43,
-    "pending": 127
+    "pending": 128
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98859:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98859,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/98859",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-21T16:42:18.282Z"
+    },
     {
       "id": "telegram-una-ganga:98858:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -263,7 +276,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/98848",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-21T15:05:03.941Z",
@@ -900,7 +913,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/98832",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-21T15:05:03.941Z",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/98824",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-21T14:25:23.721Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:46252:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 46252,
-      "store": "Amazon",
-      "status": "rejected",
-      "attempts": 3,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
-      "sourceUrl": "https://t.me/Ofertos/46252",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
