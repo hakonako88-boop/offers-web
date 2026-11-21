@@ -2,6 +2,12 @@ name: Desplegar web sin rastrear ofertas
 
 on:
   workflow_dispatch:
+  # Also reconcile the previously persisted catalogue on each source poll:
+  # bot-generated commits may not trigger a push workflow.
+  repository_dispatch:
+    types: [telegram_sources_changed]
+  schedule:
+    - cron: '17,47 * * * *'
   push:
     branches: [main]
     paths:
