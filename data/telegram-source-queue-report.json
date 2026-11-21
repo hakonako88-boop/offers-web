@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-21T23:33:45.569Z",
+  "updatedAt": "2026-11-21T23:43:41.683Z",
   "summary": {
     "published": 43,
-    "rejected": 426,
+    "rejected": 427,
     "ignored": 167,
     "needs_review": 150,
     "duplicate": 19,
     "pending": 375
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98886:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98886,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/98886",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-21T23:43:23.895Z",
+      "nextAttemptAt": "2026-11-22T00:03:41.683Z"
+    },
     {
       "id": "telegram-una-ganga:98885:amazon:0",
       "source": "telegram-una-ganga",
@@ -534,13 +547,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98866,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/98866",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-21T22:15:17.270Z",
-      "nextAttemptAt": "2026-11-21T23:35:42.702Z"
+      "lastCheckedAt": "2026-11-21T23:43:23.895Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:98865:amazon:0",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-tecnofertastop:61063:amazon:0",
-      "source": "telegram-tecnofertastop",
-      "messageId": 61063,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 1,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/tecnofertastop/61063",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-21T12:32:25.393Z"
     }
   ]
 }
