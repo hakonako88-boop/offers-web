@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-21T04:43:38.716Z",
+  "updatedAt": "2026-11-21T04:53:53.280Z",
   "summary": {
-    "rejected": 633,
+    "rejected": 634,
     "ignored": 157,
     "needs_review": 150,
     "published": 43,
@@ -9,6 +9,19 @@
     "pending": 133
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98809:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98809,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/3)",
+      "sourceUrl": "https://t.me/una_ganga/98809",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": "2026-11-21T05:12:45.616Z"
+    },
     {
       "id": "telegram-una-ganga:98808:miravia:0",
       "source": "telegram-una-ganga",
@@ -53,13 +66,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98805,
       "store": "Amazon",
-      "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de reintento (2/3)",
+      "status": "rejected",
+      "attempts": 3,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 3 intentos",
       "sourceUrl": "https://t.me/una_ganga/98805",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-21T04:53:31.430Z"
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:98804:miravia:0",
@@ -68,7 +81,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/98804",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-21T04:13:01.172Z",
@@ -237,7 +250,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/98792",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-21T04:13:01.172Z",
@@ -1295,19 +1308,6 @@
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:46223:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 46223,
-      "store": "Amazon",
-      "status": "duplicate",
-      "attempts": 1,
-      "reason": "El mismo ASIN ya estaba publicado recientemente",
-      "sourceUrl": "https://t.me/Ofertos/46223",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": "2026-11-20T18:32:44.292Z"
     }
   ]
 }
