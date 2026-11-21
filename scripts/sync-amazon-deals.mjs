@@ -270,6 +270,7 @@ const searchErrors = [];
 const consumedSignalIds = new Set();
 const duplicateSignalIds = new Set();
 const retrySignals = new Map(amazonSignals.map((signal) => [signal.id, signal]));
+const queueChecks = {};
 
 let accessToken = '';
 try {
@@ -282,6 +283,10 @@ if (accessToken) {
   for (const topic of topics) {
     try {
       const items = await searchAmazon(accessToken, config, topic);
+      if (topic.signal?.queueItemId) queueChecks[topic.signal.queueItemId] = {
+        checkedAt: new Date().toISOString(), status: 'unmatched',
+        reason: items.length ? 'Ningún resultado superó la verificación de producto y oferta' : 'Amazon no devolvió productos para esta consulta',
+      };
       for (const item of items) {
         const selectedSource = topic.signal?.source === 'nolodejesescapar';
         let offer = normalizeAmazonItem(item, topic.category, { selectedSource });
@@ -297,8 +302,11 @@ if (accessToken) {
         }
         if (offer && seenAsins.has(offer.asin) && topic.signal) {
           duplicateSignalIds.add(topic.signal.id);
+          const check = queueChecks[topic.signal.queueItemId];
+          if (check?.status === 'unmatched') check.status = 'duplicate';
         } else if (offer && !seenAsins.has(offer.asin)) {
           candidates.push({ ...offer, checkedAt: new Date().toISOString() });
+          if (topic.signal?.queueItemId) queueChecks[topic.signal.queueItemId].status = 'candidate';
         }
       }
     } catch (error) {
@@ -371,7 +379,7 @@ for (const signal of amazonSignals) {
     retrySignals.delete(signal.id);
   }
 }
-writeJson(COMMUNITY_STATE_FILE, nextCommunitySignalState(communityState, {
+writeJson(COMMUNITY_STATE_FILE, { ...nextCommunitySignalState(communityState, {
   ...communityDiscovery,
   signals: amazonSignals,
   consumedSignalIds: [...consumedSignalIds],
@@ -384,5 +392,5 @@ writeJson(COMMUNITY_STATE_FILE, nextCommunitySignalState(communityState, {
         : 'attempted',
   ])),
   retrySignals: [...retrySignals.values()],
-}));
+}), queueChecks });
 console.log(`Amazon discovery checked ${topics.map((topic) => topic.keywords).join(', ')}, found ${uniqueCandidates.length} publishable candidate(s), attempted ${attempted}, and published ${sent} offer(s).${searchErrors.length ? ` Source warning: ${searchErrors[0]}` : ''}`);

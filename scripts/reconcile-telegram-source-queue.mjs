@@ -43,6 +43,7 @@ const publicationBySignal = new Map(publications
   .filter((entry) => entry.communitySignalId)
   .map((entry) => [entry.communitySignalId, entry]));
 const amazonError = String(readJson(AMAZON_STATE_FILE, {}).lastError || '');
+const amazonChecks = readJson(path.join(ROOT, 'data', 'amazon-community-signal-state.json'), {}).queueChecks || {};
 const aliExpressCommunityState = readJson(ALIEXPRESS_COMMUNITY_STATE_FILE, { seen: [] });
 const aliExpressDiagnostics = readJson(ALIEXPRESS_DIAGNOSTICS_FILE, { items: {} });
 const miraviaCommunityState = readJson(MIRAVIA_COMMUNITY_STATE_FILE, {});
@@ -84,6 +85,15 @@ const retryCutoff = Date.now() - SOURCE_RETRY_MAX_AGE_MS;
 const reopenedIds = new Set();
 for (const item of queue.items || []) {
   const publishedAt = Date.parse(item.publishedAt || '');
+  if (item.store === 'Amazon' && item.status === 'rejected' &&
+      item.reason?.startsWith('No se pudo verificar el producto exacto,') &&
+      !item.amazonEvidenceRetry && publishedAt >= retryCutoff) {
+    item.status = 'pending';
+    item.attempts = 0;
+    item.amazonEvidenceRetry = true;
+    item.reason = 'Reabierta para comprobar el producto en Amazon';
+    delete item.nextAttemptAt;
+  }
   if (item.store === 'Amazon'
     && item.status === 'needs_review'
     && /Sin ahorro suficiente/u.test(item.reason || '')
@@ -181,6 +191,23 @@ for (const item of queue.items || []) {
     continue;
   }
 
+  if (item.store === 'Amazon') {
+    const check = amazonChecks[item.id];
+    if (check?.status === 'duplicate' && hasNewSourceDiagnostic(item, check)) {
+      item.status = 'duplicate';
+      item.reason = 'Amazon devolvió un producto ya publicado';
+      item.updatedAt = now;
+      delete item.nextAttemptAt;
+      continue;
+    }
+    if (!check || !hasNewSourceDiagnostic(item, check) || check.status !== 'unmatched') {
+      if (!check) item.reason = 'Pendiente de una consulta de Amazon para este producto';
+      else if (check.status === 'candidate') item.reason = 'Producto localizado; pendiente de selección para publicar';
+      continue;
+    }
+    item.lastCountedDiagnosticAt = check.checkedAt;
+  }
+
   if (item.store === 'AliExpress') {
     const diagnostic = aliExpressDiagnostics.items?.[item.id] || {};
     if (!hasNewSourceDiagnostic(item, diagnostic)) {
@@ -234,6 +261,9 @@ for (const item of queue.items || []) {
   } else {
     item.reason = `Pendiente de reintento (${item.attempts}/${maxAttempts})`;
     item.nextAttemptAt = nextSourceRetryAt(item.attempts, new Date(now));
+  }
+  if (item.store === 'Amazon' && amazonChecks[item.id]?.reason) {
+    item.reason = amazonChecks[item.id].reason + ` (${item.attempts}/${maxAttempts})`;
   }
 }
 
