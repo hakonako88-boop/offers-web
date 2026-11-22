@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-22T18:25:03.847Z",
+  "updatedAt": "2026-11-22T18:36:00.956Z",
   "summary": {
     "published": 63,
-    "rejected": 448,
+    "rejected": 449,
     "ignored": 207,
     "needs_review": 160,
     "duplicate": 21,
     "pending": 425
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:46350:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 46350,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/Ofertos/46350",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:98944:amazon:0",
       "source": "telegram-una-ganga",
@@ -365,13 +378,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98935,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/98935",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-22T17:05:04.219Z",
-      "nextAttemptAt": "2026-11-22T18:25:27.945Z"
+      "lastCheckedAt": "2026-11-22T18:35:42.886Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-errores-de-precio:15813:ignored",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de una consulta de Amazon para este producto",
       "sourceUrl": "https://t.me/una_ganga/98912",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:98911:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 98911,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/una_ganga/98911",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
