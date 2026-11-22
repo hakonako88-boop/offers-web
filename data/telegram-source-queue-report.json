@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-22T10:34:02.240Z",
+  "updatedAt": "2026-11-22T10:45:31.593Z",
   "summary": {
-    "published": 61,
+    "published": 62,
     "rejected": 437,
     "ignored": 192,
     "needs_review": 160,
@@ -9,6 +9,19 @@
     "pending": 389
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:46336:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 46336,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/Ofertos/46336",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-ofertos:46335:aliexpress:0",
       "source": "telegram-ofertos",
@@ -535,12 +548,12 @@
       "messageId": 98907,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/98907",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-22T09:53:32.825Z",
-      "nextAttemptAt": "2026-11-22T10:33:53.063Z"
+      "lastCheckedAt": "2026-11-22T10:45:13.015Z",
+      "nextAttemptAt": "2026-11-22T12:05:31.593Z"
     },
     {
       "id": "telegram-una-ganga:98906:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de una consulta de Amazon para este producto",
       "sourceUrl": "https://t.me/una_ganga/98875",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:98874:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 98874,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/una_ganga/98874",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
