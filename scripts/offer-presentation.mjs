@@ -73,13 +73,13 @@ export function purchaseButtonLabel(store = '') {
   return '🛒 VER OFERTA';
 }
 
-export function offerReplyMarkup(offer = {}, purchaseLabel = '') {
+export function offerReplyMarkup(offer = {}, purchaseLabel = '', verifiedPage = false) {
   const rows = [];
   if (offer.url) rows.push([{ text: purchaseLabel || purchaseButtonLabel(offer.store), url: offer.url }]);
   const code = couponOptions(offer.coupon || '').codes[0];
   if (code && code.length <= 256) rows.push([{ text: '🎟️ COPIAR CUPÓN', copy_text: { text: code } }]);
   const webUrl = trackedPublicOfferUrl(offer);
-  if (webUrl) rows.push([
+  if (webUrl && verifiedPage) rows.push([
     { text: '📋 VER FICHA', url: webUrl },
     { text: '📤 COMPARTIR', url: shareOfferUrl(offer) },
   ]);
@@ -359,14 +359,14 @@ export function formatTelegramDealCard({
     ? ` · descuenta ${escapeHtml(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(couponDiscount)))} desde ${escapeHtml(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(Number(couponMinimumSpend)))}`
     : '';
   const actionLine = codes.length
-    ? `${couponLines}${couponCondition}\n${codes.length > 1 ? 'Usa solo uno. ' : ''}Cópialo y aplícalo al pagar. Revisa el total.${cashbackLine ? `\n${cashbackLine}` : ''}`
+    ? `${couponLines}${couponCondition}\n${codes.length > 1 ? 'Usa solo uno. ' : ''}Cópialo y aplícalo al pagar. Comprueba el total en la cesta.${cashbackLine ? `\n${cashbackLine}` : ''}`
     : highlight
       ? `🔻 ${escapeCaptionField(highlight, 140)}`
       : cashbackLine;
   const kicker = telegramOfferOpening({title,store,coupon:codes.join(' / '),discount,price,previousPrice});
-  const headline = `<b>${escapeCaptionField(trimAtWord(improveOfferTitle(title), 130), 220)}</b>\n<em>${escapeCaptionField(kicker, 80)}</em> · #${escapeCaptionField(storeTag, 40)}`;
+  const headline = `<b>${escapeCaptionField(trimAtWord(improveOfferTitle(title), 130), 220)}</b>\n${escapeCaptionField(kicker.split(' · ')[0], 80)} · #${escapeCaptionField(storeTag, 40)}${discountLabel}`;
   const priceBlock = [
-    `💶 <b>${escapeCaptionField(price, 60)}</b>${discountLabel}`,
+    `💶 PRECIO OFERTA: <b>${escapeCaptionField(price, 60)}</b>`,
     previousPrice ? `↘️ Antes: <s>${escapeCaptionField(previousPrice, 60)}</s>` : '',
     savings ? `💰 <b>Te ahorras ${escapeCaptionField(savings, 60)}</b>` : '',
   ].filter(Boolean).join('\n');

@@ -176,9 +176,12 @@ export default async function OfferPage({ params }: OfferPageProps) {
               {deal.priceCondition && <p role="note">{priceConditionSummary(deal.priceCondition)}</p>}
               {deal.oldPrice > deal.price && <p>Antes <s>{money.format(deal.oldPrice)}</s> <b>−{discount}%</b></p>}
               {savings > 0 && <em>Ahorras {money.format(savings)}</em>}
+              {observations.length === 1 && <p>Primer precio registrado para este producto.</p>}
+              {observations.length >= 2 && observations.at(-1)?.price === deal.price && <p>Frente al registro del {observations.at(-2)!.date}: {observations.at(-2)!.price === deal.price ? "sin cambio de precio" : `${observations.at(-2)!.price > deal.price ? "ha bajado" : "ha subido"} ${money.format(Math.abs(observations.at(-2)!.price - deal.price))}`}. Son precios publicados, no un mínimo histórico.</p>}
             </div>
             {deal.active ? <a className="offerCta" href={deal.affiliateUrl} target="_blank" rel="nofollow sponsored noreferrer">Ir a la oferta en {deal.store} <span aria-hidden="true">→</span></a> : <div className="expiredNotice"><b>Oferta finalizada</b><p>Este fue el último precio registrado. La tienda puede haber cambiado el precio o retirado el producto.</p></div>}
             {deal.coupon && <CouponCopy code={deal.coupon} discount={deal.couponDiscount} minimumSpend={deal.couponMinimumSpend} />}
+            {deal.coupon && Number(deal.couponMinimumSpend) > deal.price && <p>El mínimo de cesta es {money.format(deal.couponMinimumSpend!)}. Si la tienda cuenta el precio mostrado de {money.format(deal.price)} para ese mínimo, faltan {money.format(deal.couponMinimumSpend! - deal.price)} en artículos válidos. Comprueba el total antes de pagar.</p>}
             {deal.priceCondition && <details className="offerConditions"><summary>Condiciones completas de esta oferta</summary><p>{deal.priceCondition}</p></details>}
             <div className="offerShare"><span>¿Conoces a alguien a quien le interese?</span><div><a href={whatsappShareUrl} target="_blank" rel="noreferrer">Compartir por WhatsApp</a><a href={telegramShareUrl} target="_blank" rel="noreferrer">Enviar por Telegram</a></div></div>
             <p className="offerMeta"><span aria-hidden="true" /><OfferFreshness date={deal.verifiedDate} fallback={deal.verifiedAt} /> · Precio sujeto a cambios.</p>

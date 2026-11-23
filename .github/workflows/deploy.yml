@@ -339,6 +339,13 @@ jobs:
           TELEGRAM_PROCESS_AMAZON_QUEUE: "true"
         run: npm run sync:inbox
 
+      - name: Añadir fichas confirmadas a mensajes recientes
+        if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'telegram_sources_changed' && env.TELEGRAM_BOT_TOKEN != '' }}
+        continue-on-error: true
+        env:
+          RECENT_BUTTONS_ONLY: "1"
+        run: node scripts/repair-telegram-offer-buttons.mjs
+
       - name: Guardar resultado de la prueba de Telegram
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[telegram-test]') && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: |

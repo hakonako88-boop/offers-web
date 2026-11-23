@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { offerReplyMarkup } from './offer-presentation.mjs';
+import { offerReplyMarkup, publicOfferUrl } from './offer-presentation.mjs';
+import {auditPrice,inspectWebPublication} from './publication-sync-audit.mjs';
 
 const ROOT = process.cwd();
 const OFFERS_FILE = path.join(ROOT, 'data', 'offers.json');
@@ -18,12 +19,16 @@ function writeJson(file, value) {
 }
 
 async function editButtons(offer) {
+  const id = offer.chollometroId || offer.source_product_id || offer.message_id;
+  const url = publicOfferUrl(id);
+  const page = await fetch(url, {redirect:'error',signal:AbortSignal.timeout(5000)});
+  if (!page.ok || inspectWebPublication({url,html:await page.text(),status:page.status,affiliateUrl:offer.url,expectedPrice:auditPrice(offer.price)}).status !== 'confirmed') return {pending:true};
   const replyMarkup = offerReplyMarkup({
-    id: offer.source_product_id || offer.message_id,
+    id, coupon:offer.coupon,
     url: offer.url,
     store: offer.store,
     storeSlug: offer.store,
-  });
+  }, '', true);
   const response = await fetch(`https://api.telegram.org/bot${token}/editMessageReplyMarkup`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -48,6 +53,7 @@ const offers = readJson(OFFERS_FILE, [])
   .filter((offer) => Number.isInteger(Number(offer.message_id)) && offer.url && offer.source !== 'removed')
   .sort((left, right) => Number(right.message_id) - Number(left.message_id))
   .filter((offer) => !repaired.has(Number(offer.message_id)))
+  .filter(offer => !process.env.RECENT_BUTTONS_ONLY || Number(offer.date)*1000 >= Date.now()-2*86400000)
   .slice(0, MAX_PER_RUN);
 
 let updated = 0;
@@ -55,12 +61,14 @@ let unchanged = 0;
 for (const offer of offers) {
   try {
     const result = await editButtons(offer);
+    if (result.pending) continue;
     if (result.unchanged) unchanged += 1;
     else updated += 1;
   } catch (error) {
     // Deleted and very old messages cannot be edited. Marking them as checked
     // prevents one unavailable post from blocking every later repair run.
     console.warn(`No se pudo actualizar el mensaje ${offer.message_id}: ${error.message}`);
+    if (!/message to edit not found|message can't be edited/iu.test(String(error.message))) continue;
   }
   repaired.add(Number(offer.message_id));
   await new Promise((resolve) => setTimeout(resolve, 120));

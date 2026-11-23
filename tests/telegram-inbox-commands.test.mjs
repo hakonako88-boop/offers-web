@@ -28,7 +28,8 @@ const controlCode = 'test-private-code';
 test('keeps the affiliate purchase button and adds the exact public offer page', () => {
   const offer = { id: 'aliexpress-ES/ventilador 10', store: 'AliExpress', url: 'https://s.click.aliexpress.com/e/example' };
   assert.equal(publicOfferUrl(offer.id), 'https://chollosaldia.com/oferta/aliexpress-ES-ventilador-10/');
-  assert.deepEqual(offerReplyMarkup(offer), {
+  assert.equal(offerReplyMarkup(offer).inline_keyboard.length, 1);
+  assert.deepEqual(offerReplyMarkup(offer, '', true), {
     inline_keyboard: [
       [{ text: '🛒 VER EN ALIEXPRESS', url: offer.url }],
       [
