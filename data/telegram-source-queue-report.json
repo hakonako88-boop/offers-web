@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-23T05:13:45.821Z",
+  "updatedAt": "2026-11-23T05:23:23.313Z",
   "summary": {
     "published": 63,
-    "rejected": 463,
+    "rejected": 464,
     "ignored": 219,
     "needs_review": 160,
     "duplicate": 22,
     "pending": 476
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:98977:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 98977,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/una_ganga/98977",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:98976:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -107,7 +120,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/98969",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-23T04:02:39.194Z",
@@ -482,13 +495,13 @@
       "source": "telegram-una-ganga",
       "messageId": 98960,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/98960",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-23T03:53:33.280Z",
-      "nextAttemptAt": "2026-11-23T05:13:54.253Z"
+      "lastCheckedAt": "2026-11-23T05:23:06.340Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:98959:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/tiesometro/8080",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:46339:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 46339,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/Ofertos/46339",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
