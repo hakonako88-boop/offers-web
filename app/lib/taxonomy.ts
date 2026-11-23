@@ -16,6 +16,9 @@ export type CategoryClassification = {
 type Rule = { category: CanonicalCategory; subcategory?: string; pattern: RegExp; weight: number };
 
 const rules: Rule[] = [
+  { category: "Deporte", pattern: /\bmancuernas?\b/iu, weight: 1 },
+  { category: "Hogar", subcategory: "Menaje de cocina", pattern: /\b(?:sarten(?:es)?|sartén|paelleras?)\b/iu, weight: 1 },
+  { category: "Gaming", subcategory: "Arcade", pattern: /\b(?:arcade classics|maquina recreativa)\b/iu, weight: 1 },
   { category: "Tecnología", subcategory: "Drones y vídeo", pattern: /\b(?:dji\s+goggles|fpv|dron(?:es)?)\b/iu, weight: 1.1 },
   { category: "Moda", subcategory: "Ropa y calzado", pattern: /\b(?:calcetines?|socks|skechers|zapatillas?|textile\s+trim)\b/iu, weight: 1.05 },
   { category: "Hogar", subcategory: "Textil", pattern: /\b(?:manta|blanket|flannel\s+fleece)\b/iu, weight: 1.05 },

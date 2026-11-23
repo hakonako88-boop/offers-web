@@ -4,3 +4,7 @@ test('day week month respect publication age and exclude inactive future invalid
 const data=[row,row,{...row,id:'week',verifiedDate:'2026-11-03'},{...row,id:'month',verifiedDate:'2026-10-20'},{...row,id:'inactive',active:false},{...row,id:'future',verifiedDate:'2027-01-01'},{...row,id:'invalid',price:0}];
 assert.deepEqual(periodTopOffers(data,1,now).map(r=>r.id),['a']);assert.equal(periodTopOffers(data,7,now).length,2);assert.equal(periodTopOffers(data,30,now).length,3);
 });
+test('plain prices and gaming do not displace evidenced savings in the shortlist',()=>{
+const inputs=[{...row,id:'game',category:'Gaming'},{...row,id:'plain',oldPrice:0},{...row,id:'coupon',oldPrice:0,coupon:'REAL'}];
+assert.deepEqual(periodTopOffers(inputs,1,now).map(r=>r.id),['coupon']);
+});

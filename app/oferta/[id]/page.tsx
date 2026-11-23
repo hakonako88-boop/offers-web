@@ -127,7 +127,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
   const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(publicOfferUrl)}&text=${encodeURIComponent(shareText)}`;
   const reportUrl = `mailto:chollosaldia@gmail.com?subject=${encodeURIComponent(`Aviso sobre una oferta: ${deal.title}`)}&body=${encodeURIComponent(`Hola, he visto un cambio de precio, stock o cupón en esta oferta:\n\n${publicOfferUrl}\n\nCambio observado:`)}`;
   const relatedDeals = publishedDeals
-    .filter((candidate) => candidate.id !== deal.id)
+    .filter((candidate) => candidate.id !== deal.id && candidate.active && candidate.category === deal.category && deal.category !== 'Otros / Sin clasificar')
     .sort((left, right) => Number(right.category === deal.category) - Number(left.category === deal.category) || Number(right.store === deal.store) - Number(left.store === deal.store))
     .slice(0, 3);
   const notes = offerBuyingNotes(deal);
@@ -167,11 +167,11 @@ export default async function OfferPage({ params }: OfferPageProps) {
         <div className="offerHero">
           <div className="offerGallery"><div className="offerImageWrap"><img src={deal.imageUrl} alt={productTitle} width={960} height={760} fetchPriority="high" decoding="async" /><span className="storeBadge"><StoreLogo store={deal.store} /></span>{discount > 0 && <span className="offerDiscount">−{discount}%</span>}</div><p>Imagen del producto. Comprueba la variante elegida en la tienda.</p></div>
           <div className="offerSummary">
-            <p className="offerKicker">{deal.category}{deal.subcategory ? ` · ${deal.subcategory}` : ""} · {deal.active ? "Oferta activa" : "Oferta finalizada"}</p>
+            <p className="offerKicker">{deal.category}{deal.subcategory ? ` · ${deal.subcategory}` : ""} · {deal.active ? (deal.oldPrice > deal.price ? "Rebaja anunciada" : "Precio localizado") : "Oferta finalizada"}</p>
             <h1>{offerDisplayTitle(productTitle)}</h1>
             <p className="offerLead">{notes.summary}</p>
             <div className="offerPriceBox">
-              <span>{deal.priceCondition ? 'PRECIO CON CONDICIONES · DESDE' : 'PRECIO DE OFERTA'}</span>
+              <span>{deal.priceCondition ? 'PRECIO CON CONDICIONES · DESDE' : deal.oldPrice > deal.price ? 'PRECIO DE OFERTA' : 'PRECIO LOCALIZADO'}</span>
               <strong>{money.format(deal.price)}</strong>
               {deal.priceCondition && <p role="note">{priceConditionSummary(deal.priceCondition)}</p>}
               {deal.oldPrice > deal.price && <p>Antes <s>{money.format(deal.oldPrice)}</s> <b>−{discount}%</b></p>}

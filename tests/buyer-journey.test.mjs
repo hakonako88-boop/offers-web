@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 const home=fs.readFileSync('app/components/DealExplorer.tsx','utf8');
 const selected=fs.readFileSync('app/components/FeaturedSelection.tsx','utf8');
-test('buyer sees search, optional coupons and shortlist before full catalogue',()=>{
+test('buyer reaches the catalogue before optional coupon promotions',()=>{
   const hero=home.indexOf('<section className="hero buyerIntro');
   const catalogue=home.indexOf('id="ofertas"',hero);
   const shortlist=home.indexOf('{featuredSelection}',hero);
@@ -11,7 +11,7 @@ test('buyer sees search, optional coupons and shortlist before full catalogue',(
   assert(hero>0 && catalogue>hero && shortlist>catalogue && campaigns>shortlist);
   assert(home.indexOf('{featuredSelection}') < home.indexOf('<div className="catalogueMain">'));
   assert(home.includes('<aside className="homeHighlights catalogueHighlights"'));
-  assert(home.indexOf('<FeaturedCoupons') < shortlist);
+  assert(home.indexOf('<FeaturedCoupons') > home.indexOf('className="dealGrid"'));
   assert(!home.includes('className="heroFeature"'));
 });
 test('shortlist has one clear detail CTA and no nested coupon actions',()=>{

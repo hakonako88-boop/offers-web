@@ -8,12 +8,13 @@ function normalized(value: string) {
 
 /** Readable factual headline. Never discard words just to fit a card. */
 export function offerDisplayTitle(value: string) {
-  const original = compact(value)
+  const original = compact(value).replace(/^\s*¡?descuento!\s*/iu, "")
     .replace(/^(?:🔥|✨|💥|⭐️?|⚡|🛍️|\s)+/gu, "")
     .replace(/^(?:¡?(?:chollazo|gran\s+rebaja|superoferta|ofertita|oferta\s+seleccionada|oferta)(?:\s+del?\s+\d+\s*%)?!?|oferta\s+en\s+[\p{L}\p{N} .&'-]+)\s*[:·|—-]*\s*/iu, "")
     .replace(/\s*\|\s*(?:Amazon|AliExpress|Miravia)\s*$/iu, "")
     .replace(/^Oficial\s*\|\s*/iu, "");
   const text = normalized(original);
+  if (/\blogitech\b/i.test(text) && /\bg102 lightsync\b/i.test(text)) return ['Ratón Logitech G102 Lightsync', /\bblanco\b/i.test(text) ? 'blanco' : '', /\b8000 dpi\b/i.test(text) ? '· 8.000 DPI' : ''].filter(Boolean).join(' ');
 
   if (/soxco/.test(text) && /calcetines/.test(text)) {
     const count = original.match(/\b(\d+)\s+pares\b/iu)?.[1];

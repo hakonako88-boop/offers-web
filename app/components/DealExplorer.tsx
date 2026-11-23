@@ -66,7 +66,7 @@ function offerCountLabel(total: number) {
   return `${total} ${total === 1 ? "oferta" : "ofertas"}`;
 }
 
-export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summary, featuredSelection, campaignBanners }: { initialDeals: Deal[]; posts: PublishedPost[]; aliexpressCampaignPost?: PublishedPost; summary: DealSummary; featuredSelection?: React.ReactNode; campaignBanners?: React.ReactNode }) {
+export function DealExplorer({ featuredIds = [], initialDeals, posts, aliexpressCampaignPost, summary, featuredSelection, campaignBanners }: { featuredIds?: string[]; initialDeals: Deal[]; posts: PublishedPost[]; aliexpressCampaignPost?: PublishedPost; summary: DealSummary; featuredSelection?: React.ReactNode; campaignBanners?: React.ReactNode }) {
   const newestOfferDate = Date.parse(initialDeals[0]?.verifiedDate || "");
   const featuredPost = posts.find((post) => /^mejores-productos-(?:dia|semana)-/u.test(post.id)
     && Number.isFinite(newestOfferDate) && newestOfferDate - Date.parse(post.publishedAt) < 7 * 24 * 60 * 60 * 1000);
@@ -174,7 +174,10 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
     hogar: deals.find((deal) => deal.category === "Hogar"),
   }), [deals]);
 
-  const gridDeals = visibleDeals.slice(0, visibleLimit);
+  const [rankingOpen, setRankingOpen] = useState(false);
+  const rest = visibleDeals.filter(deal => !featuredIds.includes(deal.id));
+  const ordered = filtersActive ? visibleDeals : [...rest.slice(0,6), ...visibleDeals.filter(deal => featuredIds.includes(deal.id)), ...rest.slice(6)];
+  const gridDeals = ordered.slice(0, visibleLimit);
   const visibleInsights = useMemo(() => {
     const discounted = visibleDeals.filter((deal) => deal.oldPrice > deal.price);
     const totalSaving = discounted.reduce((total, deal) => total + (deal.oldPrice - deal.price), 0);
@@ -269,11 +272,11 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
         {[['fire', 'Destacados', 'Todos'], ['tech', 'Tecnología', 'Tecnología'], ['home', 'Hogar', 'Hogar'], ['sport', 'Deporte', 'Deporte'], ['appliance', 'Electrodomésticos', 'Electrodomésticos'], ['fashion', 'Moda', 'Moda'], ['game', 'Gaming', 'Gaming'], ['tag', 'Cupones', 'cupones']].map(([icon, label, value]) => <button key={value} type="button" aria-pressed={value === 'cupones' ? couponOnly : category === value && !couponOnly} onClick={() => { setCategory(value === 'cupones' ? 'Todos' : value); setCouponOnly(value === 'cupones'); setVisibleLimit(18); document.getElementById('ofertas')?.scrollIntoView({ behavior: 'smooth' }); }}><ShopIcon name={icon} /><span>{label}</span></button>)}
       </nav>
       <div className="telegramQuickJoin shell"><a href="https://t.me/aldiachollos" target="_blank" rel="noreferrer"><ShopIcon name="telegram" />Unirme a Telegram <span>Gratis ↗</span></a></div>
-      <FeaturedCoupons deals={initialDeals} />
+
 
       <section className="offersSection" id="ofertas" aria-labelledby="offers-title">
         <div className="shell">
-          <div className="catalogueWithHighlights"><aside className="homeHighlights catalogueHighlights" aria-label="Selección destacada">{featuredSelection}</aside><div className="catalogueMain">
+          <div className="catalogueWithHighlights"><aside className="homeHighlights catalogueHighlights" aria-label="Selección destacada"><button className="mobileRankingSwitch" aria-controls="home-ranking" aria-expanded={rankingOpen} onClick={()=>setRankingOpen(!rankingOpen)}>{rankingOpen ? "Cerrar ranking" : "Ver el ranking de ofertas"}</button><div id="home-ranking" data-open={rankingOpen}>{featuredSelection}</div></aside><div className="catalogueMain">
           <div className="sectionIntro">
             <div>
               <h2 id="offers-title"><ShopIcon name="clock" />Últimos chollos</h2>
@@ -310,7 +313,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
                     <img src={deal.imageUrl} alt={deal.title} loading={index < 2 ? "eager" : "lazy"} decoding="async" width={720} height={560} />
                     {meaningfulSaving && <span className="discountBadge">AHORRA {discount}%</span>}
                     <span className="storeBadge"><StoreLogo store={deal.store} /></span>
-                    {index === 0 && !filtersActive && <span className="topDealBadge">⭐ DESTACADA</span>}
+
                   </a>
                   <button className={savedIds.includes(deal.id) ? "saveDealButton active" : "saveDealButton"} type="button" onClick={() => toggleSaved(deal.id)} aria-pressed={savedIds.includes(deal.id)} aria-label={`${savedIds.includes(deal.id) ? "Quitar de guardadas" : "Guardar oferta"}: ${deal.title}`}>{savedIds.includes(deal.id) ? "♥ Guardada" : "♡ Guardar"}</button>
                   <div className="dealBody">
@@ -341,6 +344,7 @@ export function DealExplorer({ initialDeals, posts, aliexpressCampaignPost, summ
 
       <section className="campaignHub buyerCampaigns" id="campanas" aria-labelledby="campaigns-title"><div className="shell"><div className="campaignHubHeading"><div><span className="campaignEyebrow">FECHAS Y CUPONES</span><h2 id="campaigns-title">¿Preparas una compra para las campañas?</h2></div><p>Consulta las guías sin perder de vista las ofertas de hoy.</p></div><div className="buyerCampaignLinks">{aliexpressCampaignPost && <a href={postHref(aliexpressCampaignPost.id)}><span>ALIEXPRESS · 11.11</span><strong>Ver fechas y cupones →</strong></a>}<a href="/black-friday-2026/"><span>BLACK FRIDAY · 27—30 NOV</span><strong>{campaign === 'black-friday' || campaign === 'cyber-monday' ? 'Ver la campaña →' : 'Preparar mi lista →'}</strong></a></div></div></section>
 
+      <FeaturedCoupons deals={initialDeals} />
       {featuredPost && <section className="editorialSpotlight shell" aria-labelledby="spotlight-title">
         <div className="editorialSpotlightCopy"><p>EN EL BLOG · {featuredPost.publishedLabel}</p><h2 id="spotlight-title">{featuredPost.title}</h2><span>Una selección de productos con fotos, precios publicados y fichas para consultar antes de comprar.</span><a href={postHref(featuredPost.id)}>Ver selección <b aria-hidden="true">↗</b></a></div>
         <a className="editorialSpotlightArtwork" href={postHref(featuredPost.id)} aria-label={`Leer ${featuredPost.title}`}><img src={featuredPost.imageUrl} alt={featuredPost.title} width="720" height="480" loading="lazy" /></a>

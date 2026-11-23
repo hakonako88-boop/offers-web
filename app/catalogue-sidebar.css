@@ -36,3 +36,5 @@
 }
 @media(min-width:1280px) and (min-height:1000px) { .dealHome .catalogueWithHighlights>.homeHighlights { position:sticky; top:16px; } }
 @media(max-width:800px) { .dealHome .catalogueWithHighlights>.homeHighlights { order:0; margin:0 0 16px; } }
+.mobileRankingSwitch{display:none}
+@media(max-width:720px){.dealHome .mobileRankingSwitch{display:block;width:100%;min-height:44px;background:#fffaf0;color:#173b31;border:1px solid #cfc8ad;border-radius:10px;font:inherit;font-weight:700}.dealHome #home-ranking[data-open=false]{display:none}}

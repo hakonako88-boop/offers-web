@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DealExplorer, type Deal, type DealSummary } from "./components/DealExplorer";
 import { dealDiscount, publishedDeals } from "./lib/deals";
 import { isProductSelection, publishedPosts } from "./lib/posts";
+import {periodTopOffers} from '../scripts/period-top-offers.mjs';
 import PeriodTopOffers from './components/PeriodTopOffers';
 import SeasonalBanners from './components/SeasonalBanners';
 import TodayGtaFeature from './components/TodayGtaFeature';
@@ -134,7 +135,7 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <TodayGtaFeature />
-      <DealExplorer initialDeals={homepageDeals} posts={publishedPosts.filter(isProductSelection).slice(0, 6)} aliexpressCampaignPost={publishedPosts.find((post) => post.id === "aliexpress-11-11-2026-cupones-ofertas")} summary={summary} campaignBanners={<SeasonalBanners renderedAt={Date.now()}/>} featuredSelection={<PeriodTopOffers deals={publishedDeals} renderedAt={Date.now()}/>} />
+      <DealExplorer featuredIds={periodTopOffers(publishedDeals, 1).map((deal: {id:string}) => deal.id)} initialDeals={homepageDeals} posts={publishedPosts.filter(isProductSelection).slice(0, 6)} aliexpressCampaignPost={publishedPosts.find((post) => post.id === "aliexpress-11-11-2026-cupones-ofertas")} summary={summary} campaignBanners={<SeasonalBanners renderedAt={Date.now()}/>} featuredSelection={<PeriodTopOffers deals={publishedDeals} renderedAt={Date.now()}/>} />
       <nav aria-label="Guías y ofertas de Chollos al Día" style={{ maxWidth: "76rem", margin: "2rem auto", padding: "0 1rem" }}>
         <h2>Guías de compra y ofertas por tienda</h2>
         <ul style={{ display: "flex", flexWrap: "wrap", gap: "0.65rem 1.5rem", listStyle: "none", padding: 0 }}>
