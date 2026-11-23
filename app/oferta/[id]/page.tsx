@@ -23,7 +23,7 @@ import { getProductForDeal, productHref } from "../../lib/products";
 import StoreLogo from "../../components/StoreLogo";
 import { offerDisplayTitle } from '../../lib/display-title';
 import { offerBuyingNotes, priceConditionSummary } from '../../../scripts/offer-buying-notes.mjs';
-import {offerSpecs} from '../../../scripts/offer-specs.mjs';
+import {verifiedProductSpecs} from '../../../scripts/verified-product-specs.mjs';
 import styles from './price-panel.module.css';
 import { isCollectableCoupon } from '../../../scripts/coupon-options.mjs';
 import priceHistory from "../../../data/price-history.json";
@@ -133,7 +133,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
     .sort((left, right) => Number(right.category === deal.category) - Number(left.category === deal.category) || Number(right.store === deal.store) - Number(left.store === deal.store))
     .slice(0, 3);
   const notes = offerBuyingNotes(deal);
-  const specs: string[] = offerSpecs(deal.title);
+  const specs = verifiedProductSpecs(deal.sourceProductId || deal.id, deal.title);
   const pros = [
     discount > 0 ? `Descuento visible del ${discount}% frente al precio anterior.` : "Precio localizado y enlazado directamente a la tienda.",
     ...notes.facts,
@@ -192,7 +192,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
             <div className="offerShare"><span>¿Conoces a alguien a quien le interese?</span><div><a href={whatsappShareUrl} target="_blank" rel="noreferrer">Compartir por WhatsApp</a><a href={telegramShareUrl} target="_blank" rel="noreferrer">Enviar por Telegram</a></div></div>
             <p className="offerMeta"><span aria-hidden="true" /><OfferFreshness date={deal.verifiedDate} fallback={deal.verifiedAt} /> · Precio sujeto a cambios.</p>
             {product && <Link className="offerProductLink" href={productHref(product)}>Comparar este producto y sus tiendas →</Link>}
-            {specs.length > 0 && <section className={styles.specs}><h2>Características del producto</h2><ul>{specs.map(spec=><li key={spec}>{spec}</li>)}</ul><small>Según el título publicado. Comprueba la variante al comprar.</small></section>}
+            {specs && <section className={styles.specs}><h2>Características del {specs.model}</h2><ul>{specs.facts.map((spec:string)=><li key={spec}>{spec}</li>)}</ul><small>Fuente: <a href={specs.source}>ficha técnica de {specs.brand}</a>. Consultada el 23 de noviembre de 2026.</small></section>}
             <a className="offerReport" href={reportUrl}>¿Ha cambiado el precio o el stock? Avísanos</a>
           </div>
         </div>
