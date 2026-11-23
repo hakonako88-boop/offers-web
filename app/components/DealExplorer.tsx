@@ -132,7 +132,7 @@ export function DealExplorer({ featuredIds = [], initialDeals, posts, aliexpress
     const needle = normalise(query.trim());
     const min = Number.parseFloat(minimumPrice.replace(",", "."));
     const max = Number.parseFloat(maximumPrice.replace(",", "."));
-    const newestTimestamp = deals.reduce((latest, deal) => Math.max(latest, Date.parse(deal.verifiedDate || "") || 0), 0);
+    const now = Date.now();
     const maximumAge = dateRange === "today" ? 24 * 60 * 60 * 1000 : dateRange === "3d" ? 3 * 24 * 60 * 60 * 1000 : dateRange === "7d" ? 7 * 24 * 60 * 60 * 1000 : Infinity;
     const filtered = deals.filter((deal) => (
       (category === "Todos" || deal.category === category)
@@ -143,7 +143,7 @@ export function DealExplorer({ featuredIds = [], initialDeals, posts, aliexpress
       && (deal.oldPrice > deal.price ? Math.round((1 - deal.price / deal.oldPrice) * 100) : 0) >= minimumDiscount
       && (!couponOnly || Boolean(deal.coupon))
       && (!savedOnly || savedIds.includes(deal.id))
-      && (!Number.isFinite(maximumAge) || Boolean(deal.verifiedDate && newestTimestamp - Date.parse(deal.verifiedDate) <= maximumAge))
+      && (!Number.isFinite(maximumAge) || Boolean(deal.verifiedDate && Date.parse(deal.verifiedDate) <= now && now - Date.parse(deal.verifiedDate) <= maximumAge))
     ));
     return filtered.sort((left, right) => {
       if (sortBy === "discount") return ((1 - right.price / right.oldPrice) || 0) - ((1 - left.price / left.oldPrice) || 0);
@@ -159,6 +159,18 @@ export function DealExplorer({ featuredIds = [], initialDeals, posts, aliexpress
     setCategory("Todos"); setStore("Todas"); setQuery(""); setMinimumPrice(""); setMaximumPrice("");
     setMinimumDiscount(0); setDateRange("all"); setCouponOnly(false); setSavedOnly(false); setSortBy("recent");
   }
+
+  const filterTags = [
+    {active:category !== "Todos",label:category,clear:()=>setCategory("Todos")},
+    {active:store !== "Todas",label:store,clear:()=>setStore("Todas")},
+    {active:!!query.trim(),label:"Búsqueda: "+query,clear:()=>setQuery("")},
+    {active:!!minimumPrice,label:"Desde "+minimumPrice+" €",clear:()=>setMinimumPrice("")},
+    {active:!!maximumPrice,label:"Hasta "+maximumPrice+" €",clear:()=>setMaximumPrice("")},
+    {active:minimumDiscount>0,label:"Descuento ≥ "+minimumDiscount+" %",clear:()=>setMinimumDiscount(0)},
+    {active:dateRange !== "all",label:dateRange==="today"?"Últimas 24 horas":dateRange==="3d"?"Últimos 3 días":"Última semana",clear:()=>setDateRange("all")},
+    {active:couponOnly,label:"Con cupón",clear:()=>setCouponOnly(false)},
+    {active:savedOnly,label:"Guardadas",clear:()=>setSavedOnly(false)},
+  ].filter(tag=>tag.active);
 
   const storeTotals = summary.stores;
   const sectionCovers = useMemo(() => ({
@@ -286,7 +298,7 @@ export function DealExplorer({ featuredIds = [], initialDeals, posts, aliexpress
 
           <div className="offerToolbar"><label className="catalogueSort">Ordenar por:<select aria-label="Ordenar ofertas" value={sortBy} onChange={(event) => setSortBy(event.target.value)}><option value="recent">Más recientes</option><option value="discount">Mayor descuento</option><option value="saving">Mayor ahorro</option><option value="price">Menor precio</option></select></label><button type="button" className={savedOnly ? "savedFilter active" : "savedFilter"} onClick={() => setSavedOnly((active) => !active)} aria-pressed={savedOnly}>♥ Guardadas <span>{savedIds.length}</span></button></div>
           <div className="controls">
-            <details className="advancedFilters"><summary>Filtros <span>{filtersActive ? "activos" : ""}</span></summary><div className="filterGrid">
+            <details className="advancedFilters"><summary>Filtros <span>{filterTags.length || ""}</span></summary><div className="filterGrid">
               <label>Categoría<select value={category} onChange={(event) => setCategory(event.target.value)}>{categories.map((item) => <option key={item}>{item}</option>)}</select></label>
               <label>Tienda<select value={store} onChange={(event) => setStore(event.target.value)}>{stores.map((item) => <option key={item}>{item}</option>)}</select></label>
               <label>Precio desde<input inputMode="decimal" value={minimumPrice} onChange={(event) => setMinimumPrice(event.target.value)} placeholder="0 €" /></label>
@@ -294,7 +306,8 @@ export function DealExplorer({ featuredIds = [], initialDeals, posts, aliexpress
               <label>Descuento mínimo<select value={minimumDiscount} onChange={(event) => setMinimumDiscount(Number(event.target.value))}><option value="0">Cualquiera</option><option value="10">10 %</option><option value="20">20 %</option><option value="30">30 %</option><option value="40">40 %</option><option value="50">50 %+</option></select></label>
               <label>Fecha<select value={dateRange} onChange={(event) => setDateRange(event.target.value)}><option value="all">Últimas 2 semanas</option><option value="today">Últimas 24 horas</option><option value="3d">Últimos 3 días</option><option value="7d">Última semana</option></select></label>
               <label className="couponFilter"><input type="checkbox" checked={couponOnly} onChange={(event) => setCouponOnly(event.target.checked)} /> Solo con cupón</label>
-            </div>{filtersActive && <button className="clearFilters" onClick={clearFilters}>Quitar todos los filtros</button>}</details>
+            </div></details>
+            {filterTags.length > 0 && <div className="activeFilterTags" role="group" aria-label="Filtros aplicados">{filterTags.map((tag,i)=><button key={i} type="button" aria-label={"Quitar filtro: "+tag.label} onClick={tag.clear}>{tag.label} <span aria-hidden="true">×</span></button>)}{filterTags.length > 1 && <button type="button" onClick={()=>{clearFilters();setSortBy(sortBy);}}>Quitar todos</button>}</div>}
           </div>
 
           <p className="resultsSummary" aria-live="polite"><b>{summary.total}</b> ofertas recientes · <b>{visibleDeals.length}</b> {visibleDeals.length === 1 ? "coincide" : "coinciden"} con tus filtros · mostrando {Math.min(gridDeals.length, visibleDeals.length)}</p>
