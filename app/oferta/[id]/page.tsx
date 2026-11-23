@@ -23,6 +23,8 @@ import { getProductForDeal, productHref } from "../../lib/products";
 import StoreLogo from "../../components/StoreLogo";
 import { offerDisplayTitle } from '../../lib/display-title';
 import { offerBuyingNotes, priceConditionSummary } from '../../../scripts/offer-buying-notes.mjs';
+import {offerSpecs} from '../../../scripts/offer-specs.mjs';
+import styles from './price-panel.module.css';
 import { isCollectableCoupon } from '../../../scripts/coupon-options.mjs';
 import priceHistory from "../../../data/price-history.json";
 
@@ -131,6 +133,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
     .sort((left, right) => Number(right.category === deal.category) - Number(left.category === deal.category) || Number(right.store === deal.store) - Number(left.store === deal.store))
     .slice(0, 3);
   const notes = offerBuyingNotes(deal);
+  const specs: string[] = offerSpecs(deal.title);
   const pros = [
     discount > 0 ? `Descuento visible del ${discount}% frente al precio anterior.` : "Precio localizado y enlazado directamente a la tienda.",
     ...notes.facts,
@@ -174,8 +177,11 @@ export default async function OfferPage({ params }: OfferPageProps) {
               <span>{deal.priceCondition ? 'PRECIO CON CONDICIONES · DESDE' : deal.oldPrice > deal.price ? 'PRECIO DE OFERTA' : 'PRECIO LOCALIZADO'}</span>
               <strong>{money.format(deal.price)}</strong>
               {deal.priceCondition && <p role="note">{priceConditionSummary(deal.priceCondition)}</p>}
-              {deal.oldPrice > deal.price && <p>Antes <s>{money.format(deal.oldPrice)}</s> <b>−{discount}%</b></p>}
-              {savings > 0 && <em>Ahorras {money.format(savings)}</em>}
+              <dl className={styles.comparison}>
+                {deal.oldPrice > deal.price && <div><dt>Precio anterior anunciado</dt><dd><s>{money.format(deal.oldPrice)}</s></dd></div>}
+                {savings > 0 && <div><dt>Ahorro frente al anterior</dt><dd>{money.format(savings)} · {discount}%</dd></div>}
+                {minimumObserved !== null && new Set(observations.map(point=>point.date.slice(0,10))).size >= 2 && <div><dt>Menor precio publicado aquí</dt><dd>{money.format(minimumObserved)}</dd></div>}
+              </dl>
               {observations.length === 1 && <p>Primer precio registrado para este producto.</p>}
               {observations.length >= 2 && observations.at(-1)?.price === deal.price && <p>Frente al registro del {observations.at(-2)!.date}: {observations.at(-2)!.price === deal.price ? "sin cambio de precio" : `${observations.at(-2)!.price > deal.price ? "ha bajado" : "ha subido"} ${money.format(Math.abs(observations.at(-2)!.price - deal.price))}`}. Son precios publicados, no un mínimo histórico.</p>}
             </div>
@@ -186,6 +192,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
             <div className="offerShare"><span>¿Conoces a alguien a quien le interese?</span><div><a href={whatsappShareUrl} target="_blank" rel="noreferrer">Compartir por WhatsApp</a><a href={telegramShareUrl} target="_blank" rel="noreferrer">Enviar por Telegram</a></div></div>
             <p className="offerMeta"><span aria-hidden="true" /><OfferFreshness date={deal.verifiedDate} fallback={deal.verifiedAt} /> · Precio sujeto a cambios.</p>
             {product && <Link className="offerProductLink" href={productHref(product)}>Comparar este producto y sus tiendas →</Link>}
+            {specs.length > 0 && <section className={styles.specs}><h2>Características del producto</h2><ul>{specs.map(spec=><li key={spec}>{spec}</li>)}</ul><small>Según el título publicado. Comprueba la variante al comprar.</small></section>}
             <a className="offerReport" href={reportUrl}>¿Ha cambiado el precio o el stock? Avísanos</a>
           </div>
         </div>
