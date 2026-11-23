@@ -9,6 +9,7 @@ import OfferFreshness from "./OfferFreshness";
 /* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element */
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import {readBudget} from '../../scripts/catalogue-budget.mjs';
 import AdSlot from "./AdSlot";
 import { adsenseHomeSlot } from "../lib/adsense";
 import { postHref } from "../lib/posts";
@@ -128,10 +129,13 @@ export function DealExplorer({ featuredIds = [], initialDeals, posts, aliexpress
   );
   const stores = useMemo(() => ["Todas", ...Array.from(new Set(deals.map((deal) => deal.store))).sort((a, b) => a.localeCompare(b, "es"))], [deals]);
 
+  const lower = readBudget(minimumPrice), upper = readBudget(maximumPrice);
+  const reversed = lower.valid && upper.valid && lower.amount !== null && upper.amount !== null && lower.amount > upper.amount;
+  const budgetError = !lower.valid || !upper.valid ? 'Escribe un importe válido, por ejemplo 19,95 €.' : reversed ? 'El precio mínimo supera al máximo.' : '';
   const visibleDeals = useMemo(() => {
     const needle = normalise(query.trim());
-    const min = Number.parseFloat(minimumPrice.replace(",", "."));
-    const max = Number.parseFloat(maximumPrice.replace(",", "."));
+    if (budgetError) return [];
+    const min = lower.amount ?? -Infinity, max = upper.amount ?? Infinity;
     const now = Date.now();
     const maximumAge = dateRange === "today" ? 24 * 60 * 60 * 1000 : dateRange === "3d" ? 3 * 24 * 60 * 60 * 1000 : dateRange === "7d" ? 7 * 24 * 60 * 60 * 1000 : Infinity;
     const filtered = deals.filter((deal) => (
@@ -151,7 +155,7 @@ export function DealExplorer({ featuredIds = [], initialDeals, posts, aliexpress
       if (sortBy === "price") return left.price - right.price;
       return Date.parse(right.verifiedDate || "") - Date.parse(left.verifiedDate || "");
     });
-  }, [deals, category, store, query, minimumPrice, maximumPrice, minimumDiscount, dateRange, couponOnly, savedOnly, savedIds, sortBy]);
+  }, [deals, category, store, query, lower.amount, upper.amount, budgetError, minimumDiscount, dateRange, couponOnly, savedOnly, savedIds, sortBy]);
 
   const filtersActive = category !== "Todos" || store !== "Todas" || query.trim() !== "" || minimumPrice !== "" || maximumPrice !== "" || minimumDiscount > 0 || dateRange !== "all" || couponOnly || savedOnly || sortBy !== "recent";
 
@@ -316,6 +320,7 @@ export function DealExplorer({ featuredIds = [], initialDeals, posts, aliexpress
             <span><b>{visibleInsights.averageSaving ? money.format(visibleInsights.averageSaving) : "—"}</b><small>ahorro medio</small></span>
             <span><b>{visibleInsights.coupons}</b><small>{visibleInsights.coupons === 1 ? "oferta con cupón" : "ofertas con cupón"}</small></span>
           </div>}
+          {budgetError && <div className="activeFilterTags" role="status"><strong>{budgetError}</strong>{reversed && <button type="button" onClick={()=>{setMinimumPrice(maximumPrice);setMaximumPrice(minimumPrice);}}>Intercambiar mínimo y máximo</button>}<button type="button" onClick={()=>{setMinimumPrice("");setMaximumPrice("");}}>Quitar solo el presupuesto</button></div>}
           <div className="dealGrid">
             {gridDeals.map((deal, index) => {
               const discount = Math.max(0, Math.round((1 - deal.price / deal.oldPrice) * 100));
@@ -350,7 +355,7 @@ export function DealExplorer({ featuredIds = [], initialDeals, posts, aliexpress
             })}
           </div>
           {gridDeals.length < visibleDeals.length && <div className="loadMoreWrap"><button className="loadMoreButton" onClick={() => setVisibleLimit((current) => current + 18)}>Ver 18 ofertas más <span aria-hidden="true">↓</span></button><p>También puedes filtrar por tienda, categoría o cupón para dar con lo que buscas.</p></div>}
-          {!visibleDeals.length && <div className="empty"><b>{savedOnly && savedIds.length === 0 ? "Aún no has guardado ofertas." : "No hemos encontrado ofertas con esos filtros."}</b><span>{savedOnly && savedIds.length === 0 ? "Pulsa «Guardar» en una oferta para verla aquí más tarde, en este navegador." : "Prueba con otra palabra o quita alguno de los filtros."}</span></div>}
+          {!budgetError && !visibleDeals.length && <div className="empty"><b>{savedOnly && savedIds.length === 0 ? "Aún no has guardado ofertas." : "No hemos encontrado ofertas con esos filtros."}</b><span>{savedOnly && savedIds.length === 0 ? "Pulsa «Guardar» en una oferta para verla aquí más tarde, en este navegador." : "Prueba con otra palabra o quita alguno de los filtros."}</span></div>}
           </div></div>
         </div>
       </section>
