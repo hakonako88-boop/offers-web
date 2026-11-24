@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-24T06:43:24.175Z",
+  "updatedAt": "2026-11-24T06:53:15.492Z",
   "summary": {
     "rejected": 473,
     "duplicate": 23,
     "ignored": 269,
     "published": 78,
     "needs_review": 156,
-    "pending": 576
+    "pending": 577
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:8092:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 8092,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/tiesometro/8092",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:99054:miravia:0",
       "source": "telegram-una-ganga",
@@ -263,7 +276,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/99036",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-24T05:32:46.107Z",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de una consulta de Amazon para este producto",
       "sourceUrl": "https://t.me/erroresde_precio/15823",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15822:amazon:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15822,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/erroresde_precio/15822",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
