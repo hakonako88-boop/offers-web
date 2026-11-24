@@ -1,26 +1,52 @@
 {
-  "updatedAt": "2026-11-24T16:07:36.849Z",
+  "updatedAt": "2026-11-24T16:16:11.955Z",
   "summary": {
-    "rejected": 446,
-    "ignored": 284,
+    "rejected": 443,
+    "ignored": 283,
     "duplicate": 22,
     "published": 94,
     "needs_review": 156,
-    "pending": 612
+    "pending": 616
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:99082:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 99082,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/99082",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-ofertos:46446:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 46446,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/Ofertos/46446",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:99081:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 99081,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/99081",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-24T15:45:30.776Z",
-      "nextAttemptAt": "2026-11-24T16:05:51.829Z"
+      "lastCheckedAt": "2026-11-24T16:15:28.281Z",
+      "nextAttemptAt": "2026-11-24T16:56:11.955Z"
     },
     {
       "id": "telegram-una-ganga:99080:amazon:0",
@@ -179,6 +205,32 @@
       "nextAttemptAt": ""
     },
     {
+      "id": "telegram-errores-de-precio:15825:miravia:18",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15825,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/erroresde_precio/15825",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-24T16:15:28.281Z",
+      "nextAttemptAt": "2026-11-24T16:36:11.955Z"
+    },
+    {
+      "id": "telegram-errores-de-precio:15825:miravia:17",
+      "source": "telegram-errores-de-precio",
+      "messageId": 15825,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/erroresde_precio/15825",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-24T16:15:28.281Z",
+      "nextAttemptAt": "2026-11-24T16:36:11.955Z"
+    },
+    {
       "id": "telegram-errores-de-precio:15825:miravia:26",
       "source": "telegram-errores-de-precio",
       "messageId": 15825,
@@ -250,7 +302,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/erroresde_precio/15825",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-24T14:54:58.125Z",
@@ -263,7 +315,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/erroresde_precio/15825",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-24T14:54:58.125Z",
@@ -276,37 +328,11 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/erroresde_precio/15825",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-24T14:54:58.125Z",
       "nextAttemptAt": "2026-11-24T16:15:19.244Z"
-    },
-    {
-      "id": "telegram-errores-de-precio:15825:miravia:18",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15825,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/erroresde_precio/15825",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-24T16:07:15.159Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15825:miravia:17",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15825,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/erroresde_precio/15825",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-24T16:07:15.159Z",
-      "nextAttemptAt": ""
     },
     {
       "id": "telegram-errores-de-precio:15825:amazon:16",
@@ -1279,32 +1305,6 @@
       "attempts": 4,
       "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/Ofertos/46418",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-24T13:15:25.417Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:46417:miravia:1",
-      "source": "telegram-ofertos",
-      "messageId": 46417,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/Ofertos/46417",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-24T13:15:25.417Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:46417:miravia:0",
-      "source": "telegram-ofertos",
-      "messageId": 46417,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/Ofertos/46417",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-24T13:15:25.417Z",
       "nextAttemptAt": ""
