@@ -1,26 +1,39 @@
 {
-  "updatedAt": "2026-11-24T03:03:20.164Z",
+  "updatedAt": "2026-11-24T03:13:52.571Z",
   "summary": {
-    "rejected": 476,
+    "rejected": 475,
     "ignored": 267,
     "duplicate": 23,
     "published": 78,
     "needs_review": 156,
-    "pending": 572
+    "pending": 574
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:99043:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 99043,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/99043",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:99042:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 99042,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/99042",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-24T02:42:55.209Z",
-      "nextAttemptAt": "2026-11-24T03:03:13.395Z"
+      "lastCheckedAt": "2026-11-24T03:13:33.608Z",
+      "nextAttemptAt": "2026-11-24T03:53:52.571Z"
     },
     {
       "id": "telegram-una-ganga:99041:amazon:0",
@@ -378,13 +391,13 @@
       "source": "telegram-una-ganga",
       "messageId": 99033,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/99033",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-24T03:02:57.768Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-24T03:13:33.608Z",
+      "nextAttemptAt": "2026-11-24T03:33:52.571Z"
     },
     {
       "id": "telegram-una-ganga:99032:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de una consulta de Amazon para este producto",
       "sourceUrl": "https://t.me/Ofertos/46390",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:99008:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 99008,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/una_ganga/99008",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
