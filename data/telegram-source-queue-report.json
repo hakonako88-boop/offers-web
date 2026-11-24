@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-24T01:23:46.593Z",
+  "updatedAt": "2026-11-24T01:33:40.707Z",
   "summary": {
     "rejected": 475,
     "ignored": 266,
     "duplicate": 23,
     "published": 78,
     "needs_review": 156,
-    "pending": 568
+    "pending": 569
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:99038:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 99038,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/una_ganga/99038",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:99037:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -28,12 +41,12 @@
       "messageId": 99036,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/99036",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-24T00:43:33.393Z",
-      "nextAttemptAt": "2026-11-24T01:03:50.491Z"
+      "lastCheckedAt": "2026-11-24T01:33:20.163Z",
+      "nextAttemptAt": "2026-11-24T02:13:40.707Z"
     },
     {
       "id": "telegram-paramanitas:5308:ignored",
@@ -301,12 +314,12 @@
       "messageId": 99033,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 2,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 3,
+      "reason": "Pendiente de reintento (3/4)",
       "sourceUrl": "https://t.me/una_ganga/99033",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-24T00:23:37.194Z",
-      "nextAttemptAt": "2026-11-24T01:03:57.007Z"
+      "lastCheckedAt": "2026-11-24T01:33:20.163Z",
+      "nextAttemptAt": "2026-11-24T02:53:40.707Z"
     },
     {
       "id": "telegram-una-ganga:99032:amazon:0",
@@ -365,13 +378,13 @@
       "source": "telegram-una-ganga",
       "messageId": 99030,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/99030",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-24T00:03:11.997Z",
-      "nextAttemptAt": "2026-11-24T01:23:33.347Z"
+      "lastCheckedAt": "2026-11-24T01:33:20.163Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:99029:amazon:0",
@@ -417,13 +430,13 @@
       "source": "telegram-una-ganga",
       "messageId": 99027,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/99027",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-24T01:23:30.140Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-24T01:33:20.163Z",
+      "nextAttemptAt": "2026-11-24T01:53:40.707Z"
     },
     {
       "id": "telegram-una-ganga:99026:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de una consulta de Amazon para este producto",
       "sourceUrl": "https://t.me/paramanitas/5305",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15820:amazon:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15820,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/erroresde_precio/15820",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
