@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-24T19:48:00.973Z",
+  "updatedAt": "2026-11-24T19:57:06.449Z",
   "summary": {
-    "rejected": 448,
     "duplicate": 22,
+    "rejected": 446,
     "ignored": 282,
     "published": 94,
     "needs_review": 156,
-    "pending": 638
+    "pending": 639
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:46469:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 46469,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/Ofertos/46469",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-errores-de-precio:15828:aliexpress:0",
       "source": "telegram-errores-de-precio",
@@ -497,7 +510,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/99084",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-24T18:35:53.397Z",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/99069",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-24T17:06:07.253Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:46435:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 46435,
-      "store": "Amazon",
-      "status": "published",
-      "attempts": 0,
-      "reason": "Oferta verificada y publicada con la afiliación de ChollosAlDía",
-      "sourceUrl": "https://t.me/Ofertos/46435",
-      "resultUrl": "https://www.amazon.es/dp/B0FSVK9XW3?tag=chollos00a-21&linkCode=osi&th=1&psc=1",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
