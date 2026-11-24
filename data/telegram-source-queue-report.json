@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-24T23:33:35.686Z",
+  "updatedAt": "2026-11-24T23:43:29.781Z",
   "summary": {
     "rejected": 442,
     "ignored": 287,
     "published": 94,
     "needs_review": 156,
     "duplicate": 21,
-    "pending": 648
+    "pending": 649
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:99105:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 99105,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/99105",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-24T23:43:09.852Z",
+      "nextAttemptAt": "2026-11-25T00:03:29.781Z"
+    },
     {
       "id": "telegram-una-ganga:99104:amazon:0",
       "source": "telegram-una-ganga",
@@ -249,12 +262,12 @@
       "messageId": 99094,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/99094",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-24T23:13:08.813Z",
-      "nextAttemptAt": "2026-11-24T23:33:31.246Z"
+      "lastCheckedAt": "2026-11-24T23:43:09.852Z",
+      "nextAttemptAt": "2026-11-25T00:23:29.781Z"
     },
     {
       "id": "telegram-ofertos:46470:aliexpress:0",
@@ -1285,19 +1298,6 @@
     },
     {
       "id": "telegram-errores-de-precio:15825:amazon:4",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15825,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/erroresde_precio/15825",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15825:amazon:3",
       "source": "telegram-errores-de-precio",
       "messageId": 15825,
       "store": "Amazon",
