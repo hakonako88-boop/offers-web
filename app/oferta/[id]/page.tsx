@@ -192,7 +192,7 @@ export default async function OfferPage({ params }: OfferPageProps) {
             <div className="offerShare"><span>¿Conoces a alguien a quien le interese?</span><div><a href={whatsappShareUrl} target="_blank" rel="noreferrer">Compartir por WhatsApp</a><a href={telegramShareUrl} target="_blank" rel="noreferrer">Enviar por Telegram</a></div></div>
             <p className="offerMeta"><span aria-hidden="true" /><OfferFreshness date={deal.verifiedDate} fallback={deal.verifiedAt} /> · Precio sujeto a cambios.</p>
             {product && <Link className="offerProductLink" href={productHref(product)}>Comparar este producto y sus tiendas →</Link>}
-            {specs && <section className={styles.specs}><h2>Características del {specs.model}</h2><ul>{specs.facts.map((spec:string)=><li key={spec}>{spec}</li>)}</ul><small>Fuente: <a href={specs.source}>ficha técnica de {specs.brand}</a>. Consultada el 23 de noviembre de 2026.</small></section>}
+            {specs && <section className={styles.specs}><h2>Características del {specs.model}</h2><ul>{specs.facts.map((spec:string)=><li key={spec}>{spec}</li>)}</ul><small>Fuente: <a href={specs.source}>ficha técnica de {specs.brand}</a>. Consultada el {specs.checked || '23 de noviembre de 2026'}.</small></section>}
             <a className="offerReport" href={reportUrl}>¿Ha cambiado el precio o el stock? Avísanos</a>
           </div>
         </div>
