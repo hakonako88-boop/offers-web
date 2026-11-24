@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-24T21:06:43.184Z",
+  "updatedAt": "2026-11-24T21:16:54.500Z",
   "summary": {
-    "rejected": 445,
+    "rejected": 446,
     "ignored": 284,
     "published": 94,
     "needs_review": 156,
@@ -9,6 +9,19 @@
     "pending": 642
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:99097:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 99097,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/99097",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-chollosdiario:46121:amazon:2",
       "source": "telegram-chollosdiario",
@@ -378,13 +391,13 @@
       "source": "telegram-una-ganga",
       "messageId": 99090,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/99090",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-24T19:47:42.850Z",
-      "nextAttemptAt": "2026-11-24T21:08:00.973Z"
+      "lastCheckedAt": "2026-11-24T21:16:30.148Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:46456:amazon:0",
@@ -1285,19 +1298,6 @@
     },
     {
       "id": "telegram-ofertos:46439:aliexpress:1",
-      "source": "telegram-ofertos",
-      "messageId": 46439,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/46439",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:46439:aliexpress:0",
       "source": "telegram-ofertos",
       "messageId": 46439,
       "store": "AliExpress",
