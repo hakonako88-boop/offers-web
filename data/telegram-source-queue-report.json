@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-25T16:23:11.880Z",
+  "updatedAt": "2026-11-25T16:37:34.806Z",
   "summary": {
     "needs_review": 146,
     "ignored": 302,
-    "rejected": 431,
+    "rejected": 432,
     "published": 102,
     "duplicate": 19,
     "pending": 678
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:99155:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 99155,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/una_ganga/99155",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:99154:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -157,13 +170,13 @@
       "source": "telegram-una-ganga",
       "messageId": 99147,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/99147",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-25T15:05:17.152Z",
-      "nextAttemptAt": "2026-11-25T16:25:34.820Z"
+      "lastCheckedAt": "2026-11-25T16:37:07.851Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-ofertos:46499:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Sin enlace compatible de Amazon, AliExpress o Miravia",
       "sourceUrl": "https://t.me/paramanitas/5319",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-paramanitas:5318:amazon:14",
-      "source": "telegram-paramanitas",
-      "messageId": 5318,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/paramanitas/5318",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
