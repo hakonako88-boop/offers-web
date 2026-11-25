@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-25T04:13:11.329Z",
+  "updatedAt": "2026-11-25T04:23:18.261Z",
   "summary": {
-    "rejected": 437,
+    "rejected": 438,
     "published": 94,
     "needs_review": 156,
     "ignored": 292,
@@ -9,6 +9,19 @@
     "pending": 667
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:99119:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 99119,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/una_ganga/99119",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:99118:aliexpress:0",
       "source": "telegram-una-ganga",
@@ -107,7 +120,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/99111",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-25T03:02:44.560Z",
@@ -469,13 +482,13 @@
       "source": "telegram-una-ganga",
       "messageId": 99102,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/99102",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-25T02:52:56.916Z",
-      "nextAttemptAt": "2026-11-25T04:13:14.267Z"
+      "lastCheckedAt": "2026-11-25T04:22:56.939Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-una-ganga:99101:amazon:0",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/99078",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-24T20:25:56.057Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:46445:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 46445,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/Ofertos/46445",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
