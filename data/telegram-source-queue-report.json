@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-25T07:55:40.191Z",
+  "updatedAt": "2026-11-25T08:04:38.507Z",
   "summary": {
     "rejected": 431,
     "published": 96,
     "needs_review": 156,
     "ignored": 295,
     "duplicate": 21,
-    "pending": 672
+    "pending": 673
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:8104:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 8104,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/tiesometro/8104",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:99129:miravia:0",
       "source": "telegram-una-ganga",
@@ -171,12 +184,12 @@
       "messageId": 99120,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 1,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 2,
+      "reason": "Pendiente de reintento (2/4)",
       "sourceUrl": "https://t.me/una_ganga/99120",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-25T07:34:57.456Z",
-      "nextAttemptAt": "2026-11-25T07:55:19.734Z"
+      "lastCheckedAt": "2026-11-25T08:04:16.029Z",
+      "nextAttemptAt": "2026-11-25T08:44:38.507Z"
     },
     {
       "id": "telegram-una-ganga:99119:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/Ofertos/46448",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-chollosdiario:46119:amazon:0",
-      "source": "telegram-chollosdiario",
-      "messageId": 46119,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/chollosdiario/46119",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
