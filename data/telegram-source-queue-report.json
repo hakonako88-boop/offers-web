@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-11-25T17:55:28.316Z",
+  "updatedAt": "2026-11-25T18:05:37.656Z",
   "summary": {
     "rejected": 432,
     "needs_review": 145,
-    "ignored": 302,
+    "ignored": 307,
     "published": 102,
     "duplicate": 19,
-    "pending": 690
+    "pending": 687
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:46505:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 46505,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/Ofertos/46505",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-ofertos:46504:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 46504,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/Ofertos/46504",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-paramanitas:5326:amazon:0",
       "source": "telegram-paramanitas",
@@ -42,7 +68,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/99159",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-25T17:44:53.309Z",
@@ -1281,32 +1307,6 @@
       "sourceUrl": "https://t.me/una_ganga/99122",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:99121:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 99121,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/una_ganga/99121",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:99120:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 99120,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/99120",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-25T10:14:38.813Z",
       "nextAttemptAt": ""
     }
   ]
