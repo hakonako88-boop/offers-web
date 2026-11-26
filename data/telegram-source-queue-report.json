@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-26T12:44:11.294Z",
+  "updatedAt": "2026-11-26T12:54:18.500Z",
   "summary": {
-    "rejected": 427,
+    "rejected": 425,
     "ignored": 302,
     "published": 112,
     "duplicate": 19,
     "needs_review": 144,
-    "pending": 782
+    "pending": 780
   },
   "recent": [
     {
@@ -15,12 +15,12 @@
       "messageId": 99218,
       "store": "Miravia",
       "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/99218",
       "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-26T12:54:00.787Z",
+      "nextAttemptAt": "2026-11-26T13:14:18.500Z"
     },
     {
       "id": "telegram-tiesometro:8116:aliexpress:0",
@@ -107,7 +107,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/99215",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-26T12:13:46.759Z",
@@ -651,13 +651,13 @@
       "source": "telegram-una-ganga",
       "messageId": 99209,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/99209",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-26T11:24:32.014Z",
-      "nextAttemptAt": "2026-11-26T12:44:49.345Z"
+      "lastCheckedAt": "2026-11-26T12:54:00.787Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-chollosdiario:46134:amazon:0",
@@ -911,13 +911,13 @@
       "source": "telegram-ofertos",
       "messageId": 46523,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/Ofertos/46523",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-26T11:24:32.014Z",
-      "nextAttemptAt": "2026-11-26T12:44:49.345Z"
+      "lastCheckedAt": "2026-11-26T12:54:00.787Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-tecnofertastop:61145:amazon:0",
