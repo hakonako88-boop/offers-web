@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-26T20:16:05.516Z",
+  "updatedAt": "2026-11-26T20:23:46.596Z",
   "summary": {
-    "rejected": 418,
-    "published": 116,
+    "rejected": 414,
     "duplicate": 20,
     "ignored": 306,
+    "published": 115,
     "needs_review": 144,
-    "pending": 810
+    "pending": 812
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:99243:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 99243,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/una_ganga/99243",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-paramanitas:5337:amazon:0",
       "source": "telegram-paramanitas",
@@ -443,13 +456,13 @@
       "source": "telegram-una-ganga",
       "messageId": 99236,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/99236",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-26T20:15:36.348Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-26T20:23:26.002Z",
+      "nextAttemptAt": "2026-11-26T20:43:46.596Z"
     },
     {
       "id": "telegram-ofertos:46570:amazon:0",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/Ofertos/46548",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:99212:miravia:0",
-      "source": "telegram-una-ganga",
-      "messageId": 99212,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/una_ganga/99212",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-26T16:33:44.157Z",
       "nextAttemptAt": ""
     }
   ]
