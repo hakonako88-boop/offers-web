@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-26T00:33:19.619Z",
+  "updatedAt": "2026-11-26T00:43:34.079Z",
   "summary": {
-    "rejected": 431,
-    "ignored": 306,
+    "ignored": 305,
     "published": 102,
+    "rejected": 429,
     "duplicate": 19,
     "needs_review": 144,
-    "pending": 741
+    "pending": 743
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:99182:amazon:0",
+      "source": "telegram-una-ganga",
+      "messageId": 99182,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/una_ganga/99182",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-paramanitas:5333:ignored",
       "source": "telegram-paramanitas",
@@ -378,13 +391,13 @@
       "source": "telegram-una-ganga",
       "messageId": 99173,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/99173",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-26T00:33:03.153Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-26T00:43:13.293Z",
+      "nextAttemptAt": "2026-11-26T01:03:34.079Z"
     },
     {
       "id": "telegram-una-ganga:99172:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
       "sourceUrl": "https://t.me/una_ganga/99148",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-tecnofertastop:61133:amazon:0",
-      "source": "telegram-tecnofertastop",
-      "messageId": 61133,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/tecnofertastop/61133",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
