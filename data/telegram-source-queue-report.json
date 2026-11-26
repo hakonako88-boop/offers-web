@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-26T05:32:56.639Z",
+  "updatedAt": "2026-11-26T05:43:33.679Z",
   "summary": {
     "ignored": 301,
     "published": 102,
-    "rejected": 433,
+    "rejected": 434,
     "duplicate": 19,
     "needs_review": 144,
     "pending": 750
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:99197:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 99197,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/99197",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-26T05:43:13.642Z",
+      "nextAttemptAt": "2026-11-26T06:03:33.679Z"
+    },
     {
       "id": "telegram-una-ganga:99196:amazon:0",
       "source": "telegram-una-ganga",
@@ -159,7 +172,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/99185",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-26T05:02:31.232Z",
@@ -482,13 +495,13 @@
       "source": "telegram-una-ganga",
       "messageId": 99179,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/99179",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-26T04:12:47.858Z",
-      "nextAttemptAt": "2026-11-26T05:33:08.741Z"
+      "lastCheckedAt": "2026-11-26T05:43:13.642Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-paramanitas:5330:amazon:0",
@@ -1292,19 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de una consulta de Amazon para este producto",
       "sourceUrl": "https://t.me/una_ganga/99158",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-tecnofertastop:61136:amazon:0",
-      "source": "telegram-tecnofertastop",
-      "messageId": 61136,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/tecnofertastop/61136",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
