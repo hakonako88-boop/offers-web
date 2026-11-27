@@ -1,14 +1,40 @@
 {
-  "updatedAt": "2026-11-27T14:45:45.018Z",
+  "updatedAt": "2026-11-27T14:54:50.394Z",
   "summary": {
-    "published": 128,
     "ignored": 301,
-    "rejected": 410,
+    "rejected": 409,
+    "published": 127,
     "duplicate": 18,
     "needs_review": 144,
-    "pending": 963
+    "pending": 966
   },
   "recent": [
+    {
+      "id": "telegram-tiesometro:8139:aliexpress:0",
+      "source": "telegram-tiesometro",
+      "messageId": 8139,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/tiesometro/8139",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-ofertos:46667:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 46667,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/Ofertos/46667",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:99321:miravia:0",
       "source": "telegram-una-ganga",
@@ -81,7 +107,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/99318",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-27T14:14:21.512Z",
@@ -391,13 +417,13 @@
       "source": "telegram-una-ganga",
       "messageId": 99311,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/99311",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-27T14:45:24.524Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-27T14:54:25.940Z",
+      "nextAttemptAt": "2026-11-27T15:14:50.394Z"
     },
     {
       "id": "telegram-una-ganga:99310:amazon:0",
@@ -562,7 +588,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/una_ganga/99308",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-27T14:14:21.512Z",
@@ -575,7 +601,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 2,
-      "reason": "Pendiente de reintento (2/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/Ofertos/46647",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-27T14:14:21.512Z",
@@ -1281,32 +1307,6 @@
       "sourceUrl": "https://t.me/Ofertos/46624",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-27T14:33:34.822Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:46626:aliexpress:0",
-      "source": "telegram-ofertos",
-      "messageId": 46626,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/Ofertos/46626",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:46625:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 46625,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/Ofertos/46625",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
