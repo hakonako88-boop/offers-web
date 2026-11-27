@@ -1,14 +1,53 @@
 {
-  "updatedAt": "2026-11-27T13:36:52.496Z",
+  "updatedAt": "2026-11-27T13:44:32.799Z",
   "summary": {
-    "rejected": 412,
-    "ignored": 302,
+    "rejected": 407,
     "published": 128,
+    "ignored": 301,
     "duplicate": 18,
     "needs_review": 144,
-    "pending": 958
+    "pending": 963
   },
   "recent": [
+    {
+      "id": "telegram-una-ganga:99318:miravia:0",
+      "source": "telegram-una-ganga",
+      "messageId": 99318,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/una_ganga/99318",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-27T13:44:08.885Z",
+      "nextAttemptAt": "2026-11-27T14:04:32.799Z"
+    },
+    {
+      "id": "telegram-ofertos:46666:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 46666,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/Ofertos/46666",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-chollosdiario:46147:amazon:0",
+      "source": "telegram-chollosdiario",
+      "messageId": 46147,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/chollosdiario/46147",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:99317:amazon:0",
       "source": "telegram-una-ganga",
@@ -185,7 +224,7 @@
       "store": "Amazon",
       "status": "pending",
       "attempts": 0,
-      "reason": "Producto localizado; pendiente de selección para publicar",
+      "reason": "Pendiente de una consulta de Amazon para este producto",
       "sourceUrl": "https://t.me/Ofertos/46657",
       "resultUrl": "",
       "lastCheckedAt": "",
@@ -456,13 +495,26 @@
       "source": "telegram-una-ganga",
       "messageId": 99308,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/99308",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-27T13:36:33.233Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-27T13:44:08.885Z",
+      "nextAttemptAt": "2026-11-27T14:04:32.799Z"
+    },
+    {
+      "id": "telegram-ofertos:46647:miravia:1",
+      "source": "telegram-ofertos",
+      "messageId": 46647,
+      "store": "Miravia",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
+      "sourceUrl": "https://t.me/Ofertos/46647",
+      "resultUrl": "",
+      "lastCheckedAt": "2026-11-27T13:44:08.885Z",
+      "nextAttemptAt": "2026-11-27T14:04:32.799Z"
     },
     {
       "id": "telegram-ofertos:46647:miravia:0",
@@ -471,7 +523,7 @@
       "store": "Miravia",
       "status": "pending",
       "attempts": 1,
-      "reason": "Pendiente de reintento (1/4)",
+      "reason": "Pendiente de turno para consultar el producto exacto en Miravia; no se consume un intento",
       "sourceUrl": "https://t.me/Ofertos/46647",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-27T13:23:39.770Z",
@@ -488,19 +540,6 @@
       "sourceUrl": "https://t.me/Ofertos/46648",
       "resultUrl": "",
       "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:46647:miravia:1",
-      "source": "telegram-ofertos",
-      "messageId": 46647,
-      "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
-      "sourceUrl": "https://t.me/Ofertos/46647",
-      "resultUrl": "",
-      "lastCheckedAt": "2026-11-27T13:36:33.233Z",
       "nextAttemptAt": ""
     },
     {
@@ -1266,45 +1305,6 @@
       "attempts": 0,
       "reason": "Pendiente de una consulta de Amazon para este producto",
       "sourceUrl": "https://t.me/Ofertos/46620",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-ofertos:46619:amazon:0",
-      "source": "telegram-ofertos",
-      "messageId": 46619,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/Ofertos/46619",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-errores-de-precio:15844:amazon:0",
-      "source": "telegram-errores-de-precio",
-      "messageId": 15844,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/erroresde_precio/15844",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-una-ganga:99301:amazon:0",
-      "source": "telegram-una-ganga",
-      "messageId": 99301,
-      "store": "Amazon",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de una consulta de Amazon para este producto",
-      "sourceUrl": "https://t.me/una_ganga/99301",
       "resultUrl": "",
       "lastCheckedAt": "",
       "nextAttemptAt": ""
