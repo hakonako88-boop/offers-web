@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-28T02:24:23.527Z",
+  "updatedAt": "2026-11-28T02:33:49.761Z",
   "summary": {
-    "ignored": 307,
-    "rejected": 403,
+    "rejected": 400,
+    "ignored": 306,
     "needs_review": 143,
     "duplicate": 16,
     "published": 134,
-    "pending": 1050
+    "pending": 1051
   },
   "recent": [
     {
@@ -404,13 +404,13 @@
       "source": "telegram-una-ganga",
       "messageId": 99351,
       "store": "Miravia",
-      "status": "rejected",
-      "attempts": 4,
-      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
+      "status": "pending",
+      "attempts": 1,
+      "reason": "Pendiente de reintento (1/4)",
       "sourceUrl": "https://t.me/una_ganga/99351",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-28T02:24:05.879Z",
-      "nextAttemptAt": ""
+      "lastCheckedAt": "2026-11-28T02:33:33.507Z",
+      "nextAttemptAt": "2026-11-28T02:53:49.761Z"
     },
     {
       "id": "telegram-chollosdiario:46153:amazon:0",
@@ -660,19 +660,6 @@
       "nextAttemptAt": ""
     },
     {
-      "id": "telegram-una-ganga:99342:aliexpress:0",
-      "source": "telegram-una-ganga",
-      "messageId": 99342,
-      "store": "AliExpress",
-      "status": "pending",
-      "attempts": 0,
-      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
-      "sourceUrl": "https://t.me/una_ganga/99342",
-      "resultUrl": "",
-      "lastCheckedAt": "",
-      "nextAttemptAt": ""
-    },
-    {
       "id": "telegram-una-ganga:99341:miravia:0",
       "source": "telegram-una-ganga",
       "messageId": 99341,
@@ -683,6 +670,19 @@
       "sourceUrl": "https://t.me/una_ganga/99341",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-28T02:24:05.879Z",
+      "nextAttemptAt": ""
+    },
+    {
+      "id": "telegram-una-ganga:99342:aliexpress:0",
+      "source": "telegram-una-ganga",
+      "messageId": 99342,
+      "store": "AliExpress",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de turno para verificar el producto exacto en AliExpress",
+      "sourceUrl": "https://t.me/una_ganga/99342",
+      "resultUrl": "",
+      "lastCheckedAt": "",
       "nextAttemptAt": ""
     },
     {
