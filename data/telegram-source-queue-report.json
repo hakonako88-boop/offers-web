@@ -1,14 +1,27 @@
 {
-  "updatedAt": "2026-11-28T18:23:49.043Z",
+  "updatedAt": "2026-11-28T18:34:09.049Z",
   "summary": {
+    "ignored": 327,
     "rejected": 380,
-    "ignored": 321,
     "needs_review": 138,
-    "pending": 1080,
+    "pending": 1074,
     "published": 145,
     "duplicate": 17
   },
   "recent": [
+    {
+      "id": "telegram-ofertos:46758:amazon:0",
+      "source": "telegram-ofertos",
+      "messageId": 46758,
+      "store": "Amazon",
+      "status": "pending",
+      "attempts": 0,
+      "reason": "Pendiente de una consulta de Amazon para este producto",
+      "sourceUrl": "https://t.me/Ofertos/46758",
+      "resultUrl": "",
+      "lastCheckedAt": "",
+      "nextAttemptAt": ""
+    },
     {
       "id": "telegram-una-ganga:99407:amazon:0",
       "source": "telegram-una-ganga",
@@ -287,13 +300,13 @@
       "source": "telegram-una-ganga",
       "messageId": 99399,
       "store": "Miravia",
-      "status": "pending",
-      "attempts": 3,
-      "reason": "Pendiente de reintento (3/4)",
+      "status": "rejected",
+      "attempts": 4,
+      "reason": "No se pudo verificar el producto exacto, el precio, la imagen y el enlace afiliado después de 4 intentos",
       "sourceUrl": "https://t.me/una_ganga/99399",
       "resultUrl": "",
-      "lastCheckedAt": "2026-11-28T17:05:36.401Z",
-      "nextAttemptAt": "2026-11-28T18:25:59.381Z"
+      "lastCheckedAt": "2026-11-28T18:33:48.425Z",
+      "nextAttemptAt": ""
     },
     {
       "id": "telegram-chollosdiario:46159:amazon:0",
@@ -1294,19 +1307,6 @@
       "sourceUrl": "https://t.me/Ofertos/46714",
       "resultUrl": "",
       "lastCheckedAt": "2026-11-28T13:46:48.599Z",
-      "nextAttemptAt": ""
-    },
-    {
-      "id": "telegram-tecnofertastop:61204:amazon:0",
-      "source": "telegram-tecnofertastop",
-      "messageId": 61204,
-      "store": "Amazon",
-      "status": "needs_review",
-      "attempts": 0,
-      "reason": "No se pudo preparar la vista previa: falta precio",
-      "sourceUrl": "https://t.me/tecnofertastop/61204",
-      "resultUrl": "",
-      "lastCheckedAt": "",
       "nextAttemptAt": ""
     }
   ]
